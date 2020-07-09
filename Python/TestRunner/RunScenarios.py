@@ -47,9 +47,8 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
         shutil.copy(merge_fixes, ram_directory)
 
     # Clear existing log files
-    for f in os.listdir(icarous_exe):
-        if f.endswith(".txt") or f.endswith(".log"):
-            os.remove(os.path.join(icarous_exe, f))
+    for f in os.listdir(os.path.join(icarous_exe, "log")):
+        os.remove(os.path.join(icarous_exe, "log", f))
 
     # Set up each vehicle
     vehicles = []
@@ -93,12 +92,11 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
         subprocess.call(["pkill", "-9", "mavproxy"])
 
     # Collect log files
-    for f in os.listdir(icarous_exe):
-        if f.endswith(".txt") or f.endswith(".log"):
-            os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
-    for f in os.listdir(output_dir):
-        if f.endswith("tlog.raw"):
-            os.remove(os.path.join(output_dir, f))
+    source = os.path.join(icarous_exe, "log")
+    dest = os.path.join(output_dir, "log")
+    for f in os.listdir(source):
+        if not f.startswith("."):
+            shutil.copy(os.path.join(source, f), dest)
 
 
 def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
@@ -115,10 +113,9 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
         waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
                                            v_scenario["waypoint_file"]))
         HomePos = waypoints[0][0:3]
-        name=v_scenario["name"]
 
-        ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
-                     verbose=1, logName=name)
+        ic = Icarous(HomePos, simtype="UAM_VTOL",
+                     vehicleID=spacecraft_id, verbose=1)
 
         # Set up the scenario
         if "merge_fixes" in scenario:
@@ -153,8 +150,7 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
 
     # Collect log files
     for ic in icInstances:
-        #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+".json"))
-        logname = "%s_%d.json" % (ic.logName, ic.vehicleID)
+        logname = "simlog-%d-%f.json" % (ic.vehicleID, time.time())
         dest = os.path.join(output_dir, logname)
         print("writing log: %s" % dest)
         log_data = {"scenario": scenario,

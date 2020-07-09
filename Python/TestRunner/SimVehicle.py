@@ -54,7 +54,8 @@ class SimVehicle:
         icarous_params.update(self.scenario["param_adjustments"])
 
         sitl_params["WPNAV_SPEED"] = icarous_params["DEF_WP_SPEED"]*100
-        sitl_param_file = os.path.join(self.output_dir, self.name + "_sitl.parm")
+        filename = "sitlparams-%d" % self.spacecraft_id
+        sitl_param_file = os.path.join(self.output_dir, filename)
         with open(sitl_param_file, 'w') as f:
             for param_id, param_value in sitl_params.items():
                 f.write("%-16s %f\n" % (param_id, param_value))
@@ -65,7 +66,8 @@ class SimVehicle:
                      "--add-param-file", sitl_param_file,
                      "--use-dir", "sitl_files",
                      "-I", str(self.spacecraft_id)]
-        logfile = os.path.join(self.output_dir, self.name+"_sitl.tlog")
+        logname = "sitl-%d-%f.tlog" % (self.spacecraft_id, time.time())
+        logfile = os.path.join(self.output_dir, logname)
         arguments += ["-m", "--logfile="+logfile]
         subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
 
@@ -86,7 +88,8 @@ class SimVehicle:
         if self.out is not None:
             # Use mavproxy to forward mavlink stream (for visualization)
             gs_port = icarous_port + 1
-            logfile = os.path.join(self.output_dir, self.name + ".tlog")
+            logname = "telemetry-%d-%f" % (self.spacecraft_id, time.time())
+            logfile = os.path.join(self.output_dir, logname + ".tlog")
             self.mav_forwarding = subprocess.Popen(["mavproxy.py",
                                                "--master=127.0.0.1:"+str(icarous_port),
                                                "--out=127.0.0.1:"+str(gs_port),
@@ -100,7 +103,7 @@ class SimVehicle:
 
         # Start the ICAROUS process
         os.chdir(icarous_exe)
-        fpic = open(self.name + "_icout.txt",'w')
+        fpic = open("icout-%d-%f.txt" % (self.spacecraft_id, time.time()), 'w')
         self.ic = subprocess.Popen(["./core-cpu1",
                                     "-I "+str(self.spacecraft_id),
                                     "-C "+str(self.cpu_id)],
@@ -121,12 +124,14 @@ class SimVehicle:
 
         # Set up the scenario (flight plan, geofence, parameters, traffic)
         self.gs.loadWaypoint(os.path.join(icarous_home, scenario["waypoint_file"]))
+        wp_log = "flightplan-%d.waypoints" % self.spacecraft_id
         shutil.copy(os.path.join(icarous_home, scenario["waypoint_file"]),
-                    os.path.join(self.output_dir, self.name + ".waypoints"))
+                    os.path.join(self.output_dir, wp_log))
         if scenario.get("geofence_file"):
             self.gs.loadGeofence(os.path.join(icarous_home, scenario["geofence_file"]))
+            gf_log = "geofence-%d.xml" % self.spacecraft_id
             shutil.copy(os.path.join(icarous_home, scenario["geofence_file"]),
-                        os.path.join(self.output_dir, self.name + "_geofence.xml"))
+                        os.path.join(self.output_dir, gf_log))
         if scenario.get("parameter_file"):
             self.gs.loadParams(os.path.join(icarous_home, scenario["parameter_file"]))
         if scenario.get("param_adjustments"):
@@ -177,7 +182,7 @@ class SimVehicle:
                    "geofences": self.geofences,
                    "parameters": self.params,
                    "sim_type": self.sim_type}
-        logname = str(self.spacecraft_id) + self.name + ".json"
+        logname = "simlog-%d-%f.json" % (self.spacecraft_id, time.time())
         dest = os.path.join(self.output_dir, logname)
         with open(dest, 'w') as f:
             json.dump(simdata, f)
@@ -185,7 +190,8 @@ class SimVehicle:
 
 
     def write_params(self):
-        param_file = os.path.join(self.output_dir, self.name + ".parm")
+        filename = "params-%d.parm" % self.spacecraft_id
+        param_file = os.path.join(self.output_dir, filename)
         with open(param_file, 'w') as f:
             for param_id, param_value in self.params.items():
                 f.write("%-16s %f\n" % (param_id, param_value))
@@ -244,6 +250,7 @@ class SimVehicle:
         # Once simulation is finished, kill the icarous process
         if self.terminated:
             return
+        self.terminated = True
         self.ic.kill()
         if self.out is not None:
             subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])

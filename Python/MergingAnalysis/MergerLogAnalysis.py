@@ -542,10 +542,10 @@ def process_data(data_location):
     found_log = True
     while found_log:
         found_log = False
-        for f in os.listdir(data_location):
+        for f in os.listdir(os.path.join(data_location, "log")):
             if f.startswith("merger_appdata_"+str(i)):
                 found_log = True
-                filename = os.path.join(data_location, f)
+                filename = os.path.join(data_location, "log", f)
                 data = ReadMergerAppData(filename, i, group)
                 data.params = read_params(data_location, i)
                 vehicles.append(data)
