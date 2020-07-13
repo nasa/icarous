@@ -1001,20 +1001,20 @@ bool Cognition::TrafficConflictManagement(){
          // Use this only for search based resolution
          if(parameters.resolutionType == SEARCH_RESOLUTION){
             return2NextWPState = INITIALIZE;
-            log << timeString + "| [STATUS] Resolving conflict with search resolution" <<"\n";
+            log << timeString + "| [STATUS] | Resolving conflict with search resolution" <<"\n";
          }else if(parameters.resolutionType == SPEED_RESOLUTION){
-            log << timeString + "| [STATUS] Resolving conflict with speed resolution" <<"\n";
+            log << timeString + "| [STATUS] | Resolving conflict with speed resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Speed Request"<<"\n";
          }else if(parameters.resolutionType == ALTITUDE_RESOLUTION){
-            log << timeString + "| [STATUS] Resolving conflict with altitude resolution" <<"\n";
+            log << timeString + "| [STATUS] | Resolving conflict with altitude resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
          }else if(parameters.resolutionType == TRACK_RESOLUTION){
-            log << timeString + "| [STATUS] Resolving conflict with track resolution" <<"\n";
+            log << timeString + "| [STATUS] | Resolving conflict with track resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
          }else if(parameters.resolutionType == DITCH_RESOLUTION){
             // The top level statemachine should catch this
             // and transition to the emergency descent state.
-            log << timeString + "| [STATUS] Resolving conflict with ditch resolution" <<"\n";
+            log << timeString + "| [STATUS] | Resolving conflict with ditch resolution" <<"\n";
          }
          break;
       }
