@@ -343,6 +343,7 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
                 // dealing with a traffic conflict
                 if (parameters.resolutionType == 4 && trafficTrackConflict)
                 {
+                    nextWpId[primary_plan_id] = i;
                     double dist = position.distanceH(GetNextWP());
                     // Consider a waypoint feasible if its greater than the 3*DTHR values.
                     // Note DTHR is in ft. Convert from ft to m before comparing with dist.
