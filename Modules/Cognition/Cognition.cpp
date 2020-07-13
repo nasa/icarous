@@ -333,6 +333,7 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
     std::string primary_plan_id = "Plan0";
     if (nextWpId.count(primary_plan_id) > 0)
     {
+        larcfm::Plan* fp = GetPlan("Plan0");
         int next_wp_id = nextWpId[primary_plan_id];
         int num_waypoints = GetTotalWaypoints(primary_plan_id);
         for (int i = next_wp_id; i < num_waypoints; ++i)
@@ -343,8 +344,7 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
                 // dealing with a traffic conflict
                 if (parameters.resolutionType == 4 && trafficTrackConflict)
                 {
-                    nextWpId[primary_plan_id] = i;
-                    double dist = position.distanceH(GetNextWP());
+                    double dist = position.distanceH(fp->getPos(i));
                     // Consider a waypoint feasible if its greater than the 3*DTHR values.
                     // Note DTHR is in ft. Convert from ft to m before comparing with dist.
                     if (dist > 3 * (parameters.DTHR / 3))
