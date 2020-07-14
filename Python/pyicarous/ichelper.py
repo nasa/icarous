@@ -119,13 +119,13 @@ def ReadFlightplanFile(filename):
     wp_speed = []
     speed = -1
     line='#'
-    while line is not '':
+    while line != '':
         line = f.readline()
         lc = line.replace(' ','\t').split('\t')
         if len(lc) < 10:
             continue
 
-        wplist = [elem for elem in lc if elem is not '']
+        wplist = [elem for elem in lc if elem != '']
 
         if int(wplist[3]) == 178:
             speed = float(wplist[5])

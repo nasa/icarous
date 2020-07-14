@@ -376,7 +376,7 @@ class Icarous():
                 self.etaFP1 = False
                 speedChange =  cmd.commandU.speedChange.speed
                 planID= cmd.commandU.speedChange.name.decode('utf-8')
-                nextWP = self.nextWP1 if planID is "Plan0" else self.nextWP2
+                nextWP = self.nextWP1 if planID == "Plan0" else self.nextWP2
                 self.Guidance.ChangeWaypointSpeed(planID,nextWP,speedChange,False)
             elif cmd.commandType == CommandTypes.STATUS_MESSAGE:
                 if self.verbose > 0:
@@ -577,7 +577,7 @@ class Icarous():
         self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
 
     def WriteLog(self, logname="simoutput.json"):
-        if self.logName is not "":
+        if self.logName != "":
              logname = self.logName + '.json'
 
         import json
