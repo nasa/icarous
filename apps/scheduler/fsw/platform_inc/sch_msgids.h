@@ -48,7 +48,8 @@
 #define FREQ_30_WAKEUP_MID 0x0F02    ///< wake up scheduler message generated at  30 Hz
 #define FREQ_20_WAKEUP_MID 0x0F03    ///< wake up scheduler message generated at  30 Hz
 #define FREQ_10_WAKEUP_MID 0x0F04    ///< wake up scheduler message generated at  10 Hz
-#define FREQ_01_WAKEUP_MID 0x0F05    ///< wake up scheduler message generated at  01 Hz
+#define FREQ_05_WAKEUP_MID 0x0F05    ///< wake up scheduler message generated at  05 Hz
+#define FREQ_01_WAKEUP_MID 0x0F06    ///< wake up scheduler message generated at  01 Hz
 
 
 
