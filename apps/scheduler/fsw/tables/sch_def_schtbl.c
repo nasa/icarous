@@ -53,11 +53,11 @@
 */
 
 /* Table file header */
-static CFE_TBL_FileDef_t CFE_TBL_FileDef =
+/* static CFE_TBL_FileDef_t CFE_TBL_FileDef =
 {
     "SCH_DefaultScheduleTable", "SCH.SCHED_DEF", "SCH schedule table",
     "sch_def_schtbl.tbl", (sizeof(SCH_ScheduleEntry_t) * SCH_TABLE_ENTRIES)
-};
+};*/
 
 /* Default schedule table data */
 SCH_ScheduleEntry_t SCH_DefaultScheduleTable[SCH_TABLE_ENTRIES] =
