@@ -4,7 +4,7 @@
 #
 ############################################################
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Swee Balachandran (swee.balachandran@nianet.org)
 LABEL icarous-base version="1.0"
 
@@ -14,8 +14,8 @@ LABEL icarous-base version="1.0"
 #
 ############################################################
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update \
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
     && apt-get upgrade -yq \
     && apt-get install -yq --no-install-recommends \
        build-essential \
@@ -44,10 +44,19 @@ RUN DEBIAN_FRONTEND=noninteractive \
        python-pexpect \
        python-dev \
        libcanberra-gtk-module \ 
+       libzmq3-dev \
+       python3 python3-pip \
+       python3.6-tk \
+       openssh-client \
+       python3-dev \
+       python3-matplotlib \
+       python3-serial \
+       python3-lxml \
+       python3-scipy \
+       python3-opencv \
+       python3-pexpect \
        ruby-full 
         
-RUN gem install jekyll bundler
-
 # Python libraries
 RUN pip install --upgrade pip
 RUN pip install setuptools
@@ -75,6 +84,13 @@ RUN export PYTHONPATH=$PYTHONPATH:/PolyCARP/Python
 
 ############################################################
 # Download ICAROUS
-RUN git clone --recurse-submodules https://github.com/nasa/icarous.git /icarous
+RUN git clone https://github.com/nasa/icarous.git /icarous
+RUN cd /icarous && bash UpdateModules.sh
 
+RUN pip3 install --upgrade pip
+RUN pip3 install setuptools
+RUN pip3 install future
+RUN pip3 install pyyaml
+RUN cd /MAVProxy && python3 setup.py install
 
+ENV PYTHONPATH=$PYTHONPATH:/PolyCARP/Python
