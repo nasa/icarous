@@ -185,7 +185,7 @@ void gsInterface_InitializeAppData(void){
   char filePrefix[] = "gsInterface";
   InitializePortConfig(filePrefix,&appdataIntGS.gs);
 
-  InitializeAircraftCallSign(appdataIntGS.callsign.value);
+  InitializeAircraftCallSign(&appdataIntGS.callsign);
 
   //Set mission start flag to -1
   appdataIntGS.startMission.param1 = -1;

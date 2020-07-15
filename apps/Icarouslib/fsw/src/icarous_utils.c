@@ -1,5 +1,3 @@
-
-
 #define _GNU_SOURCE
 #include <string.h>
 #include "cfe.h"
@@ -56,9 +54,15 @@
 /* cFE requires that a library have an initialization routine      */
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+struct callsign {
+    callsign_t value;
+    bool isInitialized;
+} callsignCache;
+
 int32 Icarous_LibInit(void)
 {
-    OS_printf ("ICAROUS_LIB Initialized.\n");
+    OS_printf ("ICAROUS_LIB Initialized with callsign %s.\n", GetAircraftCallSign());
     return CFE_SUCCESS;
 }
 
@@ -382,7 +386,7 @@ int ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
  * Returns the number of pairs read from the file
  * KEY VALUE
  */
-int GetParams(char *filename, char (*params)[16],char (*val)[16]){
+int GetParams(char *filename, size_t numOfPairs, char (*params)[MAX_PARAMETER_NAME_SIZE],char (*val)[MAX_PARAMETER_NAME_SIZE]){
    FILE* fp = fopen(filename,"r");
    if(fp == NULL){
        OS_printf("Error opening file: %s\n",filename);
@@ -390,19 +394,23 @@ int GetParams(char *filename, char (*params)[16],char (*val)[16]){
    }
 
    int i = 0;
+   int lineNo = 0;
    while(1){
        int x;
        char line[200];
-       if(fgets(line,199,fp) == NULL){
+       if(fgets(line,sizeof(line),fp) == NULL){
           break;
        }
-       memset(params[i],0,16);
-       memset(val[i],0,16);
-       x =  sscanf(line,"%s %16s",params[i],val[i]);
-       if(x > 0){
+       memset(params[i],0,MAX_PARAMETER_NAME_SIZE);
+       memset(val[i],0,MAX_PARAMETER_NAME_SIZE);
+       x =  sscanf(line,"%16s %16s\n",params[i],val[i]);
+       lineNo++;
+       if(x == 2){
             if (params[i][0] !='#'){
                 i++;
             }
+       } else if (x == 1 && line[0] != '#') {
+          OS_printf("[Icarouslib] Malformed configuration file %s at line %d\n", filename, lineNo);
        }
    }
    fclose(fp);
@@ -410,16 +418,16 @@ int GetParams(char *filename, char (*params)[16],char (*val)[16]){
 }
 
 bool InitializeParams(char *filename,param_t* params,uint16_t paramCount){
-
-    char locparams[250][16];
-    char locvals[250][16];
-    int n = GetParams(filename,locparams,locvals);
+    const size_t MAX_PARAMS = 250;
+    char locparams[MAX_PARAMS][MAX_PARAMETER_NAME_SIZE];
+    char locvals[MAX_PARAMS][MAX_PARAMETER_NAME_SIZE];
+    int n = GetParams(filename,MAX_PARAMS,locparams,locvals);
     if (n != paramCount){
         OS_printf("Parameter count incorrect in %s\n",filename);
         return false;
     }else{
         for(int i=0;i<PARAM_COUNT;++i){
-            memcpy(params[i].param_id,locparams+i,16);
+            memcpy(params[i].param_id,locparams+i,MAX_PARAMETER_NAME_SIZE);
             params[i].value = atof(locvals[i]);
             params[i].type = 10;
         }
@@ -428,17 +436,62 @@ bool InitializeParams(char *filename,param_t* params,uint16_t paramCount){
 
 }
 
-bool InitializeAircraftCallSign(char* callsign){
+char const * const GetAircraftCallSign(void) {
+    if (!callsignCache.isInitialized) {
+        InitializeAircraftCallSign(&callsignCache.value);
+        callsignCache.isInitialized = true;
+    }
+    return callsignCache.value.value;
+}
+
+void adsb_callsign_from_callsign_t(adsb_callsign * dest, callsign_t * orig) {
+    const size_t adsbCallsignMaxSize = 9;
+    size_t length = strlen(orig->value);
+    if (length < adsbCallsignMaxSize) {
+        size_t paddingSize = adsbCallsignMaxSize - (length + 1);
+        memcpy(dest->value, orig->value, length);
+        memset(dest->value + length, ' ', paddingSize);
+        dest->value[adsbCallsignMaxSize - 1] = '\0';
+    } else {
+        memcpy(dest->value, orig->value, adsbCallsignMaxSize);
+        dest->value[adsbCallsignMaxSize - 1] = '\0';
+        OS_printf("[Icarouslib] adsb_callsign_from_callsign_t trimmed the callsign %s -> %s\n", orig->value, dest->value);
+    }
+}
+
+char const * const callsign_t_get(callsign_t * dest) {
+    return dest->value;
+}
+
+void callsign_t_zero(callsign_t * dest)
+{
+    memset(dest->value,0,sizeof(dest->value));
+}
+
+void callsign_t_set(callsign_t * dest, char const * const source)
+{
+    size_t sourceLength = strlen(source);
+    if (sourceLength < MAX_CALLSIGN_LEN) {
+        memset(dest->value,0,MAX_CALLSIGN_LEN);
+        strncpy(dest->value,source,MAX_CALLSIGN_LEN);
+    } else {
+        strncpy(dest->value,source,MAX_CALLSIGN_LEN);
+        dest->value[MAX_CALLSIGN_LEN - 1] = '\0';
+    }
+}
+
+bool InitializeAircraftCallSign(callsign_t * callsign) {
+    const size_t MAX_CALLSIGNS = 1;
     char configfile[25];
     uint32_t aircraft_id = CFE_PSP_GetSpacecraftId();
     sprintf(configfile,"../ram/aircraft%d.cfg",aircraft_id);
-    char configParams[5][MAX_CALLSIGN_LEN];
-    char configValues[5][MAX_CALLSIGN_LEN];
+    char configParams[MAX_CALLSIGNS][MAX_CALLSIGN_LEN];
+    char configValues[MAX_CALLSIGNS][MAX_CALLSIGN_LEN];
 
-    GetParams(configfile,configParams,configValues);
+    GetParams(configfile,MAX_CALLSIGNS,configParams,configValues);
     
     if(strcmp(configParams[0],"CALLSIGN") == 0){
-        strcpy(callsign,configValues[0]);
+        strcpy(callsign->value,configValues[0]);
     }else{
         return false;
     }
@@ -452,9 +505,10 @@ bool InitializePortConfig(char* filename,void* vprt){
     uint32_t aircraft_id = CFE_PSP_GetSpacecraftId();
     sprintf(configfile,"../ram/%s%d.cfg",filename,aircraft_id);
 
-    char configParams[20][16];
-    char configValues[20][16];
-    int n = GetParams(configfile,configParams,configValues);
+    const size_t MAX_PARAMS = 20;
+    char configParams[MAX_PARAMS][MAX_PARAMETER_NAME_SIZE];
+    char configValues[MAX_PARAMS][MAX_PARAMETER_NAME_SIZE];
+    int n = GetParams(configfile,MAX_PARAMS,configParams,configValues);
 
     if(n == 5){
         if(strcmp(configValues[0],"SERIAL") == 0){

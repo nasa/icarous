@@ -323,9 +323,11 @@ void ProcessGSMessage(mavlink_message_t message) {
                 gs_startTimer(&appdataIntGS.gftimer,gs_gfCallback,name,1000,1000000);
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
-                appdataIntGS.traffic.index = (uint32_t)msg.param1;
-                memset(appdataIntGS.traffic.callsign.value,0,25);
-
+                uint32_t index = (uint32_t) msg.param1;
+                appdataIntGS.traffic.index = index;
+                char rawCallsign[20];
+                sprintf(rawCallsign, "WGS%d",index);
+                callsign_t_set(&appdataIntGS.traffic.callsign, rawCallsign);
                 appdataIntGS.traffic.type = _TRAFFIC_SIM_;
                 appdataIntGS.traffic.latitude = msg.param5;
                 appdataIntGS.traffic.longitude = msg.param6;
@@ -599,8 +601,7 @@ void gsInterface_ProcessPacket(void) {
 
           double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
           double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
-          char callsign[9] = "        \0";
-          memcpy(callsign,(pos->callsign.value),8);
+          callsign_t callsign = pos->callsign;
           mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
               (int32_t)(pos->latitude*1E7),
               (int32_t)(pos->longitude*1E7),
@@ -609,7 +610,7 @@ void gsInterface_ProcessPacket(void) {
               (uint16_t) (heading*1E2),
               (uint16_t) (speed*1E2),
               (uint16_t) (pos->vd*1E2),
-              callsign,0,0,0,0);
+              callsign.value,0,0,0,0);
 
           writeMavlinkData(&appdataIntGS.gs,&msg);
 
@@ -654,8 +655,8 @@ void gsInterface_ProcessPacket(void) {
 
         double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
         double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
-        char callsign[9] = "        \0";
-        memcpy(callsign,traffic->callsign.value,8);
+        adsb_callsign callsign;
+        adsb_callsign_from_callsign_t(&callsign, &traffic->callsign);
         mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
             (int32_t)(traffic->latitude * 1E7),
             (int32_t)(traffic->longitude * 1E7),
@@ -664,7 +665,7 @@ void gsInterface_ProcessPacket(void) {
             (uint16_t)(heading * 1E2),
             (uint16_t)(speed * 1E2),
             (uint16_t)(traffic->vd * 1E2),
-            callsign, emitterType, 0, 0, 0);
+            callsign.value, emitterType, 0, 0, 0);
 
         writeMavlinkData(&appdataIntGS.gs, &msg);
         break;

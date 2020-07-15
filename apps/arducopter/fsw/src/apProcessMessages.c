@@ -423,8 +423,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             }
 
             traffic.index = msg.ICAO_address;
-            memset(traffic.callsign.value,0,25);
-            memcpy(traffic.callsign.value,msg.callsign,8);
+            callsign_t_set(&traffic.callsign,msg.callsign);
             traffic.type = _TRAFFIC_ADSB_;
             traffic.latitude = msg.lat/1.0E7;
             traffic.longitude = msg.lon/1.0E7;
@@ -829,8 +828,8 @@ void ARDUCOPTER_ProcessPacket(void) {
 
             double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
             double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
-            char callsign[9]="\0";
-            memcpy(callsign,traffic->callsign.value,8);
+            adsb_callsign callsign;
+            adsb_callsign_from_callsign_t(&callsign,&traffic->callsign);
             mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
                                           (int32_t)(traffic->latitude * 1E7),
                                           (int32_t)(traffic->longitude * 1E7),
@@ -839,7 +838,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                                           (uint16_t)(heading * 1E2),
                                           (uint16_t)(speed * 1E2),
                                           (uint16_t)(traffic->vd * 1E2),
-                                          callsign, emitterType, 1, 1, 0);
+                                          callsign.value, emitterType, 1, 1, 0);
 
             writeMavlinkData(&appdataInt.ap, &msg);
             break;

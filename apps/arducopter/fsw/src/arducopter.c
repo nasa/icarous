@@ -191,7 +191,7 @@ void ARDUCOPTER_AppInitializeData(){
     char portFilePrefix[] = "arducopter";
     InitializePortConfig(portFilePrefix,&appdataInt.ap);
 
-    InitializeAircraftCallSign(appdataInt.callsign.value);
+    InitializeAircraftCallSign(&appdataInt.callsign);
 
     ArducopterTable_t *TblPtr = &appdataInt.Table;
 
