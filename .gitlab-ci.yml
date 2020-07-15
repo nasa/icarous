@@ -40,6 +40,7 @@ build:
     - su myuser -c 'make install'
 
   artifacts:
+    when: always
     paths:
       - exe/cpu1/*
       - Modules/lib/*
@@ -52,6 +53,7 @@ test:
     - cd Python/TestRunner
     - su myuser -c 'python3 RunScenarios.py scenarios.yaml --validate --test --verbose'
   artifacts:
+    when: always
     paths:
       - Python/TestRunner/sim_output/*
     expire_in: 2 days
