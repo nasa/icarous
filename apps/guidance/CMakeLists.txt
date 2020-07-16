@@ -15,9 +15,9 @@ include_directories(../guidance/fsw/platform_inc)
 
 set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
-include_directories(${MODULES_ROOT}/Utils)
-include_directories(${MODULES_ROOT}/Interfaces)
-include_directories(${MODULES_ROOT}/Guidance)
+include_directories(${MODULES_ROOT}/Core/Utils)
+include_directories(${MODULES_ROOT}/Core/Interfaces)
+include_directories(${MODULES_ROOT}/Core/Guidance)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

@@ -21,8 +21,8 @@ include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 include_directories(fsw/src)
 include_directories(fsw/tables)
-include_directories(${MODULES_ROOT}/Utils)
-include_directories(${MODULES_ROOT}/Interfaces)
+include_directories(${MODULES_ROOT}/Core/Utils)
+include_directories(${MODULES_ROOT}/Core/Interfaces)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
