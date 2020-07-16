@@ -26,7 +26,7 @@
 #include "sch_msgids.h"
 #include "UtilFunctions.h"
 
-#include "Guidance.h"
+#include "Core/Guidance/Guidance.h"
 
 #define GUIDANCE_STARTUP_INF_EID 0
 #define GUIDANCE_COMMAND_ERR_EID 1
