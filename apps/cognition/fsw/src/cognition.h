@@ -32,7 +32,7 @@
 #include "UtilFunctions.h"
 #include "Guidance.h"
 
-#include "Cognition.h"
+#include "Core/Cognition/Cognition.h"
 
 #ifdef APPDEF_MERGER
 #include "merger_msgids.h"
