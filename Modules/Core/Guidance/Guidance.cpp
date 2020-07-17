@@ -231,9 +231,13 @@ double Guidance::ComputeClimbRate(const larcfm::Position &position,const larcfm:
 
 void Guidance::ComputePlanGuidance(){
     bool finalleg = false;
-    int nextWP = nextWpId[activePlanId]%currentPlan->size();
+    int nextWP = nextWpId[activePlanId];
     if (nextWP == currentPlan->size() - 1){
         finalleg = true;
+    }else if(nextWP >= currentPlan->size()){
+        wpReached = true;
+        outputCmd = larcfm::Velocity::makeTrkGsVs(0.0,"degree",0.0,"m/s",0.0,"m/s");
+        return;
     }
     const larcfm::Position nextWPPos = currentPlan->getPos(nextWP);
 
