@@ -31,3 +31,4 @@ Modules/lib
 exe/cpu1
 sim
 **/gen
+Python/TestRunner/sim_output
