@@ -17,12 +17,10 @@ before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo -e "$SWEE_SSHKEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - git submodule sync --recursive
-  - git submodule update --init apps/rotorsim/QuadCopterSim
-  - git submodule update --init apps/merger
-  - git submodule update --init apps/raft
-  - git submodule update --init apps/safe2ditch
+  - chmod -R 777 /builds/larc-nia-fm/icarous
   - cd /builds/larc-nia-fm/icarous
+  - git submodule update --init --recursive
+  - mkdir -p /builds/larc-nia-fm/icarous/exe/cpu1/cf
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
@@ -36,12 +34,13 @@ build:
     - sed -i s/#SBN/SBN/ Icarous_defs/apps.cmake
     - sed -i s/#udp/udp/ Icarous_defs/apps.cmake
     - sed -i s/#safe2ditch/safe2ditch/ Icarous_defs/apps.cmake
-    - su myuser -c make 
-    - su myuser -c 'make install'
+    - make 
+    - make install
 
   artifacts:
     when: always
     paths:
+      - build/*
       - exe/cpu1/*
       - Modules/lib/*
     expire_in: 2 days 
@@ -49,6 +48,7 @@ build:
 test:
   stage: test
   script:
+    - chmod -R 777 /builds/larc-nia-fm/icarous
     - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
     - cd Python/TestRunner
     - su myuser -c 'python3 RunScenarios.py scenarios.yaml --validate --test --verbose'

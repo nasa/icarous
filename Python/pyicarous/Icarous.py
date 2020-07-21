@@ -96,7 +96,8 @@ class Icarous():
 
     def InputTraffic(self,idx,position,velocity,localPos):
         if idx is not self.vehicleID:
-            self.tfMonitor.input_traffic(idx,position,velocity,self.currTime)
+            trkgsvs = ConvertVnedToTrkGsVs(velocity[1],velocity[0],velocity[2])
+            self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
             self.Trajectory.InputTrafficData(idx,position,velocity)
             self.RecordTraffic(idx, position, velocity, localPos)
 
@@ -496,8 +497,8 @@ class Icarous():
 
         for i,fp in enumerate(self.flightplan1):
             wp = fp[:3]
-            feasibility = self.tfMonitor.monitor_wp_feasibility(self.position, self.trkgsvs, wp)
-            feasibility &= self.tfMonitor.monitor_wp_feasibility(self.position, [self.trkgsvs[0],self.resSpeed,self.trkgsvs[2]], wp)
+            feasibility = self.tfMonitor.monitor_wp_feasibility(wp,-1)
+            feasibility &= self.tfMonitor.monitor_wp_feasibility(wp,self.resSpeed)
             trkband.wpFeasibility1[i] = feasibility
             gsband.wpFeasibility1[i] = feasibility
             altband.wpFeasibility1[i] = feasibility
@@ -505,8 +506,8 @@ class Icarous():
         
         for i,fp in enumerate(self.flightplan2):
             wp = fp[:3]
-            feasibility = self.tfMonitor.monitor_wp_feasibility(self.position, self.trkgsvs, wp)
-            feasibility &= self.tfMonitor.monitor_wp_feasibility(self.position, [self.trkgsvs[0],self.resSpeed,self.trkgsvs[2]], wp)
+            feasibility = self.tfMonitor.monitor_wp_feasibility(wp,-1)
+            feasibility &= self.tfMonitor.monitor_wp_feasibility(wp,self.resSpeed)
             trkband.wpFeasibility2[i] = feasibility
             gsband.wpFeasibility2[i] = feasibility
             altband.wpFeasibility2[i] = feasibility

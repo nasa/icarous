@@ -3,7 +3,6 @@
 //
 
 #include <math.h>
-#include <CWrapper/TrafficMonitor_proxy.h>
 #include "traffic.h"
 #include "UtilFunctions.h"
 #include "traffic_tbl.c"
@@ -83,7 +82,7 @@ void TRAFFIC_AppInit(void) {
 
     
     trafficAppData.log = TblPtr->log;
-    trafficAppData.tfMonitor = new_TrafficMonitor(trafficAppData.log,TblPtr->configFile);
+    trafficAppData.tfMonitor = newDaidalusTrafficMonitor(trafficAppData.log,TblPtr->configFile);
     trafficAppData.numTraffic = 0;
     trafficAppData.updateDaaParams = TblPtr->updateParams;
 
@@ -98,8 +97,8 @@ void TRAFFIC_AppInit(void) {
 }
 
 void TRAFFIC_AppCleanUp(void){
-    // Do clean up here
-    delete_TrafficMonitor(trafficAppData.tfMonitor);
+    
+    delDaidalusTrafficMonitor(trafficAppData.tfMonitor);
 }
 
 void TRAFFIC_ProcessPacket(void){
@@ -136,8 +135,9 @@ void TRAFFIC_ProcessPacket(void){
             }
 
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-            double vel[3] = {msg->ve,msg->vn,msg->vd};
-            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,vel,trafficAppData.time);
+            double trkGsVs[3] = {0,0,0};
+            ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
+            int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
             if(val) {
                 trafficAppData.numTraffic++;
                 CFE_ES_WriteToSysLog("Traffic:Received intruder:%d\n",msg->index);
@@ -177,8 +177,7 @@ void TRAFFIC_ProcessPacket(void){
             double _c[3] = {B[0] - A[0], B[1] - A[1],B[2] - A[2]};
             double C[3] = {A[0] + n*_c[0],A[1] + n*_c[1],A[1] + n*_c[1] };
 
-            bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                              trafficAppData.position,trafficAppData.velocity,C);
+            bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,C,-1);
 
             if(first){
                 trafficAppData.return2fp1leg = feasibility;
@@ -195,8 +194,9 @@ void TRAFFIC_ProcessPacket(void){
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
 
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
-                double vel[3] = {msg->ve,msg->vn,msg->vd};
-                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,vel,trafficAppData.time);
+                double trkGsVs[3] = {0,0,0};
+                ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
+                int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
                 if(val){
                     trafficAppData.numTraffic++;
                     CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
@@ -225,69 +225,18 @@ void TRAFFIC_ProcessPacket(void){
             if(trafficAppData.numTraffic == 0)
                 break;
 
-            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time);
+            TrafficMonitor_InputOwnshipData(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time);
+            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor);
 
-            TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor,
-                                         &trafficAppData.trackBands.numBands,
-                                         trafficAppData.trackBands.type,
-                                         (double*)trafficAppData.trackBands.min,
-                                         (double*)trafficAppData.trackBands.max,
-                                          &trafficAppData.trackBands.recovery,
-                                          &trafficAppData.trackBands.currentConflictBand,
-                                          &trafficAppData.trackBands.timeToViolation,
-                                          &trafficAppData.trackBands.timeToRecovery,
-                                          &trafficAppData.trackBands.minHDist,
-                                          &trafficAppData.trackBands.minVDist,
-                                          &trafficAppData.trackBands.resUp,
-                                          &trafficAppData.trackBands.resDown,
-                                          &trafficAppData.trackBands.resPreferred);
+            TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor, &trafficAppData.trackBands);
 
 
-            TrafficMonitor_GetGSBands(trafficAppData.tfMonitor,
-                                      &trafficAppData.speedBands.numBands,
-                                      trafficAppData.speedBands.type,
-                                      (double*)trafficAppData.speedBands.min,
-                                      (double*)trafficAppData.speedBands.max,
-                                      &trafficAppData.speedBands.recovery,
-                                      &trafficAppData.speedBands.currentConflictBand,
-                                        &trafficAppData.speedBands.timeToViolation,
-                                          &trafficAppData.speedBands.timeToRecovery,
-                                          &trafficAppData.speedBands.minHDist,
-                                          &trafficAppData.speedBands.minVDist,
-                                          &trafficAppData.speedBands.resUp,
-                                          &trafficAppData.speedBands.resDown,
-                                          &trafficAppData.speedBands.resPreferred);
+            TrafficMonitor_GetSpeedBands(trafficAppData.tfMonitor,&trafficAppData.speedBands);
 
-            TrafficMonitor_GetVSBands(trafficAppData.tfMonitor,
-                                      &trafficAppData.vsBands.numBands,
-                                      trafficAppData.vsBands.type,
-                                      (double*)trafficAppData.vsBands.min,
-                                      (double*)trafficAppData.vsBands.max,
-                                      &trafficAppData.vsBands.recovery,
-                                      &trafficAppData.vsBands.currentConflictBand,
-                                      &trafficAppData.vsBands.timeToViolation,
-                                          &trafficAppData.vsBands.timeToRecovery,
-                                          &trafficAppData.vsBands.minHDist,
-                                          &trafficAppData.vsBands.minVDist,
-                                          &trafficAppData.vsBands.resUp,
-                                          &trafficAppData.vsBands.resDown,
-                                          &trafficAppData.vsBands.resPreferred);
+            TrafficMonitor_GetVerticalSpeedBands(trafficAppData.tfMonitor, &trafficAppData.vsBands);
 
 
-            TrafficMonitor_GetAltBands(trafficAppData.tfMonitor,
-                                      &trafficAppData.altBands.numBands,
-                                      trafficAppData.altBands.type,
-                                      (double*)trafficAppData.altBands.min,
-                                      (double*)trafficAppData.altBands.max,
-                                      &trafficAppData.altBands.recovery,
-                                      &trafficAppData.altBands.currentConflictBand,
-                                      &trafficAppData.altBands.timeToViolation,
-                                      &trafficAppData.altBands.timeToRecovery,
-                                      &trafficAppData.altBands.minHDist,
-                                      &trafficAppData.altBands.minVDist,
-                                      &trafficAppData.altBands.resUp,
-                                      &trafficAppData.altBands.resDown,
-                                      &trafficAppData.altBands.resPreferred);
+            TrafficMonitor_GetAltBands(trafficAppData.tfMonitor, &trafficAppData.altBands);
 
             // Set band times
             trafficAppData.altBands.time = trafficAppData.time;
@@ -295,9 +244,7 @@ void TRAFFIC_ProcessPacket(void){
             trafficAppData.speedBands.time = trafficAppData.time;
             trafficAppData.trackBands.time = trafficAppData.time;
 
-
             // Get feasibility data for primary flight plan
-            double speed = 0.0;
             double time = 0.0;
             for(int i=0;i<trafficAppData.flightplan1.num_waypoints;++i){
                 double wp[3] = {trafficAppData.flightplan1.waypoints[i].latitude,
@@ -307,9 +254,11 @@ void TRAFFIC_ProcessPacket(void){
                 double currentVelocity[3] =  {trafficAppData.velocity[0],
                                               trafficAppData.velocity[1],	
                                               trafficAppData.velocity[2]};
-
-                bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                              trafficAppData.position,currentVelocity,wp);
+                
+                double speed = sqrt(currentVelocity[0]*currentVelocity[0] + 
+                                    currentVelocity[1]*currentVelocity[1] + 
+                                    currentVelocity[2]*currentVelocity[2]);
+                bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor, wp, speed);
                 trafficAppData.trackBands.wpFeasibility1[i] = feasibility;
                 trafficAppData.speedBands.wpFeasibility1[i] = feasibility;
                 trafficAppData.altBands.wpFeasibility1[i] = feasibility;
@@ -337,17 +286,12 @@ void TRAFFIC_ProcessPacket(void){
 
                     }
 
-                    double originalVelocity[3] = {trafficAppData.velocity[0],
-                                                  speed,
-                                                  trafficAppData.velocity[2]};
-                    feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                                trafficAppData.position,originalVelocity,wp);
+                    feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
                     trafficAppData.speedBands.wpFeasibility1[i] &= feasibility;
                 }
 
             }
 
-            speed = 0.0;
             time  = 0.0;
             // Get feasibility data for secondary flight plan
             for(int i=0;i<trafficAppData.flightplan2.num_waypoints;++i){
@@ -358,9 +302,11 @@ void TRAFFIC_ProcessPacket(void){
                 double currentVelocity[3] = {trafficAppData.velocity[0],
                                               trafficAppData.velocity[1],	
                                               trafficAppData.velocity[2]};
+                double speed = sqrt(currentVelocity[0]*currentVelocity[0] + 
+                                    currentVelocity[1]*currentVelocity[1] + 
+                                    currentVelocity[2]*currentVelocity[2]);
 
-                bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                              trafficAppData.position,currentVelocity,wp);
+                bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
                 trafficAppData.trackBands.wpFeasibility2[i] = feasibility;
                 trafficAppData.speedBands.wpFeasibility2[i] = feasibility;
                 trafficAppData.altBands.wpFeasibility2[i] = feasibility;
@@ -388,11 +334,7 @@ void TRAFFIC_ProcessPacket(void){
                         }
 
                     }
-                    double originalVelocity[3] = {trafficAppData.velocity[0],
-                                                  speed,
-                                                  trafficAppData.velocity[2]};
-                    feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                                trafficAppData.position,originalVelocity,wp);
+                    feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
                     trafficAppData.speedBands.wpFeasibility2[i] &= feasibility;
                 }
             }
@@ -444,7 +386,7 @@ void TRAFFIC_ProcessPacket(void){
             char params[2000];
             ConstructDAAParamString(msg, params);
             if(trafficAppData.updateDaaParams){
-                TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
+                TrafficMonitor_UpdateParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
             }
             trafficAppData.trafficSrc = msg->trafficSource;
             break;

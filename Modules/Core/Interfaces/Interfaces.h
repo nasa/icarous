@@ -2,6 +2,7 @@
 #define INTERFACES_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct __attribute__((__packed__)){
     double time;                             /**< band time */

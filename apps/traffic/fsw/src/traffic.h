@@ -16,7 +16,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "TrafficMonitor_proxy.h"
+#include "TrafficMonitor.h"
 
 #include "Icarous.h"
 #include "traffic_msgids.h"
@@ -61,7 +61,7 @@
 typedef struct{
     CFE_SB_PipeId_t    Traffic_Pipe;       ///< Pipe variable
     CFE_SB_MsgPtr_t    Traffic_MsgPtr;     ///< Msg pointer to SB message
-    TrafficMonitor* tfMonitor;             ///< Opaque pointer to TrafficMonitor
+    void* tfMonitor;                       ///< Opaque pointer to TrafficMonitor
     CFE_TBL_Handle_t Traffic_tblHandle;    ///< Traffic table handle
     bands_t trackBands;                    ///< Track kinematic band data
     bands_t speedBands;                    ///< Ground speed kinematic band data
