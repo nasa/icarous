@@ -11,7 +11,6 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 
 include_directories(${MODULES_ROOT}/Core/Interfaces)
 include_directories(${MODULES_ROOT}/Core/GeofenceMonitor)
-include_directories(${MODULES_ROOT}/Core/GeofenceMonitor/CWrapper)
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(../trajectory/fsw/platform_inc)
 include_directories(../scheduler/fsw/platform_inc)

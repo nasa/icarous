@@ -19,7 +19,7 @@
 #include <string.h>
 
 
-#include "GeofenceMonitor_proxy.h"
+#include "GeofenceMonitor.h"
 #include "Icarous_msgids.h"
 #include "Icarous_msg.h"
 #include "geofence_tbl.c"
@@ -59,7 +59,7 @@ typedef struct{
     CFE_SB_PipeId_t    Geofence_Pipe;       ///< Pipe variable
     CFE_SB_MsgPtr_t    Geofence_MsgPtr;     ///< Pointer to SB message
     CFE_TBL_Handle_t   Geofence_tblHandle;  ///< Table handle
-    GeofenceMonitor* gfMonitor;             ///< Opaque pointer to GeofenceMonitor
+    void* gfMonitor;                        ///< Opaque pointer to GeofenceMonitor
     double position[3];                     ///< Current lat[deg], lon[deg], alt[m] position
     double velocity[3];                     ///< Current velocity: trk (deg), ground speed (m/s) and vertical speed (m/s)
     geofenceConflict_t gfConflictData;      ///< Geofence conflict
