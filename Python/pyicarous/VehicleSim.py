@@ -35,9 +35,17 @@ class VehicleSim():
         self.U[1] = U2
         self.U[2] = -U3
 
-    def step(self):
-        self.vel0 = self.vel0 + 0.05 * (self.U - self.vel0)
-        self.pos0 = self.pos0 + self.vel0 * self.dt
+    def step(self,windFrom=0,windSpeed=0):
+        windTo = np.mod(360 + windFrom + 180,360) # Wind towards heading with respect to true north
+        vw_y   = np.cos(windTo * np.pi/180) * windSpeed
+        vw_x   = np.sin(windTo * np.pi/180) * windSpeed
+        vw     = np.array([vw_x,vw_y,0])
+
+        speed = np.linalg.norm(self.vel0 + vw)
+        if speed <= 0:
+            vw     = np.array([0.0,0.0,0.0])
+        self.vel0 = self.vel0 + 0.05 * (self.U - self.vel0) 
+        self.pos0 = self.pos0 + (self.vel0 + vw) * self.dt
         n = np.zeros((1,3))
         if self.noise:
             n = np.random.multivariate_normal(mean=np.array([0.0,0.0,0.0]),cov = self.sigma_pos, size=1)
@@ -64,11 +72,11 @@ def StartTraffic(idx, home, rng, brng, alt, speed, heading, crate, tflist=[]):
         sim.home_gps = np.array(home)
         tflist.append(sim)
 
-def RunTraffic(tflist):
+def RunTraffic(tflist,windFrom=0,windSpeed=0):
     for tf in tflist:
         oldvel = tf.getOutputVelocity()
         tf.input(oldvel[0],oldvel[1],oldvel[2])
-        tf.step()
+        tf.step(windFrom,windSpeed)
         (tgx, tgy) = gps_offset(tf.home_gps[0], tf.home_gps[1],
                                 tf.pos[0], tf.pos[1])
         tf.pos_gps[0] = tgx

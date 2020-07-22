@@ -89,10 +89,15 @@ class Icarous():
         self.fphases = -1
         self.land    = False
         self.activePlan = "Plan0"
+        self.windFrom = 0
+        self.windSpeed = 0
 
     def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
 
+    def InputWind(self,windFrom,windSpeed):
+        self.windFrom = windFrom
+        self.windSpeed = windSpeed
 
     def InputTraffic(self,idx,position,velocity,localPos):
         if idx is not self.vehicleID:
@@ -297,7 +302,7 @@ class Icarous():
 
     def RunOwnship(self):
         self.ownship.input(self.controlInput[1],self.controlInput[0],self.controlInput[2])
-        self.ownship.step()
+        self.ownship.step(windFrom=self.windFrom,windSpeed=self.windSpeed)
 
         opos = self.ownship.getOutputPosition()
         ovel = self.ownship.getOutputVelocity()
@@ -670,16 +675,22 @@ def ExchangeArrivalTimes(icInstances,delay):
             ic.InputMergeLogs(datalog,delay)
             
 
-def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDelay=0):
+def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDelay=0,wind=[(0,0)]):
     # Run simulation until mission is complete
     simComplete = False
     prevTime = [ic.currTime for ic in icInstances]
-
+    count = 0
+    windfrom  = wind[count][0]
+    windspeed = wind[count][1]
     while not simComplete:
         status = False
         simComplete = True
         delay = False # with a large number of vehicles, some not starting if delay was longer than time limit.
+        if len(wind) > 1:
+            windfrom = wind[count][0]
+            windspeed = wind[count][1]
         for i,ic in enumerate(icInstances):
+            ic.InputWind(windfrom,windspeed)
             if not ic.startSent:
                 if len(startDelay) == 0:
                     ic.Cog.InputStartMission(0,0)
@@ -713,14 +724,14 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
                     ic.missionComplete = True
                     print('Time limit Reached', ic.vehicleID, ic.currTime, ic.currTime - prevTime[i])
                     
-
         if status:
-            RunTraffic(trafficVehicles)
+            RunTraffic(trafficVehicles,windfrom,windspeed)
             for ic in icInstances:
                 for tf in trafficVehicles:
                     ic.InputTraffic(tf.vehicleID,tf.pos_gps,tf.vel,tf.pos)
 
         ExchangeArrivalTimes(icInstances,commDelay)
+        count += 1
 
     # Transfer all vehicle to a common reference frame
     for i,ic in enumerate(icInstances):

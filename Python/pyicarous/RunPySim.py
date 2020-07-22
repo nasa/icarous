@@ -43,9 +43,10 @@ icInstances = []
 icInstances.append(ic)
 
 icDelay = []
-tLimit = []
+tLimit = [100]
+simWind = [(90,0.1)] # (wind from, speed)
 
-RunSimulation(icInstances,tfList,startDelay = icDelay,timeLimit = tLimit)
+RunSimulation(icInstances,tfList,startDelay = icDelay,timeLimit = tLimit,wind=simWind)
 
 # Plot data for visualization    
 #plt.figure(1)

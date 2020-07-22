@@ -40,7 +40,7 @@ class QuadSim():
                                    [xy, yy, yz],
                                    [xz, yz, zz]])
 
-    def step(self):
+    def step(self,windFrom=0,windSpeed=0):
         lib.PC_Quadcopter_Simulation_step()
 
     def input(self, u1, u2, u3):
