@@ -3,6 +3,7 @@
 //
 
 #include "GeofenceMonitor.h"
+#include "GeofenceMonitor.hpp"
 
 GeofenceMonitor::GeofenceMonitor(double *params):geoPolyCarp(0.01,0.001,false) {
     lookahead  = params[0];
@@ -256,3 +257,59 @@ fence* GeofenceMonitor::GetGeofence(int id) {
 void GeofenceMonitor::ClearFences() {
     fenceList.clear();
 }
+
+void *new_GeofenceMonitor(double *params){
+    GeofenceMonitor *obj = new GeofenceMonitor(params);
+    return (void*) obj;
+}
+
+void GeofenceMonitor_SetGeofenceParameters(void *obj, double *params){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    gf->SetGeofenceParameters(params);
+}
+
+void GeofenceMonitor_InputGeofenceData(void *obj, int type, int index, int totalVertices, double floor, double ceiling, double (*vertices)[2]){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    gf->InputGeofenceData(type, index, totalVertices, floor, ceiling, vertices);
+}
+
+bool GeofenceMonitor_CheckViolation(void * obj, double *position, double track, double groundSpeed, double verticalSpeed){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    return gf->CheckViolation(position, track, groundSpeed, verticalSpeed);
+}
+
+bool GeofenceMonitor_CheckWPFeasibility(void * obj, double * fromPosition, double * toPosition){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    return gf->CheckWPFeasibility(fromPosition, toPosition);
+}
+
+int GeofenceMonitor_GetNumConflicts(void * obj){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    return gf->GetNumConflicts();
+}
+
+void GeofenceMonitor_GetConflictStatus(void * obj, bool*conflictStatus){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    gf->GetConflictStatus(conflictStatus);
+}
+
+void GeofenceMonitor_GetConflict(void * obj, int id, int * fenceId, bool * conflict, bool * violation, double * recoveryPos, int * type){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    gf->GetConflict(id, *fenceId, *conflict, *violation, recoveryPos, *type);
+
+}
+
+void GeofenceMonitor_GetClosestRecoveryPoint(void * obj, double * currentPos, double *recoveryPos){
+    GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+    gf->GetClosestRecoveryPoint(currentPos, recoveryPos);
+}
+
+void GeofenceMonitor_ClearFences(void * obj){
+   GeofenceMonitor *gf = (GeofenceMonitor*)obj;
+   gf->ClearFences();
+}
+
+void delete_GeofenceMonitor(void * obj){
+   delete((GeofenceMonitor*)obj);
+}
+

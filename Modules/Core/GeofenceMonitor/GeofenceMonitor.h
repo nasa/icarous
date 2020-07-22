@@ -1,57 +1,28 @@
-//
-// Created by Swee Balachandran on 12/7/17.
-//
 
-#ifndef GEOFENCEMONITOR_H
-#define GEOFENCEMONITOR_H
+#ifndef GEOFENCEMONITORC_H
+#define GEOFENCEMONITORC_H
 
 
-#include "AircraftState.h"
-#include "Plan.h"
-#include "fence.h"
-#include <list>
-
-typedef struct{
-    int fenceId;
-    bool violationStatus;
-    bool conflictstatus;
-    double recoveryPoint[3];
-    fence* _gf;
-}GeofenceConflict;
-
-class GeofenceMonitor {
-
-private:
-    double BUFF = 0.1;
-
-    double lookahead;
-    double hthreshold;
-    double vthreshold;
-    double hstepback;
-    double vstepback;
-
-    std::list<fence> fenceList;
-    std::list<fence>::iterator fenceListIt;
-    larcfm::CDPolycarp geoPolyCarp;
-    larcfm::PolycarpResolution geoPolyResolution;
-    larcfm::PolycarpDetection geoPolyDetect;
-    larcfm::PolyPath geoPolyPath;
-    larcfm::CDIIPolygon geoCDIIPolygon;
-    std::list<GeofenceConflict> conflictList;
-    bool CollisionDetection(fence* gf,larcfm::Position* pos, larcfm::Vect2* v,double startTime, double stopTime);
-    fence* GetGeofence(int id);
-public:
-    GeofenceMonitor(double[]);
-    void SetGeofenceParameters(double []);
-    void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
-    bool CheckViolation(double position[],double track,double groundSpeed,double verticalSpeed);
-    bool CheckWPFeasibility(double fromPosition[],double toPosition[]);
-    int GetNumConflicts();
-    void GetConflictStatus(bool conflicts[]);
-    void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double recoveryPoint[],int& type);
-    void GetClosestRecoveryPoint(double currentPosition[],double recoveryPosition[]);
-    void ClearFences();
-};
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
-#endif //GEOFENCEMONITOR_H
+void *new_GeofenceMonitor(double *params);
+void GeofenceMonitor_SetGeofenceParameters(void *obj, double *params);
+void GeofenceMonitor_InputGeofenceData(void *obj, int type, int index, int totalVertices, double floor, double ceiling, double (*vertices)[2]);
+bool GeofenceMonitor_CheckViolation(void * obj, double *position, double track, double groundSpeed, double verticalSpeed);
+bool GeofenceMonitor_CheckWPFeasibility(void * obj, double * fromPosition, double * toPosition);
+int GeofenceMonitor_GetNumConflicts(void * obj);
+void GeofenceMonitor_GetConflictStatus(void * obj, bool*conflictStatus);
+void GeofenceMonitor_GetConflict(void * obj, int id, int * fenceId, bool * conflict, bool * violation, double * recoveryPos, int * type);
+void GeofenceMonitor_GetClosestRecoveryPoint(void * obj, double * currentPos, double *recoveryPos);
+void GeofenceMonitor_ClearFences(void * obj);
+void delete_GeofenceMonitor(void * obj);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
