@@ -1,8 +1,8 @@
 //
 // Created by research133 on 4/3/18.
 //
-#include "PathPlanner.h"
-#include "Bsplines.h"
+#include "PathPlanner.hpp"
+#include "Bsplines.hpp"
 #include <nlopt.h>
 
 double objfunc(unsigned n,const double *x,double *grad,void* data) {

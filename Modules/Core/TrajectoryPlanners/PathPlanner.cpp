@@ -9,15 +9,17 @@
 #include <PlanReader.h>
 #include <PlanUtil.h>
 #include <sys/time.h>
-#include "PathPlanner.h"
 #include <TrajGen.h>
+
+#include "PathPlanner.h"
+#include "PathPlanner.hpp"
 
 using namespace std;
 using namespace larcfm;
 
-PathPlanner::PathPlanner(double _obsBuffer,double _maxCeiling) {
-    obsbuffer = _obsBuffer;
-    maxCeiling = _maxCeiling;
+PathPlanner::PathPlanner() {
+    obsbuffer = 5;
+    maxCeiling = MAXDOUBLE;
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
     numPlans = 0;
     char            fmt1[64];
@@ -620,4 +622,85 @@ void PathPlanner::InputDataFromLog(string filename){
     else{
         std::cout<<"Error opening log file:"<<filename<<std::endl;
     }
+}
+
+void* new_PathPlanner(){
+   PathPlanner* pp = new PathPlanner();
+   return (void*)pp;
+}
+
+void PathPlanner_InitializeAstarParameters(void * obj,bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->InitializeAstarParameters(enable3D,gridSize,resSpeed,lookahead,daaConfig);
+}
+
+void PathPlanner_InitializeRRTParameters(void * obj,double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->InitializeRRTParameters(resSpeed,Nsteps,dt,Dt,capR,daaConfig);
+}
+
+#ifdef SPLINES
+void PathPlanner_InitializeBSplinesParameters(void * obj,bool enable3D,double computationT,int numControlPts,int lenTVec){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->InitializeBSplinesParameters(enable3D,computationT,numControlPts,lenTVec);
+}
+#endif
+
+void PathPlanner_UpdateAstarParameters(void * obj,bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[] ){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->UpdateAstarParameters(enable3D,gridSize,resSpeed,lookahead,daaConfig);
+}
+
+void PathPlanner_UpdateRRTParameters(void * obj,double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->UpdateRRTParameters(resSpeed,Nsteps,dt,Dt,capR,daaConfig);
+}
+
+void PathPlanner_UpdateDAAParameters(void * obj,char parameterString[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->UpdateDAAParameters(parameterString);
+}
+
+int PathPlanner_FindPath(void * obj,unsigned int alg,char planID[], double fromPosition[],double toPosition[],double velocity[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   return pp->FindPath((algorithm)alg,planID, fromPosition,toPosition,velocity);
+}
+
+int PathPlanner_GetTotalWaypoints(void * obj, char * planid){
+   PathPlanner* pp = (PathPlanner*)obj;
+   return pp->GetTotalWaypoints(planid);
+
+}
+
+void PathPlanner_GetWaypoint(void * obj, char * planid, int id,  double * wp){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->GetWaypoint(planid, id,  wp);
+}
+
+void PathPlanner_ClearAllPlans(void * obj){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->ClearAllPlans();
+}
+
+void PathPlanner_InputGeofenceData(void * obj,int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->InputGeofenceData(type,index, totalVertices, floor, ceiling, pos);
+
+}
+
+int PathPlanner_InputTraffic(void* obj,int id, double *position, double *velocity){
+   PathPlanner* pp = (PathPlanner*)obj;
+   return pp->InputTraffic(id, position, velocity);
+}
+
+
+void PathPlanner_InputFlightPlan(void* obj,char planID[],int wpID,double waypoint[],double time){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->InputFlightPlan(planID,wpID,waypoint,time);
+}
+
+
+void PathPlanner_CombinePlan(void* obj,char planID_A[],char planID_B[],int index){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->CombinePlan(planID_A,planID_B,index);
 }

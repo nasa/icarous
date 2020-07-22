@@ -2,7 +2,7 @@
 // Created by research133 on 3/27/18.
 //
 
-#include "Bsplines.h"
+#include "Bsplines.hpp"
 #include "math.h"
 
 

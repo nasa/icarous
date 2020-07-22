@@ -4,7 +4,7 @@
 
 #include <math.h>
 #include <nlopt.h>
-#include "Bsplines.h"
+#include "Bsplines.hpp"
 
 
 double objfunc(unsigned n,const double *x,double * grad,void* data);

@@ -1,4 +1,4 @@
-#include "Astar.h"
+#include "Astar.hpp"
 
 int main() {
 

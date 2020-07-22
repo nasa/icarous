@@ -1,8 +1,8 @@
 //
 // Created by Swee Balachandran on 3/23/18.
 //
-#include "PathPlanner.h"
-#include "Astar.h"
+#include "PathPlanner.hpp"
+#include "Astar.hpp"
 
 void PathPlanner::InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]){
     _astar_daaConfig = string(daaConfig);

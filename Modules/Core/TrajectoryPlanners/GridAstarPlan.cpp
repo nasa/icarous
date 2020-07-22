@@ -2,9 +2,9 @@
 // Created by Swee Balachandran on 12/14/17.
 //
 
-#include "PathPlanner.h"
 #include "DensityGrid.h"
 #include "DensityGridAStarSearch.h"
+#include "PathPlanner.hpp"
 
 
 int64_t PathPlanner::FindPathGridAstar(char planID[]) {

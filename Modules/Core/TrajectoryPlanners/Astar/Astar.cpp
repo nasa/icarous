@@ -2,7 +2,7 @@
 // Created by swee on 3/21/18.
 //
 
-#include "Astar.h"
+#include "Astar.hpp"
 #include <algorithm>
 #include <cfloat>
 

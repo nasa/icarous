@@ -5,7 +5,7 @@
 #ifndef PATHPLANNER_DYNAMICS_H
 #define PATHPLANNER_DYNAMICS_H
 
-#include "RRTplanner.h"
+#include "RRTplanner.hpp"
 
 void RRT_F(double X[], double U[],double Y[],int trafficSize);
 

@@ -2,7 +2,7 @@
 // Created by Swee Balachandran on 12/7/17.
 //
 
-#include "RRTplanner.h"
+#include "RRTplanner.hpp"
 
 RRTplanner::RRTplanner(Poly3D &boundary,
                        int stepT,double dt,double maxD,double maxNorm,

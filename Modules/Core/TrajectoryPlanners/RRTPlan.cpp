@@ -1,9 +1,9 @@
 //
 // Created by Swee Balachandran on 12/14/17.
 //
-#include "PathPlanner.h"
-#include "RRTplanner.h"
-#include "Dynamics.h"
+#include "PathPlanner.hpp"
+#include "RRTplanner.hpp"
+#include "Dynamics.hpp"
 
 
 void PathPlanner::InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]){

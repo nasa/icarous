@@ -8,7 +8,7 @@
 #include <list>
 #include <queue>
 #include <PolycarpDetection.h>
-#include "Node.h"
+#include "Node.hpp"
 #include "CDPolycarp.h"
 
 using namespace larcfm;

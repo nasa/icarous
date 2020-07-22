@@ -5,7 +5,7 @@
 #ifndef BSPLINES_H
 #define BSPLINES_H
 
-#include "kdtree.h"
+#include "kdtree.hpp"
 #include "Poly3D.h"
 #include <list>
 #include "CDPolycarp.h"

@@ -1,7 +1,7 @@
 //
 // Created by Swee Balachandran on 12/18/17.
 //
-#include "PathPlanner.h"
+#include "PathPlanner.hpp"
 #include "PlanWriter.h"
 #include <iostream>
 #include <fstream>
@@ -13,7 +13,7 @@
 
 int main(int argc,char** argv){
 
-    PathPlanner planner(2,30);
+    PathPlanner planner;
     planner.InputDataFromLog("flyer3.log"); 
     
     double positionA[3] = {planner.startPos.latitude(),
