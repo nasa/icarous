@@ -15,7 +15,7 @@
 #include <string.h>
 
 #include "Icarous.h"
-#include "TrajectoryPlanner_proxy.h"
+#include "PathPlanner.h"
 #include "sch_msgids.h"
 #include "trajectory_msgids.h"
 #include "traffic_msg.h"
@@ -75,7 +75,7 @@ typedef struct{
     CFE_SB_MsgPtr_t    TrajRequest_MsgPtr;     ///< Msg pointer to SB message
     CFE_SB_MsgPtr_t    Traj_MsgPtr;            ///< Scheduler message
     CFE_TBL_Handle_t   Trajectory_TblHandle;   ///< Table pointer
-    PathPlanner* pplanner;                     ///< Opaque pointer to TrajectoryMonitor
+    void* pplanner;                            ///< Opaque pointer to TrajectoryMonitor
     int numPlansComputed;                      ///< Total number of plans computed
     int runThreads;                            ///< Flag to signals to run/stop
     double position[3];                        ///< Position as lat (deg), lon (deg) and alt (m)

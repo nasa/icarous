@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void* new_PathPlanner();
+void* new_PathPlanner(void);
 void PathPlanner_InitializeAstarParameters(void * obj,bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
 void PathPlanner_InitializeRRTParameters(void * obj,double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
 
@@ -23,6 +23,8 @@ void PathPlanner_InputGeofenceData(void * obj,int type,int index, int totalVerti
 int PathPlanner_InputTraffic(void* obj,int id, double *position, double *velocity);
 void PathPlanner_InputFlightPlan(void* obj,char planID[],int wpID,double waypoint[],double time);
 void PathPlanner_CombinePlan(void* obj,char planID_A[],char planID_B[],int index);
+void PathPlanner_PlanToString(void* obj,char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift);
+void PathPlanner_StringToPlan(void* obj,char planID[],char inputString[]);
 
 #ifdef __cplusplus
 }

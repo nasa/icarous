@@ -1,7 +1,6 @@
 //
 // Created by Swee Balachandran on 12/22/17.
 //
-#include <CWrapper/TrajectoryPlanner_proxy.h>
 #include <time.h>
 #include <math.h>
 #include "trajectory.h"
@@ -115,7 +114,7 @@ void TRAJECTORY_AppInit(void)
 
 void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
 
-    TrajectoryAppData.pplanner = new_PathPlanner(TblPtr->obsbuffer, TblPtr->maxCeiling);
+    TrajectoryAppData.pplanner = new_PathPlanner();
     PathPlanner_InitializeAstarParameters(TrajectoryAppData.pplanner,
                                           TblPtr->astar_enable3D,
                                           TblPtr->astar_gridSize,
@@ -152,7 +151,6 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
 void TRAJECTORY_AppCleanUp(void)
 {
     // Do clean up here
-    delete_PathPlanner(TrajectoryAppData.pplanner);
 }
 
 void TRAJECTORY_ProcessPacket(void)
@@ -455,7 +453,7 @@ void TRAJECTORY_Monitor(void)
                                      TrajectoryAppData.flightplan1.waypoints[newWP1].longitude,
                                      TrajectoryAppData.flightplan1.waypoints[newWP1].altitude};
 
-                double dist2NextWP1 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWP1);
+                double dist2NextWP1 = ComputeDistance(position, nextWP1);
 
 
                 double prevWP1[3] = {TrajectoryAppData.flightplan1.waypoints[newWP1-1].latitude,
@@ -497,7 +495,7 @@ void TRAJECTORY_Monitor(void)
                                      TrajectoryAppData.flightplan2.waypoints[newWP2-1].longitude,
                                      TrajectoryAppData.flightplan2.waypoints[newWP2-1].altitude};
                
-                double dist2NextWP2 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWP2);
+                double dist2NextWP2 = ComputeDistance(position, nextWP2);
 
 
                 // Compute xtrack deviation for current leg.

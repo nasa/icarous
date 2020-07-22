@@ -1,0 +1,223 @@
+double TrafficMonitor::GetWPFeasibilityHeadingRads(double *position, double *velocity, double *wp) {
+
+    int numTraffic = trafficList.size();
+    if(numTraffic == 0){
+        conflictTrack = false;
+        conflictSpeed = false;
+        conflictVerticalSpeed = false;
+        return true;
+    }
+
+    const Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
+    //printf("position %f %f %f\n", position[0], position[1], position[2]);
+    const Position WP = Position::makeLatLonAlt(wp[0],"degree",wp[1],"degree",wp[2],"m");
+    //printf("wp %f %f %f\n", wp[0], wp[1], wp[2]);
+
+    EuclideanProjection proj_so = Projection::createProjection(so.lla());
+    Vect3 proj_so_v3 = proj_so.project(WP);
+    //printf("proj_so_v3 %f %f %f\n", proj_so_v3.x, proj_so_v3.y, proj_so_v3.z);
+    double heading_rads = atan2(proj_so_v3.x ,proj_so_v3.y);
+    if (heading_rads < 0)
+        heading_rads += 2.0*M_PI;
+    return heading_rads;
+}
+
+/*
+bool isWPFeasible(TrafficAppData_t* trafficAppData, TrafficMonitor* tfMonitor, double* position, double* velocity, double* wp)
+{
+    double wp_heading_rads = TrafficMonitor_GetWPFeasibilityHeadingRads(tfMonitor, position,velocity,wp);
+    double wp_heading_degs = constrainDegs((wp_heading_rads/(2*M_PI))*360.0);
+    bool feasibility = true;
+    for (int j = 0; j < trafficAppData->trackBands.numBands; j++)
+    {
+        //printf("Have band %f, %f, %d\n", trafficAppData->trackBands.min[j], trafficAppData->trackBands.max[j], trafficAppData->trackBands.type[j]);
+        if ( wp_heading_degs >= trafficAppData->trackBands.min[j] && wp_heading_degs <= trafficAppData->trackBands.max[j])
+        {
+            if ( trafficAppData->trackBands.type[j] == 3 )
+                feasibility = false;
+        }
+    }
+    return feasibility;
+}
+
+void ACASFreq10Update(ACASConnection_t* ac, TrafficAppData_t* trafficAppData)
+{
+    GenerateReportIfIsTime(ac, trafficAppData->time);
+    //This is where the ACAS advisories are fit into the banding structure of the messages that get passed throughout ICAROUS
+    //HORIZONTAL ADVISORIES
+
+    static int cc_horiz_prev = 0;
+    static float target_heading_prev = 0;
+    bool finish_first_ra_hack = true; //only accept new RAs if the previous has finished
+    
+    if (cc_horiz_prev > 0 && ac->cc_horiz !=0 && finish_first_ra_hack)
+    {
+	ac->cc_horiz = cc_horiz_prev; 
+	ac->target_heading = target_heading_prev; 
+
+        printf("@forced ac->cc_horiz %d\n", ac->cc_horiz);
+        printf("@forced ac->target_heading %f\n", ac->target_heading);
+    }
+
+    if (ac->cc_horiz != 0){
+        trafficAppData->trackBands.numBands = 3; //Use 3 bands for ACAS advisories
+        trafficAppData->trackBands.recovery = 0.00;
+        trafficAppData->trackBands.currentConflictBand = 1; //All cases, the second band will have the conflict
+
+        //Setting below to 0.00000 based on previous examination
+        trafficAppData->trackBands.timeToViolation = 0.00;
+        trafficAppData->trackBands.timeToRecovery = 0.00;
+        trafficAppData->trackBands.minHDist = 0.00;
+        trafficAppData->trackBands.minVDist = 0.00;
+        // for (int i = 0; i < 50; ++i){
+        //     trafficAppData->altBands.wpFeasibility[i] = 0;
+        // }
+
+        //Setting unused array elements to 0, since only using 3 bands
+        for (int i = 3; i < sizeof(trafficAppData->trackBands.type) / sizeof(int); ++i)
+            trafficAppData->trackBands.type[i] = 0.00;
+        for (int i = 3; i < sizeof(trafficAppData->trackBands.min) / sizeof(double); ++i)
+            trafficAppData->trackBands.min[i] = 0.00;
+        for (int i = 3; i < sizeof(trafficAppData->trackBands.max) / sizeof(double); ++i)
+            trafficAppData->trackBands.max[i] = 0.00;
+
+        //The first band will always start at 0 degrees & last band will always end at 360 degrees
+        trafficAppData->trackBands.min[0] = 0.00;
+        trafficAppData->trackBands.max[2] = 360.00;
+
+        ac->target_heading = constrainDegs(ac->target_heading);
+
+        //If TURN RIGHT advisory
+        if (ac->cc_horiz == 2){
+            if(ac->own_heading_deg < 180.00){
+                trafficAppData->trackBands.type[0] = 3;
+                trafficAppData->trackBands.type[1] = 1;
+                trafficAppData->trackBands.type[2] = 3;
+
+                //Now setting the min/max of bands
+                trafficAppData->trackBands.max[0] = ac->target_heading;
+                trafficAppData->trackBands.min[1] = ac->target_heading;
+                trafficAppData->trackBands.max[1] = ac->own_heading_deg + 180.00;
+                trafficAppData->trackBands.min[2] = ac->own_heading_deg + 180.00;
+
+            }
+            else if(ac->own_heading_deg >= 180.00){
+                trafficAppData->trackBands.type[0] = 1;
+                trafficAppData->trackBands.type[1] = 3;
+                trafficAppData->trackBands.type[2] = 1;
+
+                //Now setting the min/max of bands
+                trafficAppData->trackBands.max[0] = ac->own_heading_deg - 180.00;
+                trafficAppData->trackBands.min[1] = ac->own_heading_deg - 180.00;
+                trafficAppData->trackBands.max[1] = ac->target_heading;
+                trafficAppData->trackBands.min[2] = ac->target_heading;
+            }
+            trafficAppData->trackBands.resDown = -INFINITY;
+            trafficAppData->trackBands.resUp = ac->target_heading;
+        }
+        
+        //If TURN LEFT advisory
+        else if (ac->cc_horiz == 3){
+            if(ac->own_heading_deg < 180.00){
+                trafficAppData->trackBands.type[0] = 1;
+                trafficAppData->trackBands.type[1] = 3;
+                trafficAppData->trackBands.type[2] = 1;
+
+                //Now setting the min/max of bands
+                trafficAppData->trackBands.max[0] = ac->target_heading;
+                trafficAppData->trackBands.min[1] = ac->target_heading;
+                trafficAppData->trackBands.max[1] = ac->own_heading_deg + 180.00;
+                trafficAppData->trackBands.min[2] = ac->own_heading_deg + 180.00;
+            }
+            else if(ac->own_heading_deg >= 180.00){
+                trafficAppData->trackBands.type[0] = 3;
+                trafficAppData->trackBands.type[1] = 1;
+                trafficAppData->trackBands.type[2] = 3;
+
+                //Now setting the min/max of bands
+                trafficAppData->trackBands.max[0] = ac->own_heading_deg - 180.00;
+                trafficAppData->trackBands.min[1] = ac->own_heading_deg - 180.00;
+                trafficAppData->trackBands.max[1] = ac->target_heading;
+                trafficAppData->trackBands.min[2] = ac->target_heading;
+            }
+            trafficAppData->trackBands.resDown = ac->target_heading;
+            trafficAppData->trackBands.resUp = INFINITY;
+        }
+
+        trafficAppData->trackBands.resPreferred = ac->target_heading;
+        printf("Horizontal advisory, with target heading of : %f\n", ac->target_heading);
+        //trafficAppData->trackBands.ACAS_res = true;//TODO identify if needed
+        
+    }
+
+    //NO HORIZONTAL ADVISORY - set everything to 0/defaults upon examination
+    else{
+        trafficAppData->trackBands.numBands = 0;
+        for (int i = 0; i < sizeof(trafficAppData->trackBands.type) / sizeof(int); ++i)
+            trafficAppData->trackBands.type[i] = 0;
+        for (int i = 0; i < sizeof(trafficAppData->trackBands.min) / sizeof(double); ++i)
+            trafficAppData->trackBands.min[i] = 0.000000;
+        for (int i = 0; i < sizeof(trafficAppData->trackBands.max) / sizeof(double); ++i)
+            trafficAppData->trackBands.max[i] = 0.000000;
+        trafficAppData->trackBands.recovery = 0;
+        trafficAppData->trackBands.currentConflictBand = 0;
+        trafficAppData->trackBands.timeToViolation = 0.000000;
+        trafficAppData->trackBands.timeToRecovery = 0.000000;
+        trafficAppData->trackBands.minHDist = 0.000000;
+        trafficAppData->trackBands.minVDist = 0.000000;
+        trafficAppData->trackBands.resUp = -1.000000;
+        trafficAppData->trackBands.resDown = -1.000000;
+        trafficAppData->trackBands.resPreferred = -1.000000;
+
+    }
+    
+	cc_horiz_prev = ac->cc_horiz;
+	target_heading_prev = ac->target_heading; 
+}
+*/
+
+void ACASPublishIntruder(ACASConnection_t* ac, double cur_time, object_t* msg)
+{
+    GenerateReportIfIsTime(ac, cur_time);
+    if (cur_time > 0) //0.0 is before the simulation really starts, skip these packets
+    {
+        double toa = cur_time;
+        int intruder_aircraft_id = msg->index+1; //need to increment by 1 because msg->index starts at 0
+
+        double lat_deg = msg->latitude;
+        double lon_deg = msg->longitude;
+        double vel_ns_kts = msg->vn*mpsToKnot;//TODO pass on Velocities and other available suppl data
+        double vel_ew_kts = msg->ve*mpsToKnot;
+        double baro_alt_ft = (ac->own_alt_m  + msg->altitude)*mtrToFeet; //msg->altitude actually appears to be relative TODO check plus or minus
+        double geo_alt_ft = baro_alt_ft;
+
+        char intr_name[MAX_PUB_CHAR] = "";
+
+        strcat(intr_name, "icarous-intruder" );
+        sprintf(intr_name, "intr_name%d", intruder_aircraft_id);
+        double hdg_deg = 	(atan2(msg->ve,msg->vn)/(2*M_PI))*360.0;
+//        printf("int heading deg %f\n", hdg_deg);
+        SendGenSurvMsg(ac, "surveillance", intr_name, toa, lat_deg, lon_deg, geo_alt_ft, baro_alt_ft, hdg_deg);
+    }
+}
+
+void ACASPublishOwnship(ACASConnection_t* ac, double cur_time, position_t* msg)
+{
+    GenerateReportIfIsTime(ac, cur_time);
+    if (cur_time > 0) //0.0 is before the simulation really starts, skip these packets
+    {
+        //storing these values for future use with ACAS
+        ac->own_heading_deg = constrainDegs(msg->hdg);
+        ac->own_alt_m = msg->altitude_abs;
+        double toa = cur_time;
+        double baro_alt_ft = msg->altitude_abs*mtrToFeet;
+        double lat_deg = msg->latitude;
+        double lon_deg = msg->longitude;
+        double geo_alt_ft = msg->altitude_abs*mtrToFeet;
+        double hdg_deg = 	(atan2(msg->ve,msg->vn)/(2*M_PI))*360.0;
+	if (msg->ve!=0.0 || msg->vn!=0.0)
+		ac->own_heading_deg = constrainDegs(hdg_deg);
+        printf("own heading deg %f\n", hdg_deg);
+        SendGenSurvMsg(ac, "telemetry", OWN_ID_STR, toa, lat_deg, lon_deg, geo_alt_ft, baro_alt_ft, hdg_deg);
+    }
+}

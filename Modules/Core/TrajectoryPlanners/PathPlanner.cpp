@@ -624,7 +624,7 @@ void PathPlanner::InputDataFromLog(string filename){
     }
 }
 
-void* new_PathPlanner(){
+void* new_PathPlanner(void){
    PathPlanner* pp = new PathPlanner();
    return (void*)pp;
 }
@@ -703,4 +703,14 @@ void PathPlanner_InputFlightPlan(void* obj,char planID[],int wpID,double waypoin
 void PathPlanner_CombinePlan(void* obj,char planID_A[],char planID_B[],int index){
    PathPlanner* pp = (PathPlanner*)obj;
    pp->CombinePlan(planID_A,planID_B,index);
+}
+
+void PathPlanner_PlanToString(void* obj,char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->PlanToString(planID,outputString,tcpColumnsLocal,timeshift);
+}
+
+void PathPlanner_StringToPlan(void* obj,char planID[],char inputString[]){
+   PathPlanner* pp = (PathPlanner*)obj;
+   pp->StringToPlan(planID,inputString);
 }

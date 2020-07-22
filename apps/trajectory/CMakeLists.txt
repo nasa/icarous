@@ -17,7 +17,6 @@ include_directories(fsw/platform_inc)
 include_directories(${MODULES_ROOT}/Core/Utils)
 include_directories(${MODULES_ROOT}/Core/Interfaces)
 include_directories(${MODULES_ROOT}/Core/TrajectoryPlanners)
-include_directories(${MODULES_ROOT}/Core/TrajectoryPlanners/CWrapper)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
