@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import patches
+from matplotlib import text
 from math import sin,cos,atan2,pi
 import numpy as np
 
 
 class AgentAnimation():
-    def __init__(self,xmin,ymin,xmax,ymax,interval):
-        self.fig = plt.figure()
+    def __init__(self,xmin,ymin,xmax,ymax,interval,record=False,filename=""):
+        self.fig = plt.figure(frameon=False)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
 
@@ -21,6 +22,9 @@ class AgentAnimation():
         self.interval = interval
         self.circle = {}
         self.bands = {}
+        self.record = record
+        self.status  = {}
+        self.filename = filename
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
@@ -112,6 +116,8 @@ class AgentAnimation():
                     color = 'r'
                 elif btype[i] == 5:
                     color = 'g'
+                else:
+                    color = 'b'
                 sectors[i].set_center(position)
                 sectors[i].set_theta1(min)
                 sectors[i].set_theta2(max)
@@ -123,7 +129,7 @@ class AgentAnimation():
         return self.agents,self.paths,self.circle
 
     def animate(self,i):
-        if i < self.minlen:
+        if i < self.minlen-1:
             for j, vehicle in enumerate(self.agents):
                 id = self.agentNames[j]
                 #vehicle.center = (self.data[id][i][0], self.data[id][i][1])
@@ -133,12 +139,15 @@ class AgentAnimation():
                 self.UpdateTriangle(radius,position,velocity,vehicle)
                 self.paths[id].set_xdata(np.array(self.data[id]["positionNED"])[:i,1])
                 self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
+                
                 if "trkbands" in self.data[id].keys():
                     if self.data[id]["trkbands"][i] != {}:
                         self.UpdateBands(position,self.data[id]["trkbands"][i],self.bands[id])
                 if id in self.circle.keys():
                     if self.circle[id] is not None:
                         self.circle[id].center = position
+        else:
+            plt.close(self.fig)
         return self.agents,self.paths,self.circle
 
     def run(self):
@@ -148,11 +157,12 @@ class AgentAnimation():
                                        init_func=init,
                                        frames=self.minlen,
                                        interval=self.interval,
+                                       repeat = False,
                                        blit=False)
         
         # Save animation as a movie
-        #self.anim.save('animation.mp4', fps=10, 
-        #          extra_args=['-vcodec', 'h264', 
-        #                      '-pix_fmt', 'yuv420p'])
-
-        plt.show()
+        if self.record:
+            self.anim.save(self.filename, writer= "ffmpeg", fps=60)
+        else:
+            plt.axis('off')
+            plt.show()

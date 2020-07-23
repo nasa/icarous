@@ -741,7 +741,7 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
 
         #ic.WriteLog()
 
-def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30):
+def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
     '''
     ic: icarous object
     allplans: True/False - plot all computed plans
@@ -749,8 +749,10 @@ def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,int
     xmax,ymax : plot axis max values
     interval  : Interval between frames
     '''
+    if record:
+        import matplotlib; matplotlib.user('Agg')
     from Animation import AgentAnimation
-    anim= AgentAnimation(xmin,ymin, xmax,ymax,interval)
+    anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
     anim.AddAgent('ownship',2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
 
     for i,pln in enumerate(ic.localPlans):
