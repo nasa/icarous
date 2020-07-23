@@ -10,7 +10,7 @@ tfList = []
 # Start a single traffic vehicle from Home at specified
 # range,brg,alt,track,speed,climb rate
 # Call this function again to start multiple traffic vehicles
-#StartTraffic(1,HomePos,100,80,5,1,270,0,tfList)
+StartTraffic(1,HomePos,100,80,5,1,270,0,tfList)
 
 # Set uncertainty and smoothing params for traffic
 #for tf in tfList:
@@ -37,7 +37,7 @@ flightplan = [ [37.102177,-76.387207,5.000000,0.0],
 ic.InputFlightplan(flightplan,0)
 
 # Input geofences from file
-ic.InputGeofence("data/geofence2.xml")
+#ic.InputGeofence("data/geofence2.xml")
 
 icInstances = []
 icInstances.append(ic)
@@ -58,4 +58,4 @@ RunSimulation(icInstances,tfList,startDelay = icDelay,timeLimit = tLimit,wind=si
 #plt.plot([i for i in range(len(ic.positionLog))],np.array(ic.positionLog)[:,2])
 #plt.show()
 
-VisualizeSimData(ic,allplans=False,xmin=-30,ymin=-50,xmax=100,ymax=30)
+VisualizeSimData(icInstances,allplans=False,xmin=-30,ymin=-30,xmax=100,ymax=100,interval=5,record=False,filename="anim.mp4")

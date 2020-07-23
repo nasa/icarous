@@ -744,7 +744,7 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
 
         ic.WriteLog()
 
-def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
+def VisualizeSimData(icList,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
     '''
     ic: icarous object
     allplans: True - plot all computed plans, False - plot only the mission plan
@@ -756,18 +756,20 @@ def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,int
         import matplotlib; matplotlib.use('Agg')
     from Animation import AgentAnimation
     anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
-    anim.AddAgent('ownship',2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
 
-    for i,pln in enumerate(ic.localPlans):
-        if i == 0:
-            anim.AddPath(np.array(pln),'k--')
+    for j,ic in enumerate(icList):
+        anim.AddAgent('ownship'+str(j),2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
 
-        if i > 0 and allplans:
-            anim.AddPath(np.array(pln),'k--')
-    tfids = ic.trafficLog.keys()
-    for key in tfids:
-        anim.AddAgent('traffic'+str(key),2,'b',ic.trafficLog[key])
-    for fence in ic.localFences:
-        fence.append(fence[0])
-        anim.AddFence(np.array(fence),'c-.')
+        for i,pln in enumerate(ic.localPlans):
+            if i == 0:
+                anim.AddPath(np.array(pln),'k--')
+
+            if i > 0 and allplans:
+                anim.AddPath(np.array(pln),'k--')
+        tfids = ic.trafficLog.keys()
+        for key in tfids:
+            anim.AddAgent('traffic'+str(key),2,'b',ic.trafficLog[key])
+        for fence in ic.localFences:
+            fence.append(fence[0])
+            anim.AddFence(np.array(fence),'c-.')
     anim.run()
