@@ -25,8 +25,8 @@ class TrafficMonitor{
     larcfm::Velocity velocity;
     double elapsedTime;
   public:
-    int InputIntruderData(const object obj){trafficList[obj.callsign] = obj; return trafficList.size();}
-    void InputOwnshipData(const larcfm::Position pos,const larcfm::Velocity vel,double time){
+    virtual int InputIntruderData(const object obj){trafficList[obj.callsign] = obj; return trafficList.size();}
+    virtual void InputOwnshipData(const larcfm::Position pos,const larcfm::Velocity vel,double time){
         position = pos; velocity = vel; elapsedTime = time;
     }
     virtual void MonitorTraffic(void)=0;
