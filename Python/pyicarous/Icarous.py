@@ -67,7 +67,8 @@ class Icarous():
 
         self.positionLog = []
         self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": [], 
-                           "trkbands":[],"gsbands":[],"altbands":[],"vsbands":[]}
+                           "trkbands":[],"gsbands":[],"altbands":[],"vsbands":[],
+                           "localPlans":[],"localFences":[]}
         self.trafficLog = {}
         self.emergbreak = False
         if self.fasttime:
@@ -583,6 +584,8 @@ class Icarous():
         self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
 
     def WriteLog(self, logname="simoutput.json"):
+        self.ownshipLog['localPlans'] = self.localPlans
+        self.ownshipLog['localFences'] = self.localFences
         if self.logName != "":
              logname = self.logName + '.json'
 
@@ -739,18 +742,18 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
             ic.ownshipLog["positionNED"] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.ownshipLog["position"]))
             ic.localPlans[0] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.flightplan1))
 
-        #ic.WriteLog()
+        ic.WriteLog()
 
 def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
     '''
     ic: icarous object
-    allplans: True/False - plot all computed plans
+    allplans: True - plot all computed plans, False - plot only the mission plan
     xmin,ymin : plot axis min values
     xmax,ymax : plot axis max values
     interval  : Interval between frames
     '''
     if record:
-        import matplotlib; matplotlib.user('Agg')
+        import matplotlib; matplotlib.use('Agg')
     from Animation import AgentAnimation
     anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
     anim.AddAgent('ownship',2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
