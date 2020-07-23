@@ -24,7 +24,7 @@ int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *po
 
 void TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
-    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"degree");
+    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
     monitor->InputOwnshipData(pos,vel,time);
 }
@@ -36,7 +36,7 @@ void TrafficMonitor_MonitorTraffic(void* obj){
 
 bool TrafficMonitor_CheckPointFeasibility(void * obj, double * position,double speed){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
-    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"degree");
+    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     return monitor->CheckPositionFeasibility(pos,speed);
 }
 
