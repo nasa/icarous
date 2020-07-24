@@ -24,7 +24,9 @@ from ichelper import (ConvertTrkGsVsToVned,
 import time
 
 class Icarous():
-    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, verbose=0,callsign = "SPEEDBIRD",daafile="data/DaidalusQuadConfig.txt"):
+    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,
+                 fasttime = True, verbose=0,callsign = "SPEEDBIRD",
+                 daidalusConfig="data/DaidalusQuadConfig.txt"):
         self.fasttime = fasttime
         self.callsign = callsign
         self.verbose = verbose
@@ -36,13 +38,13 @@ class Icarous():
             from quadsim import QuadSim
             self.ownship = QuadSim()
 
-        self.daafile = daafile
+        self.daaConfig = daidalusConfig
         self.vehicleID = vehicleID
         self.Cog = Cognition(callsign)
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(callsign)
-        self.tfMonitor = TrafficMonitor(daafile,callsign,False)
+        self.tfMonitor = TrafficMonitor(callsign,daaConfig,False)
         self.Merger = Merger(callsign,vehicleID)
 
         # Aircraft data
@@ -185,7 +187,7 @@ class Icarous():
         gridSize = params['ASTAR_GRIDSIZE'] 
         resSpeed = params['ASTAR_RESSPEED']
         lookahead= params['ASTAR_LOOKAHEAD']
-        daaconfig = self.daafile
+        daaconfig = self.daaConfig
         self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
 
         # RRT Params
