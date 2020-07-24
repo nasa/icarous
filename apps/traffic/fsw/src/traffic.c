@@ -174,7 +174,7 @@ void TRAFFIC_ProcessPacket(void){
                                    fp->waypoints[nextWP].altitude};
 
             double distAB = ComputeDistance(A,B); 
-            double n = (distAB - offset)/distAB;
+            double n = 1 - (distAB - offset)/distAB;
 
             double _c[3] = {B[0] - A[0], B[1] - A[1],B[2] - A[2]};
             double C[3] = {A[0] + n*_c[0],A[1] + n*_c[1],A[1] + n*_c[1] };
