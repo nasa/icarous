@@ -2,8 +2,8 @@
 #include "DaidalusMonitor.hpp"
 #include <cstring>
 
-void* newDaidalusTrafficMonitor(bool carg1, char * carg2){
-    TrafficMonitor* obj = new DaidalusMonitor(carg1,std::string(carg2));
+void* newDaidalusTrafficMonitor(char *callsign,char *carg2,bool carg1){
+    TrafficMonitor* obj = new DaidalusMonitor(callsign,std::string(carg2),carg1);
     return (void*)obj;
 }
 

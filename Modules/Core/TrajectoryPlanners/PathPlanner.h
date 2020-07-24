@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void* new_PathPlanner(void);
+void* new_PathPlanner(char callsign[]);
 void PathPlanner_InitializeAstarParameters(void * obj,bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
 void PathPlanner_InitializeRRTParameters(void * obj,double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
 

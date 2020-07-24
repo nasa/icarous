@@ -81,7 +81,7 @@ public:
     Velocity startVel;
     algorithm search;
 
-    PathPlanner();
+    PathPlanner(std::string callsign);
     void InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
     void InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
 #ifdef SPLINES

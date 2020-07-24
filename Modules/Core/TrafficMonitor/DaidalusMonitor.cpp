@@ -8,7 +8,7 @@
 #include <cstring>
 #include <Units.h>
 
-DaidalusMonitor::DaidalusMonitor(bool reclog,std::string daaConfig) {
+DaidalusMonitor::DaidalusMonitor(std::string callsign,std::string daaConfig,bool reclog) {
     conflictStartTime = 0;
     startTime = 0;
     conflictTrack = false;
@@ -19,7 +19,7 @@ DaidalusMonitor::DaidalusMonitor(bool reclog,std::string daaConfig) {
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-    sprintf(fmt1,"log/Daidalus-%f.log",localT);
+    sprintf(fmt1,"log/Daidalus-%s-%f.log",callsign.c_str(),localT);
 
     log = reclog;
 

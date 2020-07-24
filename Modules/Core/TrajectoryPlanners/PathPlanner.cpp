@@ -17,7 +17,7 @@
 using namespace std;
 using namespace larcfm;
 
-PathPlanner::PathPlanner() {
+PathPlanner::PathPlanner(std::string callsign) {
     obsbuffer = 5;
     maxCeiling = MAXDOUBLE;
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
@@ -26,7 +26,7 @@ PathPlanner::PathPlanner() {
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-    sprintf(fmt1,"log/Path-%f.log",localT);
+    sprintf(fmt1,"log/Path-%s-%f.log",callsign.c_str(), localT);
     log.open(fmt1);
 }
 
@@ -624,8 +624,9 @@ void PathPlanner::InputDataFromLog(string filename){
     }
 }
 
-void* new_PathPlanner(void){
-   PathPlanner* pp = new PathPlanner();
+void* new_PathPlanner(char callsign[]){
+   std::string callstr(callsign);
+   PathPlanner* pp = new PathPlanner(callstr);
    return (void*)pp;
 }
 

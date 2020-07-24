@@ -1,16 +1,20 @@
 #include "Merger.hpp"
 
-Merger::Merger(char callsign[],int vID, char logSuffix[]){
+Merger::Merger(char callsign[],int vID){
 
     vehicleID = vID;
     // Open log files
-    char filename1[30];
-    sprintf(filename1,"log/mergerLog_%d%s.log",vehicleID,logSuffix);
+    struct timespec  tv;
+    clock_gettime(CLOCK_REALTIME,&tv);
+    double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+
+    char filename1[50];
+    sprintf(filename1,"log/mergerLog-%s-%f.log",callsign,localT);
     logFile1 = fopen(filename1,"w");
     fprintf(logFile1, "Vehicle ID: %d",vID);   
 
-    char filename2[30];
-    sprintf(filename2,"log/merger_appdata_%d%s.log",vehicleID,logSuffix);
+    char filename2[50];
+    sprintf(filename2,"log/merger_appdata-%s-%f.log",callsign,localT);
     logFile2 = fopen(filename2,"w");
     fprintf(logFile2,"# time (s), intID, dist2int, speed, f/c/l, (r,t,d), zone, numSch, merge speed, merge dev, merging status, lat, lon, alt\n");
 
@@ -783,11 +787,6 @@ void Merger::AddLogEntry(){
 
 void* MergerInit(char callsign[],int vehicleID){
     Merger* mg = new Merger(callsign,vehicleID);
-    return (void*) mg;
-}
-
-void* MergerInitWithLogSuffix(char callsign[],int vehicleID,char logSuffix[]){
-    Merger* mg = new Merger(callsign,vehicleID,logSuffix);
     return (void*) mg;
 }
 

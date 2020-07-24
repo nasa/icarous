@@ -13,7 +13,7 @@
 
 int main(int argc,char** argv){
 
-    PathPlanner planner;
+    PathPlanner planner("Test");
     planner.InputDataFromLog("flyer3.log"); 
     
     double positionA[3] = {planner.startPos.latitude(),

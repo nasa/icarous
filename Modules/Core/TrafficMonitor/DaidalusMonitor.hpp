@@ -53,7 +53,7 @@ private:
     larcfm::Daidalus DAA2;   // DAA2 object used for stateless queries
 public:
 
-    DaidalusMonitor(bool reclog,std::string daaConfig);
+    DaidalusMonitor(std::string callsign, std::string daaConfig,bool reclog);
     void MonitorTraffic(void);
     bool CheckPositionFeasibility(const larcfm::Position pos,const double speed);
     void UpdateParameters(std::string daaParameters,bool log);
