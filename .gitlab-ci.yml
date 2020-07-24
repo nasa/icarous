@@ -19,7 +19,7 @@ before_script:
   - chmod 600 ~/.ssh/id_rsa
   - chmod -R 777 /builds/larc-nia-fm/icarous
   - cd /builds/larc-nia-fm/icarous
-  - git submodule update --init --recursive
+  - git submodule update --init --force --recursive
   - mkdir -p /builds/larc-nia-fm/icarous/exe/cpu1/cf
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
