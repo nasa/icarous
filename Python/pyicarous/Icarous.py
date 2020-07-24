@@ -222,6 +222,7 @@ class Icarous():
         cogParams.resolutionSpeed = params['RESSPEED']
         cogParams.searchType =int(params['SEARCHALGORITHM']) 
         cogParams.resolutionType = int(params['RES_TYPE'])
+        cogParams.allowedXTrackDeviation = params['XTRKDEV']
         cogParams.DTHR = params['DET_1_WCV_DTHR']/3
         cogParams.ZTHR = params['DET_1_WCV_ZTHR']/3
         self.Cog.InputParameters(cogParams)
@@ -501,11 +502,15 @@ class Icarous():
         altband.time = self.currTime
         vsband.time = self.currTime
 
+        C1 = self.Trajectory.ComputeClosesetPoint(self.flightplan1[self.nextWP1-1],self.flightplan1[self.nextWP1],self.position)
+        feasibility_cp = self.tfMonitor.monitor_wp_feasibility(C1,-1)
+
         for i,fp in enumerate(self.flightplan1):
             wp = fp[:3]
             feasibility = self.tfMonitor.monitor_wp_feasibility(wp,-1)
             feasibility &= self.tfMonitor.monitor_wp_feasibility(wp,self.resSpeed)
             trkband.wpFeasibility1[i] = feasibility
+            trkband.fp1ClosestPointFeasible = feasibility_cp
             gsband.wpFeasibility1[i] = feasibility
             altband.wpFeasibility1[i] = feasibility
             vsband.wpFeasibility1[i] = feasibility

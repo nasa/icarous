@@ -21,6 +21,10 @@ class Trajectory():
         self.lib.PathPlanner_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
         self.lib.PathPlanner_GetTotalWaypoints.restype = c_int
         self.lib.PathPlanner_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
+
+        self.mUtils = CDLL('libUtils.so')
+        self.mUtils.ComputeXtrackDistance.argtypes = [c_double*3,c_double*3,c_double*3,c_double*3]
+
         self.module = self.lib.new_PathPlanner(c_char_p(callsign.encode('utf-8')))
 
     def UpdateAstarParams(self,enable3d,gridSize,resSpeed,lookahed,daaconfig):
@@ -102,4 +106,21 @@ class Trajectory():
         _vel = cvel(velocity[0],velocity[1],velocity[2])
         _index = c_int(index)
         return self.lib.PathPlanner_InputTraffic(self.module,_index,_pos,_vel)
+
+    def ComputeXtrackDistance(self,wpA,wpB,position):
+        cpos = c_double*3
+        offset = cpos(0,0,0)
+        self.mUtils.ComputeXtrackDistance(cpos(*wpA[:3]),cpos(*wpB[:3]),cpos(*position),offset)
+        return offset
+
+    def ComputeClosesetPoint(self,wpA,wpB,position):
+        offset = self.ComputeXtrackDistance(wpA,wpB,position)
+        dist = distance(*wpA[:2],*wpB[:2])
+        n = 1 - (dist - offset[1])/dist
+
+        C = [0.0,0.0,0.0]
+        for i in range(3):
+            C[i] = wpA[i] + n*(wpB[i] - wpA[i])
+
+        return C
 
