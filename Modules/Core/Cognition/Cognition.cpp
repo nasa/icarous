@@ -916,6 +916,7 @@ bool Cognition::XtrackManagement(){
    XtrackConflict = (fabs(xtrackDeviation) > parameters.allowedXtrackDeviation);
 
    larcfm::Velocity interceptManeuver;
+   double interceptHeading = GetInterceptHeadingToPlan(prev_wp_pos,next_wp_pos,position);
    ManeuverToIntercept(prev_wp_pos,
                        next_wp_pos,
                        position,parameters.XtrackGain,
@@ -944,10 +945,15 @@ bool Cognition::XtrackManagement(){
 
       case RESOLVE:{
          // Send velocity command to guidance
-         SetGuidanceVelCmd(interceptManeuver.trk(),interceptManeuver.gs(),interceptManeuver.vs());
+         //SetGuidanceVelCmd(larcfm::Units::to(larcfm::Units::deg,interceptManeuver.compassAngle()),
+          //                 interceptManeuver.groundSpeed("m/s"),
+           //                interceptManeuver.verticalSpeed("m/s"));
+         SetGuidanceVelCmd(interceptHeading, parameters.resolutionSpeed,0.0);
+
          if(!XtrackConflict){
             XtrackConflictState = COMPLETE;
          }
+
          break;
       }
 
@@ -996,6 +1002,7 @@ bool Cognition::TrafficConflictManagement(){
          preferredSpeed = prevResSpeed;
          preferredTrack = prevResTrack;
          preferredAlt    = prevResAlt;
+         requestGuidance2NextWP = 1;
          GetResolutionType();
 
          // Use this only for search based resolution
@@ -1008,7 +1015,8 @@ bool Cognition::TrafficConflictManagement(){
          }else if(parameters.resolutionType == ALTITUDE_RESOLUTION){
             log << timeString + "| [STATUS] | Resolving conflict with altitude resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
-         }else if(parameters.resolutionType == TRACK_RESOLUTION){
+         }else if(parameters.resolutionType == TRACK_RESOLUTION ||
+                   parameters.resolutionType == TRACK_RESOLUTION2){
             log << timeString + "| [STATUS] | Resolving conflict with track resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
          }else if(parameters.resolutionType == DITCH_RESOLUTION){
@@ -1028,8 +1036,14 @@ bool Cognition::TrafficConflictManagement(){
                trafficConflictState = NOOPC;
             }
          }else{
+
+            if(parameters.resolutionType == TRACK_RESOLUTION2){
+                requestGuidance2NextWP = 0;
+            }
             if(!RunTrafficResolution()){
-               trafficConflictState = COMPLETE;
+               if( !(requestGuidance2NextWP == 0 && !closestPointFeasible) ){
+                    trafficConflictState = COMPLETE;
+               }
             }
          }
 
@@ -1037,24 +1051,25 @@ bool Cognition::TrafficConflictManagement(){
       }
 
       case COMPLETE:{
-         requestGuidance2NextWP = 1;
+         bool sendStatus = false;
+         trafficConflictState = NOOPC;
          if(requestGuidance2NextWP == 0 && activePlan->getID() == "Plan0" && closestPointFeasible){
-            trafficConflictState = NOOPC;
+            sendStatus = true;
          }else if(requestGuidance2NextWP == 1){
-            trafficConflictState = NOOPC;
-         }else{
-            requestGuidance2NextWP = -1;
+            sendStatus = true;
          }
 
          if(parameters.resolutionType == SPEED_RESOLUTION){
             requestGuidance2NextWP = -1;
             trafficConflictState = NOOPC;
             SetGuidanceSpeedCmd(activePlan->getID(),parameters.resolutionSpeed);
+            sendStatus = true;
          }
 
-         SendStatus((char*)"IC:traffic conflict resolved",6);
-
-         log << timeString + "| [RESOLVED] | Traffic conflict resolved" <<"\n";
+         if(sendStatus){
+            SendStatus((char*)"IC:traffic conflict resolved",6);
+            log << timeString + "| [RESOLVED] | Traffic conflict resolved" <<"\n";
+         }
          return2NextWPState = NOOPC;
          break;
       }
@@ -1108,7 +1123,8 @@ bool Cognition::RunTrafficResolution(){
          break;
       }
 
-      case TRACK_RESOLUTION:{
+      case TRACK_RESOLUTION:
+      case TRACK_RESOLUTION2:{
          //printf("executing traffic resolution\n");
          double speed = parameters.resolutionSpeed;
          double climb_rate = 0;

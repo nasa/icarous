@@ -190,7 +190,6 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
     else
         vo = larcfm::Velocity::makeTrkGsVs(track,"degree",speed,"m/s",velocity.verticalSpeed("m/s"),"m/s");
 
-    //DAA2.stale(true);
     DAA2.setOwnshipState("Ownship", position, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
     int count = 0;
