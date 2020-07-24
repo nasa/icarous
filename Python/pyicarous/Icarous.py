@@ -44,7 +44,7 @@ class Icarous():
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(callsign)
-        self.tfMonitor = TrafficMonitor(callsign,daaConfig,False)
+        self.tfMonitor = TrafficMonitor(callsign,self.daaConfig,False)
         self.Merger = Merger(callsign,vehicleID)
 
         # Aircraft data
@@ -504,8 +504,10 @@ class Icarous():
         altband.time = self.currTime
         vsband.time = self.currTime
 
-        C1 = self.Trajectory.ComputeClosesetPoint(self.flightplan1[self.nextWP1-1],self.flightplan1[self.nextWP1],self.position)
-        feasibility_cp = self.tfMonitor.monitor_wp_feasibility(C1,-1)
+        feasibility_cp = True
+        if self.nextWP1 < len(self.flightplan1):
+            C1 = self.Trajectory.ComputeClosesetPoint(self.flightplan1[self.nextWP1-1],self.flightplan1[self.nextWP1],self.position)
+            feasibility_cp = self.tfMonitor.monitor_wp_feasibility(C1,-1)
 
         for i,fp in enumerate(self.flightplan1):
             wp = fp[:3]
