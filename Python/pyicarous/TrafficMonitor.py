@@ -5,10 +5,11 @@ from Interfaces import Bands
 class TrafficMonitor():
 
 
-    def __init__(self,log):
+    def __init__(self,callsign,daafile,log):
         self.lib = CDLL('libTrafficMonitor.so')
 
         self.lib.newDaidalusTrafficMonitor.restype = c_void_p
+        self.lib.newDaidalusTrafficMonitor.argtypes = [c_char_p,c_char_p,c_bool]
         self.lib.TrafficMonitor_UpdateParameters.argtypes = [c_void_p,c_char_p,c_bool]
         self.lib.TrafficMonitor_InputIntruderData.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
         self.lib.TrafficMonitor_InputOwnshipData.argtypes  = [c_void_p,c_double*3,c_double*3,c_double]
@@ -19,7 +20,7 @@ class TrafficMonitor():
         self.lib.TrafficMonitor_GetSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetAltBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetVerticalSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
-        self.obj = self.lib.newDaidalusTrafficMonitor(c_bool(log),c_char_p("data/DaidalusQuadConfig.txt".encode('utf-8')))
+        self.obj = self.lib.newDaidalusTrafficMonitor(c_char_p(callsign.encode('utf-8')),c_char_p(daafile.encode('utf-8')),c_bool(log))
 
     def SetParameters(self,params,log):
         self.lib.TrafficMonitor_UpdateParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))

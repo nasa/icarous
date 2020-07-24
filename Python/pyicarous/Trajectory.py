@@ -5,7 +5,7 @@ from ichelper import distance
 Pos = c_double*3
 
 class Trajectory():
-    def __init__(self,obsbuffer,ceiling):
+    def __init__(self,callsign):
         self.lib = CDLL('libPathPlanner.so')
         self.lib.new_PathPlanner.restype = c_void_p
         self.lib.PathPlanner_UpdateAstarParameters.argtypes = [c_void_p,c_bool,c_double,c_double,c_double,c_char_p]
@@ -21,7 +21,7 @@ class Trajectory():
         self.lib.PathPlanner_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
         self.lib.PathPlanner_GetTotalWaypoints.restype = c_int
         self.lib.PathPlanner_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
-        self.module = self.lib.new_PathPlanner()
+        self.module = self.lib.new_PathPlanner(c_char_p(callsign.encode('utf-8')))
 
     def UpdateAstarParams(self,enable3d,gridSize,resSpeed,lookahed,daaconfig):
         self.lib.PathPlanner_UpdateAstarParameters(self.module,c_bool(enable3d),

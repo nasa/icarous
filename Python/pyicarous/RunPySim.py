@@ -58,4 +58,4 @@ RunSimulation(icInstances,tfList,startDelay = icDelay,timeLimit = tLimit,wind=si
 #plt.plot([i for i in range(len(ic.positionLog))],np.array(ic.positionLog)[:,2])
 #plt.show()
 
-VisualizeSimData(icInstances,allplans=False,xmin=-30,ymin=-30,xmax=100,ymax=100,interval=5,record=False,filename="anim.mp4")
+VisualizeSimData(icInstances,allplans=False,xmin=-50,ymin=-50,xmax=100,ymax=100,interval=5,record=False,filename="anim.mp4")

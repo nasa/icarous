@@ -24,9 +24,9 @@ from ichelper import (ConvertTrkGsVsToVned,
 import time
 
 class Icarous():
-    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, verbose=0,logName = ""):
+    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, verbose=0,callsign = "SPEEDBIRD",daafile="data/DaidalusQuadConfig.txt"):
         self.fasttime = fasttime
-        self.logName = logName
+        self.callsign = callsign
         self.verbose = verbose
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
@@ -36,14 +36,14 @@ class Icarous():
             from quadsim import QuadSim
             self.ownship = QuadSim()
 
+        self.daafile = daafile
         self.vehicleID = vehicleID
-        self.Cog = Cognition("vehicle"+str(vehicleID))
+        self.Cog = Cognition(callsign)
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
-        self.Trajectory = Trajectory(5.0,250)
-        self.tfMonitor = TrafficMonitor(False)
-        self.Merger = Merger("AC",vehicleID,self.logName)
-        self.daafile = "data/DaidalusQuadConfig.txt"
+        self.Trajectory = Trajectory(callsign)
+        self.tfMonitor = TrafficMonitor(daafile,callsign,False)
+        self.Merger = Merger(callsign,vehicleID)
 
         # Aircraft data
         self.flightplan1 = []
@@ -335,9 +335,9 @@ class Icarous():
 
         if self.verbose > 1:
             if self.activePlan == 'Plan0':
-                print("IC: %d, %s, Distance to wp %d: %f" %(self.vehicleID,self.activePlan,self.nextWP1,dist))
+                print("%s: %s, Distance to wp %d: %f" %(self.callsign,self.activePlan,self.nextWP1,dist))
             else:
-                print("IC: %d, %s, Distance to wp %d: %f" %(self.vehicleID,self.activePlan,self.nextWP2,dist))
+                print("%s: %s, Distance to wp %d: %f" %(self.callsign,self.activePlan,self.nextWP2,dist))
 
         self.fphase = self.Cog.RunFlightPhases(self.currTime)
         if self.fphase == 8:
@@ -357,7 +357,7 @@ class Icarous():
                     self.nextWP2 = nextWP
                 self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,nextWP)
                 if self.verbose > 0:
-                    print("active plan = %s" % self.activePlan)
+                    print(self.callsign, ": active plan = ",self.activePlan)
             elif cmd.commandType == CommandTypes.P2P:
                 self.guidanceMode = GuidanceMode.POINT2POINT
                 point = cmd.commandU.p2pCommand.point
@@ -368,7 +368,7 @@ class Icarous():
                 self.nextWP2 = 1
                 self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,1)
                 if self.verbose > 0:
-                    print("active plan = %s" % self.activePlan)
+                    print(self.callsign, ": active plan = ",self.activePlan)
             elif cmd.commandType == CommandTypes.VELOCITY:
                 self.guidanceMode = GuidanceMode.VECTOR
                 vn = cmd.commandU.velocityCommand.vn
@@ -388,7 +388,7 @@ class Icarous():
             elif cmd.commandType == CommandTypes.STATUS_MESSAGE:
                 if self.verbose > 0:
                     message = cmd.commandU.statusMessage.buffer
-                    print(message.decode('utf-8'))
+                    print(self.callsign,":",message.decode('utf-8'))
             elif cmd.commandType == CommandTypes.FP_REQUEST:
                 self.flightplan2 = []
                 self.numSecPlan += 1
@@ -406,7 +406,7 @@ class Icarous():
 
                 if numWP > 0:
                     if self.verbose > 0:
-                        print("%f: Computed flightplan %s with %d waypoints" % (self.currTime,planID,numWP))
+                        print("%s : At %f s, Computed flightplan %s with %d waypoints" % (self.callsign,self.currTime,planID,numWP))
                     for i in range(numWP):
                         wp = self.Trajectory.GetWaypoint(planID,i)
                         self.flightplan2.append([wp[0],wp[1],wp[2],self.resSpeed])
@@ -416,7 +416,7 @@ class Icarous():
                     self.localPlans.append(self.GetLocalFlightPlan(self.flightplan2))
                 else:
                     if self.verbose > 0:
-                        print("Error finding path")
+                        print(self.callsign,"Error finding path")
 
 
     def RunGuidance(self):
@@ -445,13 +445,13 @@ class Icarous():
                     self.Cog.InputReachedWaypoint("Plan0",nextWP-1)
                     self.nextWP1 = nextWP
                     if self.verbose > 0 and self.nextWP1 < len(self.flightplan1):
-                        print("Proceeding to waypoint %d on %s" % (nextWP,self.activePlan))
+                        print("%s : Proceeding to waypoint %d on %s" % (self.callsign,nextWP,self.activePlan))
             else:
                 if self.nextWP2 < nextWP:
                     self.nextWP2 = nextWP
                     self.Cog.InputReachedWaypoint(self.activePlan,nextWP-1)
                     if self.verbose > 0 and self.nextWP2 < len(self.flightplan2):
-                        print("Proceeding to waypoint %d on %s" % (nextWP,self.activePlan))
+                        print("%s : Proceeding to waypoint %d on %s" % (self.callsign,nextWP,self.activePlan))
         else:
             pass
          
@@ -583,11 +583,11 @@ class Icarous():
         self.trafficLog[id]["velocityNED"].append([velocity[1], velocity[0], velocity[2]])
         self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
 
-    def WriteLog(self, logname="simoutput.json"):
+    def WriteLog(self, logname=""):
         self.ownshipLog['localPlans'] = self.localPlans
         self.ownshipLog['localFences'] = self.localFences
-        if self.logName != "":
-             logname = self.logName + '.json'
+        if logname == "":
+             logname = self.callsign + '.json'
 
         import json
         if self.verbose > 0:
@@ -698,13 +698,13 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
                 if len(startDelay) == 0:
                     ic.Cog.InputStartMission(0,0)
                     ic.startSent = True
-                    print(ic.vehicleID, 'Start Sent', ic.currTime)
+                    print(ic.callsign, ': Start Sent at', ic.currTime)
                 else:
                     if ic.currTime - prevTime[i] > startDelay[i]:
                         ic.Cog.InputStartMission(0,0)
                         ic.startSent = True
                         prevTime[i] = ic.currTime
-                        print(ic.vehicleID, 'Start Sent', prevTime[i])
+                        print(ic.callsign, ': Start Sent at', prevTime[i])
                     else:
                         delay = True
             
@@ -725,7 +725,7 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
             if len(timeLimit) > 0 and not delay and not ic.missionComplete:
                 if ic.currTime - prevTime[i] > timeLimit[i]:
                     ic.missionComplete = True
-                    print('Time limit Reached', ic.vehicleID, ic.currTime, ic.currTime - prevTime[i])
+                    print(ic.callsign, ': Time limit Reached', ic.currTime)
                     
         if status:
             RunTraffic(trafficVehicles,windfrom,windspeed)
