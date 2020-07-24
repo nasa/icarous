@@ -114,7 +114,10 @@ void TRAJECTORY_AppInit(void)
 
 void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
 
-    TrajectoryAppData.pplanner = new_PathPlanner();
+    char callsign[30];
+    memset(callsign,0,30);
+    sprintf(callsign,"aircraft%d",CFE_PSP_GetSpacecraftId());
+    TrajectoryAppData.pplanner = new_PathPlanner(callsign);
     PathPlanner_InitializeAstarParameters(TrajectoryAppData.pplanner,
                                           TblPtr->astar_enable3D,
                                           TblPtr->astar_gridSize,

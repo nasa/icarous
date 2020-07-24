@@ -82,7 +82,9 @@ void TRAFFIC_AppInit(void) {
 
     
     trafficAppData.log = TblPtr->log;
-    trafficAppData.tfMonitor = newDaidalusTrafficMonitor(trafficAppData.log,TblPtr->configFile);
+    char callsign[30];
+    sprintf(callsign,"aircraft%d",CFE_PSP_GetSpacecraftId());
+    trafficAppData.tfMonitor = newDaidalusTrafficMonitor(callsign,TblPtr->configFile,trafficAppData.log);
     trafficAppData.numTraffic = 0;
     trafficAppData.updateDaaParams = TblPtr->updateParams;
 
