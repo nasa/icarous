@@ -10,8 +10,8 @@ import subprocess
 sys.path.append("../pyicarous")
 import BatchGSModule as GS
 from SimVehicle import SimVehicle
-from Icarous import (Icarous, ReadFlightplanFile, LoadIcarousParams,
-                    StartTraffic, RunSimulation)
+from Icarous import (Icarous, ReadFlightplanFile, LoadIcarousParams)
+from SimEnvironment import SimEnvironment
 
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
@@ -103,54 +103,56 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario using pyIcarous """
     os.chdir(output_dir)
 
+    # Create fasttime simulation environment
+    sim = SimEnvironment()
+    if "merge_fixes" in scenario:
+        sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
+
+    # Add Icarous instances to simulation environment
     num_vehicles = len(scenario["vehicles"])
-    icInstances = []
-    tfList = []
-    icDelay = []
+    time_limit = scenario.get("time_limit", 1000)
     for v_scenario in scenario["vehicles"]:
-        cpu_id = v_scenario.get("cpu_id", 1)
+        cpu_id = v_scenario.get("cpu_id", len(sim.icInstances) + 1)
         spacecraft_id = cpu_id - 1
+        callsign = v_scenario.get("name", "vehicle%d" % spacecraft_id)
         waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
                                            v_scenario["waypoint_file"]))
         HomePos = waypoints[0][0:3]
 
-        ic = Icarous(HomePos, simtype="UAM_VTOL",
-                     vehicleID=spacecraft_id, verbose=1)
+        ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
+                     callsign=callsign, verbose=1)
 
-        # Set up the scenario
-        if "merge_fixes" in scenario:
-            ic.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
-
-        params = LoadIcarousParams(os.path.join(icarous_home, v_scenario["parameter_file"]))
+        # Set parameters
+        param_file = os.path.join(icarous_home, v_scenario["parameter_file"])
+        params = LoadIcarousParams(param_file)
         if v_scenario.get("param_adjustments"):
             params.update(v_scenario["param_adjustments"])
-            params["RESSPEED"] = params["DEF_WP_SPEED"]
+        params["RESSPEED"] = params["DEF_WP_SPEED"]
         ic.SetParameters(params)
 
-        ic.InputFlightplanFromFile(os.path.join(icarous_home, v_scenario["waypoint_file"]), eta=eta)
+        # Input flight plan
+        fp_file = os.path.join(icarous_home, v_scenario["waypoint_file"])
+        ic.InputFlightplanFromFile(fp_file, eta=eta)
 
+        # Input geofences
         if v_scenario.get("geofence_file"):
-            ic.InputGeofence(os.path.join(icarous_home, v_scenario["geofence_file"]))
+            gf_file = os.path.join(icarous_home, v_scenario["geofence_file"])
+            ic.InputGeofence(gf_file)
 
+        # Input simulated traffic
         for tf in v_scenario["traffic"]:
-            traf_id = num_vehicles + len(tfList)
-            StartTraffic(traf_id, HomePos, tf[0], tf[1], tf[2], tf[3], tf[4], tf[5], tfList)
+            traf_id = num_vehicles + len(sim.tfList)
+            sim.AddTraffic(traf_id, HomePos, *tf)
 
         delay = v_scenario.get("delay", 0)
-        icDelay.append(delay)
+        sim.AddIcarousInstance(ic, delay, time_limit)
 
-        icInstances.append(ic)
-
-    for tf in tfList:
-        tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
-
-    tlimit = [scenario.get("time_limit", 1000)]*len(icInstances)
-    RunSimulation(icInstances, tfList, startDelay=icDelay, timeLimit=tlimit)
+    sim.RunSimulation()
     os.chdir(sim_home)
 
     # Collect log files
-    for ic in icInstances:
-        logname = "simlog-%d-%f.json" % (ic.vehicleID, time.time())
+    for ic in sim.icInstances:
+        logname = "simlog-%s-%f.json" % (ic.callsign, time.time())
         dest = os.path.join(output_dir, logname)
         print("writing log: %s" % dest)
         log_data = {"scenario": scenario,

@@ -209,7 +209,7 @@ def write_metrics(vehicles, output_file="MergingMetrics.csv"):
     for v in vehicles:
         for merge_id in v.metrics.keys():
             for pass_id in v.metrics[merge_id].keys():
-                index = "%s_%d_%d_%d" % (v.group, merge_id, v.id, pass_id)
+                index = "%s_%d_%s_%d" % (v.group, merge_id, v.id, pass_id)
                 metrics = pd.DataFrame(v.metrics[merge_id][pass_id], index=[index])
                 table = metrics.combine_first(table)
                 headers = v.metrics[merge_id][pass_id].keys()
@@ -538,18 +538,14 @@ def plot_flight_trace(vehicles, merge_id=1, save=False):
 def process_data(data_location):
     vehicles = []
     group = data_location.strip("/").split("/")[-1]
-    i = 0
-    found_log = True
-    while found_log:
-        found_log = False
-        for f in os.listdir(os.path.join(data_location, "log")):
-            if f.startswith("merger_appdata_"+str(i)):
-                found_log = True
-                filename = os.path.join(data_location, "log", f)
-                data = ReadMergerAppData(filename, i, group)
-                data.params = read_params(data_location, i)
+    for root, dirs, files in os.walk(os.path.join(data_location)):
+        for f in files:
+            if f.startswith("merger_appdata"):
+                callsign = f.split("-")[1]
+                filename = os.path.join(root, f)
+                data = ReadMergerAppData(filename, callsign, group)
+                data.params = read_params(data_location, callsign)
                 vehicles.append(data)
-        i += 1
     return vehicles
 
 

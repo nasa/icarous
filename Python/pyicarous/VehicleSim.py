@@ -44,7 +44,7 @@ class VehicleSim():
         speed = np.linalg.norm(self.vel0 + vw)
         if speed <= 0:
             vw     = np.array([0.0,0.0,0.0])
-        self.vel0 = self.vel0 + 0.05 * (self.U - self.vel0) 
+        self.vel0 = self.vel0 + self.dt * (self.U - self.vel0)
         self.pos0 = self.pos0 + (self.vel0 + vw) * self.dt
         n = np.zeros((1,3))
         if self.noise:
@@ -53,6 +53,19 @@ class VehicleSim():
         self.pos[0] = self.coeff*self.pos[0] + (1 - self.coeff)*(self.pos0[0] + n[0,0]) 
         self.pos[1] = self.coeff*self.pos[1] + (1 - self.coeff)*(self.pos0[1] + n[0,1]) 
         self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0,2]) 
+
+    def run(self,windFrom=0,windSpeed=0):
+        oldvel = self.getOutputVelocity()
+        self.input(oldvel[0],oldvel[1],oldvel[2])
+        self.step(windFrom,windSpeed)
+        (tgx, tgy) = gps_offset(self.home_gps[0], self.home_gps[1],
+                                self.pos[0], self.pos[1])
+        self.pos_gps[0] = tgx
+        self.pos_gps[1] = tgy
+        self.pos_gps[2] = self.pos[2]
+        self.log['gps'].append(self.pos_gps.tolist())
+        self.log['pos'].append(self.pos.tolist())
+        self.log['vel'].append(self.vel.tolist())
 
     def getOutputPosition(self):
         return (self.pos[0],self.pos[1],self.pos[2])
@@ -72,21 +85,7 @@ def StartTraffic(idx, home, rng, brng, alt, speed, heading, crate, tflist=[]):
         sim.home_gps = np.array(home)
         tflist.append(sim)
 
+
 def RunTraffic(tflist,windFrom=0,windSpeed=0):
     for tf in tflist:
-        oldvel = tf.getOutputVelocity()
-        tf.input(oldvel[0],oldvel[1],oldvel[2])
-        tf.step(windFrom,windSpeed)
-        (tgx, tgy) = gps_offset(tf.home_gps[0], tf.home_gps[1],
-                                tf.pos[0], tf.pos[1])
-        tf.pos_gps[0] = tgx
-        tf.pos_gps[1] = tgy
-        tf.pos_gps[2] = tf.pos[2]
-        tf.log['gps'].append(tf.pos_gps.tolist())
-        tf.log['pos'].append(tf.pos.tolist())
-        tf.log['vel'].append(tf.vel.tolist())
-
-
-
-
-
+        tf.run(windFrom, windSpeed)

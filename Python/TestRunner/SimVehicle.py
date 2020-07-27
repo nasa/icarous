@@ -78,9 +78,9 @@ class SimVehicle:
 
     def setup(self):
         scenario = self.scenario
-        self.name = scenario["name"]
         self.cpu_id = scenario.get("cpu_id", 1)
         self.spacecraft_id = self.cpu_id - 1
+        self.callsign = scenario.get("name", "vehicle%d" % self.spacecraft_id)
 
         # Set up mavlink connections
         icarous_port = 14553 + (self.cpu_id - 1)*10
@@ -112,7 +112,7 @@ class SimVehicle:
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
         if self.verbose and self.out is not None:
-            print("Telemetry for %s is on 127.0.0.1:%d" % (self.name, self.out))
+            print("Telemetry for %s is on 127.0.0.1:%d" % (self.callsign, self.out))
         if self.verbose:
             print("Waiting for heartbeat...")
         master.wait_heartbeat()
@@ -158,7 +158,7 @@ class SimVehicle:
             m = master.recv_match(type="GLOBAL_POSITION_INT", blocking=False)
             if m is None:
                 continue
-            if m.lat > 1e-5:
+            if abs(m.lat) > 1e-5:
                 break
 
 
@@ -182,11 +182,11 @@ class SimVehicle:
                    "geofences": self.geofences,
                    "parameters": self.params,
                    "sim_type": self.sim_type}
-        logname = "simlog-%d-%f.json" % (self.spacecraft_id, time.time())
+        logname = "simlog-%s-%f.json" % (self.callsign, time.time())
         dest = os.path.join(self.output_dir, logname)
         with open(dest, 'w') as f:
             json.dump(simdata, f)
-        print("\nWrote " + self.name + " simulation data")
+        print("\nWrote " + self.callsign + " simulation data")
 
 
     def write_params(self):
@@ -209,7 +209,7 @@ class SimVehicle:
                     self.gs.StartMission()
                     self.started = True
                     if self.verbose:
-                        print("***Starting %s" % self.name)
+                        print("***Starting %s" % self.callsign)
             time.sleep(0.01)
             currentT = time.time()
             self.duration = currentT - self.t0
