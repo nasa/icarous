@@ -5,7 +5,7 @@ from Interfaces import Bands
 class TrafficMonitor():
 
 
-    def __init__(self,callsign,config,log):
+    def __init__(self,callsign,configs,log):
         self.lib = CDLL('libTrafficMonitor.so')
 
         self.lib.newDaidalusTrafficMonitor.restype = c_void_p
@@ -20,7 +20,8 @@ class TrafficMonitor():
         self.lib.TrafficMonitor_GetSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetAltBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetVerticalSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
-        self.obj = self.lib.newDaidalusTrafficMonitor(c_char_p(callsign.encode('utf-8')),c_char_p(config.encode('utf-8')),c_bool(log))
+        daidalusFile = configs[0]
+        self.obj = self.lib.newDaidalusTrafficMonitor(c_char_p(callsign.encode('utf-8')),c_char_p(daidalusFile.encode('utf-8')),c_bool(log))
 
     def SetParameters(self,params,log):
         self.lib.TrafficMonitor_UpdateParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
