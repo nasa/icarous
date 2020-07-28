@@ -131,12 +131,14 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
 
 
 def read_params(data_location, vehicle_id=0):
-    simlog = next(f for f in os.listdir(data_location)
-                  if f.endswith(".json") and str(vehicle_id) in f)
-    with open(os.path.join(data_location, simlog)) as f:
-        data = json.load(f)
-    params = data["parameters"]
-    return params
+    for root, dirs, files in os.walk(data_location):
+        for f in files:
+            if f.endswith(".json") and str(vehicle_id) in f:
+                simlog = os.path.join(root, f)
+                with open(simlog) as f:
+                    data = json.load(f)
+                params = data["parameters"]
+                return params
 
 
 def compute_metrics(vehicles, merge_id=1):
@@ -347,7 +349,7 @@ def plot_summary(vehicles, merge_id=1, save=False):
             t = v.get("t", merge_id=merge_id, pass_id=pass_id)
             line, = plt.plot(t, v.get("dist2int", merge_id=merge_id, pass_id=pass_id))
             color = line.get_color()
-            label = "vehicle%d" % v.id
+            label = "vehicle%s" % v.id
             if pass_id > 1:
                 label += " (pass %d)" % pass_id
             line.set_label(label)
@@ -385,7 +387,7 @@ def plot_spacing_summary(vehicles, save=False):
         time_range, dist = compute_separation(v1, v2, merge_id="all")
         if len(dist) > 0:
             line, = ax1.plot(time_range, dist)
-            line.set_label("vehicle%d to vehicle%d spacing" % (v1.id, v2.id))
+            line.set_label("vehicle%s to vehicle%s spacing" % (v1.id, v2.id))
     ax1.plot(plt.xlim(), [spacing_value]*2, 'm--', label="Minimum allowed spacing")
     ax1.set_ylim((0, ax1.get_ylim()[1]))
     ax1.set_ylabel("Horizontal separation (m)")
@@ -412,7 +414,7 @@ def plot_spacing_summary(vehicles, save=False):
                 ax1.axvspan(coordT, arrT, color=v.color, alpha=0.3)
                 ax2.axvspan(coordT, arrT, color=v.color, alpha=0.3)
         line2, = ax2.plot(time_range, v.get("speed", time_range), color=v.color)
-        line2.set_label("vehicle%d speed" % v.id)
+        line2.set_label("vehicle%s speed" % v.id)
 
     ax2.set_ylabel("Vehicle speed (m/s)")
     ax2.set_xlabel("Time (s)")
@@ -465,7 +467,7 @@ def plot_speed(vehicles, merge_id=1, save=False):
         plt.figure()
         if merge_id == "all":
             title = "speed_" + str(v.id)
-            plt.title("vehicle%d Speed (entire flight)" % v.id)
+            plt.title("vehicle%s Speed (entire flight)" % v.id)
             merge_ids = list(v.metrics.keys())
         else:
             if merge_id not in v.pass_ids:
