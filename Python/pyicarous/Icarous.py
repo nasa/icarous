@@ -670,8 +670,11 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     from Animation import AgentAnimation
     anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
 
+    vehicleSize1 = (xmax - xmin)/100
+    vehicleSize2 = (ymax - ymin)/100
+    vehicleSize  = np.max([vehicleSize1,vehicleSize2])
     for j,ic in enumerate(icList):
-        anim.AddAgent('ownship'+str(j),2,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
+        anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
 
         for i,pln in enumerate(ic.localPlans):
             if i == 0:
@@ -682,7 +685,7 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         tfids = ic.trafficLog.keys()
         if showtraffic:
             for key in tfids:
-                anim.AddAgent('traffic'+str(key),2,'b',ic.trafficLog[key])
+                anim.AddAgent('traffic'+str(key),vehicleSize,'b',ic.trafficLog[key])
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
