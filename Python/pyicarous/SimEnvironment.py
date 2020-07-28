@@ -203,10 +203,6 @@ class SimEnvironment:
             self.count += 1
             simComplete = all(ic.missionComplete for ic in self.icInstances)
 
-
-    def WriteLog(self):
-        """ Write json logs for each icarous instance """
-        # First, transfer all vehicles to a common reference frame
         for i, ic in enumerate(self.icInstances):
             if i == 0:
                 to_local = ic.ConvertToLocalCoordinates
@@ -215,4 +211,10 @@ class SimEnvironment:
                 ic.ownshipLog["positionNED"] = posNED
                 localFP = list(map(to_local, ic.flightplan1))
                 ic.localPlans[0] = localFP
+
+
+    def WriteLog(self):
+        """ Write json logs for each icarous instance """
+        # First, transfer all vehicles to a common reference frame
+        for i, ic in enumerate(self.icInstances):
             ic.WriteLog()
