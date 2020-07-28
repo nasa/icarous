@@ -165,7 +165,7 @@ def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     for v in vehicles:
         min_sep = v.metrics["min_sep_during_merge"]
         if min_sep < DTHR:
-            msg = "v%d violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
+            msg = "%s violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
             separation_ok = False
             break
 
@@ -184,7 +184,7 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     for v in vehicles:
         min_sep = v.metrics["min_sep_during_flight"]
         if min_sep < DTHR:
-            msg = "v%d violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
+            msg = "%s violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
             separation_ok = False
             break
 
