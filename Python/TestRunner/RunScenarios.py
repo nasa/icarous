@@ -107,6 +107,7 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
     sim = SimEnvironment()
     if "merge_fixes" in scenario:
         sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
+    sim.AddWind(scenario.get("wind", [(0, 0)]))
 
     # Add Icarous instances to simulation environment
     num_vehicles = len(scenario["vehicles"])
