@@ -668,7 +668,7 @@ def VisualizeSimData(icList,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100
     anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
 
     for j,ic in enumerate(icList):
-        anim.AddAgent('ownship'+str(j),2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
+        anim.AddAgent('ownship'+str(j),2,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
 
         for i,pln in enumerate(ic.localPlans):
             if i == 0:
