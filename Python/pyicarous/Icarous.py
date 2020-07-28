@@ -68,9 +68,9 @@ class Icarous():
         self.trkgsvs  = [0.0,0.0,0.0]
 
         self.positionLog = []
-        self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": [], 
-                           "trkbands":[],"gsbands":[],"altbands":[],"vsbands":[],
-                           "localPlans":[],"localFences":[]}
+        self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": [],
+                           "trkbands": [], "gsbands": [], "altbands": [], "vsbands": [],
+                           "localPlans": [], "localFences": [], "commandedVelocityNED": []}
         self.trafficLog = {}
         self.emergbreak = False
         if self.fasttime:
@@ -583,6 +583,7 @@ class Icarous():
         self.ownshipLog["positionNED"].append([self.positionLog[-1][1],
                                                self.positionLog[-1][0],
                                                self.positionLog[-1][2]])
+        self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
 
     def RecordTraffic(self, id, position, velocity, positionLoc):
         if id not in self.trafficLog:
