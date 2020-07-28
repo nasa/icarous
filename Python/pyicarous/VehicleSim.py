@@ -42,7 +42,7 @@ class VehicleSim():
         if speed <= 0:
             vw     = np.array([0.0,0.0,0.0])
         self.vw   = vw
-        self.vel0 = self.vel0 + self.dt * (self.U - self.vel0)
+        self.vel0 = self.vel0 + self.dt * (self.U - self.vel0 - vw)
         self.pos0 = self.pos0 + (self.vel0 + vw) * self.dt
         n = np.zeros((1,3))
         if self.noise:
@@ -53,7 +53,7 @@ class VehicleSim():
         self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0,2]) 
 
     def run(self,windFrom=0,windSpeed=0):
-        oldvel = self.getOutputVelocity() - self.vw
+        oldvel = self.getOutputVelocity() 
         self.input(oldvel[0],oldvel[1],oldvel[2])
         self.step(windFrom,windSpeed)
         (tgx, tgy) = gps_offset(self.home_gps[0], self.home_gps[1],

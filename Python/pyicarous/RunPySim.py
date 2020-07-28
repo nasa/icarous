@@ -6,7 +6,7 @@ from Icarous import *
 
 # Initialize simulation environment
 sim = SimEnvironment()
-sim.AddWind([(90, 0.1)])    # (wind from, speed)
+sim.AddWind([(90, 0.0)])    # (wind from, speed)
 
 # Set the home position for the simulation
 HomePos = [37.102177, -76.387207, 0.000000]
@@ -31,10 +31,10 @@ flightplan = [ [37.102177, -76.387207, 5.000000, 0.0],
 ic.InputFlightplan(flightplan, 0)
 # Input geofences from file
 #ic.InputGeofence("data/geofence2.xml")
-sim.AddIcarousInstance(ic)
+sim.AddIcarousInstance(ic,time_limit=100)
 
 # Set position uncertainty for vehicles in the simulation
-sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)
+#sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)
 
 # Run the Simulation
 sim.RunSimulation()
