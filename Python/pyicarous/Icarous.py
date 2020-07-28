@@ -657,7 +657,7 @@ class Icarous():
         return True
 
 
-def VisualizeSimData(icList,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
+def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
     '''
     ic: icarous object
     allplans: True - plot all computed plans, False - plot only the mission plan
@@ -680,8 +680,9 @@ def VisualizeSimData(icList,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100
             if i > 0 and allplans:
                 anim.AddPath(np.array(pln),'k--')
         tfids = ic.trafficLog.keys()
-        for key in tfids:
-            anim.AddAgent('traffic'+str(key),2,'b',ic.trafficLog[key])
+        if showtraffic:
+            for key in tfids:
+                anim.AddAgent('traffic'+str(key),2,'b',ic.trafficLog[key])
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
