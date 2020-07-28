@@ -1,12 +1,25 @@
-from matplotlib import pyplot as plt
-
 from SimEnvironment import SimEnvironment
 from Icarous import *
 
+from matplotlib import pyplot as plt
+import argparse
+
+def checkDAAType(value):
+    if value.upper() not in ['DAIDALUS','ACAS']:
+        raise argparse.ArgumentTypeError("%s is an invalid DAA option" % value)
+    return value.upper()
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-t", "--daaType", type=checkDAAType, default='DAIDALUS')
+parser.add_argument("-f", "--daaConfig", type=str, default='data/DaidalusQuadConfig.txt')
+parser.add_argument("-x", "--daaConfigExtra", type=str, default=None, help="append this parameter string to the configuration file contents")
+parser.add_argument("-v", "--verbosity", type=int, choices=[1,2], default=1)
+parser.add_argument("-u", "--uncertainty", type=bool, default=False)
+args = parser.parse_args()
 
 # Initialize simulation environment
 sim = SimEnvironment()
-sim.AddWind([(90, 0.0)])    # (wind from, speed)
+sim.AddWind([(90, 0.1)])    # (wind from, speed)
 
 # Set the home position for the simulation
 HomePos = [37.102177, -76.387207, 0.000000]
@@ -17,7 +30,8 @@ HomePos = [37.102177, -76.387207, 0.000000]
 sim.AddTraffic(1, HomePos, 100, 80, 5, 1, 270, 0)
 
 # Initialize Icarous class
-ic = Icarous(HomePos, simtype="UAM_VTOL", verbose=1)
+ic = Icarous(HomePos,simtype="UAM_VTOL",monitor=args.daaType,verbose=args.verbosity,daaConfig=args.daaConfig)
+
 # Read params from file and input params
 params = LoadIcarousParams('data/icarous_default.parm')
 ic.SetParameters(params)
@@ -31,10 +45,11 @@ flightplan = [ [37.102177, -76.387207, 5.000000, 0.0],
 ic.InputFlightplan(flightplan, 0)
 # Input geofences from file
 #ic.InputGeofence("data/geofence2.xml")
-sim.AddIcarousInstance(ic,time_limit=100)
+sim.AddIcarousInstance(ic)
 
 # Set position uncertainty for vehicles in the simulation
-#sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)
+if args.uncertainty:
+    sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)
 
 # Run the Simulation
 sim.RunSimulation()

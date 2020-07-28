@@ -26,7 +26,9 @@ import time
 class Icarous():
     def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,
                  fasttime = True, verbose=0,callsign = "SPEEDBIRD",
-                 daaConfigs=["data/DaidalusQuadConfig.txt"]):
+                 monitor="DAIDALUS",
+                 daaConfig="data/DaidalusQuadConfig.txt",
+                 daidalusConfig="data/DaidalusQuadConfig.txt"):
         self.fasttime = fasttime
         self.callsign = callsign
         self.verbose = verbose
@@ -38,13 +40,13 @@ class Icarous():
             from quadsim import QuadSim
             self.ownship = QuadSim()
 
-        self.daidalusConfig = daaConfigs[0]
+        self.daidalusConfig = daidalusConfig
         self.vehicleID = vehicleID
         self.Cog = Cognition(callsign)
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(callsign)
-        self.tfMonitor = TrafficMonitor(callsign,daaConfigs,False)
+        self.tfMonitor = TrafficMonitor(callsign,daaConfig,False,monitor)
         self.Merger = Merger(callsign,vehicleID)
 
         # Aircraft data

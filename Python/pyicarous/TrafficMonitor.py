@@ -4,10 +4,8 @@ from Interfaces import Bands
 
 class TrafficMonitor():
 
-
-    def __init__(self,callsign,configs,log):
+    def __init__(self,callsign,cfgFile,log,monitor="DAIDALUS"):
         self.lib = CDLL('libTrafficMonitor.so')
-
         self.lib.newDaidalusTrafficMonitor.restype = c_void_p
         self.lib.newDaidalusTrafficMonitor.argtypes = [c_char_p,c_char_p,c_bool]
         self.lib.TrafficMonitor_UpdateParameters.argtypes = [c_void_p,c_char_p,c_bool]
@@ -20,8 +18,23 @@ class TrafficMonitor():
         self.lib.TrafficMonitor_GetSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetAltBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetVerticalSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
-        daidalusFile = configs[0]
-        self.obj = self.lib.newDaidalusTrafficMonitor(c_char_p(callsign.encode('utf-8')),c_char_p(daidalusFile.encode('utf-8')),c_bool(log))
+        self.obj = self._get_monitor_module_loader(monitor)(callsign,cfgFile,log)
+
+    def _get_monitor_module_loader(self,monitorType):
+        if monitorType == 'ACAS':
+            return self._get_ACAS_module
+        elif monitorType == 'DAIDALUS':
+            return self._get_DAIDALUS_module
+        else:
+            raise ValueError("monitorType {} not supported".format(monitorType))
+
+    def _get_ACAS_module(self,callsign,cfgFile,log):
+        self.lib.newACASTrafficMonitor.restype = c_void_p
+        self.lib.newACASTrafficMonitor.argtypes = [c_bool,c_char_p]
+        return self.lib.newACASTrafficMonitor(c_bool(log),c_char_p(cfgFile.encode('utf-8')))
+
+    def _get_DAIDALUS_module(self,callsign,cfgFile,log):
+        return self.lib.newDaidalusTrafficMonitor(c_char_p(callsign.encode('utf-8')),c_char_p(cfgFile.encode('utf-8')),c_bool(log))
 
     def SetParameters(self,params,log):
         self.lib.TrafficMonitor_UpdateParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
