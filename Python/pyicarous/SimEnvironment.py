@@ -150,8 +150,6 @@ class SimEnvironment:
         for target_vehicle in self.icInstances:
             if target_vehicle.vehicleID == v_id:
                 continue
-            if not target_vehicle.startSent:
-                continue
             target_vehicle.InputTraffic(v_id, pos, vel, locpos)
 
 
@@ -182,11 +180,11 @@ class SimEnvironment:
                 # Run Icarous and send position data to other Icarous instances
                 if not ic.CheckMissionComplete():
                     status |= ic.Run()
-                    if ic.startSent:
-                        self.TransmitPositionData(ic.ownship)
+                    self.TransmitPositionData(ic.ownship)
                 else:
                     # Update log for analysis, even if mission is complete
                     ic.RecordOwnship()
+                    self.TransmitPositionData(ic.ownship)
 
                 # Check if time limit has been met
                 if ic.startSent and not ic.missionComplete:
@@ -204,14 +202,14 @@ class SimEnvironment:
             simComplete = all(ic.missionComplete for ic in self.icInstances)
 
         for i, ic in enumerate(self.icInstances):
-            if i == 0:
-                to_local = ic.ConvertToLocalCoordinates
-            else:
-                posNED = list(map(to_local, ic.ownshipLog["position"]))
-                ic.ownshipLog["positionNED"] = posNED
-                localFP = list(map(to_local, ic.flightplan1))
-                ic.localPlans[0] = localFP
-
+            to_local = self.icInstances[0].ConvertToLocalCoordinates
+            posNED = list(map(to_local, ic.ownshipLog["position"]))
+            ic.ownshipLog["positionNED"] = posNED
+            for tfid in ic.trafficLog.keys():
+                tfPosNED = list(map(to_local, ic.trafficLog[tfid]["position"]))
+                ic.trafficLog[tfid]["positionNED"] = tfPosNED
+            localFP = list(map(to_local, ic.flightplan1))
+            ic.localPlans[0] = localFP
 
     def WriteLog(self):
         """ Write json logs for each icarous instance """
