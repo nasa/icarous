@@ -137,10 +137,12 @@ def ReadFlightplanFile(filename):
 
     return wp,wp_ind,wp_speed
 
-
-
-
-
-        
-
-
+def GetWindComponent(windFrom,windSpeed,NED=True):
+    windTo = np.mod(360 + windFrom + 180,360) # Wind towards heading with respect to true north
+    vw_y   = np.cos(windTo * np.pi/180) * windSpeed
+    vw_x   = np.sin(windTo * np.pi/180) * windSpeed
+    if NED:
+        vw     = np.array([vw_y,vw_x,0])
+    else:
+        vw     = np.array([vw_x,vw_y,0])
+    return vw
