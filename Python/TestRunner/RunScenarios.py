@@ -149,6 +149,7 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
         sim.AddIcarousInstance(ic, delay, time_limit)
 
     sim.RunSimulation()
+    sim.WriteLog()
     os.chdir(sim_home)
 
     # Collect log files
