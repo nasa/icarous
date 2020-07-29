@@ -365,7 +365,7 @@ void TRAJECTORY_Monitor(void)
                 if (pos->aircraft_id != CFE_PSP_GetSpacecraftId())
                 {
                     double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
-                    double _vel[3] = {pos->ve, pos->vn, pos->vd};
+                    double _vel[3] = {pos->vn, pos->ve, pos->vd};
                     int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, _vel);
                     if (val)
                         CFE_ES_WriteToSysLog("Trajectory:Received intruder:%d\n", pos->aircraft_id);
@@ -395,7 +395,7 @@ void TRAJECTORY_Monitor(void)
                 msg = (object_t *)TrajectoryAppData.Traj_MsgPtr;
 
                 double pos[3] = {msg->latitude, msg->longitude, msg->altitude};
-                double vel[3] = {msg->ve, msg->vn, msg->vd};
+                double vel[3] = {msg->vn, msg->ve, msg->vd};
                 int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, vel);
                 if (val)
                     CFE_ES_WriteToSysLog("Trajectory:Received intruder: %d\n", msg->index);
