@@ -134,7 +134,10 @@ class SimEnvironment:
             mg = MergerData*MAX_NODES
             datalog.log = mg(*lg)
             for ic in self.icInstances:
-                ic.InputMergeLogs(datalog, self.commDelay)
+                if ic.arrTime is None:
+                    continue
+                if ic.arrTime.intersectionID == datalog.intersectionID:
+                    ic.InputMergeLogs(datalog, self.commDelay)
 
 
     def TransmitPositionData(self, source_vehicle):
