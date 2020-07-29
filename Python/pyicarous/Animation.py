@@ -145,8 +145,9 @@ class AgentAnimation():
                 self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
                 
                 if "trkbands" in self.data[id].keys():
-                    if self.data[id]["trkbands"][i] != {}:
-                        self.UpdateBands(position,self.data[id]["trkbands"][i],self.bands[id])
+                    if i < len(self.data[id]["trkbands"]):
+                        if self.data[id]["trkbands"][i] != {}:
+                            self.UpdateBands(position,self.data[id]["trkbands"][i],self.bands[id])
                 if id in self.circle.keys():
                     if self.circle[id] is not None:
                         self.circle[id].center = position
