@@ -36,6 +36,11 @@ class VehicleSim():
         self.U[1] = U2
         self.U[2] = -U3
 
+    def inputNED(self,U1,U2,U3):
+        self.U[0] = U2
+        self.U[1] = U1
+        self.U[2] = -U3
+
     def step(self,windFrom=0,windSpeed=0):
         vw = GetWindComponent(windFrom,windSpeed,NED=False)
         speed = np.linalg.norm(self.vel0 + vw)
@@ -53,8 +58,8 @@ class VehicleSim():
         self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0,2]) 
 
     def run(self,windFrom=0,windSpeed=0):
-        oldvel = self.getOutputVelocity() 
-        self.input(oldvel[0],oldvel[1],oldvel[2])
+        oldvel = self.getOutputVelocityNED() 
+        self.inputNED(oldvel[0],oldvel[1],oldvel[2])
         self.step(windFrom,windSpeed)
         (tgx, tgy) = gps_offset(self.home_gps[0], self.home_gps[1],
                                 self.pos[0], self.pos[1])
@@ -65,11 +70,11 @@ class VehicleSim():
         self.log['pos'].append(self.pos.tolist())
         self.log['vel'].append(self.vel.tolist())
 
-    def getOutputPosition(self):
-        return (self.pos[0],self.pos[1],self.pos[2])
+    def getOutputPositionNED(self):
+        return (self.pos[1],self.pos[0],self.pos[2])
 
-    def getOutputVelocity(self):
-        return (self.vel0[0] + self.vw[0],self.vel0[1] + self.vw[1],self.vel0[2] + self.vw[2])
+    def getOutputVelocityNED(self):
+        return (self.vel0[1] + self.vw[1],self.vel0[0] + self.vw[0],self.vel0[2] + self.vw[2])
 
 
 def StartTraffic(idx, home, rng, brng, alt, speed, heading, crate, tflist=[]):

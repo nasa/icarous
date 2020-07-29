@@ -64,7 +64,7 @@ class SimEnvironment:
         """ Update all traffic vehicles """
         for tf in self.tfList:
             tf.run(self.windFrom, self.windSpeed)
-            self.TransmitPositionData(tf)
+            self.TransmitPositionData(tf.vehicleID,tf.pos_gps,tf.getOutputVelocityNED())
 
 
     def AddWind(self, wind):
@@ -140,20 +140,15 @@ class SimEnvironment:
                     ic.InputMergeLogs(datalog, self.commDelay)
 
 
-    def TransmitPositionData(self, source_vehicle):
+    def TransmitPositionData(self, vid, pos, vel):
         """
         Transmit vehicle position data to all Icarous instances.
         @param source_vehicle: The vehicle transmitting its position data
         """
-        v_id = source_vehicle.vehicleID
-        pos = source_vehicle.pos_gps
-        locpos = source_vehicle.pos
-        vel = source_vehicle.vel
-
         for target_vehicle in self.icInstances:
-            if target_vehicle.vehicleID == v_id:
+            if target_vehicle.vehicleID == vid:
                 continue
-            target_vehicle.InputTraffic(v_id, pos, vel, locpos)
+            target_vehicle.InputTraffic(vid, pos, vel)
 
 
     def RunSimulation(self):
@@ -183,11 +178,11 @@ class SimEnvironment:
                 # Run Icarous and send position data to other Icarous instances
                 if not ic.CheckMissionComplete():
                     status |= ic.Run()
-                    self.TransmitPositionData(ic.ownship)
+                    self.TransmitPositionData(ic.vehicleID,ic.position,ic.velocity)
                 else:
                     # Update log for analysis, even if mission is complete
                     ic.RecordOwnship()
-                    self.TransmitPositionData(ic.ownship)
+                    self.TransmitPositionData(ic.vehicleID,ic.position,ic.velocity)
 
                 # Check if time limit has been met
                 if ic.startSent and not ic.missionComplete:

@@ -49,7 +49,13 @@ class QuadSim():
         inp3 = c_double(u3)
         lib.PC_QuadCopter_Simulation_SetInput(inp1,inp2,inp3)
 
-    def getOutputPosition(self):
+    def inputNED(self,u1,u2,u3):
+        inp1 = c_double(u2)
+        inp2 = c_double(u1)
+        inp3 = c_double(u3)
+        lib.PC_QuadCopter_Simulation_SetInput(inp1,inp2,inp3)
+
+    def getOutputPositionNED(self):
         n = np.zeros((1,3))
         if self.noise:
             n = np.random.multivariate_normal(mean=np.array([0.0,0.0,0.0]),cov = self.sigma_pos, size=1)
@@ -68,13 +74,13 @@ class QuadSim():
         self.old_x = outx
         self.old_y = outy
         self.old_z = outz
-        return (outx,outy,outz,x,y,z) 
+        return (outy,outx,outz,y,x,z) 
 
-    def getOutputVelocity(self):
+    def getOutputVelocityNED(self):
         vel = c_double*3
         _vel = vel(0.0,0.0,0.0)
         lib.PC_Quadcopter_Simulation_GetVelocity(_vel)
-        return (_vel[0],_vel[1], _vel[2])
+        return (_vel[1],_vel[0], _vel[2])
 
 
 """

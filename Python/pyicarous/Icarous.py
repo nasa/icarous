@@ -69,7 +69,7 @@ class Icarous():
         self.velocity = [0.0,0.0,0.0]
         self.trkgsvs  = [0.0,0.0,0.0]
 
-        self.positionLog = []
+        self.localPos = []
         self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": [],
                            "trkbands": [], "gsbands": [], "altbands": [], "vsbands": [],
                            "localPlans": [], "localFences": [], "commandedVelocityNED": []}
@@ -107,12 +107,12 @@ class Icarous():
         self.windFrom = windFrom
         self.windSpeed = windSpeed
 
-    def InputTraffic(self,idx,position,velocity,localPos):
+    def InputTraffic(self,idx,position,velocity):
         if idx is not self.vehicleID:
-            trkgsvs = ConvertVnedToTrkGsVs(velocity[1],velocity[0],velocity[2])
+            trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
             self.Trajectory.InputTrafficData(idx,position,velocity)
-            self.RecordTraffic(idx, position, velocity, localPos)
+            self.RecordTraffic(idx, position, velocity, self.ConvertToLocalCoordinates(position))
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
         
@@ -315,19 +315,19 @@ class Icarous():
         self.SetMergerParams(params)
 
     def RunOwnship(self):
-        self.ownship.input(self.controlInput[1],self.controlInput[0],self.controlInput[2])
+        self.ownship.inputNED(*self.controlInput)
         self.ownship.step(windFrom=self.windFrom,windSpeed=self.windSpeed)
 
-        opos = self.ownship.getOutputPosition()
-        ovel = self.ownship.getOutputVelocity()
+        opos = self.ownship.getOutputPositionNED()
+        ovel = self.ownship.getOutputVelocityNED()
 
-        self.positionLog.append(opos)
+        self.localPos = opos
 
-        (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[0], opos[1])
+        (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
        
         self.position = [ogx, ogy, opos[2]]
-        self.velocity = [ovel[1],ovel[0],-ovel[2]]
-        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[1],ovel[0],-ovel[2])
+        self.velocity = ovel
+        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],-ovel[2])
         self.trkband = None
         self.gsband = None
         self.altband = None
@@ -590,9 +590,7 @@ class Icarous():
         self.ownshipLog["t"].append(self.currTime)
         self.ownshipLog["position"].append(self.position)
         self.ownshipLog["velocityNED"].append(self.velocity)
-        self.ownshipLog["positionNED"].append([self.positionLog[-1][1],
-                                               self.positionLog[-1][0],
-                                               self.positionLog[-1][2]])
+        self.ownshipLog["positionNED"].append(self.localPos)
         self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
 
     def RecordTraffic(self, id, position, velocity, positionLoc):
@@ -600,8 +598,8 @@ class Icarous():
             self.trafficLog[id] = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
         self.trafficLog[id]["t"].append(self.currTime)
         self.trafficLog[id]["position"].append(list(position))
-        self.trafficLog[id]["velocityNED"].append([velocity[1], velocity[0], velocity[2]])
-        self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
+        self.trafficLog[id]["velocityNED"].append(velocity)
+        self.trafficLog[id]["positionNED"].append(positionLoc)
 
     def WriteLog(self, logname=""):
         self.ownshipLog['localPlans'] = self.localPlans
