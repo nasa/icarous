@@ -34,25 +34,28 @@ if __name__ == "__main__":
     xmin, ymin = 1e10, 1e10
     xmax, ymax = -1e10, -1e10 
     for file in files:
-        fp = open(file,'r')
-        data = json.load(fp)
-        pb = playback()
-        pb.ownshipLog = data['ownship']
-        pb.trafficLog = data['traffic']
-        pb.localPlans = pb.ownshipLog['localPlans']
-        pb.localFences = pb.ownshipLog['localFences']
-        pb.params = data['parameters']
-        pb.daa_radius = pb.params['DET_1_WCV_DTHR']/3
-        pb.localMergeFixes = data['mergefixes']
-        pbs.append(pb)
-        _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])
-        _xmax = np.max(np.array(pb.ownshipLog['positionNED'])[:,1])
-        _ymin = np.min(np.array(pb.ownshipLog['positionNED'])[:,0])
-        _ymax = np.max(np.array(pb.ownshipLog['positionNED'])[:,0])
-        xmin = np.min([xmin,_xmin])
-        ymin = np.min([ymin,_ymin])
-        xmax = np.max([xmax,_xmax])
-        ymax = np.max([ymax,_ymax])
+        try:
+            fp = open(file,'r')
+            data = json.load(fp)
+            pb = playback()
+            pb.ownshipLog = data['ownship']
+            pb.trafficLog = data['traffic']
+            pb.localPlans = pb.ownshipLog['localPlans']
+            pb.localFences = pb.ownshipLog['localFences']
+            pb.params = data['parameters']
+            pb.daa_radius = pb.params['DET_1_WCV_DTHR']/3
+            pb.localMergeFixes = data['mergefixes']
+            pbs.append(pb)
+            _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])
+            _xmax = np.max(np.array(pb.ownshipLog['positionNED'])[:,1])
+            _ymin = np.min(np.array(pb.ownshipLog['positionNED'])[:,0])
+            _ymax = np.max(np.array(pb.ownshipLog['positionNED'])[:,0])
+            xmin = np.min([xmin,_xmin])
+            ymin = np.min([ymin,_ymin])
+            xmax = np.max([xmax,_xmax])
+            ymax = np.max([ymax,_ymax])
+        except:
+            continue
 
     padding = args.pad
     xmin -= padding

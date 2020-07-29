@@ -698,8 +698,8 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
     for fix in icList[0].localMergeFixes:
-        anim.AddZone(fix[::-1][1:3],ic.params['COORD_ZONE'],'r')
-        anim.AddZone(fix[::-1][1:3],ic.params['SCHEDULE_ZONE'],'b')
-        anim.AddZone(fix[::-1][1:3],ic.params['ENTRY_RADIUS'],'g')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['COORD_ZONE'],'r')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['SCHEDULE_ZONE'],'b')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
 
     anim.run()
