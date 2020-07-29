@@ -670,8 +670,8 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     from Animation import AgentAnimation
     anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
 
-    vehicleSize1 = (xmax - xmin)/100
-    vehicleSize2 = (ymax - ymin)/100
+    vehicleSize1 = np.abs(xmax - xmin)/100
+    vehicleSize2 = np.abs(ymax - ymin)/100
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
     for j,ic in enumerate(icList):
         anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
