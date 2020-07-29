@@ -49,6 +49,10 @@ class AgentAnimation():
                 self.ax.add_patch(ep)
             self.bands[name] = sectors
 
+    def AddZone(self,xy,radius,color):
+        circlePatch = patches.Arc((xy[0], xy[1]), width=radius,height =radius, fill =False, color=color)
+        self.ax.add_patch(circlePatch)
+
     def GetTriangle(self, tfsize, pos, vel, col):
         x = pos[0]
         y = pos[1]

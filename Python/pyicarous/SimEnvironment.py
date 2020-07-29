@@ -208,8 +208,16 @@ class SimEnvironment:
             for tfid in ic.trafficLog.keys():
                 tfPosNED = list(map(to_local, ic.trafficLog[tfid]["position"]))
                 ic.trafficLog[tfid]["positionNED"] = tfPosNED
-            localFP = list(map(to_local, ic.flightplan1))
-            ic.localPlans[0] = localFP
+            ic.localPlans = []
+            ic.localFences = []
+            ic.localMergeFixes = []
+            for plan in ic.plans:
+                localFP = list(map(to_local,plan))
+                ic.localPlans.append(localFP)
+            for fence in ic.fences:
+                localFence = list(map(to_local,fence))
+                ic.localFences.append(localFence)
+            ic.localMergeFixes = list(map(to_local,ic.mergeFixes))
 
     def WriteLog(self):
         """ Write json logs for each icarous instance """

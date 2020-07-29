@@ -81,8 +81,11 @@ class Icarous():
             self.currTime = time.time()
         self.numSecPlan = 0
         self.plans = []
+        self.fences = []
+        self.mergeFixes = []
         self.localPlans = []
         self.localFences= []
+        self.localMergeFixes = []
         self.daa_radius = 0
         self.startSent = False
         self.nextWP1 = 1
@@ -164,14 +167,19 @@ class Icarous():
             self.numFences += 1
 
             localFence = []
+            gf = []
             for vertex in fence['Vertices']:
                 localFence.append(self.ConvertToLocalCoordinates([*vertex,0]))
+                gf.append([*vertex,0])
 
             self.localFences.append(localFence)
+            self.fences.append(gf)
 
 
     def InputMergeFixes(self,filename):
         wp, ind, _ = ReadFlightplanFile(filename)
+        self.localMergeFixes = list(map(self.ConvertToLocalCoordinates, wp))
+        self.mergeFixes = wp
         self.Merger.SetIntersectionData(list(zip(ind,wp)))
 
 
@@ -609,6 +617,7 @@ class Icarous():
                     "waypoints": self.flightplan1,
                     "geofences": self.fenceList,
                     "parameters": self.params,
+                    "mergefixes": self.localMergeFixes,
                     "sim_type": "pyIcarous"}
 
         with open(logname, 'w') as f:
@@ -675,7 +684,6 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
     for j,ic in enumerate(icList):
         anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
-
         for i,pln in enumerate(ic.localPlans):
             if i == 0:
                 anim.AddPath(np.array(pln),'k--')
@@ -689,4 +697,9 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
+    for fix in icList[0].localMergeFixes:
+        anim.AddZone(fix[::-1][1:3],ic.params['COORD_ZONE'],'r')
+        anim.AddZone(fix[::-1][1:3],ic.params['SCHEDULE_ZONE'],'b')
+        anim.AddZone(fix[::-1][1:3],ic.params['ENTRY_RADIUS'],'g')
+
     anim.run()

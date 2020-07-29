@@ -10,7 +10,9 @@ class playback():
         self.trafficLog = []
         self.localPlans = []
         self.localFences = []
+        self.localMergeFixes = []
         self.daa_radius = []
+        self.params = {}
 
 if __name__ == "__main__":
     import argparse
@@ -39,7 +41,9 @@ if __name__ == "__main__":
         pb.trafficLog = data['traffic']
         pb.localPlans = pb.ownshipLog['localPlans']
         pb.localFences = pb.ownshipLog['localFences']
-        pb.daa_radius = data['parameters']['DET_1_WCV_DTHR']/3
+        pb.params = data['parameters']
+        pb.daa_radius = pb.params['DET_1_WCV_DTHR']/3
+        pb.localMergeFixes = data['mergefixes']
         pbs.append(pb)
         _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])
         _xmax = np.max(np.array(pb.ownshipLog['positionNED'])[:,1])
