@@ -12,6 +12,7 @@ A simple example simulating an encounter with a traffic intruder is provided. To
 and visualize an animation of the simulation, try the following script:
 
 ```
-python3 RunPySim.py
+python3 RunPySim.py --help
+python3 RunPySim.py -t data/traffic.txt
 
 ```
