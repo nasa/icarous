@@ -16,6 +16,8 @@ parser.add_argument("-f", "--flightplan", type=str, default='data/flightplan.txt
                    help='flightplan file. default: data/flightplan.txt')
 parser.add_argument("-t", "--traffic", type=str, default='',
                    help='File containing traffic initial condition. See data/traffic.txt for example')
+parser.add_argument("-l", "--tlimit", type=float, default=300,
+                   help='set max sim time limit (in seconds). default 300 s')
 parser.add_argument("-p", "--params", type=str, default='data/icarous_default.parm',
                    help='icarous parameter file. default: data/icarous_default.parm')
 parser.add_argument("-g", "--geofence", type=str, default='',
@@ -54,7 +56,7 @@ if args.geofence != '':
     ic.InputGeofence("data/geofence2.xml")
 
 # Add icarous instance to sim environment
-sim.AddIcarousInstance(ic)
+sim.AddIcarousInstance(ic,time_limit=args.tlimit)
 
 # Set position uncertainty for vehicles in the simulation
 if args.uncertainty:
