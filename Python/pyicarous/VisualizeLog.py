@@ -18,6 +18,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Visualize Icarous log")
     parser.add_argument("logfile", help="Icarous json log file or directory containing multiple json logs")
+    parser.add_argument("--allplans", action="store_true", help="plot all planned paths")
     parser.add_argument("--record", action="store_true", help="record animation to file")
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     ymin -= padding
     xmax += padding
     ymax += padding
-    VisualizeSimData(pbs,allplans=False,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,interval=5,record=args.record,filename=args.output)
+    VisualizeSimData(pbs,allplans=args.allplans,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,interval=5,record=args.record,filename=args.output)
 
     
 
