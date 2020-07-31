@@ -146,3 +146,25 @@ def GetWindComponent(windFrom,windSpeed,NED=True):
     else:
         vw     = np.array([vw_x,vw_y,0])
     return vw
+
+def GetHomePosition(filename):
+    wp,_,_ = ReadFlightplanFile(filename)
+    return [wp[0][0],wp[0][1],0]
+
+def ReadTrafficInput(filename):
+    try:
+        f = open(filename,mode='r')
+    except (IOError,TypeError):
+        print("Failed to open file '%s'" % filename)
+        return
+    
+    tfinput = []
+    # Read the comment line
+    line = f.readline()
+    while line != '':
+        line = f.readline()
+        if line != '':
+            lc = line.replace(' ','').split(',')
+            tfinput.append([int(lc[0])] + [float(i) for i in lc[1:]])
+
+    return tfinput

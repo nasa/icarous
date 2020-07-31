@@ -314,6 +314,10 @@ class Icarous():
         self.SetTrafficParams(params)
         self.SetMergerParams(params)
 
+    def SetParametersFromFile(self,filename):
+        params = LoadIcarousParams(filename)
+        self.SetParameters(params)
+
     def RunOwnship(self):
         self.ownship.inputNED(*self.controlInput)
         self.ownship.step(windFrom=self.windFrom,windSpeed=self.windSpeed)
@@ -701,3 +705,8 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
 
     anim.run()
+
+def checkDAAType(value):
+    if value.upper() not in ['DAIDALUS','ACAS']:
+        raise argparse.ArgumentTypeError("%s is an invalid DAA option" % value)
+    return value.upper()
