@@ -27,8 +27,7 @@ class Icarous():
     def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,
                  fasttime = True, verbose=0,callsign = "SPEEDBIRD",
                  monitor="DAIDALUS",
-                 daaConfig="data/DaidalusQuadConfig.txt",
-                 daidalusConfig="data/DaidalusQuadConfig.txt"):
+                 daaConfig="data/DaidalusQuadConfig.txt"):
         self.fasttime = fasttime
         self.callsign = callsign
         self.verbose = verbose
@@ -40,7 +39,6 @@ class Icarous():
             from quadsim import QuadSim
             self.ownship = QuadSim()
 
-        self.daidalusConfig = daidalusConfig
         self.vehicleID = vehicleID
         self.Cog = Cognition(callsign)
         self.Guidance = Guidance(GuidanceParam())
@@ -197,7 +195,7 @@ class Icarous():
         gridSize = params['ASTAR_GRIDSIZE'] 
         resSpeed = params['ASTAR_RESSPEED']
         lookahead= params['ASTAR_LOOKAHEAD']
-        daaconfig = self.daidalusConfig
+        daaconfig = ''
         self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
 
         # RRT Params
