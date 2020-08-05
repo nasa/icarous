@@ -543,9 +543,11 @@ class Icarous():
 
         self.Cog.InputBands(trkband,gsband,altband,vsband) 
 
+
+        filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
         getbandlog = lambda bands: {} if bands is None else {"conflict": bands.currentConflictBand, 
-                                                             "resup": bands.resUp, 
-                                                             "resdown": bands.resDown,
+                                                             "resup": filterinfnan(bands.resUp),
+                                                             "resdown": filterinfnan(bands.resDown),
                                                              "numBands": bands.numBands,
                                                              "bandTypes": [bands.type[i] for i in range(20)],
                                                              "low": [bands.min[i] for i in range(20)],
