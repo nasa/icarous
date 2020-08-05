@@ -303,12 +303,21 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
         trafficAltConflict = false;
         preferredAlt = prevResAlt;
     }
+    //TODO: Use preferred resolution only if preferred resolution is not
+    //close to the ground.
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
     resVUp = vs_bands.resUp;
     resVDown = vs_bands.resDown;
+    preferredVSpeed = vs_bands.resPreferred;
     vsBandsNum = vs_bands.numBands;
+
+    if(!std::isinf(preferredVSpeed) && !std::isnan(preferredVSpeed)){
+       prevResVspeed = preferredVSpeed;
+    }else{
+        preferredVSpeed = prevResVspeed;
+    }
 }
 
 void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict){
@@ -1178,6 +1187,16 @@ bool Cognition::RunTrafficResolution(){
          //printf("Return safe: %d\n\n",val);
          returnSafe = (bool) val;
          break;
+      }
+
+      case TRACK_SPEED_VS_RESOLUTION:{
+         SetGuidanceVelCmd(preferredTrack,preferredSpeed,preferredVSpeed);
+         double intercept_heading_to_plan = GetInterceptHeadingToPlan(GetPrevWP(),GetNextWP(),position);
+         returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
+
+         if(returnSafe){
+            returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
+         }
       }
 
       default:{

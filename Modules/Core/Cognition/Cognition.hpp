@@ -75,6 +75,7 @@ typedef enum{
     SEARCH_RESOLUTION,
     DITCH_RESOLUTION,
     TRACK_RESOLUTION2,
+    TRACK_SPEED_VS_RESOLUTION
 }resolutionType_e;
 
 /**
@@ -266,6 +267,7 @@ class Cognition{
         double preferredTrack;
         double preferredSpeed;
         double preferredAlt;
+        double preferredVSpeed;
 
         int vsBandsNum;
         double resVUp;
