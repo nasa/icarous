@@ -10,6 +10,9 @@ List of parameters used by all the apps in the Icarous repository.
 
 | Parameter Name |  Description |
 |----------------|--------------|
+| TRAFFIC_SRC    | Select traffic source (0: All sources, 1: ADSB, 2: Radar) |
+| RES_TYPE       | Sense and avoid resolution type (0: Speed, 1: Altitude, 2: Track, 3: Vertical speed, 4: Search resolution)|
+| LOGDAADATA     | Record DAA data (0/1)|
 | LOOKAHEAD_TIME | Lookahead horizon used by DAIDALUS (s)   |
 | AL_1_ALERT_T   | Alertor 1 Lower bound alert time for conflicts (s) |
 | AL_1_E_ALERT_T | Alertor 1 Upper bound alert time for conflicts (s) |
@@ -65,7 +68,6 @@ List of parameters used by all the apps in the Icarous repository.
 | PGAINX         | Proportional gain x |
 | PGAINY         | Proportional gain y |
 | PGAINZ         | Proportional gain z |
-| LOGDAADATA     | Record DAA data (0/1)|
 | RESSPEED       | Speed used for resolutions (m/s)|
 | OBSBUFFER      | Obstacle buffers (m)|
 | RRT_CAPR       | RRT capture radius (m)|
@@ -82,6 +84,24 @@ List of parameters used by all the apps in the Icarous repository.
 | MAXCEILING     | Max mission ceiling (m)|
 | XTRKDEV        | Permissible cross track devition from flightplan (m)|
 | XTRKGAIN       | Proportional gain used for cross track control |
-| RES_TYPE       | Sense and avoid resolution type (0: Speed, 1: Altitude, 2: Track, 3: Vertical speed, 4: Search resolution)|
+| DEF_WP_SPEED   | Default waypoint speed (used when flight speed is not provided by the flightplan) |
+| CAP_R_SCALING  | Capture radius scaling applied to speed - used to determine waypoint transitions |
+| GUID_R_SCALING | Guidance scaling parameter |
+| CLIMB_ANGLE    | Angle for climb or descents (deg) |
+| CLIMB_ANGLE_VR | Vertical climb threshold (m) |
+| CLIMB_ANGLE_HR | Horizontal climb threshold (m) |
+| CLIMB_RATE_GAIN| climb controller gain |
+| MAX_CLIMB_RATE | max climb rate (m/s) |
+| MIN_CLIMB_RATE | min climb rate (m/s) |
+| MAX_CAP        | max limit on capture radius |
+| MIN_CAP        | min limit on capture radius |
+| YAW_FORWARD    | set heading to match track (0/1) |
 
 - Note (0/1) represent False/True
+
+## Parameter Guidelines
+
+- Set DEF_WP_SPEED to match mission speed used for the flightplan
+- Set RES_SPEED to match DEF_WP_SPEED
+- Set GUID_R_SCALING to match the DEF_WP_SPEED  
+- In scenarios where traffic avoidance is required in the presence of geofences, RES_TYPE=4 (search resolution) should be used.
