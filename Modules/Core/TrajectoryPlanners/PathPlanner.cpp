@@ -101,7 +101,7 @@ int PathPlanner::InputTraffic(int id, double *position, double *velocity) {
 int PathPlanner::InputTraffic(int id, Position &position, Velocity &velocity) {
 
     double positionR[3] = {position.latitude(),position.longitude(),position.alt()};
-    double velocityR[3] = {velocity.x, velocity.y, velocity.z};
+    double velocityR[3] = {velocity.y, velocity.x, velocity.z};
     
     return InputTraffic(id,positionR,velocityR);
 }

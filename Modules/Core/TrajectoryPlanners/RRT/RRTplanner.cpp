@@ -635,7 +635,7 @@ bool RRTplanner::CheckVelProjection(node_t *qnode){
     vec2 = AB.Scal(1/AB.norm());
     double dotprod = vec1.dot2D(vec2);
 
-    if (dotprod <= 0.5){
+    if (dotprod <= 0.1){
         return false;
     }else{
         return true;
