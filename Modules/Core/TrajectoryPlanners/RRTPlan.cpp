@@ -32,13 +32,14 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
     std::vector<Vect3> TrafficPos;
     std::vector<Vect3> TrafficVel;
 
-    double computationTime = 3;
+    double computationTime = 2;
 
+    double dist = startVel.gs()*computationTime;
     EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
 
     for(GenericObject traffic: trafficList){
         Velocity Vel = traffic.vel;
-        Position Pos = traffic.pos;
+        Position Pos = traffic.pos.linearDist2D(Vel.trk(),dist);
         Vect3 tPos = proj.project(Pos);
         Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
         tPos.linear(tVel,computationTime);
@@ -49,7 +50,6 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
     Plan currentFP;
     Position prevWP;
     Position nextWP;
-    double dist = startVel.gs()*computationTime;
 
     Position start = startPos.linearDist2D(startVel.trk(), dist);
 
@@ -70,7 +70,7 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
         }
     }
 
-    Vect3 initPosR3 = proj.project(startPos);
+    Vect3 initPosR3 = proj.project(start);
 
     Vect3 gpos = proj.project(goalPos);
     node_t goal;
