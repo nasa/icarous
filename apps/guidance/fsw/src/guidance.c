@@ -230,11 +230,12 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
         }
 
         case LAND:{
+
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,(char*)"LAND",0);
             argsCmd_t cmd1;
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
-            SendSBMsg(cmd);
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"LAND",0);
+            SendSBMsg(cmd1);
             break;
         }
 
@@ -264,20 +265,23 @@ void GUIDANCE_Run(void){
         return;
     }
 
-    if(guidOutput.nextWP >=0 && guidOutput.wpReached){
-        missionItemReached_t msg;
-        CFE_SB_InitMsg(&msg,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
-        msg.feedback = true;
-        strcpy(msg.planID,guidOutput.activePlan);
-        msg.reachedwaypoint = guidOutput.nextWP-1;
-        SendSBMsg(msg);
+    if (guidOutput.guidanceMode == FLIGHTPLAN ||
+        guidOutput.guidanceMode == POINT2POINT) {
+        if (guidOutput.nextWP >= 0 && guidOutput.wpReached)
+        {
+            missionItemReached_t msg;
+            CFE_SB_InitMsg(&msg, ICAROUS_WPREACHED_MID, sizeof(missionItemReached_t), TRUE);
+            msg.feedback = true;
+            strcpy(msg.planID, guidOutput.activePlan);
+            msg.reachedwaypoint = guidOutput.nextWP - 1;
+            SendSBMsg(msg);
 
-        argsCmd_t speedChange;
-        CFE_SB_InitMsg(&speedChange,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-        speedChange.name = _SETSPEED_;
-        speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
-        SendSBMsg(speedChange);
-        
+            argsCmd_t speedChange;
+            CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
+            speedChange.name = _SETSPEED_;
+            speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
+            SendSBMsg(speedChange);
+        }
     }
 
     if (guidOutput.guidanceMode != GUIDE_NOOP){
