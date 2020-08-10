@@ -774,6 +774,12 @@ status_e Cognition::EmergencyDescent(){
                     topOfDescent = true;
                     SendStatus((char*)"IC:Reached TOD",6);
                     log << timeString + "| [STATUS] | Reached TOD" <<"\n";
+                    command_sent = false;
+                }else if(dist_to_target > positionA.alt() && dist_to_target < 2.5 * positionA.alt()){
+                    if(!command_sent){
+                        SetGuidanceSpeedCmd("DitchPath",3,0);
+                        command_sent = true;
+                    }
                 }
 
                 // Continuously check for conflicts with intruders when proceeding to ditch site
