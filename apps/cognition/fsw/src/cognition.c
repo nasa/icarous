@@ -304,7 +304,13 @@ void COGNITION_ProcessSBData(void) {
         case SAFE2DITCH_STATUS_MID:{
             OS_printf("Received ditch status\n");
             safe2ditchStatus_t* status = (safe2ditchStatus_t*) appdataCog.CogMsgPtr;
-            InputDitchStatus(appdataCog.cog,status->ditchsite,status->ditchRequested);
+            if (status->endDitch){
+                Command command;
+                COGNITION_SendLand(command.landCommand);
+            }
+            else if (status->ditchRequested){
+                InputDitchStatus(appdataCog.cog,status->ditchsite,status->ditchRequested);
+            }
             break;
         }
         #endif
