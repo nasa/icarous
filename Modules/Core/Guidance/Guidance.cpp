@@ -299,7 +299,6 @@ void Guidance::ComputePlanGuidance(){
         n_heading = 0.95;
 
     speedRef = (1 - n_gs) * ownship_gs + n_gs * speedRef;
-    climbrate = (1 - n_vs) * ownship_vd + n_vs * climbrate;
 
     outputCmd = larcfm::Velocity::makeTrkGsVs(heading,"degree",speedRef,"m/s",climbrate,"m/s");
 
