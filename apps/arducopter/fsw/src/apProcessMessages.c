@@ -1011,7 +1011,6 @@ void ARDUCOPTER_ProcessPacket(void) {
 
                 case _LAND_:
                 {
-
                     if(appdataInt.icarousMode != 1){
                         int mode = GUIDED;
                         appdataInt.icarousMode = 1;
@@ -1080,8 +1079,9 @@ void ARDUCOPTER_ProcessPacket(void) {
                         mavlink_msg_set_position_target_local_ned_pack(sysid_ic, compid_ic, &msg,(uint32_t)position.time_boot*1E3, sysid_ap, compid_ap, MAV_FRAME_LOCAL_NED, typeMask, 0, 0, 0,
                                                                        (float)cmd->param1, (float)cmd->param2, (float)cmd->param3,
                                                                        0, 0, 0, 0, 0);
-                        double speed = sqrt(pow(cmd->param1,2) + pow(cmd->param2,2) + pow(cmd->param3,2));
-                        if(speed < 20){
+                        double refspeed = sqrt(pow(cmd->param1,2) + pow(cmd->param2,2) + pow(cmd->param3,2));
+
+                        if(refspeed < 20){
                             writeMavlinkData(&appdataInt.ap, &msg); 
                         }
 
