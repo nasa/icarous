@@ -193,7 +193,7 @@ void TRAJECTORY_ProcessPacket(void)
                         break;
                     }
                     result.waypoints[i].wp_metric = WP_METRIC_SPEED;
-                    result.waypoints[i].value = TrajectoryAppData.trajParams.astar_resSpeed;
+                    result.waypoints[i].value = TrajectoryAppData.trajParams.resSpeed;
                     result.waypoints[i].latitude = (float)wp[0];
                     result.waypoints[i].longitude = (float)wp[1];
                     result.waypoints[i].altitude = (float)wp[2];
