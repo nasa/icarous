@@ -20,7 +20,7 @@ void Guidance::SetAircraftState(const larcfm::Position &pos,const larcfm::Veloci
 
 void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID,const int nextWP){
     mode = gmode;
-    if(gmode == VECTOR){
+    if(gmode == VECTOR || gmode == LAND){
         return;
     }
     nextWpId[planID] = nextWP;

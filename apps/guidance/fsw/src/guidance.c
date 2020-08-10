@@ -234,6 +234,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
             SendSBMsg(cmd);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"LAND",0);
             break;
         }
 
