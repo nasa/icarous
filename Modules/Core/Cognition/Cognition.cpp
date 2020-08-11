@@ -777,7 +777,7 @@ status_e Cognition::EmergencyDescent(){
                     command_sent = false;
                 }else if(dist_to_target > positionA.alt() && dist_to_target < 2.5 * positionA.alt()){
                     if(!command_sent){
-                        SetGuidanceSpeedCmd("DitchPath",3,0);
+                        SetGuidanceSpeedCmd("DitchPath",3,1);
                         command_sent = true;
                     }
                 }
