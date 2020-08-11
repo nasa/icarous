@@ -64,6 +64,7 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
     t0 = time.time()
     time_limit = scenario["time_limit"]
     duration = 0
+    threads = []
     if use_threads:
         from threading import Thread
         threads = [Thread(target=v.run, args=[time_limit]) for v in vehicles]
@@ -196,6 +197,7 @@ if __name__ == "__main__":
     parser.add_argument("--test", action="store_true", help="assert test conditions")
     parser.add_argument("--plot", action="store_true", help="generate plots")
     parser.add_argument("--save", action="store_true", help="save plots")
+    parser.add_argument("--threads", action="store_true", help="use threads for simulations")
     parser.add_argument("--output_dir", default="sim_output", help="directory for output")
     args = parser.parse_args()
 
@@ -224,9 +226,10 @@ if __name__ == "__main__":
             RunScenarioPy(scenario, args.verbose, sim_params["eta"], out_dir)
         else:
             RunScenario(scenario, sim_params["sitl"], args.verbose, output_dir=out_dir,
-                        out=args.out, use_threads=True)
+                        out=args.out, use_threads=args.threads)
 
         # Perform validation
+        time.sleep(2) 
         if args.validate:
             if sim_params["merger"]:
                 import ValidateMerge as VM
