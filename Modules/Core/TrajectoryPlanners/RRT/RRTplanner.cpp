@@ -507,7 +507,7 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
         AB = AB.Scal(maxInputNorm/norm);
     }
 
-    if (!CheckVelProjection(qnode)){
+    if (!CheckVelProjection(qnode) && nodeCount > 1){
         return false;
     }
 
