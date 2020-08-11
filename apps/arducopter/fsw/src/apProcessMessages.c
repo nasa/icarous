@@ -1037,6 +1037,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                     mavlink_msg_set_mode_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,mode);
                     writeMavlinkData(&appdataInt.ap, &msg); 
                     break;
+
                 }
 
                 case _GOTOWP_:
@@ -1107,6 +1108,29 @@ void ARDUCOPTER_ProcessPacket(void) {
 
                 case _SETSPEED_:
                 {
+
+                    double vn = position.vn;
+                    double ve = position.ve;
+                    double speed = sqrt(vn*vn + ve*ve);
+                    if(speed > cmd->param1 && fabs(speed - cmd->param1) < 4){
+                        mavlink_message_t brkmode, defmode;
+                        controlMode_e currmode;
+                        if (appdataInt.icarousMode == 0)
+                        {
+                            currmode = AUTO;
+                        }
+                        else if (appdataInt.icarousMode == 1)
+                        {
+                            currmode = GUIDED;
+                        }
+                        mavlink_msg_set_mode_pack(sysid_ic,compid_ic,&brkmode,sysid_ap,compid_ap,BRAKE);
+                        writeMavlinkData(&appdataInt.ap,&brkmode);
+                        usleep(300);
+
+                        mavlink_msg_set_mode_pack(sysid_ic,compid_ic,&defmode,sysid_ap,compid_ap,currmode);
+                        writeMavlinkData(&appdataInt.ap,&defmode);
+
+                    }
                     mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_DO_CHANGE_SPEED,0,
                                                   1,(float)cmd->param1,0,0,0,0,0);
                     writeMavlinkData(&appdataInt.ap, &msg); 
