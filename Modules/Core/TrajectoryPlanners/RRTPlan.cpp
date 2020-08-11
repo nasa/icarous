@@ -26,7 +26,7 @@ void PathPlanner::UpdateRRTParameters(double resSpeed, int Nsteps, double dt, in
 
 int64_t PathPlanner::FindPathRRT(char planID[]){
 
-    double maxInputNorm = _rrt_resSpeed;
+    double maxInputNorm = startVel.gs();
 
     // Reroute flight plan
     std::vector<Vect3> TrafficPos;
