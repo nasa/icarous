@@ -5,7 +5,7 @@ from Merger import LogData, MergerData, MAX_NODES
 
 
 class SimEnvironment:
-    """ Class to manage pyicarous fast time simulations """
+    """ Class to manage pycarous fast time simulations """
     def __init__(self):
         # Vehicle instances
         self.icInstances = []

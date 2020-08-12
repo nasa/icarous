@@ -7,7 +7,7 @@ import itertools
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 
-sys.path.append("../pyicarous")
+sys.path.append("../pycarous")
 import BatchGSModule as GS
 
 sys.path.append("../MergingAnalysis")
