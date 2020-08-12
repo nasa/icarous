@@ -140,10 +140,7 @@ void TRAFFIC_ProcessPacket(void){
             double trkGsVs[3] = {0,0,0};
             ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
             int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
-            if(val) {
-                trafficAppData.numTraffic++;
-                CFE_ES_WriteToSysLog("Traffic:Received intruder:%d\n",msg->index);
-            }
+            trafficAppData.numTraffic = val;
             break;
         }
 
@@ -199,10 +196,7 @@ void TRAFFIC_ProcessPacket(void){
                 double trkGsVs[3] = {0,0,0};
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
                 int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
-                if(val){
-                    trafficAppData.numTraffic++;
-                    CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
-                }
+                trafficAppData.numTraffic = val;
             }else{
 
                 trafficAppData.position[0] = msg->latitude;
