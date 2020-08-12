@@ -1,7 +1,10 @@
 import numpy as np
 
 from VehicleSim import VehicleSim
+from ichelper import distance
 from Merger import LogData, MergerData, MAX_NODES
+from communicationmodels import channelmodels as cm
+from communicationmodels import sensormodels as sm
 
 
 class SimEnvironment:
@@ -13,30 +16,49 @@ class SimEnvironment:
         self.icTimeLimit = []
         self.tfList = []
 
+        # Communication channel
+        pm = cm.propagationmodels.TwoRayGroundPropagation()
+        rm = cm.receptionmodels.RayleighReception()
+        self.comm_channel = cm.ChannelModel(propagation_model=pm,
+                                            reception_model=rm)
+
         # Simulation environment conditions
         self.wind = [(0, 0)]
         self.commDelay = 0
         self.mergeFixFile = None
+        self.home_gps = [0, 0, 0]
 
         # Simulation status
         self.count = 0
-        self.time = 0
+        self.current_time = 0
         self.windFrom, self.windSpeed = self.wind[0]
 
 
-    def AddIcarousInstance(self, ic, delay=0, time_limit=1000):
+    def AddIcarousInstance(self, ic, delay=0, time_limit=1000,
+                           transmitter="Truth", receiver="Truth"):
         """
         Add an Icarous instance to the simulation environment
         @param ic: An Icarous instance
         @param delay: Time to delay before starting mission (s)
         @param time_limit: Time limit to fly before shutting vehicle down (s)
+        @param transmitter: A Transmitter to send V2V position data
+        @param receiver: A Receiver to send V2V position data
         """
         self.icInstances.append(ic)
         self.icStartDelay.append(delay)
         self.icTimeLimit.append(time_limit)
 
+        # Create a transmitter/receiver for V2V communications
+        ic.transmitter = sm.get_transmitter(transmitter, self.comm_channel)
+        ic.receiver = sm.get_receiver(receiver, self.comm_channel)
 
-    def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate):
+        # Set simulation home position
+        if self.home_gps == [0, 0, 0]:
+            self.home_gps = ic.home_pos
+
+
+    def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
+                   transmitter="Truth"):
         """
         Add a simulated virtual traffic vehicle to the simulation environment
         @param idx: traffic vehicle id
@@ -47,6 +69,7 @@ class SimEnvironment:
         @param speed: traffic speed [m/s]
         @param heading: traffic heading [deg], 0 is North
         @param crate: traffic climbrate [m/s]
+        @param transmitter: A Transmitter to send V2V position data
         """
         tx = rng*np.sin(brng*np.pi/180)
         ty = rng*np.cos(brng*np.pi/180)
@@ -57,6 +80,10 @@ class SimEnvironment:
         traffic = VehicleSim(idx, tx, ty, tz, tvx, tvy, tvz)
         traffic.home_gps = np.array(home)
         self.tfList.append(traffic)
+
+        # Create a transmitter for V2V communications
+        traffic.transmitter = sm.get_transmitter(transmitter, self.comm_channel)
+
         return traffic
 
 
@@ -64,7 +91,9 @@ class SimEnvironment:
         """ Update all traffic vehicles """
         for tf in self.tfList:
             tf.run(self.windFrom, self.windSpeed)
-            self.TransmitPositionData(tf.vehicleID,tf.pos_gps,tf.getOutputVelocityNED())
+            tf_pos_xyz = self.ConvertToLocalCoordinates(tf.pos_gps)
+            data = {"pos": tf.pos_gps, "vel": tf.getOutputVelocityNED()}
+            tf.transmitter.transmit(self.current_time, tf.vehicleID, tf_pos_xyz, data)
 
 
     def AddWind(self, wind):
@@ -140,17 +169,6 @@ class SimEnvironment:
                     ic.InputMergeLogs(datalog, self.commDelay)
 
 
-    def TransmitPositionData(self, vid, pos, vel):
-        """
-        Transmit vehicle position data to all Icarous instances.
-        @param source_vehicle: The vehicle transmitting its position data
-        """
-        for target_vehicle in self.icInstances:
-            if target_vehicle.vehicleID == vid:
-                continue
-            target_vehicle.InputTraffic(vid, pos, vel)
-
-
     def RunSimulation(self):
         """ Run simulation until mission is complete or time limit is reached """
         simComplete = False
@@ -178,11 +196,14 @@ class SimEnvironment:
                 # Run Icarous and send position data to other Icarous instances
                 if not ic.CheckMissionComplete():
                     status |= ic.Run()
-                    self.TransmitPositionData(ic.vehicleID,ic.position,ic.velocity)
                 else:
                     # Update log for analysis, even if mission is complete
                     ic.RecordOwnship()
-                    self.TransmitPositionData(ic.vehicleID,ic.position,ic.velocity)
+
+                # Transmit V2V position data
+                data = {"pos": ic.position, "vel": ic.velocity}
+                ic_pos_xyz = self.ConvertToLocalCoordinates(ic.position)
+                ic.transmitter.transmit(self.current_time, ic.vehicleID, ic_pos_xyz, data)
 
                 # Check if time limit has been met
                 if ic.startSent and not ic.missionComplete:
@@ -191,15 +212,28 @@ class SimEnvironment:
                         print("%s : Time limit reached at %f" %
                               (ic.callsign, ic.currTime))
 
-            # Run traffic vehicles and send position data to Icarous instances
+            # Run traffic vehicles
             self.RunTraffic()
+
+            # Receive V2V position data
+            for ic in self.icInstances:
+                ic_pos_xyz = self.ConvertToLocalCoordinates(ic.position)
+                received_msgs = ic.receiver.receive(self.current_time, ic_pos_xyz)
+                for msg in received_msgs:
+                    if msg.sender_id != ic.vehicleID:
+                        ic.InputTraffic(msg.sender_id, msg.data["pos"], msg.data["vel"])
+            self.comm_channel.flush()
 
             self.ExchangeArrivalTimes()
             self.count += 1
+            self.current_time = self.count*0.05
             simComplete = all(ic.missionComplete for ic in self.icInstances)
+        self.ConvertLogsToLocalCoordinates()
 
+
+    def ConvertLogsToLocalCoordinates(self):
         for i, ic in enumerate(self.icInstances):
-            to_local = self.icInstances[0].ConvertToLocalCoordinates
+            to_local = self.ConvertToLocalCoordinates
             posNED = list(map(to_local, ic.ownshipLog["position"]))
             ic.ownshipLog["positionNED"] = posNED
             for tfid in ic.trafficLog.keys():
@@ -209,15 +243,31 @@ class SimEnvironment:
             ic.localFences = []
             ic.localMergeFixes = []
             for plan in ic.plans:
-                localFP = list(map(to_local,plan))
+                localFP = list(map(to_local, plan))
                 ic.localPlans.append(localFP)
             for fence in ic.fences:
-                localFence = list(map(to_local,fence))
+                localFence = list(map(to_local, fence))
                 ic.localFences.append(localFence)
-            ic.localMergeFixes = list(map(to_local,ic.mergeFixes))
+            ic.localMergeFixes = list(map(to_local, ic.mergeFixes))
+
+
+    def ConvertToLocalCoordinates(self, pos_gps):
+        def dh(x, y):
+            return abs(distance(self.home_gps[0], self.home_gps[1], x, y))
+        if pos_gps[1] > self.home_gps[1]:
+            sgnX = 1
+        else:
+            sgnX = -1
+        if pos_gps[0] > self.home_gps[0]:
+            sgnY = 1
+        else:
+            sgnY = -1
+        dx = dh(self.home_gps[0], pos_gps[1])
+        dy = dh(pos_gps[0], self.home_gps[1])
+        return [dy*sgnY, dx*sgnX, pos_gps[2]]
+
 
     def WriteLog(self):
         """ Write json logs for each icarous instance """
-        # First, transfer all vehicles to a common reference frame
         for i, ic in enumerate(self.icInstances):
             ic.WriteLog()

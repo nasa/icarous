@@ -124,3 +124,33 @@ class FLARMReceiver(Receiver):
                          sensor_type="FLARM",
                          sensitivity=sensitivity,
                          latency=0.5)
+
+
+TRANSMITTER_TABLE = {
+    "Truth": Transmitter,
+    "ADS-B":  ADSBTransmitter,
+    "FLARM": FLARMTransmitter,
+    None:    DummyTransmitter,
+}
+
+
+RECEIVER_TABLE = {
+    "Truth": Receiver,
+    "ADS-B":  ADSBReceiver,
+    "FLARM": FLARMReceiver,
+    None:    DummyReceiver,
+}
+
+
+def get_transmitter(key, channel):
+    """ Return the requested transmitter """
+    if isinstance(key, Transmitter):
+        return key
+    return TRANSMITTER_TABLE.get(key, DummyTransmitter)(channel)
+
+
+def get_receiver(key, channel):
+    """ Return the requested receiver """
+    if isinstance(key, Receiver):
+        return key
+    return RECEIVER_TABLE.get(key, DummyTransmitter)(channel)
