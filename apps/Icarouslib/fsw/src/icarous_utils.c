@@ -566,6 +566,7 @@ void ConstructDAAParamString(void* vdparam,char* params){
     n += sprintf(params + n,"vertical_nmac=%f [ft];",tfParam->vertical_nmac);
     n += sprintf(params + n,"contour_thr=%f [deg];",tfParam->contour_thr);
     n += sprintf(params + n,"alerters=default;");
+    n += sprintf(params + n,"default_alert_1_detector=%s;",tfParam->alert_1_detector);
     n += sprintf(params + n,"default_alert_1_region=%s ;",tfParam->alert_1_region); 
     n += sprintf(params + n,"default_alert_1_alerting_time=%f [s];",tfParam->alert_1_alerting_time);
     n += sprintf(params + n,"default_alert_1_early_alerting_time=%f [s];",tfParam->alert_1_early_alerting_time);
@@ -573,11 +574,21 @@ void ConstructDAAParamString(void* vdparam,char* params){
     n += sprintf(params + n,"default_alert_1_spread_hs=%f [knot];",tfParam->alert_1_spread_gs);
     n += sprintf(params + n,"default_alert_1_spread_vs=%f [fpm];",tfParam->alert_1_spread_vs);
     n += sprintf(params + n,"default_alert_1_spread_alt=%f [ft];",tfParam->alert_1_spread_alt);
-    n += sprintf(params + n,"default_alert_1_detector=%s;",tfParam->alert_1_detector);
     n += sprintf(params + n,"default_det_1_WCV_DTHR = %f [ft];",tfParam->det_1_WCV_DTHR);
     n += sprintf(params + n,"default_det_1_WCV_TCOA = %f [s];",tfParam->det_1_WCV_TCOA);
     n += sprintf(params + n,"default_det_1_WCV_TTHR = %f [s];",tfParam->det_1_WCV_TTHR);
     n += sprintf(params + n,"default_det_1_WCV_ZTHR = %f [ft];",tfParam->det_1_WCV_ZTHR);
     n += sprintf(params + n,"default_load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",tfParam->load_core_detection_det_1);
+    n += sprintf(params + n,"default_alert_2_detector=det_2;");
+    n += sprintf(params + n,"default_alert_2_region= NEAR ;"); 
+    n += sprintf(params + n,"default_alert_2_alerting_time= 0.0 [s];");
+    n += sprintf(params + n,"default_alert_2_early_alerting_time= 0.0 [s];");
+    n += sprintf(params + n,"default_alert_2_spread_hdir=%f [deg];",tfParam->alert_1_spread_trk);
+    n += sprintf(params + n,"default_alert_2_spread_hs=%f [knot];",tfParam->alert_1_spread_gs);
+    n += sprintf(params + n,"default_alert_2_spread_vs=%f [fpm];",tfParam->alert_1_spread_vs);
+    n += sprintf(params + n,"default_alert_2_spread_alt=%f [ft];",tfParam->alert_1_spread_alt);
+    n += sprintf(params + n,"default_det_2_D = %f [ft];",tfParam->det_1_WCV_DTHR);
+    n += sprintf(params + n,"default_det_2_H = %f [ft];",tfParam->det_1_WCV_ZTHR);
+    n += sprintf(params + n,"default_load_core_detection_det_2 = gov.nasa.larcfm.ACCoRD.CDCylinder;");
 }
 #endif
