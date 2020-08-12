@@ -648,6 +648,16 @@ class Icarous():
         else:
             self.currTime += 0.05
 
+        if self.CheckMissionComplete():
+            return True
+
+        #time_ship_in = time.time()
+        self.RunOwnship()
+        #time_ship_out = time.time()
+
+        if not self.startSent:
+            return True
+
         #time_cog_in = time.time()
         self.RunCognition()
         #time_cog_out = time.time()
@@ -664,12 +674,7 @@ class Icarous():
         self.RunGuidance()
         #time_guid_out = time.time()
 
-
         self.RunMerger()
-
-        #time_ship_in = time.time()
-        self.RunOwnship()
-        #time_ship_out = time.time()
 
         #print("cog     %f" % (time_cog_out - time_cog_in))
         #print("traffic %f" % (time_traff_out - time_traff_in))

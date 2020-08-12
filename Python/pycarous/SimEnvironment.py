@@ -172,7 +172,6 @@ class SimEnvironment:
     def RunSimulation(self):
         """ Run simulation until mission is complete or time limit is reached """
         simComplete = False
-        prevTime = [ic.currTime for ic in self.icInstances]
         if self.mergeFixFile is not None:
             for ic in self.icInstances:
                 ic.InputMergeFixes(self.mergeFixFile)
@@ -186,19 +185,14 @@ class SimEnvironment:
 
                 # Send mission start command
                 if not ic.startSent:
-                    if ic.currTime - prevTime[i] > self.icStartDelay[i]:
+                    if self.current_time >= self.icStartDelay[i]:
                         ic.Cog.InputStartMission(0, 0)
                         ic.startSent = True
-                        prevTime[i] = ic.currTime
                         print("%s : Start command sent at %f" %
-                              (ic.callsign, prevTime[i]))
+                              (ic.callsign, self.current_time))
 
                 # Run Icarous and send position data to other Icarous instances
-                if not ic.CheckMissionComplete():
-                    status |= ic.Run()
-                else:
-                    # Update log for analysis, even if mission is complete
-                    ic.RecordOwnship()
+                status |= ic.Run()
 
                 # Transmit V2V position data
                 data = {"pos": ic.position, "vel": ic.velocity}
@@ -207,10 +201,10 @@ class SimEnvironment:
 
                 # Check if time limit has been met
                 if ic.startSent and not ic.missionComplete:
-                    if ic.currTime - prevTime[i] > self.icTimeLimit[i]:
+                    if self.current_time >= self.icTimeLimit[i]:
                         ic.missionComplete = True
                         print("%s : Time limit reached at %f" %
-                              (ic.callsign, ic.currTime))
+                              (ic.callsign, self.current_time))
 
             # Run traffic vehicles
             self.RunTraffic()
