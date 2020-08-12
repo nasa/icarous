@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
-set(SOURCE_FILES GenericObject.cpp fence.cpp UtilFunctions.cpp)
+set(SOURCE_FILES fence.cpp UtilFunctions.cpp)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
