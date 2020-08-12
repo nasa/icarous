@@ -546,25 +546,27 @@ void TRAJECTORY_Monitor(void)
                 msg = (trajectory_parameters_t *)TrajectoryAppData.Traj_MsgPtr;
                 memcpy(&TrajectoryAppData.trajParams,msg,sizeof(trajectory_parameters_t));
 
+                TrajectoryAppData.xtrkDev = msg->xtrkDev;
+                TrajectoryAppData.xtrkGain = msg->xtrkGain;
+                TrajectoryAppData.resSpeed = msg->resSpeed;
+                TrajectoryAppData.searchType = msg->searchAlgorithm;
+
                 PathPlanner_UpdateAstarParameters(TrajectoryAppData.pplanner,
                                                   msg->astar_enable3D,
                                                   msg->astar_gridSize,
-                                                  msg->astar_resSpeed,
+                                                  TrajectoryAppData.resSpeed,
                                                   msg->astar_lookahead,
                                                   msg->astar_daaConfigFile);
 
                 PathPlanner_UpdateRRTParameters(TrajectoryAppData.pplanner,
-                                                msg->rrt_resSpeed,
+                                                TrajectoryAppData.resSpeed,
                                                 msg->rrt_numIterations,
                                                 msg->rrt_dt,
                                                 msg->rrt_macroSteps,
                                                 msg->rrt_capR,
                                                 msg->rrt_daaConfigFile);
 
-                TrajectoryAppData.xtrkDev = msg->xtrkDev;
-                TrajectoryAppData.xtrkGain = msg->xtrkGain;
-                TrajectoryAppData.resSpeed = msg->resSpeed;
-                TrajectoryAppData.searchType = msg->searchAlgorithm;
+                
                 break;
             }
 
