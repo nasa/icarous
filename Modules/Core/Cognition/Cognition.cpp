@@ -541,6 +541,7 @@ int Cognition::FlightPhases(double time){
                 Command cmd = {.commandType=Command::DITCH_COMMAND};
                 cmd.ditchCommand = ditch_command;
                 cognitionCommands.push_back(cmd);
+                log << timeString + "| [STATUS] | Sending Ditch Request Signal" <<"\n";
             }
 
             break;
