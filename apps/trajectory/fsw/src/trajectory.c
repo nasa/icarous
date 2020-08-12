@@ -365,10 +365,9 @@ void TRAJECTORY_Monitor(void)
                 if (pos->aircraft_id != CFE_PSP_GetSpacecraftId())
                 {
                     double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
-                    double _vel[3] = {pos->vn, pos->ve, pos->vd};
-                    int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, _vel);
-                    if (val)
-                        CFE_ES_WriteToSysLog("Trajectory:Received intruder:%d\n", pos->aircraft_id);
+                    double trkGsVs[3] = {0.0,0.0,0.0};
+                    ConvertVnedToTrkGsVs(pos->vn,pos->ve,pos->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
+                    PathPlanner_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, trkGsVs);
                 }
                 else
                 {
@@ -395,10 +394,9 @@ void TRAJECTORY_Monitor(void)
                 msg = (object_t *)TrajectoryAppData.Traj_MsgPtr;
 
                 double pos[3] = {msg->latitude, msg->longitude, msg->altitude};
-                double vel[3] = {msg->vn, msg->ve, msg->vd};
-                int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, vel);
-                if (val)
-                    CFE_ES_WriteToSysLog("Trajectory:Received intruder: %d\n", msg->index);
+                double trkGsVs[3] = {0.0,0.0,0.0};
+                ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
+                PathPlanner_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, trkGsVs);
                 break;
             }
 
