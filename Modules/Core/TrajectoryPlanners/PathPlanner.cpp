@@ -91,19 +91,16 @@ void PathPlanner::ClearFences() {
     fenceList.clear();
 }
 
-int PathPlanner::InputTraffic(int id, double *position, double *velocity) {
-
-    GenericObject _traffic(0,_TRAFFIC_,id,(char*)"\0",(float)position[0],(float)position[1],(float)position[2],
-                                        (float)velocity[1],(float)velocity[0],(float)velocity[2]);
-    return GenericObject::AddObject(trafficList,_traffic);
-}
-
 int PathPlanner::InputTraffic(int id, Position &position, Velocity &velocity) {
-
-    double positionR[3] = {position.latitude(),position.longitude(),position.alt()};
-    double velocityR[3] = {velocity.y, velocity.x, velocity.z};
-    
-    return InputTraffic(id,positionR,velocityR);
+ 
+    std::string tfprefix("traffic");
+    pObject obj = {.callsign = tfprefix + std::to_string(id),
+                   .id = id,
+                   .time = 0,
+                   .position = position,
+                   .velocity = velocity};
+    trafficList[obj.callsign] = obj;
+    return trafficList.size();
 }
 
 void PathPlanner::UpdateDAAParameters(char *parameterString) {
@@ -465,9 +462,9 @@ void PathPlanner::LogInput(){
     log<<"Goal Pos:"<<endPos.toString(8)<<std::endl;
     log<<"Start vel:"<<startVel.toString(8)<<std::endl;
     log<<"Num traffic:"<<trafficList.size()<<std::endl;
-    for(GenericObject traffic: trafficList){
-        Velocity Vel = traffic.vel;
-        Position Pos = traffic.pos;
+    for(auto traffic: trafficList){
+        Velocity Vel = traffic.second.velocity;
+        Position Pos = traffic.second.position;
         log<<"- pos: "<<Pos.toString(5)<<std::endl;
         log<<"- vel: "<<Vel.toString(5)<<std::endl;
     }
@@ -691,7 +688,9 @@ void PathPlanner_InputGeofenceData(void * obj,int type,int index, int totalVerti
 
 int PathPlanner_InputTraffic(void* obj,int id, double *position, double *velocity){
    PathPlanner* pp = (PathPlanner*)obj;
-   return pp->InputTraffic(id, position, velocity);
+   Position pos = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
+   Velocity vel = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
+   return pp->InputTraffic(id, pos, vel);
 }
 
 

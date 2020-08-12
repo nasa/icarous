@@ -8,7 +8,7 @@
 
 void PathPlanner::InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]){
    _rrt_resSpeed = resSpeed;
-   _rrt_daaConfig = string(daaConfig);
+   _rrt_daaConfig = std::string(daaConfig);
    _rrt_maxIterations = Nsteps;
    _rrt_dt = dt;
    _rrt_macroSteps = Dt;
@@ -17,7 +17,7 @@ void PathPlanner::InitializeRRTParameters(double resSpeed,int Nsteps,double dt,i
 
 void PathPlanner::UpdateRRTParameters(double resSpeed, int Nsteps, double dt, int Dt, double capR, char *daaConfig) {
     _rrt_resSpeed = resSpeed;
-   _rrt_daaConfig = string(daaConfig);
+   _rrt_daaConfig = std::string(daaConfig);
    _rrt_maxIterations = Nsteps;
    _rrt_dt = dt;
    _rrt_macroSteps = Dt;
@@ -37,9 +37,9 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
     double dist = startVel.gs()*computationTime;
     EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
 
-    for(GenericObject traffic: trafficList){
-        Velocity Vel = traffic.vel;
-        Position Pos = traffic.pos.linearDist2D(Vel.trk(),dist);
+    for(auto traffic: trafficList){
+        Velocity Vel = traffic.second.velocity;
+        Position Pos = traffic.second.position.linearDist2D(Vel.trk(),dist);
         Vect3 tPos = proj.project(Pos);
         Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
         tPos.linear(tVel,computationTime);
@@ -97,7 +97,7 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
 
     Plan output;
     RRT.GetPlan(proj,output);
-    output.setID(string(planID));
+    output.setID(std::string(planID));
     flightPlans.push_back(output);
     return output.size();
 }

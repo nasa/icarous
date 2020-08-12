@@ -14,8 +14,17 @@ typedef enum algorithm{
 #include "ParameterData.h"
 #include "CDIIPolygon.h"
 #include "fence.h"
-#include "GenericObject.h"
 #include <list>
+#include <map>
+
+typedef struct{
+    std::string callsign;
+    int id;
+    double time;
+    larcfm::Position position;
+    larcfm::Velocity velocity;
+}pObject;
+
 
 class PathPlanner{
 
@@ -30,7 +39,7 @@ private:
     double _astar_resSpeed;
     double _astar_lookahead;
     double _astar_maxCeiling;
-    string _astar_daaConfig;
+    std::string _astar_daaConfig;
 
     double maxBankAngle;
     double maxHorAccel;
@@ -42,8 +51,8 @@ private:
     double _rrt_dt;
     int _rrt_macroSteps;
     double _rrt_goalCaptureRadius;
-    string _rrt_daaConfig;
-    string daaParameters;
+    std::string _rrt_daaConfig;
+    std::string daaParameters;
 
     // Bsplines planner specific parameters
     bool _bsplines_enable3D;
@@ -57,7 +66,7 @@ private:
 
     std::list<Plan> flightPlans;
     std::list<fence> fenceList;
-    std::list<GenericObject> trafficList;
+    std::map<std::string,pObject> trafficList;
     CDPolycarp geoPolyCarp;
     CDIIPolygon geoCDIIPolygon;
     PolyPath geoPolyPath;
@@ -102,9 +111,8 @@ public:
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, std::list<Position> &vertices);
     fence* GetGeofence(int id);
     void ClearFences();
-    int InputTraffic(int id, double *position, double *velocity);
     int InputTraffic(int id, Position &position, Velocity &velocity);
-    void InputDataFromLog(string filename);
+    void InputDataFromLog(std::string filename);
     void PlanToString(char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift);
     void StringToPlan(char planID[],char inputString[]);
     void CombinePlan(char planID_A[],char planID_B[],int index);

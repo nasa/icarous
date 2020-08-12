@@ -5,7 +5,7 @@
 #include "Astar.hpp"
 
 void PathPlanner::InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]){
-    _astar_daaConfig = string(daaConfig);
+    _astar_daaConfig = std::string(daaConfig);
     _astar_enable3D = enable3D;
     _astar_gridSize = gridSize;
     _astar_lookahead = lookahead;
@@ -13,7 +13,7 @@ void PathPlanner::InitializeAstarParameters(bool enable3D,double gridSize,double
 }
 
 void PathPlanner::UpdateAstarParameters(bool enable3D, double gridSize, double resSpeed, double lookahead,char daaConfig[]) {
-    _astar_daaConfig = string(daaConfig);
+    _astar_daaConfig = std::string(daaConfig);
     _astar_enable3D = enable3D;
     _astar_gridSize = gridSize;
     _astar_lookahead = lookahead;
@@ -30,10 +30,10 @@ int64_t PathPlanner::FindPathAstar(char planID[]) {
 
     double computationTime = 1.0;
 
-    for(GenericObject tf: trafficList){
+    for(auto tf: trafficList){
         double x,y,z,vx,vy,vz;
-        Velocity Vel = tf.vel;
-        Position Pos = tf.pos;
+        Velocity Vel = tf.second.velocity;
+        Position Pos = tf.second.position;
         Vect3 tPos = proj.project(Pos);
         Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
         tPos.linear(tVel,computationTime);
@@ -112,7 +112,7 @@ int64_t PathPlanner::FindPathAstar(char planID[]) {
             output.addNavPoint(np);
             count++;
         }
-        output.setID(string(planID));
+        output.setID(std::string(planID));
         flightPlans.push_back(output);
         return output.size();
     }else{
