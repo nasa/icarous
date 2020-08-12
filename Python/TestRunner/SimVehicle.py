@@ -54,7 +54,7 @@ class SimVehicle:
         icarous_params.update(self.scenario["param_adjustments"])
 
         sitl_params["WPNAV_SPEED"] = icarous_params["DEF_WP_SPEED"]*100
-        filename = "sitlparams-%d" % self.spacecraft_id
+        filename = "sitlparams-%s" % self.callsign
         sitl_param_file = os.path.join(self.output_dir, filename)
         with open(sitl_param_file, 'w') as f:
             for param_id, param_value in sitl_params.items():
@@ -66,7 +66,7 @@ class SimVehicle:
                      "--add-param-file", sitl_param_file,
                      "--use-dir", "sitl_files",
                      "-I", str(self.spacecraft_id)]
-        logname = "sitl-%d-%f.tlog" % (self.spacecraft_id, time.time())
+        logname = "sitl-%s-%f.tlog" % (self.callsign, time.time())
         logfile = os.path.join(self.output_dir, logname)
         arguments += ["-m", "--logfile="+logfile]
         subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
@@ -88,7 +88,7 @@ class SimVehicle:
         if self.out is not None:
             # Use mavproxy to forward mavlink stream (for visualization)
             gs_port = icarous_port + 1
-            logname = "telemetry-%d-%f" % (self.spacecraft_id, time.time())
+            logname = "%s-%f" % (self.callsign, time.time())
             logfile = os.path.join(self.output_dir, logname + ".tlog")
             self.mav_forwarding = subprocess.Popen(["mavproxy.py",
                                                "--master=127.0.0.1:"+str(icarous_port),
@@ -103,11 +103,12 @@ class SimVehicle:
 
         # Start the ICAROUS process
         os.chdir(icarous_exe)
-        fpic = open("icout-%d-%f.txt" % (self.spacecraft_id, time.time()), 'w')
+        fpic = open("icout-%s-%f.txt" % (self.callsign, time.time()), 'w')
         self.ic = subprocess.Popen(["./core-cpu1",
                                     "-I "+str(self.spacecraft_id),
                                     "-C "+str(self.cpu_id)],
-                                   stdout=fpic)
+                                    )
+#                                   stdout=fpic)
         os.chdir(sim_home)
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
@@ -124,12 +125,12 @@ class SimVehicle:
 
         # Set up the scenario (flight plan, geofence, parameters, traffic)
         self.gs.loadWaypoint(os.path.join(icarous_home, scenario["waypoint_file"]))
-        wp_log = "flightplan-%d.waypoints" % self.spacecraft_id
+        wp_log = "flightplan-%s.waypoints" % self.callsign
         shutil.copy(os.path.join(icarous_home, scenario["waypoint_file"]),
                     os.path.join(self.output_dir, wp_log))
         if scenario.get("geofence_file"):
             self.gs.loadGeofence(os.path.join(icarous_home, scenario["geofence_file"]))
-            gf_log = "geofence-%d.xml" % self.spacecraft_id
+            gf_log = "geofence-%s.xml" % self.callsign
             shutil.copy(os.path.join(icarous_home, scenario["geofence_file"]),
                         os.path.join(self.output_dir, gf_log))
         if scenario.get("parameter_file"):
@@ -175,8 +176,7 @@ class SimVehicle:
 
     def write_log(self):
         # Construct the sim data for verification
-        simdata = {"scenario": self.scenario,
-                   "ownship": self.ownship_log,
+        simdata = {"ownship": self.ownship_log,
                    "traffic": self.traffic_log,
                    "waypoints": self.waypoints,
                    "geofences": self.geofences,
@@ -190,7 +190,7 @@ class SimVehicle:
 
 
     def write_params(self):
-        filename = "params-%d.parm" % self.spacecraft_id
+        filename = "params-%s.parm" % self.callsign
         param_file = os.path.join(self.output_dir, filename)
         with open(param_file, 'w') as f:
             for param_id, param_value in self.params.items():

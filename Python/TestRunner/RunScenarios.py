@@ -153,22 +153,6 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
     sim.WriteLog()
     os.chdir(sim_home)
 
-    # Collect log files
-    for ic in sim.icInstances:
-        logname = "simlog-%s-%f.json" % (ic.callsign, time.time())
-        dest = os.path.join(output_dir, logname)
-        print("writing log: %s" % dest)
-        log_data = {"scenario": scenario,
-                    "ownship_id": ic.vehicleID,
-                    "ownship": ic.ownshipLog,
-                    "traffic": ic.trafficLog,
-                    "waypoints": ic.flightplan1,
-                    "geofences": ic.fenceList,
-                    "parameters": ic.params,
-                    "sim_type": "pyIcarous"}
-        with open(dest, 'w') as f:
-            json.dump(log_data, f)
-
 
 def set_up_output_dir(scenario, base_dir="sim_output"):
     """ Set up a directory to save log files for a scenario """
