@@ -274,10 +274,10 @@ class Icarous():
         +"recovery_crit="+( "true;" if params['RECOVERY_CRIT'] == 1 else "false;" )\
         +"contour_thr="+str(params['CONTOUR_THR'])+ "[deg];"\
         +"alerters = default;"\
+        +"default_alert_1_detector=det_1;"\
+        +"default_alert_1_region=NEAR;"\
         +"default_alert_1_alerting_time="+str(params['AL_1_ALERT_T'])+ "[s];"\
-        +"default_alert_1_detector="+"det_1;"\
         +"default_alert_1_early_alerting_time="+str(params['AL_1_E_ALERT_T'])+ "[s];"\
-        +"default_alert_1_region="+"NEAR;"\
         +"default_alert_1_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[ft];"\
         +"default_alert_1_spread_hs="+str(params['AL_1_SPREAD_GS'])+ "[knot];"\
         +"default_alert_1_spread_hdir="+str(params['AL_1_SPREAD_TRK'])+ "[deg];"\
@@ -286,7 +286,18 @@ class Icarous():
         +"default_det_1_WCV_TCOA="+str(params['DET_1_WCV_TCOA'])+ "[s];"\
         +"default_det_1_WCV_TTHR="+str(params['DET_1_WCV_TTHR'])+ "[s];"\
         +"default_det_1_WCV_ZTHR="+str(params['DET_1_WCV_ZTHR'])+ "[ft];"\
-        +"default_load_core_detection_det_1="+"gov.nasa.larcfm.ACCoRD.WCV_TAUMOD;"
+        +"default_load_core_detection_det_1="+"gov.nasa.larcfm.ACCoRD.WCV_TAUMOD;"\
+        +"default_alert_2_detector=det_2;"\
+        +"default_alert_2_region=NEAR;"\
+        +"default_alert_2_alerting_time= 0.0 [s];"\
+        +"default_alert_2_early_alerting_time= 0.0 [s];"\
+        +"default_alert_2_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[ft];"\
+        +"default_alert_2_spread_hs="+str(params['AL_1_SPREAD_GS'])+ "[knot];"\
+        +"default_alert_2_spread_hdir="+str(params['AL_1_SPREAD_TRK'])+ "[deg];"\
+        +"default_alert_2_spread_vs="+str(params['AL_1_SPREAD_VS'])+ "[fpm];"\
+        +"default_det_2_D="+str(params['DET_1_WCV_DTHR'])+ "[ft];"\
+        +"default_det_2_H="+str(params['DET_1_WCV_ZTHR'])+ "[ft];"\
+        +"default_load_core_detection_det_2="+"gov.nasa.larcfm.ACCoRD.CDCylinder;"
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
         self.Trajectory.UpdateDAAParams(paramString)
