@@ -192,8 +192,7 @@ class SimEnvironment:
                               (ic.callsign, ic.currTime))
 
             # Run traffic vehicles and send position data to Icarous instances
-            if status:
-                self.RunTraffic()
+            self.RunTraffic()
 
             self.ExchangeArrivalTimes()
             self.count += 1

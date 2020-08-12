@@ -109,7 +109,7 @@ class Icarous():
         if idx is not self.vehicleID:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
-            self.Trajectory.InputTrafficData(idx,position,velocity)
+            self.Trajectory.InputTrafficData(idx,position,trkgsvs)
             self.RecordTraffic(idx, position, velocity, self.ConvertToLocalCoordinates(position))
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
