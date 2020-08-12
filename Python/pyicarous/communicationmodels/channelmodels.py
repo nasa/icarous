@@ -1,8 +1,8 @@
 from collections import namedtuple
 import numpy as np
 
-import propagationmodels
-import receptionmodels
+from communicationmodels import propagationmodels
+from communicationmodels import receptionmodels
 
 
 # Namedtuple to represent a transmitted message

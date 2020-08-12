@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-import propagationmodels as pm
+from communicationmodels import propagationmodels as pm
 
 
 class ReceptionModel:
@@ -23,7 +23,6 @@ class ReceptionModel:
         :param freq: frequency of transmission (Hz)
         :param tx_pos_xyz: current position of transmitter [x, y, z] (m)
         :param rx_pos_xyz: current position of receiver [x, y, z] (m)
-        :param rx_pos_xyz: current position of receiver [x, y, z] (m)
         :param rx_sensitivity: minimum received power threshold for reception
         """
         rx_power_w = self.propagation_model.received_power(tx_power,
@@ -35,7 +34,9 @@ class ReceptionModel:
     def received(self, tx_power, freq, tx_pos_xyz, rx_pos_xyz, rx_sensitivity):
         """
         Return whether a message was successfully received (True/False)
-        :param msg: a Message being sent
+        :param tx_power: transmitted power (W)
+        :param freq: frequency of transmission (Hz)
+        :param tx_pos_xyz: current position of transmitter [x, y, z] (m)
         :param rx_pos_xyz: current position of receiver [x, y, z] (m)
         :param rx_sensitivity: minimum received power threshold for reception
         """
@@ -99,6 +100,7 @@ class ReceptionModel:
     def heatmap(self, rx_sensitivity, tx_power, freq, h_t=100, h_r=100,
                 save=False, show=False):
         """
+        Plot a 2D map of reception probability
         :param rx_sensitivity: min received power threshold for reception (W)
         :param tx_power: transmitted power (W)
         :param freq: frequency of transmission (Hz)

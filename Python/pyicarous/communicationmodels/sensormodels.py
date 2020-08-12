@@ -1,6 +1,6 @@
 import numpy as np
 
-from channelmodels import Message
+from communicationmodels.channelmodels import Message
 
 
 class Transmitter:
@@ -21,7 +21,7 @@ class Transmitter:
     :param channel: communications channel to transmit on
     :param sensor_type: name of the sensor
     :param tx_power: transmit power (W)
-    :param freq: transmit power (W)
+    :param freq: transmit frequency (Hz)
     :param update_interval: time between transmissions (s), 0 to always send
     """
 
