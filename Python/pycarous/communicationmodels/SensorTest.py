@@ -5,10 +5,12 @@ import random
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from communicationmodels.channelmodels import Message
+from communicationmodels import util
 
 
 class Vehicle:
-    def __init__(self, callsign, pos, vel, transmitter=None, receiver=None):
+    def __init__(self, home_gps, callsign, pos, vel, transmitter=None, receiver=None):
+        self.home_gps = home_gps
         self.callsign = callsign
         self.transmitter = transmitter
         self.receiver = receiver
@@ -31,16 +33,18 @@ class Vehicle:
         if self.transmitter is None:
             return
         data = {"pos": self.pos[:], "vel": self.vel[:]}
+        pos_gps = util.gps_offset(self.home_gps, self.pos[0], self.pos[1]) + (self.pos[2],)
         msg = self.transmitter.transmit(self.current_time,
                                         self.callsign,
-                                        self.pos[:],
+                                        pos_gps,
                                         data)
         return msg
 
     def receive(self):
         if self.receiver is None:
             return
-        msgs = self.receiver.receive(self.current_time, self.pos[:])
+        pos_gps = util.gps_offset(self.home_gps, self.pos[0], self.pos[1]) + (self.pos[2],)
+        msgs = self.receiver.receive(self.current_time, pos_gps)
         for m in msgs:
             if m.sender_id == self.callsign:
                 continue
@@ -77,9 +81,8 @@ def run_simulation(vehicles, channel, time_limit=5000, traf_range=20000):
         duration += dT
 
         # Randomly set v2 position
-        vehicles[1].pos = [2*traf_range*random.random()-traf_range,
-                           2*traf_range*random.random()-traf_range,
-                           0]
+        vehicles[1].pos[0] = 2*traf_range*random.random() - traf_range
+        vehicles[1].pos[1] = 2*traf_range*random.random() - traf_range
 
         # Exchange sensor data
         for v in vehicles:
@@ -152,8 +155,9 @@ if __name__ == "__main__":
     adsb_out = sensormodels.ADSBTransmitter(comm_channel, update_interval=0)
 
     # Create vehicle simulations that have transmitters/receivers
-    v1 = Vehicle("SPEEDBIRD", [0, 0, 0], [0, 0, 0], receiver=adsb_in)
-    v2 = Vehicle("INTRUDER", [10, 10, 0], [0, 0, 0], transmitter=adsb_out)
+    home_gps = [0, 0, 0]
+    v1 = Vehicle(home_gps, "SPEEDBIRD", [0, 0, 0], [0, 0, 0], receiver=adsb_in)
+    v2 = Vehicle(home_gps, "INTRUDER", [10, 10, 0], [0, 0, 0], transmitter=adsb_out)
     vehicles = [v1, v2]
 
     # Run a test simulation

@@ -1,5 +1,7 @@
 import numpy as np
 
+from communicationmodels import util
+
 
 class PropagationModel:
     def __init__(self, L=1):
@@ -11,13 +13,13 @@ class PropagationModel:
     (default is 1 = no loss)
     """
 
-    def received_power(self, tx_power, freq, tx_pos_xyz, rx_pos_xyz):
+    def received_power(self, tx_power, freq, tx_pos_gps, rx_pos_gps):
         """
         Return received power (W) of a transmission
         :param tx_power: transmitted power (W)
         :param freq: frequency of transmission (Hz)
-        :param tx_pos_xyz: current position of transmitter [x, y, z] (m)
-        :param rx_pos_xyz: current position of receiver [x, y, z] (m)
+        :param tx_pos_gps: current position of transmitter [x, y, z] (m)
+        :param rx_pos_gps: current position of receiver [x, y, z] (m)
         """
         return tx_power/self.L
 
@@ -49,13 +51,14 @@ class PropagationModel:
         CR = self.inverse(rx_sensitivity, tx_power, freq, h_t, h_r)
         xmax = min(2*CR, 100000)
         xs = np.linspace(0, xmax, 10000)
-        ys = [self.received_power(tx_power, freq, tx_pos, [0, x, h_r])
-              for x in xs]
+        rx_pos = [util.gps_offset(tx_pos, 0, x) + (h_r,) for x in xs]
+        ys = [self.received_power(tx_power, freq, tx_pos, rx_pos_i)
+              for rx_pos_i in rx_pos]
         plt.plot(xs, ys, label=self.model_name)
         plt.xlabel("Separation Distance (m)")
         plt.ylabel("Received Power (W)")
         plt.xlim((0, xmax))
-        rx_pos = [0, xmax/2, h_r]
+        rx_pos = util.gps_offset(tx_pos, 0, xmax/2) + (h_r,)
         rx_power_at_CR = self.received_power(tx_power, freq, tx_pos, rx_pos)
         plt.ylim((0, 3*rx_power_at_CR))
         plt.legend(loc=3)
@@ -87,11 +90,10 @@ class FreeSpacePropagation(PropagationModel):
     (default is 1 = no loss)
     """
 
-    def received_power(self, tx_power, freq, tx_pos_xyz, rx_pos_xyz):
+    def received_power(self, tx_power, freq, tx_pos_gps, rx_pos_gps):
         w = 3e8/freq                # Wavelength in meters
         C = w**2/((4*np.pi)**2*self.L)
-        rel_pos = np.array(tx_pos_xyz) - np.array(rx_pos_xyz)
-        d = np.linalg.norm(rel_pos)
+        d = util.distance(tx_pos_gps, rx_pos_gps)
         if d < w:
             return tx_power
         return tx_power*C/(d**2)
@@ -117,15 +119,14 @@ class TwoRayGroundPropagation(PropagationModel):
     (default is 1 = no loss)
     """
 
-    def received_power(self, tx_power, freq, tx_pos_xyz, rx_pos_xyz):
+    def received_power(self, tx_power, freq, tx_pos_gps, rx_pos_gps):
         w = 3e8/freq                # Wavelength in meters
         C = w**2/((4*np.pi)**2*self.L)
-        rel_pos = np.array(tx_pos_xyz) - np.array(rx_pos_xyz)
-        d = np.linalg.norm(rel_pos)
+        d = util.distance(tx_pos_gps, rx_pos_gps)
         if d < w:
             return tx_power
-        h_t = tx_pos_xyz[2]
-        h_r = rx_pos_xyz[2]
+        h_t = tx_pos_gps[2]
+        h_r = rx_pos_gps[2]
         return tx_power*C*h_t**2*h_r**2/(d**4)
 
     def inverse(self, rx_sensitivity, tx_power, freq, h_t=100, h_r=100):

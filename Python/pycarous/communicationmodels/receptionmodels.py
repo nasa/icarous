@@ -2,6 +2,7 @@ import random
 import numpy as np
 
 from communicationmodels import propagationmodels as pm
+from communicationmodels import util
 
 
 class ReceptionModel:
@@ -15,35 +16,35 @@ class ReceptionModel:
     path loss
     """
 
-    def p_reception(self, tx_power, freq, tx_pos_xyz,
-                    rx_pos_xyz, rx_sensitivity):
+    def p_reception(self, tx_power, freq, tx_pos_gps,
+                    rx_pos_gps, rx_sensitivity):
         """
         Return probability of receiving a given message
         :param tx_power: transmitted power (W)
         :param freq: frequency of transmission (Hz)
-        :param tx_pos_xyz: current position of transmitter [x, y, z] (m)
-        :param rx_pos_xyz: current position of receiver [x, y, z] (m)
+        :param tx_pos_gps: current position of transmitter [x, y, z] (m)
+        :param rx_pos_gps: current position of receiver [x, y, z] (m)
         :param rx_sensitivity: minimum received power threshold for reception
         """
         rx_power_w = self.propagation_model.received_power(tx_power,
                                                            freq,
-                                                           tx_pos_xyz,
-                                                           rx_pos_xyz)
+                                                           tx_pos_gps,
+                                                           rx_pos_gps)
         return rx_power_w > rx_sensitivity
 
-    def received(self, tx_power, freq, tx_pos_xyz, rx_pos_xyz, rx_sensitivity):
+    def received(self, tx_power, freq, tx_pos_gps, rx_pos_gps, rx_sensitivity):
         """
         Return whether a message was successfully received (True/False)
         :param tx_power: transmitted power (W)
         :param freq: frequency of transmission (Hz)
-        :param tx_pos_xyz: current position of transmitter [x, y, z] (m)
-        :param rx_pos_xyz: current position of receiver [x, y, z] (m)
+        :param tx_pos_gps: current position of transmitter [x, y, z] (m)
+        :param rx_pos_gps: current position of receiver [x, y, z] (m)
         :param rx_sensitivity: minimum received power threshold for reception
         """
         p_rx = self.p_reception(tx_power,
                                 freq,
-                                tx_pos_xyz,
-                                rx_pos_xyz,
+                                tx_pos_gps,
+                                rx_pos_gps,
                                 rx_sensitivity)
         return random.random() < p_rx
 
@@ -75,16 +76,17 @@ class ReceptionModel:
         :param show: show the plot (bool)
         """
         from matplotlib import pyplot as plt
-        tx_pos_xyz = [0, 0, h_t]
+        tx_pos = [0, 0, h_t]
         CR = self.communication_range(rx_sensitivity, tx_power, freq, h_t, h_r)
         xmax = min(2*CR, 100000)
         xs = np.linspace(0, xmax, 10000)
+        rx_pos = [util.gps_offset(tx_pos, 0, x) + (h_r,) for x in xs]
         ys = [self.p_reception(tx_power,
                                freq,
-                               tx_pos_xyz,
-                               [0, x, h_r],
+                               tx_pos,
+                               rx_pos_i,
                                rx_sensitivity)
-              for x in xs]
+              for rx_pos_i in rx_pos]
         plt.plot(xs, ys, label=self.model_name)
         plt.xlabel("Separation Distance (m)")
         plt.ylabel("Probability of Reception")
@@ -110,7 +112,7 @@ class ReceptionModel:
         :param show: show the plot (bool)
         """
         from matplotlib import pyplot as plt
-        tx_pos_xyz = [0, 0, h_t]
+        tx_pos = [0, 0, h_t]
         CR = self.communication_range(rx_sensitivity, tx_power, freq, h_t, h_r)
         range_max = min(2*CR, 100000)
         xs = np.linspace(-range_max, range_max, 100)
@@ -118,11 +120,11 @@ class ReceptionModel:
         heatmap = np.empty((xs.size, ys.size))
         for i in range(len(xs)):
             for j in range(len(ys)):
-                rx_pos_xyz = [xs[i], ys[j], h_r]
+                rx_pos = util.gps_offset(tx_pos, xs[i], ys[j]) + (h_r,)
                 heatmap[i, j] = self.p_reception(tx_power,
                                                  freq,
-                                                 tx_pos_xyz,
-                                                 rx_pos_xyz,
+                                                 tx_pos,
+                                                 rx_pos,
                                                  rx_sensitivity)
         extent = [xs[0], xs[-1], ys[0], ys[-1]]
         plt.imshow(heatmap, extent=extent)
@@ -146,8 +148,8 @@ class PerfectReception(ReceptionModel):
     received by all receivers.
     """
 
-    def p_reception(self, tx_power, freq, tx_pos_xyz,
-                    rx_pos_xyz, rx_sensitivity):
+    def p_reception(self, tx_power, freq, tx_pos_gps,
+                    rx_pos_gps, rx_sensitivity):
         return 1
 
 
@@ -174,8 +176,8 @@ class ConstantReception(ReceptionModel):
     :param rx_rate: rate of successful message reception (0 <= rx_rate <= 1)
     """
 
-    def p_reception(self, tx_power, freq, tx_pos_xyz,
-                    rx_pos_xyz, rx_sensitivity):
+    def p_reception(self, tx_power, freq, tx_pos_gps,
+                    rx_pos_gps, rx_sensitivity):
         return self.reception_rate
 
 
@@ -197,11 +199,11 @@ class RayleighReception(ReceptionModel):
     def rayleigh(self, d, CR):
         return np.exp(-(d/CR)**2)
 
-    def p_reception(self, tx_power, freq, tx_pos_xyz,
-                    rx_pos_xyz, rx_sensitivity):
-        d = np.linalg.norm(np.array(tx_pos_xyz) - np.array(rx_pos_xyz))
-        h_t = tx_pos_xyz[2]
-        h_r = rx_pos_xyz[2]
+    def p_reception(self, tx_power, freq, tx_pos_gps,
+                    rx_pos_gps, rx_sensitivity):
+        d = util.distance(tx_pos_gps, rx_pos_gps)
+        h_t = tx_pos_gps[2]
+        h_r = rx_pos_gps[2]
         CR = self.communication_range(rx_sensitivity, tx_power, freq, h_t, h_r)
         p_rx = self.rayleigh(d, CR)
         return p_rx
@@ -230,11 +232,11 @@ class NakagamiReception(ReceptionModel):
                  for i in range(1, self.m + 1)])
         return A*B
 
-    def p_reception(self, tx_power, freq, tx_pos_xyz,
-                    rx_pos_xyz, rx_sensitivity):
-        d = np.linalg.norm(np.array(tx_pos_xyz) - np.array(rx_pos_xyz))
-        h_t = tx_pos_xyz[2]
-        h_r = rx_pos_xyz[2]
+    def p_reception(self, tx_power, freq, tx_pos_gps,
+                    rx_pos_gps, rx_sensitivity):
+        d = util.distance(tx_pos_gps, rx_pos_gps)
+        h_t = tx_pos_gps[2]
+        h_r = rx_pos_gps[2]
         CR = self.communication_range(rx_sensitivity, tx_power, freq, h_t, h_r)
         p_rx = self.nakagami(d, CR)
         return p_rx

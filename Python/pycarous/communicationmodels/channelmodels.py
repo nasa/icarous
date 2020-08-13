@@ -6,7 +6,7 @@ from communicationmodels import receptionmodels
 
 
 # Namedtuple to represent a transmitted message
-field_names = 'freq tx_power sent_time sender_id tx_pos_xyz data'
+field_names = 'freq tx_power sent_time sender_id tx_pos_gps data'
 Message = namedtuple('Message', field_names=field_names)
 
 
@@ -33,18 +33,18 @@ class ChannelModel:
         """
         self.messages.append(msg)
 
-    def receive(self, rx_pos_xyz, rx_sensitivity):
+    def receive(self, rx_pos_gps, rx_sensitivity):
         """
         Return list of messages successfully received by a receiver
-        :param rx_pos_xyz: current position of this receiver [x, y, z] (m)
+        :param rx_pos_gps: current position of this receiver [x, y, z] (m)
         :param rx_sensitivity: min received power threshold for reception (W)
         """
         received_messages = []
         for msg in self.messages:
             if self.reception_model.received(msg.tx_power,
                                              msg.freq,
-                                             msg.tx_pos_xyz,
-                                             rx_pos_xyz,
+                                             msg.tx_pos_gps,
+                                             rx_pos_gps,
                                              rx_sensitivity):
                 received_messages.append(msg)
         return received_messages

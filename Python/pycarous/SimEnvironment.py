@@ -91,9 +91,8 @@ class SimEnvironment:
         """ Update all traffic vehicles """
         for tf in self.tfList:
             tf.run(self.windFrom, self.windSpeed)
-            tf_pos_xyz = self.ConvertToLocalCoordinates(tf.pos_gps)
             data = {"pos": tf.pos_gps, "vel": tf.getOutputVelocityNED()}
-            tf.transmitter.transmit(self.current_time, tf.vehicleID, tf_pos_xyz, data)
+            tf.transmitter.transmit(self.current_time, tf.vehicleID, tf.pos_gps, data)
 
 
     def AddWind(self, wind):
@@ -196,8 +195,7 @@ class SimEnvironment:
 
                 # Transmit V2V position data
                 data = {"pos": ic.position, "vel": ic.velocity}
-                ic_pos_xyz = self.ConvertToLocalCoordinates(ic.position)
-                ic.transmitter.transmit(self.current_time, ic.vehicleID, ic_pos_xyz, data)
+                ic.transmitter.transmit(self.current_time, ic.vehicleID, ic.position, data)
 
                 # Check if time limit has been met
                 if ic.startSent and not ic.missionComplete:
@@ -211,8 +209,7 @@ class SimEnvironment:
 
             # Receive V2V position data
             for ic in self.icInstances:
-                ic_pos_xyz = self.ConvertToLocalCoordinates(ic.position)
-                received_msgs = ic.receiver.receive(self.current_time, ic_pos_xyz)
+                received_msgs = ic.receiver.receive(self.current_time, ic.position)
                 for msg in received_msgs:
                     if msg.sender_id != ic.vehicleID:
                         ic.InputTraffic(msg.sender_id, msg.data["pos"], msg.data["vel"])

@@ -25,19 +25,19 @@ class Transmitter:
     :param update_interval: time between transmissions (s), 0 to always send
     """
 
-    def transmit(self, current_time, callsign, tx_pos_xyz, data):
+    def transmit(self, current_time, callsign, tx_pos_gps, data):
         """
         Transmit data onto the communication channel
         :param current_time: current time (s) of the simulation
         :param callsign: callsign of this transmitter
-        :param tx_pos_xyz: current position of this transmitter [x, y, z] (m)
+        :param tx_pos_gps: current position of this transmitter [x, y, z] (m)
         :param data: the data to send
         """
         if current_time - self.timeLastTransmit < self.updateInterval:
             return False
         self.timeLastTransmit = current_time
         msg = Message(self.frequencyHz, self.transmitPower, current_time,
-                      callsign, tx_pos_xyz, data)
+                      callsign, tx_pos_gps, data)
         self.channel.transmit(msg)
         return msg
 
@@ -61,14 +61,14 @@ class Receiver:
     :param latency: time to wait before receiving a message (s)
     """
 
-    def receive(self, current_time, rx_pos_xyz):
+    def receive(self, current_time, rx_pos_gps):
         """
         Return list of messages that are successfully received
         from the communication channel
         :param current_time: current time (s) of the simulation
-        :param rx_pos_xyz: current position of this receiver [x, y, z] (m)
+        :param rx_pos_gps: current position of this receiver [x, y, z] (m)
         """
-        received_msgs = self.channel.receive(rx_pos_xyz, self.sensitivity)
+        received_msgs = self.channel.receive(rx_pos_gps, self.sensitivity)
         self.messages += received_msgs
         msgs = [m for m in self.messages
                 if m.sent_time + self.latency >= current_time]
@@ -81,7 +81,7 @@ class DummyTransmitter(Transmitter):
     def __init__(self, channel):
         super().__init__(channel)
 
-    def transmit(self, current_time, callsign, tx_pos_xyz, data):
+    def transmit(self, current_time, callsign, tx_pos_gps, data):
         pass
 
 
@@ -89,12 +89,12 @@ class DummyReceiver(Receiver):
     def __init__(self, channel):
         super().__init__(channel)
 
-    def receive(self, current_time, rx_pos_xyz):
+    def receive(self, current_time, rx_pos_gps):
         return []
 
 
 class ADSBTransmitter(Transmitter):
-    def __init__(self, channel, tx_power=10, update_interval=1):
+    def __init__(self, channel, tx_power=40, update_interval=1):
         super().__init__(channel,
                          sensor_type="ADS-B",
                          tx_power=tx_power,
