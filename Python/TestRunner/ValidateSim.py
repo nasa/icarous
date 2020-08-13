@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import numpy as np
+from scipy.interpolate import interp1d
 from polygon_contain import Vector, definitely_inside
 
 sys.path.append("../pycarous")
@@ -160,15 +161,21 @@ def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
     waypoints = simdata["waypoints"]
     origin = simdata["ownship"]["position"][0]
     lla2ned = lambda x: GS.LLA2NED(origin, x)
+    ownship_time = simdata["ownship"]["t"]
     ownship_position = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
 
-    for i, o_pos in enumerate(ownship_position):
+    # Interpolate traffic positions
+    traffic_position = {}
+    for traffic_id, traffic in simdata["traffic"].items():
+        t_pos_default = (traffic["position"][0], traffic["position"][-1])
+        t_pos = interp1d(traffic["t"], np.array(traffic["position"]),
+                         axis=0, fill_value=t_pos_default)
+        traffic_position[traffic_id] = t_pos
+
+    for t, o_pos in zip(ownship_time, ownship_position):
         o_alt = o_pos[2]
-        for traffic_id in simdata["traffic"].keys():
-            traffic = simdata["traffic"][traffic_id]
-            if i > len(traffic["t"]) - 1:
-                continue
-            t_pos = lla2ned(traffic["position"][i])
+        for traffic_pos in traffic_position.values():
+            t_pos = lla2ned(traffic_pos(t))
             t_alt = t_pos[2]
 
             dist = np.sqrt((o_pos[0] - t_pos[0])**2 + (o_pos[1] - t_pos[1])**2)
@@ -215,14 +222,12 @@ def plot_scenario(simdata, output_dir="", save=False):
         else:
             plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
 
-
     # Set up figure
     plt.title(scenario_name + " - Ground track")
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
     plt.legend()
     plt.axis('equal')
-
 
     if save:
         output_file = os.path.join(output_dir, "simplot.png")
@@ -231,20 +236,17 @@ def plot_scenario(simdata, output_dir="", save=False):
 
     # Plot ownship and traffic altitudes   
     fig2 = plt.figure()
-    ownship_alt = np.array(simdata['ownship']['position'])[:,2]
+    ownship_alt = np.array(simdata['ownship']['position'])[:, 2]
     t = np.array(simdata['ownship']['t'])
-    plt.plot(t,ownship_alt,label='ownship')
+    plt.plot(t, ownship_alt, label='ownship')
+    for traf_id, traf in simdata["traffic"].items():
+        trafpos_alt = np.array(traf["position"])[:, 2]
+        plt.plot(traf['t'], trafpos_alt, label=str(traf_id) + " Path")
 
     plt.title(scenario_name + " - Altitude data")
     plt.xlabel("t (s)")
     plt.ylabel("Alt (m)")
     plt.legend()
-
-
-    # Plot traffic path
-    for traf_id, traf in simdata["traffic"].items():
-        trafpos_alt = np.array(traf["position"])[:,2]
-        plt.plot(t, trafpos_alt, label=str(traf_id)+" Path")
 
     if save:
         output_file = os.path.join(output_dir, "alt.png")
@@ -255,7 +257,7 @@ def plot_scenario(simdata, output_dir="", save=False):
     fig3 = plt.figure()
     ownship_vel = simdata['ownship']['velocityNED']
     speed = [np.sqrt(v[0]**2 + v[1]**2 + v[2]**2) for v in ownship_vel]
-    plt.plot(t,speed,label='ownship')
+    plt.plot(t, speed, label='ownship')
     plt.title(scenario_name + " - Speed data")
     plt.xlabel("t (s)")
     plt.ylabel("speed (m/s)")
@@ -268,6 +270,7 @@ def plot_scenario(simdata, output_dir="", save=False):
 
     if not save:
         plt.show()
+
 
 def print_results(results, scenario_name):
     ''' print results of a test scenario '''
