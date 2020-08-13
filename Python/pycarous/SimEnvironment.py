@@ -35,7 +35,7 @@ class SimEnvironment:
 
 
     def AddIcarousInstance(self, ic, delay=0, time_limit=1000,
-                           transmitter="Truth", receiver="Truth"):
+                           transmitter="GroundTruth", receiver="GroundTruth"):
         """
         Add an Icarous instance to the simulation environment
         @param ic: An Icarous instance
@@ -58,7 +58,7 @@ class SimEnvironment:
 
 
     def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
-                   transmitter="Truth"):
+                   transmitter="GroundTruth"):
         """
         Add a simulated virtual traffic vehicle to the simulation environment
         @param idx: traffic vehicle id

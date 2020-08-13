@@ -6,7 +6,7 @@ from communicationmodels.channelmodels import Message
 class Transmitter:
     def __init__(self,
                  channel,
-                 sensor_type="Truth",
+                 sensor_type="GroundTruth",
                  tx_power=40,
                  freq=978e6,
                  update_interval=0):
@@ -45,7 +45,7 @@ class Transmitter:
 class Receiver:
     def __init__(self,
                  channel,
-                 sensor_type="Truth",
+                 sensor_type="GroundTruth",
                  sensitivity=0,
                  latency=0):
         self.channel = channel
@@ -127,18 +127,18 @@ class FLARMReceiver(Receiver):
 
 
 TRANSMITTER_TABLE = {
-    "Truth": Transmitter,
-    "ADS-B":  ADSBTransmitter,
-    "FLARM": FLARMTransmitter,
-    None:    DummyTransmitter,
+    "GroundTruth": Transmitter,
+    "ADS-B":       ADSBTransmitter,
+    "FLARM":       FLARMTransmitter,
+    None:          DummyTransmitter,
 }
 
 
 RECEIVER_TABLE = {
-    "Truth": Receiver,
-    "ADS-B":  ADSBReceiver,
-    "FLARM": FLARMReceiver,
-    None:    DummyReceiver,
+    "GroundTruth": Receiver,
+    "ADS-B":       ADSBReceiver,
+    "FLARM":       FLARMReceiver,
+    None:          DummyReceiver,
 }
 
 
