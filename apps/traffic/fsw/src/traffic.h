@@ -20,11 +20,9 @@
 
 #include "Icarous.h"
 #include "traffic_msgids.h"
-#include "trajectory_msgids.h"
 #include "sch_msgids.h"
 
 #include "traffic_msg.h"
-#include "trajectory_msg.h"
 #include "traffic_tbl.h"
 
 #define TRAFFIC_STARTUP_INF_EID 0
@@ -71,7 +69,6 @@ typedef struct{
     traffic_alerts_t tfAlerts;             ///< Traffic Alerts
     flightplan_t flightplan1;              ///< Mission flight plan information
     flightplan_t flightplan2;              ///< Secondary flight plan
-    flightplan_monitor_t fpMonitor;        ///< Flight plan monitor data
     double position[3];                    ///< Current position as lat (deg), lon (deg) and alt (m)
     double velocity[3];                    ///< Current velocity as track (deg), ground speed (m/s) and vertical speed (m/s)
     double time;                           ///< Time from autopilot

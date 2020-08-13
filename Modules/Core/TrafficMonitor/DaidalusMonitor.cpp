@@ -110,7 +110,7 @@ void DaidalusMonitor::MonitorTraffic() {
 
 
     double daaTimeElapsed = elapsedTime - conflictStartTime;
-    const double holdConflictTime = 3; 
+    const double holdConflictTime = 0; 
     if(daaTimeElapsed > holdConflictTime && conflict != true){
        numTrackBands = 0;
        numSpeedBands = 0;
@@ -207,7 +207,7 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
         gs = speed;
     }
 
-    if (fabs(dh) < 1e-3){
+    if (fabs(dh) < 1){
         verticalSpeed = 0;
     }else if(dh > 0){
         verticalSpeed = minVS;

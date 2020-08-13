@@ -8,9 +8,10 @@ from pymavlink import mavutil, mavwp
 
 from ichelper import (LoadIcarousParams,
                       ReadFlightplanFile,
-                      GetFlightplanFile,
+                      GetFlightplan,
+                      ConstructWaypointsFromList,
+                      Getfence,
                       distance)
-from Geofence import Getfence
 from IcarousInterface import IcarousInterface
 import BatchGSModule as GS
 
@@ -116,9 +117,11 @@ class IcarousRunner(IcarousInterface):
             self.RecordTraffic(idx, position, velocity, positionNED)
 
     def InputFlightplan(self, fp, scenarioTime=0, eta=False):
-        self.flightplan1 = fp
-        self.plans.append(fp)
-        self.localPlans.append(self.GetLocalFlightPlan(fp))
+
+        waypoints = ConstructWaypointsFromList(fp,eta) 
+        self.flightplan1 = waypoints 
+        self.plans.append(waypoints)
+        self.localPlans.append(self.GetLocalFlightPlan(waypoints))
         self.gs.wploader.clear()
         for wp in fp:
             lat, lon, alt, wp_metric = wp
@@ -130,10 +133,11 @@ class IcarousRunner(IcarousInterface):
     def InputFlightplanFromFile(self, filename, scenarioTime=0, eta=False):
         self.gs.loadWaypoint(filename)
         time.sleep(1)
-        fp = GetFlightplanFile(filename, self.defaultWPSpeed, scenarioTime, eta)
-        self.flightplan1 = fp
-        self.plans.append(fp)
-        self.localPlans.append(self.GetLocalFlightPlan(fp))
+        fp = GetFlightplan(filename, self.defaultWPSpeed, eta)
+        waypoints = ConstructWaypointsFromList(fp,eta) 
+        self.flightplan1 = waypoints 
+        self.plans.append(waypoints)
+        self.localPlans.append(self.GetLocalFlightPlan(waypoints))
 
     def InputGeofence(self, filename):
         self.gs.loadGeofence(filename)

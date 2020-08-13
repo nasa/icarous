@@ -255,7 +255,9 @@ void ProcessGSMessage(mavlink_message_t message) {
                 }
             }else if(msg.mission_type == MAV_MISSION_TYPE_RALLY){
                 gs_stopTimer(&appdataIntGS.tjtimer);
-                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,0,0,0,
+                int tcp = appdataIntGS.trajectory.waypoints[msg.seq].tcp[0];
+                int tcpValue = appdataIntGS.trajectory.waypoints[msg.seq].tcpValue[0];
+                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,tcp,tcpValue,0,
                                               appdataIntGS.trajectory.waypoints[msg.seq].latitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].longitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
@@ -754,76 +756,6 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
         //appdataIntGS.waypoint_index[i] = count;
 
         count++;
-        /*
-        if(i < fp->num_waypoints-1){
-            if(fp->waypoints[i].wp_metric == WP_METRIC_ETA) {
-                double currentWP[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude,
-                                       fp->waypoints[i].altitude};
-                double nextWP[3] = {fp->waypoints[i + 1].latitude, fp->waypoints[i + 1].longitude,
-                                    fp->waypoints[i + 1].altitude};
-                double dist2NextWP = ComputeDistance(currentWP, nextWP);
-                double speed2NextWP = fp->waypoints[i].value;
-                double time2NextWP = dist2NextWP/speed2NextWP;
-
-                if (dist2NextWP > 1E-3) {
-                    appdataIntGS.ReceivedMissionItems[count].target_system = 1;
-                    appdataIntGS.ReceivedMissionItems[count].target_component = 0;
-                    appdataIntGS.ReceivedMissionItems[count].seq = (uint16_t) count;
-                    appdataIntGS.ReceivedMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
-                    appdataIntGS.ReceivedMissionItems[count].command = MAV_CMD_DO_CHANGE_SPEED;
-                    appdataIntGS.ReceivedMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
-                    appdataIntGS.ReceivedMissionItems[count].autocontinue = 1;
-                    appdataIntGS.ReceivedMissionItems[count].current = 0;
-                    appdataIntGS.ReceivedMissionItems[count].param1 = 1;
-                    appdataIntGS.ReceivedMissionItems[count].param2 = speed2NextWP;
-                    appdataIntGS.ReceivedMissionItems[count].param3 = 0;
-                    appdataIntGS.ReceivedMissionItems[count].param4 = 0;
-                    appdataIntGS.ReceivedMissionItems[count].x = 0;
-                    appdataIntGS.ReceivedMissionItems[count].y = 0;
-                    appdataIntGS.ReceivedMissionItems[count].z = 0;
-                    count++;
-
-                    appdataIntGS.ReceivedMissionItemsInt[count].target_system = 1;
-                    appdataIntGS.ReceivedMissionItemsInt[count].target_component = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].seq = (uint16_t) count;
-                    appdataIntGS.ReceivedMissionItemsInt[count].mission_type = MAV_MISSION_TYPE_MISSION;
-                    appdataIntGS.ReceivedMissionItemsInt[count].command = MAV_CMD_DO_CHANGE_SPEED;
-                    appdataIntGS.ReceivedMissionItemsInt[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
-                    appdataIntGS.ReceivedMissionItemsInt[count].autocontinue = 1;
-                    appdataIntGS.ReceivedMissionItemsInt[count].current = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].param1 = 1;
-                    appdataIntGS.ReceivedMissionItemsInt[count].param2 = (int) speed2NextWP;
-                    appdataIntGS.ReceivedMissionItemsInt[count].param3 = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].param4 = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].x = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].y = 0;
-                    appdataIntGS.ReceivedMissionItemsInt[count].z = 0;
-
-                    //OS_printf("Constructed speed waypoint:%f\n",speed2NextWP);
-                }else if(time2NextWP > 0){
-                    appdataIntGS.ReceivedMissionItems[count].target_system = 1;
-                    appdataIntGS.ReceivedMissionItems[count].target_component = 0;
-                    appdataIntGS.ReceivedMissionItems[count].seq = (uint16_t) count;
-                    appdataIntGS.ReceivedMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
-                    appdataIntGS.ReceivedMissionItems[count].command = MAV_CMD_NAV_LOITER_TIME;
-                    appdataIntGS.ReceivedMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
-                    appdataIntGS.ReceivedMissionItems[count].autocontinue = 1;
-                    appdataIntGS.ReceivedMissionItems[count].current = 0;
-                    appdataIntGS.ReceivedMissionItems[count].param1 = time2NextWP;
-                    appdataIntGS.ReceivedMissionItems[count].param2 = 0;
-                    appdataIntGS.ReceivedMissionItems[count].param3 = 15;
-                    appdataIntGS.ReceivedMissionItems[count].param4 = 0;
-                    appdataIntGS.ReceivedMissionItems[count].x = nextWP[0];
-                    appdataIntGS.ReceivedMissionItems[count].y = nextWP[1];
-                    appdataIntGS.ReceivedMissionItems[count].z = nextWP[2];
-                    ++i;
-                    count++;
-                    //OS_printf("Constructed loiter waypoint\n");
-                }
-            }
-        }
-        */
-
     }
 
     appdataIntGS.numWaypoints = count;
@@ -833,8 +765,7 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
 void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
-    double speed = appdataIntGS.storedparams[85].value;
-    bool useTime = false;
+    double speed = appdataIntGS.storedparams[65].value;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
@@ -846,8 +777,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 
                 // If param4 is non-zero, extract time information from param4
                 if(items[i].param4 > 0){
-                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count].value = items[i].param4;
+                    fp->waypoints[count].time = items[i].param4;
                 }else{
                     //Else if speed is non-zero (i.e. CHANGE_SPEED seen already),
                     //Determine ETA based on distance and speed.
@@ -859,18 +789,10 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                                          fp->waypoints[count].longitude,
                                          fp->waypoints[count].altitude};
 
-                        if(useTime){
-                            double distAB = ComputeDistance(wpA,wpB);
-                            double timeAB = distAB/speed;
-                            fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                            fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
-                        }else{
-                            fp->waypoints[count].wp_metric = WP_METRIC_SPEED;
-                            fp->waypoints[count].value = speed;
-                        }
+                        double distAB = ComputeDistance(wpA,wpB);
+                        double timeAB = distAB/speed;
+                        fp->waypoints[count].time = fp->waypoints[count-1].time + timeAB;
 
-                    }else{
-                        fp->waypoints[count].wp_metric = WP_METRIC_NONE;
                     }
                 }
 
@@ -879,32 +801,9 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                 break;
             }
 
-            case MAV_CMD_NAV_SPLINE_WAYPOINT:{
-                fp->waypoints[count].latitude = items[i].x/1e7;
-                fp->waypoints[count].longitude = items[i].y/1e7;
-                fp->waypoints[count].altitude = items[i].z;
-                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
-                count++;
-                break;
-            }
-
-            case MAV_CMD_NAV_LOITER_TIME:{
-                fp->waypoints[count].latitude = items[i].x/1e7;
-                fp->waypoints[count].longitude = items[i].y/1e7;
-                fp->waypoints[count].altitude = items[i].z;
-                if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
-                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count-1].value = items[i].param1;
-
-                }
-                count++;
-                //OS_printf("Setting loiter point %f\n",items[i].param1);
-                break;
-            }
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 speed = items[i].param2;
-                useTime = (items[i].z > 0)?true:false;
                 break;
             }
         }
@@ -916,8 +815,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
-    double speed = appdataIntGS.storedparams[85].value;
-    bool useTime = false;
+    double speed = appdataIntGS.storedparams[65].value;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
@@ -929,8 +827,7 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
                 // If param4 is non-zero, extract time information from param4
                 if(items[i].param4 > 0){
-                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count].value = items[i].param4;
+                    fp->waypoints[count].time = items[i].param4;
                 }else{
                     //Else if speed is non-zero (i.e. CHANGE_SPEED seen already),
                     //Determine ETA based on distance and speed.
@@ -941,17 +838,9 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                         double wpB[3] = {fp->waypoints[count].latitude,
                                          fp->waypoints[count].longitude,
                                          fp->waypoints[count].altitude};
-                        if(useTime){
-                            double distAB = ComputeDistance(wpA,wpB);
-                            double timeAB = distAB/speed;
-                            fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                            fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
-                        }else{
-                            fp->waypoints[count].wp_metric = WP_METRIC_SPEED;
-                            fp->waypoints[count].value = speed;
-                        }
-                    }else{
-                        fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                        double distAB = ComputeDistance(wpA,wpB);
+                        double timeAB = distAB/speed;
+                        fp->waypoints[count].time = fp->waypoints[count-1].time + timeAB;
                     }
                 }
                 count++;
@@ -959,32 +848,8 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 break;
             }
 
-            case MAV_CMD_NAV_SPLINE_WAYPOINT:{
-                fp->waypoints[count].latitude = items[i].x;
-                fp->waypoints[count].longitude = items[i].y;
-                fp->waypoints[count].altitude = items[i].z;
-                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
-                count++;
-                break;
-            }
-
-            case MAV_CMD_NAV_LOITER_TIME:{
-                fp->waypoints[count].latitude = items[i].x;
-                fp->waypoints[count].longitude = items[i].y;
-                fp->waypoints[count].altitude = items[i].z;
-                if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
-                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count-1].value = items[i].param1;
-
-                }
-                count++;
-                //OS_printf("Setting loiter point %f\n",items[i].param1);
-                break;
-            }
-
             case MAV_CMD_DO_CHANGE_SPEED:{
                 speed = items[i].param2;
-                useTime = (items[i].z > 0)?true:false;
                 break;
             }
         }

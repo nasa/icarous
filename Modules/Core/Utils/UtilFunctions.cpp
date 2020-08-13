@@ -3,11 +3,15 @@
 //
 
 #include "UtilFunctions.h"
+#include <list>
 #include <Position.h>
 #include <Velocity.h>
 #include <math.h>
 #include <EuclideanProjection.h>
 #include <Projection.h>
+#include <Plan.h>
+#include <TrajGen.h>
+#include <Units.h>
 
 using namespace larcfm;
 
@@ -386,4 +390,131 @@ double GetInterceptHeadingToPlan(double wpA[],double wpB[],double currentPos[]){
     GetPositionOnPlan(wpA,wpB,currentPos,_positiontOnPlan);
     Position goal = Position::makeLatLonAlt(_positiontOnPlan[0],"degree",_positiontOnPlan[1],"degree",_positiontOnPlan[2],"m");
     return pos.track(goal)*180/M_PI;
+}
+
+void ComputeWaypointsETA(double scenarioTime,int numWP, double wpSpeed[], waypoint_t wpts[]){
+    // Compute time of arrival at each waypoint based on speed
+    // NOTE: This assumes there are no overlapping types ot TCPs
+    double prevRadius = 0.0;
+    for (int i = 0; i < numWP; ++i) {
+        if (i == 0) {
+            wpts[i].time = scenarioTime;
+        }
+        else {
+            waypoint_t &prev = wpts[i - 1];
+            waypoint_t &next = wpts[i];
+            Position prevWP = Position::makeLatLonAlt(prev.latitude, "degree", prev.longitude, "degree", prev.altitude, "m");
+            Position nextWP = Position::makeLatLonAlt(next.latitude, "degree", next.longitude, "degree", next.altitude, "m");
+            double distH = prevWP.distanceH(nextWP);
+            double dt = distH / wpSpeed[i - 1];
+
+            if(prev.tcp[0] == TCP_BOT){
+                 prevRadius = std::fabs(prev.tcpValue[0]);
+            }
+
+            if(next.tcp[0] == TCP_EOTBOT || next.tcp[0] == TCP_EOT || next.tcp[0] == TCP_MOT){
+                double angle = 2*std::asin(distH/(2*prevRadius));
+                double turnRate = wpSpeed[i]/prevRadius;
+                double dt = angle/turnRate;
+                next.time = prev.time + dt;
+            }else{
+                next.time = prev.time + dt;
+            }
+        }
+    }
+}
+
+void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair){
+   int count = 0;
+   for(auto waypt: waypoints){
+       double eta = waypt.time;
+       larcfm::Position pos = larcfm::Position::makeLatLonAlt(waypt.latitude,"degree",
+                                                              waypt.longitude,"degree",
+                                                              waypt.altitude,"m");
+       fp->add(pos,eta);
+       if(waypt.tcp[0] == TCP_BOT){
+           double startHeading = initHeading;
+           if(count > 0){
+               startHeading = larcfm::Units::to(larcfm::Units::deg,fp->trkIn(count));
+           }   
+           double turn = waypt.tcpValue[0] > 0?90:-90;
+           larcfm::Position center = pos.linearDist2D((startHeading+turn)*M_PI/180,fabs(waypt.tcpValue[0]));
+           fp->addBOT(count,waypt.tcpValue[0],center);
+       }else if(waypt.tcp[0] == TCP_MOT){
+           fp->getTcpDataRef(count).setMOT(true);
+       }else if(waypt.tcp[0] == TCP_EOT){
+           fp->addEOT(count); 
+       }else if(waypt.tcp[0] == TCP_EOTBOT){
+            double startHeading = larcfm::Units::to(larcfm::Units::deg,fp->trkIn(count));
+            double turn = waypt.tcpValue[0] > 0?90:-90;
+            larcfm::Position center = pos.linearDist2D((startHeading+turn)*M_PI/180,fabs(waypt.tcpValue[0]));
+            fp->addEOT(count);
+            fp->addBOT(count,waypt.tcpValue[0],center);
+            std::cout<<startHeading<<std::endl;
+       }
+
+       if(waypt.tcp[1] ==  TCP_BGS){
+            fp->setBGS(count,waypt.tcpValue[1]); 
+       }else if(waypt.tcp[1] == TCP_EGS){
+            fp->setEGS(count); 
+       }
+
+       if(waypt.tcp[2] == TCP_BVS){
+            fp->setBVS(count,waypt.tcpValue[2]); 
+       }else if(waypt.tcp[2] == TCP_EVS){
+            fp->setEVS(count);
+       }
+
+       count++;
+   }
+
+   if(repair){
+       double speed = fp->gsOut(1);
+       double bankAngle = larcfm::Kinematics::bankAngle(speed,10*M_PI/180);
+       double turnRadius= larcfm::Kinematics::turnRadius(speed,bankAngle);
+       *fp = larcfm::TrajGen::makeKinematicPlan(*fp,bankAngle,2,1.5,true,true,true);
+   }
+}
+
+void GetWaypointFromPlan(const larcfm::Plan* fp,const int id,waypoint_t &wp){
+       larcfm::Position pos = fp->getPos(id);
+       double time = fp->time(id);
+       wp.time = time; 
+       wp.latitude = pos.latitude();
+       wp.longitude = pos.longitude();
+       wp.altitude = pos.alt();
+       if(fp->isBOT(id) && fp->isEOT(id)){
+           wp.tcp[0] = TCP_EOTBOT;
+           wp.tcpValue[0] = fp->getTcpData(id).getRadiusSigned();
+       }else if(fp->isBOT(id)){
+           wp.tcp[0] = TCP_BOT;
+           wp.tcpValue[0] = fp->getTcpData(id).getRadiusSigned();
+       }else if(fp->isEOT(id)){
+           wp.tcp[0] = TCP_EOT;
+           wp.tcpValue[0] = fp->getTcpData(fp->prevTRK(id)).getRadiusSigned();
+       }else if(fp->isMOT(id)){
+           wp.tcp[0] = TCP_MOT;
+           int previd = fp->prevTrkTCP(id);
+           wp.tcpValue[0] = fp->getTcpData(previd).getRadiusSigned();
+       }else{
+           wp.tcp[0] = TCP_NONE;
+       }
+
+       if(fp->isBGS(id)){
+           wp.tcp[1] = TCP_BGS;
+           wp.tcpValue[1] = fp->getTcpData(id).getGsAccel();
+       }else if(fp->isEGS(id)){
+           wp.tcp[1] = TCP_EGS;
+       }else{
+           wp.tcp[1] = TCP_NONEg;
+       }
+
+       if(fp->isBVS(id)){
+           wp.tcp[2] = TCP_BVS;
+           wp.tcpValue[2] = fp->getTcpData(id).getVsAccel();
+       }else if(fp->isEVS(id)){
+           wp.tcp[2] = TCP_EVS;
+       }else{
+           wp.tcp[2] = TCP_NONEv;
+       }
 }

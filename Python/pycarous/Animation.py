@@ -9,7 +9,7 @@ import math
 
 class AgentAnimation():
     def __init__(self,xmin,ymin,xmax,ymax,interval,record=False,filename=""):
-        self.fig = plt.figure(frameon=False)
+        self.fig = plt.figure(frameon=True)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
 
@@ -103,8 +103,20 @@ class AgentAnimation():
         poly.labelText.set_text('Z:%.2f[m]\nS:%.2f[mps]' % (z,speed))
 
     def AddPath(self,path,color):
-        plt.plot(path[:,1],path[:,0],color)
-        plt.scatter(path[:,1],path[:,0])
+        if (path.shape[0] < 2):
+            return
+        if path.shape[1] == 10:
+            tcps = path[:,4:7]
+            tcpValues = path[:,7:10]
+            if np.sum(tcps) > 0:
+                from AccordUtil import plotTcpPlan
+                n,e,d,ptn,pte,ptd = plotTcpPlan(path,tcps,tcpValues)
+                plt.plot(e,n,color)
+            else:
+                plt.plot(path[:,2],path[:,1],color)
+        else:
+            plt.plot(path[:,2],path[:,1],color)
+        plt.scatter(path[:,2],path[:,1])
 
     def AddFence(self,fence,color):
         plt.plot(fence[:,1],fence[:,0],color)
@@ -178,5 +190,5 @@ class AgentAnimation():
         if self.record:
             self.anim.save(self.filename, writer= "ffmpeg", fps=60)
         else:
-            plt.axis('off')
+            #plt.axis('off')
             plt.show()

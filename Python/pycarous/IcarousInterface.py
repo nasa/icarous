@@ -2,7 +2,7 @@ import abc
 import sys
 import numpy as np
 
-from ichelper import LoadIcarousParams, ReadFlightplanFile, distance
+from ichelper import LoadIcarousParams, ReadFlightplanFile, distance, ConvertToLocalCoordinates
 
 class IcarousInterface(abc.ABC):
     """
@@ -125,11 +125,10 @@ class IcarousInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def InputFlightplan(self, fp, scenarioTime=0, eta=False):
+    def InputFlightplan(self, fp, eta=False,tcp=False):
         """
         Input a flight plan as a list of waypoints
         :param fp: a list of waypoints [lat, lon, alt, wp_metric]
-        :param scenarioTime: start time of the scenario (s)
         :param eta: when True, ICAROUS enforces wp arrival times, wp_metric (s)
                     when False, ICAROUS sets speed to each wp, wp_metric (m/s)
         """
@@ -192,29 +191,20 @@ class IcarousInterface(abc.ABC):
         """ Return True if the mission is complete """
         pass
 
-    def ConvertToLocalCoordinates(self, pos):
-        """
-        Convert a position to local coordinates relative to an origin
-        :param pos: a position to convert [lat, lon, alt] (deg, deg, m)
-        :return: local position, NEU (m, m, m)
-        """
-        dh = lambda x, y: abs(distance(self.home_pos[0], self.home_pos[1], x, y))
-        if pos[1] > self.home_pos[1]:
-            sgnX = 1
-        else:
-            sgnX = -1
-        if pos[0] > self.home_pos[0]:
-            sgnY = 1
-        else:
-            sgnY = -1
-        dx = dh(self.home_pos[0], pos[1])
-        dy = dh(pos[0], self.home_pos[1])
-        return [dy*sgnY, dx*sgnX, pos[2]]
+    def ConvertToLocalCoordinates(self,pos):
+        return ConvertToLocalCoordinates(self.home_pos,pos)
 
     def GetLocalFlightPlan(self, fp):
         local = []
         for wp in fp:
-            local.append(self.ConvertToLocalCoordinates(wp))
+            if type(wp) == list:
+                pt = wp
+            else:
+                pt = [wp.latitude,wp.longitude,wp.altitude]
+            
+            tcps = [wp.tcp[0],wp.tcp[1],wp.tcp[2]]
+            tcpValues = [wp.tcpValue[0],wp.tcpValue[1],wp.tcpValue[2]]
+            local.append([wp.time,*self.ConvertToLocalCoordinates(pt),*tcps,*tcpValues])
         return local
 
     def RecordOwnship(self):
@@ -283,6 +273,7 @@ class IcarousInterface(abc.ABC):
         Save log data to a json file
         :param logname: name for the log file, default is simlog-[callsign].json
         """
+
         self.ownshipLog['localPlans'] = self.localPlans
         self.ownshipLog['localFences'] = self.localFences
 
@@ -290,17 +281,16 @@ class IcarousInterface(abc.ABC):
             logname = "simlog-%s.json" % self.callsign
         if self.verbose > 0:
             print("writing log: %s" % logname)
-
+        waypoints = [[wp.time,wp.latitude,wp.longitude,wp.altitude,*wp.tcp,*wp.tcpValue]\
+                      for wp in self.flightplan1]
         log_data = {"ownship": self.ownshipLog,
                     "traffic": self.trafficLog,
-                    "origin": self.home_pos,
-                    "waypoints": self.flightplan1,
+                    "waypoints": waypoints,
                     "geofences": self.fenceList,
                     "parameters": self.params,
                     "mergefixes": self.localMergeFixes,
-                    "sim_type": self.simType}
+                    "sim_type": "pyIcarous"}
 
         import json
         with open(logname, 'w') as f:
             json.dump(log_data, f)
-

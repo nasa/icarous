@@ -36,11 +36,11 @@ class FpChange(Structure):
                 ("nextFeasibleWp",c_int)]
 
 class FpRequest(Structure):
-    _fields_ = [("searchType",c_int),
-                ("name",c_char*25),
+    _fields_ = [("name",c_char*25),
                 ("fromPosition",c_double*3),
                 ("toPosition",c_double*3),
-                ("startVelocity",c_double*3)]
+                ("startVelocity",c_double*3),
+                ("endVelocity",c_double*3)]
 
 class StatusMessage(Structure):
     _fields_ = [("severity",c_int),
@@ -70,11 +70,36 @@ class CommandTypes(IntEnum):
     FP_REQUEST = 8
     STATUS_MESSAGE = 9
 
+class TcpType(IntEnum):
+    TCP_NONE      = 0
+    TCP_BOT       = 1
+    TCP_EOT       = 2
+    TCP_MOT       = 4
+    TCP_EOTBOT    = 5
+    TCP_NONEg     = 6 
+    TCP_BGS       = 7 
+    TCP_EGS       = 8
+    TCP_EGSBGS    = 9
+    TCP_NONEv     = 10 
+    TCP_BVS       = 11 
+    TCP_EVS       = 12
+    TCP_EVSBVS    = 13
 
 class Command(Structure):
     _fields_ = [("commandType",c_int),
                 ("commandU",CommandU)]
 
+
+class Waypoint(Structure):
+    _pack_ = 1
+    _fields_ = [("index",c_uint16),
+                ("time",c_double),
+                ("name",c_char*20),
+                ("latitude",c_double),
+                ("longitude",c_double),
+                ("altitude",c_double),
+                ("tcp",c_int*3),
+                ("tcpValue",c_double*3)]
 
 int20arr = c_int*20
 double20arr = c_double*20
@@ -97,11 +122,7 @@ class Bands(Structure):
     ("minVDist",c_double),
     ("resUp",c_double),
     ("resDown",c_double),
-    ("resPreferred",c_double),
-    ("wpFeasibility1",bool50arr),
-    ("wpFeasibility2",bool50arr),
-    ("fp1ClosestPointFeasible",c_bool),
-    ("fp2ClosestPointFeasible",c_bool)]
+    ("resPreferred",c_double) ]
 
 class GeofenceConflict(Structure):
     _pack_ = 1
@@ -111,11 +132,22 @@ class GeofenceConflict(Structure):
         ("conflictFenceIDs",c_uint8*5),
         ("conflictTypes",c_uint8*5),
         ("timeToViolation",c_double*5),
+        ("recoveryPosition",c_double*3)]
+
+class TrajectoryMonitorData(Structure):
+    _pack = 1
+    _fields_ =[
+        ("fenceConflict",c_bool),
+        ("trafficConflict",c_bool),
+        ("conflictFenceID",c_uint8),
+        ("conflictCallSign",c_char*20),
+        ("timeToFenceViolation",c_double),
+        ("timeToTrafficViolation",c_double),
         ("recoveryPosition",c_double*3),
-        ("waypointConflict1",bool50arr),
-        ("directPathToWaypoint1",bool50arr),
-        ("waypointConflict2",bool50arr),
-        ("directPathToWaypoint2",bool50arr)]
+        ("offsets",c_double*3),
+        ("nextWP",c_int),
+        ("nextFeasibleWP",c_int)
+    ]
 
 # Datastructure used for V2V data exchange
 datafields = ['type','payload']

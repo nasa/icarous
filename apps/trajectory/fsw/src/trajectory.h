@@ -15,11 +15,12 @@
 #include <string.h>
 
 #include "Icarous.h"
-#include "PathPlanner.h"
+#include "TrajManager.h"
 #include "sch_msgids.h"
 #include "trajectory_msgids.h"
 #include "traffic_msg.h"
 #include "traffic_msgids.h"
+#include "guidance_msgids.h"
 #include "Icarous_msg.h"
 #include "trajectory_msg.h"
 #include "trajectory_tbl.h"
@@ -83,18 +84,13 @@ typedef struct{
     uint32_t mutexAcState;                     ///< Mutex to enforce synchronization on shared variables
     int nextWP1;                               ///< Next waypoint index in flightplan 1
     int nextWP2;                               ///< Next waypoint index in flightplan 2
-    char planID[10];                           ///< Current plan ID
+    char planID[20];                           ///< Current plan ID
     bool monitor;                              ///< Flag indicating when monitoring should begin.
     bool updateDAAParams;                      ///< Update DAA params via SB messages
     flightplan_t flightplan1;                  ///< primary flightplan to monitor
     flightplan_t flightplan2;                  ///< secondary flightplan to monitor
-    double xtrkDev;                            ///< xtrk deviation allowed
-    double xtrkGain;                           ///< xtrk gain
-    double resSpeed;                           ///< resolution speed
-    algorithm_e searchType;                    ///< preferred search algorithm
     bool eutlReceived;                         ///< eutl plan received check
-    flightplan_monitor_t fpMonitor;            ///< flight plan monitor
-    trajectory_parameters_t trajParams;
+    double timeNow;
 }TrajectoryAppData_t;
 
 /**

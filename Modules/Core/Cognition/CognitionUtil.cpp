@@ -8,34 +8,47 @@ double Cognition::ComputeXtrackDistance(const larcfm::Position &prev_wp,
                                         const larcfm::Position &next_wp,
                                         const larcfm::Position &pos,
                                         double offset[]){
-    double psi1         = prev_wp.track(next_wp) * 180/M_PI;
-    double psi2         = prev_wp.track(pos) * 180/M_PI;
-    double sgn          = 0;
 
-    if( (psi1 - psi2) >= 0){
-        sgn = 1;              // Vehicle left of the path
-    }
-    else if( (psi1 - psi2) <= 180){
-        sgn = -1;             // Vehicle right of the path
-    }
-    else if( (psi1 - psi2) < 0 ){
-        sgn = -1;             // Vehicle right of path
-    }
-    else if ( (psi1 - psi2) >= -180  ){
-        sgn = 1;              // Vehicle left of path
-    }
+    larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(prev_wp);
+    larcfm::Vect2 A(0,0);
+    larcfm::Vect2 B = proj.project(next_wp).vect2();
+    larcfm::Vect2 C = proj.project(pos).vect2();
+    larcfm::Vect2 AB = B-A;
+    larcfm::Vect2 AC = C-A;
 
-    double bearing = std::abs(psi1 - psi2);
-    double dist = prev_wp.distanceH(pos);
-    double cross_track_deviation = sgn*dist*sin(bearing * M_PI/180);
-    double cross_track_offset    = dist*cos(bearing * M_PI/180);
-
+    double distAB   = AB.norm();
+    double perpProj = fabs(AC.dot(AB.PerpL().Hat()));
+    double straightProj = AC.dot(AB.Hat())/distAB;  
+   
     if(offset != NULL){
-        offset[0] = cross_track_deviation;
-        offset[1] = cross_track_offset;
+        offset[0] = perpProj;
+        offset[1] = straightProj;
     }
 
-    return cross_track_deviation;
+    return perpProj;
+}
+
+bool Cognition::CheckProjectedTrafficConflict(){
+    bool conflictH,conflictV = true;
+    if (!std::isinf(timeToTrafficViolation1) && !std::isnan(timeToTrafficViolation1)) {
+        double projAlt = position.alt() + velocity.verticalSpeed("m/s") * timeToTrafficViolation1;
+        int wpid = nextWpId[activePlan->getID()];
+        double targetAlt = activePlan->getPos(wpid).alt();
+        if (fabs(projAlt - targetAlt) > parameters.ZTHR) {
+            conflictV = false;
+        }
+
+        larcfm::Position projPos = position.linearEst(velocity, timeToTrafficViolation1);
+        double offsets[2];
+        ComputeXtrackDistance(activePlan->getPos(wpid - 1), activePlan->getPos(wpid), projPos, offsets);
+        if (offsets[0] <= parameters.DTHR/2 && (offsets[1] >= 0 && offsets[1] <= 1))
+        {
+            conflictH = true;
+        }else{
+            conflictH = false;
+        }
+    }
+    return conflictH && conflictV;
 }
 
 void Cognition::ManeuverToIntercept(const larcfm::Position &prev_wp,
@@ -85,107 +98,116 @@ void Cognition::ManeuverToIntercept(const larcfm::Position &prev_wp,
     output_velocity = larcfm::Velocity::makeTrkGsVs(track,"degree", resolution_speed,"m/s", 0,"m/s");
 }
 
-void Cognition::GetPositionOnPlan(const larcfm::Position &prev_wp,
-                                  const larcfm::Position &next_wp,
-                                  const larcfm::Position &current_pos,
-                                  larcfm::Position &position_on_plan){
+larcfm::Position Cognition::GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
+                                                     const larcfm::Position &next_wp,
+                                                     const larcfm::Position &current_pos){
     double offsets[2];
     ComputeXtrackDistance(prev_wp,next_wp,current_pos,offsets);
 
-    double heading_next_wp  = prev_wp.track(next_wp);;
-    double dn               = offsets[1]*cos(heading_next_wp);
-    double de               = offsets[1]*sin(heading_next_wp);
-
-    position_on_plan = prev_wp.linearEst(dn, de);
-
-    if(position_on_plan.alt() <= 0){
-        position_on_plan = position_on_plan.mkAlt(next_wp.alt());
+    double distAB = prev_wp.distanceH(next_wp); 
+    if(distAB < 1e-3){
+        return prev_wp;
     }
+
+    double heading2nextWP  = prev_wp.track(next_wp);;
+    return prev_wp.linearDist2D(heading2nextWP,offsets[1]*distAB);
 }
 
 double Cognition::GetInterceptHeadingToPlan(const larcfm::Position &prev_wp,
                                             const larcfm::Position &next_wp,
                                             const larcfm::Position &current_pos){
-    larcfm::Position position_on_plan;
-    GetPositionOnPlan(prev_wp,next_wp,current_pos,position_on_plan);
-    return current_pos.track(position_on_plan)*180/M_PI;
+    larcfm::Position positionOnPlan;
+    positionOnPlan = GetNearestPositionOnPlan(prev_wp,next_wp,current_pos);
+    return current_pos.track(positionOnPlan)*180/M_PI;
 }
 
-bool Cognition::CheckTurnConflict(const double low,const double high,double new_heading,double old_heading){
-    if(new_heading < 0){
-        new_heading = 360 + old_heading;
+bool Cognition::CheckTurnConflict(double low,double high,double new_heading,double old_heading){
+
+    low  = std::fmod(360+low,360);
+    high = std::fmod(360+high,360);
+    new_heading = std::fmod(360+new_heading,360);
+    old_heading = std::fmod(360+old_heading,360);
+
+    double delta = larcfm::Util::turnDelta(old_heading * M_PI/180,new_heading * M_PI/180);
+    int turnDir  = larcfm::Util::turnDir(old_heading * M_PI/180,new_heading * M_PI/180);
+    bool rightTurn = (turnDir==1);
+
+    if (low > high){
+        high = high + 360;
     }
 
-    if(old_heading < 0){
-        old_heading = 360 + old_heading;
+    bool cond1 = new_heading >= low && new_heading <= high;
+    bool cond2 = old_heading >= low && old_heading <= high;
+
+    if(cond1 || cond2){
+        return true;
     }
 
-    // Get direction of turn
-    double psi   = new_heading - old_heading;
-    double psi_c = 360 - std::abs(psi);
-    bool rightTurn = false;
-    if(psi > 0){
-        if(std::abs(psi) > std::abs(psi_c)){
-            rightTurn = false;
-        }
-        else{
-            rightTurn = true;
-        }
-    }else{
-        if(std::abs(psi) > std::abs(psi_c)){
-            rightTurn = true;
-        }
-        else{
-            rightTurn = false;
-        }
-    }
-
-    double A,B,X,Y,diff;
     if(rightTurn){
-        diff = old_heading;
-        A = old_heading - diff;
-        B = new_heading - diff;
-        X = low - diff;
-        Y = high - diff;
-
-        if(B < 0){
-            B = 360 + B;
-        }
-
-        if(X < 0){
-            X = 360 + X;
-        }
-
-        if(Y < 0){
-            Y = 360 + Y;
-        }
-
-        if(A < X && B > Y){
-            return true;
+        if (new_heading < old_heading){
+            new_heading += 360;
         }
     }else{
-        diff = 360 - old_heading;
-        A    = old_heading + diff;
-        B    = new_heading + diff;
-        X = low + diff;
-        Y = high + diff;
-
-        if(B > 360){
-            B = B - 360;
+        if (new_heading > old_heading){
+            old_heading += 360;
         }
+    }
+    
+    if( low >= old_heading && high <= new_heading ){
+        return true;
+    }else{
+        return false;
+    }
+}
 
-        if(X > 360){
-            X = X - 360;
+bool Cognition::ComputeTargetFeasibility(larcfm::Position target){
+
+    double newtrk = position.track(target) * 180 / M_PI;
+    double oldtrk = velocity.track("degree"); 
+
+
+    bool conflict = false;
+    // Check if it is safe to turn given the current bands available
+    // Check feasibility based on trk bands
+    for(int i=0;i<trkBandNum;++i){
+        double low = trkBandMin[i];
+        double high = trkBandMax[i];
+        if(trkBandType[i] != BANDREGION_NONE && trkBandType[i] != BANDREGION_RECOVERY){
+            conflict |= CheckTurnConflict(low,high,oldtrk,newtrk);
         }
-
-        if(Y > 360){
-            Y = Y - 360;
-        }
-
-        if(A > Y && B < X){
-            return true;
+        if(conflict){
+            return !conflict; // Negate conflict to denote feasibility
         }
     }
 
-    return false;
+    // Check feasibility based on speed bands
+    for(int i=0;i<gsBandNum;++i){
+        double low = gsBandMin[i];
+        double high = gsBandMax[i];
+        if(gsBandType[i] != BANDREGION_NONE && gsBandType[i] != BANDREGION_RECOVERY){
+            double refSpeed = GetPlan("Plan0")->gsIn(nextFeasibleWpId);
+            if(refSpeed >= low && refSpeed <= high){
+                conflict |= true; 
+            }
+        }
+        if(conflict){
+            return !conflict; // Negate conflict to denote feasibility
+        }
+    }
+
+    // Check feasibility based on alt bands
+    for(int i=0;i<altBandNum;++i){
+        double low = altBandMin[i];
+        double high = altBandMax[i];
+        if(altBandType[i] != BANDREGION_NONE && altBandType[i] != BANDREGION_RECOVERY){
+            double targetAlt = target.alt();
+            if(targetAlt >= low && targetAlt <= high){
+                conflict |= true; 
+            }
+        }
+        if(conflict){
+            return !conflict; // Negate conflict to denote feasibility
+        }
+    }
+    return !conflict; // Negate conflict to denote feasibility
 }

@@ -12,13 +12,8 @@ void* CognitionInit(const char callsign[]);
 void Reset(void *obj);
 void ResetFlightPhases(void *obj);
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading);
-void InputFlightPlanData(void *obj,
-                         const char plan_id[],
-                         const double scenario_time,
-                         const int wp_id,
-                         const double wp_position[3],
-                         const int wp_metric,
-                         const double wp_value);
+void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize);
+void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonData);
 void InputParameters(void *obj,const cognition_params_t *new_params);
 void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested);
 void InputMergeStatus(void *obj,const int merge_status);

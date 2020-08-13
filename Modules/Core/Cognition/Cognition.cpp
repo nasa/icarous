@@ -1,4 +1,5 @@
 #include "Cognition.hpp"
+#include "WP2Plan.hpp"
 
 Cognition::Cognition(const std::string callsign){
     Initialize();
@@ -6,9 +7,6 @@ Cognition::Cognition(const std::string callsign){
     parameters.DTHR = 30;
     parameters.ZTHR = 1000;
     parameters.allowedXtrackDeviation = 1000;
-    parameters.XtrackGain = 0.6;
-    parameters.resolutionSpeed = 1;
-    parameters.searchType = 1;
     // Open a log file
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
@@ -62,64 +60,40 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
     speed = vel.gs();
 }
 
-void Cognition::InputFlightPlanData(const std::string &plan_id,
-                                    const double scenario_time,
-                                    const int wp_id,
-                                    const larcfm::Position &wp_position,
-                                    const int wp_metric,
-                                    const double wp_value){
+
+void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,const double initHeading,bool repair){
+
     larcfm::Plan* fp = GetPlan(plan_id);
-
-    // Initialize the feasibility of this waypoint to true
-    if(fp != NULL) {
-        // Existing flight plan
-
-        double wp_time;
-        if(wp_id == 0){
-            fp->clear();
-            wp_time = scenario_time;
-        }else if(wp_metric == 1){
-            // wp metric is ETA
-            wp_time = wp_value;
-            wpMetricEta[plan_id].push_back(true);
-            wpFeasibility[plan_id].push_back(true);
-        }else if(wp_metric == 2){
-            // wp metric is speed
-            wpMetricEta[plan_id].push_back(false);
-            wpFeasibility[plan_id].push_back(true);
-            double speed = wp_value;
-            int prev_wp_id = wp_id - 1;
-            if(prev_wp_id < 0){
-                prev_wp_id = 0;
-            }
-            larcfm::Position prev_position = fp->getPos(prev_wp_id);
-            double start_time = fp->time(prev_wp_id);
-            double dist = prev_position.distanceH(wp_position);
-            if(dist < 1e-3){
-                dist = prev_position.distanceV(wp_position);
-            }
-            wp_time = start_time + dist/speed;
-        }
-        fp->add(wp_position,wp_time);
-        return;
+    larcfm::Plan newPlan(plan_id); 
+    if (fp != NULL){
+        fp->clear();
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
     }else{
-        // New flight plan
-        larcfm::Plan newPlan(plan_id);
-        newPlan.add(wp_position,scenario_time);
+        fp = &newPlan;
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
         flightPlans.push_back(newPlan);
-        std::vector<bool> init(1,true);
-        wpFeasibility[plan_id] = std::move(init);
-        nextWpId[plan_id] = 1;
-        if(plan_id == "Plan0"){
-            primaryFPReceived = true;
-            scenarioTime = scenario_time;
-        }
-        return;
     }
 
-    wpMetricEta[plan_id] = {(wp_metric == 1)};
-
+    nextWpId[plan_id] = 1;
+    if(plan_id == "Plan0"){
+        primaryFPReceived = true;
+        scenarioTime = fp->time(0);
+    }
     
+    resolutionStartSpeed = fp->gsIn(1);
+}
+
+void Cognition::InputTrajectoryMonitorData(const trajectoryMonitorData_t & tjMonData){
+    timeToFenceViolation = tjMonData.timeToFenceViolation;
+    timeToTrafficViolation3 = tjMonData.timeToTrafficViolation;
+    planProjectedFenceConflict = tjMonData.fenceConflict;
+    planProjectedTrafficConflict = tjMonData.trafficConflict;
+    nextFeasibleWpId = tjMonData.nextFeasibleWP;
+
+    if(tjMonData.offsets[0] > 10){
+        planProjectedTrafficConflict = false;
+        planProjectedFenceConflict = false;
+    }
 }
 
 larcfm::Plan* Cognition::GetPlan(const std::string &plan_id){
@@ -157,6 +131,17 @@ larcfm::Position Cognition::GetNextWP(){
    return next_wp_pos;
 }
 
+larcfm::Velocity Cognition::GetNextWPVelocity(){
+   int next_wp_id = nextWpId[activePlan->getID()];
+   if(next_wp_id >= activePlan->size()){
+      next_wp_id = activePlan->size() - 1;
+   }
+   double gs = activePlan->gsOut(next_wp_id);
+   double trk = activePlan->trkOut(next_wp_id);
+   double vs = activePlan->vsOut(next_wp_id);
+   return larcfm::Velocity::makeTrkGsVs(trk*180/M_PI,"degree",gs,"m/s",vs,"m/s");
+}
+
 larcfm::Position Cognition::GetPrevWP(){
    int next_wp_id = nextWpId[activePlan->getID()];
    if(next_wp_id >= activePlan->size()){
@@ -168,12 +153,6 @@ larcfm::Position Cognition::GetPrevWP(){
    }
    larcfm::Position prev_wp_pos = activePlan->getPos(prev_wp_id);
    return prev_wp_pos;
-}
-
-bool Cognition::NextWpFeasible(){
-    int next_wp_id = nextWpId[activePlan->getID()];
-    bool next_wp_feas = wpFeasibility[activePlan->getID()].at(next_wp_id);
-    return next_wp_feas;
 }
 
 void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp_id){
@@ -197,8 +176,8 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
             activePlan  = fp;
             int total_waypoints = GetTotalWaypoints(plan_id);
             nextWpId[plan_id] = next_wp_id;
+            resolutionStartSpeed = activePlan->gsIn(next_wp_id);
             if (next_wp_id < total_waypoints) {
-                wpMetricTime = wpMetricEta[plan_id][next_wp_id];
                 refWpTime = activePlan->time(next_wp_id);
             }
         }
@@ -241,19 +220,6 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     std::memcpy(trkBandMax,track_bands.max,sizeof(double)*20);
     trkBandNum = track_bands.numBands;
     trackRecovery = (bool) track_bands.recovery;
-    if (activePlan != nullptr)
-    {
-        std::string plan_id = activePlan->getID();
-        bool wpF[50];
-        if (plan_id == "Plan0") {
-            std::memcpy(wpF, track_bands.wpFeasibility1, sizeof(bool) * 50);
-            closestPointFeasible = track_bands.fp1ClosestPointFeasible;
-        } else {
-            std::memcpy(wpF, track_bands.wpFeasibility2, sizeof(bool) * 50);
-        }
-        std::vector<bool> v(wpF, wpF + 50);
-        wpFeasibility[plan_id] = std::move(v);
-    }
 }
 
 void Cognition::InputSpeedBands(const bands_t &speed_bands){
@@ -266,37 +232,24 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
         double fac;
         if (fabs(speed_bands.resPreferred - speed_bands.resDown) < 1e-3) {
             // Preferred resolution is to slow down
-            fac = 0.8;
+            fac = 0.99;
         } else {
             // Preferred resolution is to speed up
-            fac = 1.2;
+            fac = 1.01;
         }
 
         // Use the provided resolution if it is valid
         if (!std::isinf(speed_bands.resPreferred) && !std::isnan(speed_bands.resPreferred)) {
             preferredSpeed = speed_bands.resPreferred * fac;
-            prevResSpeed = preferredSpeed;
         }
     }else{
-        // If there is no current speed conflict,
-        // check to make sure it is feasible to turn to the next waypoint
-        if (activePlan != nullptr) {
-            int next_wp_id = nextWpId[activePlan->getID()];
-            int num_waypoints = GetTotalWaypoints(activePlan->getID());
-            if (next_wp_id >= num_waypoints)
-                next_wp_id = num_waypoints - 1;
-            bool feasibility;
-            if (activePlan->getID() == "Plan0"){
-                feasibility = speed_bands.wpFeasibility1[next_wp_id];
-            }else{
-                feasibility = speed_bands.wpFeasibility2[next_wp_id];
-            }
-                
-            if (feasibility){
-                trafficSpeedConflict = false;
-            }           
-        }
+        trafficSpeedConflict = false;
+        preferredSpeed = prevResSpeed;
     }
+    std::memcpy(gsBandType,speed_bands.type,sizeof(int)*20);
+    std::memcpy(gsBandMin,speed_bands.min,sizeof(double)*20);
+    std::memcpy(gsBandMax,speed_bands.max,sizeof(double)*20);
+    gsBandNum = speed_bands.numBands;
 }
 
 void Cognition::InputAltBands(const bands_t &alt_bands){
@@ -311,8 +264,12 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
         trafficAltConflict = false;
         preferredAlt = prevResAlt;
     }
-    timeToTrafficViolation = alt_bands.timeToViolation[0];
+    timeToTrafficViolation1 = alt_bands.timeToViolation[0];
     timeToTrafficViolation2 = alt_bands.timeToViolation[1];
+    std::memcpy(altBandType,alt_bands.type,sizeof(int)*20);
+    std::memcpy(altBandMin,alt_bands.min,sizeof(double)*20);
+    std::memcpy(altBandMax,alt_bands.max,sizeof(double)*20);
+    altBandNum = alt_bands.numBands;
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
@@ -340,75 +297,9 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
         recoveryPosition = larcfm::Position::makeLatLonAlt(gf_conflict.recoveryPosition[0],"deg",
                                                        gf_conflict.recoveryPosition[1],"deg",
                                                        gf_conflict.recoveryPosition[2],"m");
-
     }else{
         keepOutConflict = false;
         keepInConflict = false;
-    }
-
-    
-   
-    std::string primary_plan_id = "Plan0";
-    if (nextWpId.count(primary_plan_id) > 0)
-    {
-        larcfm::Plan* fp = GetPlan("Plan0");
-        int next_wp_id = nextWpId[primary_plan_id];
-        int num_waypoints = GetTotalWaypoints(primary_plan_id);
-        for (int i = next_wp_id; i < num_waypoints; ++i)
-        {
-            if (!gf_conflict.waypointConflict1[i])
-            {
-                // Check to see that the next waypoint is not too close when
-                // dealing with a traffic conflict
-                if (parameters.resolutionType == 4 && trafficTrackConflict)
-                {
-                    double dist = position.distanceH(fp->getPos(i));
-                    // Consider a waypoint feasible if its greater than the 3*DTHR values.
-                    // Note DTHR is in ft. Convert from ft to m before comparing with dist.
-                    if (dist > 3 * (parameters.DTHR / 3))
-                    {
-                        nextFeasibleWpId[primary_plan_id] = i;
-                        break;
-                    }
-                }
-                else
-                {
-                    nextFeasibleWpId[primary_plan_id] = i;
-                    break;
-                }
-            }
-        }
-    }
-    if(primaryFPReceived){
-        int next_feasible_wp_id = nextFeasibleWpId[primary_plan_id];
-        bool direct_path_geofence = gf_conflict.directPathToWaypoint1[next_feasible_wp_id];
-        bool direct_path_traffic = wpFeasibility[primary_plan_id][next_feasible_wp_id];
-        directPathToFeasibleWP1 = direct_path_geofence && direct_path_traffic;
-    }else{
-        directPathToFeasibleWP1 = false;
-    }
-
-    if (activePlan != nullptr)
-    {
-        std::string plan_id = activePlan->getID();
-        // If secondary flight plan is active
-        if (plan_id != "Plan0")
-        {
-            int num_waypoints_secondary = GetTotalWaypoints(plan_id);
-            int secondary_wp_id = nextWpId[plan_id];
-            for (int i = secondary_wp_id; i < num_waypoints_secondary; ++i)
-            {
-                if (!gf_conflict.waypointConflict2[i])
-                {
-                    nextFeasibleWpId[plan_id] = i;
-                    break;
-                }
-            }
-            int next_feasible_wp_id = nextFeasibleWpId[plan_id];
-            bool direct_path_geofence = gf_conflict.directPathToWaypoint2[next_feasible_wp_id];
-            bool direct_path_traffic = wpFeasibility[plan_id].at(next_feasible_wp_id);
-            directPathToFeasibleWP2 = direct_path_geofence && direct_path_traffic;
-        }
     }
 }
 
@@ -611,7 +502,7 @@ int Cognition::FlightPhases(double time){
         case MERGING_PHASE:{
             if(mergingActive == 2 || mergingActive == 0){
                 fpPhase = CRUISE_PHASE;
-                SetGuidanceFlightPlan((char*)"Plan0",nextFeasibleWpId["Plan0"]);
+                SetGuidanceFlightPlan((char*)"Plan0",nextFeasibleWpId);
                 log << timeString + "| [FLIGHT_PHASES] | MERGING -> CRUISE" <<"\n";
             }else if(mergingActive == 3){
                 //printf("Setting guidance flightplan\n");
@@ -700,7 +591,6 @@ status_e Cognition::Cruise(){
 
             if(nextWpId["Plan0"] >= GetTotalWaypoints("Plan0")){
                 cruiseState = SUCCESS;
-                //printf("Completing cruise\n");
             }
             break;
        }
@@ -739,7 +629,9 @@ status_e Cognition::EmergencyDescent(){
 
     double trk = std::fmod(2*M_PI + ditchSite.track(positionA),2*M_PI);
     larcfm::Position positionB = ditchSite.linearDist2D(trk,todAltitude).mkAlt(todAltitude);
+    double trkGoal = positionA.track(positionB)*180/M_PI;
     larcfm::Velocity velocityA = velocity;
+    larcfm::Velocity velocityB = larcfm::Velocity::makeTrkGsVs(trkGoal,"degree",velocityA.gs(),"m/s",0,"m/s");
 
     switch(emergencyDescentState){
 
@@ -755,7 +647,7 @@ status_e Cognition::EmergencyDescent(){
             // Find a new path to the ditch site
             // Note that if a direct path is not availabe, this will find
             // a possible detour.
-            FindNewPath("DitchPath",positionA, velocityA, positionB);
+            FindNewPath("DitchPath",positionA, velocityA, positionB, velocityB);
 
             request = REQUEST_PROCESSING;
             emergencyDescentState = RUNNING;
@@ -825,81 +717,30 @@ status_e Cognition::EmergencyDescent(){
     return emergencyDescentState;
 }
 
-void Cognition::SetGuidanceVelCmd(const double track,const double gs,const double vs){
-    VelocityCommand velocity_command = {
-        .vn = gs*cos(track* M_PI/180),
-        .ve = gs*sin(track* M_PI/180),
-        .vu = vs
-    };
-    Command cmd = {.commandType = Command::VELOCITY_COMMAND};
-    cmd.velocityCommand = velocity_command;
-    cognitionCommands.push_back(cmd);
-}
 
-void Cognition::SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold){
-    SpeedChange speed_change = {"",speed, hold };
-    strcpy(speed_change.name,planID.c_str());
-    Command cmd = {.commandType = Command::SPEED_CHANGE_COMMAND};
-    cmd.speedChange = speed_change;
-    cognitionCommands.push_back(cmd);
-}
-
-void Cognition::SetGuidanceAltCmd(const std::string &planID,const double alt,const int hold){
-    AltChange alt_change = {"",alt, hold };
-    strcpy(alt_change.name,planID.c_str());
-    Command cmd = {.commandType = Command::ALT_CHANGE_COMMAND};
-    cmd.altChange = alt_change;
-    cognitionCommands.push_back(cmd);
-}
-
-void Cognition::SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index){
-    activePlan = GetPlan(plan_id);
-    nextWpId[plan_id] = wp_index;
-
-    FpChange fp_change;
-    std::memset(fp_change.name,0,25);
-    strcpy(fp_change.name,plan_id.c_str());
-    fp_change.wpIndex = wp_index;
-    fp_change.nextFeasibleWp = nextFeasibleWpId["Plan0"];
-    Command cmd = {.commandType = Command::FP_CHANGE};
-    cmd.fpChange = fp_change;
-    cognitionCommands.push_back(cmd);
-    log << timeString + "| [MODE] | Guidance Flightplan change, Plan: "<<plan_id<<", wp:"<<wp_index<<"\n";
-}
-
-void Cognition::SetGuidanceP2P(const larcfm::Position &point,const double speed){
-    P2PCommand p2p_command = {
-        .point = {point.latitude(), point.longitude(), point.alt()},
-        .speed = speed
-    };
-    Command cmd = {.commandType = Command::P2P_COMMAND};
-    cmd.p2PCommand = p2p_command;
-    cognitionCommands.push_back(cmd);
-}
-
-void Cognition::SendStatus(const char buffer[],const uint8_t severity){
-    StatusMessage status_message;
-    std::memset(status_message.buffer,0,250);
-    strcpy(status_message.buffer,buffer);
-    status_message.severity = severity;
-
-    Command cmd = {.commandType = Command::STATUS_MESSAGE};
-    cmd.statusMessage = status_message;
-    cognitionCommands.push_back(cmd);
-}
 
 bool Cognition::GeofenceConflictManagement(){
-   bool geofence_conflict = (keepInConflict || keepOutConflict) && !trafficConflict;
+   bool geofence_conflict = (keepInConflict || keepOutConflict) && !trafficConflict && planProjectedFenceConflict;
    switch(geofenceConflictState){
 
       case NOOPC:{
-         if(geofence_conflict){
-            SendStatus((char*)"IC: Geofence conflict detected",1);
+         if(planProjectedFenceConflict){
+             // Consider this as a conflict if projected time is within the time to turn around
+             if(timeToFenceViolation < 10){
+                 geofence_conflict = true;
+             }else{
+                 geofence_conflict = false;
+             }
+         }
 
+         if(geofence_conflict && (return2NextWPState == NOOPC || return2NextWPState == RESOLVE)){
+            SendStatus((char*)"IC: Geofence conflict detected",1);
             log << timeString + "| [CONFLICT] | Geofence conflict detected" <<"\n";
-            geofenceConflictState = INITIALIZE;
-            requestGuidance2NextWP = -1;
+            std::cout<<"Time to violation:"<<timeToFenceViolation<<std::endl;
             return2NextWPState = NOOPC;
+            geofenceConflictState = RESOLVE;
+            p2pComplete = true;
+            requestGuidance2NextWP = 1;
            break;
          }
          return false;
@@ -907,7 +748,7 @@ bool Cognition::GeofenceConflictManagement(){
 
       case INITIALIZE:{
          //TODO: Get recovery position
-         SetGuidanceP2P(recoveryPosition,parameters.resolutionSpeed);
+         SetGuidanceP2P(recoveryPosition,resolutionStartSpeed);
          geofenceConflictState = RESOLVE;
          p2pComplete = false;
          break;
@@ -927,7 +768,6 @@ bool Cognition::GeofenceConflictManagement(){
          // TODO: Fly to next waypoint
          requestGuidance2NextWP = 1;
          geofenceConflictState = NOOPC;
-         return2NextWPState = NOOPC;
          SendStatus((char*)"IC:Geofence resolution complete",6);
          log << timeString + "| [RESOLVED] | Geofence conflict resolved" <<"\n";
          break;
@@ -951,10 +791,11 @@ bool Cognition::XtrackManagement(){
 
    larcfm::Velocity interceptManeuver;
    double interceptHeading = GetInterceptHeadingToPlan(prev_wp_pos,next_wp_pos,position);
+   double gain = 0.6;
    ManeuverToIntercept(prev_wp_pos,
                        next_wp_pos,
-                       position,parameters.XtrackGain,
-                       parameters.resolutionSpeed,
+                       position,gain,
+                       resolutionStartSpeed,
                        parameters.allowedXtrackDeviation,
                        interceptManeuver);
 
@@ -982,7 +823,7 @@ bool Cognition::XtrackManagement(){
          //SetGuidanceVelCmd(larcfm::Units::to(larcfm::Units::deg,interceptManeuver.compassAngle()),
           //                 interceptManeuver.groundSpeed("m/s"),
            //                interceptManeuver.verticalSpeed("m/s"));
-         SetGuidanceVelCmd(interceptHeading, parameters.resolutionSpeed,0.0);
+         SetGuidanceVelCmd(interceptHeading, resolutionStartSpeed,0.0);
 
          if(!XtrackConflict){
             XtrackConflictState = COMPLETE;
@@ -1013,40 +854,30 @@ bool Cognition::XtrackManagement(){
 bool Cognition::TrafficConflictManagement(){
 
    // Check for traffic conflict
-   trafficConflict = trafficSpeedConflict | trafficAltConflict | trafficTrackConflict;
-  
+   trafficConflict = (trafficSpeedConflict || trafficAltConflict || trafficTrackConflict) && planProjectedTrafficConflict;
+   if(!trafficConflict && planProjectedTrafficConflict){
+       if(timeToTrafficViolation3 < parameters.lookaheadTime && parameters.resolutionType == SEARCH_RESOLUTION){ 
+          trafficConflict = true; 
+       }
+   }
    switch(trafficConflictState){
       case NOOPC:{
           
-         // Check to make sure the conflict is a real threat based on our target altitude
-         
          if(trafficConflict){
-            if(!std::isinf(timeToTrafficViolation) && !std::isnan(timeToTrafficViolation)){
-
-                double projAlt = position.alt() + velocity.verticalSpeed("m/s") * timeToTrafficViolation;
-                int wpid = nextWpId[activePlan->getID()];
-                double targetAlt = activePlan->getPos(wpid).alt();
-                if (fabs(projAlt - targetAlt) > parameters.ZTHR){
-                    trafficConflict = false;
-                }
-
-            }
-            if(trafficConflict){
-                SendStatus((char *)"IC:traffic conflict", 1);
-                log << timeString + "| [CONFLICT] | Traffic conflict detected"
-                    << "\n";
-                trafficConflictState = INITIALIZE;
-                requestGuidance2NextWP = -1;
-                newAltConflict = true;
-                break;
-            }
+             SendStatus((char *)"IC:traffic conflict", 1);
+             log << timeString + "| [CONFLICT] | Traffic conflict detected"
+                 << "\n";
+             trafficConflictState = INITIALIZE;
+             requestGuidance2NextWP = -1;
+             newAltConflict = true;
+             break;
          }
          return false;
       }
 
       case INITIALIZE:{
          trafficConflictState = RESOLVE;
-         prevResSpeed  = parameters.resolutionSpeed;
+         prevResSpeed  = resolutionStartSpeed;
          prevResTrack  = hdg;
          prevResAlt    = larcfm::Units::to(larcfm::Units::m,position.alt());
          prevResVspeed = larcfm::Units::to(larcfm::Units::mps,velocity.vs());
@@ -1114,7 +945,7 @@ bool Cognition::TrafficConflictManagement(){
          if(parameters.resolutionType == SPEED_RESOLUTION){
             requestGuidance2NextWP = -1;
             trafficConflictState = NOOPC;
-            SetGuidanceSpeedCmd(activePlan->getID(),parameters.resolutionSpeed);
+            SetGuidanceSpeedCmd(activePlan->getID(),resolutionStartSpeed);
             sendStatus = true;
          }
 
@@ -1161,14 +992,11 @@ bool Cognition::RunTrafficResolution(){
 
       case SPEED_RESOLUTION:{
          //printf("resolution speed = %f\n",preferredSpeed);
-         if(preferredSpeed >= 0){
+         if(fabs(preferredSpeed - prevResSpeed) >= 0.1){
             SetGuidanceSpeedCmd(activePlan->getID(),preferredSpeed);
             prevResSpeed = preferredSpeed;
-         }else{
-            SetGuidanceSpeedCmd(activePlan->getID(),prevResSpeed);
          }
-
-         returnSafe = NextWpFeasible();
+         returnSafe = ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
          break;
       }
 
@@ -1191,7 +1019,7 @@ bool Cognition::RunTrafficResolution(){
             prevResAlt = alt_pref;
          }
 
-         returnSafe = NextWpFeasible();
+         returnSafe = ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
 
          break;
       }
@@ -1199,23 +1027,23 @@ bool Cognition::RunTrafficResolution(){
       case TRACK_RESOLUTION:
       case TRACK_RESOLUTION2:{
          //printf("executing traffic resolution\n");
-         double speed = parameters.resolutionSpeed;
+         double speed = resolutionStartSpeed;
          double climb_rate = 0;
          SetGuidanceVelCmd(preferredTrack,speed,climb_rate);
          prevResTrack = preferredTrack;
 
-         double intercept_heading_to_plan = GetInterceptHeadingToPlan(GetPrevWP(),GetNextWP(),position);
-         returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
-
-         if(returnSafe){
-            returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);   
+         
+         if(parameters.resolutionType == TRACK_RESOLUTION){
+            returnSafe  = ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
+         }else{
+            larcfm::Position clstPoint = GetNearestPositionOnPlan(GetPrevWP(),GetNextWP(),position);
+            returnSafe  = ComputeTargetFeasibility(clstPoint);
          }
-
          break;
       }
 
       case VERTICALSPEED_RESOLUTION:{
-         double speed = parameters.resolutionSpeed;
+         double speed = resolutionStartSpeed;
          double res_up = resVUp;
          double res_down = resVDown;
          // If there is a valid up resolution, execute up resolution.
@@ -1270,12 +1098,7 @@ bool Cognition::RunTrafficResolution(){
          }
 
          SetGuidanceVelCmd(outTrack,outSpeed,outVS);
-         double intercept_heading_to_plan = GetInterceptHeadingToPlan(GetPrevWP(),GetNextWP(),position);
-         returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
-
-         if(returnSafe){
-            returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
-         }
+         returnSafe = ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
       }
 
       default:{
@@ -1295,7 +1118,7 @@ bool Cognition::ReturnToNextWP(){
 
       case NOOPC:{
 
-         if (keepInConflict || keepOutConflict || trafficConflict){
+         if (trafficConflict){
             return false;
          }
 
@@ -1311,7 +1134,7 @@ bool Cognition::ReturnToNextWP(){
          std::string returningPlan("Plan0");
          // Currently only consider return to nominal mission plan
          //returningPlan = activePlan->getID();
-         nextWpId[returningPlan] = nextFeasibleWpId[returningPlan];
+         nextWpId[returningPlan] = nextFeasibleWpId;
          return2NextWPState = COMPUTE;
          request = REQUEST_NIL;
          log << timeString + "| [CONFLICT] | Returning to "<<returningPlan<<" wp:"<<nextWpId[returningPlan]<<"\n";
@@ -1327,13 +1150,15 @@ bool Cognition::ReturnToNextWP(){
             numSecPaths++;
             std::string pathName = "Plan" + std::to_string(numSecPaths);
             larcfm::Position positionB;
-            nextWpId[activePlan->getID()] = nextFeasibleWpId[activePlan->getID()];
+            nextWpId[activePlan->getID()] = nextFeasibleWpId;
             positionB = GetNextWP();
 
 
             larcfm::Position positionA = position;
             larcfm::Velocity velocityA = velocity;
-            FindNewPath(pathName,positionA, velocityA, positionB);
+            larcfm::Velocity velocityB = GetNextWPVelocity();
+            std::cout<<"velocityB:"<<velocityB.toString()<<std::endl;
+            FindNewPath(pathName,positionA, velocityA, positionB, velocityB);
             request = REQUEST_PROCESSING;
             SendStatus((char*)"IC:Computing secondary path",6);
 
@@ -1366,14 +1191,15 @@ bool Cognition::ReturnToNextWP(){
          }else{
             int next_secondary_wp_id = nextWpId[plan_id];
             int num_secondary_wps = GetTotalWaypoints(plan_id);
-            if(next_secondary_wp_id > (ceil((float)(num_secondary_wps-1))/2)){
-               if (keepInConflict || keepOutConflict || trafficConflict){
+            /*
+            //if(next_secondary_wp_id > (ceil((float)(num_secondary_wps-1))/2)){
+               if (trafficConflict){
                   log << timeString + "| [STATUS] | Incomplete termination of return to path: " <<next_secondary_wp_id<<"/"<<num_secondary_wps<<"\n";
                   return2NextWPState = NOOPC;
                   requestGuidance2NextWP = 1;
                   return false;
                }
-            }
+            //}*/
          }
          break;
       }
@@ -1393,36 +1219,21 @@ bool Cognition::ReturnToNextWP(){
    return true;
 }
 
-bool Cognition::CheckSafeToTurn(const double from_heading,const double to_heading) {
-   bool conflict = false;
-   for (int i = 0; i < trkBandNum; i++)
-   {
-      bool val = false;
-      if(trkBandType[i] != 1 && trkBandType[i] != 5){
-      val = CheckTurnConflict(trkBandMin[i],
-                              trkBandMax[i],
-                              from_heading, to_heading);
-      }
-      conflict |= val;
-   }
-
-   conflict |= !NextWpFeasible();
-
-   return !conflict;
-}
-
 void Cognition::FindNewPath(const std::string &PlanID,
                             const larcfm::Position &positionA,
                             const larcfm::Velocity &velocityA,
-                            const larcfm::Position &positionB){
+                            const larcfm::Position &positionB,
+                            const larcfm::Velocity &velocityB){
     FpRequest fp_request = {
-         parameters.searchType,
         "",
         {positionA.latitude(), positionA.longitude(), positionA.alt()},
         {positionB.latitude(), positionB.longitude(), positionB.alt()},
         {larcfm::Units::to(larcfm::Units::deg,velocityA.trk()), 
          larcfm::Units::to(larcfm::Units::mps,velocityA.gs()), 
-         larcfm::Units::to(larcfm::Units::mps,velocityA.vs())}
+         larcfm::Units::to(larcfm::Units::mps,velocityA.vs())},
+        {larcfm::Units::to(larcfm::Units::deg,velocityB.trk()), 
+         larcfm::Units::to(larcfm::Units::mps,velocityB.gs()), 
+         larcfm::Units::to(larcfm::Units::mps,velocityB.vs())}
     };
     strcpy(fp_request.name,PlanID.c_str());
     Command cmd = {.commandType=Command::FP_REQUEST};
@@ -1436,37 +1247,65 @@ void Cognition::GetResolutionType(){
    //
 }
 
-bool Cognition::TimeManagement(){
-   if(!wpMetricTime){
-      return false;
-   }
-   larcfm::Position currPosition = position;
-   larcfm::Position nextPosition = GetNextWP();
+void Cognition::SetGuidanceVelCmd(const double track,const double gs,const double vs){
+    VelocityCommand velocity_command = {
+        .vn = gs*cos(track* M_PI/180),
+        .ve = gs*sin(track* M_PI/180),
+        .vu = vs
+    };
+    Command cmd = {.commandType = Command::VELOCITY_COMMAND};
+    cmd.velocityCommand = velocity_command;
+    cognitionCommands.push_back(cmd);
+}
 
-   double dist_to_next_wp = currPosition.distanceH(nextPosition);
-   double current_speed = velocity.norm();
-   time_t curr_time = time(NULL);
-   time_t scenario_time = scenarioTime;
-   time_t next_wp_sta = scenario_time + (long)refWpTime;
-   time_t next_wp_eta = curr_time + dist_to_next_wp/current_speed;
-   double arr_tolerance = 3; //TODO: Make this a user defined parameter
-   double max_speed = 7;     //TODO: Make parameter
-   double min_speed = 0.5;   //TODO: Make parameter
-   double new_speed;
+void Cognition::SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold){
+    SpeedChange speed_change = {"",speed, hold };
+    strcpy(speed_change.name,planID.c_str());
+    Command cmd = {.commandType = Command::SPEED_CHANGE_COMMAND};
+    cmd.speedChange = speed_change;
+    cognitionCommands.push_back(cmd);
+}
 
-   if (labs(next_wp_sta - next_wp_eta) > arr_tolerance){
-      new_speed = dist_to_next_wp/(next_wp_sta - curr_time);
-      if(new_speed > max_speed){
-         new_speed = max_speed;
-      }else{
-         if(new_speed < min_speed){
-            new_speed = min_speed;
-         }
-      }
+void Cognition::SetGuidanceAltCmd(const std::string &planID,const double alt,const int hold){
+    AltChange alt_change = {"",alt, hold };
+    strcpy(alt_change.name,planID.c_str());
+    Command cmd = {.commandType = Command::ALT_CHANGE_COMMAND};
+    cmd.altChange = alt_change;
+    cognitionCommands.push_back(cmd);
+}
 
+void Cognition::SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index){
+    activePlan = GetPlan(plan_id);
+    nextWpId[plan_id] = wp_index;
 
-      SetGuidanceSpeedCmd(activePlan->getID(),new_speed);
-      return true;
-   }
-   return false;
+    FpChange fp_change;
+    std::memset(fp_change.name,0,25);
+    strcpy(fp_change.name,plan_id.c_str());
+    fp_change.wpIndex = wp_index;
+    fp_change.nextFeasibleWp = nextFeasibleWpId;
+    Command cmd = {.commandType = Command::FP_CHANGE};
+    cmd.fpChange = fp_change;
+    cognitionCommands.push_back(cmd);
+    log << timeString + "| [MODE] | Guidance Flightplan change, Plan: "<<plan_id<<", wp:"<<wp_index<<"\n";
+}
+
+void Cognition::SetGuidanceP2P(const larcfm::Position &point,const double speed){
+    P2PCommand p2p_command = {
+        .point = {point.latitude(), point.longitude(), point.alt()},
+        .speed = speed
+    };
+    Command cmd = {.commandType = Command::P2P_COMMAND};
+    cmd.p2PCommand = p2p_command;
+    cognitionCommands.push_back(cmd);
+}
+
+void Cognition::SendStatus(const char buffer[],const uint8_t severity){
+    StatusMessage status_message;
+    std::memset(status_message.buffer,0,250);
+    strcpy(status_message.buffer,buffer);
+    status_message.severity = severity;
+
+    Command cmd = {.commandType = Command::STATUS_MESSAGE};
+    cmd.statusMessage = status_message;
+    cognitionCommands.push_back(cmd);
 }

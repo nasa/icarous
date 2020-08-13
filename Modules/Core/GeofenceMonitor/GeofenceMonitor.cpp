@@ -110,7 +110,9 @@ bool GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
                                                     LLA.altitude(), "ft");
 
             Vect2 vel = currentVel.vect2();
-            if (CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead) && vel.norm() >= 0.1) {
+            double t = hthreshold/std::max(vel.norm(),0.01);
+            double tHorizon = std::max(t,lookahead);
+            if (CollisionDetection(gf, &currentPosLLA, &vel, 0, tHorizon) && vel.norm() >= 0.1) {
                 conflict = true;
                 //printf("keep out conflict\n");
             } else {

@@ -479,6 +479,7 @@ bool Merger::CheckIntersectionConflict(void)
         {
             Release[i] = 0;
             Deadline[i] = 0;
+            arrivalTime[i] = 0;
             continue;
         }
         Release[i] = globalArrivalData[i].earlyArrivalTime;

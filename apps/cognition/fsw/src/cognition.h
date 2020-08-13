@@ -69,9 +69,6 @@ typedef struct{
     CFE_SB_MsgPtr_t    SchMsgPtr;          ///< msg pointer to SB message
     CFE_TBL_Handle_t   CogtblHandle;       ///< table handle
 
-    flightplan_monitor_t fp1monitor;
-    flightplan_monitor_t fp2monitor;
-
     position_t position;                   ///< position message
     attitude_t attitude;                   ///< attitude message
 

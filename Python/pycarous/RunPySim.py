@@ -67,7 +67,7 @@ else:
 ic.SetParametersFromFile(args.params)
 
 # Input flightplan
-ic.InputFlightplanFromFile(args.flightplan)
+ic.InputFlightplanFromFile(args.flightplan,repair=False)
 
 # Input geofences from file
 if args.geofence != '':

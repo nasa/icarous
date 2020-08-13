@@ -221,6 +221,7 @@ class SimEnvironment:
                 self.count += 1
                 self.current_time += self.dT
                 self.RunSimulatedTraffic()
+                print("Sim Duration: %.1fs" % (duration), end="\r")
             else:
                 time_now = time.time()
                 if time_now - self.current_time >= self.dT:
@@ -270,9 +271,9 @@ class SimEnvironment:
         self.ConvertLogsToLocalCoordinates()
 
     def ConvertLogsToLocalCoordinates(self):
-        for ic in self.icInstances:
-            ic.home_pos = self.home_gps
-            to_local = ic.ConvertToLocalCoordinates
+        # Convert flightplans from all instances to a common reference frame
+        to_local = self.icInstances[0].ConvertToLocalCoordinates
+        for i, ic in enumerate(self.icInstances):
             posNED = list(map(to_local, ic.ownshipLog["position"]))
             ic.ownshipLog["positionNED"] = posNED
             for tfid in ic.trafficLog.keys():
@@ -282,7 +283,12 @@ class SimEnvironment:
             ic.localFences = []
             ic.localMergeFixes = []
             for plan in ic.plans:
-                localFP = list(map(to_local, plan))
+                wps = [[wp.latitude,wp.longitude,wp.altitude] for wp in plan]
+                times = [wp.time for wp in plan]
+                tcps = [[*wp.tcp] for wp in plan]
+                tcpValues = [[*wp.tcpValue] for wp in plan]
+                localwps = list(map(to_local,wps))
+                localFP = [[val[0],*val[1],*val[2],*val[3]] for val in zip(times,localwps,tcps,tcpValues)]
                 ic.localPlans.append(localFP)
             for fence in ic.fences:
                 localFence = list(map(to_local, fence))

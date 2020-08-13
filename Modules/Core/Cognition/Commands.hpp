@@ -51,11 +51,11 @@ typedef struct{
 
 // Command structure containing data for a new flightplan request
 typedef struct{
-    int searchType;
     char name[25];
     double fromPosition[3];
     double toPosition[3];
     double startVelocity[3];
+    double endVelocity[3];
 }FpRequest;
 
 // Command structure containing data for a new flightplan request

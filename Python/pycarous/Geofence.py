@@ -1,33 +1,4 @@
 from ctypes import *
-import xml.etree.ElementTree as ET
-
-
-
-def Getfence(filename):
-    '''add geofences from a file'''
-    tree = ET.parse(filename)
-    root = tree.getroot()        
-    fenceList = []    
-    for child in root:
-        id    = int(child.get('id'));
-        type  = int(child.find('type').text);
-        numV  = int(child.find('num_vertices').text);            
-        floor = float(child.find('floor').text);
-        roof  = float(child.find('roof').text);
-        Vertices = [];
-    
-        if(len(child.findall('vertex')) >= numV):        
-            for vertex in child.findall('vertex'):
-                coord = (float(vertex.find('lat').text),
-                         float(vertex.find('lon').text))
-            
-                Vertices.append(coord)
-
-        # Check geofence niceness
-        Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
-                    'roof':roof,'Vertices':Vertices[:numV]}
-        fenceList.append(Geofence)
-    return fenceList
 
 class GeofenceMonitor():
     def __init__(self,params):
@@ -40,7 +11,7 @@ class GeofenceMonitor():
         self.lib.GeofenceMonitor_CheckViolation.restype = c_bool 
         self.lib.GeofenceMonitor_GetNumConflicts.argtypes = [c_void_p]
         self.lib.GeofenceMonitor_GetNumConflicts.restype = c_int
-        self.lib.GeofenceMonitor_GetConflict.argtypes = [c_void_p,c_int,POINTER(c_int),POINTER(c_bool),POINTER(c_bool),POINTER(c_double),POINTER(c_int)]
+        self.lib.GeofenceMonitor_GetConflict.argtypes = [c_void_p,c_int,POINTER(c_int),POINTER(c_bool),POINTER(c_bool),POINTER(c_double),POINTER(c_double),POINTER(c_int)]
         self.lib.GeofenceMonitor_GetCloesetRecoveryPoint = [c_void_p,c_double*3,c_double*3]
         self.lib.GeofenceMonitor_CheckWPFeasibility.argtypes = [c_void_p,c_double*3,c_double*3]
         self.lib.GeofenceMonitor_CheckWPFeasibility.restype = c_bool
@@ -84,13 +55,15 @@ class GeofenceMonitor():
         conflict = c_bool()
         violation = c_bool()
         recPoint = Pos()
+        time = c_double()
         ftype = c_int()
         self.lib.GeofenceMonitor_GetConflict(self.module,c_int(count),byref(fid),
                                         byref(conflict),
                                         byref(violation),
                                         recPoint,
+                                        byref(time),
                                         byref(ftype))
-        return (fid.value,conflict.value,violation.value,recPoint,ftype.value)
+        return (fid.value,conflict.value,violation.value,recPoint,time.value,ftype.value)
 
     def CheckWPFeasibility(self,pos,wp):
         Pos = c_double*3

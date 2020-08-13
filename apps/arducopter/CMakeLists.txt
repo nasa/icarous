@@ -9,6 +9,8 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 include_directories(${MODULES_ROOT}/Core/Utils)
 include_directories(${MODULES_ROOT}/Core/Interfaces)
 include_directories(${MODULES_ROOT}/Core/Guidance)
+include_directories(${MODULES_ROOT}/Core/TrajectoryManager/DubinsPlanner)
+
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(../scheduler/fsw/platform_inc)
 include_directories(../traffic/fsw/platform_inc)

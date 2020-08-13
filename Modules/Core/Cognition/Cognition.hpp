@@ -16,6 +16,8 @@
 #include "Interfaces.h"
 #include "Position.h"
 #include "Velocity.h"
+#include "Projection.h"
+#include "EuclideanProjection.h"
 #include "Units.h"
 #include "Plan.h"
 
@@ -106,12 +108,9 @@ class Cognition{
 
         void InputVehicleState(const larcfm::Position &pos,const larcfm::Velocity &vel,const double heading);
 
-        void InputFlightPlanData(const std::string &plan_id,
-                                 const double scenario_time,
-                                 const int wp_id,
-                                 const larcfm::Position &wp_position,
-                                 const int wp_metric,
-                                 const double wp_value);
+        void InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,const double initHeading,bool repair);
+
+        void InputTrajectoryMonitorData(const trajectoryMonitorData_t& tjMonData);
 
         void InputParameters(const cognition_params_t &new_params);
 
@@ -151,9 +150,9 @@ class Cognition{
 
         larcfm::Position GetNextWP();
 
-        larcfm::Position GetPrevWP();
+        larcfm::Velocity GetNextWPVelocity();
 
-        bool NextWpFeasible();
+        larcfm::Position GetPrevWP();
 
         bool CheckPlanComplete(const std::string &plan_id);
 
@@ -164,8 +163,6 @@ class Cognition{
         bool ReturnToNextWP();
 
         bool XtrackManagement();
-
-        bool TimeManagement();
 
         status_e Takeoff();
 
@@ -183,7 +180,9 @@ class Cognition{
 
         bool RunTrafficResolution();
 
-        bool CheckSafeToTurn(const double from_heading,const double to_heading);
+        bool CheckProjectedTrafficConflict();
+
+        bool ComputeTargetFeasibility(larcfm::Position target);
 
         void SetGuidanceVelCmd(const double track,const double gs,const double vs);
 
@@ -195,7 +194,8 @@ class Cognition{
 
         void FindNewPath(const std::string &planID,const larcfm::Position &positionA,
                          const larcfm::Velocity &velocityA,
-                         const larcfm::Position &positionB);
+                         const larcfm::Position &positionB,
+                         const larcfm::Velocity &velocityB);
 
         void SetGuidanceP2P(const larcfm::Position &point,const double speed);
 
@@ -207,10 +207,9 @@ class Cognition{
                                      const larcfm::Position &next_wp,
                                      const larcfm::Position &pos,
                                      double offset[]);
-        void GetPositionOnPlan(const larcfm::Position &prev_wp,
+        larcfm::Position GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
                                const larcfm::Position &next_wp,
-                               const larcfm::Position &current_pos,
-                               larcfm::Position &position_on_plan);
+                               const larcfm::Position &current_pos);
         void ManeuverToIntercept(const larcfm::Position &prev_wp,
                                  const larcfm::Position &next_wp,
                                  const larcfm::Position &curr_position,
@@ -237,10 +236,8 @@ class Cognition{
         larcfm::Plan* activePlan;                   ///< Pointer to the active flight plan
         std::map<std::string,int> nextWpId;         ///< Map from flight plan id to next waypoint id
 
-        std::map<std::string,int> nextFeasibleWpId;             ///< Map from flight plan id to next feasible waypoint id
-        std::map<std::string,std::vector<bool>> wpFeasibility;  ///< Map from flight plan id to vector of wp feasibility
-        std::map<std::string,std::vector<bool>> wpMetricEta;    ///< Map from flight plan id to vector of wp metric type
-        bool closestPointFeasible;                              ///< Feasibility of nearest point on primary flight plan
+        int nextFeasibleWpId;                        ///< to next feasible waypoint id
+        bool closestPointFeasible;                   ///< Feasibility of nearest point on primary flight plan
 
         bool primaryFPReceived;
         bool trackRecovery;
@@ -248,8 +245,10 @@ class Cognition{
         bool altRecovery;
         bool vsRecovery;
         double scenarioTime;
-        double timeToTrafficViolation;
-        double timeToTrafficViolation2;
+        double timeToTrafficViolation1;        ///< time in to violation from DAA
+        double timeToTrafficViolation2;        ///< time out of violation from DAA
+        double timeToTrafficViolation3;        ///< time in to violation from Trajectory Monitor
+        double timeToFenceViolation;
 
         // Aircraft state information
         larcfm::Position position;
@@ -271,7 +270,12 @@ class Cognition{
         bool trafficAltConflict;
         bool newAltConflict;
 
+        // Conflict flags based on flightplan projections
+        bool planProjectedTrafficConflict;
+        bool planProjectedFenceConflict;
+
         bool returnSafe;
+        double resolutionStartSpeed;
 
         double preferredTrack;
         double preferredSpeed;
@@ -291,6 +295,16 @@ class Cognition{
         int trkBandType[20];
         double trkBandMin[20];
         double trkBandMax[20];
+
+        int gsBandNum;
+        int gsBandType[20];
+        double gsBandMin[20];
+        double gsBandMax[20];
+
+        int altBandNum;
+        int altBandType[20];
+        double altBandMin[20];
+        double altBandMax[20];
 
         // Flight plan monitoring related variables
         bool XtrackConflict;

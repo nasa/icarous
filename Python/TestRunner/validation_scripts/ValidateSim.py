@@ -38,6 +38,7 @@ def get_planned_waypoints(simdata):
         return range(len(simdata["waypoints"]))
 
     planned_wps = []
+    origin = simdata["ownship"]["position"][0]
     geofences = GetPolygons(simdata["ownship"]["localFences"])
     keep_in_fence = geofences[0]
     keep_out_fences = geofences[1:]
@@ -45,7 +46,7 @@ def get_planned_waypoints(simdata):
 
     for i, wp in enumerate(waypoints):
         reachable = True
-        s = Vector(wp[1], wp[0])
+        s = Vector(wp[2], wp[1])
 
         # Check for keep in fence violations
         if not definitely_inside(keep_in_fence, s, 0.01):
@@ -90,6 +91,7 @@ def verify_waypoint_progress(simdata):
     '''Check simulation data for progress towards goal'''
     condition_name = "Waypoint Progress"
     wp_radius = validation_params["wp_radius"]
+    origin = simdata["ownship"]["position"][0]
     waypoints = simdata["ownship"]["localPlans"][0]
     pos_local = simdata["ownship"]["positionNED"]
 
@@ -98,7 +100,7 @@ def verify_waypoint_progress(simdata):
         # Check for reached waypoints
         for wp_seq, wp_pos in enumerate(waypoints):
             # If within wp_radius, add to reached
-            dist = np.sqrt((pos[0] - wp_pos[0])**2 + (pos[1] - wp_pos[1])**2)
+            dist = np.sqrt((pos[0] - wp_pos[1])**2 + (pos[1] - wp_pos[2])**2)
             if dist < wp_radius and wp_seq not in reached:
                 #print("reached", wp[3], pos)
                 reached.append(wp_seq)
@@ -187,7 +189,7 @@ def plot_scenario(simdata, output_dir="", save=False):
     # Plot waypoints
     for plan in simdata["ownship"]["localPlans"]:
         waypoints = np.array(plan)
-        plt.plot(waypoints[:, 1], waypoints[:, 0], 's--', color='gray')
+        plt.plot(waypoints[:, 2], waypoints[:, 1], 's--', color='gray')
 
     # Plot fences
     for i, fence in enumerate(simdata["ownship"]["localFences"]):

@@ -60,6 +60,7 @@ void GUIDANCE_AppInit(void) {
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_PARAMETERS_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
     CFE_TBL_Handle_t tblHandle;
@@ -122,16 +123,18 @@ void GUIDANCE_ProcessPacket(void){
         case ICAROUS_FLIGHTPLAN_MID:
         case ICAROUS_TRAJECTORY_MID:{
             flightplan_t *fp = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
+            waypoint_t wp[MAX_WAYPOINTS];
             for (int i=0;i<fp->num_waypoints;++i){
-                double wp[3] = {fp->waypoints[i].latitude,
-                                fp->waypoints[i].longitude,
-                                fp->waypoints[i].altitude};
-                bool eta = fp->waypoints[i].wp_metric == WP_METRIC_ETA?true:false;
-                double value = fp->waypoints[i].value;
-                guidInputFlightplanData(guidanceAppData.Guidance,
-                                    fp->id,fp->scenario_time,i,wp,eta,value);
+                wp[i] = fp->waypoints[i];
             }
+            guidInputFlightplanData(guidanceAppData.Guidance,fp->id,wp,fp->num_waypoints,0,false);
+            SetGuidanceMode(guidanceAppData.Guidance,0,fp->id,0,false);
             break;
+        }
+
+        case ICAROUS_STARTMISSION_MID:{
+            // This sets the proper times for the plans
+            SetGuidanceMode(guidanceAppData.Guidance,0,"Plan0",0,false);
         }
 
         
@@ -181,7 +184,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
     switch((int)cmd->name){
         case FLIGHTPLAN:{
             strcpy(guidanceAppData.activePlan,cmd->buffer);
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,cmd->buffer,(int)cmd->param1);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,cmd->buffer,(int)cmd->param1,false);
             char buffer[100];
             memset(buffer,0,sizeof(char)*100);
             sprintf(buffer,"Following flightplan %s to waypoint %d",cmd->buffer,(int)cmd->param1);
@@ -196,26 +199,28 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,trkgsvs,trkgsvs+1,trkgsvs+2);
             guidInputVelocityCmd(guidanceAppData.Guidance,trkgsvs);
             char name[] = "";
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,0);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,0,false);
             break;
         }
         
         case POINT2POINT:{
-            double pointA[3] = {guidanceAppData.pos.latitude,
-                                  guidanceAppData.pos.longitude,
-                                  guidanceAppData.pos.altitude_abs};
-            double pointB[3] = {cmd->param1,cmd->param2,cmd->param3};
             double speed = cmd->param4;
+            double pointA[4] = {guidanceAppData.pos.latitude,guidanceAppData.pos.longitude,guidanceAppData.pos.altitude_abs};
+            double pointB[3] = {cmd->param1,cmd->param2,cmd->param3};
+            waypoint_t wps[2];
+            wps[0].latitude = guidanceAppData.pos.latitude;
+            wps[0].longitude = guidanceAppData.pos.longitude;
+            wps[0].altitude = guidanceAppData.pos.altitude_abs;
+            wps[1].latitude  = cmd->param1;
+            wps[1].longitude = cmd->param2;
+            wps[1].altitude = cmd->param3; 
+            wps[1].time = ComputeDistance(pointA,pointB)/speed;
+
             char name[] = "P2P";
-            for(int i=0;i<2;++i){
-                if (i == 0)
-                    guidInputFlightplanData(guidanceAppData.Guidance,name,0,i,pointA,false,speed);
-                else
-                    guidInputFlightplanData(guidanceAppData.Guidance,name,0,i,pointB,false,speed);
+            guidInputFlightplanData(guidanceAppData.Guidance,name,wps,2,0,false);
 
-            }
 
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1,false);
             SetStatus(guidanceAppData.statustxt,"Point to point control",SEVERITY_INFO);
             guidanceAppData.sentPos = false;
             guidanceAppData.lastReachedWaypoint = -1;
@@ -236,7 +241,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
         case LAND:{
 
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,(char*)"LAND",0);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,(char*)"LAND",0,false);
             argsCmd_t cmd1;
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
@@ -252,7 +257,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             strcpy(planID,cmd->buffer);
             double speed = cmd->param1;
             bool hold = cmd->param2==1?true:false;
-            ChangeWaypointSpeed(guidanceAppData.Guidance,planID,0,speed,hold);
+            ChangeWaypointSpeed(guidanceAppData.Guidance,planID,-1,speed,hold);
 
             argsCmd_t speedChange;
             CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
@@ -267,7 +272,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             strcpy(planID,cmd->buffer);
             double alt = cmd->param1;
             bool hold = cmd->param2==1?true:false;
-            ChangeWaypointAlt(guidanceAppData.Guidance,planID,0,alt,hold);
+            ChangeWaypointAlt(guidanceAppData.Guidance,planID,-1,alt,hold);
             break;
         }
 

@@ -1,5 +1,6 @@
 from ctypes import *
 from enum import IntEnum
+from Interfaces import Waypoint
 
 class GuidanceMode(IntEnum):
     FLIGHTPLAN = 0
@@ -50,14 +51,16 @@ class Guidance():
           self.lib.InitGuidance.restype  = c_void_p
           self.lib.guidSetParams.argtypes = [c_void_p,POINTER(GuidanceParam)]
           self.lib.guidSetAircraftState.argtypes = [c_void_p,c_double*3,c_double*3]
-          self.lib.guidInputFlightplanData.argtypes = [c_void_p,c_char_p,c_double,c_int,c_double*3,c_bool,c_double]
+          self.lib.guidInputFlightplanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool]
           self.lib.RunGuidance.argtypes = [c_void_p, c_double]
           self.lib.guidInputVelocityCmd.argtypes = [c_void_p, c_double*3]
           self.lib.guidGetOutput.argtypes = [c_void_p,POINTER(GuidanceOutput)]
-          self.lib.SetGuidanceMode.argtypes = [c_void_p,c_int,c_char_p,c_int]
+          self.lib.SetGuidanceMode.argtypes = [c_void_p,c_int,c_char_p,c_int,c_bool]
           self.lib.ChangeWaypointSpeed.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
           self.lib.ChangeWaypointAlt.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
           self.lib.ChangeWaypointETA.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
+          self.lib.guidGetWaypoint.argtypes = [c_void_p,c_char_p,c_int,POINTER(Waypoint)]
+          self.lib.guidGetWaypoint.restype = c_int
           self.obj = self.lib.InitGuidance(byref(param))
 
      def SetGuidanceParams(self,param):
@@ -68,12 +71,26 @@ class Guidance():
           cvel = double3(*vel)
           self.lib.guidSetAircraftState(self.obj,cpos,cvel)
 
-     def InputFlightplanData(self,planID,scenarioTime,fp,eta=False):
+     def GetKinematicPlan(self,planID):
+          id = 0
+          totalWP = 1
+          fp = []
+          while id < totalWP:
+               wp = Waypoint()
+               totalWP = self.lib.guidGetWaypoint(self.obj,c_char_p(planID.encode('utf-8')),c_int(id),byref(wp))
+               id += 1
+               fp.append(wp)
+          
+          return fp
+
+     def InputFlightplanData(self,planID,fp,repair=False):
+          n = len(fp)
+          wparray = Waypoint*50
+          wpts = wparray()
           for i,wp in enumerate(fp):
-               cpos = double3(*wp[:3])
-               val  = wp[3]
-               self.lib.guidInputFlightplanData(self.obj,c_char_p(planID.encode('utf-8')),c_double(scenarioTime),
-                                      c_int(i),cpos,c_bool(eta),c_double(val))
+               wpts[i] = wp
+          self.lib.guidInputFlightplanData(self.obj,c_char_p(planID.encode('utf-8')),
+                                          wpts,c_int(n),c_double(0),c_bool(repair))
 
      def RunGuidance(self,time):
           self.lib.RunGuidance(self.obj,c_double(time))
@@ -87,8 +104,8 @@ class Guidance():
           self.lib.guidGetOutput(self.obj,byref(output))
           return output
 
-     def SetGuidanceMode(self,mode,planID,nextWP):
-          self.lib.SetGuidanceMode(self.obj,c_int(mode),c_char_p(planID.encode('utf-8')),c_int(nextWP))
+     def SetGuidanceMode(self,mode,planID,nextWP,eta=False):
+          self.lib.SetGuidanceMode(self.obj,c_int(mode),c_char_p(planID.encode('utf-8')),c_int(nextWP),c_bool(eta))
 
      def ChangeWaypointSpeed(self,planID,wpID,val,updateAll):
           self.lib.ChangeWaypointSpeed(self.obj,c_char_p(planID.encode('utf-8')),c_int(wpID),c_double(val),c_bool(updateAll))

@@ -8,6 +8,7 @@ set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 set(SOURCE_FILES Guidance.cpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Utils)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Interfaces)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 

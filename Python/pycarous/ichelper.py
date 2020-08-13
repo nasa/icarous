@@ -1,6 +1,7 @@
 import math
 import random
 import numpy as np
+import xml.etree.ElementTree as ET
 
 radius_of_earth = 6378100.0
 
@@ -57,8 +58,12 @@ def ConvertVnedToTrkGsVs(vn,ve,vz):
 
 def ComputeHeading(start,end):
     relvec = [end[0]-start[0],end[1]-start[1],end[2]-start[2]]
-    (trk,gs,vs) = ConvertVnedToTrkGsVs(relvec[1],relvec[0],-relvec[2])
+    (trk,gs,vs) = ConvertVnedToTrkGsVs(relvec[0],relvec[1],-relvec[2])
     return trk
+
+def ComputeDistanceNED(start,end):
+    relvec = [end[0]-start[0],end[1]-start[1],end[2]-start[2]]
+    return np.linalg.norm(relvec)
 
 def ConvertTrkGsVsToVned(trk,gs,vs):
     vy = gs * np.cos(trk*np.pi/180)
@@ -123,6 +128,8 @@ def ReadFlightplanFile(filename):
     wp = []
     wp_ind = []
     wp_speed = []
+    wp_tcp = []
+    wp_tcpvalue = []
     speed = -1
     line='#'
     while line != '':
@@ -139,11 +146,13 @@ def ReadFlightplanFile(filename):
         if int(wplist[3]) == 16:
             wp.append([float(wplist[8]),float(wplist[9]),float(wplist[10])])
             wp_ind.append(float(wplist[7]))
+            wp_tcp.append([int(float(wplist[5])),0,0])
+            wp_tcpvalue.append([float(wplist[6]),0,0])
             wp_speed.append(speed)
 
-    return wp,wp_ind,wp_speed
+    return wp,wp_ind,wp_speed,wp_tcp,wp_tcpvalue
 
-def GetFlightplanFile(filename, defaultWPSpeed=1, scenarioTime=0, eta=False):
+def GetFlightplan(filename, defaultWPSpeed=1, eta=False):
     '''
     Read a flight plan from a waypoint file
     :param filename: name of the waypoint file
@@ -151,18 +160,21 @@ def GetFlightplanFile(filename, defaultWPSpeed=1, scenarioTime=0, eta=False):
     :param scenarioTime: start time of the scenario (s)
     :param eta: when True, ICAROUS enforces wp arrival times, wp_metric (s)
                 when False, ICAROUS sets speed to each wp, wp_metric (m/s)
-    :return: a list of waypoints [lat, lon, alt, wp_metric]
+    :return: a list of waypoints [lat, lon, alt, wp_metric, tcp, tcp_value]
     '''
-    wp, time, speed = ReadFlightplanFile(filename)
+    wp, time, speed, tcp, tcpValue = ReadFlightplanFile(filename)
     fp = []
     if eta:
         combine = time
     else:
         combine = speed
+
+    count = 0
     for w, i in zip(wp, combine):
         if not eta and i < 0:
             i = defaultWPSpeed
-        fp.append(w + [i])
+        fp.append(w + [i]+[tcp[count]] + [tcpValue[count]])
+        count+=1
     return fp
 
 def GetWindComponent(windFrom,windSpeed,NED=True):
@@ -176,7 +188,7 @@ def GetWindComponent(windFrom,windSpeed,NED=True):
     return vw
 
 def GetHomePosition(filename):
-    wp,_,_ = ReadFlightplanFile(filename)
+    wp,_,_,_,_ = ReadFlightplanFile(filename)
     return [wp[0][0],wp[0][1],0]
 
 def ReadTrafficInput(filename):
@@ -196,3 +208,89 @@ def ReadTrafficInput(filename):
             tfinput.append([int(lc[0])] + [float(i) for i in lc[1:]])
 
     return tfinput
+
+def ConvertToLocalCoordinates(home_pos,pos):
+    try:
+        from AccordUtil import ConvertLLA2NED
+        return ConvertLLA2NED(home_pos,pos)
+    except:
+        dh = lambda x, y: abs(distance(home_pos[0],home_pos[1],x,y))
+        if pos[1] > home_pos[1]:
+            sgnX = 1
+        else:
+            sgnX = -1
+
+        if pos[0] > home_pos[0]:
+            sgnY = 1
+        else:
+            sgnY = -1
+        dx = dh(home_pos[0],pos[1])
+        dy = dh(pos[0],home_pos[1])
+        return [dy*sgnY,dx*sgnX,pos[2]]
+
+def Getfence(filename):
+    '''add geofences from a file'''
+    tree = ET.parse(filename)
+    root = tree.getroot()        
+    fenceList = []    
+    for child in root:
+        id    = int(child.get('id'));
+        type  = int(child.find('type').text);
+        numV  = int(child.find('num_vertices').text);            
+        floor = float(child.find('floor').text);
+        roof  = float(child.find('roof').text);
+        Vertices = [];
+    
+        if(len(child.findall('vertex')) >= numV):        
+            for vertex in child.findall('vertex'):
+                coord = (float(vertex.find('lat').text),
+                         float(vertex.find('lon').text))
+            
+                Vertices.append(coord)
+
+        # Check geofence niceness
+        Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
+                    'roof':roof,'Vertices':Vertices[:numV]}
+        fenceList.append(Geofence)
+    return fenceList
+
+def ConstructWaypointsFromList(fp,eta=False):
+    from Interfaces import Waypoint,TcpType
+    speeds = []
+    times  = []
+    waypoints = []
+    if eta:
+        times = [wp[3] for wp in fp]
+    else:
+        speeds = [wp[3] for wp in fp]
+
+    for i in range(len(fp)):
+        if not eta:
+            if i == 0:
+                times.append(0)
+            else:
+                dist = distance(fp[i-1][0],fp[i-1][1],fp[i][0],fp[i][1])
+                times.append(times[-1] + dist/speeds[i]) 
+        
+        wp = Waypoint()
+        wp.index = i
+        wp.time = times[i] 
+        wp.latitude = fp[i][0]
+        wp.longitude = fp[i][1]
+        wp.altitude = fp[i][2]
+        if len(fp[i]) > 4:
+            tcp = True
+        if tcp:
+            wp.tcp[0] = fp[i][4][0]
+            wp.tcp[1] = fp[i][4][1]
+            wp.tcp[2] = fp[i][4][2]
+            wp.tcpValue[0] = fp[i][5][0]
+            wp.tcpValue[1] = fp[i][5][1]
+            wp.tcpValue[2] = fp[i][5][2]
+        else:
+            wp.tcp[0] = TcpType.TCP_NONE 
+            wp.tcp[1] = TcpType.TCP_NONEg
+            wp.tcp[2] = TcpType.TCP_NONEv
+        
+        waypoints.append(wp)
+    return waypoints

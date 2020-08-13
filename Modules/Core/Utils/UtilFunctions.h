@@ -6,6 +6,7 @@
 #define ICAROUS_CFS_UTILFUNCTIONS_H
 
 #include <stdbool.h>
+#include <Interfaces.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,7 @@ void GetPositionOnPlan(double wpA[],double wpB[],double currentPos[],double posi
 void ManueverToIntercept(double wpA[],double wpB[],double currPosition[],double velocity[],
                         double xtrkDevGain,double resolutionSpeed,double allowedDev);
 double GetInterceptHeadingToPlan(double wpA[],double wpB[],double currentPos[]);
+void ComputeWaypointsETA(double scenarioTime,int numWP, double wpSpeed[], waypoint_t wpts[]);
 
 #ifdef __cplusplus
 };

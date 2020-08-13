@@ -1,87 +1,99 @@
 from ctypes import *
 from ichelper import distance
+from Interfaces import Waypoint,TrajectoryMonitorData
 
+class DubinsParams(Structure):
+    _fields_=[
+        ("wellClearDistH",c_double),
+        ("wellClearDistV",c_double),
+        ("turnRate",c_double),
+        ("gs",c_double),
+        ("vs",c_double),
+        ("maxGS",c_double),
+        ("minGS",c_double),
+        ("maxVS",c_double),
+        ("minVS",c_double),
+        ("hAccel",c_double),
+        ("hDaccel",c_double),
+        ("vAccel",c_double),
+        ("vDaccel",c_double),
+        ("climbgs",c_double),
+        ("zSections",c_double),
+        ("vertexBuffer",c_double),
+        ("maxH",c_double)
+    ]
 
 Pos = c_double*3
 
 class Trajectory():
     def __init__(self,callsign):
-        self.lib = CDLL('libPathPlanner.so')
-        self.lib.new_PathPlanner.restype = c_void_p
-        self.lib.PathPlanner_UpdateAstarParameters.argtypes = [c_void_p,c_bool,c_double,c_double,c_double,c_char_p]
-        self.lib.PathPlanner_UpdateRRTParameters.argtypes = [c_void_p,c_double,c_int,c_double,c_int,c_double,c_char_p]
-        self.lib.PathPlanner_UpdateDAAParameters.argtypes = [c_void_p,c_char_p]
-        self.lib.PathPlanner_FindPath.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double*3]
-        self.lib.PathPlanner_FindPath.restype = c_int
-        self.lib.PathPlanner_GetWaypoint.argtypes = [c_void_p,c_char_p,c_int,c_double*4]
-        self.lib.PathPlanner_InputGeofenceData.argtypes = [c_void_p,c_int,c_int,c_int,c_double,c_double,POINTER(c_double*2)]
-        self.lib.PathPlanner_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3]
-        self.lib.PathPlanner_InputTraffic.restype = c_int
-        self.lib.PathPlanner_InputFlightPlan.argtypes = [c_void_p,c_char_p,c_int,c_double*3,c_double]
-        self.lib.PathPlanner_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
-        self.lib.PathPlanner_GetTotalWaypoints.restype = c_int
-        self.lib.PathPlanner_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
+        self.lib = CDLL('libTrajectoryManager.so')
+        self.lib.new_TrajManager.restype = c_void_p
+        self.lib.TrajManager_UpdateDubinsPlannerParameters.argtypes = [c_void_p,POINTER(DubinsParams)]
+        self.lib.TrajManager_FindPath.argtypes = [c_void_p,c_char_p,c_double*3,c_double*3,c_double*3,c_double*3]
+        self.lib.TrajManager_FindPath.restype = c_int
+        self.lib.TrajManager_GetWaypoint.argtypes = [c_void_p,c_char_p,c_int,POINTER(Waypoint)]
+        self.lib.TrajManager_GetWaypoint.restype = c_int
+        self.lib.TrajManager_SetPlanOffset.argtypes = [c_void_p,c_char_p,c_int,c_double]
+        self.lib.TrajManager_InputGeofenceData.argtypes = [c_void_p,c_int,c_int,c_int,c_double,c_double,POINTER(c_double*2)]
+        self.lib.TrajManager_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3,c_double]
+        self.lib.TrajManager_InputTraffic.restype = c_int
+        self.lib.TrajManager_InputFlightPlan.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool]
+        self.lib.TrajManager_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
+        self.lib.TrajManager_GetTotalWaypoints.restype = c_int
+        self.lib.TrajManager_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
+        self.lib.TrajManager_MonitorTrajectory.argtypes = [c_void_p,c_double,c_char_p,c_double*3,c_double*3,c_int]
+        self.lib.TrajManager_MonitorTrajectory.restype = TrajectoryMonitorData
 
         self.mUtils = CDLL('libUtils.so')
         self.mUtils.ComputeXtrackDistance.argtypes = [c_double*3,c_double*3,c_double*3,c_double*3]
 
-        self.module = self.lib.new_PathPlanner(c_char_p(callsign.encode('utf-8')))
-
-    def UpdateAstarParams(self,enable3d,gridSize,resSpeed,lookahed,daaconfig):
-        self.lib.PathPlanner_UpdateAstarParameters(self.module,c_bool(enable3d),
-                c_double(gridSize),
-                c_double(resSpeed),
-                c_double(lookahed),
-                c_char_p(daaconfig.encode('utf-8')))
+        self.module = self.lib.new_TrajManager(c_char_p(callsign.encode('utf-8')))
 
 
-    def UpdateRRTParams(self,resSpeed,NStep,dt,Dt,capR,daaconfig):
-        self.lib.PathPlanner_UpdateRRTParameters(self.module,c_double(resSpeed),
-                 c_int(NStep),
-                 c_double(dt),
-                 c_int(Dt),
-                 c_double(capR),
-                 c_char_p(daaconfig.encode('utf-8')))
 
+    def UpdateDubinsPlannerParams(self,params):
+        self.lib.TrajManager_UpdateDubinsPlannerParameters(self.module,byref(params))
 
-    def UpdateDAAParams(self,param):
-        self.lib.PathPlanner_UpdateDAAParameters(self.module,c_char_p(param.encode('utf-8')))
+    def CombinePlan(self,planA,planB,wp=-1):
+        self.lib.TrajManager_CombinePlan(self.module,c_char_p(planA.encode('utf-8')),c_char_p(planB.encode('utf-8')),c_int(wp))
 
-
-    def CombinePlan(self,planA,planB,wp):
-        self.lib.PathPlanner_CombinePlan(self.module,c_char_p(planA.encode('utf-8')),c_char_p(planB.encode('utf-8')),c_int(wp))
-
-    def FindPath(self,serachType,planID,fromPos,toPos,fromVel):
-        return self.lib.PathPlanner_FindPath(self.module,c_int(serachType),c_char_p(planID.encode('utf-8')),
-                Pos(*fromPos),Pos(*toPos),Pos(*fromVel))
+    def FindPath(self,planID,fromPos,toPos,fromVel,toVel):
+        return self.lib.TrajManager_FindPath(self.module,c_char_p(planID.encode('utf-8')),
+                Pos(*fromPos),Pos(*toPos),Pos(*fromVel),Pos(*toVel))
 
 
     def GetTotalWaypoints(self,planID):
-        return self.lib.PathPlanner_GetTotalWaypoints(self.module,c_char_p(planID.encode('utf-8')))
+        return self.lib.TrajManager_GetTotalWaypoints(self.module,c_char_p(planID.encode('utf-8')))
 
     def GetWaypoint(self,planID,wpID):
-        WP = c_double*4
-        wp = WP()
-        self.lib.PathPlanner_GetWaypoint(self.module,c_char_p(planID.encode('utf-8')),c_int(wpID),wp)
-        return wp
+        wp = Waypoint()
+        total = self.lib.TrajManager_GetWaypoint(self.module,c_char_p(planID.encode('utf-8')),c_int(wpID),byref(wp))
+        return total,wp
 
-    
-    def InputFlightplan(self,planID,fp,eta=False):
+    def SetPlanOffset(self,planID,wpID,offset):
+        self.lib.TrajManager_SetPlanOffset(self.module,c_char_p(planID.encode('utf-8')),c_int(wpID),c_double(offset))
 
-        wpTime = 0
-        for i in range(len(fp)):
-            if not eta:
-                if i > 0:
-                    speed = fp[i][3]
-                    prevWP  = fp[i-1][:3]
-                    nextWP  = fp[i][:3]
-                    dist = distance(prevWP[0],prevWP[1],nextWP[0],nextWP[1])
-                    wpTime += dist/speed
-            else:
-                wpTime = fp[i][3]
-            wp = Pos(fp[i][0],fp[i][1],fp[i][2]) 
-            self.lib.PathPlanner_InputFlightPlan(self.module,c_char_p(planID.encode('utf-8')),c_int(i),wp,c_double(wpTime))
+    def GetFlightPlan(self,planID):
+        waypoints = []
+        total = 1
+        i = 0
+        while i < total:
+            total,wp = self.GetWaypoint(planID,i)
+            i += 1
+            if total > 0:
+                waypoints.append(wp)
+ 
+        return waypoints
 
+    def InputFlightplanData(self,planID,fp,repair=False):
+          n = len(fp)
+          wparray = Waypoint*50
+          wpts = wparray()
+          for i,wp in enumerate(fp):
+               wpts[i] = wp
+          self.lib.TrajManager_InputFlightPlan(self.module,c_char_p(planID.encode('utf-8')),
+                                          wpts,c_int(n),c_double(0),c_bool(repair))
 
     def InputGeofenceData(self,gf):
         Vert = (c_double*2)*gf['numV']
@@ -90,7 +102,7 @@ class Trajectory():
             vert[i][0] = gf['Vertices'][i][0]
             vert[i][1] = gf['Vertices'][i][1]
 
-        self.lib.PathPlanner_InputGeofenceData(self.module,
+        self.lib.TrajManager_InputGeofenceData(self.module,
                                               c_int(gf['type']),
                                               c_int(gf['id']),
                                               c_int(gf['numV']),
@@ -99,19 +111,26 @@ class Trajectory():
                                               vert)
 
 
-    def InputTrafficData(self,index,position,velocity):
+    def InputTrafficData(self,index,position,velocity,time):
         cpos = c_double*3
         cvel = c_double*3
         _pos = cpos(position[0],position[1],position[2])
         _vel = cvel(velocity[0],velocity[1],velocity[2])
         _index = c_int(index)
-        return self.lib.PathPlanner_InputTraffic(self.module,_index,_pos,_vel)
+        return self.lib.TrajManager_InputTraffic(self.module,_index,_pos,_vel,c_double(time))
 
     def ComputeXtrackDistance(self,wpA,wpB,position):
         cpos = c_double*3
         offset = cpos(0,0,0)
         self.mUtils.ComputeXtrackDistance(cpos(*wpA[:3]),cpos(*wpB[:3]),cpos(*position),offset)
         return offset
+
+    def MonitorTrajectory(self,time,planID,pos,vel,nextWP):
+        cpos = c_double*3
+        posIn = cpos(*pos)
+        velIn = cpos(*vel)
+        planid = c_char_p(planID.encode('utf-8'))
+        return self.lib.TrajManager_MonitorTrajectory(self.module,c_double(time),planid,posIn,velIn,c_int(nextWP))
 
     def ComputeClosesetPoint(self,wpA,wpB,position):
         offset = self.ComputeXtrackDistance(wpA,wpB,position)

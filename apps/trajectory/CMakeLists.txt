@@ -10,13 +10,15 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(../traffic/fsw/platform_inc)
+include_directories(../guidance/fsw/platform_inc)
 include_directories(../scheduler/fsw/platform_inc)
 include_directories(fsw/src)
 include_directories(fsw/tables)
 include_directories(fsw/platform_inc)
 include_directories(${MODULES_ROOT}/Core/Utils)
 include_directories(${MODULES_ROOT}/Core/Interfaces)
-include_directories(${MODULES_ROOT}/Core/TrajectoryPlanners)
+include_directories(${MODULES_ROOT}/Core/TrajectoryManager)
+include_directories(${MODULES_ROOT}/Core/TrajectoryManager/DubinsPlanner)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
@@ -24,7 +26,7 @@ link_directories(${MODULES_LIB})
 
 add_library(trajectory MODULE ${APP_SRC_FILES})
 
-target_link_libraries(trajectory PathPlanner)
+target_link_libraries(trajectory TrajectoryManager)
 
 set_target_properties(trajectory PROPERTIES PREFIX "")
 

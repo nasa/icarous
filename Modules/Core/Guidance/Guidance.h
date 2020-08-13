@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include <stdbool.h>
+#include <Interfaces.h>
 
 /**
  * @enum guidance_mode_e
@@ -59,15 +60,15 @@ typedef struct{
 void* InitGuidance(GuidanceParams_t* params);
 void guidSetParams(void* obj,GuidanceParams_t* params);
 void guidSetAircraftState(void* obj, double position[],double velocity[]);
-void guidInputFlightplanData(void* obj, char planID[], double scenarioTIme, 
-                         int wpID, double position[], bool eta, double value);
+void guidInputFlightplanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize);
 void RunGuidance(void* obj,double time);
 void guidInputVelocityCmd(void* obj,double velcmd[]);
-void SetGuidanceMode(void* obj,GuidanceMode mode,char* planID,int nextWP);
+void SetGuidanceMode(void* obj,GuidanceMode mode,char* planID,int nextWP,bool eta);
 void ChangeWaypointSpeed(void* obj,char planID[],int wpID,double val,bool updateAll);
 void ChangeWaypointAlt(void* obj,char planID[],int wpID,double val,bool updateAll);
 void ChangeWaypointETA(void* obj,char planID[],int wpID,double val,bool updateAll);
 void guidGetOutput(void* obj,GuidanceOutput_t* output);
+int guidGetWaypoint(void* obj, char planID[],int id, waypoint_t *wp);
 
 #ifdef __cplusplus
 }

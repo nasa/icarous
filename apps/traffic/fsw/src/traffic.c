@@ -59,10 +59,7 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FREQ_10_WAKEUP_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trafficAppData.bandReport,ICAROUS_BAND_REPORT_MID,sizeof(band_report_t),TRUE);
@@ -111,18 +108,6 @@ void TRAFFIC_ProcessPacket(void){
 
     switch(MsgId){
 
-        case ICAROUS_FLIGHTPLAN_MID:{
-            flightplan_t* msg = (flightplan_t*) trafficAppData.Traffic_MsgPtr;
-            memcpy(&trafficAppData.flightplan1,msg, sizeof(flightplan_t));
-            break;
-        }
-
-        case ICAROUS_TRAJECTORY_MID:{
-            flightplan_t* msg = (flightplan_t*) trafficAppData.Traffic_MsgPtr;
-            memcpy(&trafficAppData.flightplan2,msg, sizeof(flightplan_t));
-            break;
-        }
-
         case ICAROUS_TRAFFIC_MID:{
             object_t* msg;
             msg = (object_t*) trafficAppData.Traffic_MsgPtr;
@@ -142,48 +127,6 @@ void TRAFFIC_ProcessPacket(void){
             ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
             int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
             trafficAppData.numTraffic = val;
-            break;
-        }
-
-        case FLIGHTPLAN_MONITOR_MID:{
-            flightplan_monitor_t* msg = (flightplan_monitor_t*)trafficAppData.Traffic_MsgPtr;
-
-            int nextWP = msg->nextWP;  
-            double xtrackDev = msg->crossTrackDeviation;
-            double dist2nextWP = msg->dist2NextWP; 
-
-            // This is the distance of the current flight plan leg completed
-            double offset = sqrt(dist2nextWP*dist2nextWP - xtrackDev*xtrackDev); 
-
-            flightplan_t *fp;
-            bool first = false;
-            if(strcmp(msg->planID,"Plan0") == 0){
-                fp = &trafficAppData.flightplan1;
-                first = true;
-            }else if(strcmp(msg->planID,"Plan1") == 0){
-                fp = &trafficAppData.flightplan2;
-            }
-
-            double A[3] = {fp->waypoints[nextWP-1].latitude,
-                                   fp->waypoints[nextWP-1].longitude,
-                                   fp->waypoints[nextWP-1].altitude};
-            double B[3] = {fp->waypoints[nextWP].latitude,
-                                   fp->waypoints[nextWP].longitude,
-                                   fp->waypoints[nextWP].altitude};
-
-            double distAB = ComputeDistance(A,B); 
-            double n = 1 - (distAB - offset)/distAB;
-
-            double _c[3] = {B[0] - A[0], B[1] - A[1],B[2] - A[2]};
-            double C[3] = {A[0] + n*_c[0],A[1] + n*_c[1],A[1] + n*_c[1] };
-
-            bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,C,-1);
-
-            if(first){
-                trafficAppData.return2fp1leg = feasibility;
-            }else{
-                trafficAppData.return2fp2leg = feasibility;
-            }
             break;
         }
 
@@ -240,90 +183,6 @@ void TRAFFIC_ProcessPacket(void){
             trafficAppData.vsBands.time = trafficAppData.time;
             trafficAppData.speedBands.time = trafficAppData.time;
             trafficAppData.trackBands.time = trafficAppData.time;
-
-            // Get feasibility data for primary flight plan
-            double time = 0.0;
-            for(int i=0;i<trafficAppData.flightplan1.num_waypoints;++i){
-                double wp[3] = {trafficAppData.flightplan1.waypoints[i].latitude,
-                                trafficAppData.flightplan1.waypoints[i].longitude,
-                                trafficAppData.flightplan1.waypoints[i].altitude};
-
-                double speed = trafficAppData.velocity[1];
-                bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor, wp, speed);
-                trafficAppData.trackBands.wpFeasibility1[i] = feasibility;
-                trafficAppData.speedBands.wpFeasibility1[i] = feasibility;
-                trafficAppData.altBands.wpFeasibility1[i] = feasibility;
-                trafficAppData.vsBands.wpFeasibility1[i] = feasibility;
-                trafficAppData.trackBands.fp1ClosestPointFeasible = trafficAppData.return2fp1leg;
-
-                if (trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_SPEED){
-                    speed = trafficAppData.flightplan1.waypoints[i].value;
-                }else if(trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_ETA){
-                    time = trafficAppData.flightplan1.waypoints[i].value;
-                }
-
-                if(i > 0){
-                    if(speed < 1e-6){
-                        double wp2[3] = {trafficAppData.flightplan1.waypoints[i-1].latitude,
-                                        trafficAppData.flightplan1.waypoints[i-1].longitude,
-                                        trafficAppData.flightplan1.waypoints[i-1].altitude};
-                        double dist = ComputeDistance(wp,wp2);
-
-                        if(time > 0){
-                            speed = dist/time;
-                        }else{
-                            speed = 1;
-                        }
-
-                    }
-
-                    feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
-                    trafficAppData.speedBands.wpFeasibility1[i] &= feasibility;
-                }
-
-            }
-
-            time  = 0.0;
-            // Get feasibility data for secondary flight plan
-            for(int i=0;i<trafficAppData.flightplan2.num_waypoints;++i){
-                double wp[3] = {trafficAppData.flightplan2.waypoints[i].latitude,
-                                trafficAppData.flightplan2.waypoints[i].longitude,
-                                trafficAppData.flightplan2.waypoints[i].altitude};
-
-                double speed = trafficAppData.velocity[1];
-
-                bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
-                trafficAppData.trackBands.wpFeasibility2[i] = feasibility;
-                trafficAppData.speedBands.wpFeasibility2[i] = feasibility;
-                trafficAppData.altBands.wpFeasibility2[i] = feasibility;
-                trafficAppData.vsBands.wpFeasibility2[i] = feasibility;
-                trafficAppData.trackBands.fp2ClosestPointFeasible = trafficAppData.return2fp2leg;
-
-
-                if (trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_SPEED){
-                    speed = trafficAppData.flightplan1.waypoints[i].value;
-                }else if(trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_ETA){
-                    time = trafficAppData.flightplan1.waypoints[i].value;
-                }
-
-                if(i > 0){
-                    if(speed < 1e-6){
-                        double wp2[3] = {trafficAppData.flightplan2.waypoints[i-1].latitude,
-                                        trafficAppData.flightplan2.waypoints[i-1].longitude,
-                                        trafficAppData.flightplan2.waypoints[i-1].altitude};
-                        double dist = ComputeDistance(wp,wp2);
-
-                        if(time > 0){
-                            speed = dist/time;
-                        }else{
-                            speed = 1;
-                        }
-
-                    }
-                    feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
-                    trafficAppData.speedBands.wpFeasibility2[i] &= feasibility;
-                }
-            }
 
             cfsBands_t track_bands_msg;
             CFE_SB_InitMsg(&track_bands_msg, ICAROUS_BANDS_TRACK_MID, sizeof(cfsBands_t), TRUE);

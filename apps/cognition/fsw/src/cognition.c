@@ -138,11 +138,11 @@ void COGNITION_ProcessSBData(void) {
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t* fplan = (flightplan_t*)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan1,fplan,sizeof(flightplan_t));
+            waypoint_t wp[MAX_WAYPOINTS];
             for(int i = 0; i<fplan->num_waypoints; ++i){
-                waypoint_t wp = fplan->waypoints[i];
-                double wp_pos[3] = {wp.latitude, wp.longitude, wp.altitude};
-                InputFlightPlanData(appdataCog.cog,fplan->id,fplan->scenario_time,i,wp_pos,wp.wp_metric,wp.value);
+                wp[i] = fplan->waypoints[i];
             }
+            InputFlightPlanData(appdataCog.cog,fplan->id,wp,fplan->num_waypoints,0,false);
             break;
         }
 
@@ -217,19 +217,9 @@ void COGNITION_ProcessSBData(void) {
             break;
         }
 
-
-        // This may not be required
         case FLIGHTPLAN_MONITOR_MID:{
-            flightplan_monitor_t* fpm = (flightplan_monitor_t*) appdataCog.CogMsgPtr;
-            if (strcmp(fpm->planID,"Plan0") == 0){
-                memcpy(&appdataCog.fp1monitor,fpm,sizeof(flightplan_monitor_t));
-                //OS_printf("xtrack dev %f, allowd dev %f\n",fpm->crossTrackDeviation,fpm->allowedXtrackError);
-            }else if(strcmp(fpm->planID,"Plan1") == 0){
-                memcpy(&appdataCog.fp2monitor,fpm,sizeof(flightplan_monitor_t));
-            }
-
-            appdataCog.parameters.resolutionSpeed = fpm->resolutionSpeed;
-            InputParameters(appdataCog.cog,&appdataCog.parameters);
+            trajectoryMonitorData_t* fpm = (trajectoryMonitorData_t*) CFE_SB_GetUserData(appdataCog.CogMsgPtr);
+            InputTrajectoryMonitorData(appdataCog.cog,fpm);
             break;
         }
 
@@ -238,16 +228,14 @@ void COGNITION_ProcessSBData(void) {
             appdataCog.parameters.DTHR = msg->det_1_WCV_DTHR/3;
             appdataCog.parameters.ZTHR = msg->det_1_WCV_ZTHR/3;
             appdataCog.parameters.resolutionType = msg->resType;
+            appdataCog.parameters.lookaheadTime = msg->lookahead_time;
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
         }
 
         case TRAJECTORY_PARAMETERS_MID:{
             trajectory_parameters_t* msg = (trajectory_parameters_t*) appdataCog.CogMsgPtr;
-            appdataCog.parameters.allowedXtrackDeviation = msg->xtrkDev;
-            appdataCog.parameters.XtrackGain = msg->xtrkGain;
-            appdataCog.parameters.resolutionSpeed = msg->resSpeed;
-            appdataCog.parameters.searchType = msg->searchAlgorithm;
+            appdataCog.parameters.allowedXtrackDeviation = msg->crossTrackDeviation;
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
         }
@@ -279,10 +267,10 @@ void COGNITION_ProcessSBData(void) {
             flightplan_t *fp;
             fp = (flightplan_t *)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan2, fp, sizeof(flightplan_t));
+            waypoint_t wp[MAX_WAYPOINTS];
             for(int i = 0;i < fp->num_waypoints; i++){
-                waypoint_t wp = fp->waypoints[i];
-                double wp_pos[3] = {wp.latitude, wp.longitude, wp.altitude};
-                InputFlightPlanData(appdataCog.cog,fp->id,fp->scenario_time,i,wp_pos,wp.wp_metric,wp.value);
+                wp[i] = fp->waypoints[i];
+                InputFlightPlanData(appdataCog.cog,fp->id,wp,fp->num_waypoints,0,false);
             }
             break;
         }
@@ -479,11 +467,11 @@ void COGNITION_FindNewPath(FpRequest fp_request_command){
    trajectory_request_t pathRequest;
    CFE_SB_InitMsg(&pathRequest, ICAROUS_TRAJECTORY_REQUEST_MID, sizeof(trajectory_request_t), TRUE);
 
-   pathRequest.algorithm = fp_request_command.searchType;
    strcpy(pathRequest.planID,fp_request_command.name);
    memcpy(pathRequest.initialPosition, fp_request_command.fromPosition, sizeof(double) * 3);
    memcpy(pathRequest.initialVelocity, fp_request_command.startVelocity, sizeof(double) * 3);
    memcpy(pathRequest.finalPosition, fp_request_command.toPosition, sizeof(double) * 3);
+   memcpy(pathRequest.finalVelocity, fp_request_command.endVelocity, sizeof(double) * 3);
 
    SendSBMsg(pathRequest);
 }

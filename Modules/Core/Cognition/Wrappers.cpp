@@ -1,5 +1,6 @@
 #include "Cognition.hpp"
 #include "Cognition.h"
+#include "UtilFunctions.h"
 
 void* CognitionInit(const char callsign[]){
     Cognition* cog = new Cognition(std::string(callsign));
@@ -23,17 +24,11 @@ void InputVehicleState(void *obj,const double pos[3],const double vel[3],const d
     cog->InputVehicleState(position,velocity,heading);
 }
 
-void InputFlightPlanData(void *obj,
-                         const char plan_id[],
-                         const double scenario_time,
-                         const int wp_id,
-                         const double wp_pos[3],
-                         const int wp_metric,
-                         const double wp_value){
+
+void InputFlightPlanData(void* obj,char planid[],waypoint_t wpts[],int totalwp,double initHeading,bool kinematize){
     Cognition* cog = (Cognition*)obj;
-    larcfm::Position position = larcfm::Position::makeLatLonAlt(wp_pos[0],"deg",wp_pos[1],"deg",wp_pos[2],"m");
-    std::string plan_name = std::string(plan_id);
-    cog->InputFlightPlanData(plan_name,scenario_time,wp_id,position,wp_metric,wp_value);
+    std::list<waypoint_t> waypoints(wpts,wpts+totalwp);
+    cog->InputFlightPlanData(planid,waypoints,initHeading,kinematize);
 }
 
 void InputParameters(void *obj,const cognition_params_t *new_params){
@@ -103,4 +98,9 @@ void StartMission(void *obj,const int mission_start_value,const double delay){
 int FlightPhases(void *obj,double time){
     Cognition* cog = (Cognition*)obj;
     return cog->FlightPhases(time);
+}
+
+void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonData){
+    Cognition* cog = (Cognition*)obj;
+    return cog->InputTrajectoryMonitorData(*tjMonData);
 }

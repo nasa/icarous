@@ -4,6 +4,53 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define MAX_FIX_NAME_SIZE 20
+
+/**
+ * @enum wp_metric_e
+ * @brief waypoint metrix
+ */
+typedef enum {
+    TCP_NONE      = 0, ///< None
+    TCP_BOT       = 1, ///< Beginnning of turn
+    TCP_EOT       = 2, ///< End of vertical turn
+    TCP_MOT       = 4, ///< Middle of turn
+    TCP_EOTBOT    = 5, ///< End/Beginning of turn
+    TCP_NONEg     = 6, ///< None
+    TCP_BGS       = 7, ///< Beginning of ground speed change
+    TCP_EGS       = 8, ///< End of ground speed change
+    TCP_EGSBGS    = 9, ///< End/Beginning of speed change
+    TCP_NONEv     = 10,///< None
+    TCP_BVS       = 11,///< Beginning of vertical speed change
+    TCP_EVS       = 12,///< Beginning of vertical speed change
+    TCP_EVSBVS    = 13,///< End/Beginning of vertical speed change
+}tcp_e;
+
+typedef enum{
+    BANDREGION_UNKNOWN  = 0,
+    BANDREGION_NONE     = 1,
+    BANDREGION_FAR      = 2,
+    BANDREGION_MID      = 3,
+    BANDREGION_NEAR     = 4,
+    BANDREGION_RECOVERY = 5
+}bandRegion_e;
+
+/**
+ * @struct waypoint_t
+ * @brief waypoint data.
+ */
+typedef struct __attribute__((__packed__))
+{
+    uint16_t  index;                        /**< waypoint index */
+    double  time;                           /**< ETA at this waypoint */
+    char    name[MAX_FIX_NAME_SIZE];        /**< waypoint name */
+    double  latitude; 					    /**< latitude in degrees */
+    double  longitude; 					    /**< longitude in degrees */
+    double  altitude;                       /**< altitude Meters */
+    tcp_e tcp[3];                           /**< see @see wp_metric_e */
+    double  tcpValue[3];                    /**< wp_metric value applicable at this waypoint */
+}waypoint_t;
+
 typedef struct __attribute__((__packed__)){
     double time;                             /**< band time */
     int numConflictTraffic;                  /**< total number of conflict traffic */
@@ -20,10 +67,6 @@ typedef struct __attribute__((__packed__)){
     double resUp;                            /**< resolution up */
     double resDown;                          /**< resolution down */
     double resPreferred;                     /**< preferred resolution */
-    bool wpFeasibility1[50];                 /**< feasibility to waypoints in flightplan 1 */
-    bool wpFeasibility2[50];                 /**< feasibility to waypoints in flightplan 2 */
-    bool fp1ClosestPointFeasible;            /**< feasibility of nearest point on flightplan 1 */
-    bool fp2ClosestPointFeasible;            /**< feasibility of nearest point on flightplan 2 */
 }bands_t;
 
 typedef struct __attribute__((__packed__)){
@@ -33,20 +76,28 @@ typedef struct __attribute__((__packed__)){
     uint8_t conflictTypes[5];                /**< type of conflict (keep in: 0/ keep out:1) */
     double timeToViolation[5];               /**< time to violating constraint at current speed */
     double recoveryPosition[3];              /**< recovery position */
-    bool waypointConflict1[50];              /**< 0 if waypoint is conflict free. 1 if waypoint conflict due to geofence */
-    bool directPathToWaypoint1[50];          /**< 1 if direct path exists, 0 if no direct path exist */
-    bool waypointConflict2[50];              /**< 0 if waypoint is conflict free. 1 if waypoint conflict due to geofence */
-    bool directPathToWaypoint2[50];          /**< 1 if direct path exists, 0 if no direct path exist */
 }geofenceConflict_t;
+
+typedef struct __attribute__((__packed__)){
+    bool fenceConflict;                      /**< fence conflicts */
+    bool trafficConflict;                    /**< traffic conflict */ 
+    uint8_t conflictFenceID;                 /**< conflicting fence ids */
+    char conflictCallSign[20];               /**< callsign of conflicting traffic */
+    double timeToTrafficViolation;           /**< time to violating constraint at current speed */
+    double timeToFenceViolation;             /**< time to violating constraint at current speed */
+    double recoveryPosition[3];              /**< recovery position */
+    double offsets[3];                       /**< perp, striaght and time offsets with respect to nextWP */
+    int nextWP;                              /**< current nextWP */
+    int nextFeasibleWP;                      /**< next feasible waypoint */
+}trajectoryMonitorData_t;
+
 
 typedef struct{
     int resolutionType;             // Type of resolutions to use, one of resolutionType_e
     double DTHR;                    // Well clear radius threshold (ft)
     double ZTHR;                    // Well clear vertical distance threshold (ft)
-    int searchType;                 // Search algorithm to use
-    double resolutionSpeed;         // Speed to use during resolutions
     double allowedXtrackDeviation;  // Allowed deviation from flight plan (m)
-    double XtrackGain;
+    double lookaheadTime;           // lookahead time for traffic conflicts;
 }cognition_params_t;
 
 

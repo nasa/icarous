@@ -14,7 +14,7 @@
 
 #include "Interfaces.h"
 
-#define MAX_WAYPOINTS 50
+#define MAX_WAYPOINTS 25 
 #define MAX_VERTICES 100
 #define ACID_SIZE 25
 #define MAX_FIX_NAME_SIZE 20
@@ -107,32 +107,6 @@ typedef enum{
 }objectType_e;
 
 
-/**
- * @enum wp_metric_e
- * @brief waypoint metrix
- */
-typedef enum {
-    WP_METRIC_NONE      = 0,///< None
-    WP_METRIC_ETA       = 1,///< Estimated time of arrival (s) at the next waypoint
-    WP_METRIC_SPEED     = 2,///< Speed(m/s) en route to next waypoint
-    WP_METRIC_ALTITUDE  = 3 ///< Altitude
-}wp_metric_e;
-
-
-/**
- * @struct waypoint_t
- * @brief waypoint data.
- */
-typedef struct __attribute__((__packed__))
-{
-    uint16  index;                          /**< waypoint index */
-    char    name[MAX_FIX_NAME_SIZE];        /**< waypoint name */
-    double  latitude; 					    /**< latitude in degrees */
-    double  longitude; 					    /**< longitude in degrees */
-    double  altitude;                       /**< altitude Meters */
-    int     wp_metric;                      /**< see @see wp_metric_e */
-    double  value;                          /**< wp_metric value to next waypoint. */
-}waypoint_t;
 
 /**
  * @struct flightplan_t
@@ -389,6 +363,14 @@ DEF_MSG(cfsBands_t,sizeof(bands_t))
  * Published under the ICAROUS_GEOFENCE_MONITOR_MID topic
  */
 DEF_MSG(cfsGeofenceConflict_t,sizeof(geofenceConflict_t))
+
+/**
+ * @struct cfsTrajectoryMonitorData_t
+ * @brief message contaning information about trajectory conflicts
+ *
+ * Published under the ICAROUS_FLIGHTPLAN_MONITOR_MID topic
+ */
+DEF_MSG(cfsTrajectoryMonitorData_t,sizeof(trajectoryMonitorData_t))
 
 /**@}*/
 

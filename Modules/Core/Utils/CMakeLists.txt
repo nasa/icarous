@@ -10,6 +10,7 @@ set(SOURCE_FILES fence.cpp UtilFunctions.cpp)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Interfaces)
 
 link_directories(${LIBRARY_OUTPUT_PATH})
 

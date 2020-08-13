@@ -1,0 +1,17 @@
+larcfm::Vect3 posA = startPos - center1;
+    larcfm::Vect3 posB = tcp1 - center1;
+    larcfm::Vect3 posC = tcp2 - center2;
+    larcfm::Vect3 posD = endPos - center2;
+    double angle1,angle2;
+    int r1,r2;
+    if     (type == "RSR") r1 = +1, r2 = +1;
+    else if(type == "RSL") r1 = +1, r2 = -1;
+    else if(type == "LSR") r1 = -1, r2 = +1;
+    else if(type == "LSL") r1 = -1, r2 = -1;
+
+    angle1 = larcfm::Util::turnDelta(posA.vect2().trk(),posB.vect2().trk(),r1);
+    angle2 = larcfm::Util::turnDelta(posC.vect2().trk(),posD.vect2().trk(),r2);
+
+    double dt1 = angle1/(params.turnRate*M_PI/180);
+    double dt2 = (tcp2 - tcp1).norm()/gs;
+    double dt3 = angle2/(params.turnRate*M_PI/180);

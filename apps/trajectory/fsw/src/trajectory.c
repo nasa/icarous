@@ -31,10 +31,14 @@ void TRAJECTORY_AppMain(void)
 
     while (CFE_ES_RunLoop(&RunStatus) == TRUE)
     {
+        
         status = CFE_SB_RcvMsg(&TrajectoryAppData.TrajRequest_MsgPtr, TrajectoryAppData.TrajRequest_Pipe, CFE_SB_PEND_FOREVER);
 
         if (status == CFE_SUCCESS)
         {
+            struct timespec ts;
+            timespec_get(&ts,TIME_UTC);
+            TrajectoryAppData.timeNow = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
             TRAJECTORY_ProcessPacket();
         }
     }
@@ -83,7 +87,9 @@ void TRAJECTORY_AppInit(void)
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(TRAJECTORY_PARAMETERS_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_REQUEST_MID, TrajectoryAppData.TrajRequest_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(EUTL1_TRAJECTORY_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
@@ -117,31 +123,13 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
     char callsign[30];
     memset(callsign,0,30);
     sprintf(callsign,"aircraft%d",CFE_PSP_GetSpacecraftId());
-    TrajectoryAppData.pplanner = new_PathPlanner(callsign);
-    PathPlanner_InitializeAstarParameters(TrajectoryAppData.pplanner,
-                                          TblPtr->astar_enable3D,
-                                          TblPtr->astar_gridSize,
-                                          TblPtr->astar_resSpeed,
-                                          TblPtr->astar_lookahead,
-                                          TblPtr->astar_daaConfigFile);
-
-    PathPlanner_InitializeRRTParameters(TrajectoryAppData.pplanner,
-                                        TblPtr->rrt_resSpeed,
-                                        TblPtr->rrt_numIterations,
-                                        TblPtr->rrt_dt,
-                                        TblPtr->rrt_macroSteps,
-                                        TblPtr->rrt_capR,
-                                        TblPtr->rrt_daaConfigFile);
+    TrajectoryAppData.pplanner = new_TrajManager(callsign);
+        
 
     TrajectoryAppData.flightplan2.num_waypoints = 0;
     TrajectoryAppData.numPlansComputed = 0;
-    TrajectoryAppData.nextWP1 = 1;
+    TrajectoryAppData.nextWP1 = 0;
     TrajectoryAppData.nextWP2 = 1;
-    TrajectoryAppData.xtrkDev = TblPtr->xtrkDev;
-    TrajectoryAppData.xtrkGain = TblPtr->xtrkGain;
-    TrajectoryAppData.resSpeed = TblPtr->resSpeed;
-    TrajectoryAppData.searchType = TblPtr->searchAlgorithm;
-    TrajectoryAppData.updateDAAParams = TblPtr->updateDaaParams;
     TrajectoryAppData.eutlReceived = false;
     strcpy(TrajectoryAppData.planID, "Plan0\0");
 
@@ -172,78 +160,52 @@ void TRAJECTORY_ProcessPacket(void)
 
             // Plan
             char planID[25];
-            //sprintf(planID,"Plan%d",TrajectoryAppData.numPlansComputed);
             strcpy(planID,msg->planID);
-            int val = PathPlanner_FindPath(TrajectoryAppData.pplanner, TrajectoryAppData.searchType, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity);
+            int val = TrajManager_FindPath(TrajectoryAppData.pplanner, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity, msg->finalVelocity);
 
             if(val <= 0){
                 OS_printf("*** No path found ***\n");
             }else{
+                
+                TrajManager_SetPlanOffset(TrajectoryAppData.pplanner,planID,0,TrajectoryAppData.timeNow);
+
                 flightplan_t result;
                 CFE_SB_InitMsg(&result, ICAROUS_TRAJECTORY_MID, sizeof(flightplan_t), TRUE);
                 memcpy(result.id, planID, 10);
-                result.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
+                result.num_waypoints = (uint16_t)TrajManager_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
                 for (int i = 0; i < result.num_waypoints; ++i)
                 {
-                    double wp[4];
-                    PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, i, wp);
+                    TrajManager_GetWaypoint(TrajectoryAppData.pplanner, planID, i, result.waypoints+i);
                     if (i >= MAX_WAYPOINTS)
                     {
                         OS_printf("Trajectory: more than MAX_WAYPOINTS");
                         break;
                     }
-                    result.waypoints[i].wp_metric = WP_METRIC_SPEED;
-                    result.waypoints[i].value = TrajectoryAppData.trajParams.resSpeed;
-                    result.waypoints[i].latitude = (float)wp[0];
-                    result.waypoints[i].longitude = (float)wp[1];
-                    result.waypoints[i].altitude = (float)wp[2];
                 }
 
                 SendSBMsg(result);
 
                 memcpy(&TrajectoryAppData.flightplan2, &result, sizeof(flightplan_t));
 
-                // Check that the nextWP is the destination for the new plan.
-                // If not increment nextWP until it is the destination WP
-                int destinationWP = TrajectoryAppData.nextWP1;
-                while (destinationWP < TrajectoryAppData.flightplan1.num_waypoints)
+                
+                char missionPlan[] = "Plan0";
+                TrajManager_CombinePlan(TrajectoryAppData.pplanner, planID, missionPlan, -1);
+
+
+                // Publish EUTIL trajectory information
+                char buffer[MAX_DATABUFFER_SIZE] = {0};
+                char combinePlanId[] = "Plan+";
+                TrajManager_PlanToString(TrajectoryAppData.pplanner, combinePlanId, buffer, true, (int)TrajectoryAppData.timeNow);
+
+                CFE_SB_ZeroCopyHandle_t cpyhandle;
+                stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);
+                CFE_SB_InitMsg(bigdataptr, EUTL2_TRAJECTORY_MID, sizeof(stringdata_t), TRUE);
+                strcpy(bigdataptr->buffer, buffer);
+                CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)bigdataptr);
+                int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *)bigdataptr, cpyhandle);
+                if (status != CFE_SUCCESS)
                 {
-                    double wp[3] = {TrajectoryAppData.flightplan1.waypoints[destinationWP].latitude,
-                                    TrajectoryAppData.flightplan1.waypoints[destinationWP].longitude,
-                                    TrajectoryAppData.flightplan1.waypoints[destinationWP].altitude};
-                    if ((fabs(wp[0] - msg->finalPosition[0]) < 1e-8) &&
-                        (fabs(wp[1] - msg->finalPosition[1]) < 1e-8) &&
-                        (fabs(wp[2] - msg->finalPosition[2]) < 1e-8))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        destinationWP++;
-                    }
-                }
-
-                if (destinationWP < TrajectoryAppData.flightplan1.num_waypoints)
-                {
-                    char missionPlan[] = "Plan0";
-                    PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, missionPlan, destinationWP + 1);
-
-                    // Publish EUTIL trajectory information
-                    char buffer[MAX_DATABUFFER_SIZE] = {0};
-                    time_t timeNow = time(NULL);
-                    char combinePlanId[] = "Plan+";
-                    PathPlanner_PlanToString(TrajectoryAppData.pplanner, combinePlanId, buffer, true, timeNow);
-
-                    CFE_SB_ZeroCopyHandle_t cpyhandle;
-                    stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);
-                    CFE_SB_InitMsg(bigdataptr, EUTL2_TRAJECTORY_MID, sizeof(stringdata_t), TRUE);
-                    strcpy(bigdataptr->buffer, buffer);
-                    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)bigdataptr);
-                    int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *)bigdataptr, cpyhandle);
-                    if (status != CFE_SUCCESS)
-                    {
-                        OS_printf("Error sending EUTL trajectory\n");
-                    }
+                    OS_printf("Error sending EUTL trajectory\n");
                 }
             }
             break;
@@ -258,6 +220,9 @@ void TRAJECTORY_Monitor(void)
     while (TrajectoryAppData.runThreads)
     {
         int32 status = CFE_SB_RcvMsg(&TrajectoryAppData.Traj_MsgPtr, TrajectoryAppData.TrajData_Pipe, CFE_SB_PEND_FOREVER);
+        struct timespec ts;
+        timespec_get(&ts,TIME_UTC);
+        TrajectoryAppData.timeNow = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
         if (status == CFE_SUCCESS)
         {
             CFE_SB_MsgId_t MsgId;
@@ -273,26 +238,20 @@ void TRAJECTORY_Monitor(void)
 
                 flightplan_t *fp;
                 fp = (flightplan_t *)TrajectoryAppData.Traj_MsgPtr;
-                PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
+                TrajManager_ClearAllPlans(TrajectoryAppData.pplanner);
                 memcpy(&TrajectoryAppData.flightplan1, fp, sizeof(flightplan_t));
+                waypoint_t wp[MAX_WAYPOINTS];
                 for (int i = 0; i < fp->num_waypoints; ++i)
                 {
-                    double position[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude, fp->waypoints[i].altitude};
-                    int id = i;
-                    double time;
-                    if (fp->waypoints[i].wp_metric == WP_METRIC_ETA){
-                        time = fp->waypoints[i].value;
-                    }else{
-                        time = id;
-                    }
-                    char name[] = "Plan0";
-                    PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner, name, (int)id, position, time);
-                    OS_MutSemTake(TrajectoryAppData.mutexAcState);
-                    TrajectoryAppData.monitor = true;
-                    OS_MutSemGive(TrajectoryAppData.mutexAcState);
-                }
-
+                    wp[i] = fp->waypoints[i];
+                } 
+                char name[] = "Plan0";
+                TrajManager_InputFlightPlan(TrajectoryAppData.pplanner, name, wp, fp->num_waypoints,0,false);
+                OS_MutSemTake(TrajectoryAppData.mutexAcState);
+                TrajectoryAppData.monitor = true;
+                OS_MutSemGive(TrajectoryAppData.mutexAcState);
                 CFE_ES_WriteToSysLog("Trajectory:Received flight plan with %d waypoints\n", fp->num_waypoints);
+                TrajectoryAppData.nextWP1 = 1;
                 break;
             }
 
@@ -302,35 +261,25 @@ void TRAJECTORY_Monitor(void)
                 char buffer[MAX_DATABUFFER_SIZE] = {0};    // TODO: Read this from the  message
                 strcpy(buffer,strdata->buffer);
                 char planID[] = "Plan0";
-                PathPlanner_StringToPlan(TrajectoryAppData.pplanner,planID,buffer);  
+                TrajManager_StringToPlan(TrajectoryAppData.pplanner,planID,buffer);  
 
                 flightplan_t fp;
                 CFE_SB_InitMsg(&fp,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
-                fp.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
+                fp.num_waypoints = (uint16_t)TrajManager_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
                 strcpy(fp.id,"Plan0");
                 for (int i = 0; i < fp.num_waypoints; ++i)
                 {
-                    double wp[4];
-                    PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, i, wp);
+                    waypoint_t wp;
+                    TrajManager_GetWaypoint(TrajectoryAppData.pplanner, planID, i, &wp);
 
-                    if(i==0){
-                        fp.scenario_time = wp[3];
-                    }
 
                     if (i >= MAX_WAYPOINTS)
                     {
                         OS_printf("Trajectory: more than MAX_WAYPOINTS");
                         break;
                     }
-                    if (wp[3] > 0){
-                        fp.waypoints[i].wp_metric = WP_METRIC_ETA;
-                        fp.waypoints[i].value =  wp[3] - fp.scenario_time;
-                    }else{
-                        fp.waypoints[i].wp_metric = WP_METRIC_NONE;
-                    }
-                    fp.waypoints[i].latitude = (float)wp[0];
-                    fp.waypoints[i].longitude = (float)wp[1];
-                    fp.waypoints[i].altitude = (float)wp[2];
+
+                    fp.waypoints[i] = wp; 
                 }
                 memcpy(&TrajectoryAppData.flightplan1, &fp, sizeof(flightplan_t));
                 TrajectoryAppData.monitor = true;
@@ -351,7 +300,7 @@ void TRAJECTORY_Monitor(void)
                     vertices[i][1] = gf->vertices[i][1];
                 }
 
-                PathPlanner_InputGeofenceData(TrajectoryAppData.pplanner, gf->type, gf->index, gf->totalvertices, gf->floor, gf->ceiling, vertices);
+                TrajManager_InputGeofenceData(TrajectoryAppData.pplanner, gf->type, gf->index, gf->totalvertices, gf->floor, gf->ceiling, vertices);
 
                 break;
             }
@@ -367,7 +316,7 @@ void TRAJECTORY_Monitor(void)
                     double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
                     double trkGsVs[3] = {0.0,0.0,0.0};
                     ConvertVnedToTrkGsVs(pos->vn,pos->ve,pos->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-                    PathPlanner_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, trkGsVs);
+                    TrajManager_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, trkGsVs, TrajectoryAppData.timeNow);
                 }
                 else
                 {
@@ -396,7 +345,7 @@ void TRAJECTORY_Monitor(void)
                 double pos[3] = {msg->latitude, msg->longitude, msg->altitude};
                 double trkGsVs[3] = {0.0,0.0,0.0};
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-                PathPlanner_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, trkGsVs);
+                TrajManager_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, trkGsVs, TrajectoryAppData.timeNow);
                 break;
             }
 
@@ -408,8 +357,7 @@ void TRAJECTORY_Monitor(void)
                 if (strcmp(msg->planID, "Plan0") == 0)
                 {
                     TrajectoryAppData.nextWP1 = msg->reachedwaypoint + 1;
-                }
-                else if (strcmp(msg->planID, "Plan1") == 0)
+                }else
                 {
                     TrajectoryAppData.nextWP2 = msg->reachedwaypoint + 1;
                 }
@@ -419,152 +367,68 @@ void TRAJECTORY_Monitor(void)
 
             case ICAROUS_RESET_MID:
             {
-                PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
+                TrajManager_ClearAllPlans(TrajectoryAppData.pplanner);
                 break;
             }
 
             case ICAROUS_RESETFP_MID:
             {
-                PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
+                TrajManager_ClearAllPlans(TrajectoryAppData.pplanner);
+                break;
+            }
+
+            case ICAROUS_STARTMISSION_MID:{
+                double diff = TrajectoryAppData.timeNow - TrajectoryAppData.flightplan1.waypoints[0].time;
+                TrajManager_SetPlanOffset(TrajectoryAppData.pplanner,(char*)"Plan0",0,diff);
                 break;
             }
 
             case FREQ_30_WAKEUP_MID:
             {
 
+                if(TrajectoryAppData.nextWP1 == 0){
+                    break;
+                } 
                 double position[3];
                 double velocity[3];
-                int newWP1;
-                int newWP2;
-                bool monitor;
+                int nextWP;
 
                 OS_MutSemTake(TrajectoryAppData.mutexAcState);
                 memcpy(position, TrajectoryAppData.position, sizeof(double) * 3);
                 memcpy(velocity, TrajectoryAppData.velocity, sizeof(double) * 3);
-                newWP1 = TrajectoryAppData.nextWP1;
-                newWP2 = TrajectoryAppData.nextWP2;
-                monitor = TrajectoryAppData.monitor;
                 OS_MutSemGive(TrajectoryAppData.mutexAcState);
-
-                if (!monitor)
-                    break;
-
-                // Compute distance to next waypoint.
-                double nextWP1[3] = {TrajectoryAppData.flightplan1.waypoints[newWP1].latitude,
-                                     TrajectoryAppData.flightplan1.waypoints[newWP1].longitude,
-                                     TrajectoryAppData.flightplan1.waypoints[newWP1].altitude};
-
-                double dist2NextWP1 = ComputeDistance(position, nextWP1);
-
-
-                double prevWP1[3] = {TrajectoryAppData.flightplan1.waypoints[newWP1-1].latitude,
-                                     TrajectoryAppData.flightplan1.waypoints[newWP1-1].longitude,
-                                     TrajectoryAppData.flightplan1.waypoints[newWP1-1].altitude};
-
-                // Compute xtrack deviation for current leg.
-                double offset[2];
-                ComputeXtrackDistance(prevWP1,nextWP1,position,offset);
-                // Maneuver to intercept plan
-                double maneuver[3];
-                ManueverToIntercept(prevWP1,nextWP1,position,maneuver,TrajectoryAppData.xtrkGain,TrajectoryAppData.resSpeed,TrajectoryAppData.xtrkDev);
-
-                double interceptHeadingToPlan;
-                interceptHeadingToPlan = GetInterceptHeadingToPlan(prevWP1,nextWP1,position);
-
-                CFE_SB_InitMsg(&TrajectoryAppData.fpMonitor, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_monitor_t), TRUE);
-                strcpy(TrajectoryAppData.fpMonitor.planID,"Plan0\0");
-                TrajectoryAppData.fpMonitor.nextWP = TrajectoryAppData.nextWP1;
-                TrajectoryAppData.fpMonitor.dist2NextWP = dist2NextWP1;
-                TrajectoryAppData.fpMonitor.crossTrackDeviation = offset[0];
-                memcpy(TrajectoryAppData.fpMonitor.interceptManeuver, maneuver, sizeof(double) * 3);
-                TrajectoryAppData.fpMonitor.interceptHeadingToPlan = interceptHeadingToPlan;
-                TrajectoryAppData.fpMonitor.allowedXtrackError = TrajectoryAppData.xtrkDev;
-                TrajectoryAppData.fpMonitor.resolutionSpeed = TrajectoryAppData.resSpeed;
-                TrajectoryAppData.fpMonitor.searchType = TrajectoryAppData.searchType;
-                SendSBMsg(TrajectoryAppData.fpMonitor);
-
-                // Compute monitoring information for flight plan 2
-                if(newWP2 >= TrajectoryAppData.flightplan2.num_waypoints || TrajectoryAppData.flightplan2.num_waypoints > 0){
-                    break;
+                if(strcmp(TrajectoryAppData.planID,"Plan0") == 0){
+                    nextWP = TrajectoryAppData.nextWP1;
+                }else{
+                    nextWP = TrajectoryAppData.nextWP2;
                 }
-                 // Compute distance to next waypoint.
-                double nextWP2[3] = {TrajectoryAppData.flightplan2.waypoints[newWP2].latitude,
-                                     TrajectoryAppData.flightplan2.waypoints[newWP2].longitude,
-                                     TrajectoryAppData.flightplan2.waypoints[newWP2].altitude};
-               
-                double prevWP2[3] = {TrajectoryAppData.flightplan2.waypoints[newWP2-1].latitude,
-                                     TrajectoryAppData.flightplan2.waypoints[newWP2-1].longitude,
-                                     TrajectoryAppData.flightplan2.waypoints[newWP2-1].altitude};
-               
-                double dist2NextWP2 = ComputeDistance(position, nextWP2);
-
-
-                // Compute xtrack deviation for current leg.
-                ComputeXtrackDistance(prevWP2,nextWP2,position,offset);
-
-                // Maneuver to intercept plan
-                ManueverToIntercept(prevWP2,nextWP2,position,maneuver,TrajectoryAppData.xtrkGain,TrajectoryAppData.resSpeed,TrajectoryAppData.xtrkDev);
-
-                interceptHeadingToPlan = GetInterceptHeadingToPlan(prevWP2,nextWP2,position);
-
-                CFE_SB_InitMsg(&TrajectoryAppData.fpMonitor, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_monitor_t), TRUE);
-                strcpy(TrajectoryAppData.fpMonitor.planID,"Plan1\0");
-                TrajectoryAppData.fpMonitor.nextWP = TrajectoryAppData.nextWP2;
-                TrajectoryAppData.fpMonitor.dist2NextWP = dist2NextWP2;
-                TrajectoryAppData.fpMonitor.crossTrackDeviation = offset[0];
-                memcpy(TrajectoryAppData.fpMonitor.interceptManeuver, maneuver, sizeof(double) * 3);
-                TrajectoryAppData.fpMonitor.interceptHeadingToPlan = interceptHeadingToPlan;
-                TrajectoryAppData.fpMonitor.allowedXtrackError = TrajectoryAppData.xtrkDev;
-                TrajectoryAppData.fpMonitor.resolutionSpeed = TrajectoryAppData.resSpeed;
-                TrajectoryAppData.fpMonitor.searchType = TrajectoryAppData.searchType;
-                SendSBMsg(TrajectoryAppData.fpMonitor);
+                cfsTrajectoryMonitorData_t tjMonData;
+                CFE_SB_InitMsg(&tjMonData, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_t), TRUE);
+                trajectoryMonitorData_t monData;
+                monData = TrajManager_MonitorTrajectory(TrajectoryAppData.pplanner,TrajectoryAppData.timeNow,TrajectoryAppData.planID,position,velocity,nextWP);
+                memcpy(tjMonData.databuffer,(char*)&monData,sizeof(trajectoryMonitorData_t));
+                SendSBMsg(tjMonData);
 
                 break;
             }
 
-            case TRAFFIC_PARAMETERS_MID:
-            {
-                    char params[2000];
-
-                    traffic_parameters_t* msg;
-                    msg = (traffic_parameters_t*) TrajectoryAppData.Traj_MsgPtr;
-
-                    ConstructDAAParamString(msg,params);
-
-                    if(TrajectoryAppData.updateDAAParams){
-                        PathPlanner_UpdateDAAParameters(TrajectoryAppData.pplanner,params);
-                    }
-		    break;
-            }
-
             case TRAJECTORY_PARAMETERS_MID:
             {
+                trajectory_parameters_t *tjparams = (trajectory_parameters_t*)TrajectoryAppData.Traj_MsgPtr; 
+                TrajManager_UpdateDubinsPlannerParameters(TrajectoryAppData.pplanner,&tjparams->dbparams);
+                break;
+            }
 
-                trajectory_parameters_t *msg;
-                msg = (trajectory_parameters_t *)TrajectoryAppData.Traj_MsgPtr;
-                memcpy(&TrajectoryAppData.trajParams,msg,sizeof(trajectory_parameters_t));
-
-                TrajectoryAppData.xtrkDev = msg->xtrkDev;
-                TrajectoryAppData.xtrkGain = msg->xtrkGain;
-                TrajectoryAppData.resSpeed = msg->resSpeed;
-                TrajectoryAppData.searchType = msg->searchAlgorithm;
-
-                PathPlanner_UpdateAstarParameters(TrajectoryAppData.pplanner,
-                                                  msg->astar_enable3D,
-                                                  msg->astar_gridSize,
-                                                  TrajectoryAppData.resSpeed,
-                                                  msg->astar_lookahead,
-                                                  msg->astar_daaConfigFile);
-
-                PathPlanner_UpdateRRTParameters(TrajectoryAppData.pplanner,
-                                                TrajectoryAppData.resSpeed,
-                                                msg->rrt_numIterations,
-                                                msg->rrt_dt,
-                                                msg->rrt_macroSteps,
-                                                msg->rrt_capR,
-                                                msg->rrt_daaConfigFile);
-
-                
+            case GUIDANCE_COMMAND_MID:{
+                argsCmd_t* cmd = (argsCmd_t*) TrajectoryAppData.Traj_MsgPtr;
+                if((int) cmd->name == 0){
+                    if(strcmp(cmd->buffer,"Plan0") == 0){
+                        TrajectoryAppData.nextWP1 = (int)cmd->param1;
+                    }else{
+                        TrajectoryAppData.nextWP2 = (int)cmd->param1;
+                    }
+                    strcpy(TrajectoryAppData.planID,cmd->buffer);
+                }
                 break;
             }
 

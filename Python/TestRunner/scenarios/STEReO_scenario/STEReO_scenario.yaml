@@ -14,6 +14,7 @@ scenarios:
     parameter_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_manned.parm
     param_adjustments: {}
     traffic: []
+    python: True
   - name: UAV
     cpu_id: 2
     waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_uav.txt
@@ -22,3 +23,4 @@ scenarios:
     param_adjustments: {}
     traffic: []
     delay: 30
+    python: True

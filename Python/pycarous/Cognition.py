@@ -6,11 +6,8 @@ class CognitionParams(Structure):
         ("resolutionType",c_int),
         ("DTHR",c_double),
         ("ZTHR",c_double),
-        ("searchType",c_int),
-        ("resolutionSpeed",c_double),
         ("allowedXTrackDeviation",c_double),
-        ("XtrackGain",c_double)
-    ]
+        ("lookaheadTime",c_double)]
 
 ARR3 = c_double*3
 
@@ -22,7 +19,8 @@ class Cognition():
         self.lib.Reset.argtypes = [c_void_p]
         self.lib.ResetFlightPhases.argtypes = [c_void_p]
         self.lib.InputVehicleState.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
-        self.lib.InputFlightPlanData.argtypes = [c_void_p,c_char_p,c_double,c_int,c_double*3,c_int,c_double]
+        self.lib.InputFlightPlanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool]
+        self.lib.InputTrajectoryMonitorData.argtypes = [c_void_p,POINTER(TrajectoryMonitorData)]
         self.lib.InputParameters.argtypes = [c_void_p,POINTER(CognitionParams)]
         self.lib.InputDitchStatus.argtypes = [c_void_p,c_double*3,c_bool]
         self.lib.InputMergeStatus.argtypes = [c_void_p,c_int]
@@ -45,13 +43,18 @@ class Cognition():
         cvel = ARR3(*vel)
         self.lib.InputVehicleState(self.obj,cpos,cvel,c_double(hdg))
 
-    def InputFlightplanData(self,planID,scenarioTime,flightplan,eta=False):
-        for i,fp in enumerate(flightplan):
-            wp = fp[:3]
-            wpmetric = 1 if eta else 2
-            self.lib.InputFlightPlanData(self.obj,c_char_p(planID.encode('utf-8')),
-                                         c_double(scenarioTime),c_int(i),ARR3(*wp),c_int(wpmetric),c_double(fp[3]))
 
+    def InputFlightplanData(self,planID,fp,repair=False):
+        n = len(fp)
+        wparray = Waypoint*50
+        wpts = wparray()
+        for i,wp in enumerate(fp):
+             wpts[i] = wp 
+        self.lib.InputFlightPlanData(self.obj,c_char_p(planID.encode('utf-8')),
+                                          wpts,c_int(n),c_double(0),c_bool(repair))
+
+    def InputTrajectoryMonitorData(self,tjMonData):
+       self.lib.InputTrajectoryMonitorData(self.obj,byref(tjMonData))
 
     def InputParameters(self,cogParam):
         self.lib.InputParameters(self.obj,byref(cogParam))

@@ -8,8 +8,8 @@ from Cognition import (Cognition,
 from Guidance import (Guidance,
                       GuidanceParam,
                       GuidanceMode)
-from Geofence import (Getfence,GeofenceMonitor)
-from Trajectory import Trajectory
+from Geofence import (GeofenceMonitor)
+from Trajectory import Trajectory,DubinsParams
 from TrafficMonitor import TrafficMonitor
 from Merger import (MAX_NODES,Merger,LogData,MergerData)
 from VehicleSim import (VehicleSim,
@@ -17,13 +17,15 @@ from VehicleSim import (VehicleSim,
                         RunTraffic)
 from ichelper import (ConvertTrkGsVsToVned,
                       distance,
+                      Getfence,
                       gps_offset,
+                      GetFlightplan,
                       ConvertVnedToTrkGsVs,
                       ComputeHeading,
                       LoadIcarousParams,
                       ReadFlightplanFile,
-                      GetFlightplanFile)
-
+                      ConstructWaypointsFromList)
+import time
 from IcarousInterface import IcarousInterface
 
 class Icarous(IcarousInterface):
@@ -94,7 +96,6 @@ class Icarous(IcarousInterface):
         self.guidanceMode = GuidanceMode.NOOP
         self.emergbreak = False
         self.daa_radius = 0
-        self.resSpeed = 0
         self.fphases = -1
         self.land    = False
 
@@ -105,23 +106,30 @@ class Icarous(IcarousInterface):
         if idx is not self.vehicleID and 0 not in position:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
-            self.Trajectory.InputTrafficData(idx,position,trkgsvs)
+            self.Trajectory.InputTrafficData(idx,position,trkgsvs,self.currTime)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(idx, position, velocity, localPos)
 
-    def InputFlightplan(self,fp,scenarioTime=0,eta=False):
-        self.flightplan1 = fp 
-        self.flightplan2 = []
+    def InputFlightplan(self,fp,eta=False,repair=False):
+        
+        waypoints = ConstructWaypointsFromList(fp,eta) 
+        
         self.etaFP1 = eta
-        self.plans.append(fp)
-        self.localPlans.append(self.GetLocalFlightPlan(fp))
-        self.Trajectory.InputFlightplan("Plan0",fp,eta)
-        self.Cog.InputFlightplanData("Plan0",scenarioTime,fp,eta)
-        self.Guidance.InputFlightplanData("Plan0",scenarioTime,fp,eta)
+        self.localPlans.append(self.GetLocalFlightPlan(waypoints))
+        self.Cog.InputFlightplanData("Plan0",waypoints,repair)
+        self.Guidance.InputFlightplanData("Plan0",waypoints,repair)
+        self.Trajectory.InputFlightplanData("Plan0",waypoints,repair)
 
-    def InputFlightplanFromFile(self,filename,scenarioTime=0,eta=False):
-        fp = GetFlightplanFile(filename, self.defaultWPSpeed, scenarioTime, eta)
-        self.InputFlightplan(fp,scenarioTime,eta)
+        if repair: 
+            waypoints = self.Guidance.GetKinematicPlan("Plan0")
+
+        self.plans.append(waypoints)
+        self.flightplan1 = waypoints 
+        self.flightplan2 = []
+
+    def InputFlightplanFromFile(self,filename,scenarioTime=0,eta=False,repair=False):
+        fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
+        self.InputFlightplan(fp,eta,repair)
 
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
@@ -140,7 +148,7 @@ class Icarous(IcarousInterface):
             self.fences.append(gf)
 
     def InputMergeFixes(self,filename):
-        wp, ind, _ = ReadFlightplanFile(filename)
+        wp, ind, _, _, _ = ReadFlightplanFile(filename)
         self.localMergeFixes = list(map(self.ConvertToLocalCoordinates, wp))
         self.mergeFixes = wp
         self.Merger.SetIntersectionData(list(zip(ind,wp)))
@@ -154,22 +162,26 @@ class Icarous(IcarousInterface):
         self.Geofence.SetParameters(gfparams)
 
     def SetTrajectoryParams(self,params):
-        # Astar params
-        enable3d = True if params['ASTAR_ENABLE3D'] == 1 else False
-        gridSize = params['ASTAR_GRIDSIZE'] 
-        resSpeed = params['ASTAR_RESSPEED']
-        lookahead= params['ASTAR_LOOKAHEAD']
-        daaconfig = ''
-        self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
 
         # RRT Params
-        Nstep = int(params['RRT_NITERATIONS'])
-        dt    = params['RRT_DT'] 
-        Dt    = int(params['RRT_MACROSTEPS'])
-        capR  = params['RRT_CAPR']
-        resSpeed = params['RRT_RESSPEED']
+        dubinsParams = DubinsParams()
+        dubinsParams.turnRate = params['TURN_RATE']
+        dubinsParams.zSections = params['ALT_DH'] 
+        dubinsParams.vertexBuffer = params['OBSBUFFER']
+        dubinsParams.maxGS = params['MAX_GS'] * 0.5
+        dubinsParams.minGS = params['MIN_GS'] * 0.5
+        dubinsParams.maxVS = params['MAX_VS'] * 0.00508
+        dubinsParams.minVS = params['MIN_VS'] * 0.00508
+        dubinsParams.hAccel = params['HORIZONTAL_ACCL'] 
+        dubinsParams.vAccel = params['VERTICAL_ACCL'] 
+        dubinsParams.hDaccel = params['HORIZONTAL_ACCL']*-0.8
+        dubinsParams.vDaccel = params['VERTICAL_ACCL']*-1
+        dubinsParams.climbgs = params['CLMB_SPEED']
+        dubinsParams.maxH = params['MAX_ALT']*0.3 
+        dubinsParams.wellClearDistH = params['DET_1_WCV_DTHR']/3
+        dubinsParams.wellClearDistV = params['DET_1_WCV_ZTHR']/3
 
-        self.Trajectory.UpdateRRTParams(resSpeed,Nstep,dt,Dt,capR,daaconfig)
+        self.Trajectory.UpdateDubinsPlannerParams(dubinsParams)
 
     def SetGuidanceParams(self,params):
         guidParams = GuidanceParam()
@@ -181,8 +193,8 @@ class Icarous(IcarousInterface):
         guidParams.climbAngleVRange = params['CLIMB_ANGLE_VR']
         guidParams.climbAngleHRange = params['CLIMB_ANGLE_HR']
         guidParams.climbRateGain = params['CLIMB_RATE_GAIN']
-        guidParams.maxClimbRate = params['MAX_CLIMB_RATE']
-        guidParams.minClimbRate = params['MIN_CLIMB_RATE']
+        guidParams.maxClimbRate = params['MAX_VS'] * 0.00508
+        guidParams.minClimbRate = params['MIN_VS'] * 0.00508
         guidParams.maxCap = params['MAX_CAP']
         guidParams.minCap = params['MIN_CAP']
         guidParams.maxSpeed = params['MAX_GS'] * 0.5
@@ -193,14 +205,12 @@ class Icarous(IcarousInterface):
 
     def SetCognitionParams(self,params):
         cogParams = CognitionParams()
-        cogParams.resolutionSpeed = params['RESSPEED']
-        cogParams.searchType =int(params['SEARCHALGORITHM']) 
         cogParams.resolutionType = int(params['RES_TYPE'])
         cogParams.allowedXTrackDeviation = params['XTRKDEV']
         cogParams.DTHR = params['DET_1_WCV_DTHR']/3
         cogParams.ZTHR = params['DET_1_WCV_ZTHR']/3
+        cogParams.lookaheadTime = params['LOOKAHEAD_TIME']
         self.Cog.InputParameters(cogParams)
-        self.resSpeed = params["RESSPEED"]
 
     def SetTrafficParams(self,params):
         paramString = "" \
@@ -263,7 +273,6 @@ class Icarous(IcarousInterface):
         +"default_load_core_detection_det_2="+"gov.nasa.larcfm.ACCoRD.CDCylinder;"
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
-        self.Trajectory.UpdateDAAParams(paramString)
         self.daa_radius = params['DET_1_WCV_DTHR']/3
 
     def SetMergerParams(self,params):
@@ -311,7 +320,7 @@ class Icarous(IcarousInterface):
         nextWP1 = self.nextWP1
         if self.nextWP1 >= len(self.flightplan1):
             nextWP1 = len(self.flightplan1) - 1
-        dist = distance(self.position[0],self.position[1],self.flightplan1[nextWP1][0],self.flightplan1[nextWP1][1])
+        dist = distance(self.position[0],self.position[1],self.flightplan1[nextWP1].latitude,self.flightplan1[nextWP1].longitude)
 
         if self.verbose > 1:
             if self.activePlan == 'Plan0':
@@ -330,12 +339,15 @@ class Icarous(IcarousInterface):
                 self.guidanceMode = GuidanceMode.FLIGHTPLAN
                 self.activePlan =  cmd.commandU.fpChange.name.decode('utf-8')
                 nextWP = cmd.commandU.fpChange.wpIndex
+                eta = False
                 if self.activePlan == "Plan0":
                     self.flightplan2 = []
                     self.nextWP1 = nextWP
+                    eta = self.etaFP1
                 else:
                     self.nextWP2 = nextWP
-                self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,nextWP)
+                    eta = self.etaFP2
+                self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,nextWP,eta)
                 if self.verbose > 0:
                     print(self.callsign, ": active plan = ",self.activePlan)
             elif cmd.commandType == CommandTypes.P2P:
@@ -343,10 +355,11 @@ class Icarous(IcarousInterface):
                 point = cmd.commandU.p2pCommand.point
                 speed = cmd.commandU.p2pCommand.speed
                 fp = [(*self.position,0),(*point,speed)]
-                self.Guidance.InputFlightplanData("P2P",0,fp)
+                waypoints = ConstructWaypointsFromList(fp)
+                self.Guidance.InputFlightplanData("P2P",waypoints)
                 self.activePlan = "P2P"
                 self.nextWP2 = 1
-                self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,1)
+                self.Guidance.SetGuidanceMode(self.guidanceMode,self.activePlan,1,False)
                 if self.verbose > 0:
                     print(self.callsign, ": active plan = ",self.activePlan)
             elif cmd.commandType == CommandTypes.VELOCITY:
@@ -377,26 +390,34 @@ class Icarous(IcarousInterface):
             elif cmd.commandType == CommandTypes.FP_REQUEST:
                 self.flightplan2 = []
                 self.numSecPlan += 1
-                searchType = cmd.commandU.fpRequest.searchType
                 startPos = cmd.commandU.fpRequest.fromPosition
                 stopPos = cmd.commandU.fpRequest.toPosition
                 startVel = cmd.commandU.fpRequest.startVelocity
+                endVel = cmd.commandU.fpRequest.endVelocity
                 planID = cmd.commandU.fpRequest.name.decode('utf-8')
+                # Find the new path
                 numWP = self.Trajectory.FindPath(
-                        searchType,
                         planID,
                         startPos,
                         stopPos,
-                        startVel)
+                        startVel,
+                        endVel)
 
                 if numWP > 0:
                     if self.verbose > 0:
                         print("%s : At %f s, Computed flightplan %s with %d waypoints" % (self.callsign,self.currTime,planID,numWP))
-                    for i in range(numWP):
-                        wp = self.Trajectory.GetWaypoint(planID,i)
-                        self.flightplan2.append([wp[0],wp[1],wp[2],self.resSpeed])
-                    self.Cog.InputFlightplanData(planID,0,self.flightplan2)
-                    self.Guidance.InputFlightplanData(planID,0,self.flightplan2)
+                    # offset the new path with current time (because new paths start with t=0) 
+                    self.Trajectory.SetPlanOffset(planID,0,self.currTime)
+
+                    # Combine new plan with rest of old plan
+                    self.Trajectory.CombinePlan(planID,"Plan0",-1)
+                    self.flightplan2 = self.Trajectory.GetFlightPlan(planID)
+                    self.Cog.InputFlightplanData(planID,self.flightplan2)
+                    self.Guidance.InputFlightplanData(planID,self.flightplan2)
+
+                    # Set guidance mode with new flightplan and wp 0 to offset plan times
+                    self.Guidance.SetGuidanceMode(GuidanceMode.FLIGHTPLAN,planID,0,False)
+
                     self.plans.append(self.flightplan2)
                     self.localPlans.append(self.GetLocalFlightPlan(self.flightplan2))
                 else:
@@ -444,24 +465,11 @@ class Icarous(IcarousInterface):
         gfConflictData.numConflicts = self.Geofence.GetNumConflicts()
         gfConflictData.numFences = self.numFences
         for i in range(gfConflictData.numConflicts):
-            (ids,conflict,violation,recPos,ftype) = self.Geofence.GetConflict(i)
+            (ids,conflict,violation,recPos,time,ftype) = self.Geofence.GetConflict(i)
             gfConflictData.conflictFenceIDs[i] = ids
             gfConflictData.conflictTypes[i] = ftype
             gfConflictData.recoveryPosition = recPos
-
-        for i,fp in enumerate(self.flightplan1):
-            wp = fp[:3]
-            check1 = self.Geofence.CheckViolation(wp,0,0,0)
-            check2 = self.Geofence.CheckWPFeasibility(self.position,wp)
-            gfConflictData.waypointConflict1[i] = check1
-            gfConflictData.directPathToWaypoint1[i] = check2
-
-        for i,fp in enumerate(self.flightplan2):
-            wp = fp[:3]
-            check1 = self.Geofence.CheckViolation(wp,0,0,0)
-            check2 = self.Geofence.CheckWPFeasibility(self.position,wp)
-            gfConflictData.waypointConflict2[i] = check1
-            gfConflictData.directPathToWaypoint2[i] = check2
+            gfConflictData.timeToViolation[i] = time
 
         self.Cog.InputGeofenceConflictData(gfConflictData)
 
@@ -478,36 +486,18 @@ class Icarous(IcarousInterface):
         altband.time = self.currTime
         vsband.time = self.currTime
 
-        feasibility_cp = True
-        if self.nextWP1 < len(self.flightplan1):
-            C1 = self.Trajectory.ComputeClosesetPoint(self.flightplan1[self.nextWP1-1],self.flightplan1[self.nextWP1],self.position)
-            feasibility_cp = self.tfMonitor.monitor_wp_feasibility(C1,-1)
-
-        for i,fp in enumerate(self.flightplan1):
-            wp = fp[:3]
-            feasibility = self.tfMonitor.monitor_wp_feasibility(wp,-1)
-            feasibility &= self.tfMonitor.monitor_wp_feasibility(wp,self.resSpeed)
-            trkband.wpFeasibility1[i] = feasibility
-            trkband.fp1ClosestPointFeasible = feasibility_cp
-            gsband.wpFeasibility1[i] = feasibility
-            altband.wpFeasibility1[i] = feasibility
-            vsband.wpFeasibility1[i] = feasibility
-        
-        for i,fp in enumerate(self.flightplan2):
-            wp = fp[:3]
-            feasibility = self.tfMonitor.monitor_wp_feasibility(wp,-1)
-            feasibility &= self.tfMonitor.monitor_wp_feasibility(wp,self.resSpeed)
-            trkband.wpFeasibility2[i] = feasibility
-            gsband.wpFeasibility2[i] = feasibility
-            altband.wpFeasibility2[i] = feasibility
-            vsband.wpFeasibility2[i] = feasibility
-         
         self.Cog.InputBands(trkband,gsband,altband,vsband) 
 
         self.trkband = trkband
         self.gsband = gsband
         self.altband = altband
         self.vsband = vsband
+
+    def RunTrajectoryMonitor(self):
+        nextWP = self.nextWP1 if self.activePlan == "Plan0" else self.nextWP2
+        planID = "Plan+" if self.activePlan != "Plan0" else "Plan0"
+        tjMonData = self.Trajectory.MonitorTrajectory(self.currTime,planID,self.position,self.trkgsvs,nextWP)
+        self.Cog.InputTrajectoryMonitorData(tjMonData)
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)
@@ -554,28 +544,30 @@ class Icarous(IcarousInterface):
         if self.CheckMissionComplete():
             return True
 
-        #time_ship_in = time.time()
+        time_ship_in = time.time()
         self.RunOwnship()
-        #time_ship_out = time.time()
+        time_ship_out = time.time()
 
         if not self.missionStarted:
             return True
 
-        #time_cog_in = time.time()
+        time_cog_in = time.time()
         self.RunCognition()
-        #time_cog_out = time.time()
+        time_cog_out = time.time()
 
-        #time_traff_in = time.time()
+        time_traff_in = time.time()
         self.RunTrafficMonitor()
-        #time_traff_out = time.time()
+        time_traff_out = time.time()
 
-        #time_geof_in = time.time()
+        time_geof_in = time.time()
         self.RunGeofenceMonitor()
-        #time_geof_out = time.time()
+        time_geof_out = time.time()
 
-        #time_guid_in = time.time()
+        time_guid_in = time.time()
         self.RunGuidance()
-        #time_guid_out = time.time()
+        time_guid_out = time.time()
+
+        self.RunTrajectoryMonitor()
 
         self.RunMerger()
 

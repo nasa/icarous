@@ -57,8 +57,6 @@ void GEOFENCE_AppInit(void) {
     CFE_SB_SubscribeLocal(ICAROUS_RESET_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_POSITION_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FREQ_30_WAKEUP_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(GEOFENCE_PATH_CHECK_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GEOFENCE_PARAMETERS_MID,geofenceAppData.Geofence_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
@@ -156,41 +154,11 @@ void GEOFENCE_ProcessPacket(void){
             break;
         }
 
-        case ICAROUS_FLIGHTPLAN_MID:{
-            flightplan_t* fp;
-            fp = (flightplan_t*) geofenceAppData.Geofence_MsgPtr;
-            memcpy(&geofenceAppData.flightplan1,fp,sizeof(flightplan_t));
-            geofenceAppData.receivedFP1 = true;
-            break;
-        }
-
-        case ICAROUS_TRAJECTORY_MID:
-        {
-            flightplan_t *fp;
-            fp = (flightplan_t *)geofenceAppData.Geofence_MsgPtr;
-            memcpy(&geofenceAppData.flightplan2, fp, sizeof(flightplan_t));
-            geofenceAppData.receivedFP2 = true;
-            break;
-        }
-
         case ICAROUS_RESET_MID:{
             argsCmd_t *reset = (argsCmd_t*) geofenceAppData.Geofence_MsgPtr;
             if(reset->param1 == 2){
                  GeofenceMonitor_ClearFences(geofenceAppData.gfMonitor);
             }
-            break;
-        }
-
-        case GEOFENCE_PATH_CHECK_MID:{
-            pathFeasibilityCheck_t *pfcheck = (pathFeasibilityCheck_t*) geofenceAppData.Geofence_MsgPtr;
-            pathFeasibilityCheck_t pfresult;
-            CFE_SB_InitMsg(&pfresult,GEOFENCE_PATH_CHECK_RESULT_MID,sizeof(pathFeasibilityCheck_t),TRUE);
-            memcpy(pfresult.fromPosition,pfcheck->fromPosition,sizeof(double)*3);
-            memcpy(pfresult.toPosition,pfcheck->toPosition,sizeof(double)*3);
-            pfresult.feasibleA = !GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.fromPosition,0,0,0);
-            pfresult.feasibleB = !GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.toPosition,0,0,0);
-            pfresult.feasibleAB = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,pfresult.fromPosition,pfresult.toPosition);
-            SendSBMsg(pfresult);
             break;
         }
 
@@ -226,35 +194,6 @@ void GEOFENCE_ProcessPacket(void){
                //TODO: add time to violation data;
                //OS_printf("Geofence conflict type:%d at %f,%f\n",type,geofenceAppData.position[0],geofenceAppData.position[1]);
             }
-
-            if(geofenceAppData.receivedFP1){
-                for(int i=0;i<geofenceAppData.flightplan1.num_waypoints; ++i) {
-                    double wpPos[3] = {geofenceAppData.flightplan1.waypoints[i].latitude,
-                                       geofenceAppData.flightplan1.waypoints[i].longitude,
-                                       geofenceAppData.flightplan1.waypoints[i].altitude};
-                    geofenceAppData.waypointConflict1[i] = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor, wpPos , 0, 0, 0);
-
-                    double position[3] = {geofenceAppData.position[0],geofenceAppData.position[1],geofenceAppData.position[2]};
-                    geofenceAppData.directPathToWP1[i] = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,position,wpPos);
-                }
-            }
-
-            if(geofenceAppData.receivedFP2){
-                for(int i=0;i<geofenceAppData.flightplan2.num_waypoints; ++i) {
-                    double wpPos[3] = {geofenceAppData.flightplan2.waypoints[i].latitude,
-                                       geofenceAppData.flightplan2.waypoints[i].longitude,
-                                       geofenceAppData.flightplan2.waypoints[i].altitude};
-                    geofenceAppData.waypointConflict2[i] = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor, wpPos , 0, 0, 0);
-
-                    double position[3] = {geofenceAppData.position[0],geofenceAppData.position[1],geofenceAppData.position[2]};
-                    geofenceAppData.directPathToWP2[i] = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,position,wpPos);
-                }
-            }
-
-            memcpy(geofenceAppData.gfConflictData.waypointConflict1,geofenceAppData.waypointConflict1,sizeof(bool)*50);
-            memcpy(geofenceAppData.gfConflictData.directPathToWaypoint1,geofenceAppData.directPathToWP1,sizeof(bool)*50);
-            memcpy(geofenceAppData.gfConflictData.waypointConflict2,geofenceAppData.waypointConflict2,sizeof(bool)*50);
-            memcpy(geofenceAppData.gfConflictData.directPathToWaypoint2,geofenceAppData.directPathToWP2,sizeof(bool)*50);
 
             memcpy(geofence_conflict_msg.databuffer,(char*) &geofenceAppData.gfConflictData,sizeof(geofenceConflict_t));
             SendSBMsg(geofence_conflict_msg);

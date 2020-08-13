@@ -70,25 +70,14 @@ scenarios:
     - [95, 30, 5, 1, 180, 0]
 
 # Test ID: AT-4
-- name: "Geofence ASTAR"
+- name: "Geofence"
   time_limit: 300
   vehicles:
   - name: Ownship
     waypoint_file: Examples/InputData/flightplan.txt
     geofence_file: Examples/InputData/geofence2.xml
     parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"SEARCHALGORITHM": 1}
-    traffic: []
-
-# Test ID: AT-5
-- name: "Geofence RRT"
-  time_limit: 300
-  vehicles:
-  - name: Ownship
-    waypoint_file: Examples/InputData/flightplan.txt
-    geofence_file: Examples/InputData/geofence2.xml
-    parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"SEARCHALGORITHM": 2}
+    param_adjustments: {}
     traffic: []
 
 # Test ID: AT-6
@@ -100,10 +89,10 @@ scenarios:
     waypoint_file: Examples/InputData/flightplan.txt
     geofence_file: Examples/InputData/geofence2.xml
     parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+    param_adjustments: {"RES_TYPE": 4}
     traffic:
       - [77, 77, 5, 1, 270, 0]
-      #- [142, 265, 5, 1, 90, 0]
+      - [142, 265, 5, 1, 90, 0]
 
 # Test ID: AT-7
 # geofence conflict then traffic conflict
@@ -114,7 +103,7 @@ scenarios:
     waypoint_file: Examples/InputData/flightplan.txt
     geofence_file: Examples/InputData/geofence2.xml
     parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+    param_adjustments: {"RES_TYPE": 4}
     traffic:
       - [120, 74, 5, 1, 270, 0]
-      #- [127, 95, 5, 1, 270, 0]
+      - [127, 95, 5, 1, 270, 0]

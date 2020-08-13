@@ -121,7 +121,6 @@ void PublishParams(param_t *params) {
     localTrafficParams.alert_1_spread_gs = params[i].value;i++;;
     localTrafficParams.alert_1_spread_trk = params[i].value;i++;;
     localTrafficParams.alert_1_spread_vs = params[i].value;i++;;
-    localTrafficParams.conflict_level = (uint8_t) params[i].value;i++;;
     strcpy(localTrafficParams.load_core_detection_det_1, "WCV_TAUMOD"); //Hard coded, not parameter
     localTrafficParams.det_1_WCV_DTHR = params[i].value;i++;;
     localTrafficParams.det_1_WCV_TCOA = params[i].value;i++;;
@@ -130,53 +129,33 @@ void PublishParams(param_t *params) {
 
     SendSBMsg(localTrafficParams);
     #else
-       for(int k=0;k<46;++k) i++;
-    #endif
-
-    // Tracking parameters
-    #ifdef APPDEF_TRACKING
-    tracking_parameters_t localTrackingParams;
-    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
-    localTrackingParams.command = (bool) params[i].value;i++;;
-    localTrackingParams.trackingObjId = (int) params[i].value;i++;;
-    localTrackingParams.pGainX = (double) params[i].value;i++;;
-    localTrackingParams.pGainY = (double) params[i].value;i++;;
-    localTrackingParams.pGainZ = (double) params[i].value;i++;;
-    localTrackingParams.heading = (double) params[i].value;i++;;
-    localTrackingParams.distH = (double) params[i].value;i++;;
-    localTrackingParams.distV = (double) params[i].value;i++;;
-    SendSBMsg(localTrackingParams);
-    #else
-       for(int k=0;k<8;++k) i++;
+       for(int k=0;k<45;++k) i++;
     #endif
 
     // Trajectory parameters
     #ifdef APPDEF_TRAJECTORY
     trajectory_parameters_t localTrajectoryParams;
     CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
-    localTrajectoryParams.obsbuffer = (double) params[i].value;i++;;
-    localTrajectoryParams.maxCeiling = (double) params[i].value;i++;;
-    localTrajectoryParams.astar_enable3D = (bool) params[i].value;i++;;
-    localTrajectoryParams.astar_gridSize = (double) params[i].value;i++;;
-    localTrajectoryParams.astar_resSpeed = (double) params[i].value;i++;;
-    localTrajectoryParams.astar_lookahead = (double) params[i].value;i++;;
-    strcpy(localTrajectoryParams.astar_daaConfigFile, "../ram/DaidalusQuadConfig.txt");   //Hard coded, not parameter
-    //params[i].value;i++;;
-    localTrajectoryParams.rrt_resSpeed = (double) params[i].value;i++;;
-    localTrajectoryParams.rrt_numIterations = (int) params[i].value;i++;;
-    localTrajectoryParams.rrt_dt = (double) params[i].value;i++;;
-    localTrajectoryParams.rrt_macroSteps = (int) params[i].value;i++;;
-    localTrajectoryParams.rrt_capR = (double) params[i].value;i++;;
-    strcpy(localTrajectoryParams.rrt_daaConfigFile, "../ram/DaidalusQuadConfig.txt");     //Hard coded, not parameter
-    //params[i].value;i++;;
-    localTrajectoryParams.xtrkDev = (double) params[i].value;i++;;
-    localTrajectoryParams.xtrkGain = (double) params[i].value;i++;;
-    localTrajectoryParams.resSpeed = (double) params[i].value;i++;;
-    localTrajectoryParams.searchAlgorithm = (uint8_t) params[i].value;i++;;
+    localTrajectoryParams.dbparams.vertexBuffer = (double) params[i].value;i++;;
+    localTrajectoryParams.dbparams.maxH = (double) params[i].value;i++;;
+    localTrajectoryParams.dbparams.climbgs =  (double) params[i].value;i++;;
+    localTrajectoryParams.dbparams.zSections = (double) params[i].value;i++;;
+    localTrajectoryParams.dbparams.wellClearDistH = localTrafficParams.det_1_WCV_DTHR * 0.3; 
+    localTrajectoryParams.dbparams.wellClearDistV = localTrafficParams.det_1_WCV_ZTHR * 0.3; 
+    localTrajectoryParams.dbparams.turnRate = localTrafficParams.turn_rate;
+    localTrajectoryParams.dbparams.maxGS = localTrafficParams.max_gs * 0.5;
+    localTrajectoryParams.dbparams.minGS = localTrafficParams.min_gs * 0.5;
+    localTrajectoryParams.dbparams.maxVS = localTrafficParams.max_vs * 0.00508;
+    localTrajectoryParams.dbparams.minVS = localTrafficParams.min_vs * 0.00508;
+    localTrajectoryParams.dbparams.hAccel = localTrafficParams.horizontal_accel;
+    localTrajectoryParams.dbparams.hDaccel = -localTrafficParams.horizontal_accel*0.8;
+    localTrajectoryParams.dbparams.vAccel = localTrafficParams.vertical_accel;
+    localTrajectoryParams.dbparams.vDaccel = -localTrafficParams.vertical_accel;
+    localTrajectoryParams.crossTrackDeviation = (double)params[i].value;i++;;
 
     SendSBMsg(localTrajectoryParams);
     #else
-       for(int k=0;k<15;++k) i++;
+       for(int k=0;k<5;++k) i++;
     #endif
 
     // Geofence parameters
@@ -191,16 +170,6 @@ void PublishParams(param_t *params) {
     SendSBMsg(localGeofenceParams);
     #else
        for(int k=0;k<5;++k) i++;
-    #endif
-
-    #ifdef APPDEF_ROTORSIM
-    // Rotorsim parameters
-    rotorsim_parameters_t localRotorsimParams;
-    CFE_SB_InitMsg(&localRotorsimParams,ROTORSIM_PARAMETERS_MID,sizeof(rotorsim_parameters_t),TRUE);
-    localRotorsimParams.speed = (double) params[i].value;i++;;
-    SendSBMsg(localRotorsimParams);
-    #else
-       for(int k=0;k<1;++k) i++;
     #endif
 
     #ifdef APPDEF_MERGER
@@ -227,13 +196,13 @@ void PublishParams(param_t *params) {
     localGuidanceParams.defaultWpSpeed = (double) params[i].value;i++;;
     localGuidanceParams.captureRadiusScaling = (double) params[i].value;i++;;
     localGuidanceParams.guidanceRadiusScaling = (double) params[i].value;i++;;
-    localGuidanceParams.xtrkDev = localTrajectoryParams.xtrkDev;
+    localGuidanceParams.xtrkDev = localTrajectoryParams.crossTrackDeviation;
     localGuidanceParams.climbAngle = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleVRange = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleHRange = (double) params[i].value;i++;;
     localGuidanceParams.climbRateGain = (double) params[i].value;i++;;
-    localGuidanceParams.maxClimbRate = (double) params[i].value;i++;;
-    localGuidanceParams.minClimbRate = (double) params[i].value;i++;;
+    localGuidanceParams.minClimbRate = (double) params[8].value * 0.00508;
+    localGuidanceParams.maxClimbRate = (double) params[9].value * 0.00508;
     localGuidanceParams.maxCap = (double) params[i].value;i++;;
     localGuidanceParams.minCap = (double) params[i].value;i++;;
     localGuidanceParams.minSpeed = (double) params[6].value * 0.5;
@@ -242,7 +211,6 @@ void PublishParams(param_t *params) {
     SendSBMsg(localGuidanceParams);
     #endif
 
-    OS_printf("Published parameters\n");
 }
 
 /**
