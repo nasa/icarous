@@ -1,6 +1,9 @@
+import sys
+import os
 from matplotlib import pyplot as plt
 
-import propagationmodels
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+from communicationmodels import propagationmodels
 
 
 rx_threshold = 1e-10    # W
