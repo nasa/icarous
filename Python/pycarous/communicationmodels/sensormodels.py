@@ -143,14 +143,24 @@ RECEIVER_TABLE = {
 
 
 def get_transmitter(key, channel):
-    """ Return the requested transmitter """
+    """
+    Return the requested transmitter
+    :param key: name of transmitter type to return.
+    If key is an instance of Transmitter return key
+    :param channel: the communication channel this transmitter will use
+    """
     if isinstance(key, Transmitter):
         return key
-    return TRANSMITTER_TABLE.get(key, DummyTransmitter)(channel)
+    return TRANSMITTER_TABLE[key](channel)
 
 
 def get_receiver(key, channel):
-    """ Return the requested receiver """
+    """
+    Return the requested receiver
+    :param key: name of receiver type to return.
+    If key is an instance of Receiver return key
+    :param channel: the communication channel this receiver will use
+    """
     if isinstance(key, Receiver):
         return key
-    return RECEIVER_TABLE.get(key, DummyTransmitter)(channel)
+    return RECEIVER_TABLE[key](channel)

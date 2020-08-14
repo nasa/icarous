@@ -57,6 +57,7 @@ class PropagationModel:
         plt.plot(xs, ys, label=self.model_name)
         plt.xlabel("Separation Distance (m)")
         plt.ylabel("Received Power (W)")
+        plt.title(self.model_name)
         plt.xlim((0, xmax))
         rx_pos = util.gps_offset(tx_pos, 0, xmax/2) + (h_r,)
         rx_power_at_CR = self.received_power(tx_power, freq, tx_pos, rx_pos)
@@ -135,4 +136,26 @@ class TwoRayGroundPropagation(PropagationModel):
         w = 3e8/freq                # Wavelength in meters
         C = w**2/((4*np.pi)**2*self.L)
         d = (tx_power*C*h_t**2*h_r**2/rx_sensitivity)**(1/4)
+        if d == 0:
+            return w
         return d
+
+
+MODEL_TABLE = {
+    "Constant":      PropagationModel,
+    "NoLoss":        NoLossPropagation,
+    "FreeSpace":     FreeSpacePropagation,
+    "TwoRayGround":  TwoRayGroundPropagation,
+}
+
+
+def get_propagation_model(key, params={}):
+    """
+    Return the requested propagation model
+    :param key: name of model to return.
+    If key is an instance of PropagationModel return key
+    :param params: dictionary of keyword parameters for the model instantiation
+    """
+    if isinstance(key, PropagationModel):
+        return key
+    return MODEL_TABLE[key](**params)

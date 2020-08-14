@@ -4,12 +4,22 @@ from VehicleSim import VehicleSim
 from ichelper import distance
 from Merger import LogData, MergerData, MAX_NODES
 from communicationmodels import channelmodels as cm
-from communicationmodels import sensormodels as sm
+from communicationmodels import get_propagation_model, get_reception_model
+from communicationmodels import get_transmitter, get_receiver
 
 
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
-    def __init__(self):
+    def __init__(self, propagation_model="NoLoss", reception_model="Perfect",
+                 propagation_params={}, reception_params={}):
+        """
+        @param propagation_model: name of signal propagation model
+        ex: "NoLoss", "FreeSpace", "TwoRayGround"
+        @param reception_model: name of V2V reception model,
+        ex: "Perfect", "Deterministic", "Rayleigh", "Nakagami"
+        @param propagation_params: dict of keyword params for propagation model
+        @param reception_params: dict of keyword params for reception model
+        """
         # Vehicle instances
         self.icInstances = []
         self.icStartDelay = []
@@ -17,8 +27,10 @@ class SimEnvironment:
         self.tfList = []
 
         # Communication channel
-        pm = cm.propagationmodels.TwoRayGroundPropagation()
-        rm = cm.receptionmodels.RayleighReception()
+        pm = get_propagation_model(propagation_model, propagation_params)
+        reception_params["propagation_model"] = pm
+        rm = get_reception_model(reception_model, reception_params)
+        print("Reception model: %s" % rm.model_name)
         self.comm_channel = cm.ChannelModel(propagation_model=pm,
                                             reception_model=rm)
 
@@ -41,16 +53,18 @@ class SimEnvironment:
         @param ic: An Icarous instance
         @param delay: Time to delay before starting mission (s)
         @param time_limit: Time limit to fly before shutting vehicle down (s)
-        @param transmitter: A Transmitter to send V2V position data
-        @param receiver: A Receiver to send V2V position data
+        @param transmitter: A Transmitter to send V2V position data,
+        ex: "ADS-B" or "GroundTruth"
+        @param receiver: A Receiver to get V2V position data,
+        ex: "ADS-B" or "GroundTruth"
         """
         self.icInstances.append(ic)
         self.icStartDelay.append(delay)
         self.icTimeLimit.append(time_limit)
 
-        # Create a transmitter/receiver for V2V communications
-        ic.transmitter = sm.get_transmitter(transmitter, self.comm_channel)
-        ic.receiver = sm.get_receiver(receiver, self.comm_channel)
+        # Create a transmitter and receiver for V2V communications
+        ic.transmitter = get_transmitter(transmitter, self.comm_channel)
+        ic.receiver = get_receiver(receiver, self.comm_channel)
 
         # Set simulation home position
         if self.home_gps == [0, 0, 0]:
@@ -69,7 +83,8 @@ class SimEnvironment:
         @param speed: traffic speed [m/s]
         @param heading: traffic heading [deg], 0 is North
         @param crate: traffic climbrate [m/s]
-        @param transmitter: A Transmitter to send V2V position data
+        @param transmitter: A Transmitter to send V2V position data,
+        ex: "ADS-B" or "GroundTruth"
         """
         tx = rng*np.sin(brng*np.pi/180)
         ty = rng*np.cos(brng*np.pi/180)
@@ -82,7 +97,7 @@ class SimEnvironment:
         self.tfList.append(traffic)
 
         # Create a transmitter for V2V communications
-        traffic.transmitter = sm.get_transmitter(transmitter, self.comm_channel)
+        traffic.transmitter = get_transmitter(transmitter, self.comm_channel)
 
         return traffic
 
@@ -169,7 +184,7 @@ class SimEnvironment:
 
 
     def RunSimulation(self):
-        """ Run simulation until mission is complete or time limit is reached """
+        """ Run simulation until mission complete or time limit reached """
         simComplete = False
         if self.mergeFixFile is not None:
             for ic in self.icInstances:
@@ -260,5 +275,5 @@ class SimEnvironment:
 
     def WriteLog(self):
         """ Write json logs for each icarous instance """
-        for i, ic in enumerate(self.icInstances):
+        for ic in self.icInstances:
             ic.WriteLog()

@@ -140,7 +140,7 @@ class ReceptionModel:
 
 
 class PerfectReception(ReceptionModel):
-    def __init__(self):
+    def __init__(self, propagation_model=pm.NoLossPropagation()):
         super().__init__()
         self.model_name = "Perfect Reception"
     """
@@ -166,7 +166,7 @@ class DeterministicReception(ReceptionModel):
 
 
 class ConstantReception(ReceptionModel):
-    def __init__(self, rx_rate=1):
+    def __init__(self, rx_rate=1, propagation_model=pm.NoLossPropagation()):
         super().__init__()
         self.reception_rate = rx_rate
         self.model_name = "Constant Reception (P = %.2f)" % self.reception_rate
@@ -227,6 +227,7 @@ class NakagamiReception(ReceptionModel):
     """
 
     def nakagami(self, d, CR):
+        #print(CR)
         A = np.exp(-self.m*(d/CR)**2)
         B = sum([(self.m*(d/CR)**2)**(i-1)/np.math.factorial(i - 1)
                  for i in range(1, self.m + 1)])
@@ -240,3 +241,24 @@ class NakagamiReception(ReceptionModel):
         CR = self.communication_range(rx_sensitivity, tx_power, freq, h_t, h_r)
         p_rx = self.nakagami(d, CR)
         return p_rx
+
+
+MODEL_TABLE = {
+    "Perfect":       PerfectReception,
+    "Deterministic": DeterministicReception,
+    "Constant":      ConstantReception,
+    "Rayleigh":      RayleighReception,
+    "Nakagami":      NakagamiReception,
+}
+
+
+def get_reception_model(key, params={}):
+    """
+    Return the requested reception model
+    :param key: name of model to return.
+    If key is an instance of ReceptionModel return key
+    :param params: dictionary of keyword parameters for the model instantiation
+    """
+    if isinstance(key, ReceptionModel):
+        return key
+    return MODEL_TABLE[key](**params)
