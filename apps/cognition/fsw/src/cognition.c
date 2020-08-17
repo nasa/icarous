@@ -309,7 +309,7 @@ void COGNITION_ProcessSBData(void) {
                 COGNITION_SendLand(command.landCommand);
             }
             else if (status->ditchRequested){
-                InputDitchStatus(appdataCog.cog,status->ditchsite,status->ditchRequested);
+                InputDitchStatus(appdataCog.cog,status->ditchsite,status->todAltitude,status->ditchRequested);
             }
             break;
         }
