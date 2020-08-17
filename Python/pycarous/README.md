@@ -16,3 +16,11 @@ python3 RunPySim.py --help
 python3 RunPySim.py -t data/traffic.txt
 
 ```
+
+## Visualization
+The above simulation produces a .json log file with the callsign of the vehicle (SPEEDBIRD). 
+Use the `VisualizeLog.py` script to visualize the simulation.
+```
+python3 VisualizeLog.py --help
+python3 VisualizeLog.py SPEEDBIRD.json
+```
