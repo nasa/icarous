@@ -41,12 +41,12 @@ void InputParameters(void *obj,const cognition_params_t *new_params){
     cog->InputParameters(*new_params);
 }
 
-void InputDitchStatus(void *obj,const double ditch_pos[3],const bool ditch_requested){
+void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested){
     Cognition* cog = (Cognition*)obj;
     larcfm::Position ditch_location = larcfm::Position::makeLatLonAlt(ditch_pos[0],"deg",
                                                                       ditch_pos[1],"deg",
                                                                       ditch_pos[2],"m");
-    cog->InputDitchStatus(ditch_location, ditch_requested);
+    cog->InputDitchStatus(ditch_location,todAltitude, ditch_requested);
 }
 
 void InputMergeStatus(void *obj,const int merge_status){

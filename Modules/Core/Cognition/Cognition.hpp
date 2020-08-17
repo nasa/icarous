@@ -115,7 +115,7 @@ class Cognition{
 
         void InputParameters(const cognition_params_t &new_params);
 
-        void InputDitchStatus(const larcfm::Position &ditch_site,const bool ditch_requested);
+        void InputDitchStatus(const larcfm::Position &ditch_site,const double todAltitude,const bool ditch_requested);
 
         void InputMergeStatus(const int merge_status);
 
@@ -292,6 +292,7 @@ class Cognition{
 
         // Ditching variables
         larcfm::Position ditchSite;
+        double todAltitude;
         bool ditch;
         bool resetDitch;
         bool endDitch;

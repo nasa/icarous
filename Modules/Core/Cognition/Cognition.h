@@ -20,7 +20,7 @@ void InputFlightPlanData(void *obj,
                          const int wp_metric,
                          const double wp_value);
 void InputParameters(void *obj,const cognition_params_t *new_params);
-void InputDitchStatus(void *obj,const double ditch_pos[3],const bool ditch_requested);
+void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested);
 void InputMergeStatus(void *obj,const int merge_status);
 void InputTrackBands(void *obj,const bands_t *track_bands);
 void InputSpeedBands(void *obj,const bands_t *speed_bands);

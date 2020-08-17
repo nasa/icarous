@@ -36,6 +36,7 @@ void Cognition::Initialize(){
     return2NextWPState = NOOPC;
     requestGuidance2NextWP = -1;
     topOfDescent = false;
+    todAltitude = 0;
     ditch = false;
     endDitch = false;
     resetDitch = false;
@@ -206,8 +207,9 @@ void Cognition::InputParameters(const cognition_params_t &new_params){
     
 }
 
-void Cognition::InputDitchStatus(const larcfm::Position &ditch_site,const bool ditch_requested){
+void Cognition::InputDitchStatus(const larcfm::Position &ditch_site,const double todAlt,const bool ditch_requested){
     ditchSite = ditch_site;
+    todAltitude = todAlt;
     ditch = ditch_requested;
 }
 
@@ -726,10 +728,10 @@ status_e Cognition::Landing(){
 
 status_e Cognition::EmergencyDescent(){
     static bool command_sent;
-    larcfm::Position positionA = position;
+    larcfm::Position positionA = position.mkAlt(todAltitude);
     larcfm::Position positionB = larcfm::Position::makeLatLonAlt(ditchSite.latitude(), "deg",
                                                                  ditchSite.longitude(), "deg",
-                                                                 position.alt(), "m");
+                                                                 todAltitude, "m");
     larcfm::Velocity velocityA = velocity;
 
     switch(emergencyDescentState){
