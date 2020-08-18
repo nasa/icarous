@@ -288,17 +288,13 @@ void Guidance::ComputePlanGuidance(){
     else
         n_gs = 0.95;
 
-    if (fabs(climbrate - (-ownship_vd)) > vs_range / 2)
-        n_vs = 0.3;
+    if (heading_change > 5)
+        n_vs = 0.25;
     else
-        n_vs = 0.95;
-
-    if (heading_change > 45)
-        n_heading = 0.3;
-    else
-        n_heading = 0.95;
+        n_vs = 1;
 
     speedRef = (1 - n_gs) * ownship_gs + n_gs * speedRef;
+    climbrate = (1 - n_vs) * ownship_vd + n_vs * climbrate;
 
     outputCmd = larcfm::Velocity::makeTrkGsVs(heading,"degree",speedRef,"m/s",climbrate,"m/s");
 
