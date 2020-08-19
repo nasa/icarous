@@ -60,6 +60,7 @@ typedef struct{
     void* Guidance;
     char activePlan[25];
     status_t statustxt;
+    bool sentPos;
 }guidanceAppData_t;
 
 /**

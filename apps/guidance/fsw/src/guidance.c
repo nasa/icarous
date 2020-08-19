@@ -4,6 +4,7 @@
 #define EXTERN
 #include "guidance.h"
 #include "guidance_tbl.c"
+#include <math.h>
 
 CFE_EVS_BinFilter_t  guidance_EventFilters[] =
 {  /* Event ID    mask */
@@ -185,6 +186,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             memset(buffer,0,sizeof(char)*100);
             sprintf(buffer,"Following flightplan %s to waypoint %d",cmd->buffer,(int)cmd->param1);
             SetStatus(guidanceAppData.statustxt,buffer,SEVERITY_INFO);
+            guidanceAppData.sentPos = false;
             break;
         }
 
@@ -214,6 +216,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
             SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1);
             SetStatus(guidanceAppData.statustxt,"Point to point control",SEVERITY_INFO);
+            guidanceAppData.sentPos = false;
             break;
         }
 
@@ -235,6 +238,9 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             argsCmd_t cmd1;
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
+            cmd1.param5 = guidanceAppData.pos.latitude;
+            cmd1.param6 = guidanceAppData.pos.longitude;
+            cmd1.param7 = 0;
             SendSBMsg(cmd1);
             break;
         }
@@ -245,6 +251,12 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             double speed = cmd->param1;
             bool hold = cmd->param2==1?true:false;
             ChangeWaypointSpeed(guidanceAppData.Guidance,planID,0,speed,hold);
+
+            argsCmd_t speedChange;
+            CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
+            speedChange.name = _SETSPEED_;
+            speedChange.param1 = speed;
+            SendSBMsg(speedChange);
             break;
         }
 
@@ -281,6 +293,8 @@ void GUIDANCE_Run(void){
             speedChange.name = _SETSPEED_;
             speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
             SendSBMsg(speedChange);
+
+            guidanceAppData.sentPos = false;
         }
     }
 
@@ -296,6 +310,21 @@ void GUIDANCE_Run(void){
         cmd.param3 = vd;
         cmd.param4 = guidanceAppData.guidance_params.yawForward;
         SendSBMsg(cmd);
+        
+        if(guidanceAppData.sentPos == false && 
+           (guidOutput.guidanceMode == FLIGHTPLAN ||
+            guidOutput.guidanceMode == POINT2POINT) ){
+           argsCmd_t cmd;
+           CFE_SB_InitMsg(&cmd, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);   
+           cmd.name = _SETPOS_;
+           cmd.param1 = guidOutput.target[0];
+           cmd.param2 = guidOutput.target[1];
+           cmd.param3 = guidOutput.target[2];
+           if(fabs(cmd.param1) <= 90){
+            SendSBMsg(cmd);
+            guidanceAppData.sentPos = true;
+           }
+        }
     }
 }
 
