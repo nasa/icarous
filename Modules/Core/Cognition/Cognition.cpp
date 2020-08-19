@@ -236,7 +236,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     std::memcpy(trkBandMin,track_bands.min,sizeof(double)*20);
     std::memcpy(trkBandMax,track_bands.max,sizeof(double)*20);
     trkBandNum = track_bands.numBands;
-
+    trackRecovery = (bool) track_bands.recovery;
     if (activePlan != nullptr)
     {
         std::string plan_id = activePlan->getID();
@@ -253,7 +253,8 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
 }
 
 void Cognition::InputSpeedBands(const bands_t &speed_bands){
-    
+
+    gsRecovery = (bool)speed_bands.recovery; 
     if(speed_bands.currentConflictBand == 1){
         // Factor to increment or decrement the provided speed resolution by
         // This will eliminate oscillatory behavior due to numerical errors
@@ -295,6 +296,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
 }
 
 void Cognition::InputAltBands(const bands_t &alt_bands){
+    altRecovery = (bool) alt_bands.recovery;
     if(alt_bands.currentConflictBand == 1){
         trafficAltConflict = true;
         if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred))
@@ -310,6 +312,7 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
+    vsRecovery = (bool) vs_bands.recovery;
     resVUp = vs_bands.resUp;
     resVDown = vs_bands.resDown;
     preferredVSpeed = vs_bands.resPreferred;
@@ -1022,6 +1025,7 @@ bool Cognition::TrafficConflictManagement(){
          preferredAlt    = prevResAlt;
          requestGuidance2NextWP = 1;
          GetResolutionType();
+         
 
          // Use this only for search based resolution
          if(parameters.resolutionType == SEARCH_RESOLUTION){
@@ -1101,6 +1105,16 @@ bool Cognition::TrafficConflictManagement(){
 }
 
 bool Cognition::RunTrafficResolution(){
+
+   int resolutionType = parameters.resolutionType;
+
+   // If track, gs and vs are in recovery, don't allow combined resolution 
+   if(trackRecovery && gsRecovery && vsRecovery){
+       if(resolutionType == TRACK_SPEED_VS_RESOLUTION){
+            resolutionType = TRACK_RESOLUTION;
+       }
+   }
+
    switch(parameters.resolutionType){
 
       case SPEED_RESOLUTION:{
@@ -1199,7 +1213,22 @@ bool Cognition::RunTrafficResolution(){
       }
 
       case TRACK_SPEED_VS_RESOLUTION:{
-         SetGuidanceVelCmd(preferredTrack,preferredSpeed,preferredVSpeed);
+         double outTrack = preferredTrack; 
+         double outSpeed = preferredSpeed; 
+         double outVS = preferredVSpeed;
+         if(trackRecovery){
+            outTrack =std::fmod(360 + velocity.trk()*180/M_PI,360);
+         }
+
+         if(gsRecovery){
+            outSpeed = velocity.gs();
+         }
+
+         if(vsRecovery){
+             outVS = velocity.vs();
+         }
+
+         SetGuidanceVelCmd(outTrack,outSpeed,outVS);
          double intercept_heading_to_plan = GetInterceptHeadingToPlan(GetPrevWP(),GetNextWP(),position);
          returnSafe = CheckSafeToTurn(hdg,intercept_heading_to_plan);
 

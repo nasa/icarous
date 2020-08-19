@@ -241,6 +241,10 @@ class Cognition{
         bool closestPointFeasible;                              ///< Feasibility of nearest point on primary flight plan
 
         bool primaryFPReceived;
+        bool trackRecovery;
+        bool gsRecovery;
+        bool altRecovery;
+        bool vsRecovery;
         double scenarioTime;
 
         // Aircraft state information
