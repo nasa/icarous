@@ -4,6 +4,7 @@ from matplotlib import patches
 from matplotlib import text
 from math import sin,cos,atan2,pi
 import numpy as np
+import math
 
 
 class AgentAnimation():
@@ -71,11 +72,16 @@ class AgentAnimation():
         x3 = tempX - tfsize * cos((t + pi/2))
         y3 = tempY - tfsize * sin((t + pi/2))
 
-        return plt.Polygon([[x1, y1], [x2, y2], [x3, y3]], color=col, fill=True)
+
+        triangle = plt.Polygon([[x1, y1], [x2, y2], [x3, y3]], color=col, fill=True)
+        triangle.labelText = plt.text(x+2*tfsize, y+2*tfsize, "", fontsize=8)
+
+        return triangle
 
     def UpdateTriangle(self,tfsize, pos, vel, poly):
         x = pos[0]
         y = pos[1]
+        z = pos[2]
 
         t = atan2(vel[1], vel[0])
 
@@ -92,6 +98,9 @@ class AgentAnimation():
         y3 = tempY - 1*tfsize * sin((t + pi/2))
 
         poly.set_xy([[x1, y1], [x2, y2], [x3, y3]])
+        poly.labelText.set_position((x + 2*tfsize,y+2*tfsize))
+        speed = np.sqrt(vel[0]**2 + vel[1]**2)
+        poly.labelText.set_text('Z:%.2f[m]\nS:%.2f[mps]' % (z,speed))
 
     def AddPath(self,path,color):
         plt.plot(path[:,1],path[:,0],color)
@@ -122,7 +131,7 @@ class AgentAnimation():
                     color = 'g'
                 else:
                     color = 'b'
-                sectors[i].set_center(position)
+                sectors[i].set_center(position[:2])
                 sectors[i].set_theta1(min)
                 sectors[i].set_theta2(max)
                 sectors[i].set_color(color)
@@ -137,7 +146,7 @@ class AgentAnimation():
             for j, vehicle in enumerate(self.agents):
                 id = self.agentNames[j]
                 #vehicle.center = (self.data[id][i][0], self.data[id][i][1])
-                position = (self.data[id]["positionNED"][i][1], self.data[id]["positionNED"][i][0])
+                position = (self.data[id]["positionNED"][i][1], self.data[id]["positionNED"][i][0],self.data[id]["positionNED"][i][2])
                 velocity = (self.data[id]["velocityNED"][i][1], self.data[id]["velocityNED"][i][0])
                 radius = self.agentsRadius[id]
                 self.UpdateTriangle(radius,position,velocity,vehicle)
