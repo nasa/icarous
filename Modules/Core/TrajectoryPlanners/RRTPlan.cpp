@@ -32,7 +32,7 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
     std::vector<Vect3> TrafficPos;
     std::vector<Vect3> TrafficVel;
 
-    double computationTime = 4;
+    double computationTime = 2;
 
     double dist = startVel.gs()*computationTime;
     EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
