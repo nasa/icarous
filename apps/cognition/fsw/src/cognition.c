@@ -394,7 +394,7 @@ void COGNITION_SendGuidanceVelCmd(VelocityCommand velocity_command){
     cmd.name = VECTOR;
     cmd.param1 = (float) velocity_command.vn;
     cmd.param2 = (float) velocity_command.ve;
-    cmd.param3 = (float) velocity_command.vu;
+    cmd.param3 = -(float) velocity_command.vu;
     SendSBMsg(cmd);
 }
 
