@@ -88,7 +88,17 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
         output.distV2WP = distV2nextWP;
         output.xtrackDev = xtrackDist;
    }
-
+   if(currentPlan != NULL){
+    int nextWP = std::min(nextWpId[activePlanId],currentPlan->size()-1);
+    larcfm::Position pos = currentPlan->getPos(nextWP);
+    output.target[0] = pos.latitude();
+    output.target[1] = pos.longitude();
+    output.target[2] = pos.alt();
+   }else{
+    output.target[0] = 5000;
+    output.target[1] = 5000;
+    output.target[2] = 5000;
+   }
    output.velCmd[0] = larcfm::Units::to(larcfm::Units::deg,outputCmd.compassAngle());
    output.velCmd[1] = larcfm::Units::to(larcfm::Units::mps,outputCmd.gs());
    output.velCmd[2] = larcfm::Units::to(larcfm::Units::mps,outputCmd.vs());
@@ -264,16 +274,22 @@ void Guidance::ComputePlanGuidance(){
     const double ownship_heading = currentVel.compassAngle() * 180/M_PI;
     const double target_heading = currentPos.track(newPositionToTrack) * 180/M_PI;
     const double turn_angle = std::fmod(360 + std::fabs(ownship_heading - target_heading), 360);
+    const double rangeS = params.maxSpeed - params.minSpeed;
     if((finalleg && distH < capture_radius) || turn_angle > 60){
-        const double range = params.maxSpeed - params.minSpeed;
-        if( speedRef > (params.minSpeed + range * 0.6) ){
-            speedRef = speedRef/2;
+        if( speedRef > (params.minSpeed + rangeS * 0.5) ){
+            speedRef = std::max(params.minSpeed,speedRef/2);
         }
     }
 
     // Compute velocity command to next waypoint
     const double heading = currentPos.track(newPositionToTrack) * 180/M_PI;
     double climbrate = ComputeClimbRate(currentPos, nextWPPos, speedRef);
+
+    if (std::fabs(climbrate) > params.maxClimbRate/2){
+        if( speedRef > (params.minSpeed + rangeS * 0.5) ){
+            speedRef = std::max(params.minSpeed,speedRef/2);
+        }
+    }
 
     // Smooth the output
     double n_gs, n_vs, n_heading;

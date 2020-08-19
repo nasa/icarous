@@ -51,6 +51,7 @@ typedef struct{
     double distV2WP;
     double xtrackDev;
     double velCmd[3];
+    double target[3];
     bool wpReached;
 }GuidanceOutput_t;
 
