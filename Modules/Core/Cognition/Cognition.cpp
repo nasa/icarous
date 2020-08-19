@@ -729,9 +729,9 @@ status_e Cognition::Landing(){
 status_e Cognition::EmergencyDescent(){
     static bool command_sent;
     larcfm::Position positionA = position.mkAlt(todAltitude);
-    larcfm::Position positionB = larcfm::Position::makeLatLonAlt(ditchSite.latitude(), "deg",
-                                                                 ditchSite.longitude(), "deg",
-                                                                 todAltitude, "m");
+
+    double trk = std::fmod(2*M_PI + ditchSite.track(positionA),2*M_PI);
+    larcfm::Position positionB = ditchSite.linearDist2D(trk,todAltitude).mkAlt(todAltitude);
     larcfm::Velocity velocityA = velocity;
 
     switch(emergencyDescentState){
