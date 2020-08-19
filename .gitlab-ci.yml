@@ -51,7 +51,7 @@ test:
     - chmod -R 777 /builds/larc-nia-fm/icarous
     - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
     - cd Python/TestRunner
-    - su myuser -c 'python3 RunScenarios.py scenarios.yaml --validate --test --verbose'
+    - su myuser -c 'python3 RunScenarios.py scenarios.yaml --validate --test'
   artifacts:
     when: always
     paths:
