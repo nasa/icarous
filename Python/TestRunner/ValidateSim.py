@@ -182,7 +182,6 @@ def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
             horiz_violation = (dist < DMOD*h_allow)
             vert_violation = (abs(o_alt - t_alt) < ZTHR*v_allow)
             if horiz_violation and vert_violation:
-                t = simdata["ownship"]["t"][i]
                 msg = "Well Clear Violation at t = %fs" % t
                 return False, msg, condition_name
 
