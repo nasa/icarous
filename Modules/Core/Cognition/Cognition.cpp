@@ -1145,7 +1145,7 @@ bool Cognition::RunTrafficResolution(){
              diff = -50;
          }
 
-         climb_rate = -0.2*diff;
+         climb_rate = 0.2*diff;
          double speed = parameters.resolutionSpeed;
          SetGuidanceVelCmd(hdg,speed,climb_rate);
          prevResVspeed = climb_rate;
