@@ -122,13 +122,12 @@ class TwoRayGroundPropagation(PropagationModel):
 
     def received_power(self, tx_power, freq, tx_pos_gps, rx_pos_gps):
         w = 3e8/freq                # Wavelength in meters
-        C = w**2/((4*np.pi)**2*self.L)
         d = util.distance(tx_pos_gps, rx_pos_gps)
         if d < w:
             return tx_power
         h_t = tx_pos_gps[2]
         h_r = rx_pos_gps[2]
-        return tx_power*C*h_t**2*h_r**2/(d**4)
+        return tx_power*h_t**2*h_r**2/(d**4*self.L)
 
     def inverse(self, rx_sensitivity, tx_power, freq, h_t=100, h_r=100):
         if rx_sensitivity == 0:
