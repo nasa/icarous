@@ -187,6 +187,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             sprintf(buffer,"Following flightplan %s to waypoint %d",cmd->buffer,(int)cmd->param1);
             SetStatus(guidanceAppData.statustxt,buffer,SEVERITY_INFO);
             guidanceAppData.sentPos = false;
+            guidanceAppData.lastReachedWaypoint = -1;
             break;
         }
 
@@ -217,6 +218,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1);
             SetStatus(guidanceAppData.statustxt,"Point to point control",SEVERITY_INFO);
             guidanceAppData.sentPos = false;
+            guidanceAppData.lastReachedWaypoint = -1;
             break;
         }
 
@@ -288,13 +290,17 @@ void GUIDANCE_Run(void){
             msg.reachedwaypoint = guidOutput.nextWP - 1;
             SendSBMsg(msg);
 
-            argsCmd_t speedChange;
-            CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
-            speedChange.name = _SETSPEED_;
-            speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
-            SendSBMsg(speedChange);
+            if (guidanceAppData.lastReachedWaypoint != msg.reachedwaypoint)
+            {
+                argsCmd_t speedChange;
+                CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
+                speedChange.name = _SETSPEED_;
+                speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
+                SendSBMsg(speedChange);
 
-            guidanceAppData.sentPos = false;
+                guidanceAppData.sentPos = false;
+                guidanceAppData.lastReachedWaypoint = msg.reachedwaypoint;
+            }
         }
     }
 

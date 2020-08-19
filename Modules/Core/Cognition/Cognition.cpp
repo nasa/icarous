@@ -757,7 +757,7 @@ status_e Cognition::EmergencyDescent(){
         }
 
         case RUNNING:{
-            double dist_to_target = positionA.distanceH(ditchSite);
+            double dist_to_target = positionA.distanceH(positionB);
 
             // Proceeed to the top of descent by following the
             // computed flight plan
@@ -773,7 +773,7 @@ status_e Cognition::EmergencyDescent(){
                 // Check if top of descent (TOD) has been reached
                 // TOP is calculated assuming a 45 degree flight path angle
                 // while descending
-                if(dist_to_target <= positionA.alt()){
+                if(nextWpId["DitchPath"] >= GetPlan("DitchPath")->size()){
                     topOfDescent = true;
                     SendStatus((char*)"IC:Reached TOD",6);
                     log << timeString + "| [STATUS] | Reached TOD" <<"\n";
