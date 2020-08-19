@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2019 United States Government as represented by
+ * Copyright (c) 2014-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,6 +31,10 @@ ParameterData::ParameterData() {
 	unitCompatibility = true;
 	parameters = paramtype();
 	listPatternStr = Constants::wsPatternBaseNoRegex;
+}
+
+ParameterData ParameterData::make() {
+	return ParameterData();
 }
 
 ParameterData ParameterData::copyWithPrefix(const std::string& prefix) const {
@@ -233,17 +237,25 @@ bool ParameterData::parse_parameter_string(const std::string& str) {
 }
 
 bool ParameterData::putParam(const std::string& ikey, const std::pair<bool, ParameterEntry>& entry) {
-	std::string key(ikey);
 	bool perform_conversion = entry.first;
 	ParameterEntry newEntry = entry.second;
+
+	return putParam(ikey, perform_conversion, newEntry);
+}
+
+bool ParameterData::putParam(const std::string& ikey, bool perform_conversion, ParameterEntry& newEntry) {
+	std::string key(ikey);
 
 	bool compatible = true;
 	if (contains(key)) {
 		ParameterEntry oldEntry = parameters[key];
 		newEntry.order = oldEntry.order; // preserve ordering
-		if (!Units::isCompatible(newEntry.units,oldEntry.units)) {
+		if ( ! Units::isCompatible(newEntry.units,oldEntry.units)) {
 			compatible = false;
 		} else {
+			if (newEntry.comment == "") {
+				newEntry.comment = oldEntry.comment;
+			}
 			if (newEntry.units == "unspecified") {
 				newEntry.units = oldEntry.units;
 				if (perform_conversion) {
@@ -279,7 +291,7 @@ std::pair<bool, ParameterEntry> ParameterData::parse_parameter_value(const std::
 	if (equalsIgnoreCase(value, "true") || equalsIgnoreCase(value, "T")) {
 		boolx = true;
 	}
-	ParameterEntry quad(value,dbl,unit,boolx,"");
+	ParameterEntry quad = ParameterEntry::make(value,dbl,unit,boolx,"");
 	return std::pair<bool,ParameterEntry>(perform_conversion,quad);
 }
 
@@ -335,6 +347,16 @@ bool ParameterData::setInternal(const std::string& key, double value,
 	return putParam(key, std::pair<bool, ParameterEntry>(false,newEntry));
 }
 
+bool ParameterData::updateUnit(const std::string& key, const std::string& unit) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		if (Units::isCompatible(entry->second.units, unit)) {
+			entry->second.units = unit;
+			return true;
+		}
+	}
+	return false;
+}
 
 bool ParameterData::updateComment(const std::string& key, const std::string& msg) {
 	paramtype::iterator entry = parameters.find(key);
@@ -379,10 +401,16 @@ std::vector<std::string> ParameterData::validateParameters(
 }
 
 void ParameterData::listCopy(const ParameterData& p, const std::vector<std::string>& plist, bool overwrite) {
-	for (int i = 0; i < (int) plist.size(); i++) {
+	for (int i = 0; i < (int)plist.size(); i++) {
 		std::string key = plist[i];
-		if (overwrite || ! contains(key)) {
+		if (overwrite || !contains(key)) {
 			set(key, p.getString(key));
+			paramtype::const_iterator q = p.parameters.find(key);
+			if (q != p.parameters.end()) {
+				//return q->second.sval;
+				ParameterEntry entry = ParameterEntry::make(q->second);
+				putParam(key, false, entry);
+			}
 		}
 	}
 }

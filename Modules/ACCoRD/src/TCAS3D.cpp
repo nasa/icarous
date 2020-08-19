@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2019 United States Government as represented by
+ * Copyright (c) 2012-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,6 +15,8 @@
 #include "Vertical.h"
 #include "ConflictData.h"
 #include "Triple.h"
+#include "CDCylinder.h"
+#include "WCV_TAUMOD.h"
 #include <cfloat>
 #include <limits>
 #include <cmath>
@@ -37,6 +39,22 @@ TCAS3D::TCAS3D(const TCASTable& tab) {
 const TCAS3D& TCAS3D::A_TCAS3D() {
   static TCAS3D dwc;
   return dwc;
+}
+
+/**
+ * @return one static TCASII_RA
+ */
+const TCAS3D& TCAS3D::TCASII_RA() {
+  static TCAS3D ra = make_TCASII_RA();
+  return ra;
+}
+
+/**
+ * @return one static TCASII_TA
+ */
+const TCAS3D& TCAS3D::TCASII_TA() {
+  static TCAS3D ta = make_TCASII_TA();
+  return ta;
 }
 
 /** Make TCAS3D object with empty Table **/
@@ -417,8 +435,6 @@ bool TCAS3D::equals(Detection3D* d) const {
   return true;
 }
 
-
-
 bool TCAS3D::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
     TCAS3D* d = (TCAS3D*)cd;
@@ -426,5 +442,52 @@ bool TCAS3D::contains(const Detection3D* cd) const {
   }
   return false;
 }
+
+void TCAS3D::horizontalHazardZone(std::vector<Position>& haz, const TrafficState& ownship, const TrafficState& intruder,
+    double T) const {
+  int sl = table_.getSensitivityLevel(ownship.altitude());
+  bool usehmdf = table_.getHMDFilter();
+  double TAUMOD  = table_.getTAU(sl);
+  double DMOD = Util::max(table_.getDMOD(sl),table_.getHMD(sl));
+  haz.clear();
+  Position po = ownship.getPosition();
+  Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
+  Vect3 sD = Horizontal::hmd_tangent_point(DMOD,v);
+  Velocity vD = Velocity::make(sD);
+  if (TAUMOD+T == 0) {
+      CDCylinder::circular_arc(haz,po,vD,2*Pi,false);
+  } else {
+      CDCylinder::circular_arc(haz,po,vD,Pi,usehmdf);
+      Position TAU_center = WCV_TAUMOD::TAU_center(po,v,TAUMOD,T);
+      Vect3 vC = v.Scal(0.5*TAUMOD);     // TAUMOD Center (relative)
+      if (usehmdf) {
+          Vect3 vDC = vC.Sub(vD); // Far end point opposite to -vD (vC-relative);
+          Vect3 nvDC = vC.Add(vD); // Far end point opposite to vD (vC-relative);
+          double sqa = vDC.sqv2D();
+          double alpha = Util::atan2_safe(vDC.det2D(nvDC)/sqa,vDC.dot2D(nvDC)/sqa);
+          Velocity velDC = Velocity::make(vDC);
+          CDCylinder::circular_arc(haz,TAU_center,velDC,alpha,true);
+      } else {
+          Vect3 nsCD=sD.Neg().Sub(vC);
+          Vect3 sCD=sD.Sub(vC);
+          double sqa = sCD.sqv2D();
+          Velocity nvCD = Velocity::make(nsCD);
+          if (T==0) { // Two circles: DMOD and TAUMO. They intersect at +/-vD
+              double alpha = Util::atan2_safe(nsCD.det2D(sCD)/sqa,nsCD.dot2D(sCD)/sqa);
+              CDCylinder::circular_arc(haz,TAU_center,nvCD,alpha,false);
+          } else { // Two circles: DMOD and TAUMOD. They intersect at +/- vD.
+              Vect3 sT = Horizontal::hmd_tangent_point(std::sqrt(sqa),v);
+              Velocity vT = Velocity::make(sT);
+              Vect3 nsT = sT.Neg();
+              Velocity nvT = Velocity::make(nsT);
+              double alpha = Util::atan2_safe(nsCD.det2D(nsT)/sqa,nsCD.dot2D(nsT)/sqa);
+              Position TAU_center_0 = WCV_TAUMOD::TAU_center(po,v,TAUMOD,0);
+              CDCylinder::circular_arc(haz,TAU_center_0,nvCD,alpha,true);
+              CDCylinder::circular_arc(haz,TAU_center,nvT,Pi,true);
+              CDCylinder::circular_arc(haz,TAU_center_0,vT,alpha,false);                }
+      }
+  }
+}
+
 
 }

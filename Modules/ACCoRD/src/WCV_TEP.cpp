@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 #include "Horizontal.h"
 #include "WCVTable.h"
 #include "LossData.h"
+#include "CDCylinder.h"
 #include "Util.h"
 #include "format.h"
 #include "string_util.h"
@@ -103,6 +104,11 @@ bool WCV_TEP::contains(const Detection3D* cd) const {
     return containsTable((WCV_tvar*)cd);
   }
   return false;
+}
+
+void WCV_TEP::hazard_zone_far_end(std::vector<Position>& haz,
+    const Position& po, const Velocity& v, const Velocity& vD, double T) const {
+  CDCylinder::circular_arc(haz,po.linear(v,getTTHR()+T),Velocity::make(vD.Neg()),Pi,true);
 }
 
 }

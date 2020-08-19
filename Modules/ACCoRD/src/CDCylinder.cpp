@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2019 United States Government as represented by
+ * Copyright (c) 2011-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,6 +16,7 @@
 #include "LossData.h"
 #include "LossData.h"
 #include "ConflictData.h"
+#include "DaidalusParameters.h"
 #include <cmath>
 
 #include "CD3D.h"
@@ -178,12 +179,12 @@ void CDCylinder::updateParameterData(ParameterData& p) const {
 
 void CDCylinder::setParameters(const ParameterData& p) {
   if (p.contains("D")) {
-      setHorizontalSeparation(p.getValue("D"));
-      units_["D"]=p.getUnit("D");
+    setHorizontalSeparation(p.getValue("D"));
+    units_["D"]=p.getUnit("D");
   }
   if (p.contains("H")) {
-      setVerticalSeparation(p.getValue("H"));
-      units_["H"]=p.getUnit("H");
+    setVerticalSeparation(p.getValue("H"));
+    units_["H"]=p.getUnit("H");
   }
   if (p.contains("id")) {
     id = p.getString("id");
@@ -226,6 +227,40 @@ bool CDCylinder::contains(const Detection3D* det) const {
     return D_ >= cd->D_ && H_ >= cd->H_;
   }
   return false;
+}
+
+/* Return a list of point representing a counter-clockwise circular arc centered at pc,
+ * whose first point is pc+v(0), and the last one is pc+v(alpha), where alpha is
+ * in [0,2*pi].
+ */
+void CDCylinder::circular_arc(std::vector<Position>& arc, const Position& pc, const Velocity& v,
+    double alpha, bool include_last) {
+  alpha = Util::almost_equals(alpha,2*Pi,DaidalusParameters::ALMOST_) ? alpha :  Util::to_2pi(alpha);
+  double step = Pi/180;
+  arc.push_back(pc.linear(v,1));
+  double current_trk = v.trk();
+  for (double a = step; Util::almost_less(a,alpha,DaidalusParameters::ALMOST_); a += step) {
+    arc.push_back(pc.linear(v.mkTrk(current_trk-a),1));
+  }
+  if (include_last) {
+    arc.push_back(pc.linear(v.mkTrk(current_trk-alpha),1));
+  }
+}
+
+void CDCylinder::horizontalHazardZone(std::vector<Position>& haz,
+    const TrafficState& ownship, const TrafficState& intruder, double T) const {
+  haz.clear();
+  const Position& po = ownship.getPosition();
+  Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
+  Vect3 sD = Horizontal::hmd_tangent_point(D_,v);
+  Velocity vD = Velocity::make(sD);
+  Velocity vnD = Velocity::make(sD.Neg());
+  if (T == 0) {
+    circular_arc(haz,po,vD,2*Pi,false);
+  } else {
+    circular_arc(haz,po,vD,Pi,true);
+    circular_arc(haz,po.linear(v,T),vnD,Pi,true);
+  }
 }
 
 }

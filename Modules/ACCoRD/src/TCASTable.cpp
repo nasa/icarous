@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2019 United States Government as represented by
+ * Copyright (c) 2012-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,6 +10,7 @@
 #include "format.h"
 #include "ParameterData.h"
 #include "string_util.h"
+#include "DaidalusParameters.h"
 #include <cmath>
 #include <sstream>
 
@@ -573,8 +574,12 @@ bool TCASTable::isRAStandard() const {
   if (levels_.size() != 7) return false;
   bool ra = HMDFilter_;
   for (int i=0; ra && i < 8; ++i) {
-    ra &= (i == 7 || levels_[i] == default_levels()[i]) && TAU_[i]==RA_TAU()[i] && TCOA_[i]==RA_TAU()[i] &&
-        DMOD_[i]==RA_DMOD()[i] && ZTHR_[i]==RA_ZTHR()[i] && HMD_[i]==RA_HMD()[i];
+    ra &= (i == 7 || Util::almost_equals(levels_[i],default_levels()[i],DaidalusParameters::ALMOST_)) &&
+        Util::almost_equals(TAU_[i],RA_TAU()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(TCOA_[i],RA_TAU()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(DMOD_[i],RA_DMOD()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(ZTHR_[i],RA_ZTHR()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(HMD_[i],RA_HMD()[i],DaidalusParameters::ALMOST_);
   }
   return ra;
 }
@@ -584,8 +589,12 @@ bool TCASTable::isTAStandard() const {
   bool ta = !HMDFilter_;
   if (levels_.size() != 7) return false;
   for (int i=0; ta && i < 8; ++i) {
-    ta &= (i == 7 || levels_[i] == default_levels()[i]) && TAU_[i]==TA_TAU()[i] && TCOA_[i]==TA_TAU()[i] &&
-        DMOD_[i]==TA_DMOD()[i] && ZTHR_[i]==TA_ZTHR()[i] && HMD_[i]==TA_DMOD()[i];
+    ta &= (i == 7 || Util::almost_equals(levels_[i],default_levels()[i],DaidalusParameters::ALMOST_)) &&
+        Util::almost_equals(TAU_[i],TA_TAU()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(TCOA_[i],TA_TAU()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(DMOD_[i],TA_DMOD()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(ZTHR_[i],TA_ZTHR()[i],DaidalusParameters::ALMOST_) &&
+        Util::almost_equals(HMD_[i],TA_DMOD()[i],DaidalusParameters::ALMOST_);
   }
   return ta;
 }
@@ -606,8 +615,11 @@ std::string TCASTable::list_units(const std::string& units, const std::vector<do
 
 std::string TCASTable::toString() const {
   std::string s = "HMDFilter: "+Fmb(HMDFilter_);
-  if (isRAStandard()) s = s+"; (RA vals) ";
-  else if (isTAStandard()) s= s+"; (TA vals) ";
+  if (isRAStandard()) {
+    s = s+"; (RA vals) ";
+  } else if (isTAStandard()) {
+    s= s+"; (TA vals) ";
+  }
   std::string unit1 =
       s= s+"; levels: "+list_units(units_.at("TCAS_level"),levels_)+
       "; TAU: "+list_units(units_.at("TCAS_TAU"),TAU_)+"; TCOA: "+

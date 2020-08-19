@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -107,8 +107,11 @@ public:
   /* Constructors */
 
   /**
-   * Construct a Daidalus object with a default set of parameters.
-   */
+   * Construct an empty Daidalus object.
+   * NOTE: This object doesn't have any alert configured. Alerters can be
+   * configured either programmatically, set_DO_365A(true,true) or
+   * via a configuration file with the method loadFromFile(configurationfile)
+   **/
   Daidalus();
 
   /**
@@ -129,11 +132,14 @@ public:
 
   /*
    * Set Daidalus object such that
-   * - Alerting thresholds are unbuffered as defined in RTCA DO-365.
-   * - Maneuver guidance logic assumes instantaneous maneuvers
-   * - Bands saturate at DMOD/ZTHR
+   * - Configure two alerters (Phase I and Phase II) as defined as in RTCA DO-365A
+   * - Maneuver guidance logic assumes kinematic maneuvers
+   * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+   *   when type is false.
+   * - Configure Sensor Uncertainty Migitation (SUM) when sum is true
+   * - Bands don't saturate until NMAC
    */
-  void set_WC_DO_365();
+  void set_DO_365A(bool type=true, bool sum=true);
 
   /*
    * Set DAIDALUS object such that
@@ -152,6 +158,10 @@ public:
    * - Only 1 alert level
    * - Instantaneous maneuvers */
   void set_CD3D();
+
+  /* Set DAIDALUS object such that alerting logic and maneuver guidance corresponds to
+   * ideal TCASII */
+  void set_TCASII();
 
   /**
    * Return release version string
@@ -409,25 +419,68 @@ public:
    */
   TrafficState mostUrgentAircraft();
 
-  /* Computation of contours, a.k.a. blobs */
+  /* Computation of contours, a.k.a. blobs, and hazard zones */
 
   /**
    * Computes horizontal contours contributed by aircraft at index idx, for
-   * given alert level. A contour is a non-empty list of points in counter-clockwise
-   * direction representing a polygon.
-   * @param blobs list of direction contours returned by reference.
+   * given alert level. A contour is a list of points in counter-clockwise
+   * direction representing a polygon. Last point should be connected to first one.
+   * The computed polygon should only be used for display purposes since it's merely an
+   * approximation of the actual contours defined by the violation and detection methods.
+   * @param blobs list of horizontal contours returned by reference.
    * @param ac_idx is the index of the aircraft used to compute the contours.
+   * @param alert_level is the alert level used to compute detection. The value 0
+   * indicate the alert level of the corrective region.
    */
-  void horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx, int alert_level);
+  void horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx, int alert_level=0);
 
   /**
-   * Computes horizontal contours contributed by aircraft at index idx, the alert level
-   * corresponding to the corrective region. A contour is a non-empty list of points in
-   * counter-clockwise direction representing a polygon.
-   * @param blobs list of direction contours returned by reference.
-   * @param idx is the index of the aircraft used to compute the contours.
+   * Computes horizontal contours contributed by aircraft at index idx, for
+   * given region. A contour is a list of points in counter-clockwise
+   * direction representing a polygon. Last point should be connected to first one.
+   * The computed polygon should only be used for display purposes since it's merely an
+   * approximation of the actual contours defined by the violation and detection methods.
+   * @param blobs list of horizontal contours returned by reference.
+   * @param ac_idx is the index of the aircraft used to compute the contours.
+   * @param region is the region used to compute detection.
    */
-  void horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx);
+  void horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx,
+      BandsRegion::Region region);
+
+  /**
+   * Computes horizontal hazard zone around aircraft at index ac_idx, for given alert level.
+   * A hazard zone is a list of points in counter-clockwise
+   * direction representing a polygon. Last point should be connected to first one.
+   * @param haz hazard zone returned by reference.
+   * @param ac_idx is the index of the aircraft used to compute the contours.
+   * @param loss true means that the polygon represents the hazard zone. Otherwise,
+   * the polygon represents the hazard zone with an alerting time.
+   * @param from_ownship true means ownship point of view. Otherwise, the hazard zone is computed
+   * from the intruder's point of view.
+   * @param alert_level is the alert level used to compute detection. The value 0
+   * indicate the alert level of the corrective region.
+   * NOTE: The computed polygon should only be used for display purposes since it's merely an
+   * approximation of the actual hazard zone defined by the violation and detection methods.
+   */
+  void horizontalHazardZone(std::vector<Position>& haz, int ac_idx, bool loss, bool from_ownship,
+      int alert_level=0);
+
+  /**
+   * Computes horizontal hazard zone around aircraft at index ac_idx, for given region.
+   * A hazard zone is a list of points in counter-clockwise
+   * direction representing a polygon. Last point should be connected to first one.
+   * @param haz hazard zone returned by reference.
+   * @param ac_idx is the index of the aircraft used to compute the contours.
+   * @param loss true means that the polygon represents the hazard zone. Otherwise,
+   * the polygon represents the hazard zone with an alerting time.
+   * @param from_ownship true means ownship point of view. Otherwise, the hazard zone is computed
+   * from the intruder's point of view.
+   * @param region is the region used to compute detection.
+   * NOTE: The computed polygon should only be used for display purposes since it's merely an
+   * approximation of the actual hazard zone defined by the violation and detection methods.
+   */
+  void horizontalHazardZone(std::vector<Position>& haz, int ac_idx, bool loss, bool from_ownship,
+      BandsRegion::Region region);
 
   /* Setting and getting DaidalusParameters */
 
@@ -1690,7 +1743,7 @@ public:
    * @param alerter_idx Indice of an alerter (starting from 1)
    * @return corrective level of alerter at alerter_idx. The corrective level
    * is the first alert level that has a region equal to or more severe than corrective_region.
-   * Return -1 if alerter_idx is out of range. Return 0 is there is no corrective alert level
+   * Return -1 if alerter_idx is out of range of if there is no corrective alert level
    * for this alerter.
    */
   int correctiveAlertLevel(int alerter_idx);
@@ -1782,24 +1835,26 @@ public:
   /* Main interface methods */
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
-   * 1 = FAR, 2 = MID, 3 = NEAR
+   * Compute in acs list of aircraft identifiers contributing to conflict bands for given
+   * conflict bands region.
+   * 1 = FAR, 2 = MID, 3 = NEAR.
    */
   void conflictBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
+   * Compute in acs list of aircraft identifiers contributing to conflict bands for given
+   * conflict bands region.
    */
   void conflictBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Return time interval of violation for given bands region
+   * Return time interval of violation for given conflict bands region
    * 1 = FAR, 2 = MID, 3 = NEAR
    */
   Interval timeIntervalOfConflict(int region);
 
   /**
-   * Return time interval of violation for given bands region
+   * Return time interval of violation for given conflict bands region
    */
   Interval timeIntervalOfConflict(BandsRegion::Region region);
 
@@ -1873,14 +1928,14 @@ public:
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
-   * for given region.
+   * for given conflict bands region.
    * 1 = FAR, 2 = MID, 3 = NEAR
    */
   void peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
-   * for given region.
+   * for given conflict bands region.
    */
   void peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
@@ -1981,14 +2036,14 @@ public:
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
-   * for given region.
+   * for given conflict bands region.
    * 1 = FAR, 2 = MID, 3 = NEAR
    */
   void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
-   * for given region.
+   * for given conflict bands region.
    */
   void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
@@ -2089,14 +2144,14 @@ public:
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
-   * for given region.
+   * for conflict bands region.
    * 1 = FAR, 2 = MID, 3 = NEAR
    */
   void peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
-   * for given region.
+   * for conflict bands region.
    */
   void peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
@@ -2198,14 +2253,14 @@ public:
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
-   * for given region.
+   * for conflict bands region.
    * 1 = FAR, 2 = MID, 3 = NEAR
    */
   void peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
-   * for given region.
+   * for conflict bands region.
    */
   void peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
@@ -2275,6 +2330,16 @@ public:
   ConflictData violationOfAlertThresholds(int ac_idx, int alert_level);
 
   /**
+   * Detects violation of alert thresholds for a given region with an
+   * aircraft at index ac_idx.
+   * Conflict data provides time to violation and time to end of violation
+   * of alert thresholds of given alert level.
+   * @param ac_idx is the index of the traffic aircraft
+   * @param region region used to compute detection.
+   */
+  ConflictData violationOfAlertThresholds(int ac_idx, BandsRegion::Region region);
+
+  /**
    * Detects violation of corrective thresholds with an aircraft at index ac_idx.
    * Conflict data provides time to violation and time to end of violation
    * @param ac_idx is the index of the traffic aircraft
@@ -2288,6 +2353,31 @@ public:
    * @param ac_idx is the index of the traffic aircraft
    */
   double timeToCorrectiveVolume(int ac_idx);
+
+  /**
+   * @return region corresponding to a given alert level for a particular aircraft.
+   * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+   * logic, then returns the configured region for the alerter level. It returns
+   * UNKNOWN if the aircraft or the alert level are invalid.
+   */
+  BandsRegion::Region regionOfAlertLevel(int ac_idx, int alert_level);
+
+  /**
+   * @return alert_level corresponding to a given region for a particular aircraft.
+   * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+   * logic, then returns the configured region for the region. It returns -1
+   * if the aircraft or the alert level are invalid.
+   * 0 = NONE, 1 = FAR, 2 = MID, 3 = NEAR.
+   */
+  int alertLevelOfRegion(int ac_idx, int region);
+
+  /**
+   * @return alert_level corresponding to a given region for a particular aircraft.
+   * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+   * logic, then returns the configured region for the region. It returns -1
+   * if the aircraft or its alerter are invalid.
+   */
+  int alertLevelOfRegion(int ac_idx, BandsRegion::Region region);
 
   /* Getting and Setting DaidalusParameters (note that setters stale the Daidalus object) */
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,7 +12,9 @@
 #include "Detection3D.h"
 #include "BandsRegion.h"
 #include "WCV_TAUMOD.h"
+#include "WCV_TAUMOD_SUM.h"
 #include "WCV_tvar.h"
+#include "TCAS3D.h"
 #include "string_util.h"
 
 #include <vector>
@@ -48,7 +50,7 @@ const std::string& Alerter::getId() const {
 }
 
 /**
- * @return DO-365 HAZ preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
  * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
  * bands region = NONE
  */
@@ -58,7 +60,7 @@ const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_preventive() {
 }
 
 /**
- * @return DO-365 HAZ corrective thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * @return DO-365 HAZ corrective thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
  * bands region = MID
  */
@@ -68,7 +70,7 @@ const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_corrective() {
 }
 
 /**
- * @return DO-365 HAZ warning thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * @return DO-365 HAZ warning thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s,
  * bands region = NEAR
  */
@@ -77,13 +79,155 @@ const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_warning() {
   return corrective;
 }
 
+/**
+ * @return alerting thresholds as defined in RTCA DO-365 Phase I (en-route).
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
 const Alerter& Alerter::DWC_Phase_I() {
-  static Alerter alerter;
+  static Alerter alerter("DWC_Phase_I");
   if (!alerter.isValid()) {
-    alerter.setId("DWC_Phase_I");
     alerter.addLevel(DO_365_Phase_I_HAZ_preventive());
     alerter.addLevel(DO_365_Phase_I_HAZ_corrective());
     alerter.addLevel(DO_365_Phase_I_HAZ_warning());
+  }
+  return alerter;
+}
+
+/**
+ * @return DO-365A HAZ preventive thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+ * bands region = NONE
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_preventive() {
+  static AlertThresholds preventive(&WCV_TAUMOD::DO_365_DWC_Phase_II(),45,75,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365A HAZ corrective thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+ * bands region = MID
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_corrective() {
+  static AlertThresholds preventive(&WCV_TAUMOD::DO_365_DWC_Phase_II(),45,75,BandsRegion::MID);
+  return preventive;
+}
+
+/**
+ * @return DO-365A HAZ warning thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+ * bands region = NEAR
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_warning() {
+  static AlertThresholds warning(&WCV_TAUMOD::DO_365_DWC_Phase_II(),45,75,BandsRegion::NEAR);
+  return warning;
+}
+
+/**
+ * @return alerting thresholds as defined in RTCA DO-365A Phase II (DTA)
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
+const Alerter& Alerter::DWC_Phase_II() {
+  static Alerter alerter("DWC_Phase_II");
+  if (!alerter.isValid()) {
+    alerter.addLevel(DO_365_Phase_II_HAZ_preventive());
+    alerter.addLevel(DO_365_Phase_II_HAZ_corrective());
+    alerter.addLevel(DO_365_Phase_II_HAZ_warning());
+  }
+  return alerter;
+}
+
+/**
+ * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
+ * bands region = NONE, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_preventive_SUM() {
+  static AlertThresholds preventive(&WCV_TAUMOD_SUM::DO_365_Phase_I_preventive(),50,75,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365 HAZ corrective thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
+ * bands region = MID, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_corrective_SUM() {
+  static AlertThresholds corrective(&WCV_TAUMOD_SUM::DO_365_DWC_Phase_I(),50,75,BandsRegion::MID);
+  return corrective;
+}
+
+/**
+ * @return DO-365 HAZ warning thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s,
+ * bands region = NEAR, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_warning_SUM() {
+  static AlertThresholds warning(&WCV_TAUMOD_SUM::DO_365_DWC_Phase_I(),25,55,BandsRegion::NEAR);
+  return warning;
+}
+
+/**
+ * @return alerting thresholds as defined in RTCA DO-365 Phase I (en-route), with SUM
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
+const Alerter& Alerter::DWC_Phase_I_SUM() {
+  static Alerter alerter("DWC_Phase_I_SUM");
+  if (!alerter.isValid()) {
+    alerter.addLevel(DO_365_Phase_I_HAZ_preventive_SUM());
+    alerter.addLevel(DO_365_Phase_I_HAZ_corrective_SUM());
+    alerter.addLevel(DO_365_Phase_I_HAZ_warning_SUM());
+  }
+  return alerter;
+}
+/**
+ * @return DO-365A HAZ preventive thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+ * bands region = NONE, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_preventive_SUM() {
+  static AlertThresholds preventive(&WCV_TAUMOD_SUM::DO_365_DWC_Phase_II(),40,75,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365A HAZ corrective thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+ * bands region = MID, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_corrective_SUM() {
+  static AlertThresholds corrective(&WCV_TAUMOD_SUM::DO_365_DWC_Phase_II(),40,75,BandsRegion::MID);
+  return corrective;
+}
+
+/**
+ * @return DO-365A HAZ warning thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+ * bands region = MID, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Phase_II_HAZ_warning_SUM() {
+  static AlertThresholds warning(&WCV_TAUMOD_SUM::DO_365_DWC_Phase_II(),40,75,BandsRegion::NEAR);
+  return warning;
+}
+
+/**
+ * @return alerting thresholds as defined in RTCA DO-365A Phase II (DTA), with SUM.
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
+const Alerter& Alerter::DWC_Phase_II_SUM() {
+  static Alerter alerter("DWC_Phase_II_SUM");
+  if (!alerter.isValid()) {
+    alerter.addLevel(DO_365_Phase_II_HAZ_preventive_SUM());
+    alerter.addLevel(DO_365_Phase_II_HAZ_corrective_SUM());
+    alerter.addLevel(DO_365_Phase_II_HAZ_warning_SUM());
   }
   return alerter;
 }
@@ -119,7 +263,7 @@ const AlertThresholds& Alerter::Buffered_Phase_I_HAZ_warning() {
 }
 
 const Alerter& Alerter::Buffered_DWC_Phase_I() {
-  static Alerter alerter;
+  static Alerter alerter("Buffered_DWC_Phase_I");
   if (!alerter.isValid()) {
     alerter.addLevel(Buffered_Phase_I_HAZ_preventive());
     alerter.addLevel(Buffered_Phase_I_HAZ_corrective());
@@ -132,8 +276,9 @@ const Alerter& Alerter::Buffered_DWC_Phase_I() {
  * @return alerting thresholds for single bands given by detector,
  * alerting time, and lookahead time. The single bands region is NEAR
  */
-Alerter Alerter::SingleBands(const Detection3D* detector, double alerting_time, double lookahead_time) {
-  Alerter alerter("");
+Alerter Alerter::SingleBands(const Detection3D* detector, double alerting_time, double lookahead_time,
+    const std::string name) {
+  Alerter alerter(name);
   alerter.addLevel(AlertThresholds(detector,alerting_time,lookahead_time,BandsRegion::NEAR));
   return alerter;
 }
@@ -144,8 +289,7 @@ Alerter Alerter::SingleBands(const Detection3D* detector, double alerting_time, 
  * 180s.
  */
 const Alerter& Alerter::CD3D_SingleBands() {
-  static Alerter alerter = SingleBands(&CDCylinder::CD3DCylinder(),180,180);
-  alerter.setId("CD3D");
+  static Alerter alerter = SingleBands(&CDCylinder::CD3DCylinder(),180,180,"CD3D");
   return alerter;
 }
 
@@ -155,8 +299,35 @@ const Alerter& Alerter::CD3D_SingleBands() {
  * alerting time = 55s, early alerting time = 75s.
  */
 const Alerter& Alerter::WCV_TAUMOD_SingleBands() {
-  static Alerter alerter = SingleBands(&WCV_TAUMOD::DO_365_DWC_Phase_I(),55,75);
-  alerter.setId("WCV_TAUMOD");
+  static Alerter alerter = SingleBands(&WCV_TAUMOD::DO_365_DWC_Phase_I(),55,75,"WCV_TAUMOD");
+  return alerter;
+}
+
+/**
+ * TCASII-TA thresholds
+ */
+const AlertThresholds& Alerter::TCASII_TA_THR() {
+  static AlertThresholds ta(&TCAS3D::TCASII_TA(),0,0,BandsRegion::NONE);
+  return ta;
+}
+
+/**
+ * TCASII-RA thresholds
+ */
+const AlertThresholds& Alerter::TCASII_RA_THR() {
+  static AlertThresholds ra(&TCAS3D::TCASII_RA(),0,0,BandsRegion::NEAR);
+  return ra;
+}
+
+/**
+ * DAIDALUS's ideal TCASII alerter logic
+ */
+const Alerter& Alerter::TCASII() {
+  static Alerter alerter("TCASII");
+  if (!alerter.isValid()) {
+    alerter.addLevel(TCASII_TA_THR());
+    alerter.addLevel(TCASII_RA_THR());
+  }
   return alerter;
 }
 
@@ -174,7 +345,7 @@ int Alerter::alertLevelForRegion(BandsRegion::Region region) const {
       return i+1;
     }
   }
-  return 0;
+  return -1;
 }
 
 Detection3D* Alerter::getDetectorPtr(int alert_level) const {

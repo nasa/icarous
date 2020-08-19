@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,7 +21,7 @@
 
 namespace larcfm {
 
-const std::string DaidalusParameters::VERSION = "2.0.g";
+const std::string DaidalusParameters::VERSION = "2.0.2";
 const INT64FM DaidalusParameters::ALMOST_ = PRECISION5;
 bool DaidalusParameters::initialized = false;
 
@@ -1796,12 +1796,16 @@ bool DaidalusParameters::isAlertingLogicOwnshipCentric() const {
   return ownship_centric_alerting_;
 }
 
-
+/**
+ * Get corrective region for calculation of resolution maneuvers and bands saturation.
+ */
 BandsRegion::Region DaidalusParameters::getCorrectiveRegion() const {
   return corrective_region_;
 }
 
-
+/**
+ * Set corrective region for calculation of resolution maneuvers and bands saturation.
+ */
 bool DaidalusParameters::setCorrectiveRegion(BandsRegion::Region val) {
   if (BandsRegion::isConflictBand(val)) {
     corrective_region_ = val;
@@ -1812,7 +1816,13 @@ bool DaidalusParameters::setCorrectiveRegion(BandsRegion::Region val) {
   }
 }
 
-
+/**
+ * @param alerter_idx Indice of an alerter (starting from 1)
+ * @return corrective level of alerter at alerter_idx. The corrective level
+ * is the first alert level that has a region equal to or more severe than corrective_region.
+ * Return -1 if alerter_idx is out of range or if there is no corrective alert level
+ * for this alerter.
+ */
 int DaidalusParameters::correctiveAlertLevel(int alerter_idx) {
   if (1 <= alerter_idx && alerter_idx <= static_cast<int>(alerters_.size())) {
     Alerter alerter = alerters_[alerter_idx-1];
@@ -1823,7 +1833,9 @@ int DaidalusParameters::correctiveAlertLevel(int alerter_idx) {
   }
 }
 
-
+/**
+ * @return maximum alert level for all alerters. Returns 0 if alerter list is empty.
+ */
 int DaidalusParameters::maxAlertLevel() const {
   int maxalert_level = 0;
   for (int alerter_idx=1; alerter_idx <= static_cast<int>(alerters_.size()); ++alerter_idx) {
@@ -1832,7 +1844,9 @@ int DaidalusParameters::maxAlertLevel() const {
   return maxalert_level;
 }
 
-
+/**
+ * Set instantaneous bands.
+ */
 void DaidalusParameters::setInstantaneousBands() {
   set_turn_rate(0.0);
   set_bank_angle(0.0);
@@ -1841,7 +1855,11 @@ void DaidalusParameters::setInstantaneousBands() {
   setVerticalRate(0.0);
 }
 
-
+/**
+ * Set kinematic bands.
+ * Set turn rate to 3 deg/s, when type is true; set turn rate to  1.5 deg/s
+ * when type is false;
+ */
 void DaidalusParameters::setKinematicBands(bool type) {
   // Section 1.2.3 in RTCA DO-365
   setTurnRate(type ? 3.0 : 1.5,"deg/s");

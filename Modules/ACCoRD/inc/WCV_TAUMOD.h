@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,25 +33,31 @@ public:
   static const WCV_TAUMOD& A_WCV_TAUMOD();
 
   /**
-   * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+   * @return DO-365 preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
    * TTHR=35s, TCOA=0.
    */
   static const WCV_TAUMOD& DO_365_Phase_I_preventive();
 
   /**
-   * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * @return DO-365 Well-Clear thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
    * TTHR=35s, TCOA=0.
    */
   static const WCV_TAUMOD& DO_365_DWC_Phase_I();
 
   /**
-   * @return buffered preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
+   * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=1500 [ft], ZTHR=450ft,
+   * TTHR=0s, TCOA=0.
+   */
+  static const WCV_TAUMOD& DO_365_DWC_Phase_II();
+
+  /**
+   * @return buffered preventive thresholds Phase I (en-route), i.e., DTHR=1nmi, ZTHR=750ft,
    * TTHR=35s, TCOA=20.
    */
   static const WCV_TAUMOD& Buffered_Phase_I_preventive();
 
   /**
-   * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+   * @return buffered Well-Clear thresholds Phase I (en-route), i.e., DTHR=1.0nmi, ZTHR=450ft,
    * TTHR=35s, TCOA=20.
    */
   static const WCV_TAUMOD& Buffered_DWC_Phase_I();
@@ -71,6 +77,14 @@ public:
 
   virtual bool contains(const Detection3D* cd) const;
 
+  static Position TAU_center(const Position& po, const Velocity& v, double TTHR, double T);
+
+  static double TAU_radius(const Velocity& v, double DTHR, double TTHR);
+
+  virtual void hazard_zone_far_end(std::vector<Position>& haz,
+      const Position& po, const Velocity& v, const Velocity& vD, double T) const;
+
 };
+
 }
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,6 +13,7 @@
 #include "ParameterData.h"
 #include "ConflictData.h"
 #include "LossData.h"
+#include "CDCylinder.h"
 #include "format.h"
 #include "string_util.h"
 #include <cfloat>
@@ -191,6 +192,21 @@ std::string WCV_tvar::getIdentifier() const {
 
 void WCV_tvar::setIdentifier(const std::string& s) {
   id = s;
+}
+
+void WCV_tvar::horizontalHazardZone(std::vector<Position>& haz, const TrafficState& ownship, const TrafficState& intruder,
+    double T) const {
+  haz.clear();
+  const Position& po = ownship.getPosition();
+  Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
+  Vect3 sD = Horizontal::hmd_tangent_point(getDTHR(),v);
+  Velocity vD = Velocity::make(sD);
+  if (getTTHR()+T == 0) {
+      CDCylinder::circular_arc(haz,po,vD,2*Pi,false);
+  } else {
+      CDCylinder::circular_arc(haz,po,vD,Pi,true);
+      hazard_zone_far_end(haz,po,v,vD,T);
+  }
 }
 
 bool WCV_tvar::equals(Detection3D *obj) const {

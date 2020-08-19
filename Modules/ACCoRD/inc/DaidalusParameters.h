@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -849,12 +849,28 @@ public:
    */
   bool isAlertingLogicOwnshipCentric() const;
 
+  /**
+   * Get corrective region for calculation of resolution maneuvers and bands saturation.
+   */
   BandsRegion::Region getCorrectiveRegion() const;
 
+  /**
+   * Set corrective region for calculation of resolution maneuvers and bands saturation.
+   */
   bool setCorrectiveRegion(BandsRegion::Region val);
 
+  /**
+   * @param alerter_idx Indice of an alerter (starting from 1)
+   * @return corrective level of alerter at alerter_idx. The corrective level
+   * is the first alert level that has a region equal to or more severe than corrective_region.
+   * Return -1 if alerter_idx is out of range or if there is no corrective alert level
+   * for this alerter.
+   */
   int correctiveAlertLevel(int alerter_idx);
 
+  /**
+   * @return maximum alert level for all alerters. Returns 0 if alerter list is empty.
+   */
   int maxAlertLevel() const;
 
   /**

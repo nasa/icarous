@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2019 United States Government as represented by
+ * Copyright (c) 2014-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,37 +29,38 @@ ParameterEntry::~ParameterEntry() {
 }
 
 ParameterEntry::ParameterEntry(const std::string& s, double d, const std::string& u,
-		bool b, const std::string& msg) :
+		bool b, const std::string& msg, long o) :
 	sval(s),
 	dval(d),
 	units(u),
 	bval(b),
 	comment(msg),
-	order(count++) {
+	order(o) {
 }
 
-ParameterEntry::ParameterEntry(const ParameterEntry& entry) : 
-	sval(entry.sval),
-	dval(entry.dval),
-	units(entry.units),
-	bval(entry.bval),
-	comment(entry.comment),
-	order(entry.order) {
+ParameterEntry ParameterEntry::make(const std::string& s, double d, const std::string& u,
+	bool b, const std::string& msg) {
+	return ParameterEntry(s, d, u, b, msg, count++);
+}
+
+ParameterEntry ParameterEntry::make(const ParameterEntry& entry) {
+	ParameterEntry pe(entry.sval, entry.dval, entry.units, entry.bval, entry.comment, entry.order);
+	return pe;
 }
 
 // Make boolean entry
 ParameterEntry ParameterEntry::makeBoolEntry(bool b) {
 	return ParameterEntry(b ? "true" : "false",0,
-			"unitless", b, "");
+			"unitless", b, "", count++);
 }
 
 // New double entry
 ParameterEntry ParameterEntry::makeDoubleEntry(double d, const std::string& u, int p) {
-	return ParameterEntry(format(u,d,p),d,u,false,"");
+	return ParameterEntry(format(u,d,p),d,u,false,"", count++);
 }
 // New integer entry
 ParameterEntry ParameterEntry::makeIntEntry(int i){
-	return ParameterEntry(to_string(i),i,"unitless",false,"");
+	return ParameterEntry(to_string(i),i,"unitless",false,"",count++);
 }
 
 std::string ParameterEntry::format(const std::string& u, double d, int p) {

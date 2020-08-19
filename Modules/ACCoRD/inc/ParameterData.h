@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2019 United States Government as represented by
+ * Copyright (c) 2014-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -48,6 +48,8 @@ public:
 	static const std::string defaultEntrySeparator;
 
 	ParameterData();
+	static ParameterData make();
+
 	/** 
 	 * Will set methods update the units in the database, or will the units
 	 * in the database be preserved?
@@ -352,15 +354,16 @@ public:
 	 */
 	bool setInternal(const std::string& key, double value, const std::string& units, int prec);
 
-	/* /\** */
-	/*  * Updates the unit for an existing entry. This ignores the setPreservedUnits() flag. */
-	/*  * You may create a blank entry in order to preemptively store a units value. */
-	/*  *  */
-	/*  * @param key name of parameter */
-	/*  * @param unit unit for this parameter */
-	/*  * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true. */
-	/*  *\/ */
-	/* bool updateUnit(const std::string& key, const std::string& unit); */
+	/** 
+	 * Updates the unit for an existing entry. This ignores the setPreservedUnits() flag. 
+	 * You may create a blank entry in order to preemptively store a units value. 
+	 *  
+	 * @param key name of parameter 
+	 * @param unit unit for this parameter 
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, 
+	 *         otherwise it returns true. 
+	 * */
+	bool updateUnit(const std::string& key, const std::string& unit); 
 
 	/**
 	 * Updates entry's comment
@@ -565,6 +568,8 @@ private:
 	 * @return true, if parameter was added successfully
 	 */
 	bool putParam(const std::string& key, const std::pair<bool, ParameterEntry>& entry);
+
+	bool putParam(const std::string& key, bool perform_conversion, ParameterEntry& entry);
 
 	std::pair<bool, ParameterEntry> parse_parameter_value(const std::string& value);
 

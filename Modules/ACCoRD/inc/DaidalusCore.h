@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -203,6 +203,15 @@ public:
    */
   int horizontal_contours(std::vector<std::vector<Position> >& blobs, int idx, int alert_level);
 
+  /* idx is a 0-based index in the list of traffic aircraft
+   * returns 1 if detector of traffic aircraft
+   * returns 2 if corrective alerter level is not set
+   * returns 3 if alerter of traffic aircraft is out of bands
+   * otherwise, if there are no errors, returns 0 and the answer is in blobs
+   */
+  int horizontal_hazard_zone(std::vector<Position>& haz, int idx, int alert_level,
+      bool loss, bool from_ownship);
+
   /**
    * Computes alerting type of ownship and an the idx-th aircraft in the traffic list
    * The number 0 means no alert. A negative number means
@@ -231,8 +240,6 @@ private:
   bool greater_than_corrective() const;
 
   int raw_alert_level(const Alerter& alerter, const TrafficState& intruder, int turning, int accelerating, int climbing);
-
-  static void add_blob(std::vector<std::vector<Position> >& blobs, std::vector<Position>& vin, std::vector<Position>& vout);
 
   /**
    * Return true if and only if threshold values, defining an alerting level, are violated.

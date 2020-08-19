@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -52,6 +52,32 @@ WCV_TAUMOD_SUM::WCV_TAUMOD_SUM(const WCVTable& tab) {
  */
 const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::A_WCV_TAUMOD_SUM() {
   static WCV_TAUMOD_SUM dwc;
+  return dwc;
+}
+
+/**
+ * @return DO-365 Phase I (en-route) preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * TTHR=35s, TCOA=0, with SUM
+ */
+const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::DO_365_Phase_I_preventive() {
+  static WCV_TAUMOD_SUM preventive(WCVTable::DO_365_Phase_I_preventive());
+  return preventive;
+}
+
+/**
+ * @return DO-365 Well-Clear thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0, with SUM
+ */
+const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::DO_365_DWC_Phase_I() {
+  return A_WCV_TAUMOD_SUM();
+}
+
+/**
+ * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=1500 [ft], ZTHR=450ft,
+ * TTHR=0s, TCOA=0, with SUM
+ */
+const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::DO_365_DWC_Phase_II() {
+  static WCV_TAUMOD_SUM dwc(WCVTable::DO_365_DWC_Phase_II());
   return dwc;
 }
 

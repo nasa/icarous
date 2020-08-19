@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -47,38 +47,33 @@ public:
 
   virtual double time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const;
 
-  virtual std::pair<Vect3, Velocity> trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir) const;
+  virtual std::pair<Vect3, Velocity> trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir, int target_step, bool instantaneous) const;
 
   // In PVS: alt_bands@conflict_free_traj_step
 private:
-  bool conflict_free_traj_step(const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T, double B2, double T2,
-      const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const ;
+  bool conflict_free_traj_step(const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T,
+      const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, int target_step, bool instantaneous) const ;
 
   // In PVS: alt_bands@alt_bands_generic
   void alt_bands_generic(std::vector<Integerval>& l,
-      const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T, double B2, double T2,
-      int maxup, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T,
+      int maxup, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, bool instantaneous) const;
+
+  int first_nat(int mini, int maxi, bool dir, const Detection3D* conflict_det, const Detection3D* recovery_det,
+      double B, double T,  const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, bool green, bool instantaneous) const;
+
+  int first_band_alt_generic(const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T,
+      const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, bool dir, bool green, bool instantaneous) const;
 
 public:
   virtual void none_bands(IntervalSet& noneset, const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   virtual bool any_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   virtual bool all_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
-
-  int first_nat(int mini, int maxi, bool dir, const Detection3D* conflict_det, const Detection3D* recovery_det,
-      double B, double T, double B2, double T2, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, bool green);
-
-  int first_band_alt_generic(const Detection3D* conflict_det, const Detection3D* recovery_det, double B, double T, double B2, double T2,
-      const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic, bool dir, bool green);
-
-  // dir=false is down, dir=true is up
-  virtual  double resolution(const Detection3D* conflict_det, const Detection3D* recovery_det, const TrafficState& repac,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic,
-      bool dir);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   virtual double max_delta_resolution(const DaidalusParameters& parameters) const;
 

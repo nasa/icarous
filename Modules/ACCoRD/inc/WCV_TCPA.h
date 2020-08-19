@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -48,6 +48,9 @@ public:
   std::string getSimpleClassName() const;
 
   bool contains(const Detection3D* cd) const;
+
+  virtual void hazard_zone_far_end(std::vector<Position>& haz,
+      const Position& po, const Velocity& v, const Velocity& vD, double T) const;
 
 };
 }

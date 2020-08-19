@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2019 United States Government as represented by
+ * Copyright (c) 2012-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -52,7 +52,7 @@ WCVTable::WCVTable(double dthr, const std::string& udthr, double zthr, const std
 WCVTable::~WCVTable() { }
 
 /**
- * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * @return DO-365 preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
  * TTHR=35s, TCOA=0.
  */
 const WCVTable& WCVTable::DO_365_Phase_I_preventive() {
@@ -61,7 +61,7 @@ const WCVTable& WCVTable::DO_365_Phase_I_preventive() {
 }
 
 /**
- * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * @return DO-365 Well-Clear thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=0.
  */
 const WCVTable& WCVTable::DO_365_DWC_Phase_I() {
@@ -70,7 +70,16 @@ const WCVTable& WCVTable::DO_365_DWC_Phase_I() {
 }
 
 /**
- * @return buffered preventive thresholds, i.e., DTHR=1.0nmi, ZTHR=750ft,
+ * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0.
+ */
+const WCVTable& WCVTable::DO_365_DWC_Phase_II() {
+  static WCVTable dwc(1500,"ft",450,"ft",0,"s",0,"s");
+  return dwc;
+}
+
+/**
+ * @return buffered preventive thresholds Phase I (en-route), i.e., DTHR=1.0nmi, ZTHR=750ft,
  * TTHR=35s, TCOA=20.
  */
 const WCVTable& WCVTable::Buffered_Phase_I_preventive() {
@@ -79,7 +88,7 @@ const WCVTable& WCVTable::Buffered_Phase_I_preventive() {
 }
 
 /**
- * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+ * @return buffered Well-Clear thresholds Phase I (en-route), i.e., DTHR=1.0nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=20.
  */
 const WCVTable& WCVTable::Buffered_DWC_Phase_I() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2019 United States Government as represented by
+ * Copyright (c) 2014-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,8 +23,10 @@ public:
 
 	ParameterEntry();
 	virtual ~ParameterEntry();
-	ParameterEntry(const std::string& s, double d, const std::string& u, bool b, const std::string& msg);
-	ParameterEntry(const ParameterEntry& entry);
+	ParameterEntry(const std::string& s, double d, const std::string& u, bool b, const std::string& msg, long order);
+
+	static ParameterEntry make(const std::string& s, double d, const std::string& u, bool b, const std::string& msg);
+	static ParameterEntry make(const ParameterEntry& pe);
 
 	// Make bool entry
 	static ParameterEntry makeBoolEntry(bool b);

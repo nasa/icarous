@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -426,18 +426,6 @@ bool DaidalusCore::has_traffic() const {
   return traffic.size() > 0;
 }
 
-void DaidalusCore::add_blob(std::vector<std::vector<Position> >& blobs, std::vector<Position>& vin, std::vector<Position>& vout) {
-  if (vin.empty() && vout.empty()) {
-    return;
-  }
-  // Add conflict contour
-  std::vector<Position> blob = vin;
-  blob.insert(blob.end(), vout.begin(), vout.end());
-  blobs.push_back(blob);
-  vin.clear();
-  vout.clear();
-}
-
 /* idx is a 0-based index in the list of traffic aircraft
  * returns 1 if detector of traffic aircraft
  * returns 2 if corrective alerter level is not set
@@ -455,85 +443,43 @@ int DaidalusCore::horizontal_contours(std::vector<std::vector<Position> >& blobs
     if (alert_level > 0) {
       Detection3D* detector = alerter.getDetectorPtr(alert_level);
       if (detector != NULL) {
-        blobs.clear();
-        std::vector<Position> vin;
-        const Position& po = ownship.getPosition();
-        const Velocity& vo = ownship.getVelocity();
-        double current_trk = vo.trk();
-        std::vector<Position> vout;
-        /* First step: Computes conflict contour (contour in the current path of the aircraft).
-         * Get contour portion to the right.  If los.getTimeIn() == 0, a 360 degree
-         * contour will be computed. Otherwise, stops at the first non-conflict degree.
-         */
-        double right = 0; // Contour conflict limit to the right relative to current direction  [0-2pi rad]
-        double two_pi = 2*Pi;
-        TrafficState own = ownship;
-        for (; right < two_pi; right += parameters.getHorizontalDirectionStep()) {
-          Velocity vop = vo.mkTrk(current_trk+right);
-          own.setAirVelocity(vop);
-          LossData los = detector->conflictDetectionWithTrafficState(own,intruder,0.0,parameters.getLookaheadTime());
-          if ( !los.conflict() ) {
-            break;
-          }
-          if (los.getTimeIn() != 0 ) {
-            // if not in los, add position at time in (counter clock-wise)
-            vin.push_back(po.linear(vop,los.getTimeIn()));
-          }
-          // in any case, add position ad time out (counter clock-wise)
-          vout.insert(vout.begin(), po.linear(vop,los.getTimeOut()));
-        }
-        /* Second step: Compute conflict contour to the left */
-        double left = 0;  // Contour conflict limit to the left relative to current direction [0-2pi rad]
-        if (0 < right && right < two_pi) {
-          /* There is a conflict contour, but not a violation */
-          for (left = parameters.getHorizontalDirectionStep(); left < two_pi; left += parameters.getHorizontalDirectionStep()) {
-            Velocity vop = vo.mkTrk(current_trk-left);
-            own.setAirVelocity(vop);
-            LossData los = detector->conflictDetectionWithTrafficState(own,intruder,0.0,parameters.getLookaheadTime());
-            if ( !los.conflict() ) {
-              break;
-            }
-            vin.insert(vin.begin(), po.linear(vop,los.getTimeIn()));
-            vout.push_back(po.linear(vop,los.getTimeOut()));
-          }
-        }
-        add_blob(blobs,vin,vout);
-        // Third Step: Look for other blobs to the right within direction threshold
-        if (right < parameters.getHorizontalContourThreshold()) {
-          for (; right < two_pi-left; right += parameters.getHorizontalDirectionStep()) {
-            Velocity vop = vo.mkTrk(current_trk+right);
-            own.setAirVelocity(vop);
-            LossData los = detector->conflictDetectionWithTrafficState(own,intruder,0.0,parameters.getLookaheadTime());
-            if (los.conflict()) {
-              vin.push_back(po.linear(vop,los.getTimeIn()));
-              vout.insert(vout.begin(), po.linear(vop,los.getTimeOut()));
-            } else {
-              add_blob(blobs,vin,vout);
-              if (right >= parameters.getHorizontalContourThreshold()) {
-                break;
-              }
-            }
-          }
-          add_blob(blobs,vin,vout);
-        }
-        // Fourth Step: Look for other blobs to the left within direction threshold
-        if (left < parameters.getHorizontalContourThreshold()) {
-          for (; left < two_pi-right; left += parameters.getHorizontalDirectionStep()) {
-            Velocity vop = vo.mkTrk(current_trk-left);
-            own.setAirVelocity(vop);
-            LossData los = detector->conflictDetectionWithTrafficState(own,intruder,0.0,parameters.getLookaheadTime());
-            if (los.conflict()) {
-              vin.insert(vin.begin(), po.linear(vop,los.getTimeIn()));
-              vout.push_back(po.linear(vop,los.getTimeOut()));
-            } else {
-              add_blob(blobs,vin,vout);
-              if (left >= parameters.getHorizontalContourThreshold()) {
-                break;
-              }
-            }
-          }
-          add_blob(blobs,vin,vout);
-        }
+        detector->horizontalContours(blobs,ownship,intruder,
+            parameters.getHorizontalContourThreshold(),
+            parameters.getLookaheadTime());
+      } else {
+        return 1;
+      }
+    } else {
+      return 2;
+    }
+  } else {
+    return 3;
+  }
+  return 0;
+}
+
+/* idx is a 0-based index in the list of traffic aircraft
+ * returns 1 if detector of traffic aircraft
+ * returns 2 if corrective alerter level is not set
+ * returns 3 if alerter of traffic aircraft is out of bands
+ * otherwise, if there are no errors, returns 0 and the answer is in blobs
+ */
+int DaidalusCore::horizontal_hazard_zone(std::vector<Position>& haz, int idx, int alert_level,
+    bool loss, bool from_ownship) {
+  const TrafficState& intruder = traffic[idx];
+  int alerter_idx = alerter_index_of(intruder);
+  if (1 <= alerter_idx && alerter_idx <= parameters.numberOfAlerters()) {
+    const Alerter& alerter = parameters.getAlerterAt(alerter_idx);
+    if (alert_level == 0) {
+      alert_level = parameters.correctiveAlertLevel(alerter_idx);
+    }
+    if (alert_level > 0) {
+      Detection3D* detector = alerter.getDetectorPtr(alert_level);
+      if (detector != NULL) {
+        detector->horizontalHazardZone(haz,
+            (from_ownship ? ownship : intruder),
+            (from_ownship ? intruder : ownship),
+            (loss ? 0 : alerter.getLevel(alert_level).getAlertingTime()));
       } else {
         return 1;
       }
@@ -575,10 +521,9 @@ void DaidalusCore::conflict_aircraft(int conflict_region) {
               alerting_hysteresis_ptr->second.getLastValue() == alert_level) {
             alerting_time = alerter.getLevel(alert_level).getEarlyAlertingTime();
           }
-          alerting_time = Util::min(parameters.getLookaheadTime(),alerting_time);
           ConflictData det = detector->conflictDetectionWithTrafficState(ownship,intruder,0.0,parameters.getLookaheadTime());
           if (det.conflict()) {
-            if (det.getTimeIn() == 0 || det.getTimeIn() < alerting_time) {
+            if (det.conflictBefore(alerting_time)) {
               acs_conflict_bands_[conflict_region].push_back(IndexLevelT(ac,alert_level,parameters.getLookaheadTime()));
             }
             tin = Util::min(tin,det.getTimeIn());
@@ -707,11 +652,10 @@ bool DaidalusCore::check_alerting_thresholds(const Alerter& alerter, int alert_l
         alerting_hysteresis_ptr->second.getLastValue() == alert_level) {
       alerting_time = alerter.getLevel(alert_level).getEarlyAlertingTime();
     }
-    alerting_time = Util::min(parameters.getLookaheadTime(),alerting_time);
     int epsh = epsilonH(false,intruder);
     int epsv = epsilonV(false,intruder);
-    ConflictData det = detector->conflictDetectionWithTrafficState(ownship,intruder,0.0,alerting_time);
-    if (det.conflict()) {
+    ConflictData det = detector->conflictDetectionWithTrafficState(ownship,intruder,0.0,parameters.getLookaheadTime());
+    if (det.conflictBefore(alerting_time)) {
       return true;
     }
     if (athr.getHorizontalDirectionSpread() > 0 || athr.getHorizontalSpeedSpread() > 0 ||

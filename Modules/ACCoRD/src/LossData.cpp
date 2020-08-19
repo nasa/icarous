@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2019 United States Government as represented by
+ * Copyright (c) 2014-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,14 +35,30 @@ const LossData& EMPTY() {
  * Returns true if loss
  */
 bool LossData::conflict() const {
-	return time_in < time_out && !Util::almost_equals(time_in,time_out); //[CAM] Added to avoid numerical instability
+	return Util::almost_less(time_in,time_out); //[CAM] Added to avoid numerical instability
+}
+
+/**
+ * Returns true if loss occurs before t in seconds
+ */
+bool LossData::conflictBefore(double t) const {
+	return // Zero is special since loss intervals are cut at 0
+			(time_in == 0 || Util::almost_less(time_in,t)) &&
+			Util::almost_less(time_in,time_out);
 }
 
 /**
  * Returns true if loss last more than thr in seconds
  */
-bool LossData::conflict(double thr) const {
+bool LossData::conflictLastMoreThan(double thr) const {
 	return conflict() && (time_out - time_in >= thr);
+}
+
+/**
+ * DEPRECATED -- Use conflictLastMoreThan instead
+ */
+bool LossData::conflict(double thr) const {
+	return conflictLastMoreThan(thr);
 }
 
 /**

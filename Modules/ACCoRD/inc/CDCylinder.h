@@ -40,7 +40,7 @@
  * t_in  : Time to loss of separation
  * t_out : Time to recovery from loss of separation
  *
- * Copyright (c) 2011-2019 United States Government as represented by
+ * Copyright (c) 2011-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -198,8 +198,17 @@ public:
   virtual bool equals(Detection3D* d) const;
   virtual bool contains(const Detection3D* cd) const;
 
-};
+  /* Return a list of point representing a counter-clockwise circular arc centered at pc,
+   * whose first point is pc+v(0), and the last one is pc+v(alpha), where alpha is
+   * in [0,2*pi].
+   */
+  static void circular_arc(std::vector<Position>& arc, const Position& pc, const Velocity& v,
+      double alpha, bool include_last);
 
+  virtual void horizontalHazardZone(std::vector<Position>& haz,
+      const TrafficState& ownship, const TrafficState& intruder, double T) const;
+
+};
 
 }
 

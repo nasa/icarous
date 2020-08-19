@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 United States Government as represented by
+ * Copyright (c) 2018-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -299,29 +299,19 @@ public:
    * values (or [0,mod] in the case of circular bands, i.e., when mod == 0).
    */
   virtual void none_bands(IntervalSet& noneset, const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   virtual bool any_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   virtual bool all_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   bool all_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   bool any_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
-
-  /**
-   * This function returns a resolution maneuver that is valid from B to T.
-   * It returns NaN if there is no conflict and +/- infinity, depending on dir, if there
-   * are no resolutions.
-   * The value dir=false is down and dir=true is up.
-   */
-  virtual double resolution(const Detection3D* conflict_det, const Detection3D* recovery_det, const TrafficState& repac,
-      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic,
-      bool dir);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic) const;
 
   std::string rawString() const;
 

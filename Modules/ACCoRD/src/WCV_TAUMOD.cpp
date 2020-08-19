@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -8,6 +8,7 @@
 #include "WCV_TAUMOD.h"
 #include "WCV_TCPA.h"
 #include "WCV_TCOA.h"
+#include "CDCylinder.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Horizontal.h"
@@ -41,7 +42,7 @@ const WCV_TAUMOD& WCV_TAUMOD::A_WCV_TAUMOD() {
 }
 
 /**
- * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * @return DO-365 preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
  * TTHR=35s, TCOA=0.
  */
 const WCV_TAUMOD& WCV_TAUMOD::DO_365_Phase_I_preventive() {
@@ -50,7 +51,7 @@ const WCV_TAUMOD& WCV_TAUMOD::DO_365_Phase_I_preventive() {
 }
 
 /**
- * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * @return DO-365 Well-Clear thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=0.
  */
 const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Phase_I() {
@@ -58,7 +59,16 @@ const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Phase_I() {
 }
 
 /**
- * @return buffered preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
+ * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=1500 [ft], ZTHR=450ft,
+ * TTHR=0s, TCOA=0.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Phase_II() {
+  static WCV_TAUMOD dwc(WCVTable::DO_365_DWC_Phase_II());
+  return dwc;
+}
+
+/**
+ * @return buffered preventive thresholds Phase I (en-route), i.e., DTHR=1nmi, ZTHR=750ft,
  * TTHR=35s, TCOA=20.
  */
 const WCV_TAUMOD& WCV_TAUMOD::Buffered_Phase_I_preventive() {
@@ -67,7 +77,7 @@ const WCV_TAUMOD& WCV_TAUMOD::Buffered_Phase_I_preventive() {
 }
 
 /**
- * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+ * @return buffered Well-Clear thresholds Phase I (en-route), i.e., DTHR=1.0nmi, ZTHR=450ft,
  * TTHR=35s, TCOA=20.
  */
 const WCV_TAUMOD& WCV_TAUMOD::Buffered_DWC_Phase_I() {
@@ -137,6 +147,27 @@ bool WCV_TAUMOD::contains(const Detection3D* cd) const {
     return containsTable((WCV_tvar*)cd);
   }
   return false;
+}
+
+Position WCV_TAUMOD::TAU_center(const Position& po, const Velocity& v, double TTHR, double T) {
+  Vect3 nv = v.Scal(0.5*TTHR+T);
+  return po.linear(Velocity::make(nv),1);
+}
+
+double WCV_TAUMOD::TAU_radius(const Velocity& v, double DTHR, double TTHR) {
+  double inside = Util::sq(DTHR) + 0.25*Util::sq(TTHR)*v.sqv();
+  return Util::sqrt_safe(inside);
+}
+
+void WCV_TAUMOD::hazard_zone_far_end(std::vector<Position>& haz,
+    const Position& po, const Velocity& v, const Velocity& vD, double T) const {
+  Vect3 vC = v.Scal(0.5*getTTHR());     // TAUMOD Center (relative)
+  Vect3 vDC = vC.Sub(vD); // Far end point opposite to -vD (vC-relative);
+  Vect3 nvDC = vC.Add(vD); // Far end point opposite to vD (vC-relative);
+  double sqa = vDC.sqv2D();
+  double alpha = Util::atan2_safe(vDC.det2D(nvDC)/sqa,vDC.dot2D(nvDC)/sqa);
+  Velocity velDC = Velocity::make(vDC);
+  CDCylinder::circular_arc(haz,TAU_center(po,v,getTTHR(),T),velDC,alpha,true);
 }
 
 }

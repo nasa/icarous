@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2019 United States Government as represented by
+ * Copyright (c) 2011-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -368,5 +368,13 @@ Horizontal Horizontal::opt_vertical(const Vect3& s,const Vect3& vo,const Vect3& 
   }
   return NoHorizontalSolution();
 }
+
+/* Point in relative coordinates that is tangent to the circle of radius D, around
+ * so, in the direction of the relative velocity vo-vi.
+ */
+Vect3 Horizontal::hmd_tangent_point(double D, const Vect3& v) {
+  return v.Hat2D().PerpL().Scal(D);
+}
+
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2019 United States Government as represented by
+ * Copyright (c) 2013-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -141,6 +141,41 @@ public:
     return larcfm::equals(getCanonicalClassName(), classname);
   }
 
+  /**
+   * Computes horizontal list of contours contributed by intruder aircraft. A contour is a
+   * list of points in counter-clockwise direction representing a polygon.
+   * Last point should be connected to first one.
+   * @param thr This is a contour threshold in radians [0,pi]. This threshold indicates
+   * how far from current direction to look for contours.  A value of 0 means only conflict contour.
+   * A value of pi means all contours.
+   * @param T Lookahead time in seconds
+   *
+   * NOTE: The computed polygon should only be used for display purposes since it's merely an
+   * approximation of the actual contours defined by the violation and detection methods.
+   */
+  void horizontalContours(std::vector<std::vector<Position> >& blobs, const TrafficState& ownship, const TrafficState& intruder,
+      double thr, double T) const;
+
+  /**
+   * Return a list of points (polygon) that approximates the horizontal hazard zone
+   * around the ownship, with respect to a traffic aircraft.
+   * A polygon is a list of points in counter-clockwise direction, where the last point is connected to the
+   * first one.
+   * @param T This time represents a time horizon in seconds. When T is 0,
+   * the polygon represents the hazard zone. Otherwise, the are represents
+   * the hazard zone with time horizon T.
+   *
+   * NOTE 1: This polygon should only be used for display purposes since it's merely an
+   * approximation of the actual hazard zone defined by the violation and detection methods.
+   *
+   * NOTE 2: This method has to be redefined as appropriate for every specific
+   * hazard zone.
+   */
+  virtual void horizontalHazardZone(std::vector<Position>& haz, const TrafficState& ownship, const TrafficState& intruder,
+      double T) const;
+
+private:
+  static void add_blob(std::vector<std::vector<Position> >& blobs, std::vector<Position>& vin, std::vector<Position>& vout);
 };
 
 inline Detection3D::~Detection3D(){}

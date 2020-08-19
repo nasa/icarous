@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -84,6 +84,12 @@
 
 namespace larcfm {
 
+/**
+ * Construct an empty Daidalus object.
+ * NOTE: This object doesn't have any alert configured. Alerters can be
+ * configured either programmatically, set_DO_365A(true,true) or
+ * via a configuration file with the method loadFromFile(configurationfile)
+ **/
 Daidalus::Daidalus() : error("Daidalus") {}
 
 /**
@@ -101,20 +107,50 @@ Daidalus::Daidalus(const Detection3D* det, double T) : error("Daidalus"), core_(
 
 /*
  * Set Daidalus object such that
- * - Alerting thresholds are unbuffered as defined in RTCA DO-365.
- * - Maneuver guidance logic assumes instantaneous maneuvers
- * - Bands saturate at DMOD/ZTHR
+ * - Configure two alerters (Phase I and Phase II) as defined as in RTCA DO-365A
+ * - Maneuver guidance logic assumes kinematic maneuvers
+ * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+ *   when type is false.
+ * - Configure Sensor Uncertainty Migitation (SUM) when sum is true
+ * - Bands don't saturate until NMAC
  */
-void Daidalus::set_WC_DO_365() {
+void Daidalus::set_DO_365A(bool type, bool sum) {
   clearAlerters();
-  addAlerter(Alerter::DWC_Phase_I());
+  if (sum) {
+    addAlerter(Alerter::DWC_Phase_I_SUM());
+    addAlerter(Alerter::DWC_Phase_II_SUM());
+  } else {
+    addAlerter(Alerter::DWC_Phase_I());
+    addAlerter(Alerter::DWC_Phase_II());
+  }
   setCorrectiveRegion(BandsRegion::MID);
-  setInstantaneousBands();
-  disableHysteresis();
-  setCollisionAvoidanceBands(false);
-  setCollisionAvoidanceBandsFactor(0.0);
+  setKinematicBands(type);
+  setCollisionAvoidanceBands(true);
+  setCollisionAvoidanceBandsFactor(0.1);
   setMinHorizontalRecovery(0.66,"nmi");
   setMinVerticalRecovery(450,"ft");
+  //setVerticalRate(1000,"fpm");
+  setIntruderCentricAlertingLogic();
+  /** Set hysteresis parameters **/
+  setHysteresisTime(5.0);
+  setPersistenceTime(4.0);
+  setBandsPersistence(true);
+  setPersistencePreferredHorizontalDirectionResolution(15,"deg");
+  setPersistencePreferredHorizontalSpeedResolution(100,"knot");
+  setPersistencePreferredVerticalSpeedResolution(250,"fpm");
+  setPersistencePreferredAltitudeResolution(250,"ft");
+  setAlertingMofN(2,4);
+  /** Set SUM parameters **/
+  setHorizontalPositionZScore(1.5);
+  setHorizontalVelocityZScoreMin(0.5);
+  setHorizontalVelocityZScoreMax(1.0);
+  setHorizontalVelocityZDistance(5,"nmi");
+  setVerticalPositionZScore(0.75);
+  setVerticalSpeedZScore(1.5);
+  /** Set DTA parameters **/
+  setDTARadius(4.2,"nmi");
+  setDTAHeight(2000,"ft");
+  setDTAAlerter(2);
 }
 
 /*
@@ -130,7 +166,6 @@ void Daidalus::set_Buffered_WC_DO_365(bool type) {
   addAlerter(Alerter::Buffered_DWC_Phase_I());
   setCorrectiveRegion(BandsRegion::MID);
   setKinematicBands(type);
-  disableHysteresis();
   setCollisionAvoidanceBands(true);
   setCollisionAvoidanceBandsFactor(0.1);
   setMinHorizontalRecovery(1.0,"nmi");
@@ -150,6 +185,23 @@ void Daidalus::set_CD3D() {
   setInstantaneousBands();
   setCollisionAvoidanceBands(true);
   setCollisionAvoidanceBandsFactor(0.1);
+  setMinHorizontalRecovery(5.0,"nmi");
+  setMinVerticalRecovery(1000,"ft");
+}
+
+/* Set DAIDALUS object such that alerting logic and maneuver guidance corresponds to
+ * ideal TCASII */
+void Daidalus::set_TCASII() {
+  clearAlerters();
+  addAlerter(Alerter::TCASII());
+  setLookaheadTime(60);
+  setCorrectiveRegion(BandsRegion::NEAR);
+  setKinematicBands(true);
+  setVerticalRate(1500,"fpm");
+  setCollisionAvoidanceBands(true);
+  setCollisionAvoidanceBandsFactor(0.1);
+  setMinHorizontalRecovery(0);
+  setMinVerticalRecovery(0);
 }
 
 /**
@@ -609,16 +661,21 @@ TrafficState Daidalus::mostUrgentAircraft() {
   return core_.mostUrgentAircraft();
 }
 
-/* Computation of contours, a.k.a. blobs */
+/* Computation of contours, a.k.a. blobs, and hazard zones */
 
 /**
  * Computes horizontal contours contributed by aircraft at index idx, for
- * given alert level. A contour is a non-empty list of points in counter-clockwise
- * direction representing a polygon.
- * @param blobs list of direction contours returned by reference.
+ * given alert level. A contour is a list of points in counter-clockwise
+ * direction representing a polygon. Last point should be connected to first one.
+ * The computed polygon should only be used for display purposes since it's merely an
+ * approximation of the actual contours defined by the violation and detection methods.
+ * @param blobs list of horizontal contours returned by reference.
  * @param ac_idx is the index of the aircraft used to compute the contours.
+ * @param alert_level is the alert level used to compute detection. The value 0
+ * indicate the alert level of the corrective region.
  */
 void Daidalus::horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx, int alert_level) {
+  blobs.clear();
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
     int code = core_.horizontal_contours(blobs,ac_idx-1,alert_level);
     switch (code) {
@@ -638,14 +695,73 @@ void Daidalus::horizontalContours(std::vector<std::vector<Position> >& blobs, in
 }
 
 /**
- * Computes horizontal contours contributed by aircraft at index idx, the alert level
- * corresponding to the corrective region. A contour is a non-empty list of points in
- * counter-clockwise direction representing a polygon.
- * @param blobs list of direction contours returned by reference.
- * @param idx is the index of the aircraft used to compute the contours.
+ * Computes horizontal contours contributed by aircraft at index idx, for
+ * given region. A contour is a list of points in counter-clockwise
+ * direction representing a polygon. Last point should be connected to first one.
+ * The computed polygon should only be used for display purposes since it's merely an
+ * approximation of the actual contours defined by the violation and detection methods.
+ * @param blobs list of horizontal contours returned by reference.
+ * @param ac_idx is the index of the aircraft used to compute the contours.
+ * @param region is the region used to compute detection.
  */
-void Daidalus::horizontalContours(std::vector<std::vector<Position> >& blobs, int idx) {
-  horizontalContours(blobs,idx,0);
+void Daidalus::horizontalContours(std::vector<std::vector<Position> >& blobs, int ac_idx,
+    BandsRegion::Region region) {
+  horizontalContours(blobs,ac_idx,alertLevelOfRegion(ac_idx,region));
+}
+
+/**
+ * Computes horizontal hazard zone around aircraft at index ac_idx, for given alert level.
+ * A hazard zone is a list of points in counter-clockwise
+ * direction representing a polygon. Last point should be connected to first one.
+ * @param haz hazard zone returned by reference.
+ * @param ac_idx is the index of the aircraft used to compute the contours.
+ * @param loss true means that the polygon represents the hazard zone. Otherwise,
+ * the polygon represents the hazard zone with an alerting time.
+ * @param from_ownship true means ownship point of view. Otherwise, the hazard zone is computed
+ * from the intruder's point of view.
+ * @param alert_level is the alert level used to compute detection. The value 0
+ * indicate the alert level of the corrective region.
+ * NOTE: The computed polygon should only be used for display purposes since it's merely an
+ * approximation of the actual hazard zone defined by the violation and detection methods.
+ */
+void Daidalus::horizontalHazardZone(std::vector<Position>& haz, int ac_idx, bool loss, bool from_ownship,
+    int alert_level) {
+  haz.clear();
+  if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
+    int code = core_.horizontal_hazard_zone(haz,ac_idx-1,alert_level,loss,from_ownship);
+    switch (code) {
+    case 1:
+      error.addError("horizontalHazardZone: detector of traffic aircraft "+Fmi(ac_idx)+" is not set");
+      break;
+    case 2:
+      error.addError("horizontalHazardZone: no corrective alerter level for alerter of "+Fmi(ac_idx));
+      break;
+    case 3:
+      error.addError("horizontalHazardZone: alerter of traffic aircraft "+Fmi(ac_idx)+" is out of bounds");
+      break;
+    }
+  } else {
+    error.addError("horizontalHazardZone: aircraft index "+Fmi(ac_idx)+" is out of bounds");
+  }
+}
+
+/**
+ * Computes horizontal hazard zone around aircraft at index ac_idx, for given region.
+ * A hazard zone is a list of points in counter-clockwise
+ * direction representing a polygon. Last point should be connected to first one.
+ * @param haz hazard zone returned by reference.
+ * @param ac_idx is the index of the aircraft used to compute the contours.
+ * @param loss true means that the polygon represents the hazard zone. Otherwise,
+ * the polygon represents the hazard zone with an alerting time.
+ * @param from_ownship true means ownship point of view. Otherwise, the hazard zone is computed
+ * from the intruder's point of view.
+ * @param region is the region used to compute detection.
+ * NOTE: The computed polygon should only be used for display purposes since it's merely an
+ * approximation of the actual hazard zone defined by the violation and detection methods.
+ */
+void Daidalus::horizontalHazardZone(std::vector<Position>& haz, int ac_idx, bool loss, bool from_ownship,
+    BandsRegion::Region region) {
+  horizontalHazardZone(haz,ac_idx,loss,from_ownship,alertLevelOfRegion(ac_idx,region));
 }
 
 /* Setting and getting DaidalusParameters */
@@ -2490,7 +2606,7 @@ void Daidalus::setCorrectiveRegion(BandsRegion::Region val) {
  * @param alerter_idx Indice of an alerter (starting from 1)
  * @return corrective level of alerter at alerter_idx. The corrective level
  * is the first alert level that has a region equal to or more severe than corrective_region.
- * Return -1 if alerter_idx is out of range. Return 0 is there is no corrective alert level
+ * Return -1 if alerter_idx is out of range of if there is no corrective alert level
  * for this alerter.
  */
 int Daidalus::correctiveAlertLevel(int alerter_idx) {
@@ -2622,8 +2738,9 @@ void Daidalus::reset() {
 /* Main interface methods */
 
 /**
- * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
- * 1 = FAR, 2 = MID, 3 = NEAR
+ * Compute in acs list of aircraft identifiers contributing to conflict bands for given
+ * conflict bands region.
+ * 1 = FAR, 2 = MID, 3 = NEAR.
  */
 void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, int region) {
   if (0 < region && region <= BandsRegion::NUMBER_OF_CONFLICT_BANDS) {
@@ -2635,14 +2752,15 @@ void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, int region) 
 }
 
 /**
- * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
+ * Compute in acs list of aircraft identifiers contributing to conflict bands for given
+ * conflict bands region.
  */
 void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
   conflictBandsAircraft(acs,BandsRegion::orderOfRegion(region));
 }
 
 /**
- * Return time interval of violation for given bands region
+ * Return time interval of violation for given conflict bands region
  * 1 = FAR, 2 = MID, 3 = NEAR
  */
 Interval Daidalus::timeIntervalOfConflict(int region) {
@@ -2653,7 +2771,7 @@ Interval Daidalus::timeIntervalOfConflict(int region) {
 }
 
 /**
- * Return time interval of violation for given bands region
+ * Return time interval of violation for given conflict bands region
  */
 Interval Daidalus::timeIntervalOfConflict(BandsRegion::Region region) {
   return timeIntervalOfConflict(BandsRegion::orderOfRegion(region));
@@ -2755,7 +2873,7 @@ RecoveryInformation Daidalus::horizontalDirectionRecoveryInformation() {
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
- * for given region.
+ * for given conflict bands region.
  * 1 = FAR, 2 = MID, 3 = NEAR
  */
 void Daidalus::peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, int region) {
@@ -2768,7 +2886,7 @@ void Daidalus::peripheralHorizontalDirectionBandsAircraft(std::vector<std::strin
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
- * for given region.
+ * for given conflict bands region.
  */
 void Daidalus::peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
   peripheralHorizontalDirectionBandsAircraft(acs,BandsRegion::orderOfRegion(region));
@@ -2903,7 +3021,7 @@ RecoveryInformation Daidalus::horizontalSpeedRecoveryInformation() {
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
- * for given region.
+ * for given conflict bands region.
  * 1 = FAR, 2 = MID, 3 = NEAR
  */
 void Daidalus::peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, int region) {
@@ -2916,7 +3034,7 @@ void Daidalus::peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& 
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
- * for given region.
+ * for given conflict bands region.
  */
 void Daidalus::peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
   peripheralHorizontalSpeedBandsAircraft(acs,BandsRegion::orderOfRegion(region));
@@ -3020,7 +3138,7 @@ int Daidalus::indexOfVerticalSpeed(double vs, const std::string& u) {
  * @return the region of a given vertical speed specified in internal units [m/s]
  * @param vs [m/s]
  */
-BandsRegion::Region Daidalus::regionOfVerticalSpeed(double vs) { //TODO shadows! verticalSpeedRegion **********************************************************************
+BandsRegion::Region Daidalus::regionOfVerticalSpeed(double vs) {
   return verticalSpeedRegionAt(indexOfVerticalSpeed(vs));
 }
 
@@ -3051,7 +3169,7 @@ RecoveryInformation Daidalus::verticalSpeedRecoveryInformation() {
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
- * for given region.
+ * for conflict bands region.
  * 1 = FAR, 2 = MID, 3 = NEAR
  */
 void Daidalus::peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, int region) {
@@ -3064,7 +3182,7 @@ void Daidalus::peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& ac
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
- * for given region.
+ * for conflict bands region.
  */
 void Daidalus::peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
   peripheralVerticalSpeedBandsAircraft(acs,BandsRegion::orderOfRegion(region));
@@ -3199,7 +3317,7 @@ RecoveryInformation Daidalus::altitudeRecoveryInformation() {
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
- * for given region.
+ * for conflict bands region.
  * 1 = FAR, 2 = MID, 3 = NEAR
  */
 void Daidalus::peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, int region) {
@@ -3212,7 +3330,7 @@ void Daidalus::peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, in
 
 /**
  * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
- * for given region.
+ * for conflict bands region.
  */
 void Daidalus::peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
   peripheralAltitudeBandsAircraft(acs,BandsRegion::orderOfRegion(region));
@@ -3325,6 +3443,18 @@ ConflictData Daidalus::violationOfAlertThresholds(int ac_idx, int alert_level) {
 }
 
 /**
+ * Detects violation of alert thresholds for a given region with an
+ * aircraft at index ac_idx.
+ * Conflict data provides time to violation and time to end of violation
+ * of alert thresholds of given alert level.
+ * @param ac_idx is the index of the traffic aircraft
+ * @param region region used to compute detection.
+ */
+ConflictData Daidalus::violationOfAlertThresholds(int ac_idx, BandsRegion::Region region) {
+  return violationOfAlertThresholds(ac_idx,alertLevelOfRegion(ac_idx,region));
+}
+
+/**
  * Detects violation of corrective thresholds with an aircraft at index ac_idx.
  * Conflict data provides time to violation and time to end of violation
  * @param ac_idx is the index of the traffic aircraft
@@ -3350,6 +3480,65 @@ double Daidalus::timeToCorrectiveVolume(int ac_idx) {
     error.addError("timeToCorrectiveVolume: aircraft index "+Fmi(ac_idx)+" is out of bounds");
     return NaN;
   }
+}
+
+/**
+ * @return region corresponding to a given alert level for a particular aircraft.
+ * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+ * logic, then returns the configured region for the alerter level. It returns
+ * UNKNOWN if the aircraft or the alert level are invalid.
+ */
+BandsRegion::Region Daidalus::regionOfAlertLevel(int ac_idx, int alert_level) {
+  if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
+    const TrafficState& intruder = core_.traffic[ac_idx-1];
+    int alerter_idx = core_.alerter_index_of(intruder);
+    if (1 <= alerter_idx && alerter_idx <= core_.parameters.numberOfAlerters()) {
+      const Alerter& alerter = core_.parameters.getAlerterAt(alerter_idx);
+      if (0 < alert_level && alert_level <= alerter.mostSevereAlertLevel()) {
+        return alerter.getLevel(alert_level).getRegion();
+      } else {
+        error.addError("regionOfAlertLevel: alert_level "+Fmi(alert_level)+" for  "+Fmi(ac_idx)+" is not set");
+      }
+    } else {
+      error.addError("regionOfAlertLevel: alerter of traffic aircraft "+Fmi(ac_idx)+" is out of bounds");
+    }
+  } else {
+    error.addError("regionOfAlertLevel: aircraft index "+Fmi(ac_idx)+" is out of bounds");
+  }
+  return BandsRegion::UNKNOWN;
+}
+
+/**
+ * @return alert_level corresponding to a given region for a particular aircraft.
+ * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+ * logic, then returns the configured region for the region. It returns -1
+ * if the aircraft or the alert level are invalid.
+ * 0 = NONE, 1 = FAR, 2 = MID, 3 = NEAR.
+ */
+int Daidalus::alertLevelOfRegion(int ac_idx, int region) {
+  return alertLevelOfRegion(ac_idx,BandsRegion::regionFromOrder(region));
+}
+
+/**
+ * @return alert_level corresponding to a given region for a particular aircraft.
+ * This function first finds the alerter for this aircraft, based on ownship/intruder-centric
+ * logic, then returns the configured region for the region. It returns -1
+ * if the aircraft or its alerter are invalid.
+ */
+int Daidalus::alertLevelOfRegion(int ac_idx, BandsRegion::Region region) {
+  if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
+    const TrafficState& intruder = core_.traffic[ac_idx-1];
+    int alerter_idx = core_.alerter_index_of(intruder);
+    if (1 <= alerter_idx && alerter_idx <= core_.parameters.numberOfAlerters()) {
+      const Alerter& alerter = core_.parameters.getAlerterAt(alerter_idx);
+      return alerter.alertLevelForRegion(region);
+    } else {
+      error.addError("alertLevelOfRegion: alerter of traffic aircraft "+Fmi(ac_idx)+" is out of bounds");
+    }
+  } else {
+    error.addError("alertLevelOfRegion: aircraft index "+Fmi(ac_idx)+" is out of bounds");
+  }
+  return -1;
 }
 
 /* Getting and Setting DaidalusParameters (note that setters stale the Daidalus object) */

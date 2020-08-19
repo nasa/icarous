@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019 United States Government as represented by
+ * Copyright (c) 2015-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -51,33 +51,120 @@ public:
   const std::string& getId() const;
 
   /**
-   * @return DO-365 HAZ preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+   * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
    * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
    * bands region = NONE
    */
   static const AlertThresholds& DO_365_Phase_I_HAZ_preventive();
 
   /**
-   * @return DO-365 HAZ corrective thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * @return DO-365 HAZ corrective thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
    * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
    * bands region = MID
    */
   static const AlertThresholds& DO_365_Phase_I_HAZ_corrective();
 
   /**
-   * @return DO-365 HAZ warning thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * @return DO-365 HAZ warning thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
    * TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s,
    * bands region = NEAR
    */
   static const AlertThresholds& DO_365_Phase_I_HAZ_warning();
 
   /**
-   * @return alerting thresholds (unbuffered) as defined in RTCA DO-365.
+   * @return alerting thresholds as defined in RTCA DO-365 Phase I (en-route).
    * Maneuver guidance logic produces multilevel bands:
    * MID: Corrective
    * NEAR: Warning
    */
   static const Alerter& DWC_Phase_I();
+
+  /**
+   * @return DO-365A HAZ preventive thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+   * bands region = NONE
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_preventive();
+
+  /**
+   * @return DO-365A HAZ corrective thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+   * bands region = MID
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_corrective();
+
+  /**
+   * @return DO-365A HAZ warning thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s,
+   * bands region = NEAR
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_warning();
+
+  /**
+   * @return alerting thresholds as defined in RTCA DO-365A Phase II (DTA)
+   * Maneuver guidance logic produces multilevel bands:
+   * MID: Corrective
+   * NEAR: Warning
+   */
+  static const Alerter& DWC_Phase_II();
+
+  /**
+   * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
+   * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
+   * bands region = NONE, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_I_HAZ_preventive_SUM();
+
+  /**
+   * @return DO-365 HAZ corrective thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
+   * bands region = MID, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_I_HAZ_corrective_SUM();
+
+  /**
+   * @return DO-365 HAZ warning thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s,
+   * bands region = NEAR, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_I_HAZ_warning_SUM();
+
+  /**
+   * @return alerting thresholds as defined in RTCA DO-365 Phase I (en-route), with SUM
+   * Maneuver guidance logic produces multilevel bands:
+   * MID: Corrective
+   * NEAR: Warning
+   */
+  static const Alerter& DWC_Phase_I_SUM();
+
+  /**
+   * @return DO-365A HAZ preventive thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+   * bands region = NONE, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_preventive_SUM();
+
+  /**
+   * @return DO-365A HAZ corrective thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+   * bands region = MID, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_corrective_SUM();
+
+  /**
+   * @return DO-365A HAZ warning thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s,
+   * bands region = MID, with SUM
+   */
+  static const AlertThresholds& DO_365_Phase_II_HAZ_warning_SUM();
+
+  /**
+   * @return alerting thresholds as defined in RTCA DO-365A Phase II (DTA), with SUM.
+   * Maneuver guidance logic produces multilevel bands:
+   * MID: Corrective
+   * NEAR: Warning
+   */
+  static const Alerter& DWC_Phase_II_SUM();
 
   /**
    * @return buffered HAZ preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
@@ -112,7 +199,8 @@ public:
    * @return alerting thresholds for single bands given by detector,
    * alerting time, and lookahead time. The single bands region is NEAR
    */
-  static Alerter SingleBands(const Detection3D* detector, double alerting_time, double lookahead_time);
+  static Alerter SingleBands(const Detection3D* detector, double alerting_time, double lookahead_time,
+      const std::string name="default");
 
   /**
    * @return alerting thresholds for ACCoRD's CD3D, i.e.,
@@ -129,6 +217,21 @@ public:
   static const Alerter& WCV_TAUMOD_SingleBands();
 
   /**
+   * TCASII-TA thresholds
+   */
+  static const AlertThresholds& TCASII_TA_THR();
+
+  /**
+   * TCASII-RA thresholds
+   */
+  static const AlertThresholds& TCASII_RA_THR();
+
+  /**
+   * DAIDALUS's ideal TCASII alerter logic
+   */
+  static const Alerter& TCASII();
+
+  /**
    * Clears alert levels
    **/
   void clear();
@@ -139,7 +242,8 @@ public:
   int mostSevereAlertLevel() const;
 
   /**
-   * @return first alert level whose region is equal to given region. Returns 0 if none.
+   * @return first alert level whose region is equal to given region.
+   * Returns -1 if none.
    */
   int alertLevelForRegion(BandsRegion::Region region) const;
 
@@ -147,7 +251,6 @@ public:
    * @return detector for given alert level starting from 1.
    */
   Detection3D* getDetectorPtr(int alert_level) const;
-
 
   /**
    * Set the threshold values of a given alert level.
@@ -176,7 +279,7 @@ public:
 
   static std::string listToPVS(const std::vector<Alerter>& alerter);
 
-
 };
+
 }
 #endif

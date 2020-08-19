@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2019 United States Government as represented by
+ * Copyright (c) 2012-2020 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,6 +33,16 @@ public:
    * @return one static TCAS3D
    */
   static const TCAS3D& A_TCAS3D();
+
+  /**
+   * @return one static TCASII_RA
+   */
+  static const TCAS3D& TCASII_RA();
+
+  /**
+   * @return one static TCASII_TA
+   */
+  static const TCAS3D& TCASII_TA();
 
   /** Make TCAS3D object with empty Table **/
   static TCAS3D make_Empty();
@@ -185,6 +195,9 @@ public:
   void setParameters(const ParameterData& p);
 
   bool contains(const Detection3D* cd) const;
+
+  virtual void horizontalHazardZone(std::vector<Position>& haz, const TrafficState& ownship, const TrafficState& intruder,
+      double T) const;
 
 };
 
