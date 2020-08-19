@@ -12,7 +12,7 @@ class DaidalusMonitor: public TrafficMonitor {
 private:
     bool log;
     double conflictTimeElapsed;
-    double daaLookahed;
+    double alertingTime;
     bool conflictTrack;
     bool conflictSpeed;
     bool conflictVerticalSpeed;

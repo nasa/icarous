@@ -40,6 +40,7 @@ DaidalusMonitor::DaidalusMonitor(std::string callsign,std::string daaConfig,bool
     speedIntTypes.push_back(larcfm::BandsRegion::NONE);
     vsIntTypes.push_back(larcfm::BandsRegion::NONE);
     altIntTypes.push_back(larcfm::BandsRegion::NONE);
+    alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
 
 }
 
@@ -49,6 +50,7 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     params.parseParameterList(";",daaParameters);
     DAA1.setParameterData(params);
     DAA2.setParameterData(params);
+    alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
@@ -422,6 +424,16 @@ bands_t DaidalusMonitor::GetVerticalSpeedBands(void){
     band.resUp = DAA1.verticalSpeedResolution(true);
     band.resDown = DAA1.verticalSpeedResolution(false);
     band.resPreferred = DAA1.verticalSpeedResolution(DAA1.preferredVerticalSpeedUpOrDown());
+
+    // Revise down vertical speed resolution if projected altitude is not safe
+    if(!DAA1.preferredVerticalSpeedUpOrDown() && !(std::isnan(band.resDown) || std::isinf(band.resDown))){
+        double projAlt = position.alt() + band.resDown*alertingTime;
+        if(DAA1.regionOfAltitude(projAlt) != larcfm::BandsRegion::NONE){
+            band.resPreferred = band.resUp;
+        }
+    }
+
+    
     return band;
 }
 
