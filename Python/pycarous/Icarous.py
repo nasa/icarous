@@ -399,7 +399,7 @@ class Icarous():
                 self.guidanceMode = GuidanceMode.VECTOR
                 vn = cmd.commandU.velocityCommand.vn
                 ve = cmd.commandU.velocityCommand.ve
-                vu = cmd.commandU.velocityCommand.vu
+                vu = -cmd.commandU.velocityCommand.vu
                 trkGsVs = ConvertVnedToTrkGsVs(vn,ve,vu)
                 self.Guidance.InputVelocityCmd(trkGsVs)
                 self.Guidance.SetGuidanceMode(self.guidanceMode,"",0)
