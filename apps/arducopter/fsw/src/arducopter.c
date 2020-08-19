@@ -227,6 +227,7 @@ void ARDUCOPTER_AppInitializeData(){
     appdataInt.pmtimer = 0xffff;
     appdataInt.tjtimer = 0xffff;
     appdataInt.fenceSent = false;
+    appdataInt.useVectors = false;
 
     char paramFile[] = "../ram/icarous_default.parm";
     bool status = InitializeParams(paramFile,appdataInt.storedparams,PARAM_COUNT);

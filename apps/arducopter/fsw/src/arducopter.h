@@ -18,6 +18,7 @@
 #include <network_includes.h>
 #include <arducopter_table.h>
 #include <arducopter_events.h>
+#include <arducopter_version.h>
 #include <Icarous.h>
 
 #include <traffic_msg.h>
@@ -142,6 +143,7 @@ typedef struct{
     uint8_t icRcChannel;
     uint32_t pwmStart;
     uint32_t pwmReset;
+    bool useVectors;
     callsign_t callsign;
 }appdataInt_t;
 

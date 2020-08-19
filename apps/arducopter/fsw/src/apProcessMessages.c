@@ -916,6 +916,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                         }
                     }
 
+                    appdataInt.useVectors = false || ARDUCOPTER_VELCMD;
                     break;
                 }
 
@@ -928,6 +929,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                         mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg, sysid_ap, compid_ap, mode);
                         writeMavlinkData(&appdataInt.ap, &msg);
                     }
+                    appdataInt.useVectors = false || ARDUCOPTER_VELCMD;
                     break;
                 }
 
@@ -941,6 +943,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                         mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg, sysid_ap, compid_ap, mode);
                         writeMavlinkData(&appdataInt.ap, &msg);
                     }
+                    appdataInt.useVectors = true;
                     break;
                 }
 
@@ -957,7 +960,7 @@ void ARDUCOPTER_ProcessPacket(void) {
                     mavlink_message_t msg;
                     mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_NAV_LAND,0,1,0,0,0,cmd->param5,cmd->param6,cmd->param7);
                     writeMavlinkData(&appdataInt.ap, &msg); 
-
+                    appdataInt.useVectors = true;
                     break;
                 }
 
@@ -1063,17 +1066,19 @@ void ARDUCOPTER_ProcessPacket(void) {
 
                 case _SETPOS_:
                 {
-                    uint16_t typeMask = 0x0FF8; //0b0000111111111000
-                    mavlink_msg_set_position_target_global_int_pack(sysid_ic,compid_ic,&msg,(uint32_t)position.time_boot*1E3,sysid_ap,compid_ap,MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
+                    if (appdataInt.icarousMode == 1 && !appdataInt.useVectors){
+                        uint16_t typeMask = 0x0FF8; //0b0000111111111000
+                        mavlink_msg_set_position_target_global_int_pack(sysid_ic,compid_ic,&msg,(uint32_t)position.time_boot*1E3,sysid_ap,compid_ap,MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
                                                                     typeMask,(int)(cmd->param1*1E7),(int)(cmd->param2*1E7),(cmd->param3),
                                                                     0,0,0,0,0,0,0,0);
-                     writeMavlinkData(&appdataInt.ap, &msg); 
+                        writeMavlinkData(&appdataInt.ap, &msg); 
+                    }
                     break;
                 }
 
                 case _SETVEL_:
                 {
-                    if (appdataInt.icarousMode == 1 && !appdataInt.takeoff)
+                    if (appdataInt.icarousMode == 1 && !appdataInt.takeoff && appdataInt.useVectors)
                     {
 
                         uint16_t typeMask = 0x0FC7; // 0b0000111111000111  
@@ -1108,29 +1113,6 @@ void ARDUCOPTER_ProcessPacket(void) {
 
                 case _SETSPEED_:
                 {
-
-                    double vn = position.vn;
-                    double ve = position.ve;
-                    double speed = sqrt(vn*vn + ve*ve);
-                    if(speed > cmd->param1 && fabs(speed - cmd->param1) < 4){
-                        mavlink_message_t brkmode, defmode;
-                        controlMode_e currmode;
-                        if (appdataInt.icarousMode == 0)
-                        {
-                            currmode = AUTO;
-                        }
-                        else if (appdataInt.icarousMode == 1)
-                        {
-                            currmode = GUIDED;
-                        }
-                        mavlink_msg_set_mode_pack(sysid_ic,compid_ic,&brkmode,sysid_ap,compid_ap,BRAKE);
-                        writeMavlinkData(&appdataInt.ap,&brkmode);
-                        usleep(300);
-
-                        mavlink_msg_set_mode_pack(sysid_ic,compid_ic,&defmode,sysid_ap,compid_ap,currmode);
-                        writeMavlinkData(&appdataInt.ap,&defmode);
-
-                    }
                     mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_DO_CHANGE_SPEED,0,
                                                   1,(float)cmd->param1,0,0,0,0,0);
                     writeMavlinkData(&appdataInt.ap, &msg); 
