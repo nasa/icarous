@@ -18,6 +18,7 @@ class GuidanceOutput(Structure):
           ("distV2WP",c_double),
           ("xtrackDev",c_double),
           ("velCmd",c_double*3),
+          ("target",c_double*3),
           ("wpReached",c_bool)
      ]
 
