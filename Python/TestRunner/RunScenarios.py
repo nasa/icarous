@@ -30,6 +30,8 @@ def SetApps(sitl=False, merger=False):
     if merger:
         app_list += ["merger", "raft", "SBN", "SBN_UDP"]
 
+    app_list.append("safe2ditch")
+
     approot = os.path.join(icarous_home, "apps")
     outputloc = os.path.join(icarous_exe, "cf")
 

@@ -32,6 +32,8 @@ class SimVehicle:
         self.started = False
         self.running = False
         self.terminated = False
+        self.s2d = False
+        self.ditch_sent = False
         if self.sitl:
             self.sim_type = "cFS SITL"
         else:
@@ -107,8 +109,7 @@ class SimVehicle:
         self.ic = subprocess.Popen(["./core-cpu1",
                                     "-I "+str(self.spacecraft_id),
                                     "-C "+str(self.cpu_id)],
-                                    )
-#                                   stdout=fpic)
+                                    stdout=fpic)
         os.chdir(sim_home)
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
@@ -141,6 +142,9 @@ class SimVehicle:
         if scenario.get("traffic"):
             for traf in scenario["traffic"]:
                 self.gs.load_traffic([0]+traf)
+        if scenario.get("ditch_command"):
+            self.s2d = True
+            self.ditch_command = scenario["ditch_command"]
         self.waypoints = self.get_waypoints()
         self.params = self.gs.getParams()
         self.gs.setParam("RESSPEED", self.params["DEF_WP_SPEED"])
@@ -210,6 +214,11 @@ class SimVehicle:
                     self.started = True
                     if self.verbose:
                         print("***Starting %s" % self.callsign)
+            if self.s2d and not self.ditch_sent:
+                if self.duration >= self.ditch_command["ditch_time"]:
+                    self.send_ditch(self.ditch_command["ditch_site"])
+                    self.ditch_sent = True
+
             time.sleep(0.01)
             currentT = time.time()
             self.duration = currentT - self.t0
@@ -235,11 +244,22 @@ class SimVehicle:
                 self.traffic_log[i]["t"].append(self.duration)
                 self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
                 self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
-
             return False
         else:
             self.terminate()
             return True
+
+
+    def send_ditch(self, ditch_pos):
+        latE7 = int(ditch_pos[0]*1e7)
+        lonE7 = int(ditch_pos[1]*1e7)
+        alt = int(ditch_pos[2])
+        master = mavutil.mavlink_connection("udpout:127.0.0.1:14556")
+        master.mav.command_int_send(1, 0, 0, 31010, 0, 0, 1, 1, 1, 0,
+                                    latE7, lonE7, alt)
+        if self.verbose:
+            print("***%s ditching to %s" % (self.callsign, ditch_pos))
+
 
     def run(self, time_limit):
         finished = False
