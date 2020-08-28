@@ -206,48 +206,43 @@ class SimVehicle:
         if not self.running:
             self.t0 = time.time()
             self.running = True
-
-        if self.duration < time_limit:
-            if self.duration >= self.delay:
-                if not self.started:
-                    self.gs.StartMission()
-                    self.started = True
-                    if self.verbose:
-                        print("***Starting %s" % self.callsign)
-            if self.s2d and not self.ditch_sent:
-                if self.duration >= self.ditch_command["ditch_time"]:
-                    self.send_ditch(self.ditch_command["ditch_site"])
-                    self.ditch_sent = True
-
-            time.sleep(0.01)
-            currentT = time.time()
-            self.duration = currentT - self.t0
-
-            self.gs.Update_traffic()
-
-            msg = self.gs.master.recv_match(blocking=False, type=["GLOBAL_POSITION_INT"])
-
-            if msg is None:
-                return False
-
-            # Store ownship position/velocity information
-            self.ownship_log["t"].append(self.duration)
-            self.ownship_log["position"].append([msg.lat/1E7, msg.lon/1E7,
-                                                 msg.relative_alt/1E3])
-            self.ownship_log["velocityNED"].append([msg.vx/1E2, msg.vy/1E2,
-                                                    msg.vz/1E2])
-
-            # Store traffic position/velocity information
-            for i, traf in enumerate(self.gs.traffic_list):
-                if i not in self.traffic_log.keys():
-                    self.traffic_log[i] = vehicle_log()
-                self.traffic_log[i]["t"].append(self.duration)
-                self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
-                self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
-            return False
-        else:
+        if self.duration > time_limit:
             self.terminate()
             return True
+        if self.duration >= self.delay and not self.started:
+            self.gs.StartMission()
+            self.started = True
+            if self.verbose:
+                print("***Starting %s" % self.callsign)
+        if self.s2d and not self.ditch_sent:
+            if self.duration >= self.ditch_command["ditch_time"]:
+                self.send_ditch(self.ditch_command["ditch_site"])
+                self.ditch_sent = True
+
+        time.sleep(0.01)
+        currentT = time.time()
+        self.duration = currentT - self.t0
+        self.gs.Update_traffic()
+        msg = self.gs.master.recv_match(blocking=False, type=["GLOBAL_POSITION_INT"])
+        if msg is None:
+            return False
+
+        # Store ownship position/velocity information
+        self.ownship_log["t"].append(self.duration)
+        self.ownship_log["position"].append([msg.lat/1E7, msg.lon/1E7,
+                                             msg.relative_alt/1E3])
+        self.ownship_log["velocityNED"].append([msg.vx/1E2, msg.vy/1E2,
+                                                msg.vz/1E2])
+
+        # Store traffic position/velocity information
+        for i, traf in enumerate(self.gs.traffic_list):
+            if i not in self.traffic_log.keys():
+                self.traffic_log[i] = vehicle_log()
+            self.traffic_log[i]["t"].append(self.duration)
+            self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
+            self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
+
+        return False
 
 
     def send_ditch(self, ditch_pos):
