@@ -107,7 +107,7 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
     os.chdir(output_dir)
 
     # Create fasttime simulation environment
-    sim = SimEnvironment()
+    sim = SimEnvironment(verbose=int(verbose))
     if "merge_fixes" in scenario:
         sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
     sim.AddWind(scenario.get("wind", [(0, 0)]))
@@ -124,7 +124,7 @@ def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
         HomePos = waypoints[0][0:3]
 
         ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
-                     callsign=callsign, verbose=1)
+                     callsign=callsign, verbose=int(verbose))
 
         # Set parameters
         param_file = os.path.join(icarous_home, v_scenario["parameter_file"])

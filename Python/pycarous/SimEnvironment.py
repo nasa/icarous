@@ -11,7 +11,7 @@ from communicationmodels import get_transmitter, get_receiver
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
     def __init__(self, propagation_model="NoLoss", reception_model="Perfect",
-                 propagation_params={}, reception_params={}):
+                 propagation_params={}, reception_params={}, verbose=1):
         """
         @param propagation_model: name of signal propagation model
         ex: "NoLoss", "FreeSpace", "TwoRayGround"
@@ -20,6 +20,8 @@ class SimEnvironment:
         @param propagation_params: dict of keyword params for propagation model
         @param reception_params: dict of keyword params for reception model
         """
+        self.verbose = verbose
+
         # Vehicle instances
         self.icInstances = []
         self.icStartDelay = []
@@ -30,9 +32,9 @@ class SimEnvironment:
         pm = get_propagation_model(propagation_model, propagation_params)
         reception_params["propagation_model"] = pm
         rm = get_reception_model(reception_model, reception_params)
-        print("Reception model: %s" % rm.model_name)
-        self.comm_channel = cm.ChannelModel(propagation_model=pm,
-                                            reception_model=rm)
+        self.comm_channel = cm.ChannelModel(pm, rm)
+        if verbose > 0:
+            print("Reception model: %s" % rm.model_name)
 
         # Simulation environment conditions
         self.wind = [(0, 0)]
@@ -202,8 +204,9 @@ class SimEnvironment:
                     if self.current_time >= self.icStartDelay[i]:
                         ic.Cog.InputStartMission(0, 0)
                         ic.startSent = True
-                        print("%s : Start command sent at %f" %
-                              (ic.callsign, self.current_time))
+                        if self.verbose > 0:
+                            print("%s : Start command sent at %f" %
+                                  (ic.callsign, self.current_time))
 
                 # Run Icarous and send position data to other Icarous instances
                 status |= ic.Run()
@@ -216,8 +219,9 @@ class SimEnvironment:
                 if ic.startSent and not ic.missionComplete:
                     if self.current_time >= self.icTimeLimit[i]:
                         ic.missionComplete = True
-                        print("%s : Time limit reached at %f" %
-                              (ic.callsign, self.current_time))
+                        if self.verbose > 0:
+                            print("%s : Time limit reached at %f" %
+                                  (ic.callsign, self.current_time))
 
             # Run traffic vehicles
             self.RunTraffic()
