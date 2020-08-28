@@ -68,6 +68,7 @@ public:
     
     void SetGuidanceMode(const GuidanceMode mode,const std::string planID,const int nextWP);
     void ChangeWaypointSpeed(const std::string planID,int wpID,const double value,const bool updateAll);
+    void ChangeWaypointAlt(const std::string planID,int wpID,const double value,const bool updateAll);
     void ChangeWaypointETA(const std::string planID,const int wpID,const double value,const bool updateAll);
     void SetVelocityCommands(const larcfm::Velocity &inputs);
 

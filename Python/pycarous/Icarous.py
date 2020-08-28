@@ -411,6 +411,11 @@ class Icarous():
                 planID= cmd.commandU.speedChange.name.decode('utf-8')
                 nextWP = self.nextWP1 if planID == "Plan0" else self.nextWP2
                 self.Guidance.ChangeWaypointSpeed(planID,nextWP,speedChange,False)
+            elif cmd.commandType == CommandTypes.ALT_CHANGE:
+                altChange = cmd.commandU.altChange.altitude
+                planID= cmd.commandU.altChange.name.decode('utf-8')
+                nextWP = self.nextWP1 if planID == "Plan0" else self.nextWP2
+                self.Guidance.ChangeWaypointAlt(planID,nextWP,altChange,False)
             elif cmd.commandType == CommandTypes.STATUS_MESSAGE:
                 if self.verbose > 0:
                     message = cmd.commandU.statusMessage.buffer

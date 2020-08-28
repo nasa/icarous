@@ -359,6 +359,11 @@ void COGNITION_DecisionProcess(void){
                     break;
                 }
 
+                case ALT_CHANGE_COMMAND:{
+                    COGNITION_SendAltChange(command.altChange);
+                    break;
+                }
+
                 case TAKEOFF_COMMAND:{
                     COGNITION_SendTakeoff(command.takeoffCommand);
                     break;
@@ -440,6 +445,17 @@ void COGNITION_SendSpeedChange(SpeedChange speed_command){
     strcpy(cmd.buffer,speed_command.name);
     cmd.param1 = speed_command.speed;
     cmd.param2 = speed_command.hold;
+    SendSBMsg(cmd);
+}
+
+void COGNITION_SendAltChange(AltChange alt_command){
+    // Send speed change command
+    argsCmd_t cmd;
+    CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
+    cmd.name = ALT_CHANGE;
+    strcpy(cmd.buffer,alt_command.name);
+    cmd.param1 = alt_command.altitude;
+    cmd.param2 = alt_command.hold;
     SendSBMsg(cmd);
 }
 

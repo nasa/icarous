@@ -56,6 +56,7 @@ class Guidance():
           self.lib.guidGetOutput.argtypes = [c_void_p,POINTER(GuidanceOutput)]
           self.lib.SetGuidanceMode.argtypes = [c_void_p,c_int,c_char_p,c_int]
           self.lib.ChangeWaypointSpeed.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
+          self.lib.ChangeWaypointAlt.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
           self.lib.ChangeWaypointETA.argtypes = [c_void_p,c_char_p,c_int,c_double,c_bool]
           self.obj = self.lib.InitGuidance(byref(param))
 
@@ -91,6 +92,9 @@ class Guidance():
 
      def ChangeWaypointSpeed(self,planID,wpID,val,updateAll):
           self.lib.ChangeWaypointSpeed(self.obj,c_char_p(planID.encode('utf-8')),c_int(wpID),c_double(val),c_bool(updateAll))
+
+     def ChangeWaypointAlt(self,planID,wpID,val,updateAll):
+          self.lib.ChangeWaypointAlt(self.obj,c_char_p(planID.encode('utf-8')),c_int(wpID),c_double(val),c_bool(updateAll))
 
      def ChangeWaypointETA(self,planID,wpID,val,updateAll):
           self.lib.ChangeWaypointETA(self.obj,c_char_p(planID.encode('utf-8')),

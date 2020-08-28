@@ -262,6 +262,15 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             break;
         }
 
+        case ALT_CHANGE:{
+            char planID[25];
+            strcpy(planID,cmd->buffer);
+            double alt = cmd->param1;
+            bool hold = cmd->param2==1?true:false;
+            ChangeWaypointAlt(guidanceAppData.Guidance,planID,0,alt,hold);
+            break;
+        }
+
     }
 }
 

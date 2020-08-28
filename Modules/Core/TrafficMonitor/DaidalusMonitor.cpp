@@ -51,6 +51,9 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     DAA1.setParameterData(params);
     DAA2.setParameterData(params);
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
+    maxVS = DAA1.getParameterData().getValue("max_vs");
+    minVS = DAA1.getParameterData().getValue("min_vs");
+    std::cout<<"max/min VS"<<maxVS<<"/"<<minVS<<std::endl;
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
@@ -186,12 +189,26 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
     }
 
     double track = larcfm::Units::to(larcfm::Units::deg,position.track(wp));
+    double dh = position.distanceV(wp);
     larcfm::Velocity vo;
-    if (speed < 0) 
-        vo = larcfm::Velocity::makeTrkGsVs(track,"degree",velocity.groundSpeed("m/s"),"m/s",velocity.verticalSpeed("m/s"),"m/s");
-    else
-        vo = larcfm::Velocity::makeTrkGsVs(track,"degree",speed,"m/s",velocity.verticalSpeed("m/s"),"m/s");
+    double verticalSpeed;
+    double gs;
+    if (speed < 0){
+        gs = velocity.groundSpeed("m/s");
+    }else{
+        gs = speed;
+    }
 
+    if (fabs(dh) < 1e-3){
+        verticalSpeed = 0;
+    }else if(dh > 0){
+        verticalSpeed = minVS;
+    }else{
+        verticalSpeed = maxVS;
+    }
+
+
+    vo = larcfm::Velocity::makeTrkGsVs(track,"degree",gs,"m/s",verticalSpeed,"m/s");
     DAA2.setOwnshipState("Ownship", position, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
     int count = 0;

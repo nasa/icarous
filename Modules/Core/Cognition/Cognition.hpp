@@ -189,6 +189,8 @@ class Cognition{
 
         void SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold = 0);
 
+        void SetGuidanceAltCmd(const std::string &planID,const double alt,const int hold = 0);
+        
         void SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index);
 
         void FindNewPath(const std::string &planID,const larcfm::Position &positionA,

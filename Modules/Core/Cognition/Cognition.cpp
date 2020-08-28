@@ -839,6 +839,14 @@ void Cognition::SetGuidanceSpeedCmd(const std::string &planID,const double speed
     cognitionCommands.push_back(cmd);
 }
 
+void Cognition::SetGuidanceAltCmd(const std::string &planID,const double alt,const int hold){
+    AltChange alt_change = {"",alt, hold };
+    strcpy(alt_change.name,planID.c_str());
+    Command cmd = {.commandType = Command::ALT_CHANGE_COMMAND};
+    cmd.altChange = alt_change;
+    cognitionCommands.push_back(cmd);
+}
+
 void Cognition::SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index){
     activePlan = GetPlan(plan_id);
     nextWpId[plan_id] = wp_index;
@@ -1088,6 +1096,18 @@ bool Cognition::TrafficConflictManagement(){
             sendStatus = true;
          }
 
+         if(parameters.resolutionType == ALTITUDE_RESOLUTION){
+            requestGuidance2NextWP = -1;
+            trafficConflictState = NOOPC;
+            std::string planid = activePlan->getID();
+            double alt = activePlan->getPos(nextWpId[planid]).alt();
+            if(fabs(prevResAlt - alt) > 1e-3){
+                SetGuidanceAltCmd(planid,alt,1);
+                prevResAlt = alt;
+            }
+            sendStatus = true;
+         }
+
          if(sendStatus){
             SendStatus((char*)"IC:traffic conflict resolved",6);
             log << timeString + "| [RESOLVED] | Traffic conflict resolved" <<"\n";
@@ -1136,20 +1156,10 @@ bool Cognition::RunTrafficResolution(){
 
          double current_alt = position.alt();
          double alt_pref = preferredAlt;
-
-         diff = alt_pref - current_alt;
-
-         if(diff > 50){
-             diff = 50;
-         }else if(diff < -50){
-             diff = -50;
+         if( fabs(alt_pref - prevResAlt) > 1e-3 ){
+            SetGuidanceAltCmd(activePlan->getID(),alt_pref,1);
+            prevResAlt = alt_pref;
          }
-
-         climb_rate = 0.2*diff;
-         double speed = parameters.resolutionSpeed;
-         SetGuidanceVelCmd(hdg,speed,climb_rate);
-         prevResVspeed = climb_rate;
-         prevResAlt = alt_pref;
 
          returnSafe = NextWpFeasible();
          break;

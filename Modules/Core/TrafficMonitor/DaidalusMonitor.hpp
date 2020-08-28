@@ -51,6 +51,9 @@ private:
 
     larcfm::Daidalus DAA1;   // DAA1 object used for regular traffic monitor
     larcfm::Daidalus DAA2;   // DAA2 object used for stateless queries
+
+    double maxVS;
+    double minVS;
 public:
 
     DaidalusMonitor(std::string callsign, std::string daaConfig,bool reclog);

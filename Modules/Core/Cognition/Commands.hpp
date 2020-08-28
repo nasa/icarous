@@ -21,6 +21,12 @@ typedef struct{
     int hold;           // 0: use new speed only until next wp, 1: use new speed for all future wps
 }SpeedChange;
 
+typedef struct{
+    char name[25];
+    double altitude;
+    int hold;
+}AltChange;
+
 // Command structure containing data for takeoff commands
 typedef struct{
     char temp;
@@ -64,6 +70,7 @@ typedef struct{
         VELOCITY_COMMAND,
         P2P_COMMAND,
         SPEED_CHANGE_COMMAND,
+        ALT_CHANGE_COMMAND,
         TAKEOFF_COMMAND,
         LAND_COMMAND,
         DITCH_COMMAND,
@@ -76,6 +83,7 @@ typedef struct{
         VelocityCommand velocityCommand;
         P2PCommand p2PCommand;
         SpeedChange speedChange;
+        AltChange altChange;
         TakeoffCommand takeoffCommand;
         LandCommand landCommand;
         DitchCommand ditchCommand;

@@ -18,6 +18,7 @@ typedef enum{
     TAKEOFF,                ///< Takeoff mode
     LAND,                   ///< Landing mode
     SPEED_CHANGE,           ///< Change speed
+    ALT_CHANGE,             ///< Change alt
     GUIDE_NOOP,
 }GuidanceMode;
 
@@ -64,6 +65,7 @@ void RunGuidance(void* obj,double time);
 void guidInputVelocityCmd(void* obj,double velcmd[]);
 void SetGuidanceMode(void* obj,GuidanceMode mode,char* planID,int nextWP);
 void ChangeWaypointSpeed(void* obj,char planID[],int wpID,double val,bool updateAll);
+void ChangeWaypointAlt(void* obj,char planID[],int wpID,double val,bool updateAll);
 void ChangeWaypointETA(void* obj,char planID[],int wpID,double val,bool updateAll);
 void guidGetOutput(void* obj,GuidanceOutput_t* output);
 

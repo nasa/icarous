@@ -146,6 +146,8 @@ void COGNITION_SendGuidanceP2P(P2PCommand cmd);
 
 void COGNITION_SendSpeedChange(SpeedChange cmd);
 
+void COGNITION_SendAltChange(AltChange cmd);
+
 void COGNITION_SendTakeoff(TakeoffCommand cmd);
 
 void COGNITION_SendLand(LandCommand cmd);

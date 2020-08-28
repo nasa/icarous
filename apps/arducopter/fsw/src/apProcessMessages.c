@@ -947,6 +947,19 @@ void ARDUCOPTER_ProcessPacket(void) {
                     break;
                 }
 
+                case ALT_CHANGE:{
+                    mavlink_message_t msg;
+                    int mode = GUIDED;
+                    if (appdataInt.icarousMode != 1)
+                    {
+                        appdataInt.icarousMode = 1;
+                        mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg, sysid_ap, compid_ap, mode);
+                        writeMavlinkData(&appdataInt.ap, &msg);
+                    }
+                    appdataInt.useVectors = true;
+                    break;
+                }
+
                 case LAND:{
                     if(appdataInt.icarousMode != 1){
                         int mode = GUIDED;

@@ -15,6 +15,11 @@ class SpeedChange(Structure):
                 ("speed",c_double),
                 ("hold",c_double)]
 
+class AltChange(Structure):
+    _fields_ = [("name",c_char*25),
+                ("altitude",c_double),
+                ("hold",c_double)]
+
 class TakeoffCommand(Structure):
     _fields_ = []
 
@@ -44,6 +49,7 @@ class CommandU(Union):
     _fields_ = [("velocityCommand",VelocityCommand),
                 ("p2pCommand",P2PCommand),
                 ("speedChange",SpeedChange),
+                ("altChange",AltChange),
                 ("takeoffCommand",TakeoffCommand),
                 ("landCommand",LandCommand),
                 ("ditchCommand",DitchCommand),
@@ -55,12 +61,13 @@ class CommandTypes(IntEnum):
     VELOCITY = 0
     P2P = 1
     SPEED_CHANGE = 2
-    TAKEOFF = 3
-    LAND = 4
-    DITCH = 5
-    FP_CHANGE = 6
-    FP_REQUEST = 7
-    STATUS_MESSAGE = 8
+    ALT_CHANGE = 3
+    TAKEOFF = 4
+    LAND = 5
+    DITCH = 6
+    FP_CHANGE = 7
+    FP_REQUEST = 8
+    STATUS_MESSAGE = 9
 
 
 class Command(Structure):

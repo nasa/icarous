@@ -36,21 +36,31 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
    
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
-   //larcfm::Position prev_position = fp->getPos(wpidprev);
-   //double start_time = fp->time(wpidprev);
-   //double old_time   = fp->time(newInd);
-   //double dist = prev_position.distanceH(currentPos);
-   //double new_time = start_time + dist/speed;
-   //double delta = old_time - new_time;
    if (updateAll){
-        //fp->timeShiftPlan(newInd,delta);
         for(int i=newInd;i<fp->size();++i){
               wpSpeeds[planID][i] = speed;
         }
    }
    else{
-        //fp->setTime(newInd,new_time);
         wpSpeeds[planID][newInd] = speed;
+   }
+}
+
+void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const double val,const bool updateAll){
+   larcfm::Plan* fp = GetPlan(planID);
+   if (fp == nullptr) return;
+
+   int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
+   int newInd = wpidprev + 1;
+   for(int i=newInd;i<fp->size();++i){
+        larcfm::NavPoint point = fp->point(i);
+        fp->remove(i);
+        fp->add(point.position().mkAlt(val),point.time());
+
+        std::cout<<"Guidance: Changing waypoint alt for "<<wpid<<" to:"<<val<<std::endl;
+        if(!updateAll){
+            break;
+        }
    }
 }
 
@@ -467,6 +477,7 @@ int Guidance::RunGuidance(double time){
 
         case GUIDE_NOOP:break;
         case SPEED_CHANGE: break;
+        case ALT_CHANGE: break;
 
     }
 
@@ -523,6 +534,11 @@ void guidGetOutput(void* obj,GuidanceOutput_t* output){
 void ChangeWaypointSpeed(void* obj,char planID[],int wpID,double speed,bool updateAll){
    std::string planid(planID);
    ((Guidance*)obj)->ChangeWaypointSpeed(planID,wpID,speed,updateAll);
+}
+
+void ChangeWaypointAlt(void* obj,char planID[],int wpID,double speed,bool updateAll){
+   std::string planid(planID);
+   ((Guidance*)obj)->ChangeWaypointAlt(planID,wpID,speed,updateAll);
 }
 
 void ChangeWaypointETA(void* obj,char planID[],int wpID,double eta,bool updateAll){
