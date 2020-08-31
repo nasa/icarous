@@ -8,12 +8,13 @@
 #include <cstring>
 #include <Units.h>
 
-DaidalusMonitor::DaidalusMonitor(std::string callsign,std::string daaConfig,bool reclog) {
+DaidalusMonitor::DaidalusMonitor(std::string callsgn,std::string daaConfig,bool reclog) {
     conflictStartTime = 0;
     startTime = 0;
     conflictTrack = false;
     conflictSpeed = false;
     conflictVerticalSpeed = false;
+    callsign = callsgn;
     prevLogTime = 0;
     char            fmt1[64],fmt2[64];
     struct timespec  tv;
@@ -51,9 +52,9 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     DAA1.setParameterData(params);
     DAA2.setParameterData(params);
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
+    ZTHR = DAA1.getAlerterAt(1).getParameters().getValue("det_1_WCV_ZTHR");
     maxVS = DAA1.getParameterData().getValue("max_vs");
     minVS = DAA1.getParameterData().getValue("min_vs");
-    std::cout<<"max/min VS"<<maxVS<<"/"<<minVS<<std::endl;
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
@@ -61,7 +62,7 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
         struct tm       *tm;
         clock_gettime(CLOCK_REALTIME,&tv);
         double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-        sprintf(fmt1,"log/Daidalus-%f.log",localT);
+        sprintf(fmt1,"log/Daidalus-%s-%f.log",callsign.c_str(),localT);
         logfileIn.open(fmt1);
     }
 }
@@ -121,7 +122,9 @@ void DaidalusMonitor::MonitorTraffic() {
         daaViolationVS = larcfm::BandsRegion::isConflictBand(DAA1.regionOfVerticalSpeed(DAA1.getOwnshipState().verticalSpeed()));
         daaViolationAlt = larcfm::BandsRegion::isConflictBand(DAA1.regionOfAltitude(DAA1.getOwnshipState().altitude()));
         numTrackBands = DAA1.horizontalDirectionBandsLength();
-        
+        larcfm::Interval timeIntervalOfConflict = DAA1.timeIntervalOfConflict(larcfm::BandsRegion::NEAR);
+        timeIntervalOfConflictLow =  timeIntervalOfConflict.low;
+        timeIntervalOfConflictHigh =  timeIntervalOfConflict.up;
         trackIntTypes.clear();
         trackInterval.clear();
         for (int i = 0; i < numTrackBands; ++i) {
@@ -168,6 +171,7 @@ void DaidalusMonitor::MonitorTraffic() {
             altband[1] = iv.up;
             altInterval.push_back(altband);
         }
+
     }
 
 
@@ -189,7 +193,7 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
     }
 
     double track = larcfm::Units::to(larcfm::Units::deg,position.track(wp));
-    double dh = position.distanceV(wp);
+    double dh = position.alt() - wp.alt();
     larcfm::Velocity vo;
     double verticalSpeed;
     double gs;
@@ -220,6 +224,19 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
             conflict = true;
         }
     }
+
+    double timeToTrafficViolation = DAA2.timeIntervalOfConflict(larcfm::BandsRegion::NEAR).low;
+    if(!std::isinf(timeToTrafficViolation) && !std::isnan(timeToTrafficViolation)){
+         double projAlt = position.alt() + verticalSpeed * timeToTrafficViolation;
+         double targetAlt = wp.alt();
+         
+         if (fabs(projAlt - targetAlt) > ZTHR){
+             conflict = false;
+         }else{
+             conflict = true;
+         }
+    }
+
     return !conflict;
 }
 
@@ -349,8 +366,10 @@ bands_t DaidalusMonitor::GetTrackBands(void) {
            trkband.minHDist = rec.recoveryHorizontalDistance("m");
            trkband.minVDist = rec.recoveryVerticalDistance("m");
        }
+       
     }
-
+    trkband.timeToViolation[0] = timeIntervalOfConflictLow;
+    trkband.timeToViolation[1] = timeIntervalOfConflictHigh;
     if(numTrackBands > 0) {
         trkband.resUp = DAA1.horizontalDirectionResolution(true) * 180/M_PI;
         trkband.resDown = DAA1.horizontalDirectionResolution(false) * 180/M_PI;
@@ -394,14 +413,14 @@ bands_t DaidalusMonitor::GetSpeedBands(void) {
        }
 
     }
+    band.timeToViolation[0] = timeIntervalOfConflictLow;
+    band.timeToViolation[1] = timeIntervalOfConflictHigh;
 
     double speedMax = DAA1.getMaxHorizontalSpeed("m/s");
     double speedMin = DAA1.getMinHorizontalSpeed("m/s");
-    double diff = speedMax - speedMin;
-    double percentChange = 0.05 * diff;
 
-    band.resUp = DAA1.horizontalSpeedResolution(true) + percentChange;
-    band.resDown = DAA1.horizontalSpeedResolution(false) - percentChange;
+    band.resUp = DAA1.horizontalSpeedResolution(true);
+    band.resDown = DAA1.horizontalSpeedResolution(false);
 
     if(band.resUp > speedMax)
         band.resUp =  DAA1.horizontalSpeedResolution(true);
@@ -437,6 +456,8 @@ bands_t DaidalusMonitor::GetVerticalSpeedBands(void){
        }
 
     }
+    band.timeToViolation[0] = timeIntervalOfConflictLow;
+    band.timeToViolation[1] = timeIntervalOfConflictHigh;
 
     band.resUp = DAA1.verticalSpeedResolution(true);
     band.resDown = DAA1.verticalSpeedResolution(false);
@@ -477,11 +498,12 @@ bands_t DaidalusMonitor::GetAltBands(void){
 
     double altMax = DAA1.getMaxAltitude("m");
     double altMin = DAA1.getMinAltitude("m");
-    double diff = altMax - altMin;
-    double percentChange = 0.05 * diff;
 
-    band.resUp = DAA1.altitudeResolution(true) + percentChange;
-    band.resDown = DAA1.altitudeResolution(false) - percentChange;
+    band.timeToViolation[0] = timeIntervalOfConflictLow;
+    band.timeToViolation[1] = timeIntervalOfConflictHigh;
+
+    band.resUp = DAA1.altitudeResolution(true);
+    band.resDown = DAA1.altitudeResolution(false);
 
     if(band.resUp > altMax)
         band.resUp =  DAA1.altitudeResolution(true);

@@ -11,6 +11,7 @@
 class DaidalusMonitor: public TrafficMonitor {
 private:
     bool log;
+    std::string callsign;
     double conflictTimeElapsed;
     double alertingTime;
     bool conflictTrack;
@@ -54,6 +55,10 @@ private:
 
     double maxVS;
     double minVS;
+    double ZTHR;
+    double DTHR;
+    double timeIntervalOfConflictLow;
+    double timeIntervalOfConflictHigh;
 public:
 
     DaidalusMonitor(std::string callsign, std::string daaConfig,bool reclog);
