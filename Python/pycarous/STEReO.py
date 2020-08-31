@@ -27,11 +27,11 @@ uav.SetParametersFromFile(uav_params)
 uav.InputFlightplanFromFile(uav_fp)
 
 # Add icarous instance to sim environment
-sim.AddIcarousInstance(manned,time_limit=3000)
-sim.AddIcarousInstance(uav,time_limit=3000, delay=30)
+sim.AddIcarousInstance(manned,time_limit=180)
+sim.AddIcarousInstance(uav,time_limit=180, delay=30)
 
 # Set position uncertainty for vehicles in the simulation
-sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)
+sim.SetPosUncertainty(0.0, 0.0, 0, 0, 0, 0)
 
 # Run the Simulation
 sim.RunSimulation()

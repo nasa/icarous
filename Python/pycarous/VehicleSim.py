@@ -74,7 +74,7 @@ class VehicleSim():
         return (self.pos[1],self.pos[0],self.pos[2])
 
     def getOutputVelocityNED(self):
-        return (self.vel0[1] + self.vw[1],self.vel0[0] + self.vw[0],self.vel0[2] + self.vw[2])
+        return (self.vel0[1] + self.vw[1],self.vel0[0] + self.vw[0],-self.vel0[2] + self.vw[2])
 
 
 def StartTraffic(idx, home, rng, brng, alt, speed, heading, crate, tflist=[]):

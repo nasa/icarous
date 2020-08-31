@@ -340,7 +340,7 @@ class Icarous():
        
         self.position = [ogx, ogy, opos[2]]
         self.velocity = ovel
-        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],-ovel[2])
+        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
         self.trkband = None
         self.gsband = None
         self.altband = None

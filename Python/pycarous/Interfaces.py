@@ -90,7 +90,7 @@ class Bands(Structure):
     ("max",double20arr),
     ("recovery",c_int),
     ("currentConflictBand",c_int),
-    ("timeToViolation",c_double),
+    ("timeToViolation",c_double*2),
     ("timeToRecovery",c_double),
     ("minHDist",c_double),
     ("minVDist",c_double),
