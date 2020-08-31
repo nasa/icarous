@@ -776,7 +776,8 @@ status_e Cognition::EmergencyDescent(){
                 // Check if top of descent (TOD) has been reached
                 // TOP is calculated assuming a 45 degree flight path angle
                 // while descending
-                if(nextWpId["DitchPath"] >= GetPlan("DitchPath")->size()){
+                int totalWP = GetPlan("DitchPath")->size();
+                if(nextWpId["DitchPath"] >= totalWP){
                     topOfDescent = true;
                     SendStatus((char*)"IC:Reached TOD",6);
                     log << timeString + "| [STATUS] | Reached TOD" <<"\n";
@@ -790,7 +791,7 @@ status_e Cognition::EmergencyDescent(){
 
                 // Continuously check for conflicts with intruders when proceeding to ditch site
                 trafficConflict = trafficSpeedConflict | trafficAltConflict | trafficTrackConflict;
-                if(trafficConflict){
+                if(trafficConflict && nextWpId["DitchPath"] >= 2){
                     emergencyDescentState = INITIALIZING;
                 }
             }else{
