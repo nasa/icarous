@@ -307,8 +307,8 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
         trafficAltConflict = false;
         preferredAlt = prevResAlt;
     }
-    //TODO: Use preferred resolution only if preferred resolution is not
-    //close to the ground.
+    timeToTrafficViolation = alt_bands.timeToViolation[0];
+    timeToTrafficViolation2 = alt_bands.timeToViolation[1];
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
@@ -1012,12 +1012,28 @@ bool Cognition::TrafficConflictManagement(){
   
    switch(trafficConflictState){
       case NOOPC:{
+          
+         // Check to make sure the conflict is a real threat based on our target altitude
+         
          if(trafficConflict){
-            SendStatus((char*)"IC:traffic conflict",1);
-            log << timeString + "| [CONFLICT] | Traffic conflict detected" <<"\n";
-            trafficConflictState = INITIALIZE;
-            requestGuidance2NextWP = -1;
-            break;
+            if(!std::isinf(timeToTrafficViolation) && !std::isnan(timeToTrafficViolation)){
+
+                double projAlt = position.alt() + velocity.verticalSpeed("m/s") * timeToTrafficViolation;
+                int wpid = nextWpId[activePlan->getID()];
+                double targetAlt = activePlan->getPos(wpid).alt();
+                if (fabs(projAlt - targetAlt) > parameters.ZTHR){
+                    trafficConflict = false;
+                }
+
+            }
+            if(trafficConflict){
+                SendStatus((char *)"IC:traffic conflict", 1);
+                log << timeString + "| [CONFLICT] | Traffic conflict detected"
+                    << "\n";
+                trafficConflictState = INITIALIZE;
+                requestGuidance2NextWP = -1;
+                break;
+            }
          }
          return false;
       }
@@ -1156,12 +1172,20 @@ bool Cognition::RunTrafficResolution(){
 
          double current_alt = position.alt();
          double alt_pref = preferredAlt;
-         if( fabs(alt_pref - prevResAlt) > 1e-3 ){
+         bool newTargetAlt = fabs(alt_pref - prevResAlt) > 1e-3;
+         bool prevTargetReached = fabs(current_alt - prevResAlt) < 2;
+         /* 
+          * Implement an altitude resolution with the following criteria:
+          * Check if the previous target altitude has already been reached 
+          * before implementing a new updated resolution.
+          */
+         if(  newTargetAlt && prevTargetReached ){
             SetGuidanceAltCmd(activePlan->getID(),alt_pref,1);
             prevResAlt = alt_pref;
          }
 
          returnSafe = NextWpFeasible();
+
          break;
       }
 

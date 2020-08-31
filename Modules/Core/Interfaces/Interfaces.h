@@ -13,7 +13,7 @@ typedef struct __attribute__((__packed__)){
     double max[20];                          /**< max values of each band */
     int recovery;                            /**< 1 if recovery band is available */
     int currentConflictBand;                 /**< current ownship conflict band */
-    double timeToViolation;                  /**< time to violation */
+    double timeToViolation[2];               /**< time to violation */
     double timeToRecovery;                   /**< time to recovery */
     double minHDist;                         /**< min horizontal distance */
     double minVDist;                         /**< min vertical distance */

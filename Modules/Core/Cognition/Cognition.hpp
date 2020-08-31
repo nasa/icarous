@@ -248,6 +248,8 @@ class Cognition{
         bool altRecovery;
         bool vsRecovery;
         double scenarioTime;
+        double timeToTrafficViolation;
+        double timeToTrafficViolation2;
 
         // Aircraft state information
         larcfm::Position position;
