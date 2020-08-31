@@ -57,7 +57,6 @@ void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const d
         fp->remove(i);
         fp->add(point.position().mkAlt(val),point.time());
 
-        std::cout<<"Guidance: Changing waypoint alt for "<<wpid<<" to:"<<val<<std::endl;
         if(!updateAll){
             break;
         }
