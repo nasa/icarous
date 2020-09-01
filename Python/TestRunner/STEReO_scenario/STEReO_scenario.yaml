@@ -1,0 +1,22 @@
+sim_params:
+    s2d: True
+
+scenarios:
+- name: "STEReO"
+  time_limit: 300
+  vehicles:
+  - name: MANNED
+    cpu_id: 1
+    waypoint_file: Python/TestRunner/STEReO_scenario/STEReO_manned.txt
+    geofence_file: null
+    parameter_file: Python/TestRunner/STEReO_scenario/STEReO_manned.parm
+    param_adjustments: {}
+    traffic: []
+  - name: UAV
+    cpu_id: 2
+    waypoint_file: Python/TestRunner/STEReO_scenario/STEReO_uav.txt
+    geofence_file: null
+    parameter_file: Python/TestRunner/STEReO_scenario/STEReO_uav.parm
+    param_adjustments: {}
+    traffic: []
+    delay: 30

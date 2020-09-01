@@ -1,5 +1,5 @@
 from SimEnvironment import SimEnvironment
-from Icarous import *
+from Icarous import Icarous
 from ichelper import GetHomePosition, ReadTrafficInput
 
 import os

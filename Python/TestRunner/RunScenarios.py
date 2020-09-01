@@ -18,7 +18,7 @@ icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 
-def SetApps(sitl=False, merger=False):
+def SetApps(sitl=False, merger=False, s2d=False):
     '''set the apps that ICAROUS will run'''
     if sitl:
         sim_app = "arducopter"
@@ -30,7 +30,8 @@ def SetApps(sitl=False, merger=False):
     if merger:
         app_list += ["merger", "raft", "SBN", "SBN_UDP"]
 
-    app_list.append("safe2ditch")
+    if s2d:
+        app_list.append("safe2ditch")
 
     approot = os.path.join(icarous_home, "apps")
     outputloc = os.path.join(icarous_exe, "cf")
@@ -177,6 +178,7 @@ if __name__ == "__main__":
     parser.add_argument("--sitl", action="store_true", help="use SITL simulator")
     parser.add_argument("--eta", action="store_true", help="Enforce wp etas")
     parser.add_argument("--merger", action="store_true", help="run merging apps")
+    parser.add_argument("--s2d", action="store_true", help="run safe2ditch app")
     parser.add_argument("--python", action="store_true", help="use pyIcarous")
     parser.add_argument("--out", type=int, default=None, help="port to fwd mavlink stream")
     parser.add_argument("--validate", action="store_true", help="check test conditions")
@@ -199,7 +201,9 @@ if __name__ == "__main__":
 
     if not sim_params["python"]:
         # Set the apps that ICAROUS will run
-        SetApps(sitl=sim_params["sitl"], merger=sim_params["merger"])
+        SetApps(sitl=sim_params["sitl"],
+                merger=sim_params["merger"],
+                s2d=sim_params["s2d"])
 
     # Run the scenarios
     for scenario in scenario_list:
