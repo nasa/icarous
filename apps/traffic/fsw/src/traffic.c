@@ -247,13 +247,7 @@ void TRAFFIC_ProcessPacket(void){
                                 trafficAppData.flightplan1.waypoints[i].longitude,
                                 trafficAppData.flightplan1.waypoints[i].altitude};
 
-                double currentVelocity[3] =  {trafficAppData.velocity[0],
-                                              trafficAppData.velocity[1],	
-                                              trafficAppData.velocity[2]};
-                
-                double speed = sqrt(currentVelocity[0]*currentVelocity[0] + 
-                                    currentVelocity[1]*currentVelocity[1] + 
-                                    currentVelocity[2]*currentVelocity[2]);
+                double speed = trafficAppData.velocity[1];
                 bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor, wp, speed);
                 trafficAppData.trackBands.wpFeasibility1[i] = feasibility;
                 trafficAppData.speedBands.wpFeasibility1[i] = feasibility;
@@ -295,12 +289,7 @@ void TRAFFIC_ProcessPacket(void){
                                 trafficAppData.flightplan2.waypoints[i].longitude,
                                 trafficAppData.flightplan2.waypoints[i].altitude};
 
-                double currentVelocity[3] = {trafficAppData.velocity[0],
-                                              trafficAppData.velocity[1],	
-                                              trafficAppData.velocity[2]};
-                double speed = sqrt(currentVelocity[0]*currentVelocity[0] + 
-                                    currentVelocity[1]*currentVelocity[1] + 
-                                    currentVelocity[2]*currentVelocity[2]);
+                double speed = trafficAppData.velocity[1];
 
                 bool feasibility = TrafficMonitor_CheckPointFeasibility(trafficAppData.tfMonitor,wp,speed);
                 trafficAppData.trackBands.wpFeasibility2[i] = feasibility;
