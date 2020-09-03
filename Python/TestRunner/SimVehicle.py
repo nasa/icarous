@@ -9,7 +9,7 @@ from pymavlink import mavutil, mavwp
 
 sys.path.append("../pycarous")
 import BatchGSModule as GS
-from ichelper import LoadIcarousParams, ReadFlightplanFile
+from ichelper import LoadIcarousParams, ReadFlightplanFile, distance
 
 
 sim_home = os.getcwd()
@@ -19,7 +19,7 @@ sitl_default = os.path.join("Python", "TestRunner", "sitl_files", "sitl_defaults
 
 
 def vehicle_log():
-    return {"t": [], "position": [], "velocityNED": []}
+    return {"t": [], "position": [], "velocityNED": [], "positionNED": []}
 
 
 class SimVehicle:
@@ -146,6 +146,7 @@ class SimVehicle:
             self.s2d = True
             self.ditch_command = scenario["ditch_command"]
         self.waypoints = self.get_waypoints()
+        self.home_pos = self.waypoints[0]
         self.params = self.gs.getParams()
         self.gs.setParam("RESSPEED", self.params["DEF_WP_SPEED"])
         self.params = self.gs.getParams()
@@ -228,22 +229,42 @@ class SimVehicle:
             return False
 
         # Store ownship position/velocity information
+        pos = [msg.lat/1E7, msg.lon/1E7, msg.relative_alt/1E3]
+        vel = [msg.vx/1E2, msg.vy/1E2, msg.vz/1E2]
+        localPos = self.ConvertToLocalCoordinates(pos)
         self.ownship_log["t"].append(self.duration)
-        self.ownship_log["position"].append([msg.lat/1E7, msg.lon/1E7,
-                                             msg.relative_alt/1E3])
-        self.ownship_log["velocityNED"].append([msg.vx/1E2, msg.vy/1E2,
-                                                msg.vz/1E2])
+        self.ownship_log["position"].append(pos)
+        self.ownship_log["velocityNED"].append(vel)
+        self.ownship_log["positionNED"].append(localPos)
 
         # Store traffic position/velocity information
         for i, traf in enumerate(self.gs.traffic_list):
             if i not in self.traffic_log.keys():
                 self.traffic_log[i] = vehicle_log()
+            pos = [traf.lat, traf.lon, traf.alt]
+            vel = [traf.vx0, traf.vy0, traf.vz0]
+            localPos = self.ConvertToLocalCoordinates(pos)
             self.traffic_log[i]["t"].append(self.duration)
-            self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
-            self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
+            self.traffic_log[i]["position"].append(pos)
+            self.traffic_log[i]["velocityNED"].append(vel)
+            self.traffic_log[i]["positionNED"].append(localPos)
 
         return False
 
+    def ConvertToLocalCoordinates(self, pos):
+        dh = lambda x, y: abs(distance(self.home_pos[0], self.home_pos[1], x, y))
+        if pos[1] > self.home_pos[1]:
+            sgnX = 1
+        else:
+            sgnX = -1
+
+        if pos[0] > self.home_pos[0]:
+            sgnY = 1
+        else:
+            sgnY = -1
+        dx = dh(self.home_pos[0], pos[1])
+        dy = dh(pos[0], self.home_pos[1])
+        return [dy*sgnY, dx*sgnX, pos[2]]
 
     def send_ditch(self, ditch_pos):
         latE7 = int(ditch_pos[0]*1e7)

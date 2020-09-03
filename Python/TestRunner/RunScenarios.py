@@ -100,7 +100,15 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
     dest = os.path.join(output_dir, "log")
     for f in os.listdir(source):
         if not f.startswith("."):
-            shutil.copy(os.path.join(source, f), dest)
+            oldname = f
+            try:
+                log_type, vehicle_name, timestamp = oldname.split('-')
+                cpu_id = int(vehicle_name.strip("aircraft")) + 1
+                callsign = next((v["name"] for v in scenario["vehicles"] if v.get("cpu_id", 0) == cpu_id), "0")
+                newname = "-".join([log_type, callsign, timestamp])
+            except:
+                newname = oldname
+            shutil.copy(os.path.join(source, f), os.path.join(dest, newname))
 
 
 def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
