@@ -181,13 +181,15 @@ void COGNITION_ProcessSBData(void) {
 
 		case ICAROUS_POSITION_MID:{
             position_t* pos = (position_t*) appdataCog.CogMsgPtr;
-			memcpy(&appdataCog.position,pos,sizeof(position_t));			
-            double position[3] = {pos->latitude,pos->longitude,pos->altitude_rel};
-            double velocity[3] = {pos->vn,pos->ve,pos->vd};
-            double velTrkGsVs[3];
-            ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2],velTrkGsVs,velTrkGsVs+1,velTrkGsVs+2);
-            InputVehicleState(appdataCog.cog,position,velTrkGsVs,pos->hdg);
-			break;
+            if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()){
+                memcpy(&appdataCog.position, pos, sizeof(position_t));
+                double position[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
+                double velocity[3] = {pos->vn, pos->ve, pos->vd};
+                double velTrkGsVs[3];
+                ConvertVnedToTrkGsVs(velocity[0], velocity[1], velocity[2], velTrkGsVs, velTrkGsVs + 1, velTrkGsVs + 2);
+                InputVehicleState(appdataCog.cog, position, velTrkGsVs, pos->hdg);
+            }
+            break;
 		}
 
         case ICAROUS_COMMANDS_MID:{
@@ -233,8 +235,8 @@ void COGNITION_ProcessSBData(void) {
 
         case TRAFFIC_PARAMETERS_MID:{
             traffic_parameters_t* msg = (traffic_parameters_t*) appdataCog.CogMsgPtr;
-            appdataCog.parameters.DTHR = msg->det_1_WCV_DTHR;
-            appdataCog.parameters.ZTHR = msg->det_1_WCV_ZTHR;
+            appdataCog.parameters.DTHR = msg->det_1_WCV_DTHR/3;
+            appdataCog.parameters.ZTHR = msg->det_1_WCV_ZTHR/3;
             appdataCog.parameters.resolutionType = msg->resType;
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
