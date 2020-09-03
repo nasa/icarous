@@ -50,11 +50,15 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     larcfm::ParameterData params;
     params.parseParameterList(";",daaParameters);
     DAA1.setParameterData(params);
-    DAA2.setParameterData(params);
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
     ZTHR = DAA1.getAlerterAt(1).getParameters().getValue("det_1_WCV_ZTHR");
     maxVS = DAA1.getParameterData().getValue("max_vs");
     minVS = DAA1.getParameterData().getValue("min_vs");
+    // Increase time threshold parameters for second DAA object
+    params.setInternal("default_alert_1_alerting_time",alertingTime*2,"s");
+    params.setInternal("default_alert_1_early_alerting_time",alertingTime*2+10,"s");
+    params.setInternal("lookahead",alertingTime*2+10,"s");
+    DAA2.setParameterData(params);
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
