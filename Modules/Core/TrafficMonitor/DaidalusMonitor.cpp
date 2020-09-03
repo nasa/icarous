@@ -57,7 +57,7 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     // Increase time threshold parameters for second DAA object
     params.setInternal("default_alert_1_alerting_time",alertingTime*2,"s");
     params.setInternal("default_alert_1_early_alerting_time",alertingTime*2+10,"s");
-    params.setInternal("lookahead",alertingTime*2+10,"s");
+    params.setInternal("lookahead_time",alertingTime*2+10,"s");
     DAA2.setParameterData(params);
     if(reclog && !log) {
         log = reclog;
