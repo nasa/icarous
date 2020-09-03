@@ -113,7 +113,6 @@ class Icarous():
             self.RecordTraffic(idx, position, velocity, self.ConvertToLocalCoordinates(position))
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
-        
         self.flightplan1 = fp 
         self.flightplan2 = []
         self.etaFP1 = eta
@@ -124,16 +123,7 @@ class Icarous():
         self.Guidance.InputFlightplanData("Plan0",scenarioTime,fp,eta)
 
     def InputFlightplanFromFile(self,filename,scenarioTime=0,eta=False):
-        wp, time, speed = ReadFlightplanFile(filename)
-        fp = []
-        if eta:
-            combine = time
-        else:
-            combine = speed
-        for w,i in zip(wp,combine):
-            if not eta and i < 0:
-                i = self.defaultWPSpeed
-            fp.append(w + [i])
+        fp = GetFlightplanFile(filename, self.defaultWPSpeed, scenarioTime, eta)
         self.InputFlightplan(fp,scenarioTime,eta)
 
     def ConvertToLocalCoordinates(self,pos):

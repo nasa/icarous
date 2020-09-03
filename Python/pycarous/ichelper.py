@@ -108,6 +108,12 @@ def LoadIcarousParams(filename):
     return param
 
 def ReadFlightplanFile(filename):
+    '''
+    Read data from a waypoint file
+    :param filename: name of the waypoint file
+    :return: (wp, wp_ind, wp_speed), wp is list of waypoints, wp_ind is list
+    of param4 values for each wp, wp_speed is list of speed for each wp
+    '''
     try:
         f = open(filename,mode='r')
     except (IOError,TypeError):
@@ -136,6 +142,28 @@ def ReadFlightplanFile(filename):
             wp_speed.append(speed)
 
     return wp,wp_ind,wp_speed
+
+def GetFlightplanFile(filename, defaultWPSpeed=1, scenarioTime=0, eta=False):
+    '''
+    Read a flight plan from a waypoint file
+    :param filename: name of the waypoint file
+    :param defaultWPSpeed: default speed if no speed commands given in the file
+    :param scenarioTime: start time of the scenario (s)
+    :param eta: when True, ICAROUS enforces wp arrival times, wp_metric (s)
+                when False, ICAROUS sets speed to each wp, wp_metric (m/s)
+    :return: a list of waypoints [lat, lon, alt, wp_metric]
+    '''
+    wp, time, speed = ReadFlightplanFile(filename)
+    fp = []
+    if eta:
+        combine = time
+    else:
+        combine = speed
+    for w, i in zip(wp, combine):
+        if not eta and i < 0:
+            i = defaultWPSpeed
+        fp.append(w + [i])
+    return fp
 
 def GetWindComponent(windFrom,windSpeed,NED=True):
     windTo = np.mod(360 + windFrom + 180,360) # Wind towards heading with respect to true north

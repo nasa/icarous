@@ -237,8 +237,6 @@ class BatchGSModule():
 
     def loadWaypoint(self,filename):
         '''load waypoints from a file'''
-        self.wploader.target_system = self.target_system
-        self.wploader.target_component = self.target_component
         try:
             self.wploader.load(filename)
         except Exception as msg:
@@ -246,23 +244,25 @@ class BatchGSModule():
             return
         print("Loaded %u waypoints from %s" % (self.wploader.count(), filename))
         self.send_all_waypoints()
-        while self.loading_waypoints:
-            reqd_msgs = ['WAYPOINT_COUNT', 'MISSION_COUNT',
-                         'WAYPOINT', 'MISSION_ITEM',
-                         'WAYPOINT_REQUEST', 'MISSION_REQUEST'
-                         'MISSION_ACK']            
-            data = self.master.recv_msg()
-            if data is not None:
-                self.mavlink_packet_wp(data)
 
     def send_all_waypoints(self):
         '''send all waypoints to vehicle'''
+        self.wploader.target_system = self.target_system
+        self.wploader.target_component = self.target_component
         self.master.waypoint_clear_all_send()
         if self.wploader.count() == 0:
             return
         self.loading_waypoints = True
         self.loading_waypoint_lasttime = time.time()
         self.master.waypoint_count_send(self.wploader.count())
+        while self.loading_waypoints:
+            reqd_msgs = ['WAYPOINT_COUNT', 'MISSION_COUNT',
+                         'WAYPOINT', 'MISSION_ITEM',
+                         'WAYPOINT_REQUEST', 'MISSION_REQUEST'
+                         'MISSION_ACK']
+            data = self.master.recv_msg()
+            if data is not None:
+                self.mavlink_packet_wp(data)
 
     def missing_wps_to_request(self):
         ret = []
@@ -415,15 +415,29 @@ class BatchGSModule():
             self.traffic_list[i].lon = lon;
             self.traffic_list[i].alt = self.traffic_list[i].z
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))
-            self.master.mav.command_long_send(
-                1,  # target_system
-                0, # target_component
-                mavutil.mavlink.MAV_CMD_SPATIAL_USER_1, # command
-                0, # confirmation
-                i, # param1
-                self.traffic_list[i].vx0, # param2
-                self.traffic_list[i].vy0, # param3
-                self.traffic_list[i].vz0, # param4
-                lat, # param5
-                lon, # param6
-                self.traffic_list[i].z0) # param7
+            pos = [lat, lon, self.traffic_list[i].z0]
+            vel = [self.traffic_list[i].vx0,
+                   self.traffic_list[i].vz0,
+                   self.traffic_list[i].vy0]
+            self.Send_traffic(i, pos, vel)
+
+    def Send_traffic(self, idx, position, velocity):
+        '''
+        Send traffic position updates to ICAROUS
+        Input traffic surveillance data to ICAROUS
+        :param idx: ID of the traffic vehicle
+        :param position: traffic position [lat, lon, alt] (deg, deg, m)
+        :param velocity: traffic velocity [vn, ve, vd] (m/s, m/s, m/s)
+        '''
+        self.master.mav.command_long_send(
+            self.target_system,    # target_system
+            self.target_component, # target_component
+            mavutil.mavlink.MAV_CMD_SPATIAL_USER_1, # command
+            0,           # confirmation
+            idx,         # param1 (traffic id)
+            velocity[0], # param2 (vn)
+            velocity[1], # param3 (ve)
+            velocity[2], # param4 (vd)
+            position[0], # param5 (lat)
+            position[1], # param6 (lon)
+            position[2]) # param7 (alt)
