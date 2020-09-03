@@ -31,8 +31,7 @@ def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS, merge_id=1
             new_v = copy.deepcopy(v)
             new_v.metrics = m
             merging_vehicles.append(new_v)
-    vehicles = merging_vehicles
-    if not vehicles:
+    if not merging_vehicles:
         print("No vehicles merged at point %d" % merge_id)
         return
 
@@ -46,7 +45,7 @@ def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS, merge_id=1
     conditions.append(verify_spacing)
 
     # Check conditions
-    results = [c(vehicles, params) for c in conditions]
+    results = [c(merging_vehicles, params) for c in conditions]
 
     # Print results
     print_results(results, name)
