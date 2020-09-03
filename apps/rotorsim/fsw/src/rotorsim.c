@@ -244,6 +244,8 @@ void Rotorsim_GetOutputs(void){
     CFE_SB_InitMsg(&positionGPS,ICAROUS_POSITION_MID, sizeof(position_t),TRUE);
 
     positionGPS.aircraft_id = CFE_PSP_GetSpacecraftId();
+    memset(positionGPS.callsign,0,sizeof(char)*MAX_CALLSIGN_LEN);
+    sprintf(positionGPS.callsign.value,"aircraft%d",positionGPS.aircraft_id);
     positionGPS.latitude = rotorsimAppData.position[0];
     positionGPS.longitude = rotorsimAppData.position[1];
     positionGPS.altitude_rel = rotorsimAppData.position[2];
