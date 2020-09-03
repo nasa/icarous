@@ -1033,6 +1033,7 @@ bool Cognition::TrafficConflictManagement(){
                     << "\n";
                 trafficConflictState = INITIALIZE;
                 requestGuidance2NextWP = -1;
+                newAltConflict = true;
                 break;
             }
          }
@@ -1180,7 +1181,8 @@ bool Cognition::RunTrafficResolution(){
           * Check if the previous target altitude has already been reached 
           * before implementing a new updated resolution.
           */
-         if(  newTargetAlt && prevTargetReached ){
+         if(  (newTargetAlt && prevTargetReached) || newAltConflict ){
+            newAltConflict = false;
             SetGuidanceAltCmd(activePlan->getID(),alt_pref,1);
             prevResAlt = alt_pref;
          }

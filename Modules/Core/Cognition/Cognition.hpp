@@ -269,6 +269,7 @@ class Cognition{
         bool trafficTrackConflict;
         bool trafficSpeedConflict;
         bool trafficAltConflict;
+        bool newAltConflict;
 
         bool returnSafe;
 
