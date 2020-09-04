@@ -152,6 +152,9 @@ void Guidance::InputFlightplanData(const std::string &plan_id,
             larcfm::Position prev_position = fp->getPos(prev_wp_id);
             double start_time = fp->time(prev_wp_id);
             double dist = prev_position.distanceH(wp_position);
+            if(dist < 1e-3){
+                dist = prev_position.distanceV(wp_position);
+            }
             wp_time = start_time + dist/speed;
             wpSpeeds[plan_id].push_back(speed);
         }
@@ -308,6 +311,10 @@ void Guidance::ComputePlanGuidance(){
     double vs_range = (params.maxClimbRate - params.minClimbRate);
     double heading_change = fabs(fmod(180 + ownship_heading - heading, 360) - 180);
 
+    if(distH < 1e-3){
+        speedRef = 0.0;
+    }
+
     if (fabs(speedRef - ownship_gs) > gs_range / 2)
         n_gs = 0.3;
     else
@@ -355,6 +362,10 @@ larcfm::Position Guidance::ComputeOffSetPositionOnPlan(double speedRef,double& d
     const double distAB = AB.norm2D();
     const double distAP = AP.norm2D();
     const double distPB = AB.Sub(AP).norm2D();
+
+    if(distAB < 1e-3){
+        return currentPos;
+    }
 
     // Projection of AP onto AB
     const double projection = (AP.dot2D(AB))/pow(AB.norm2D(),2);

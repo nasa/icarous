@@ -95,6 +95,9 @@ void Cognition::InputFlightPlanData(const std::string &plan_id,
             larcfm::Position prev_position = fp->getPos(prev_wp_id);
             double start_time = fp->time(prev_wp_id);
             double dist = prev_position.distanceH(wp_position);
+            if(dist < 1e-3){
+                dist = prev_position.distanceV(wp_position);
+            }
             wp_time = start_time + dist/speed;
         }
         fp->add(wp_position,wp_time);
