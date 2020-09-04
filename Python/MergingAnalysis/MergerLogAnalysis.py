@@ -506,6 +506,8 @@ def plot_speed(vehicles, merge_id=1, save=False):
 
 
 def plot_roles(vehicles, merge_id=1, save=False):
+    if not vehicles:
+        return
     labels = ["NEUTRAL", "FOLLOWER", "CANDIDATE", "LEADER"]
     plt.figure()
     for v in vehicles:
@@ -520,6 +522,8 @@ def plot_roles(vehicles, merge_id=1, save=False):
 
 
 def plot_flight_trace(vehicles, merge_id=1, save=False):
+    if not vehicles:
+        return
     plt.figure()
     for v in vehicles:
         time_range = v.get("t", merge_id=merge_id)
