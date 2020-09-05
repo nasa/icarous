@@ -44,7 +44,8 @@ bool json_get_double_field(double *dest, struct json_object *obj, char const * c
     json_bool success = json_object_object_get_ex(obj, key, &field);
     if (!success)
         return false;
-    if (json_object_get_type(field) != json_type_double)
+    enum json_type ty = json_object_get_type(field);
+    if (ty != json_type_double && ty != json_type_int)
         return false;
     *dest = json_object_get_double(field);
     return true;

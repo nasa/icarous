@@ -68,7 +68,7 @@ void ZMQ_IFACE_AppInit(void) {
 		    ZMQ_IFACE_PIPE_DEPTH,       /* Depth of Pipe */
 		    ZMQ_IFACE_PIPE_NAME);       /* Name of pipe */
     if (status != CFE_SUCCESS) {
-        OS_printf("[zmq_iface] Cannot create pipe %s: %d", ZMQ_IFACE_PIPE_NAME, status);
+        OS_printf("[zmq_iface] Cannot create pipe %s: %d\n", ZMQ_IFACE_PIPE_NAME, status);
     }
 
     // Subscribe to SB messages
