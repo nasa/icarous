@@ -65,6 +65,7 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
+    CFE_SB_InitMsg(&trafficAppData.bandReport,ICAROUS_BAND_REPORT_MID,sizeof(band_report_t),TRUE);
     CFE_SB_InitMsg(&trafficAppData.tfAlerts,TRAFFIC_ALERTS_MID,sizeof(traffic_alerts_t),TRUE);
 
     // Register table with table services
@@ -343,6 +344,22 @@ void TRAFFIC_ProcessPacket(void){
             CFE_SB_InitMsg(&alt_bands_msg,ICAROUS_BANDS_ALT_MID,sizeof(cfsBands_t),TRUE);
             memcpy(alt_bands_msg.databuffer,(char*) &trafficAppData.altBands,sizeof(bands_t));
             SendSBMsg(alt_bands_msg);
+
+            // Pack Band Report
+            trafficAppData.bandReport.altitudeBands      = trafficAppData.altBands;
+            trafficAppData.bandReport.groundSpeedBands   = trafficAppData.speedBands;
+            trafficAppData.bandReport.trackBands         = trafficAppData.trackBands;
+            trafficAppData.bandReport.verticalSpeedBands = trafficAppData.vsBands;
+
+            // Publish Band Report
+            CFE_SB_ZeroCopyHandle_t copyHandle;
+            band_report_t * dataPtr = (band_report_t *) CFE_SB_ZeroCopyGetPtr(sizeof(band_report_t), &copyHandle);
+            *dataPtr = trafficAppData.bandReport;
+            CFE_SB_TimeStampMsg( (CFE_SB_Msg_t *) dataPtr);
+            int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *) dataPtr, copyHandle);
+            if (status != CFE_SUCCESS) {
+                OS_printf("[traffic] Error publishing ICAROUS_BAND_REPORT_MID with zero-copy: status %x\n", status);
+            }
 
             int count = 1;
             for(int i=0;i<count;++i){

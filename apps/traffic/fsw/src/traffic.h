@@ -67,6 +67,7 @@ typedef struct{
     bands_t speedBands;                    ///< Ground speed kinematic band data
     bands_t vsBands;                       ///< Vertical speed kinematic band data
     bands_t altBands;                      ///< Altitude kinematic band data
+    band_report_t bandReport;              ///< Band Report
     traffic_alerts_t tfAlerts;             ///< Traffic Alerts
     flightplan_t flightplan1;              ///< Mission flight plan information
     flightplan_t flightplan2;              ///< Secondary flight plan

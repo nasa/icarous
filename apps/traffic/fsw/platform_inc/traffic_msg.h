@@ -20,6 +20,20 @@
  * @{
  */
 
+/**
+ * @struct band_report_t
+ * @brief kinematics bands report
+ *
+ * Published under the following topics: ICAROUS_BAND_REPORT_MID
+ */
+typedef struct {
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
+    bands_t altitudeBands;
+    bands_t groundSpeedBands;
+    bands_t trackBands;
+    bands_t verticalSpeedBands;
+} band_report_t;
+
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
     callsign_t callsign[MAX_TRAFFIC_ALERTS];
