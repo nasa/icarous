@@ -27,3 +27,4 @@ void ZMQ_IFACE_SendTelemetry(ZMQ_IFACE_Connection_t * const conn, char const * c
 void ZMQ_IFACE_SendAlertReport(ZMQ_IFACE_Connection_t * const conn, traffic_alerts_t const * const cfsAlerts);
 void ZMQ_IFACE_SendBandReport(ZMQ_IFACE_Connection_t * const conn, band_report_t const * const cfsBands);
 bool ZMQ_IFACE_ReceiveCommand(ZMQ_IFACE_Connection_t * const conn, char * const buffer, size_t size);
+void ZMQ_IFACE_SendEUTL(ZMQ_IFACE_Connection_t * const conn, stringdata_t * msg);

@@ -218,3 +218,16 @@ bool ZMQ_IFACE_ReceiveCommand(ZMQ_IFACE_Connection_t * const conn, char * const 
     return false;
 }
 
+
+void ZMQ_IFACE_SendEUTL(ZMQ_IFACE_Connection_t * const conn, stringdata_t * cFSMsg)
+{
+    printf("ZMQ Sending EUTL: %s\n", cFSMsg->buffer);
+    (void)conn;
+    json_object * obj = json_object_new_object();
+    json_object_object_add(obj, "type", json_object_new_string("ICAROUS::FlightPlan"));
+    json_object_object_add(obj, "data", json_object_new_string(cFSMsg->buffer));
+    json_object_object_add(obj, "id", json_object_new_string(conn->callSign.value));
+    char const * const msg = json_object_to_json_string_ext(obj, JSON_C_TO_STRING_PLAIN);
+    s_send(conn->telemetrySocket, msg);
+    json_object_put(obj);
+}

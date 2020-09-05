@@ -74,6 +74,7 @@ void ZMQ_IFACE_AppInit(void) {
     // Subscribe to SB messages
     CFE_SB_Subscribe(ICAROUS_BAND_REPORT_MID, AppData.pipe);
     CFE_SB_Subscribe(TRAFFIC_ALERTS_MID, AppData.pipe);
+    CFE_SB_Subscribe(EUTL2_TRAJECTORY_MID, AppData.pipe);
 
     // Initialize all messages that this App generates
 
@@ -102,6 +103,9 @@ void ZMQ_IFACE_ProcessPacket(void)
         break;
     case ICAROUS_BAND_REPORT_MID:
         ZMQ_IFACE_SendBandReport(connPtr, (band_report_t const * const) AppData.msgPtr);
+        break;
+    case EUTL2_TRAJECTORY_MID:
+        ZMQ_IFACE_SendEUTL(connPtr, (stringdata_t *) AppData.msgPtr);
         break;
     default:
         OS_printf("[zmq_iface] Unhandled message id: %x\n", MsgId);
