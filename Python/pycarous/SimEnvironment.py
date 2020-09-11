@@ -216,6 +216,8 @@ class SimEnvironment:
             # Update Icarous instances
             for i, ic in enumerate(self.icInstances):
                 ic.InputWind(self.windFrom, self.windSpeed)
+                if ic.CheckMissionComplete():
+                    ic.Terminate()
 
                 # Send mission start command
                 if not ic.missionStarted and duration >= self.icStartDelay[i]:

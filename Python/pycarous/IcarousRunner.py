@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import shutil
 import subprocess
 import numpy as np
 from pymavlink import mavutil, mavwp
@@ -109,7 +110,7 @@ class IcarousRunner(IcarousInterface):
             self.fences.append(gf)
 
     def InputMergeFixes(self, filename):
-        wp, ind, _ = ReadFlightplanFile(filename)
+        wp, _, _ = ReadFlightplanFile(filename)
         self.localMergeFixes = list(map(self.ConvertToLocalCoordinates, wp))
         self.mergeFixes = wp
         dest = os.path.join(icarous_home, "exe", "ram", "merge_fixes.txt")
@@ -131,10 +132,7 @@ class IcarousRunner(IcarousInterface):
     def CheckMissionComplete(self):
         if self.missionComplete:
             return True
-        lat, lon = self.position[:2]
-        final_lat, final_lon = self.flightplan1[-1][:2]
-        dist2final = distance(lat, lon, final_lat, final_lon)
-        self.missionComplete = self.missionStarted and (dist2final < 10)
+        self.missionComplete = self.missionStarted and self.land
         return self.missionComplete
 
     def Run(self):
@@ -148,7 +146,7 @@ class IcarousRunner(IcarousInterface):
         self.currTime = time.time()
 
         # Record position data to logs
-        msg_types = ["GLOBAL_POSITION_INT", "ADSB_VEHICLE"]
+        msg_types = ["GLOBAL_POSITION_INT", "ADSB_VEHICLE", "STATUSTEXT"]
         msg = self.gs.master.recv_match(blocking=False, type=msg_types)
         if msg is None:
             return False
@@ -168,6 +166,10 @@ class IcarousRunner(IcarousInterface):
             vx = msg.hor_velocity*1e-2*np.cos(np.radians(heading))
             velocityNED = [vx, vy, msg.ver_velocity*1e-2]
             self.RecordTraffic(traffic_id, position, velocityNED, positionNED)
+        elif msg.get_type() == "STATUSTEXT":
+            print("%s : %s" % (self.callsign, msg.text))
+            if "Landing" in msg.text:
+                self.land = True
         return False
 
     def Terminate(self):

@@ -1,7 +1,6 @@
 import abc
 import sys
 
-sys.path.append("../pycarous")
 from ichelper import LoadIcarousParams, ReadFlightplanFile, distance
 
 class IcarousInterface(abc.ABC):
@@ -53,6 +52,7 @@ class IcarousInterface(abc.ABC):
         self.running = False
         self.missionStarted = False
         self.missionComplete = False
+        self.land = False
 
         # Vehicle logs
         self.ownshipLog = {"t": [],

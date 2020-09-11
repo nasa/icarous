@@ -31,15 +31,14 @@ parser.add_argument("-v", "--verbosity", type=int, choices=[1,2], default=1,
 parser.add_argument("--realtime", dest="fasttime", action="store_false",
                    help='Run sim in real time')
 parser.add_argument("--fasttime", dest="fasttime", action="store_true",
-                   help='Run sim in fast time')
+                   help='Run sim in fast time (not available for cFS simulations)')
 parser.add_argument("--cfs", action="store_true",
-                   help='Run Icarous using cFS')
+                   help='Run Icarous using cFS instead of pycarous')
 parser.add_argument("-u", "--uncertainty", type=bool, default=False,
                    help='Enable uncertainty')
 args = parser.parse_args()
 if args.cfs:
     args.fasttime = False
-print(args.fasttime)
 
 # Initialize simulation environment
 sim = SimEnvironment(fasttime=args.fasttime)
@@ -82,4 +81,3 @@ sim.RunSimulation()
 
 # Save json log outputs
 sim.WriteLog()
-
