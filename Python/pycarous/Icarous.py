@@ -1,5 +1,6 @@
 from ctypes import byref
 import numpy as np
+import time
 
 from Interfaces import (CommandTypes,GeofenceConflict)
 from Cognition import (Cognition,
@@ -20,99 +21,91 @@ from ichelper import (ConvertTrkGsVsToVned,
                       ConvertVnedToTrkGsVs,
                       ComputeHeading,
                       LoadIcarousParams,
-                      ReadFlightplanFile)
-import time
+                      ReadFlightplanFile,
+                      GetFlightplanFile)
 
-class Icarous():
-    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,
-                 fasttime = True, verbose=0,callsign = "SPEEDBIRD",
-                 monitor="DAIDALUS",
-                 daaConfig="data/DaidalusQuadConfig.txt"):
+from IcarousInterface import IcarousInterface
+
+class Icarous(IcarousInterface):
+    """
+    Interface to launch and control an instance of pycarous
+    (core ICAROUS modules called from python)
+    """
+    def Setup(self, fasttime=True, simtype="UAS_ROTOR", monitor="DAIDALUS",
+              daaConfig="data/DaidalusQuadConfig.txt"):
+        """
+        Initialize pycarous
+        :param fasttime: when fasttime is True, simulation will run in fasttime
+        :param simtype: string defining vehicle model: UAS_ROTOR, UAM_VTOL, ...
+        :param monitor: string defining DAA module: DAIDALUS, ACAS, ...
+        :param daaConfig: DAA module configuration file
+        """
+        self.simType = "pycarous"
         self.fasttime = fasttime
-        self.callsign = callsign
-        self.verbose = verbose
-        self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
-        self.traffic = []
-        if simtype == "UAM_VTOL":
-            self.ownship = VehicleSim(vehicleID,0.0,0.0,0.0,0.0,0.0,0.0)
-        else:
-            from quadsim import QuadSim
-            self.ownship = QuadSim()
-
-        self.vehicleID = vehicleID
-        self.Cog = Cognition(callsign)
-        self.Guidance = Guidance(GuidanceParam())
-        self.Geofence = GeofenceMonitor([3,2,2,20,20])
-        self.Trajectory = Trajectory(callsign)
-        self.tfMonitor = TrafficMonitor(callsign,daaConfig,False,monitor)
-        self.Merger = Merger(callsign,vehicleID)
-
-        # Aircraft data
-        self.flightplan1 = []
-        self.etaFP1      = False
-        self.etaFP2      = False
-        self.flightplan2 = []
-        self.controlInput = [0.0,0.0,0.0]
-        self.fenceList   = []
-
-        self.guidanceMode = GuidanceMode.NOOP
-
-        # Merger
-        self.arrTime = None
-        self.logLatency = 0
-        self.prevLogUpdate = 0
-        self.mergerLog = LogData()
-
-        self.position = self.home_pos
-        self.velocity = [0.0,0.0,0.0]
-        self.trkgsvs  = [0.0,0.0,0.0]
-
-        self.localPos = []
-        self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": [],
-                           "trkbands": [], "gsbands": [], "altbands": [], "vsbands": [],
-                           "localPlans": [], "localFences": [], "commandedVelocityNED": []}
-        self.trafficLog = {}
-        self.emergbreak = False
         if self.fasttime:
             self.currTime = 0
         else:
             self.currTime = time.time()
-        self.numSecPlan = 0
-        self.plans = []
-        self.fences = []
-        self.mergeFixes = []
-        self.localPlans = []
-        self.localFences= []
+
+        # Initialize vehicle sim
+        if simtype == "UAM_VTOL":
+            self.ownship = VehicleSim(self.vehicleID, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        else:
+            from quadsim import QuadSim
+            self.ownship = QuadSim()
+
+        # Initialize ICAROUS apps
+        self.Cog = Cognition(self.callsign)
+        self.Guidance = Guidance(GuidanceParam())
+        self.Geofence = GeofenceMonitor([3, 2, 2, 20, 20])
+        self.Trajectory = Trajectory(self.callsign)
+        self.tfMonitor = TrafficMonitor(self.callsign, daaConfig, False, monitor)
+        self.Merger = Merger(self.callsign, self.vehicleID)
+
+        # Merger data
+        self.arrTime = None
+        self.logLatency = 0
+        self.prevLogUpdate = 0
+        self.mergerLog = LogData()
         self.localMergeFixes = []
-        self.daa_radius = 0
-        self.startSent = False
+
+        # Fligh plan data
+        self.flightplan1 = []
+        self.flightplan2 = []
+        self.etaFP1      = False
+        self.etaFP2      = False
         self.nextWP1 = 1
         self.nextWP2 = 1
+        self.plans = []
+        self.localPlans = []
+        self.activePlan = "Plan0"
+        self.numSecPlan = 0
+
+        # Geofence data
+        self.fences = []
+        self.localFences= []
         self.numFences = 0
+
+        # Other aircraft data
+        self.guidanceMode = GuidanceMode.NOOP
+        self.emergbreak = False
+        self.daa_radius = 0
         self.resSpeed = 0
-        self.defaultWPSpeed = 1
-        self.missionComplete = False
         self.fphases = -1
         self.land    = False
-        self.activePlan = "Plan0"
-        self.windFrom = 0
-        self.windSpeed = 0
 
-    def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
-        self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
-
-    def InputWind(self,windFrom,windSpeed):
-        self.windFrom = windFrom
-        self.windSpeed = windSpeed
+    def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+        self.ownship.setpos_uncertainty(xx, yy, zz, xy, yz, xz, coeff)
 
     def InputTraffic(self,idx,position,velocity):
         if idx is not self.vehicleID:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
             self.Trajectory.InputTrafficData(idx,position,trkgsvs)
-            self.RecordTraffic(idx, position, velocity, self.ConvertToLocalCoordinates(position))
+            localPos = self.ConvertToLocalCoordinates(position)
+            self.RecordTraffic(idx, position, velocity, localPos)
 
-    def InputFlightplan(self,fp,scenarioTime,eta=False):
+    def InputFlightplan(self,fp,scenarioTime=0,eta=False):
         self.flightplan1 = fp 
         self.flightplan2 = []
         self.etaFP1 = eta
@@ -125,27 +118,6 @@ class Icarous():
     def InputFlightplanFromFile(self,filename,scenarioTime=0,eta=False):
         fp = GetFlightplanFile(filename, self.defaultWPSpeed, scenarioTime, eta)
         self.InputFlightplan(fp,scenarioTime,eta)
-
-    def ConvertToLocalCoordinates(self,pos):
-        dh = lambda x, y: abs(distance(self.home_pos[0],self.home_pos[1],x,y))
-        if pos[1] > self.home_pos[1]:
-            sgnX = 1
-        else:
-            sgnX = -1
-
-        if pos[0] > self.home_pos[0]:
-            sgnY = 1
-        else:
-            sgnY = -1
-        dx = dh(self.home_pos[0],pos[1])
-        dy = dh(pos[0],self.home_pos[1])
-        return [dy*sgnY,dx*sgnX,pos[2]]
-
-    def GetLocalFlightPlan(self,fp):
-        local = []
-        for wp in fp:
-            local.append(self.ConvertToLocalCoordinates(wp))
-        return local
 
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
@@ -163,13 +135,11 @@ class Icarous():
             self.localFences.append(localFence)
             self.fences.append(gf)
 
-
     def InputMergeFixes(self,filename):
         wp, ind, _ = ReadFlightplanFile(filename)
         self.localMergeFixes = list(map(self.ConvertToLocalCoordinates, wp))
         self.mergeFixes = wp
         self.Merger.SetIntersectionData(list(zip(ind,wp)))
-
 
     def SetGeofenceParams(self,params):
         gfparams = [params['LOOKAHEAD'],
@@ -227,7 +197,6 @@ class Icarous():
         cogParams.ZTHR = params['DET_1_WCV_ZTHR']/3
         self.Cog.InputParameters(cogParams)
         self.resSpeed = params["RESSPEED"]
-
 
     def SetTrafficParams(self,params):
         paramString = "" \
@@ -302,7 +271,6 @@ class Icarous():
                                  params["SCHEDULE_ZONE"],
                                  params["ENTRY_RADIUS"],
                                  params["CORRIDOR_WIDTH"])
-
         
     def SetParameters(self,params):
         self.params = params
@@ -312,10 +280,6 @@ class Icarous():
         self.SetCognitionParams(params)
         self.SetTrafficParams(params)
         self.SetMergerParams(params)
-
-    def SetParametersFromFile(self,filename):
-        params = LoadIcarousParams(filename)
-        self.SetParameters(params)
 
     def RunOwnship(self):
         self.ownship.inputNED(*self.controlInput)
@@ -336,12 +300,9 @@ class Icarous():
         self.altband = None
         self.vsband = None
 
-
         self.RecordOwnship()
 
     def RunCognition(self):
-
-
         self.Cog.InputVehicleState(self.position,self.trkgsvs,self.trkgsvs[0])
         
         nextWP1 = self.nextWP1
@@ -439,12 +400,9 @@ class Icarous():
                     if self.verbose > 0:
                         print(self.callsign,"Error finding path")
 
-
     def RunGuidance(self):
-
         if self.guidanceMode is GuidanceMode.NOOP:
             return
-
         if self.guidanceMode is GuidanceMode.TAKEOFF:
             self.Cog.InputReachedWaypoint("Takeoff",0); 
             return
@@ -457,7 +415,6 @@ class Icarous():
         self.controlInput = ConvertTrkGsVsToVned(guidOutput.velCmd[0],
                                                  guidOutput.velCmd[1],
                                                  guidOutput.velCmd[2])
-
 
         nextWP = guidOutput.nextWP
         if self.guidanceMode is not GuidanceMode.VECTOR:
@@ -477,8 +434,6 @@ class Icarous():
             pass
          
     def RunGeofenceMonitor(self):
-
-
         gfConflictData = GeofenceConflict()
         
         self.Geofence.CheckViolation(self.position,*self.trkgsvs)
@@ -506,8 +461,6 @@ class Icarous():
             gfConflictData.directPathToWaypoint2[i] = check2
 
         self.Cog.InputGeofenceConflictData(gfConflictData)
-
-
 
     def RunTrafficMonitor(self):
         self.tfMonitor.monitor_traffic(self.position,self.trkgsvs,self.currTime)
@@ -546,9 +499,7 @@ class Icarous():
             altband.wpFeasibility2[i] = feasibility
             vsband.wpFeasibility2[i] = feasibility
          
-
         self.Cog.InputBands(trkband,gsband,altband,vsband) 
-
 
         filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
         getbandlog = lambda bands: {} if bands is None else {"conflict": bands.currentConflictBand, 
@@ -563,8 +514,6 @@ class Icarous():
         self.ownshipLog["gsbands"].append(getbandlog(gsband))
         self.ownshipLog["altbands"].append(getbandlog(altband))
         self.ownshipLog["vsbands"].append(getbandlog(vsband))
-
- 
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)
@@ -583,60 +532,24 @@ class Icarous():
             nextWP = self.nextWP1
             self.Guidance.ChangeWaypointSpeed("Plan0",nextWP,speedChange,False)
 
-
-
     def InputMergeLogs(self,logs,delay):
         self.mergerLog = logs
         self.logLatency = delay
 
+    def StartMission(self):
+        self.Cog.InputStartMission(0, 0)
+        self.missionStarted = True
 
     def CheckMissionComplete(self):
         if self.land and self.fphase == 0:
             self.missionComplete = True
         return self.missionComplete
 
-
-    def RecordOwnship(self):
-        self.ownshipLog["t"].append(self.currTime)
-        self.ownshipLog["position"].append(self.position)
-        self.ownshipLog["velocityNED"].append(self.velocity)
-        self.ownshipLog["positionNED"].append(self.localPos)
-        self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
-
-    def RecordTraffic(self, id, position, velocity, positionLoc):
-        if id not in self.trafficLog:
-            self.trafficLog[id] = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
-        self.trafficLog[id]["t"].append(self.currTime)
-        self.trafficLog[id]["position"].append(list(position))
-        self.trafficLog[id]["velocityNED"].append(velocity)
-        self.trafficLog[id]["positionNED"].append(positionLoc)
-
-    def WriteLog(self, logname=""):
-        self.ownshipLog['localPlans'] = self.localPlans
-        self.ownshipLog['localFences'] = self.localFences
-        if logname == "":
-             logname = self.callsign + '.json'
-
-        import json
-        if self.verbose > 0:
-            print("writing log: %s" % logname)
-        log_data = {"ownship": self.ownshipLog,
-                    "traffic": self.trafficLog,
-                    "waypoints": self.flightplan1,
-                    "geofences": self.fenceList,
-                    "parameters": self.params,
-                    "mergefixes": self.localMergeFixes,
-                    "sim_type": "pyIcarous"}
-
-        with open(logname, 'w') as f:
-            json.dump(log_data, f)
-
-
     def Run(self):
-
         time_now = time.time()
         if not self.fasttime:
             if time_now - self.currTime >= 0.05:
+                self.ownship.dt = time_now - self.currTime
                 self.currTime = time_now
             else:
                 return False
@@ -650,7 +563,7 @@ class Icarous():
         self.RunOwnship()
         #time_ship_out = time.time()
 
-        if not self.startSent:
+        if not self.missionStarted:
             return True
 
         #time_cog_in = time.time()
@@ -677,6 +590,10 @@ class Icarous():
         #print("ownship %f" % (time_ship_out - time_ship_in))
 
         return True
+
+    def Terminate(self):
+        # No special shut down action required when using pycarous
+        pass
 
 
 def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
@@ -716,6 +633,7 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
 
     anim.run()
+
 
 def checkDAAType(value):
     if value.upper() not in ['DAIDALUS','ACAS']:

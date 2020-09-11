@@ -1,5 +1,7 @@
 from SimEnvironment import SimEnvironment
-from Icarous import *
+from Icarous import Icarous
+from IcarousRunner import IcarousRunner
+from Icarous import checkDAAType
 from ichelper import GetHomePosition,ReadTrafficInput
 import argparse
 
@@ -26,12 +28,21 @@ parser.add_argument("-c", "--daaConfig", type=str, default='data/DaidalusQuadCon
                    help='specify configuration file if one is required by the DAA module specified by -d/--daaType')
 parser.add_argument("-v", "--verbosity", type=int, choices=[1,2], default=1,
                    help='Set print verbosity level')
+parser.add_argument("--realtime", dest="fasttime", action="store_false",
+                   help='Run sim in real time')
+parser.add_argument("--fasttime", dest="fasttime", action="store_true",
+                   help='Run sim in fast time')
+parser.add_argument("--cfs", action="store_true",
+                   help='Run Icarous using cFS')
 parser.add_argument("-u", "--uncertainty", type=bool, default=False,
                    help='Enable uncertainty')
 args = parser.parse_args()
+if args.cfs:
+    args.fasttime = False
+print(args.fasttime)
 
 # Initialize simulation environment
-sim = SimEnvironment()
+sim = SimEnvironment(fasttime=args.fasttime)
 
 # Set the home position for the simulation
 HomePos = GetHomePosition(args.flightplan)
@@ -43,7 +54,11 @@ if args.traffic != '':
         sim.AddTraffic(tf[0], HomePos, *tf[1:])
 
 # Initialize Icarous class
-ic = Icarous(HomePos,simtype="UAM_VTOL",monitor=args.daaType,verbose=args.verbosity,daaConfig=args.daaConfig)
+if args.cfs:
+    ic = IcarousRunner(HomePos, verbose=args.verbosity)
+else:
+    ic = Icarous(HomePos,simtype="UAM_VTOL",monitor=args.daaType,verbose=args.verbosity,
+                 daaConfig=args.daaConfig, fasttime=args.fasttime)
 
 # Read params from file and input params
 ic.SetParametersFromFile(args.params)
@@ -67,3 +82,4 @@ sim.RunSimulation()
 
 # Save json log outputs
 sim.WriteLog()
+
