@@ -415,7 +415,7 @@ class Icarous():
                 altChange = cmd.commandU.altChange.altitude
                 planID= cmd.commandU.altChange.name.decode('utf-8')
                 nextWP = self.nextWP1 if planID == "Plan0" else self.nextWP2
-                self.Guidance.ChangeWaypointAlt(planID,nextWP,altChange,False)
+                self.Guidance.ChangeWaypointAlt(planID,nextWP,altChange,cmd.commandU.altChange.hold)
             elif cmd.commandType == CommandTypes.STATUS_MESSAGE:
                 if self.verbose > 0:
                     message = cmd.commandU.statusMessage.buffer
