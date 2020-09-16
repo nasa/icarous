@@ -31,15 +31,19 @@ class Icarous(IcarousInterface):
     Interface to launch and control an instance of pycarous
     (core ICAROUS modules called from python)
     """
-    def Setup(self, fasttime=True, simtype="UAS_ROTOR", monitor="DAIDALUS",
-              daaConfig="data/DaidalusQuadConfig.txt"):
+    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
+                 fasttime=True, simtype="UAS_ROTOR", monitor="DAIDALUS",
+                 daaConfig="data/DaidalusQuadConfig.txt"):
         """
         Initialize pycarous
         :param fasttime: when fasttime is True, simulation will run in fasttime
         :param simtype: string defining vehicle model: UAS_ROTOR, UAM_VTOL, ...
         :param monitor: string defining DAA module: DAIDALUS, ACAS, ...
         :param daaConfig: DAA module configuration file
+        Other parameters are defined in parent class, see IcarousInterface.py
         """
+        super().__init__(home_pos, callsign, vehicleID, verbose)
+
         self.simType = "pycarous"
         self.fasttime = fasttime
         if self.fasttime:

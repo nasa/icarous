@@ -10,15 +10,13 @@ class IcarousInterface(abc.ABC):
     and for recording log files. Subclasses must implement all of the
     functions marked @abc.abstractmethod.
     """
-    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
-                 **kwargs):
+    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1):
         """
         Initialize Icarous interface
         :param home_pos: initial position / origin for local coordinates
         :param callsign: callsign for the vehicle
         :param vehicleID: unique integer ID for this Icarous instance
         :param verbose: control printout frequency (0: none, 1: some, 2+: more)
-        Any additional keyword arguments are passed to Setup()
         """
         self.home_pos = home_pos
         self.callsign = callsign
@@ -67,14 +65,6 @@ class IcarousInterface(abc.ABC):
                            "localPlans": [],
                            "localFences": []}
         self.trafficLog = {}
-
-        # Call setup function
-        self.Setup(**kwargs)
-
-    @abc.abstractmethod
-    def Setup(self):
-        """ Conduct any initialization necessary to run ICAROUS """
-        pass
 
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):

@@ -22,12 +22,16 @@ class IcarousRunner(IcarousInterface):
     """
     Interface to launch and control a cFS instance of ICAROUS from python
     """
-    def Setup(self, out=None):
+    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
+                 out=None):
         """
         Initialize an instance of ICAROUS running in cFS
         :param out: port number to forward MAVLink data for visualization
-        (use out=None to turn off MAVLink output)
+                    (use out=None to turn off MAVLink output)
+        Other parameters are defined in parent class, see IcarousInterface.py
         """
+        super().__init__(home_pos, callsign, vehicleID, verbose)
+
         self.simType = "cFS"
         self.out = out
         self.cpu_id = self.vehicleID + 1
@@ -180,4 +184,3 @@ class IcarousRunner(IcarousInterface):
         self.ic.kill()
         if self.out is not None:
             subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
-
