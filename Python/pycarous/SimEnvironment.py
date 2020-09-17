@@ -4,6 +4,7 @@ import time
 from VehicleSim import VehicleSim
 from ichelper import distance
 from Merger import LogData, MergerData, MAX_NODES
+from Interfaces import V2Vdata
 from communicationmodels import channelmodels as cm
 from communicationmodels import get_propagation_model, get_reception_model
 from communicationmodels import get_transmitter, get_receiver
@@ -68,8 +69,8 @@ class SimEnvironment:
         self.icTimeLimit.append(time_limit)
 
         # Create a transmitter and receiver for V2V communications
-        ic.transmitter = get_transmitter(transmitter, self.comm_channel)
-        ic.receiver = get_receiver(receiver, self.comm_channel)
+        ic.transmitter = get_transmitter(transmitter, ic.vehicleID, self.comm_channel)
+        ic.receiver = get_receiver(receiver, ic.vehicleID, self.comm_channel)
 
         # Set simulation home position
         if self.home_gps == [0, 0, 0]:
@@ -101,17 +102,19 @@ class SimEnvironment:
         self.tfList.append(traffic)
 
         # Create a transmitter for V2V communications
-        traffic.transmitter = get_transmitter(transmitter, self.comm_channel)
+        traffic.transmitter = get_transmitter(transmitter,idx,self.comm_channel)
 
         return traffic
 
-    def RunTraffic(self, dT=None):
-        """ Update all traffic vehicles """
+    def RunSimulatedTraffic(self):
+        """ Update all simulated traffic vehicles """
         for tf in self.tfList:
             tf.dt = dT or self.dT
             tf.run(self.windFrom, self.windSpeed)
-            data = {"pos": tf.pos_gps, "vel": tf.getOutputVelocityNED()}
-            tf.transmitter.transmit(self.current_time, tf.vehicleID, tf.pos_gps, data)
+            tfdata = V2Vdata("INTRUDER", {"id":tf.vehicleID,
+                                          "pos": tf.pos_gps,
+                                          "vel": tf.getOutputVelocityNED()})
+            tf.transmitter.transmit(self.current_time, tf.pos_gps, tfdata)
 
     def AddWind(self, wind):
         """
@@ -145,43 +148,54 @@ class SimEnvironment:
         """ Input a file to read merge fixes from """
         self.mergeFixFile = filename
 
-    def ExchangeArrivalTimes(self):
+    def ExchangeV2VData(self):
         """ Exchange V2V communications between the Icarous instances """
-        arrTimes = []
-        log = []
+
+        # Transmit all V2V data
         for ic in self.icInstances:
-            if "arrTime" not in ic.__dict__:
+            # Do not broadcast if running SBN
+            if "SBN" in ic.apps:
+                continue
+            # broadcast position data to all other vehicles in the airspace
+            tfdata = V2Vdata("INTRUDER", {"id":ic.vehicleID,
+                                          "pos": ic.position,
+                                          "vel": ic.velocity})
+            ic.transmitter.transmit(self.current_time, ic.position, tfdata)
+
+        # Gather logs to be exchanged for merging activity
+        log = {}
+        for ic in self.icInstances:
+            if "arrTime" not in vars(ic):
                 continue
             if ic.arrTime is not None:
-                arrTimes.append(ic.arrTime)
+                intsid = ic.arrTime.intersectionID
+                if intsid in log.keys():
+                    log[intsid].append(ic.arrTime)
+                else:
+                    log[intsid] = [ic.arrTime]
 
-        for arr in arrTimes:
-            fid = arr.intersectionID
-            if fid <= 0:
-                continue
-            avail = False
-            for g in log:
-                if fid == g[0].intersectionID:
-                    avail = True
-                    g.append(arr)
-            if not avail:
-                log.append([arr])
-
+        # Transmit all merger log data
         for lg in log:
-            if len(lg) == 0:
-                continue
-
             datalog = LogData()
-            datalog.intersectionID = lg[0].intersectionID
+            datalog.intersectionID = log[lg][0].intersectionID
             datalog.nodeRole = 1
-            datalog.totalNodes = len(lg)
+            datalog.totalNodes = len(log[lg])
             mg = MergerData*MAX_NODES
-            datalog.log = mg(*lg)
+            datalog.log = mg(*log[lg])
             for ic in self.icInstances:
-                if ic.arrTime is None:
+                # Do not broadcast if running SBN
+                if "SBN" in ic.apps:
                     continue
-                if ic.arrTime.intersectionID == datalog.intersectionID:
-                    ic.InputMergeLogs(datalog, self.commDelay)
+                mergelog = V2Vdata("MERGER",datalog)
+                ic.transmitter.transmit(self.current_time, ic.position, mergelog)
+
+        # Receive all V2V data
+        for ic in self.icInstances:
+            received_msgs = ic.receiver.receive(self.current_time, ic.position)
+            data = [m.data for m in received_msgs]
+            ic.InputV2VData(data)
+
+        self.comm_channel.flush()
 
     def RunSimulation(self):
         """ Run simulation until mission complete or time limit reached """
@@ -230,11 +244,6 @@ class SimEnvironment:
                 # Run Icarous
                 status |= ic.Run()
 
-                # Transmit V2V position data
-                if "SBN" not in ic.apps:
-                    data = {"pos": ic.position, "vel": ic.velocity}
-                    ic.transmitter.transmit(self.current_time, ic.vehicleID, ic.position, data)
-
                 # Check if time limit has been met
                 if ic.missionStarted and not ic.missionComplete:
                     if duration >= self.icTimeLimit[i]:
@@ -244,15 +253,15 @@ class SimEnvironment:
                             print("%s : Time limit reached at %f" %
                                   (ic.callsign, self.current_time))
 
-            # Receive V2V position data
-            for ic in self.icInstances:
-                received_msgs = ic.receiver.receive(self.current_time, ic.position)
-                for msg in received_msgs:
-                    if msg.sender_id != ic.vehicleID:
-                        ic.InputTraffic(msg.sender_id, msg.data["pos"], msg.data["vel"])
-            self.comm_channel.flush()
+            # Run traffic vehicles
+            self.RunSimulatedTraffic()
 
-            self.ExchangeArrivalTimes()
+            
+            # Exchange all V2V data between vehicles in the environment
+            self.ExchangeV2VData()
+
+            self.count += 1
+            self.current_time = self.count*0.05
             simComplete = all(ic.missionComplete for ic in self.icInstances)
         self.ConvertLogsToLocalCoordinates()
 

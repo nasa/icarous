@@ -588,12 +588,12 @@ class Icarous(IcarousInterface):
     def InputV2VData(self,data):
         for d in data:
             if d.type == "INTRUDER":
-                self.InputTraffic(msg.sender_id, d.payload["pos"], d.payload["vel"])
+                self.InputTraffic(d.payload["id"], d.payload["pos"], d.payload["vel"])
             elif d.type == "MERGER":
                 if self.arrTime is None:
                     return
                 elif self.arrTime.intersectionID == d.payload.intersectionID:
-                    self.InputMergeLogs(datalog, 0.0)
+                    self.InputMergeLogs(d.payload, 0.0)
 
     def Run(self):
         time_now = time.time()
