@@ -529,7 +529,8 @@ class Icarous(IcarousInterface):
         self.Cog.InputMergeStatus(mergingActive)
         outAvail, arrTime =  self.Merger.GetArrivalTimes()
         if outAvail:
-            self.arrTime = arrTime
+            if arrTime.intersectionID > 0:
+                self.arrTime = arrTime
         if mergingActive == 3:
             velCmd = self.Merger.GetVelocityCmd()
             speedChange = velCmd[1]
@@ -548,6 +549,51 @@ class Icarous(IcarousInterface):
         if self.land and self.fphase == 0:
             self.missionComplete = True
         return self.missionComplete
+
+    def RecordOwnship(self):
+        self.ownshipLog["t"].append(self.currTime)
+        self.ownshipLog["position"].append(self.position)
+        self.ownshipLog["velocityNED"].append(self.velocity)
+        self.ownshipLog["positionNED"].append(self.localPos)
+        self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
+
+    def RecordTraffic(self, id, position, velocity, positionLoc):
+        if id not in self.trafficLog:
+            self.trafficLog[id] = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
+        self.trafficLog[id]["t"].append(self.currTime)
+        self.trafficLog[id]["position"].append(list(position))
+        self.trafficLog[id]["velocityNED"].append(velocity)
+        self.trafficLog[id]["positionNED"].append(positionLoc)
+
+    def WriteLog(self, logname=""):
+        self.ownshipLog['localPlans'] = self.localPlans
+        self.ownshipLog['localFences'] = self.localFences
+        if logname == "":
+             logname = self.callsign + '.json'
+
+        import json
+        if self.verbose > 0:
+            print("writing log: %s" % logname)
+        log_data = {"ownship": self.ownshipLog,
+                    "traffic": self.trafficLog,
+                    "waypoints": self.flightplan1,
+                    "geofences": self.fenceList,
+                    "parameters": self.params,
+                    "mergefixes": self.localMergeFixes,
+                    "sim_type": "pyIcarous"}
+
+        with open(logname, 'w') as f:
+            json.dump(log_data, f)
+
+    def InputV2VData(self,data):
+        for d in data:
+            if d.type == "INTRUDER":
+                self.InputTraffic(msg.sender_id, d.payload["pos"], d.payload["vel"])
+            elif d.type == "MERGER":
+                if self.arrTime is None:
+                    return
+                elif self.arrTime.intersectionID == d.payload.intersectionID:
+                    self.InputMergeLogs(datalog, 0.0)
 
     def Run(self):
         time_now = time.time()
