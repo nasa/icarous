@@ -169,7 +169,7 @@ def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
     for traffic_id, traffic in simdata["traffic"].items():
         t_pos_default = (traffic["position"][0], traffic["position"][-1])
         t_pos = interp1d(traffic["t"], np.array(traffic["position"]),
-                         axis=0, fill_value=t_pos_default)
+                         axis=0, bounds_error=False, fill_value=t_pos_default)
         traffic_position[traffic_id] = t_pos
 
     for t, o_pos in zip(ownship_time, ownship_position):
@@ -193,33 +193,31 @@ def plot_scenario(simdata, output_dir="", save=False):
     from matplotlib import pyplot as plt
     scenario_name = os.path.basename(output_dir)
     fig1 = plt.figure()
-    WP = simdata["waypoints"]
-    origin = simdata["ownship"]["position"][0]
-    geofences = GetPolygons(origin, simdata["geofences"])
-    lla2ned = lambda x: GS.LLA2NED(origin, x)
 
     # Plot waypoints
-    waypoints = [wp[0:3] for wp in WP]
-    waypoints_local = np.array([lla2ned(wp) for wp in waypoints])
-    plt.plot(waypoints_local[:, 1], waypoints_local[:, 0], 'k*:', label="Flight Plan")
+    for plan in simdata["ownship"]["localPlans"]:
+        waypoints = np.array(plan)
+        plt.plot(waypoints[:, 1], waypoints[:, 0], 's--', color='gray')
+
+    # Plot fences
+    for i, fence in enumerate(simdata["ownship"]["localFences"]):
+        vertices = np.array(fence + [fence[0]])
+        if i == 0:
+            color = "orange"
+            label = "Keep In Geofence"
+        else:
+            color = "red"
+            label = "Keep Out Geofence"
+        plt.plot(vertices[:, 1], vertices[:, 0], '--', color=color, label=label)
 
     # Plot ownship path
-    ownpos_local = np.array([lla2ned(ownpos) for ownpos in simdata["ownship"]["position"]])
+    ownpos_local = np.array(simdata["ownship"]["positionNED"])
     plt.plot(ownpos_local[:, 1], ownpos_local[:, 0], label="Ownship Path")
 
     # Plot traffic path
     for traf_id, traf in simdata["traffic"].items():
-        trafpos_local = np.array([lla2ned(t_pos) for t_pos in traf["position"]])
+        trafpos_local = np.array(traf["positionNED"])
         plt.plot(trafpos_local[:, 1], trafpos_local[:, 0], label=str(traf_id)+" Path")
-
-    # Plot geofences
-    for i, vertices in enumerate(geofences):
-        vertices.append(vertices[0])
-        vertices = np.array(vertices)
-        if i == 0:
-            plt.plot(vertices[:, 0], vertices[:, 1], 'orange', label="Keep In Geofence")
-        else:
-            plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
 
     # Set up figure
     plt.title(scenario_name + " - Ground track")
@@ -274,9 +272,9 @@ def plot_scenario(simdata, output_dir="", save=False):
 def print_results(results, scenario_name):
     ''' print results of a test scenario '''
     if all([res for res, msg, name in results]):
-        print("\n\033[32m\"%s\" scenario PASSED:\033[0m" % scenario_name)
+        print("\033[32m\"%s\" scenario PASSED:\033[0m" % scenario_name)
     else:
-        print("\n\033[31m\"%s\" scenario FAILED:\033[0m" % scenario_name)
+        print("\033[31m\"%s\" scenario FAILED:\033[0m" % scenario_name)
     for result, msg, name in results:
         if result:
             print("\t\033[32m* %s - PASS:\033[0m %s" % (name, msg))
