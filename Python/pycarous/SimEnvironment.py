@@ -12,12 +12,13 @@ from communicationmodels import get_transmitter, get_receiver
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
     def __init__(self, propagation_model="NoLoss", reception_model="Perfect",
-                 propagation_params={}, reception_params={}, verbose=1, fasttime=True):
+                 propagation_params={}, reception_params={}, verbose=1,
+                 fasttime=True):
         """
         :param propagation_model: name of signal propagation model
-        ex: "NoLoss", "FreeSpace", "TwoRayGround"
+            ex: "NoLoss", "FreeSpace", "TwoRayGround"
         :param reception_model: name of V2V reception model,
-        ex: "Perfect", "Deterministic", "Rayleigh", "Nakagami"
+            ex: "Perfect", "Deterministic", "Rayleigh", "Nakagami"
         :param propagation_params: dict of keyword params for propagation model
         :param reception_params: dict of keyword params for reception model
         """

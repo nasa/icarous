@@ -15,7 +15,8 @@ from IcarousInterface import IcarousInterface
 import BatchGSModule as GS
 
 sim_home = os.getcwd()
-icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
+file_location = os.path.dirname(os.path.abspath(__file__))
+icarous_home = os.path.abspath(os.path.join(file_location, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 class IcarousRunner(IcarousInterface):
@@ -53,8 +54,8 @@ class IcarousRunner(IcarousInterface):
                                             "--logfile=" + logname],
                                             stdout=subprocess.DEVNULL)
             if self.verbose:
-                print("Telemetry for %s is on 127.0.0.1:%d" %
-                      (self.callsign, self.out))
+                print("%s : Telemetry for %s is on 127.0.0.1:%d" %
+                      (self.callsign, self.callsign, self.out))
 
         # Open connection for virtual ground station
         master = mavutil.mavlink_connection("127.0.0.1:"+str(gs_port))
@@ -70,7 +71,7 @@ class IcarousRunner(IcarousInterface):
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
         if self.verbose:
-            print("Waiting for heartbeat...")
+            print("%s : Waiting for heartbeat..." % self.callsign)
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, target_system=1, target_component=0)
 
@@ -136,7 +137,9 @@ class IcarousRunner(IcarousInterface):
     def CheckMissionComplete(self):
         if self.missionComplete:
             return True
-        self.missionComplete = self.missionStarted and self.land
+        if self.missionStarted and self.land:
+            self.missionComplete = True
+            print("%s : Landing" % self.callsign)
         return self.missionComplete
 
     def Run(self):
