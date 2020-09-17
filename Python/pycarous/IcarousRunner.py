@@ -81,6 +81,9 @@ class IcarousRunner(IcarousInterface):
 
     def InputTraffic(self, idx, position, velocity):
         self.gs.Send_traffic(idx, position, velocity)
+        if position != [0, 0, 0]:
+            positionNED = self.ConvertToLocalCoordinates(position)
+            self.RecordTraffic(idx, position, velocity, positionNED)
 
     def InputFlightplan(self, fp, scenarioTime=0, eta=False):
         self.flightplan1 = fp
@@ -163,16 +166,6 @@ class IcarousRunner(IcarousInterface):
             self.velocity = [msg.vx*1e-2, msg.vy*1e-2, msg.vz*1e-2]
             self.localPos = self.ConvertToLocalCoordinates(self.position)
             self.RecordOwnship()
-        elif msg.get_type() == "ADSB_VEHICLE":
-            # Store traffic position/velocity information
-            traffic_id = msg.callsign
-            position = [msg.lat*1e-7, msg.lon*1e-7, msg.altitude*1e-3]
-            positionNED = self.ConvertToLocalCoordinates(position)
-            heading = msg.heading*1e-2
-            vy = msg.hor_velocity*1e-2*np.sin(np.radians(heading))
-            vx = msg.hor_velocity*1e-2*np.cos(np.radians(heading))
-            velocityNED = [vx, vy, msg.ver_velocity*1e-2]
-            self.RecordTraffic(traffic_id, position, velocityNED, positionNED)
         elif msg.get_type() == "STATUSTEXT":
             print("%s : %s" % (self.callsign, msg.text))
             if "Landing" in msg.text:
