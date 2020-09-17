@@ -1,5 +1,6 @@
 from ctypes import *
 from enum import IntEnum
+from collections import namedtuple
 
 class VelocityCommand(Structure):
     _fields_ = [("vn",c_double),
@@ -116,3 +117,6 @@ class GeofenceConflict(Structure):
         ("waypointConflict2",bool50arr),
         ("directPathToWaypoint2",bool50arr)]
 
+# Datastructure used for V2V data exchange
+datafields = ['type','payload']
+V2Vdata = namedtuple('V2Vdata',field_names=datafields)
