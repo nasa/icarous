@@ -18,30 +18,8 @@ icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 
-def SetApps(sitl=False, merger=False, s2d=False):
-    """ set the apps that ICAROUS will run """
-    if sitl:
-        sim_app = "arducopter"
-    else:
-        sim_app = "rotorsim"
-
-    app_list = ["Icarouslib","port_lib", "scheduler", sim_app, "gsInterface",
-                "cognition", "guidance", "traffic", "trajectory", "geofence"]
-    if merger:
-        app_list += ["merger", "raft", "SBN", "SBN_UDP"]
-
-    if s2d:
-        app_list.append("safe2ditch")
-
-    approot = os.path.join(icarous_home, "apps")
-    outputloc = os.path.join(icarous_exe, "cf")
-
-    subprocess.call(["python3", "../cFS_Utils/ConfigureApps.py",
-                     approot, outputloc, *app_list])
-
-
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
-                out=None, output_dir="sim_output"):
+                out=None, use_sbn=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario """
     os.chdir(output_dir)
     if not python:
@@ -57,20 +35,28 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     num_vehicles = len(scenario["vehicles"])
     sim_time_limit = scenario.get("time_limit", 1000)
 
+    # If any vehicles are using pycarous, do not run SBN
+    if any(v.get("python", python) for v in scenario["vehicles"]):
+        use_sbn = False
+
     for v in scenario["vehicles"]:
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
         spacecraft_id = cpu_id - 1
         callsign = v.get("name", "vehicle%d" % spacecraft_id)
         fp_file = os.path.join(icarous_home, v["waypoint_file"])
         HomePos = GetHomePosition(fp_file)
+        use_python = v.get("python", python)
 
         # Initialize Icarous class
-        if python:
+        if use_python:
+            os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime)
         else:
+            apps = GetApps(sitl=args.sitl, merger=args.merger, sbn=use_sbn)
             ic = IcarousRunner(HomePos, vehicleID=spacecraft_id,
-                               callsign=callsign, verbose=verbose, out=out)
+                               callsign=callsign, verbose=verbose,
+                               apps=apps, out=out)
 
         # Set parameters
         param_file = os.path.join(icarous_home, v["parameter_file"])
@@ -94,7 +80,7 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
             sim.AddTraffic(traf_id, HomePos, *tf)
 
         delay = v.get("delay", 0)
-        time_limit = v.get("time_limit", sim_time_limit)
+        time_limit = min(sim_time_limit, v.get("time_limit", sim_time_limit))
         sim.AddIcarousInstance(ic, delay, time_limit)
 
     # Run the simulation
@@ -142,6 +128,39 @@ def RunValidation(out_dir):
         VS.run_validation(out_dir, args.test, args.plot, args.save)
 
 
+def GetApps(apps="default", sitl=False, merger=False, s2d=False, sbn=False):
+    """
+    Set the apps that ICAROUS will run
+    :param apps: Starting list of the apps, or "default" to use default apps
+    :param sitl: When true, run arducopter instead of rotorsim
+    :param merger: When true, add the merger apps (merger and raft)
+    :param s2d: When true, add the safe2ditch app
+    :param sbn: When true, add the software bus network apps (SBN, SBN_UDP)
+    """
+    if apps == "default":
+        app_list = ["Icarouslib","port_lib", "scheduler",
+                    "gsInterface", "cognition", "guidance",
+                    "traffic", "trajectory", "geofence"]
+    else:
+        app_list = apps
+
+    if sitl:
+        app_list.append("arducopter")
+    else:
+        app_list.append("rotorsim")
+
+    if merger:
+        app_list += ["merger", "raft"]
+
+    if sbn:
+        app_list += ["SBN", "SBN_UDP"]
+
+    if s2d:
+        app_list.append("safe2ditch")
+
+    return app_list
+
+
 def set_up_output_dir(scenario, base_dir="sim_output"):
     """ Set up a directory to save log files for a scenario """
     name = scenario["name"].replace(' ', '-')
@@ -168,6 +187,8 @@ if __name__ == "__main__":
                         help="run merging apps")
     parser.add_argument("--s2d", action="store_true",
                         help="run safe2ditch app")
+    parser.add_argument("--sbn", action="store_true",
+                        help="run the software bus network (cFS)")
     parser.add_argument("--python", action="store_true",
                         help="use pycarous instead of cFS")
     parser.add_argument("--realtime", dest="fasttime", action="store_false",
@@ -207,7 +228,6 @@ if __name__ == "__main__":
 
     if not args.python:
         args.fasttime = False
-        SetApps(sitl=args.sitl, merger=args.merger, s2d=args.s2d)
 
     # Run the scenarios
     for scenario in scenario_list:
@@ -219,11 +239,10 @@ if __name__ == "__main__":
         # Run the simulation
         RunScenario(scenario, verbose=args.verbose, fasttime=args.fasttime,
                     eta=args.eta, python=use_python, out=args.out,
-                    output_dir=out_dir)
+                    use_sbn=args.sbn, output_dir=out_dir)
 
         # Perform validation
         if args.validate:
             time.sleep(2)
             args.merger = False
             RunValidation(out_dir)
-

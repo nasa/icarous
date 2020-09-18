@@ -29,6 +29,7 @@ class IcarousInterface(abc.ABC):
         self.windSpeed = 0
 
         # Aircraft data
+        self.apps         = []
         self.params       = {}
         self.localMergeFixes = []
         self.plans        = []
@@ -38,7 +39,7 @@ class IcarousInterface(abc.ABC):
         self.flightplan1  = []
         self.controlInput = [0.0, 0.0, 0.0]
         self.fenceList    = []
-        self.mergeFixes = []
+        self.mergeFixes   = []
 
         # Aircraft state
         self.currTime = 0

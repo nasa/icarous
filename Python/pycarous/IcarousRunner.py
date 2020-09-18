@@ -24,15 +24,17 @@ class IcarousRunner(IcarousInterface):
     Interface to launch and control a cFS instance of ICAROUS from python
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
-                 out=None):
+                 apps="default", out=None):
         """
         Initialize an instance of ICAROUS running in cFS
+        :param apps: List of the apps to run, or "default" to use default apps
         :param out: port number to forward MAVLink data for visualization
                     (use out=None to turn off MAVLink output)
         Other parameters are defined in parent class, see IcarousInterface.py
         """
         super().__init__(home_pos, callsign, vehicleID, verbose)
 
+        self.SetApps(apps=apps)
         self.simType = "cFS"
         self.out = out
         self.cpu_id = self.vehicleID + 1
@@ -180,3 +182,22 @@ class IcarousRunner(IcarousInterface):
         self.ic.kill()
         if self.out is not None:
             subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
+
+    def SetApps(self, apps="default"):
+        """
+        Set the apps that ICAROUS will run
+        :param apps: List of the apps to run, or "default" to use default apps
+        """
+        if apps == "default":
+            app_list = ["Icarouslib","port_lib", "scheduler", "gsInterface",
+                        "cognition", "guidance", "traffic", "trajectory",
+                        "geofence", "rotorsim"]
+        else:
+            app_list = apps
+
+        approot = os.path.join(icarous_home, "apps")
+        outputloc = os.path.join(icarous_exe, "cf")
+        script = os.path.join(icarous_home, "Python/cFS_Utils/ConfigureApps.py")
+
+        subprocess.call(["python3", script, approot, outputloc, *app_list])
+        self.apps = app_list
