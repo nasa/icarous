@@ -102,7 +102,7 @@ class Icarous(IcarousInterface):
         self.ownship.setpos_uncertainty(xx, yy, zz, xy, yz, xz, coeff)
 
     def InputTraffic(self,idx,position,velocity):
-        if idx is not self.vehicleID:
+        if idx is not self.vehicleID and 0 not in position:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
             self.Trajectory.InputTrafficData(idx,position,trkgsvs)

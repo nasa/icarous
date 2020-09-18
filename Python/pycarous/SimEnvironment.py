@@ -231,8 +231,9 @@ class SimEnvironment:
                 status |= ic.Run()
 
                 # Transmit V2V position data
-                data = {"pos": ic.position, "vel": ic.velocity}
-                ic.transmitter.transmit(self.current_time, ic.vehicleID, ic.position, data)
+                if "SBN" not in ic.apps:
+                    data = {"pos": ic.position, "vel": ic.velocity}
+                    ic.transmitter.transmit(self.current_time, ic.vehicleID, ic.position, data)
 
                 # Check if time limit has been met
                 if ic.missionStarted and not ic.missionComplete:

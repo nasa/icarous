@@ -21,7 +21,6 @@ icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
                 out=None, use_sbn=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario """
-    os.chdir(output_dir)
     if not python:
         ClearLogs()
 
