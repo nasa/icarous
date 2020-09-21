@@ -106,7 +106,7 @@ class SimEnvironment:
 
         return traffic
 
-    def RunSimulatedTraffic(self):
+    def RunSimulatedTraffic(self, dT=None):
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:
             tf.dt = dT or self.dT
@@ -165,8 +165,6 @@ class SimEnvironment:
         # Gather logs to be exchanged for merging activity
         log = {}
         for ic in self.icInstances:
-            if "arrTime" not in vars(ic):
-                continue
             if ic.arrTime is not None:
                 intsid = ic.arrTime.intersectionID
                 if intsid in log.keys():
@@ -217,14 +215,14 @@ class SimEnvironment:
             if self.fasttime:
                 self.count += 1
                 self.current_time += self.dT
-                self.RunTraffic()
+                self.RunSimulatedTraffic()
             else:
                 time_now = time.time()
                 if time_now - self.current_time >= self.dT:
                     dT = time_now - self.current_time
                     self.current_time = time_now
                     self.count += 1
-                    self.RunTraffic(dT=dT)
+                    self.RunSimulatedTraffic(dT=dT)
                     print("Sim Duration: %.1fs" % (duration), end="\r")
             self.windFrom, self.windSpeed = self.GetWind()
 
@@ -252,16 +250,10 @@ class SimEnvironment:
                         if self.verbose > 0:
                             print("%s : Time limit reached at %f" %
                                   (ic.callsign, self.current_time))
-
-            # Run traffic vehicles
-            self.RunSimulatedTraffic()
-
             
             # Exchange all V2V data between vehicles in the environment
             self.ExchangeV2VData()
 
-            self.count += 1
-            self.current_time = self.count*0.05
             simComplete = all(ic.missionComplete for ic in self.icInstances)
         self.ConvertLogsToLocalCoordinates()
 

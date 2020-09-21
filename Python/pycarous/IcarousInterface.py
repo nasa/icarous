@@ -40,6 +40,7 @@ class IcarousInterface(abc.ABC):
         self.controlInput = [0.0, 0.0, 0.0]
         self.fenceList    = []
         self.mergeFixes   = []
+        self.arrTime      = None
 
         # Aircraft state
         self.currTime = 0
@@ -89,6 +90,21 @@ class IcarousInterface(abc.ABC):
         """
         self.windFrom = windFrom
         self.windSpeed = windSpeed
+
+    def InputV2VData(self, data):
+        """
+        Input V2V data to ICAROUS
+        :param data: the V2V data to input
+        """
+        for d in data:
+            if d.type == "INTRUDER":
+                self.InputTraffic(d.payload["id"], d.payload["pos"], d.payload["vel"])
+            elif d.type == "MERGER":
+                if self.arrTime is None:
+                    return
+                elif self.arrTime.intersectionID == d.payload.intersectionID:
+                    self.InputMergeLogs(d.payload, 0.0)
+                    print("received merger data")
 
     @abc.abstractmethod
     def InputTraffic(self, idx, position, velocity):

@@ -243,5 +243,4 @@ if __name__ == "__main__":
         # Perform validation
         if args.validate:
             time.sleep(2)
-            args.merger = False
             RunValidation(out_dir)
