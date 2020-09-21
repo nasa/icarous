@@ -16,6 +16,7 @@ from ichelper import (ReadFlightplanFile, LoadIcarousParams, GetHomePosition)
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
+pycarous_home = os.path.join(icarous_home, "Python/pycarous")
 
 
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
@@ -48,12 +49,15 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
         fp_file = os.path.join(icarous_home, v["waypoint_file"])
         HomePos = GetHomePosition(fp_file)
         use_python = v.get("python", python)
+        default = os.path.join(pycarous_home, "data", "DaidalusQuadConfig.txt")
+        daa_config = v.get("daa_file", default)
 
         # Initialize Icarous class
         if use_python:
             os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
-                         callsign=callsign, verbose=verbose, fasttime=fasttime)
+                         callsign=callsign, verbose=verbose, fasttime=fasttime,
+                         daaConfig=daa_config)
         else:
             apps = GetApps(sitl=args.sitl, merger=args.merger, sbn=use_sbn)
             ic = IcarousRunner(HomePos, vehicleID=spacecraft_id,
@@ -227,9 +231,6 @@ if __name__ == "__main__":
     if args.num is not None:
         selected_scenarios = [scenario_list[i] for i in args.num]
         scenario_list = selected_scenarios
-
-    if not args.python:
-        args.fasttime = False
 
     # Run the scenarios
     for scenario in scenario_list:
