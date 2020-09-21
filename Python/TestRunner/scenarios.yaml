@@ -94,7 +94,7 @@ scenarios:
     param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
     traffic:
       - [77, 77, 5, 1, 270, 0]
-      - [142, 265, 5, 1, 90, 0]
+      #- [142, 265, 5, 1, 90, 0]
 
 # Test ID: AT-7
 # geofence conflict then traffic conflict
