@@ -1,9 +1,13 @@
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
 from IcarousRunner import IcarousRunner
-from Icarous import checkDAAType
 from ichelper import GetHomePosition,ReadTrafficInput
 import argparse
+
+def checkDAAType(value):
+    if value.upper() not in ['DAIDALUS','ACAS']:
+        raise argparse.ArgumentTypeError("%s is an invalid DAA option" % value)
+    return value.upper()
 
 parser = argparse.ArgumentParser(description=\
 " Run a fast time simulation of Icarous with the provided inputs.\n\

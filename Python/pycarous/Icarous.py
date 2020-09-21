@@ -585,16 +585,6 @@ class Icarous(IcarousInterface):
         with open(logname, 'w') as f:
             json.dump(log_data, f)
 
-    def InputV2VData(self,data):
-        for d in data:
-            if d.type == "INTRUDER":
-                self.InputTraffic(d.payload["id"], d.payload["pos"], d.payload["vel"])
-            elif d.type == "MERGER":
-                if self.arrTime is None:
-                    return
-                elif self.arrTime.intersectionID == d.payload.intersectionID:
-                    self.InputMergeLogs(d.payload, 0.0)
-
     def Run(self):
         time_now = time.time()
         if not self.fasttime:
@@ -683,9 +673,3 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
 
     anim.run()
-
-
-def checkDAAType(value):
-    if value.upper() not in ['DAIDALUS','ACAS']:
-        raise argparse.ArgumentTypeError("%s is an invalid DAA option" % value)
-    return value.upper()
