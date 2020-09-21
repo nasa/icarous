@@ -21,8 +21,11 @@ icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
                 out=None, use_sbn=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario """
-    if not python:
-        ClearLogs()
+    if python:
+        log_home = os.path.join(icarous_home, "Python", "pycarous", "log")
+    else:
+        log_home = os.path.join(icarous_exe, "log")
+    ClearLogs(log_home)
 
     # Create simulation environment
     sim = SimEnvironment(verbose=verbose, fasttime=fasttime)
@@ -89,22 +92,23 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     os.chdir(output_dir)
     sim.WriteLog()
     os.chdir(sim_home)
-    if not python:
-        CollectLogs(output_dir)
+    CollectLogs(log_home, output_dir)
 
 
-def ClearLogs():
-    for f in os.listdir(os.path.join(icarous_exe, "log")):
+def ClearLogs(source):
+    if not os.path.isdir(source):
+        return
+    for f in os.listdir(source):
         if f.endswith(".log"):
-            os.remove(os.path.join(icarous_exe, "log", f))
+            os.remove(os.path.join(source, f))
 
 
-def CollectLogs(output_dir):
-    source = os.path.join(icarous_exe, "log")
+def CollectLogs(source, output_dir):
     dest = os.path.join(output_dir, "log")
     for f in os.listdir(source):
         if f.endswith(".log"):
             oldname = f
+            # Rename the log to match json log naming convention
             try:
                 # Rename the log to match json log naming convention
                 log_type, vehicle_name, timestamp = oldname.split('-')
@@ -114,7 +118,6 @@ def CollectLogs(output_dir):
                 newname = "-".join([log_type, callsign, timestamp])
             except:
                 newname = oldname
-            newname = f
             shutil.copy(os.path.join(source, f), os.path.join(dest, newname))
 
 
