@@ -28,6 +28,14 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
         log_home = os.path.join(icarous_exe, "log")
     ClearLogs(log_home)
 
+    # If any vehicles are using pycarous, do not run SBN
+    if any(v.get("python", python) for v in scenario["vehicles"]):
+        use_sbn = False
+
+    # If any vehicles are using cFS, run in real time
+    if not all(v.get("python", python) for v in scenario["vehicles"]):
+        fasttime = False
+
     # Create simulation environment
     sim = SimEnvironment(verbose=verbose, fasttime=fasttime)
     if "merge_fixes" in scenario:
@@ -38,9 +46,6 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     num_vehicles = len(scenario["vehicles"])
     sim_time_limit = scenario.get("time_limit", 1000)
 
-    # If any vehicles are using pycarous, do not run SBN
-    if any(v.get("python", python) for v in scenario["vehicles"]):
-        use_sbn = False
 
     for v in scenario["vehicles"]:
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
