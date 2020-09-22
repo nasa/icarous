@@ -19,51 +19,64 @@ icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 pycarous_home = os.path.join(icarous_home, "Python", "pycarous")
 pycarous_log_dir = os.path.join(pycarous_home, "log")
 cFS_log_dir = os.path.join(icarous_exe, "log")
+default_apps =  ["Icarouslib","port_lib", "scheduler", "gsInterface",
+                 "cognition", "guidance", "traffic", "trajectory",
+                 "geofence", "rotorsim"]
+default_daa_file = os.path.join(pycarous_home, "data", "DaidalusQuadConfig.txt")
 
 
-def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
-                out=None, sitl=False, s2d=False, merger=False, use_sbn=False,
-                output_dir="sim_output"):
-    """ Run an ICAROUS scenario """
+def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
+                out=None, output_dir="sim_output"):
+    """
+    Run an ICAROUS scenario
+    :param scenario: dictionary defining scenario inputs
+    :param verbose: control printouts (0: none, 1: some, 2+: more)
+    :param fasttime: run simulation in fasttime (pycarous only)
+    :param use_python: run simulation with pycarous (override scenario inputs)
+    :param out: port number to forward MAVLink data for visualization
+                (use out=None to turn off MAVLink output)
+    :param output_dir: location to save log files
+    """
     # Clear out existing logs
     ClearLogs(pycarous_log_dir)
     ClearLogs(cFS_log_dir)
-
-    # If any vehicles are using pycarous, do not run SBN
-    if any(v.get("python", python) for v in scenario["vehicles"]):
-        use_sbn = False
-
-    # If any vehicles are using cFS, run in real time
-    if not all(v.get("python", python) for v in scenario["vehicles"]):
-        fasttime = False
 
     # Create simulation environment
     sim = SimEnvironment(verbose=verbose, fasttime=fasttime)
     if "merge_fixes" in scenario:
         sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
     sim.AddWind(scenario.get("wind", [(0, 0)]))
+    sitl_running = False
 
     # Add Icarous instances to simulation environment
     num_vehicles = len(scenario["vehicles"])
     sim_time_limit = scenario.get("time_limit", 1000)
     for v in scenario["vehicles"]:
+        v = dict(list(scenario.items()) + list(v.items()))
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
         spacecraft_id = cpu_id - 1
         callsign = v.get("name", "vehicle%d" % spacecraft_id)
         fp_file = os.path.join(icarous_home, v["waypoint_file"])
         HomePos = GetHomePosition(fp_file)
-        use_python = v.get("python", python)
-        default = os.path.join(pycarous_home, "data", "DaidalusQuadConfig.txt")
-        daa_config = v.get("daa_file", default)
+        daa_file = v.get("daa_file", default_daa_file)
 
         # Initialize Icarous class
+        if not use_python:
+            use_python = v.get("python", False)
         if use_python:
             os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,
-                         daaConfig=daa_config)
+                         daaConfig=daa_file)
         else:
-            apps = GetApps(sitl=sitl, merger=merger, s2d=s2d, sbn=use_sbn)
+            sim.fasttime = False
+            apps = v.get("apps", default_apps)
+            sitl = v.get("sitl", False)
+            if sitl:
+                apps.append("arducopter")
+                if "rotorsim" in apps:
+                    apps.remove("rotorsim")
+            sitl_running |= sitl
             ic = IcarousRunner(HomePos, vehicleID=spacecraft_id,
                                callsign=callsign, verbose=verbose,
                                apps=apps, sitl=sitl, out=out)
@@ -77,6 +90,7 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
         ic.SetParameters(params)
 
         # Input flight plan
+        eta = v.get("eta", False)
         ic.InputFlightplanFromFile(fp_file, eta=eta)
 
         # Input geofences
@@ -97,7 +111,7 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     sim.RunSimulation()
 
     # Shut down SITL if necessary
-    if sitl:
+    if sitl_running:
         subprocess.call(["pkill", "-9", "arducopter"])
         subprocess.call(["pkill", "-9", "mavproxy"])
 
@@ -122,7 +136,6 @@ def CollectLogs(source, output_dir):
     for f in os.listdir(source):
         if f.endswith(".log"):
             oldname = f
-            # Rename the log to match json log naming convention
             try:
                 # Rename the log to match json log naming convention
                 log_type, vehicle_name, timestamp = oldname.split('-')
@@ -136,45 +149,11 @@ def CollectLogs(source, output_dir):
 
 
 def RunValidation(out_dir):
-    if args.merger:
-        import ValidateMerge as VM
-        VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
-    else:
-        import ValidateSim as VS
-        VS.run_validation(out_dir, args.test, args.plot, args.save)
-
-
-def GetApps(apps="default", sitl=False, merger=False, s2d=False, sbn=False):
-    """
-    Set the apps that ICAROUS will run
-    :param apps: Starting list of the apps, or "default" to use default apps
-    :param sitl: When true, run arducopter instead of rotorsim
-    :param merger: When true, add the merger apps (merger and raft)
-    :param s2d: When true, add the safe2ditch app
-    :param sbn: When true, add the software bus network apps (SBN, SBN_UDP)
-    """
-    if apps == "default":
-        app_list = ["Icarouslib","port_lib", "scheduler",
-                    "gsInterface", "cognition", "guidance",
-                    "traffic", "trajectory", "geofence"]
-    else:
-        app_list = apps
-
-    if sitl:
-        app_list.append("arducopter")
-    else:
-        app_list.append("rotorsim")
-
-    if merger:
-        app_list += ["merger", "raft"]
-
-    if sbn:
-        app_list += ["SBN", "SBN_UDP"]
-
-    if s2d:
-        app_list.append("safe2ditch")
-
-    return app_list
+    """ Run validation script on the log files in out_dir """
+    import ValidateMerge as VM
+    VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
+    import ValidateSim as VS
+    VS.run_validation(out_dir, args.test, args.plot, args.save)
 
 
 def set_up_output_dir(scenario, base_dir="sim_output"):
@@ -195,22 +174,10 @@ if __name__ == "__main__":
                         help="yaml file containing scenario(s) to run")
     parser.add_argument("--num", type=int, nargs="+",
                         help="index of scenario to run")
-    parser.add_argument("--sitl", action="store_true",
-                        help="use SITL simulator (only for cFS simulations)")
-    parser.add_argument("--eta", action="store_true",
-                        help="Enforce waypoint etas")
-    parser.add_argument("--merger", action="store_true",
-                        help="run merging apps")
-    parser.add_argument("--s2d", action="store_true",
-                        help="run safe2ditch app")
-    parser.add_argument("--sbn", action="store_true",
-                        help="run the software bus network (cFS)")
-    parser.add_argument("--python", action="store_true",
-                        help="use pycarous instead of cFS")
     parser.add_argument("--realtime", dest="fasttime", action="store_false",
                         help='Run sim in real time')
-    parser.add_argument("--fasttime", dest="fasttime", action="store_true",
-                        help='Run sim in fast time (only for pycarous)')
+    parser.add_argument("--python", action="store_true",
+                        help="use pycarous instead of cFS")
 
     output = parser.add_argument_group("output arguments")
     output.add_argument("--verbose", nargs='?', type=int, default=0, const=1,
@@ -235,27 +202,25 @@ if __name__ == "__main__":
     with open(args.scenario, 'r') as f:
         scenario_data = yaml.load(f, Loader=yaml.FullLoader)
         scenario_list = scenario_data.get("scenarios", [])
-        default_params = scenario_data.get("sim_params", {})
-        parser.set_defaults(**default_params)
-        args = parser.parse_args()
+        defaults = scenario_data.get("defaults", {})
     if args.num is not None:
         selected_scenarios = [scenario_list[i] for i in args.num]
         scenario_list = selected_scenarios
 
     # Run the scenarios
     for scenario in scenario_list:
-        use_python = scenario.get("python", args.python)
         out_dir = set_up_output_dir(scenario, args.output_dir)
+        scenario = dict(list(defaults.items()) + list(scenario.items()))
         if args.verbose > 0:
             print("~~~~ Running scenario: %s ~~~~" % scenario["name"])
 
         # Run the simulation
         RunScenario(scenario, verbose=args.verbose, fasttime=args.fasttime,
-                    eta=args.eta, python=use_python, out=args.out,
-                    sitl=args.sitl, s2d=args.s2d, use_sbn=args.sbn,
-                    output_dir=out_dir)
+                    use_python=args.python, out=args.out, output_dir=out_dir)
 
         # Perform validation
+        args.validate = args.validate or args.test
         if args.validate:
             time.sleep(2)
             RunValidation(out_dir)
+

@@ -1,5 +1,7 @@
-sim_params:
-    merger: True
+defaults:
+  apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
+         "cognition", "guidance", "traffic", "trajectory",
+         "geofence", "raft", "merger", "rotorsim", "SBN", "SBN_UDP"]
 
 scenarios:
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt

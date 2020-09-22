@@ -242,7 +242,7 @@ def run_validation(flight_dir, merge_id=1, test=False, plot=False, save=False):
         MA.plot_summary(vehicles, merge_id=merge_id, save=save)
         MA.plot_spacing_summary(vehicles, save=save)
         plt.show()
-    plt.close("all")
+        plt.close("all")
 
 
 if __name__ == "__main__":

@@ -340,6 +340,8 @@ def plot(vehicles, *fields, merge_id="all", save=False, fmt=""):
 
 
 def plot_summary(vehicles, merge_id=1, save=False):
+    if not vehicles:
+        return
     plt.figure()
 
     for v in vehicles:
@@ -581,7 +583,7 @@ if __name__ == "__main__":
         plot_spacing(vehicles, merge_id="all", save=args.save)
         plot_flight_trace(vehicles, merge_id="all", save=args.save)
         plot_summary(vehicles, merge_id=args.merge_id, save=args.save)
-    if args.show:
-        plt.show()
-    else:
-        plt.close("all")
+        if args.show:
+            plt.show()
+        else:
+            plt.close("all")

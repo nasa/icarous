@@ -12,6 +12,15 @@
 #   time_limit: time limit for the scenario (in seconds)
 #   (file paths are relative to Icarous repository)
 
+# defaults apply to all scenarios and vehicles, unless overridden in a specific
+# scenario or vehicle
+defaults:
+  apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
+         "cognition", "guidance", "traffic", "trajectory",
+         "geofence", "rotorsim"]
+  python: False
+  sitl: False
+
 # Test ID: AT-0
 scenarios:
 - name: "Basic"

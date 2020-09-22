@@ -1,5 +1,7 @@
-sim_params:
-    s2d: True
+defaults:
+  apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
+         "cognition", "guidance", "traffic", "trajectory",
+         "geofence", "safe2ditch", "rotorsim"]
 
 scenarios:
 - name: "STEReO"
