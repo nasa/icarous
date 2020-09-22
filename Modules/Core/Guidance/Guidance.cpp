@@ -47,20 +47,61 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
 }
 
 void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const double val,const bool updateAll){
+   // For altitude changes, create a copy of the original plan
+   // and modify altitudes in the copy.
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
 
+   // New Plan
+   std::string newPlanID("PlanAltChange");
+
+   // Reuse existing PlanAltChange if available
+   larcfm::Plan *oldPlan = GetPlan(newPlanID);
+   if (oldPlan != nullptr) oldPlan->clear();
+
+   larcfm::Plan fp2  = fp->copy();
+   fp2.setID("PlanAltChange");
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
-   for(int i=newInd;i<fp->size();++i){
-        larcfm::NavPoint point = fp->point(i);
-        fp->remove(i);
-        fp->add(point.position().mkAlt(val),point.time());
 
+   // Find diff altitude so that all remaining waypoints
+   // can be shifted by the diff altitude
+   double currentRefAlt = fp->getPos(newInd).alt();
+   double diffAlt = val - currentRefAlt;
+
+   // If no altitude difference, revert back to using nominal plan
+   if(fabs(diffAlt) < 1e-4){
+       activePlanId = planID;
+       currentPlan = GetPlan(activePlanId);
+       nextWpId[planID] = newInd;
+       wpSpeeds[planID] = wpSpeeds[planID];
+       return;
+   }
+   
+   // Shift altitudes in plan copy
+   for(int i=newInd;i<fp2.size();++i){
+        larcfm::NavPoint point = fp2.point(i);
+        fp2.remove(i);
+        double oldAlt = point.position().alt();
+        double newAlt = oldAlt + diffAlt;
+        fp2.add(point.position().mkAlt(newAlt),point.time());
         if(!updateAll){
             break;
         }
    }
+
+   // Add new plan to list if not already available
+   if(oldPlan == nullptr){
+       planList.push_back(fp2);
+   }else{
+       *oldPlan = fp2;
+   }
+
+   // Set pointers to the new plan
+   activePlanId = newPlanID;
+   currentPlan = GetPlan(activePlanId);
+   nextWpId[newPlanID] = newInd;
+   wpSpeeds[newPlanID] = wpSpeeds[planID];
 }
 
 void Guidance::ChangeWaypointETA(const std::string planID,const int wpid,const double val,bool updateAll){
@@ -306,7 +347,7 @@ void Guidance::ComputePlanGuidance(){
     // Smooth the output
     double n_gs, n_vs, n_heading;
     double ownship_gs = currSpeed;
-    double ownship_vd = -currentVel.z;
+    double ownship_vd = currentVel.z;
     double gs_range = params.maxSpeed - params.minSpeed;
     double vs_range = (params.maxClimbRate - params.minClimbRate);
     double heading_change = fabs(fmod(180 + ownship_heading - heading, 360) - 180);
@@ -329,6 +370,7 @@ void Guidance::ComputePlanGuidance(){
     climbrate = (1 - n_vs) * ownship_vd + n_vs * climbrate;
 
     outputCmd = larcfm::Velocity::makeTrkGsVs(heading,"degree",speedRef,"m/s",climbrate,"m/s");
+
 
     const double approachPrec = GetApproachPrecision(currentPos,currentVel,nextWPPos);
     // If distance to next waypoint is < captureRadius, switch to next waypoint
