@@ -104,7 +104,6 @@ class IcarousInterface(abc.ABC):
                     return
                 elif self.arrTime.intersectionID == d.payload.intersectionID:
                     self.InputMergeLogs(d.payload, 0.0)
-                    print("received merger data")
 
     @abc.abstractmethod
     def InputTraffic(self, idx, position, velocity):

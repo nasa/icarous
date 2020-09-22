@@ -1,0 +1,1458 @@
+defaults:
+  apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
+         "cognition", "guidance", "traffic", "trajectory",
+         "geofence", "raft", "merger", "rotorsim", "SBN", "SBN_UDP"]
+
+scenarios:
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging1
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging2
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging3
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging4
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging5
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging6
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging7
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging8
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging9
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging10
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging11
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging12
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging13
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging14
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging15
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging16
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging17
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging18
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging19
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 3.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging20
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging21
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging22
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging23
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging24
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging25
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging26
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging27
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging28
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 70
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging29
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 3.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging30
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging31
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging32
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging33
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging34
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging35
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging36
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging37
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging38
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 85
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging39
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 3.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging40
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging41
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 0.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging42
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging43
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging44
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 13.3
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 5.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging45
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 13.3
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging46
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 3
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 19.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 19.0
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging47
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 0.0
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt
+- merge_fixes: Python/TestRunner/scenarios/merging_scenarios/merge_fixes.txt
+  name: merging48
+  time_limit: 100
+  vehicles:
+  - cpu_id: 1
+    delay: 0
+    name: AC0
+    param_adjustments:
+      DEF_WP_SPEED: 5
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle0_waypoints.txt
+  - cpu_id: 2
+    delay: 5.7
+    name: AC1
+    param_adjustments:
+      DEF_WP_SPEED: 7
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle1_waypoints.txt
+  - cpu_id: 3
+    delay: 5.7
+    name: AC2
+    param_adjustments:
+      DEF_WP_SPEED: 7.0
+      SCHEDULE_ZONE: 65
+    parameter_file: Python/TestRunner/scenarios/merging_scenarios/merging_default.parm
+    time_limit: 100
+    traffic: []
+    waypoint_file: Python/TestRunner/scenarios/merging_scenarios/vehicle2_waypoints.txt

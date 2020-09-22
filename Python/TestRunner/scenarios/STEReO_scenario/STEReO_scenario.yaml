@@ -9,16 +9,16 @@ scenarios:
   vehicles:
   - name: MANNED
     cpu_id: 1
-    waypoint_file: Python/TestRunner/STEReO_scenario/STEReO_manned.txt
+    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_manned.txt
     geofence_file: null
-    parameter_file: Python/TestRunner/STEReO_scenario/STEReO_manned.parm
+    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_manned.parm
     param_adjustments: {}
     traffic: []
   - name: UAV
     cpu_id: 2
-    waypoint_file: Python/TestRunner/STEReO_scenario/STEReO_uav.txt
+    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_uav.txt
     geofence_file: null
-    parameter_file: Python/TestRunner/STEReO_scenario/STEReO_uav.parm
+    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_uav.parm
     param_adjustments: {}
     traffic: []
     delay: 30

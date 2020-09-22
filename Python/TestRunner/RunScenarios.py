@@ -150,10 +150,10 @@ def CollectLogs(source, output_dir):
 
 def RunValidation(out_dir, merge=False):
     """ Run validation script on the log files in out_dir """
-    import ValidateSim as VS
+    from validation_scripts import ValidateSim as VS
     VS.run_validation(out_dir, args.test, args.plot, args.save)
     if merge:
-        import ValidateMerge as VM
+        from validation_scripts import ValidateMerge as VM
         VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
 
 
