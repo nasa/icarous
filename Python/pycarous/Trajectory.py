@@ -116,11 +116,13 @@ class Trajectory():
     def ComputeClosesetPoint(self,wpA,wpB,position):
         offset = self.ComputeXtrackDistance(wpA,wpB,position)
         dist = distance(*wpA[:2],*wpB[:2])
-        n = 1 - (dist - offset[1])/dist
+        if dist<1e-3:
+            return wpB
+        else:
+            n = 1 - (dist - offset[1])/dist
+            C = [0.0,0.0,0.0]
+            for i in range(3):
+                C[i] = wpA[i] + n*(wpB[i] - wpA[i])
 
-        C = [0.0,0.0,0.0]
-        for i in range(3):
-            C[i] = wpA[i] + n*(wpB[i] - wpA[i])
-
-        return C
+            return C
 

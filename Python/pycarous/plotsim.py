@@ -41,7 +41,6 @@ plt.legend()
 plt.xlabel("X (m)"); plt.ylabel("Y (m)")
 plt.axis('equal')
 plt.savefig("simplot.png")
-plt.show()
 
 plt.figure()
 for log in logs:
@@ -54,7 +53,6 @@ for log in logs:
 plt.legend()
 plt.xlabel("Time (s)"); plt.ylabel("Altitude (m)")
 plt.savefig("alt.png")
-plt.show()
 
 plt.figure()
 for log in logs:
