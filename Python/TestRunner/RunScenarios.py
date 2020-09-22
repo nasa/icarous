@@ -16,18 +16,18 @@ from ichelper import (ReadFlightplanFile, LoadIcarousParams, GetHomePosition)
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
-pycarous_home = os.path.join(icarous_home, "Python/pycarous")
+pycarous_home = os.path.join(icarous_home, "Python", "pycarous")
+pycarous_log_dir = os.path.join(pycarous_home, "log")
+cFS_log_dir = os.path.join(icarous_exe, "log")
 
 
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
                 out=None, sitl=False, s2d=False, merger=False, use_sbn=False,
                 output_dir="sim_output"):
     """ Run an ICAROUS scenario """
-    if python:
-        log_home = os.path.join(icarous_home, "Python", "pycarous", "log")
-    else:
-        log_home = os.path.join(icarous_exe, "log")
-    ClearLogs(log_home)
+    # Clear out existing logs
+    ClearLogs(pycarous_log_dir)
+    ClearLogs(cFS_log_dir)
 
     # If any vehicles are using pycarous, do not run SBN
     if any(v.get("python", python) for v in scenario["vehicles"]):
@@ -105,7 +105,8 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     os.chdir(output_dir)
     sim.WriteLog()
     os.chdir(sim_home)
-    CollectLogs(log_home, output_dir)
+    CollectLogs(pycarous_log_dir, output_dir)
+    CollectLogs(cFS_log_dir, output_dir)
 
 
 def ClearLogs(source):
