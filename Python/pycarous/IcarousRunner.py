@@ -24,10 +24,11 @@ class IcarousRunner(IcarousInterface):
     Interface to launch and control a cFS instance of ICAROUS from python
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
-                 apps="default", out=None):
+                 apps="default", sitl=False, out=None):
         """
         Initialize an instance of ICAROUS running in cFS
         :param apps: List of the apps to run, or "default" to use default apps
+        :param sitl: When True, launch arducopter for vehicle simulation
         :param out: port number to forward MAVLink data for visualization
                     (use out=None to turn off MAVLink output)
         Other parameters are defined in parent class, see IcarousInterface.py
@@ -35,10 +36,16 @@ class IcarousRunner(IcarousInterface):
         super().__init__(home_pos, callsign, vehicleID, verbose)
 
         self.SetApps(apps=apps)
-        self.simType = "cFS"
+        self.sitl = sitl
         self.out = out
         self.cpu_id = self.vehicleID + 1
         self.spacecraft_id = self.vehicleID
+        if "rotorsim" in self.apps:
+            self.simType = "cFS/rotorsim"
+        elif "arducopter" in self.apps:
+            self.simType = "cFS/SITL"
+        else:
+            self.simType = "cFS"
 
         # Set up mavlink connections
         icarous_port = 14553 + 10*self.spacecraft_id
@@ -76,6 +83,27 @@ class IcarousRunner(IcarousInterface):
             print("%s : Waiting for heartbeat..." % self.callsign)
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, target_system=1, target_component=0)
+
+        # Launch SITL
+        if self.sitl:
+            self.launch_arducopter()
+
+    def launch_arducopter(self):
+        start_point = ','.join(str(x) for x in self.home_pos + [0])
+        sitl_param_file = os.path.join(icarous_home, "Python", "TestRunner",
+                                       "sitl_files", "sitl_defaults.parm")
+        arguments = ["sim_vehicle.py", "-v", "ArduCopter",
+                     "-l", str(start_point),
+                     "--add-param-file", sitl_param_file,
+                     "--use-dir", "sitl_files",
+                     "-I", str(self.spacecraft_id)]
+        logfile = "sitl-%s-%f.tlog" % (self.callsign, time.time())
+        arguments += ["-m", "--logfile="+logfile]
+        subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
+
+        if self.verbose:
+            print("Waiting several seconds to allow ArduCopter to start up")
+        time.sleep(60)
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         # Setting position uncertainty isn't supported for cFS simulations

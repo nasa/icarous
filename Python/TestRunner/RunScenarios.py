@@ -20,7 +20,8 @@ pycarous_home = os.path.join(icarous_home, "Python/pycarous")
 
 
 def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
-                out=None, use_sbn=False, output_dir="sim_output"):
+                out=None, sitl=False, s2d=False, merger=False, use_sbn=False,
+                output_dir="sim_output"):
     """ Run an ICAROUS scenario """
     if python:
         log_home = os.path.join(icarous_home, "Python", "pycarous", "log")
@@ -45,8 +46,6 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
     # Add Icarous instances to simulation environment
     num_vehicles = len(scenario["vehicles"])
     sim_time_limit = scenario.get("time_limit", 1000)
-
-
     for v in scenario["vehicles"]:
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
         spacecraft_id = cpu_id - 1
@@ -64,10 +63,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,
                          daaConfig=daa_config)
         else:
-            apps = GetApps(sitl=args.sitl, merger=args.merger, sbn=use_sbn)
+            apps = GetApps(sitl=sitl, merger=merger, s2d=s2d, sbn=use_sbn)
             ic = IcarousRunner(HomePos, vehicleID=spacecraft_id,
                                callsign=callsign, verbose=verbose,
-                               apps=apps, out=out)
+                               apps=apps, sitl=sitl, out=out)
 
         # Set parameters
         param_file = os.path.join(icarous_home, v["parameter_file"])
@@ -96,6 +95,11 @@ def RunScenario(scenario, verbose=0, fasttime=True, eta=False, python=True,
 
     # Run the simulation
     sim.RunSimulation()
+
+    # Shut down SITL if necessary
+    if sitl:
+        subprocess.call(["pkill", "-9", "arducopter"])
+        subprocess.call(["pkill", "-9", "mavproxy"])
 
     # Collect the log files
     os.chdir(output_dir)
@@ -247,7 +251,8 @@ if __name__ == "__main__":
         # Run the simulation
         RunScenario(scenario, verbose=args.verbose, fasttime=args.fasttime,
                     eta=args.eta, python=use_python, out=args.out,
-                    use_sbn=args.sbn, output_dir=out_dir)
+                    sitl=args.sitl, s2d=args.s2d, use_sbn=args.sbn,
+                    output_dir=out_dir)
 
         # Perform validation
         if args.validate:
