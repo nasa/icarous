@@ -148,12 +148,13 @@ def CollectLogs(source, output_dir):
             shutil.copy(os.path.join(source, f), os.path.join(dest, newname))
 
 
-def RunValidation(out_dir):
+def RunValidation(out_dir, merge=False):
     """ Run validation script on the log files in out_dir """
-    import ValidateMerge as VM
-    VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
     import ValidateSim as VS
     VS.run_validation(out_dir, args.test, args.plot, args.save)
+    if merge:
+        import ValidateMerge as VM
+        VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
 
 
 def set_up_output_dir(scenario, base_dir="sim_output"):
@@ -220,7 +221,8 @@ if __name__ == "__main__":
 
         # Perform validation
         args.validate = args.validate or args.test
+        merge = ("merge_fixes" in scenario)
         if args.validate:
             time.sleep(2)
-            RunValidation(out_dir)
+            RunValidation(out_dir, merge=merge)
 
