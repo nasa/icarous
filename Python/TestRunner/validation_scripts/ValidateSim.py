@@ -5,27 +5,25 @@ import numpy as np
 from scipy.interpolate import interp1d
 from polygon_contain import Vector, definitely_inside
 
-sys.path.append("../pycarous")
-import BatchGSModule as GS
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+from ValidationHelper import print_results, record_results, find_logs, LLA2NED, update_params
+
+validation_params = {
+     "h_allow": 0.85,       # use h_allow*DTHR to check WC violations
+     "v_allow": 0.65,       # use v_allow*ZTHR to check WC violations
+     "wp_radius": 5,        # dist (m) to consider a waypoint reached
+    }
 
 
-DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,   # use h_allow*DTHR to check WC violations
-                             "v_allow": 0.65,      # use v_allow*ZTHR to check WC violations
-                             "wp_radius": 5}    # dist (m) to consider a waypoint reached
-params = dict(DEFAULT_VALIDATION_PARAMS)
-
-def GetPolygons(origin, fenceList):
+def GetPolygons(fenceList):
     """
     Constructs a list of Polygon (for use with PolyCARP) given a list of fences
-    @param fenceList list of fence dictionaries
-    @return list of polygons (a polygon here is a list of Vectors)
+    :param fenceList: list of fence dictionaries
+    :return: list of polygons (a polygon here is a list of vertices)
     """
     Polygons = []
     for fence in fenceList:
-        vertices = fence["Vertices"]
-        vertices_ned = [list(reversed(GS.LLA2NED(origin[0:2], position)))
-                        for position in vertices]
-        polygon = [[vertex[0], vertex[1]] for vertex in vertices_ned]
+        polygon = [Vector(vertex[1], vertex[0]) for vertex in fence]
         Polygons.append(polygon)
     return Polygons
 
@@ -37,13 +35,10 @@ def get_planned_waypoints(simdata):
         return range(len(simdata["waypoints"]))
 
     planned_wps = []
-    origin = simdata["ownship"]["position"][0]
-    geofences = GetPolygons(origin, simdata["geofences"])
-    keep_in_fence = [Vector(*vertex) for vertex in geofences[0]]
-    keep_out_fences = [[Vector(*vertex) for vertex in fence]
-                       for fence in geofences[1:]]
-    lla2ned = lambda x: GS.LLA2NED(origin, x)
-    waypoints = [lla2ned(wp[0:3]) for wp in simdata["waypoints"]]
+    geofences = GetPolygons(simdata["ownship"]["localFences"])
+    keep_in_fence = geofences[0]
+    keep_out_fences = geofences[1:]
+    waypoints = simdata["ownship"]["localPlans"][0]
 
     for i, wp in enumerate(waypoints):
         reachable = True
@@ -64,8 +59,7 @@ def get_planned_waypoints(simdata):
     return planned_wps
 
 
-def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test",
-                      save=False, test=False):
+def validate_sim_data(simdata, name="test", save=False, test=False):
     '''Check simulation data for test conditions'''
     # Define conditions
     conditions = []
@@ -74,7 +68,7 @@ def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test",
     conditions.append(verify_traffic)
 
     # Check conditions
-    results = [c(simdata, params) for c in conditions]
+    results = [c(simdata) for c in conditions]
 
     # Print results
     print_results(results, name)
@@ -89,17 +83,14 @@ def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test",
     return results
 
 
-def verify_waypoint_progress(simdata, params=DEFAULT_VALIDATION_PARAMS):
+def verify_waypoint_progress(simdata):
     '''Check simulation data for progress towards goal'''
     condition_name = "Waypoint Progress"
-    wp_radius = params["wp_radius"]
-    origin = simdata["ownship"]["position"][0]
-    lla2ned = lambda x: GS.LLA2NED(origin, x)
-    waypoints = [lla2ned(wp[0:3])+[i] for i, wp in enumerate(simdata["waypoints"])]
-    pos_local = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
+    wp_radius = validation_params["wp_radius"]
+    waypoints = simdata["ownship"]["localPlans"][0]
+    pos_local = simdata["ownship"]["positionNED"]
 
     reached = []
-
     for pos in pos_local:
         # Check for reached waypoints
         for wp_seq, wp_pos in enumerate(waypoints):
@@ -118,20 +109,17 @@ def verify_waypoint_progress(simdata, params=DEFAULT_VALIDATION_PARAMS):
         return False, "Did not reach all planned waypoints", condition_name
 
 
-def verify_geofence(simdata, params=DEFAULT_VALIDATION_PARAMS):
+def verify_geofence(simdata):
     '''Check simulation data for geofence violations'''
     condition_name = "Geofencing"
 
-    origin = simdata["ownship"]["position"][0]
-    geofences = GetPolygons(origin, simdata["geofences"])
+    geofences = GetPolygons(simdata["ownship"]["localFences"])
     if len(geofences) == 0:
         return True, "No Geofences", condition_name
-    keep_in_fence = [Vector(*vertex) for vertex in geofences[0]]
-    keep_out_fences = [[Vector(*vertex) for vertex in fence]
-                       for fence in geofences[1:]]
+    keep_in_fence = geofences[0]
+    keep_out_fences = geofences[1:]
 
-    lla2ned = lambda x: GS.LLA2NED(origin, x)
-    pos_local = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
+    pos_local = simdata["ownship"]["positionNED"]
     pos_vector = [Vector(pos[1], pos[0]) for pos in pos_local]
 
     for i, s in enumerate(pos_vector):
@@ -151,31 +139,30 @@ def verify_geofence(simdata, params=DEFAULT_VALIDATION_PARAMS):
     return True, "No Geofence Violation", condition_name
 
 
-def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
+def verify_traffic(simdata):
     '''Check simulation data for traffic well clear violations'''
     condition_name = "Traffic Avoidance"
     DMOD = simdata["parameters"]["DET_1_WCV_DTHR"]*0.3048  # Convert ft to m
     ZTHR = simdata["parameters"]["DET_1_WCV_ZTHR"]*0.3048  # Convert ft to m
-    h_allow = params["h_allow"]
-    v_allow = params["v_allow"]
-    waypoints = simdata["waypoints"]
-    origin = simdata["ownship"]["position"][0]
-    lla2ned = lambda x: GS.LLA2NED(origin, x)
+    h_allow = validation_params["h_allow"]
+    v_allow = validation_params["v_allow"]
+
+    waypoints = simdata["ownship"]["localPlans"][0]
     ownship_time = simdata["ownship"]["t"]
-    ownship_position = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
+    ownship_position = simdata["ownship"]["positionNED"]
 
     # Interpolate traffic positions
     traffic_position = {}
     for traffic_id, traffic in simdata["traffic"].items():
-        t_pos_default = (traffic["position"][0], traffic["position"][-1])
-        t_pos = interp1d(traffic["t"], np.array(traffic["position"]),
+        t_pos_default = (traffic["positionNED"][0], traffic["positionNED"][-1])
+        t_pos = interp1d(traffic["t"], np.array(traffic["positionNED"]),
                          axis=0, bounds_error=False, fill_value=t_pos_default)
         traffic_position[traffic_id] = t_pos
 
     for t, o_pos in zip(ownship_time, ownship_position):
         o_alt = o_pos[2]
         for traffic_pos in traffic_position.values():
-            t_pos = lla2ned(traffic_pos(t))
+            t_pos = traffic_pos(t)
             t_alt = t_pos[2]
 
             dist = np.sqrt((o_pos[0] - t_pos[0])**2 + (o_pos[1] - t_pos[1])**2)
@@ -269,52 +256,19 @@ def plot_scenario(simdata, output_dir="", save=False):
         plt.show()
 
 
-def print_results(results, scenario_name):
-    ''' print results of a test scenario '''
-    if all([res for res, msg, name in results]):
-        print("\033[32m\"%s\" scenario PASSED:\033[0m" % scenario_name)
-    else:
-        print("\033[31m\"%s\" scenario FAILED:\033[0m" % scenario_name)
-    for result, msg, name in results:
-        if result:
-            print("\t\033[32m* %s - PASS:\033[0m %s" % (name, msg))
-        else:
-            print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
-
-
-def record_results(results, scenario_name, output_file="ValidationResults.csv"):
-    import pandas as pd
-    if os.path.isfile(output_file):
-        table = pd.read_csv(output_file, index_col=0)
-    else:
-        table = pd.DataFrame({})
-    metrics = {r[2]:r[0] for r in results}
-    index = scenario_name
-    metrics = pd.DataFrame(metrics, index=[index])
-    table = metrics.combine_first(table)
-    table = table[metrics.keys()]
-    table.to_csv(output_file)
-
-
-def run_validation(logfile, test=False, plot=False, save=False):
+def run_validation(flight_dir, test=False, plot=False, save=False):
     # Gather all simulation data files
-    if os.path.isfile(logfile) and logfile.endswith(".json"):
-        data_files = [logfile]
-    elif os.path.isdir(logfile):
-        data_files = []
-        for root, dirs, files in os.walk(logfile):
-            data_files += [os.path.join(root, f) for f in files if f.endswith(".json")]
-        print("Found %d simulation data files in %s" % (len(data_files), logfile))
+    log_files = find_logs(flight_dir, ".*\.json$")
 
-    for data_file in data_files:
+    for log in log_files:
         # Read in the simulation data
-        output_dir = os.path.dirname(data_file)
+        output_dir = os.path.dirname(log)
         scenario_name = os.path.basename(os.path.normpath(output_dir))
-        with open(data_file, 'r') as fp:
+        with open(log, 'r') as fp:
             simdata = json.load(fp)
 
         # Check the test conditions
-        validate_sim_data(simdata, params, scenario_name, save, test)
+        validate_sim_data(simdata, scenario_name, save, test)
 
         # Generate plots
         if plot:
@@ -332,11 +286,6 @@ if __name__ == "__main__":
                         metavar=("KEY", "VALUE"), help="set validation parameter")
     args = parser.parse_args()
 
-    # Set validation parameters
-    for p in args.param:
-        if p[0] not in params:
-            print("** Warning, unrecognized validation parameter: %s" % p[0])
-            continue
-        params[p[0]] = float(p[1])
-
+    validation_params = update_params(validation_params, args.param)
     run_validation(args.sim_output, args.test, args.plot, args.save)
+
