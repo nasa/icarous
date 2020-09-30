@@ -14,7 +14,7 @@ class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
     def __init__(self, propagation_model="NoLoss", reception_model="Perfect",
                  propagation_params={}, reception_params={}, verbose=1,
-                 fasttime=True):
+                 fasttime=True, time_limit=None):
         """
         :param propagation_model: name of signal propagation model
             ex: "NoLoss", "FreeSpace", "TwoRayGround"
@@ -46,6 +46,7 @@ class SimEnvironment:
         self.home_gps = [0, 0, 0]
         self.fasttime = fasttime
         self.dT = 0.05
+        self.time_limit = time_limit
 
         # Simulation status
         self.count = 0
@@ -250,6 +251,13 @@ class SimEnvironment:
                         if self.verbose > 0:
                             print("%s : Time limit reached at %f" %
                                   (ic.callsign, self.current_time))
+
+            if self.time_limit is not None and duration >= self.time_limit:
+                for ic in self.icInstances:
+                    ic.missionComplete = True
+                    ic.Terminate()
+                    if self.verbose > 0:
+                        print("Time limit reached at %f" % self.current_time)
             
             # Exchange all V2V data between vehicles in the environment
             self.ExchangeV2VData()

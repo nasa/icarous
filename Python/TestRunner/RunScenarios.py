@@ -41,8 +41,17 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
     ClearLogs(pycarous_log_dir)
     ClearLogs(cFS_log_dir)
 
+    # Set python option for each vehicle
+    for v in scenario["vehicles"]:
+        if use_python:
+            v["python"] = True
+        if not v.get("python", False):
+            fasttime = False
+
     # Create simulation environment
-    sim = SimEnvironment(verbose=verbose, fasttime=fasttime)
+    sim_time_limit = scenario.get("time_limit", 1000)
+    sim = SimEnvironment(verbose=verbose, fasttime=fasttime,
+                         time_limit=sim_time_limit)
     if "merge_fixes" in scenario:
         sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
     sim.AddWind(scenario.get("wind", [(0, 0)]))
@@ -50,7 +59,6 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
 
     # Add Icarous instances to simulation environment
     num_vehicles = len(scenario["vehicles"])
-    sim_time_limit = scenario.get("time_limit", 1000)
     for v in scenario["vehicles"]:
         v = dict(list(scenario.items()) + list(v.items()))
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
@@ -61,11 +69,9 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         daa_file = v.get("daa_file", default_daa_file)
 
         # Initialize Icarous class
-        if use_python:
-            python = True
-        else:
-            python = v.get("python", False)
+        python = v.get("python", False)
         if python:
+            print("launching %s, fasttime=%s" % (callsign, fasttime))
             os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,
