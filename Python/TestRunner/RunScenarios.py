@@ -61,9 +61,11 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         daa_file = v.get("daa_file", default_daa_file)
 
         # Initialize Icarous class
-        if not use_python:
-            use_python = v.get("python", False)
         if use_python:
+            python = True
+        else:
+            python = v.get("python", False)
+        if python:
             os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,
