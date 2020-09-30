@@ -565,26 +565,6 @@ class Icarous(IcarousInterface):
         self.trafficLog[id]["velocityNED"].append(velocity)
         self.trafficLog[id]["positionNED"].append(positionLoc)
 
-    def WriteLog(self, logname=""):
-        self.ownshipLog['localPlans'] = self.localPlans
-        self.ownshipLog['localFences'] = self.localFences
-        if logname == "":
-             logname = self.callsign + '.json'
-
-        import json
-        if self.verbose > 0:
-            print("writing log: %s" % logname)
-        log_data = {"ownship": self.ownshipLog,
-                    "traffic": self.trafficLog,
-                    "waypoints": self.flightplan1,
-                    "geofences": self.fenceList,
-                    "parameters": self.params,
-                    "mergefixes": self.localMergeFixes,
-                    "sim_type": "pyIcarous"}
-
-        with open(logname, 'w') as f:
-            json.dump(log_data, f)
-
     def Run(self):
         time_now = time.time()
         if not self.fasttime:

@@ -132,7 +132,6 @@ def ClearLogs(source):
 
 
 def CollectLogs(source, output_dir):
-    dest = os.path.join(output_dir, "log")
     for f in os.listdir(source):
         if f.endswith(".log"):
             oldname = f
@@ -145,7 +144,7 @@ def CollectLogs(source, output_dir):
                 newname = "-".join([log_type, callsign, timestamp])
             except:
                 newname = oldname
-            shutil.copy(os.path.join(source, f), os.path.join(dest, newname))
+            shutil.copy(os.path.join(source, f), os.path.join(output_dir, newname))
 
 
 def RunValidation(out_dir, merge=False):
@@ -162,9 +161,7 @@ def set_up_output_dir(scenario, base_dir="sim_output"):
     name = scenario["name"].replace(' ', '-')
     timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
     output_dir = os.path.join(sim_home, base_dir, timestamp+"_"+name)
-    output_logdir = os.path.join(output_dir,'log')
     os.makedirs(output_dir)
-    os.makedirs(output_logdir)
     return output_dir
 
 

@@ -246,24 +246,26 @@ class IcarousInterface(abc.ABC):
     def WriteLog(self, logname=""):
         """
         Save log data to a json file
-        :param logname: name for the log file, default is callsign.json
+        :param logname: name for the log file, default is simlog-[callsign].json
         """
         self.ownshipLog['localPlans'] = self.localPlans
         self.ownshipLog['localFences'] = self.localFences
-        if logname == "":
-             logname = self.callsign + '.json'
 
-        import json
+        if logname == "":
+            logname = "simlog-%s.json" % self.callsign
         if self.verbose > 0:
             print("writing log: %s" % logname)
+
         log_data = {"ownship": self.ownshipLog,
                     "traffic": self.trafficLog,
+                    "origin": self.home_pos,
                     "waypoints": self.flightplan1,
                     "geofences": self.fenceList,
                     "parameters": self.params,
                     "mergefixes": self.localMergeFixes,
                     "sim_type": self.simType}
 
+        import json
         with open(logname, 'w') as f:
             json.dump(log_data, f)
 

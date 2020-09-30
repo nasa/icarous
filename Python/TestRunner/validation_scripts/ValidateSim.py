@@ -6,7 +6,10 @@ from scipy.interpolate import interp1d
 from polygon_contain import Vector, definitely_inside
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from ValidationHelper import print_results, record_results, find_logs, LLA2NED, update_params
+from ValidationHelper import (print_results,
+                              record_results,
+                              find_logs,
+                              update_params)
 
 validation_params = {
      "h_allow": 0.85,       # use h_allow*DTHR to check WC violations
