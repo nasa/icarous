@@ -1396,10 +1396,12 @@ bool Cognition::CheckSafeToTurn(const double from_heading,const double to_headin
    bool conflict = false;
    for (int i = 0; i < trkBandNum; i++)
    {
-      bool val;
+      bool val = false;
+      if(trkBandType[i] != 1 && trkBandType[i] != 5){
       val = CheckTurnConflict(trkBandMin[i],
                               trkBandMax[i],
                               from_heading, to_heading);
+      }
       conflict |= val;
    }
 

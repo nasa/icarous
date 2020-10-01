@@ -120,7 +120,7 @@ void DaidalusMonitor::MonitorTraffic() {
 
 
 
-    if(conflict) {
+    if(true) {
         daaViolationTrack = larcfm::BandsRegion::isConflictBand(DAA1.regionOfHorizontalDirection(DAA1.getOwnshipState().horizontalDirection()));
         daaViolationSpeed = larcfm::BandsRegion::isConflictBand(DAA1.regionOfHorizontalSpeed(DAA1.getOwnshipState().horizontalSpeed()));
         daaViolationVS = larcfm::BandsRegion::isConflictBand(DAA1.regionOfVerticalSpeed(DAA1.getOwnshipState().verticalSpeed()));
