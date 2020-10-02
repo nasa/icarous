@@ -131,7 +131,11 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
    output.guidanceMode = mode;
    output.nextWP = -1;
    if(currentPlan != nullptr){
-        strcpy(output.activePlan,activePlanId.c_str());
+        if(activePlanId == "PlanAltChange"){
+            strcpy(output.activePlan,"Plan0");
+        }else{
+            strcpy(output.activePlan,activePlanId.c_str());
+        }
         output.nextWP = nextWpId[activePlanId];
         output.wpReached = wpReached;
         output.distH2WP = distH2nextWP;

@@ -192,8 +192,9 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
 
     }else{
         int next_wp_id = reached_wp_id + 1;
-        activePlan = GetPlan(plan_id);
-        if (activePlan != nullptr) {
+        larcfm::Plan* fp = GetPlan(plan_id);
+        if (fp != nullptr) {
+            activePlan  = fp;
             int total_waypoints = GetTotalWaypoints(plan_id);
             nextWpId[plan_id] = next_wp_id;
             if (next_wp_id < total_waypoints) {
