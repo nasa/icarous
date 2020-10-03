@@ -140,7 +140,7 @@ void DaidalusMonitor::MonitorTraffic() {
             trackInterval.push_back(trkband);
         }
 
-        numSpeedBands = DAA2.horizontalSpeedBandsLength();
+        numSpeedBands = DAA1.horizontalSpeedBandsLength();
         speedIntTypes.clear();
         speedInterval.clear();
         for (int i = 0; i < numSpeedBands; ++i) {
