@@ -32,8 +32,8 @@ class Icarous(IcarousInterface):
     (core ICAROUS modules called from python)
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
-                 fasttime=True, simtype="UAS_ROTOR", monitor="DAIDALUS",
-                 daaConfig="data/DaidalusQuadConfig.txt"):
+                 logRateHz=5, fasttime=True, simtype="UAS_ROTOR",
+                 monitor="DAIDALUS", daaConfig="data/DaidalusQuadConfig.txt"):
         """
         Initialize pycarous
         :param fasttime: when fasttime is True, simulation will run in fasttime
@@ -299,12 +299,11 @@ class Icarous(IcarousInterface):
         self.position = [ogx, ogy, opos[2]]
         self.velocity = ovel
         self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
+        self.RecordOwnship()
         self.trkband = None
         self.gsband = None
         self.altband = None
         self.vsband = None
-
-        self.RecordOwnship()
 
     def RunCognition(self):
         self.Cog.InputVehicleState(self.position,self.trkgsvs,self.trkgsvs[0])
@@ -505,19 +504,10 @@ class Icarous(IcarousInterface):
          
         self.Cog.InputBands(trkband,gsband,altband,vsband) 
 
-        filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
-        getbandlog = lambda bands: {} if bands is None else {"conflict": bands.currentConflictBand, 
-                                                             "resup": filterinfnan(bands.resUp),
-                                                             "resdown": filterinfnan(bands.resDown),
-                                                             "numBands": bands.numBands,
-                                                             "bandTypes": [bands.type[i] for i in range(20)],
-                                                             "low": [bands.min[i] for i in range(20)],
-                                                             "high": [bands.max[i] for i in range(20)]}
-
-        self.ownshipLog["trkbands"].append(getbandlog(trkband))
-        self.ownshipLog["gsbands"].append(getbandlog(gsband))
-        self.ownshipLog["altbands"].append(getbandlog(altband))
-        self.ownshipLog["vsbands"].append(getbandlog(vsband))
+        self.trkband = trkband
+        self.gsband = gsband
+        self.altband = altband
+        self.vsband = vsband
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)
@@ -549,21 +539,6 @@ class Icarous(IcarousInterface):
         if self.land and self.fphase == 0:
             self.missionComplete = True
         return self.missionComplete
-
-    def RecordOwnship(self):
-        self.ownshipLog["t"].append(self.currTime)
-        self.ownshipLog["position"].append(self.position)
-        self.ownshipLog["velocityNED"].append(self.velocity)
-        self.ownshipLog["positionNED"].append(self.localPos)
-        self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
-
-    def RecordTraffic(self, id, position, velocity, positionLoc):
-        if id not in self.trafficLog:
-            self.trafficLog[id] = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
-        self.trafficLog[id]["t"].append(self.currTime)
-        self.trafficLog[id]["position"].append(list(position))
-        self.trafficLog[id]["velocityNED"].append(velocity)
-        self.trafficLog[id]["positionNED"].append(positionLoc)
 
     def Run(self):
         time_now = time.time()

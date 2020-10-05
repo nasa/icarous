@@ -71,7 +71,6 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         # Initialize Icarous class
         python = v.get("python", False)
         if python:
-            print("launching %s, fasttime=%s" % (callsign, fasttime))
             os.chdir("../pycarous")
             ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,

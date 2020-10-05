@@ -23,8 +23,8 @@ class IcarousRunner(IcarousInterface):
     """
     Interface to launch and control a cFS instance of ICAROUS from python
     """
-    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
-                 apps="default", sitl=False, out=None):
+    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0,
+                 verbose=1, logRateHz=5, apps="default", sitl=False, out=None):
         """
         Initialize an instance of ICAROUS running in cFS
         :param apps: List of the apps to run, or "default" to use default apps

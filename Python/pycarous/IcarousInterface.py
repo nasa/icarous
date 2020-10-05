@@ -1,5 +1,6 @@
 import abc
 import sys
+import numpy as np
 
 from ichelper import LoadIcarousParams, ReadFlightplanFile, distance
 
@@ -10,13 +11,15 @@ class IcarousInterface(abc.ABC):
     and for recording log files. Subclasses must implement all of the
     functions marked @abc.abstractmethod.
     """
-    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1):
+    def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0,
+                 verbose=1, logRateHz=5):
         """
         Initialize Icarous interface
         :param home_pos: initial position / origin for local coordinates
         :param callsign: callsign for the vehicle
         :param vehicleID: unique integer ID for this Icarous instance
         :param verbose: control printout frequency (0: none, 1: some, 2+: more)
+        :param logRateHz: number of data points to log per second
         """
         self.home_pos = home_pos
         self.callsign = callsign
@@ -41,6 +44,10 @@ class IcarousInterface(abc.ABC):
         self.fenceList    = []
         self.mergeFixes   = []
         self.arrTime      = None
+        self.trkband      = None
+        self.gsband       = None
+        self.altband      = None
+        self.vsband       = None
 
         # Aircraft state
         self.currTime = 0
@@ -67,6 +74,8 @@ class IcarousInterface(abc.ABC):
                            "localPlans": [],
                            "localFences": []}
         self.trafficLog = {}
+        self.logRateHz = logRateHz
+        self.minLogInterval = 1/self.logRateHz - 0.01
 
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
@@ -209,13 +218,34 @@ class IcarousInterface(abc.ABC):
         return local
 
     def RecordOwnship(self):
+        if self.ownshipLog["t"]:
+            last_time = self.ownshipLog["t"][-1]
+        else:
+            last_time = -1
+        if self.currTime - last_time < self.minLogInterval:
+            return
         if sum(abs(p) for p in self.position) < 1e-3:
             return
+
         self.ownshipLog["t"].append(self.currTime)
         self.ownshipLog["position"].append(self.position)
         self.ownshipLog["velocityNED"].append(self.velocity)
         self.ownshipLog["positionNED"].append(self.localPos)
         self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
+
+        filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
+        getbandlog = lambda bands: {} if bands is None else {
+                                                             #"conflict": bands.currentConflictBand,
+                                                             #"resup": filterinfnan(bands.resUp),
+                                                             #"resdown": filterinfnan(bands.resDown),
+                                                             "numBands": bands.numBands,
+                                                             "bandTypes": [bands.type[i] for i in range(20)],
+                                                             "low": [bands.min[i] for i in range(20)],
+                                                             "high": [bands.max[i] for i in range(20)]}
+        self.ownshipLog["trkbands"].append(getbandlog(self.trkband))
+        #self.ownshipLog["gsbands"].append(getbandlog(self.gsband))
+        #self.ownshipLog["altbands"].append(getbandlog(self.altband))
+        #self.ownshipLog["vsbands"].append(getbandlog(self.vsband))
 
     def RecordTraffic(self, traffic_id, position, velocity, localPos):
         if traffic_id not in self.trafficLog:
@@ -223,6 +253,11 @@ class IcarousInterface(abc.ABC):
                                            "position": [],
                                            "velocityNED": [],
                                            "positionNED": []}
+            last_time = -1
+        else:
+            last_time = self.trafficLog[traffic_id]["t"][-1]
+        if self.currTime - last_time < self.minLogInterval:
+            return
         self.trafficLog[traffic_id]["t"].append(self.currTime)
         self.trafficLog[traffic_id]["position"].append(list(position))
         self.trafficLog[traffic_id]["velocityNED"].append(velocity)
