@@ -634,6 +634,7 @@ tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double 
 
 
 bool DubinsPlanner::ComputePath(double startTime){
+   potentialFixes.clear();
    // Compute potential fix points
    GetPotentialFixes();
    node_t* root = &potentialFixes[0];

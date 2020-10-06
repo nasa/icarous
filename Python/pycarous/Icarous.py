@@ -496,7 +496,7 @@ class Icarous(IcarousInterface):
     def RunTrajectoryMonitor(self):
         nextWP = self.nextWP1 if self.activePlan == "Plan0" else self.nextWP2
         planID = "Plan+" if self.activePlan != "Plan0" else "Plan0"
-        tjMonData = self.Trajectory.MonitorTrajectory(self.currTime,planID,self.position,self.trkgsvs,nextWP)
+        tjMonData = self.Trajectory.MonitorTrajectory(self.currTime,planID,self.position,self.trkgsvs,self.nextWP1,nextWP)
         self.Cog.InputTrajectoryMonitorData(tjMonData)
 
     def RunMerger(self):

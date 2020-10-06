@@ -74,7 +74,7 @@ public:
     void StringToPlan(std::string planID,std::string inputString);
     void CombinePlan(std::string planA,std::string planB,int index);
     void SetPlanOffset(std::string planID,int n,double offset);
-    trajectoryMonitorData_t MonitorTrajectory(double time, std::string planID, larcfm::Position pos,larcfm::Velocity vel, int nextWP);
+    trajectoryMonitorData_t MonitorTrajectory(double time, std::string planID, larcfm::Position pos,larcfm::Velocity vel, int nextWP1,int nextWP2);
 };
 
 

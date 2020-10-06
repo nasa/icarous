@@ -79,9 +79,9 @@ void TrajManager_StringToPlan(void* obj,char planID[],char inputString[]){
    pp->StringToPlan(planID,inputString);
 }
 
-trajectoryMonitorData_t TrajManager_MonitorTrajectory(void* obj,double time,char planID[],double position[],double velocity[],int nextWP){
+trajectoryMonitorData_t TrajManager_MonitorTrajectory(void* obj,double time,char planID[],double position[],double velocity[],int nextWP1,int nextWP2){
    TrajManager* pp = (TrajManager*)obj;
    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
    larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
-   return pp->MonitorTrajectory(time,std::string(planID),pos,vel,nextWP);
+   return pp->MonitorTrajectory(time,std::string(planID),pos,vel,nextWP1,nextWP2);
 }

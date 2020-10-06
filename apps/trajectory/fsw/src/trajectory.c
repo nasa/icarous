@@ -405,7 +405,7 @@ void TRAJECTORY_Monitor(void)
                 cfsTrajectoryMonitorData_t tjMonData;
                 CFE_SB_InitMsg(&tjMonData, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_t), TRUE);
                 trajectoryMonitorData_t monData;
-                monData = TrajManager_MonitorTrajectory(TrajectoryAppData.pplanner,TrajectoryAppData.timeNow,TrajectoryAppData.planID,position,velocity,nextWP);
+                monData = TrajManager_MonitorTrajectory(TrajectoryAppData.pplanner,TrajectoryAppData.timeNow,TrajectoryAppData.planID,position,velocity,TrajectoryAppData.nextWP1,nextWP);
                 memcpy(tjMonData.databuffer,(char*)&monData,sizeof(trajectoryMonitorData_t));
                 SendSBMsg(tjMonData);
 

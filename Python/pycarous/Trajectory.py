@@ -42,7 +42,7 @@ class Trajectory():
         self.lib.TrajManager_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
         self.lib.TrajManager_GetTotalWaypoints.restype = c_int
         self.lib.TrajManager_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
-        self.lib.TrajManager_MonitorTrajectory.argtypes = [c_void_p,c_double,c_char_p,c_double*3,c_double*3,c_int]
+        self.lib.TrajManager_MonitorTrajectory.argtypes = [c_void_p,c_double,c_char_p,c_double*3,c_double*3,c_int,c_int]
         self.lib.TrajManager_MonitorTrajectory.restype = TrajectoryMonitorData
 
         self.mUtils = CDLL('libUtils.so')
@@ -125,12 +125,12 @@ class Trajectory():
         self.mUtils.ComputeXtrackDistance(cpos(*wpA[:3]),cpos(*wpB[:3]),cpos(*position),offset)
         return offset
 
-    def MonitorTrajectory(self,time,planID,pos,vel,nextWP):
+    def MonitorTrajectory(self,time,planID,pos,vel,nextWP1,nextWP2):
         cpos = c_double*3
         posIn = cpos(*pos)
         velIn = cpos(*vel)
         planid = c_char_p(planID.encode('utf-8'))
-        return self.lib.TrajManager_MonitorTrajectory(self.module,c_double(time),planid,posIn,velIn,c_int(nextWP))
+        return self.lib.TrajManager_MonitorTrajectory(self.module,c_double(time),planid,posIn,velIn,c_int(nextWP1),c_int(nextWP2))
 
     def ComputeClosesetPoint(self,wpA,wpB,position):
         offset = self.ComputeXtrackDistance(wpA,wpB,position)

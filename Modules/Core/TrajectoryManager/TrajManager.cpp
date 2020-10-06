@@ -392,7 +392,7 @@ double TrajManager::FindTimeToFenceViolation(larcfm::Poly3D polygon, larcfm::Vec
     return timeX.front();
 }
 
-trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP)
+trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
 {
 
     trajectoryMonitorData_t data;
@@ -406,7 +406,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     bool trafficConflict = false;
     std::list<double> gfTimes, tfTimes;
     auto cmp = [](double x, double y) { return x < y; };
-    std::vector<double> offsets = ComputePlanOffsets(planID,nextWP,pos,vel,time);
+    std::vector<double> offsets = ComputePlanOffsets(planID,nextWP2,pos,vel,time);
     double toffset = offsets[2]; // Correct for any time delay (-ve offsets[2] indicate a delay)
     double correctedtime = time + toffset;
     for (auto &gf : fenceList)
@@ -498,9 +498,9 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     tfTimes.sort(cmp);
     gfTimes.sort(cmp);
 
-    // Check for next feasible waypoint
+    // Check for next feasible waypoint in the main plan
     fp = GetPlan("Plan0");
-    int findex = nextWP;
+    int findex = nextWP1;
     auto CheckWPFeasibility = [&](int index) {
         larcfm::Vect3 locpos = projection.project(fp->getPos(index));
         bool conflict = false;
@@ -541,7 +541,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     data.offsets[0] = offsets[0];
     data.offsets[1] = offsets[1];
     data.offsets[2] = offsets[2];
-    data.nextWP = nextWP;
+    data.nextWP = nextWP2;
     data.nextFeasibleWP = findex;
 
     return data;
