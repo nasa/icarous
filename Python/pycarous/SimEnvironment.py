@@ -157,6 +157,8 @@ class SimEnvironment:
             # Do not broadcast if running SBN
             if "SBN" in ic.apps:
                 continue
+            if not ic.missionStarted or ic.missionComplete:
+                continue
             # broadcast position data to all other vehicles in the airspace
             tfdata = V2Vdata("INTRUDER", {"id":ic.vehicleID,
                                           "pos": ic.position,
@@ -190,6 +192,8 @@ class SimEnvironment:
 
         # Receive all V2V data
         for ic in self.icInstances:
+            if not ic.missionStarted or ic.missionComplete:
+                continue
             received_msgs = ic.receiver.receive(self.current_time, ic.position)
             data = [m.data for m in received_msgs]
             ic.InputV2VData(data)
