@@ -165,6 +165,11 @@ bool Cognition::ComputeTargetFeasibility(larcfm::Position target){
     double newtrk = position.track(target) * 180 / M_PI;
     double oldtrk = velocity.track("degree"); 
 
+    double elapsedTime = utcTime - trafficConflictStartTime;
+
+    if(elapsedTime < parameters.lookaheadTime/2){
+        return false;
+    }
 
     bool conflict = false;
     // Check if it is safe to turn given the current bands available

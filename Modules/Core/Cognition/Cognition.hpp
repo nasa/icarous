@@ -270,6 +270,7 @@ class Cognition{
         bool trafficSpeedConflict;
         bool trafficAltConflict;
         bool newAltConflict;
+        double trafficConflictStartTime;
 
         // Conflict flags based on flightplan projections
         bool planProjectedTrafficConflict;

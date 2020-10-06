@@ -870,6 +870,7 @@ bool Cognition::TrafficConflictManagement(){
              trafficConflictState = INITIALIZE;
              requestGuidance2NextWP = -1;
              newAltConflict = true;
+             trafficConflictStartTime = utcTime;
              break;
          }
          return false;
@@ -971,6 +972,11 @@ bool Cognition::TrafficConflictManagement(){
             log << timeString + "| [RESOLVED] | Traffic conflict resolved" <<"\n";
          }
          return2NextWPState = NOOPC;
+
+         if(requestGuidance2NextWP == 0){
+             std::string planid = activePlan->getID();
+             SetGuidanceFlightPlan(planid,nextWpId[planid]);
+         }
          break;
       }
 
@@ -1043,6 +1049,7 @@ bool Cognition::RunTrafficResolution(){
          }else{
             larcfm::Position clstPoint = GetNearestPositionOnPlan(GetPrevWP(),GetNextWP(),position);
             returnSafe  = ComputeTargetFeasibility(clstPoint);
+            closestPointFeasible = returnSafe;
          }
          break;
       }
@@ -1162,7 +1169,6 @@ bool Cognition::ReturnToNextWP(){
             larcfm::Position positionA = position;
             larcfm::Velocity velocityA = velocity;
             larcfm::Velocity velocityB = GetNextWPVelocity();
-            std::cout<<"velocityB:"<<velocityB.toString()<<std::endl;
             FindNewPath(pathName,positionA, velocityA, positionB, velocityB);
             request = REQUEST_PROCESSING;
             SendStatus((char*)"IC:Computing secondary path",6);
