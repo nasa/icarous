@@ -45,7 +45,7 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
     for v in scenario["vehicles"]:
         if use_python:
             v["python"] = True
-        if not v.get("python", False):
+        if not v.get("python", scenario.get("python", False)):
             fasttime = False
 
     # Create simulation environment
