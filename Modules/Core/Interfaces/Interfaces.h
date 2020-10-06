@@ -98,6 +98,7 @@ typedef struct{
     double ZTHR;                    // Well clear vertical distance threshold (ft)
     double allowedXtrackDeviation;  // Allowed deviation from flight plan (m)
     double lookaheadTime;           // lookahead time for traffic conflicts;
+    double persistenceTime;         // traffic conflict persistence time
 }cognition_params_t;
 
 

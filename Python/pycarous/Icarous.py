@@ -210,6 +210,7 @@ class Icarous(IcarousInterface):
         cogParams.DTHR = params['DET_1_WCV_DTHR']/3
         cogParams.ZTHR = params['DET_1_WCV_ZTHR']/3
         cogParams.lookaheadTime = params['LOOKAHEAD_TIME']
+        cogParams.persistence_time = params['PERSIST_TIME']
         self.Cog.InputParameters(cogParams)
 
     def SetTrafficParams(self,params):

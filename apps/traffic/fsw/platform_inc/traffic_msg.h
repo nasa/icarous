@@ -83,6 +83,7 @@ typedef struct{
   float	bank_angle;
   float	vertical_rate;
   float	recovery_stability_time;
+  float persistence_time;
   float	min_horizontal_recovery;
   float	min_vertical_recovery;
   bool recovery_trk;

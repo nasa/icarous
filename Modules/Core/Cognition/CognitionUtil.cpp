@@ -167,7 +167,7 @@ bool Cognition::ComputeTargetFeasibility(larcfm::Position target){
 
     double elapsedTime = utcTime - trafficConflictStartTime;
 
-    if(elapsedTime < parameters.lookaheadTime/2){
+    if(elapsedTime <= parameters.persistenceTime){
         return false;
     }
 

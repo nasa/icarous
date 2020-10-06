@@ -229,6 +229,7 @@ void COGNITION_ProcessSBData(void) {
             appdataCog.parameters.ZTHR = msg->det_1_WCV_ZTHR/3;
             appdataCog.parameters.resolutionType = msg->resType;
             appdataCog.parameters.lookaheadTime = msg->lookahead_time;
+            appdataCog.parameters.persistenceTime = msg->persistence_time;
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
         }

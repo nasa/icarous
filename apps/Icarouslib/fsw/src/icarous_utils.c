@@ -100,6 +100,7 @@ void PublishParams(param_t *params) {
     localTrafficParams.bank_angle = params[i].value;i++;;
     localTrafficParams.vertical_rate = params[i].value;i++;;
     localTrafficParams.recovery_stability_time = params[i].value;i++;;
+    localTrafficParams.persistence_time = params[i].value;i++;;
     localTrafficParams.min_horizontal_recovery = params[i].value;i++;;
     localTrafficParams.min_vertical_recovery = params[i].value;i++;;
     localTrafficParams.recovery_trk = (bool) params[i].value;i++;;
@@ -520,6 +521,7 @@ void ConstructDAAParamString(void* vdparam,char* params){
     n += sprintf(params + n,"bank_angle=%f [deg];",tfParam->bank_angle);
     n += sprintf(params + n,"vertical_rate=%f [fpm];",tfParam->vertical_rate);
     n += sprintf(params + n,"recovery_stability_time=%f [s];",tfParam->recovery_stability_time);
+    //n += sprintf(params + n,"persistence_time=%f [s];",tfParam->persistence_time);
     n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",tfParam->min_horizontal_recovery);
     n += sprintf(params + n,"min_vertical_recovery=%f [ft];",tfParam->min_vertical_recovery);
     n += tfParam->recovery_trk? sprintf(params + n,"recovery_hdir=true;"):sprintf(params + n,"recovery_dir=false;");
