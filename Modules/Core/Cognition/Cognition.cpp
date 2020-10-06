@@ -202,6 +202,7 @@ void Cognition::InputMergeStatus(const int merge_status){
 
 void Cognition::InputTrackBands(const bands_t &track_bands){
     utcTime = track_bands.time;
+    trackRecovery = (bool) track_bands.recovery;
     if (track_bands.currentConflictBand == 1) {
         trafficTrackConflict = true;
         if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred))
@@ -219,7 +220,6 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     std::memcpy(trkBandMin,track_bands.min,sizeof(double)*20);
     std::memcpy(trkBandMax,track_bands.max,sizeof(double)*20);
     trkBandNum = track_bands.numBands;
-    trackRecovery = (bool) track_bands.recovery;
 }
 
 void Cognition::InputSpeedBands(const bands_t &speed_bands){
@@ -885,24 +885,29 @@ bool Cognition::TrafficConflictManagement(){
          preferredTrack = prevResTrack;
          preferredAlt    = prevResAlt;
          requestGuidance2NextWP = 1;
-         GetResolutionType();
+
+         if(parameters.resolutionType < 0){
+            resType = GetResolutionType();
+         }else{
+             resType = (resolutionType_e) parameters.resolutionType;
+         }
          
 
          // Use this only for search based resolution
-         if(parameters.resolutionType == SEARCH_RESOLUTION){
+         if(resType == SEARCH_RESOLUTION){
             return2NextWPState = INITIALIZE;
             log << timeString + "| [STATUS] | Resolving conflict with search resolution" <<"\n";
-         }else if(parameters.resolutionType == SPEED_RESOLUTION){
+         }else if(resType == SPEED_RESOLUTION){
             log << timeString + "| [STATUS] | Resolving conflict with speed resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Speed Request"<<"\n";
-         }else if(parameters.resolutionType == ALTITUDE_RESOLUTION){
+         }else if(resType == ALTITUDE_RESOLUTION){
             log << timeString + "| [STATUS] | Resolving conflict with altitude resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
-         }else if(parameters.resolutionType == TRACK_RESOLUTION ||
+         }else if(resType == TRACK_RESOLUTION ||
                    parameters.resolutionType == TRACK_RESOLUTION2){
             log << timeString + "| [STATUS] | Resolving conflict with track resolution" <<"\n";
             log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
-         }else if(parameters.resolutionType == DITCH_RESOLUTION){
+         }else if(resType == DITCH_RESOLUTION){
             // The top level statemachine should catch this
             // and transition to the emergency descent state.
             log << timeString + "| [STATUS] | Resolving conflict with ditch resolution" <<"\n";
@@ -911,7 +916,7 @@ bool Cognition::TrafficConflictManagement(){
       }
 
       case RESOLVE:{
-         if(parameters.resolutionType == SEARCH_RESOLUTION){
+         if(resType == SEARCH_RESOLUTION){
             // Only for search based resolution
             if(return2NextWPState != NOOPC){
                ReturnToNextWP();
@@ -920,7 +925,7 @@ bool Cognition::TrafficConflictManagement(){
             }
          }else{
 
-            if(parameters.resolutionType == TRACK_RESOLUTION2){
+            if(resType == TRACK_RESOLUTION2){
                 requestGuidance2NextWP = 0;
             }
             if(!RunTrafficResolution()){
@@ -942,14 +947,14 @@ bool Cognition::TrafficConflictManagement(){
             sendStatus = true;
          }
 
-         if(parameters.resolutionType == SPEED_RESOLUTION){
+         if(resType == SPEED_RESOLUTION){
             requestGuidance2NextWP = -1;
             trafficConflictState = NOOPC;
             SetGuidanceSpeedCmd(activePlan->getID(),resolutionStartSpeed);
             sendStatus = true;
          }
 
-         if(parameters.resolutionType == ALTITUDE_RESOLUTION){
+         if(resType == ALTITUDE_RESOLUTION){
             requestGuidance2NextWP = -1;
             trafficConflictState = NOOPC;
             std::string planid = activePlan->getID();
@@ -979,7 +984,7 @@ bool Cognition::TrafficConflictManagement(){
 
 bool Cognition::RunTrafficResolution(){
 
-   int resolutionType = parameters.resolutionType;
+   int resolutionType = resType;
 
    // If track, gs and vs are in recovery, don't allow combined resolution 
    if(trackRecovery && gsRecovery && vsRecovery){
@@ -988,7 +993,7 @@ bool Cognition::RunTrafficResolution(){
        }
    }
 
-   switch(parameters.resolutionType){
+   switch(resolutionType){
 
       case SPEED_RESOLUTION:{
          //printf("resolution speed = %f\n",preferredSpeed);
@@ -1243,8 +1248,19 @@ void Cognition::FindNewPath(const std::string &PlanID,
     log << timeString + "| [PATH_REQUEST] | Computing secondary path: " <<PlanID<<"\n";
 }
 
-void Cognition::GetResolutionType(){
-   //
+resolutionType_e Cognition::GetResolutionType(){
+   // Check for valid horizontal resolutions first
+   if(!trackRecovery){
+       return TRACK_RESOLUTION;
+   }else if(! altRecovery){
+       return ALTITUDE_RESOLUTION;
+   }else if(! vsRecovery){
+       return VERTICALSPEED_RESOLUTION;
+   }else if(! gsRecovery){
+       return SPEED_RESOLUTION;
+   }else{
+       return TRACK_RESOLUTION;
+   }
 }
 
 void Cognition::SetGuidanceVelCmd(const double track,const double gs,const double vs){

@@ -132,7 +132,7 @@ class Cognition{
 
         int GetCognitionOutput(Command &command);
 
-        void GetResolutionType();
+        resolutionType_e GetResolutionType();
 
         void StartMission(const int mission_start_value,const double scenario_time);
 
@@ -238,6 +238,7 @@ class Cognition{
 
         int nextFeasibleWpId;                        ///< to next feasible waypoint id
         bool closestPointFeasible;                   ///< Feasibility of nearest point on primary flight plan
+        resolutionType_e resType;
 
         bool primaryFPReceived;
         bool trackRecovery;
