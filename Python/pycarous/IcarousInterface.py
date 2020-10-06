@@ -285,11 +285,12 @@ class IcarousInterface(abc.ABC):
                       for wp in self.flightplan1]
         log_data = {"ownship": self.ownshipLog,
                     "traffic": self.trafficLog,
+                    "origin": self.home_pos,
                     "waypoints": waypoints,
                     "geofences": self.fenceList,
                     "parameters": self.params,
                     "mergefixes": self.localMergeFixes,
-                    "sim_type": "pyIcarous"}
+                    "sim_type": self.simType}
 
         import json
         with open(logname, 'w') as f:
