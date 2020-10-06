@@ -65,7 +65,27 @@ int TrajManager::InputTraffic(int id, larcfm::Position &position, larcfm::Veloci
 }
 
 void TrajManager::UpdateDubinsPlannerParameters(DubinsParams_t& params) {
-    dubinsparams = params;
+    dbPlanner.SetParameters(params);
+    wellClearDistH = params.wellClearDistH;
+    wellClearDistV = params.wellClearDistV;
+
+    // Log params to file
+    log<<"Planner parameters"<<std::endl;
+    log<<" Well clear H [m]: "<<params.wellClearDistH<<std::endl;
+    log<<" Well clear V [m]: "<<params.wellClearDistV<<std::endl;
+    log<<" Turn rate [deg/s]: "<<params.turnRate<<std::endl;
+    log<<" Max GS [m/s]: "<<params.maxGS<<std::endl;
+    log<<" Min GS [m/s]: "<<params.minGS<<std::endl;
+    log<<" Max VS [m/s]: "<<params.maxVS<<std::endl;
+    log<<" Min VS [m/s]: "<<params.minVS<<std::endl;
+    log<<" Horizontal accel [m/s^2]: "<<params.hAccel<<std::endl;
+    log<<" Horizontal daccel [m/s^2]: "<<params.hDaccel<<std::endl;
+    log<<" Vertical accel [m/s^2]: "<<params.vAccel<<std::endl;
+    log<<" Vertical daccel [m/s^2]: "<<params.vDaccel<<std::endl;
+    log<<" Climb speed [m/s]: "<<params.climbgs<<std::endl;
+    log<<" Obstacle buffer [m]: "<<params.vertexBuffer<<std::endl;
+    log<<" Altitude sections: "<<params.zSections<<std::endl;
+    log<<" Altitude ceiling [m]: "<<params.maxH<<std::endl;
 }
 
 int TrajManager::FindPath(std::string planID, larcfm::Position fromPosition, larcfm::Position toPosition,
@@ -138,22 +158,17 @@ int64_t TrajManager::FindDubinsPath(std::string planID){
         }
     }
 
-    DubinsPlanner RRT;
-    RRT.SetParameters(dubinsparams);
-    RRT.SetBoundary(bbox);
-    RRT.SetObstacles(obstacleList);
-    std::cout<<initPosR3.toString()<<std::endl;
-    std::cout<<startVel.toString()<<std::endl;
-    std::cout<<gpos.toString()<<std::endl;
-    RRT.SetVehicleInitialConditions(initPosR3,startVel);
-    RRT.SetGoal(gpos,endVel);
-    RRT.SetTraffic(TrafficPos,TrafficVel);
-    RRT.ComputePath(computationTime);
+    dbPlanner.SetBoundary(bbox);
+    dbPlanner.SetObstacles(obstacleList);
+    dbPlanner.SetVehicleInitialConditions(initPosR3,startVel);
+    dbPlanner.SetGoal(gpos,endVel);
+    dbPlanner.SetTraffic(TrafficPos,TrafficVel);
+    dbPlanner.ComputePath(computationTime);
 
 
     larcfm::Plan output;
     output.add(startPos,0);
-    RRT.GetPlan(proj,output);
+    dbPlanner.GetPlan(proj,output);
     output.setID(std::string(planID));
     flightPlans.push_back(output);
     return output.size();
@@ -448,7 +463,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     // Check for projected traffic conflict based on flightplan
     for (auto &tp : trafficPlans)
     {
-        larcfm::CDII cdii = larcfm::CDII::make(dubinsparams.wellClearDistH, "m", dubinsparams.wellClearDistV, "m");
+        larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
         cdii.detection(*fp, tp, time, fp->getLastTime());
         int n = cdii.size();
         if (n > 0)
@@ -470,7 +485,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         larcfm::Plan tp("traffic");
         tp.add(posA, timeA);
         tp.add(posB, timeB);
-        larcfm::CDII cdii = larcfm::CDII::make(dubinsparams.wellClearDistH, "m", dubinsparams.wellClearDistV, "m");
+        larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
         cdii.detection(*fp, tp, correctedtime, fp->getLastTime());
         int n = cdii.size();
         if (n > 0)

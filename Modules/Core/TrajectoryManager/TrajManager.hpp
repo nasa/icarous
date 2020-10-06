@@ -37,7 +37,9 @@ class TrajManager{
 
 private:
     
-    DubinsParams_t dubinsparams;
+    DubinsPlanner dbPlanner;
+    double wellClearDistH;
+    double wellClearDistV;
     int numPlans;
     std::ofstream log;
     std::list<larcfm::Plan> flightPlans;
