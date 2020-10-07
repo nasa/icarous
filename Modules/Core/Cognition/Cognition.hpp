@@ -241,10 +241,7 @@ class Cognition{
         resolutionType_e resType;
 
         bool primaryFPReceived;
-        bool trackRecovery;
-        bool gsRecovery;
-        bool altRecovery;
-        bool vsRecovery;
+        bool recovery[4];
         double scenarioTime;
         double timeToTrafficViolation1;        ///< time in to violation from DAA
         double timeToTrafficViolation2;        ///< time out of violation from DAA

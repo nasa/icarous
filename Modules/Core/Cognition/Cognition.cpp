@@ -202,7 +202,7 @@ void Cognition::InputMergeStatus(const int merge_status){
 
 void Cognition::InputTrackBands(const bands_t &track_bands){
     utcTime = track_bands.time;
-    trackRecovery = (bool) track_bands.recovery;
+    recovery[TRACK_RESOLUTION] = (bool) track_bands.recovery;
     if (track_bands.currentConflictBand == 1) {
         trafficTrackConflict = true;
         if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred))
@@ -224,7 +224,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
 
 void Cognition::InputSpeedBands(const bands_t &speed_bands){
 
-    gsRecovery = (bool)speed_bands.recovery; 
+    recovery[SPEED_RESOLUTION] = (bool)speed_bands.recovery; 
     if(speed_bands.currentConflictBand == 1){
         // Factor to increment or decrement the provided speed resolution by
         // This will eliminate oscillatory behavior due to numerical errors
@@ -253,7 +253,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
 }
 
 void Cognition::InputAltBands(const bands_t &alt_bands){
-    altRecovery = (bool) alt_bands.recovery;
+    recovery[ALTITUDE_RESOLUTION] = (bool) alt_bands.recovery;
     if(alt_bands.currentConflictBand == 1){
         trafficAltConflict = true;
         if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred))
@@ -273,7 +273,7 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
-    vsRecovery = (bool) vs_bands.recovery;
+    recovery[VERTICALSPEED_RESOLUTION] = (bool) vs_bands.recovery;
     resVUp = vs_bands.resUp;
     resVDown = vs_bands.resDown;
     preferredVSpeed = vs_bands.resPreferred;
@@ -887,13 +887,8 @@ bool Cognition::TrafficConflictManagement(){
          preferredAlt    = prevResAlt;
          requestGuidance2NextWP = 1;
 
-         if(parameters.resolutionType < 0){
-            resType = GetResolutionType();
-         }else{
-             resType = (resolutionType_e) parameters.resolutionType;
-         }
+         resType = GetResolutionType();
          
-
          // Use this only for search based resolution
          if(resType == SEARCH_RESOLUTION){
             return2NextWPState = INITIALIZE;
@@ -993,7 +988,7 @@ bool Cognition::RunTrafficResolution(){
    int resolutionType = resType;
 
    // If track, gs and vs are in recovery, don't allow combined resolution 
-   if(trackRecovery && gsRecovery && vsRecovery){
+   if(recovery[TRACK_RESOLUTION] && recovery[SPEED_RESOLUTION] && recovery[VERTICALSPEED_RESOLUTION]){
        if(resolutionType == TRACK_SPEED_VS_RESOLUTION){
             resolutionType = TRACK_RESOLUTION;
        }
@@ -1097,15 +1092,15 @@ bool Cognition::RunTrafficResolution(){
          double outTrack = preferredTrack; 
          double outSpeed = preferredSpeed; 
          double outVS = preferredVSpeed;
-         if(trackRecovery){
+         if(recovery[TRACK_RESOLUTION]){
             outTrack =std::fmod(360 + velocity.trk()*180/M_PI,360);
          }
 
-         if(gsRecovery){
+         if(recovery[SPEED_RESOLUTION]){
             outSpeed = velocity.gs();
          }
 
-         if(vsRecovery){
+         if(recovery[VERTICALSPEED_RESOLUTION]){
              outVS = velocity.vs();
          }
 
@@ -1255,18 +1250,36 @@ void Cognition::FindNewPath(const std::string &PlanID,
 }
 
 resolutionType_e Cognition::GetResolutionType(){
-   // Check for valid horizontal resolutions first
-   if(!trackRecovery){
-       return TRACK_RESOLUTION;
-   }else if(! altRecovery){
-       return ALTITUDE_RESOLUTION;
-   }else if(! vsRecovery){
-       return VERTICALSPEED_RESOLUTION;
-   }else if(! gsRecovery){
-       return SPEED_RESOLUTION;
+   int resType = parameters.resolutionType;
+   int resPriority[4];
+   if(resType < 9){
+      // If only one digit is provide, use that as the resolution
+      return (resolutionType_e)resType;
    }else{
-       return TRACK_RESOLUTION;
+       // If more than one digit is provided, consider it as a prioirty list
+       // where the most significant digit indicates the highest prioirty 
+       for(int i=3; i>=0; --i){
+           if(i > 0){
+              int fac = pow(10,i);
+              resPriority[3-i] = std::min((int) resType/fac,3);
+              resType = resType%fac;
+           }else{
+              resPriority[3-i] =  std::min((int) resType%10,3);
+           }
+       }
    }
+
+   // Return the first resolution type in the given priority
+   // that has no recovery
+   for(int i=0;i<=3;++i){
+      if(!recovery[resPriority[i]]){
+          return (resolutionType_e) resPriority[i];
+      }
+   }
+
+   // If all the dimensions are in recovery, 
+   // return the first resolution in the priority.
+   return (resolutionType_e) resPriority[0];
 }
 
 void Cognition::SetGuidanceVelCmd(const double track,const double gs,const double vs){
