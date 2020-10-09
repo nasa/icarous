@@ -67,9 +67,11 @@ if __name__ == "__main__":
         except:
             continue
 
-    if xmax > ymax:
+    if (xmax-xmin) > (ymax-ymin):
+        ymin = ymin + (ymax - ymin)/2 - (xmax-xmin)/2
         ymax = ymin + (xmax - xmin)
-    elif ymax > xmax:
+    elif (ymax-ymin) > (xmax-xmin):
+        xmin = xmin + (xmax - xmin)/2 - (ymax-ymin)/2
         xmax = xmin + (ymax - ymin)
 
     padding = args.pad
