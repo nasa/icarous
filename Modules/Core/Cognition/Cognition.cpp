@@ -1043,13 +1043,10 @@ bool Cognition::RunTrafficResolution(){
          prevResTrack = preferredTrack;
 
          
-         if(parameters.resolutionType == TRACK_RESOLUTION){
-            returnSafe  = ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
-         }else{
-            larcfm::Position clstPoint = GetNearestPositionOnPlan(GetPrevWP(),GetNextWP(),position);
-            returnSafe  = ComputeTargetFeasibility(clstPoint);
-            closestPointFeasible = returnSafe;
-         }
+         larcfm::Position clstPoint = GetNearestPositionOnPlan(GetPrevWP(),GetNextWP(),position);
+         returnSafe  = ComputeTargetFeasibility(clstPoint);
+         closestPointFeasible = returnSafe;
+         returnSafe  &= ComputeTargetFeasibility(GetPlan("Plan0")->getPos(nextFeasibleWpId));
          break;
       }
 

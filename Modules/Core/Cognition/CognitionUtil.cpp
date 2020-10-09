@@ -133,7 +133,24 @@ bool Cognition::CheckTurnConflict(double low,double high,double new_heading,doub
     bool rightTurn = (turnDir==1);
 
     if (low > high){
-        high = high + 360;
+        low -= 360;
+    }
+
+    if(rightTurn){
+        if (new_heading < old_heading){
+            old_heading -= 360;
+        }
+        if( old_heading <= low && high <= new_heading ){
+            return true;
+        }
+    }else{
+        if (new_heading > old_heading){
+            new_heading -= 360;
+        }
+        
+        if( new_heading <= low && high <= old_heading ){
+            return true;
+        }
     }
 
     bool cond1 = new_heading >= low && new_heading <= high;
@@ -143,21 +160,9 @@ bool Cognition::CheckTurnConflict(double low,double high,double new_heading,doub
         return true;
     }
 
-    if(rightTurn){
-        if (new_heading < old_heading){
-            new_heading += 360;
-        }
-    }else{
-        if (new_heading > old_heading){
-            old_heading += 360;
-        }
-    }
+    return false;
+
     
-    if( low >= old_heading && high <= new_heading ){
-        return true;
-    }else{
-        return false;
-    }
 }
 
 bool Cognition::ComputeTargetFeasibility(larcfm::Position target){
@@ -178,7 +183,7 @@ bool Cognition::ComputeTargetFeasibility(larcfm::Position target){
         double low = trkBandMin[i];
         double high = trkBandMax[i];
         if(trkBandType[i] != BANDREGION_NONE && trkBandType[i] != BANDREGION_RECOVERY){
-            conflict |= CheckTurnConflict(low,high,oldtrk,newtrk);
+            conflict |= CheckTurnConflict(low,high,newtrk,oldtrk);
         }
         if(conflict){
             return !conflict; // Negate conflict to denote feasibility
