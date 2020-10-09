@@ -66,7 +66,7 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         callsign = v.get("name", "vehicle%d" % spacecraft_id)
         fp_file = os.path.join(icarous_home, v["waypoint_file"])
         HomePos = GetHomePosition(fp_file)
-        daa_file = v.get("daa_file", default_daa_file)
+        daa_file = os.path.join(icarous_home,v.get("daa_file", default_daa_file))
 
         # Initialize Icarous class
         python = v.get("python", False)
