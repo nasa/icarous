@@ -27,9 +27,10 @@ void Cognition::Initialize(){
     takeoffComplete = -1;
     trafficConflictState = NOOPC;
     geofenceConflictState = NOOPC;
-    trafficTrackConflict = false;
-    trafficSpeedConflict = false;
-    trafficAltConflict = false;
+    allTrafficConflicts[0] = false;
+    allTrafficConflicts[1] = false;
+    allTrafficConflicts[2] = false;
+    allTrafficConflicts[3] = false;
     XtrackConflictState = NOOPC;
     return2NextWPState = NOOPC;
     requestGuidance2NextWP = -1;
@@ -204,7 +205,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     utcTime = track_bands.time;
     recovery[TRACK_RESOLUTION] = (bool) track_bands.recovery;
     if (track_bands.currentConflictBand == 1) {
-        trafficTrackConflict = true;
+        allTrafficConflicts[TRACK_RESOLUTION] = true;
         if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred))
             preferredTrack = track_bands.resPreferred;
         else
@@ -212,7 +213,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     }
     else
     {
-        trafficTrackConflict = false;
+        allTrafficConflicts[TRACK_RESOLUTION] = false;
         preferredTrack = prevResTrack;
     }
 
@@ -228,7 +229,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
     if(speed_bands.currentConflictBand == 1){
         // Factor to increment or decrement the provided speed resolution by
         // This will eliminate oscillatory behavior due to numerical errors
-        trafficSpeedConflict = true;
+        allTrafficConflicts[SPEED_RESOLUTION] = true;
         double fac;
         if (fabs(speed_bands.resPreferred - speed_bands.resDown) < 1e-3) {
             // Preferred resolution is to slow down
@@ -243,7 +244,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
             preferredSpeed = speed_bands.resPreferred * fac;
         }
     }else{
-        trafficSpeedConflict = false;
+        allTrafficConflicts[SPEED_RESOLUTION] = false;
         preferredSpeed = prevResSpeed;
     }
     std::memcpy(gsBandType,speed_bands.type,sizeof(int)*20);
@@ -255,13 +256,13 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
 void Cognition::InputAltBands(const bands_t &alt_bands){
     recovery[ALTITUDE_RESOLUTION] = (bool) alt_bands.recovery;
     if(alt_bands.currentConflictBand == 1){
-        trafficAltConflict = true;
+        allTrafficConflicts[ALTITUDE_RESOLUTION] = true;
         if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred))
             preferredAlt = alt_bands.resPreferred;
         else
             preferredAlt = prevResAlt;
     }else{
-        trafficAltConflict = false;
+        allTrafficConflicts[ALTITUDE_RESOLUTION] = false;
         preferredAlt = prevResAlt;
     }
     timeToTrafficViolation1 = alt_bands.timeToViolation[0];
@@ -686,7 +687,9 @@ status_e Cognition::EmergencyDescent(){
                 }
 
                 // Continuously check for conflicts with intruders when proceeding to ditch site
-                trafficConflict = trafficSpeedConflict | trafficAltConflict | trafficTrackConflict;
+                trafficConflict = allTrafficConflicts[SPEED_RESOLUTION] || 
+                                  allTrafficConflicts[TRACK_RESOLUTION] || 
+                                  allTrafficConflicts[ALTITUDE_RESOLUTION];
                 if(trafficConflict && nextWpId["DitchPath"] >= 2){
                     emergencyDescentState = INITIALIZING;
                 }
@@ -854,7 +857,9 @@ bool Cognition::XtrackManagement(){
 bool Cognition::TrafficConflictManagement(){
 
    // Check for traffic conflict
-   trafficConflict = (trafficSpeedConflict || trafficAltConflict || trafficTrackConflict) && planProjectedTrafficConflict;
+   trafficConflict = (allTrafficConflicts[SPEED_RESOLUTION] || 
+                      allTrafficConflicts[ALTITUDE_RESOLUTION] || 
+                      allTrafficConflicts[TRACK_RESOLUTION]) && planProjectedTrafficConflict;
    if(!trafficConflict && planProjectedTrafficConflict){
        if(timeToTrafficViolation3 < parameters.lookaheadTime && parameters.resolutionType == SEARCH_RESOLUTION){ 
           trafficConflict = true; 
@@ -997,7 +1002,6 @@ bool Cognition::RunTrafficResolution(){
    switch(resolutionType){
 
       case SPEED_RESOLUTION:{
-         //printf("resolution speed = %f\n",preferredSpeed);
          if(fabs(preferredSpeed - prevResSpeed) >= 0.1){
             SetGuidanceSpeedCmd(activePlan->getID(),preferredSpeed);
             prevResSpeed = preferredSpeed;
@@ -1272,8 +1276,17 @@ resolutionType_e Cognition::GetResolutionType(){
    // Return the first resolution type in the given priority
    // that has no recovery
    for(int i=0;i<=3;++i){
+      if(!allTrafficConflicts[resPriority[i]]){
+          continue;
+      }
       if(!recovery[resPriority[i]]){
-          return (resolutionType_e) resPriority[i];
+          if(resPriority[i] == TRACK_RESOLUTION){
+            if(!(trkBandNum == 1 && trkBandMin[0] < 1e-3 && trkBandMax[0] > 359.999)){
+               return (resolutionType_e) resPriority[i];
+            }
+          }else{
+            return (resolutionType_e) resPriority[i];
+          }
       }
    }
 

@@ -179,7 +179,7 @@ void DaidalusMonitor::MonitorTraffic() {
     }
 
 
-    if(log && elapsedTime > prevLogTime){
+    if(log && elapsedTime > prevLogTime+0.5){
         logfileIn << "**************** Current Time:"+std::to_string(elapsedTime)+" *******************\n";
         logfileIn << DAA1.toString()+"\n";
         prevLogTime = elapsedTime;

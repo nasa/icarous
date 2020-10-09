@@ -263,9 +263,7 @@ class Cognition{
 
         // Traffic conflict related variables
         bool trafficConflict;
-        bool trafficTrackConflict;
-        bool trafficSpeedConflict;
-        bool trafficAltConflict;
+        bool allTrafficConflicts[4];
         bool newAltConflict;
         double trafficConflictStartTime;
 
