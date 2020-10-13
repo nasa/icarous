@@ -221,7 +221,8 @@ class SimEnvironment:
                 self.count += 1
                 self.current_time += self.dT
                 self.RunSimulatedTraffic()
-                print("Sim Duration: %.1fs" % (duration), end="\r")
+                if self.verbose > 0:
+                    print("Sim Duration: %.1fs" % (duration), end="\r")
             else:
                 time_now = time.time()
                 if time_now - self.current_time >= self.dT:
@@ -229,7 +230,8 @@ class SimEnvironment:
                     self.current_time = time_now
                     self.count += 1
                     self.RunSimulatedTraffic(dT=dT)
-                    print("Sim Duration: %.1fs" % (duration), end="\r")
+                    if self.verbose > 0:
+                        print("Sim Duration: %.1fs" % (duration), end="\r")
             self.windFrom, self.windSpeed = self.GetWind()
 
             # Update Icarous instances
