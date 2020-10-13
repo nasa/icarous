@@ -357,6 +357,8 @@ bands_t DaidalusMonitor::GetTrackBands(void) {
     trkband.recovery = 0;
     trkband.numBands = numTrackBands;
     trkband.currentConflictBand = 0;
+    trkband.timeToRecovery = -1;
+    trkband.recovery = -1;
     if(numTrackBands > 0)
         trkband.currentConflictBand = (int)daaViolationTrack;
     for(int i=0;i<numTrackBands;++i){
@@ -364,8 +366,8 @@ bands_t DaidalusMonitor::GetTrackBands(void) {
        trkband.min[i] = trackInterval[i][0];
        trkband.max[i] = trackInterval[i][1];
        if(trkband.type[i] == larcfm::BandsRegion::RECOVERY) {
-           trkband.recovery = 1;
            larcfm::RecoveryInformation rec = DAA1.horizontalDirectionRecoveryInformation();
+           trkband.recovery = rec.nFactor();
            trkband.timeToRecovery = rec.timeToRecovery();
            trkband.minHDist = rec.recoveryHorizontalDistance("m");
            trkband.minVDist = rec.recoveryVerticalDistance("m");
@@ -402,6 +404,8 @@ bands_t DaidalusMonitor::GetSpeedBands(void) {
     band.recovery = 0;
     band.numBands = numSpeedBands;
     band.currentConflictBand = 0;
+    band.recovery = -1;
+    band.timeToRecovery = -1;
     if(numSpeedBands > 0)
         band.currentConflictBand = (int)daaViolationSpeed;
     for(int i=0;i<numSpeedBands;++i){
@@ -409,8 +413,8 @@ bands_t DaidalusMonitor::GetSpeedBands(void) {
        band.min[i] = speedInterval[i][0];
        band.max[i] = speedInterval[i][1];
        if(band.type[i] == larcfm::BandsRegion::RECOVERY) {
-           band.recovery = 1;
            larcfm::RecoveryInformation rec = DAA1.horizontalSpeedRecoveryInformation();
+           band.recovery = rec.nFactor();
            band.timeToRecovery = rec.timeToRecovery();
            band.minHDist = rec.recoveryHorizontalDistance("m");
            band.minVDist = rec.recoveryVerticalDistance("m");
@@ -445,6 +449,8 @@ bands_t DaidalusMonitor::GetVerticalSpeedBands(void){
     band.recovery = 0;
     band.numBands = numVerticalSpeedBands;
     band.currentConflictBand = 0;
+    band.recovery = -1;
+    band.timeToRecovery = -1;
     if(numVerticalSpeedBands > 0)
         band.currentConflictBand = (int)daaViolationVS;
     for(int i=0;i<numVerticalSpeedBands;++i){
@@ -452,8 +458,8 @@ bands_t DaidalusMonitor::GetVerticalSpeedBands(void){
        band.min[i] = vsInterval[i][0];
        band.max[i] = vsInterval[i][1];
        if(band.type[i] == larcfm::BandsRegion::RECOVERY) {
-           band.recovery = 1;
 	       larcfm::RecoveryInformation rec = DAA1.verticalSpeedRecoveryInformation();
+           band.recovery = rec.nFactor();
            band.timeToRecovery = rec.timeToRecovery();
            band.minHDist = rec.recoveryHorizontalDistance("m");
            band.minVDist = rec.recoveryVerticalDistance("m");
@@ -485,6 +491,8 @@ bands_t DaidalusMonitor::GetAltBands(void){
     band.recovery = 0;
     band.numBands = numAltitudeBands;
     band.currentConflictBand = 0;
+    band.recovery = -1;
+    band.timeToRecovery = -1;
     if(numAltitudeBands > 0)
         band.currentConflictBand = (int)daaViolationAlt;
     for(int i=0;i<numAltitudeBands;++i){
@@ -492,8 +500,8 @@ bands_t DaidalusMonitor::GetAltBands(void){
         band.min[i] = altInterval[i][0];
         band.max[i] = altInterval[i][1];
         if(band.type[i] == larcfm::BandsRegion::RECOVERY) {
-            band.recovery = 1;
             larcfm::RecoveryInformation rec = DAA1.altitudeRecoveryInformation();
+            band.recovery = rec.nFactor();
             band.timeToRecovery = rec.timeToRecovery();
             band.minHDist = rec.recoveryHorizontalDistance("m");
             band.minVDist = rec.recoveryVerticalDistance("m");

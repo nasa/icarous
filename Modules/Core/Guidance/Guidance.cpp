@@ -488,8 +488,8 @@ void Guidance::CheckWaypointArrival(){
     // If distance to next waypoint is < captureRadius, switch to next waypoint
     if (distH2nextWP <= capture_radius && 
         distV2nextWP <= params.climbAngleVRange && approachPrec < 0) {
+        //std::cout<<currentPlan->getID()<<":Reached waypoint: "<<nextWP<<", at: "<<currTime<<"/"<<currentPlan->time(nextWP)<<std::endl;
         wpReached = true;
-        std::cout<<currentPlan->getID()<<":Reached waypoint: "<<nextWP<<", at: "<<currTime<<"/"<<currentPlan->time(nextWP)<<std::endl;
         nextWP++;
         nextWpId[activePlanId] = nextWP;
     }else{

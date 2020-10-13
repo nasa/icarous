@@ -203,13 +203,17 @@ void Cognition::InputMergeStatus(const int merge_status){
 
 void Cognition::InputTrackBands(const bands_t &track_bands){
     utcTime = track_bands.time;
-    recovery[TRACK_RESOLUTION] = (bool) track_bands.recovery;
+    recovery[TRACK_RESOLUTION] = track_bands.recovery >= 0;
     if (track_bands.currentConflictBand == 1) {
         allTrafficConflicts[TRACK_RESOLUTION] = true;
-        if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred))
+        if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred)){
             preferredTrack = track_bands.resPreferred;
-        else
+            validResolution[TRACK_RESOLUTION] = true;
+        }
+        else{
             preferredTrack = prevResTrack;
+            validResolution[TRACK_RESOLUTION] = false;
+        }
     }
     else
     {
@@ -225,7 +229,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
 
 void Cognition::InputSpeedBands(const bands_t &speed_bands){
 
-    recovery[SPEED_RESOLUTION] = (bool)speed_bands.recovery; 
+    recovery[SPEED_RESOLUTION] = speed_bands.recovery >= 0; 
     if(speed_bands.currentConflictBand == 1){
         // Factor to increment or decrement the provided speed resolution by
         // This will eliminate oscillatory behavior due to numerical errors
@@ -242,6 +246,9 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
         // Use the provided resolution if it is valid
         if (!std::isinf(speed_bands.resPreferred) && !std::isnan(speed_bands.resPreferred)) {
             preferredSpeed = speed_bands.resPreferred * fac;
+            validResolution[SPEED_RESOLUTION] = true;
+        }else{
+            validResolution[SPEED_RESOLUTION] = false;
         }
     }else{
         allTrafficConflicts[SPEED_RESOLUTION] = false;
@@ -254,13 +261,17 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
 }
 
 void Cognition::InputAltBands(const bands_t &alt_bands){
-    recovery[ALTITUDE_RESOLUTION] = (bool) alt_bands.recovery;
+    recovery[ALTITUDE_RESOLUTION] = alt_bands.recovery >= 0;
     if(alt_bands.currentConflictBand == 1){
         allTrafficConflicts[ALTITUDE_RESOLUTION] = true;
-        if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred))
+        if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred)){
             preferredAlt = alt_bands.resPreferred;
-        else
+            validResolution[ALTITUDE_RESOLUTION] = true;
+        }
+        else{
             preferredAlt = prevResAlt;
+            validResolution[ALTITUDE_RESOLUTION] = false;
+        }
     }else{
         allTrafficConflicts[ALTITUDE_RESOLUTION] = false;
         preferredAlt = prevResAlt;
@@ -274,7 +285,7 @@ void Cognition::InputAltBands(const bands_t &alt_bands){
 }
 
 void Cognition::InputVSBands(const bands_t &vs_bands){
-    recovery[VERTICALSPEED_RESOLUTION] = (bool) vs_bands.recovery;
+    recovery[VERTICALSPEED_RESOLUTION] = vs_bands.recovery >= 0;
     resVUp = vs_bands.resUp;
     resVDown = vs_bands.resDown;
     preferredVSpeed = vs_bands.resPreferred;
@@ -282,8 +293,10 @@ void Cognition::InputVSBands(const bands_t &vs_bands){
 
     if(!std::isinf(preferredVSpeed) && !std::isnan(preferredVSpeed)){
        prevResVspeed = preferredVSpeed;
+       validResolution[VERTICALSPEED_RESOLUTION] = true;
     }else{
-        preferredVSpeed = prevResVspeed;
+       preferredVSpeed = prevResVspeed;
+       validResolution[VERTICALSPEED_RESOLUTION] = false;
     }
 }
 
@@ -933,6 +946,12 @@ bool Cognition::TrafficConflictManagement(){
                if( !(requestGuidance2NextWP == 0 && !closestPointFeasible) ){
                     trafficConflictState = COMPLETE;
                }
+            }else{
+               int ind = resType;
+               bool val =  !validResolution[ind];
+               if(val){
+                   trafficConflictState = NOOPC;
+               }
             }
          }
 
@@ -1276,14 +1295,8 @@ resolutionType_e Cognition::GetResolutionType(){
       if(!allTrafficConflicts[resPriority[i]]){
           continue;
       }
-      if(!recovery[resPriority[i]]){
-          if(resPriority[i] == TRACK_RESOLUTION){
-            if(!(trkBandNum == 1 && trkBandMin[0] < 1e-3 && trkBandMax[0] > 359.999)){
-               return (resolutionType_e) resPriority[i];
-            }
-          }else{
-            return (resolutionType_e) resPriority[i];
-          }
+      if(validResolution[resPriority[i]]){
+          return (resolutionType_e) resPriority[i];
       }
    }
 
