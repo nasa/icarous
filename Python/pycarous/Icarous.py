@@ -584,7 +584,7 @@ class Icarous(IcarousInterface):
         pass
 
 
-def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30,record=False,filename=""):
+def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename=""):
     '''
     ic: icarous object
     allplans: True - plot all computed plans, False - plot only the mission plan
@@ -595,7 +595,7 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     if record:
         import matplotlib; matplotlib.use('Agg')
     from Animation import AgentAnimation
-    anim= AgentAnimation(xmin,ymin, xmax,ymax,interval,record,filename)
+    anim= AgentAnimation(xmin,ymin, xmax,ymax,playbkspeed,interval,record,filename)
 
     vehicleSize1 = np.abs(xmax - xmin)/100
     vehicleSize2 = np.abs(ymax - ymin)/100

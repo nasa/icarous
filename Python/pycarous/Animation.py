@@ -8,7 +8,7 @@ import math
 
 
 class AgentAnimation():
-    def __init__(self,xmin,ymin,xmax,ymax,interval,record=False,filename=""):
+    def __init__(self,xmin,ymin,xmax,ymax,playbkspeed=1,interval=5,record=False,filename=""):
         self.fig = plt.figure(frameon=True)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
@@ -26,6 +26,7 @@ class AgentAnimation():
         self.record = record
         self.status  = {}
         self.filename = filename
+        self.speed = playbkspeed
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
@@ -154,6 +155,7 @@ class AgentAnimation():
         return self.agents,self.paths,self.circle
 
     def animate(self,i):
+        i = int(i*self.speed)
         if i < self.minlen-1:
             for j, vehicle in enumerate(self.agents):
                 id = self.agentNames[j]
@@ -181,7 +183,7 @@ class AgentAnimation():
         init = lambda:self.init()
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,
-                                       frames=self.minlen,
+                                       frames=int(self.minlen/self.speed),
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)

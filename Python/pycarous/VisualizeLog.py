@@ -23,6 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("--record", action="store_true", help="record animation to file")
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
+    parser.add_argument("--speed",type=float, default=25.0, help="increase playback speed by given factor")
     args = parser.parse_args()
 
     files = []
@@ -45,7 +46,7 @@ if __name__ == "__main__":
             pb.localPlans = pb.ownshipLog['localPlans']
             pb.localFences = pb.ownshipLog['localFences']
             pb.params = data['parameters']
-            pb.daa_radius = pb.params['DET_1_WCV_DTHR']/3
+            pb.daa_radius = pb.params['DET_1_WCV_DTHR']*0.3048
             pb.localMergeFixes = data['mergefixes']
             pbs.append(pb)
             _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     ymin -= padding
     xmax += padding
     ymax += padding
-    VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,interval=5,record=args.record,filename=args.output)
+    VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output)
 
     
 
