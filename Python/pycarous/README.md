@@ -1,7 +1,7 @@
-# PyIcarous
+# Pycarous
 
-PyIcarous is a python wrapper for the core ICAROUS C++ modules. 
-PyIcarous enables us to simulate ICAROUS (faster than real time).
+Pycarous is a python wrapper for the core ICAROUS C++ modules. 
+Pycarous enables us to simulate ICAROUS (faster than real time).
 This is very helpful to perform batch simulations and analysis for ICAROUS.
 
 To get started, first ensure the core ICAROUS C++ modules are compiled. 

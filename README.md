@@ -24,7 +24,12 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.2.2 - July 31, 2020
+- ICAROUS  V-2.2.3 - October 13, 2020
+
+### Pycarous
+
+Refer to [Python/pycarous/README.md](Python/pycarous/README.md) for more information about the Icarous python framework.
+
 
 ### License
 
