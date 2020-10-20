@@ -11,6 +11,7 @@
 #include <fstream>
 #include <cstdio>
 #include <cmath>
+#include <memory>
 
 
 #include "Interfaces.h"
@@ -22,6 +23,9 @@
 #include "Plan.h"
 
 #include "Commands.hpp"
+
+#include "EventManager.hpp"
+#include "EventHandler.hpp"
 
 /**
  * @enum flightphase_e
@@ -76,7 +80,6 @@ typedef enum{
     VERTICALSPEED_RESOLUTION,
     SEARCH_RESOLUTION,
     DITCH_RESOLUTION,
-    TRACK_RESOLUTION2,
     TRACK_SPEED_VS_RESOLUTION
 }resolutionType_e;
 
@@ -97,6 +100,128 @@ typedef enum{
     REQUEST_PROCESSING,
     REQUEST_RESPONDED
 }request_e;
+
+typedef struct{
+    double utcTime;                ///< Current time
+    std::string timeString;        ///< Formatted time string
+    std::string callSign;          ///< Vehicle's callsign string
+    cognition_params_t parameters; ///< Configurable parameters used by Cognition
+
+    // Flight plan book keeping
+    std::list<larcfm::Plan> flightPlans; ///< List of flight plans
+    larcfm::Plan *activePlan;            ///< Pointer to the active flight plan
+    std::map<std::string, int> nextWpId; ///< Map from flight plan id to next waypoint id
+
+    int nextFeasibleWpId;      ///< to next feasible waypoint id
+    bool closestPointFeasible; ///< Feasibility of nearest point on primary flight plan
+    resolutionType_e resType;
+
+    bool primaryFPReceived;
+    bool recovery[4];
+    bool validResolution[4];
+    double scenarioTime;
+    double timeToTrafficViolation1; ///< time in to violation from DAA
+    double timeToTrafficViolation2; ///< time out of violation from DAA
+    double timeToTrafficViolation3; ///< time in to violation from Trajectory Monitor
+    double timeToFenceViolation;
+
+    double xtrackDeviation;
+
+    // Aircraft state information
+    larcfm::Position position;
+    larcfm::Velocity velocity;
+    double hdg;
+    double speed;
+    double refWpTime;
+    bool wpMetricTime;
+
+    // Geofence conflict related variables
+    bool keepInConflict;
+    bool keepOutConflict;
+    larcfm::Position recoveryPosition;
+    larcfm::Position clstPoint;
+
+    // Traffic conflict related variables
+    bool trafficConflict;
+    bool allTrafficConflicts[4];
+    bool newAltConflict;
+    double trafficConflictStartTime;
+
+    // Conflict flags based on flightplan projections
+    bool planProjectedTrafficConflict;
+    bool planProjectedFenceConflict;
+
+    bool returnSafe;
+    double resolutionStartSpeed;
+
+    double preferredTrack;
+    double preferredSpeed;
+    double preferredAlt;
+    double preferredVSpeed;
+
+    int vsBandsNum;
+    double resVUp;
+    double resVDown;
+
+    double prevResSpeed;
+    double prevResAlt;
+    double prevResTrack;
+    double prevResVspeed;
+
+    int trkBandNum;
+    int trkBandType[20];
+    double trkBandMin[20];
+    double trkBandMax[20];
+
+    int gsBandNum;
+    int gsBandType[20];
+    double gsBandMin[20];
+    double gsBandMax[20];
+
+    int altBandNum;
+    int altBandType[20];
+    double altBandMin[20];
+    double altBandMax[20];
+
+    // Flight plan monitoring related variables
+    bool XtrackConflict;
+    bool directPathToFeasibleWP1;
+    bool directPathToFeasibleWP2;
+
+    // Ditching variables
+    larcfm::Position ditchSite;
+    double todAltitude;
+    bool ditch;
+    bool resetDitch;
+    bool endDitch;
+    bool ditchRouteFeasible;
+
+    status_e takeoffState;
+    status_e cruiseState;
+    status_e emergencyDescentState;
+    int takeoffComplete;
+
+    conflictState_e geofenceConflictState;
+    conflictState_e XtrackConflictState;
+    conflictState_e trafficConflictState;
+    conflictState_e return2NextWPState;
+
+    int8_t request;
+
+    int missionStart;
+    int requestGuidance2NextWP; // -1: undediced, 0: no guidance, 1: obtain guidance
+    bool p2pComplete;
+    bool topOfDescent;
+
+    // Status of merging activity
+    uint8_t mergingActive;
+    uint16_t numSecPaths;
+
+    // output
+    std::list<Command> cognitionCommands;
+
+    std::ofstream log;
+}CognitionState_t;
 
 class Cognition{
     public:
@@ -132,221 +257,85 @@ class Cognition{
 
         int GetCognitionOutput(Command &command);
 
-        resolutionType_e GetResolutionType();
-
         void StartMission(const int mission_start_value,const double scenario_time);
 
-        /**
-         * Top level finite state machines governing flight phase transitions
-         */
-        int FlightPhases(double time);
+        void Run(double time);
+
+        CognitionState_t cogState;
 
     private:
-        void Initialize();
+        EventManagement<CognitionState_t> eventMng;
+        void InitializeState();
+        void InitializeEvents();
+        void InitializeEventHandlers();
 
-        larcfm::Plan* GetPlan(const std::string &plan_id);
-
-        int GetTotalWaypoints(const std::string &plan_id);
-
-        larcfm::Position GetNextWP();
-
-        larcfm::Velocity GetNextWPVelocity();
-
-        larcfm::Position GetPrevWP();
-
-        bool CheckPlanComplete(const std::string &plan_id);
-
-        bool TrafficConflictManagement();
-
-        bool GeofenceConflictManagement();
-
-        bool ReturnToNextWP();
-
-        bool XtrackManagement();
-
-        status_e Takeoff();
-
-        status_e Climb();
-
-        status_e Cruise();
-
-        status_e Descent();
-
-        status_e Approach();
-
-        status_e Landing();
-
-        status_e EmergencyDescent();
-
-        bool RunTrafficResolution();
-
-        bool CheckProjectedTrafficConflict();
-
-        bool ComputeTargetFeasibility(larcfm::Position target);
-
-        void SetGuidanceVelCmd(const double track,const double gs,const double vs);
-
-        void SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold = 0);
-
-        void SetGuidanceAltCmd(const std::string &planID,const double alt,const int hold = 0);
-        
-        void SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index);
-
-        void FindNewPath(const std::string &planID,const larcfm::Position &positionA,
-                         const larcfm::Velocity &velocityA,
-                         const larcfm::Position &positionB,
-                         const larcfm::Velocity &velocityB);
-
-        void SetGuidanceP2P(const larcfm::Position &point,const double speed);
-
-        void SendStatus(const char buffer[],const uint8_t severity);
-
-        // Cognition util functions
-        double ComputeHeading(const larcfm::Position &positionA,const larcfm::Position &positionB);
-        double ComputeXtrackDistance(const larcfm::Position &prev_wp,
-                                     const larcfm::Position &next_wp,
-                                     const larcfm::Position &pos,
-                                     double offset[]);
-        larcfm::Position GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
-                               const larcfm::Position &next_wp,
-                               const larcfm::Position &current_pos);
-        void ManeuverToIntercept(const larcfm::Position &prev_wp,
-                                 const larcfm::Position &next_wp,
-                                 const larcfm::Position &curr_position,
-                                 double x_trk_dev_gain,
-                                 const double resolution_speed,
-                                 const double allowed_dev,
-                                 larcfm::Velocity &output_velocity);
-        double GetInterceptHeadingToPlan(const larcfm::Position &prev_wp,
-                                         const larcfm::Position &next_wp,
-                                         const larcfm::Position &current_pos);
-        bool CheckTurnConflict(const double low,
-                               const double high,
-                               const double new_heading,
-                               const double old_heading);
-
-    private:
-        double utcTime;                         ///< Current time
-        std::string timeString;                 ///< Formatted time string
-        std::string callSign;                   ///< Vehicle's callsign string
-        cognition_params_t parameters;          ///< Configurable parameters used by Cognition
-
-        // Flight plan book keeping
-        std::list<larcfm::Plan> flightPlans;        ///< List of flight plans
-        larcfm::Plan* activePlan;                   ///< Pointer to the active flight plan
-        std::map<std::string,int> nextWpId;         ///< Map from flight plan id to next waypoint id
-
-        int nextFeasibleWpId;                        ///< to next feasible waypoint id
-        bool closestPointFeasible;                   ///< Feasibility of nearest point on primary flight plan
-        resolutionType_e resType;
-
-        bool primaryFPReceived;
-        bool recovery[4];
-        bool validResolution[4];
-        double scenarioTime;
-        double timeToTrafficViolation1;        ///< time in to violation from DAA
-        double timeToTrafficViolation2;        ///< time out of violation from DAA
-        double timeToTrafficViolation3;        ///< time in to violation from Trajectory Monitor
-        double timeToFenceViolation;
-
-        // Aircraft state information
-        larcfm::Position position;
-        larcfm::Velocity velocity;
-        double hdg;
-        double speed;
-        double refWpTime;
-        bool wpMetricTime;
-
-        // Geofence conflict related variables
-        bool keepInConflict;
-        bool keepOutConflict;
-        larcfm::Position recoveryPosition;
-
-        // Traffic conflict related variables
-        bool trafficConflict;
-        bool allTrafficConflicts[4];
-        bool newAltConflict;
-        double trafficConflictStartTime;
-
-        // Conflict flags based on flightplan projections
-        bool planProjectedTrafficConflict;
-        bool planProjectedFenceConflict;
-
-        bool returnSafe;
-        double resolutionStartSpeed;
-
-        double preferredTrack;
-        double preferredSpeed;
-        double preferredAlt;
-        double preferredVSpeed;
-
-        int vsBandsNum;
-        double resVUp;
-        double resVDown;
-
-        double prevResSpeed;
-        double prevResAlt;
-        double prevResTrack;
-        double prevResVspeed;
-
-        int trkBandNum;
-        int trkBandType[20];
-        double trkBandMin[20];
-        double trkBandMax[20];
-
-        int gsBandNum;
-        int gsBandType[20];
-        double gsBandMin[20];
-        double gsBandMax[20];
-
-        int altBandNum;
-        int altBandType[20];
-        double altBandMin[20];
-        double altBandMax[20];
-
-        // Flight plan monitoring related variables
-        bool XtrackConflict;
-        bool directPathToFeasibleWP1;
-        bool directPathToFeasibleWP2;
-
-        double xtrackDeviation;
-
-        // Ditching variables
-        larcfm::Position ditchSite;
-        double todAltitude;
-        bool ditch;
-        bool resetDitch;
-        bool endDitch;
-        bool ditchRouteFeasible;
-
-        // State machine related variables
-        flightphase_e fpPhase;                 ///< Current phase of flight
-
-        status_e takeoffState;
-        status_e cruiseState;
-        status_e emergencyDescentState;
-        int takeoffComplete;
-
-        conflictState_e geofenceConflictState;
-        conflictState_e XtrackConflictState;
-        conflictState_e trafficConflictState;
-        conflictState_e return2NextWPState;
-
-        int8_t request;
-
-        int missionStart;
-        int requestGuidance2NextWP;             // -1: undediced, 0: no guidance, 1: obtain guidance
-        bool p2pComplete;
-        bool topOfDescent;
-
-        // Status of merging activity
-        uint8_t mergingActive;
-        uint16_t numSecPaths;
-
-        // output
-        std::list<Command> cognitionCommands;
-
-        std::ofstream log;
 };
+
+larcfm::Plan* GetPlan(std::list<larcfm::Plan>* planList,const std::string &plan_id);
+
+int GetTotalWaypoints(std::list<larcfm::Plan>* planList,const std::string &plan_id);
+
+larcfm::Position GetNextWP(larcfm::Plan*fp, int nextWP);
+
+larcfm::Position GetPrevWP(larcfm::Plan*fp, int nextWP);
+
+larcfm::Velocity GetNextWPVelocity(larcfm::Plan*fp, int nextWP);
+
+bool CheckProjectedTrafficConflict(larcfm::Position position, larcfm::Velocity velocity,
+                                   larcfm::Position prevWP,larcfm::Position nextWP,
+                                   double timeToViolation,double DTHR,double ZTHR);
+
+bool ComputeTargetFeasibility(CognitionState_t *state,larcfm::Position target);
+
+void SetGuidanceVelCmd(CognitionState_t *state,const double track,const double gs,const double vs);
+
+void SetGuidanceSpeedCmd(CognitionState_t *state,const std::string &planID,const double speed,const int hold = 0);
+
+void SetGuidanceAltCmd(CognitionState_t *state,const std::string &planID,const double alt,const int hold = 0);
+        
+void SetGuidanceFlightPlan(CognitionState_t *state,const std::string &plan_id,const int wp_index);
+
+void SetLandCmd(CognitionState_t* state);
+
+void SetDitchSiteRequestCmd(CognitionState_t* state);
+
+void FindNewPath(CognitionState_t *state,const std::string &planID,const larcfm::Position &positionA,
+                const larcfm::Velocity &velocityA,
+                const larcfm::Position &positionB,
+                const larcfm::Velocity &velocityB);
+
+void SetGuidanceP2P(CognitionState_t *state,const larcfm::Position &point,const double speed);
+
+void SendStatus(CognitionState_t *state,const char buffer[],const uint8_t severity);
+
+resolutionType_e GetResolutionType(CognitionState_t* state);
+
+void LogMessage(CognitionState_t* state,std::string message);
+
+// Cognition util functions
+double ComputeHeading(const larcfm::Position &positionA,const larcfm::Position &positionB);
+double ComputeXtrackDistance(const larcfm::Position &prev_wp,
+                            const larcfm::Position &next_wp,
+                            const larcfm::Position &pos,
+                            double offset[]);
+larcfm::Position GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
+                        const larcfm::Position &next_wp,
+                        const larcfm::Position &current_pos);
+void ManeuverToIntercept(const larcfm::Position &prev_wp,
+                            const larcfm::Position &next_wp,
+                            const larcfm::Position &curr_position,
+                            double x_trk_dev_gain,
+                            const double resolution_speed,
+                            const double allowed_dev,
+                            larcfm::Velocity &output_velocity);
+double GetInterceptHeadingToPlan(const larcfm::Position &prev_wp,
+                                    const larcfm::Position &next_wp,
+                                    const larcfm::Position &current_pos);
+bool CheckTurnConflict(const double low,
+                    const double high,
+                    const double new_heading,
+                    const double old_heading);
+
+
 
 #endif

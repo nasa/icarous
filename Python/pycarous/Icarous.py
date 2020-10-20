@@ -94,6 +94,7 @@ class Icarous(IcarousInterface):
         self.daa_radius = 0
         self.fphases = -1
         self.land    = False
+        self.ditch   = False
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
@@ -207,6 +208,7 @@ class Icarous(IcarousInterface):
         cogParams.ZTHR = params['DET_1_WCV_ZTHR']/3
         cogParams.lookaheadTime = params['LOOKAHEAD_TIME']
         cogParams.persistence_time = params['PERSIST_TIME']
+        cogParams.return2nextWP = int(params['RETURN_WP'])
         self.Cog.InputParameters(cogParams)
 
     def SetTrafficParams(self,params):
@@ -326,8 +328,8 @@ class Icarous(IcarousInterface):
             else:
                 print("%s: %s, Distance to wp %d: %f" %(self.callsign,self.activePlan,self.nextWP2,dist))
 
-        self.fphase = self.Cog.RunFlightPhases(self.currTime)
-        if self.fphase == 8:
+        self.fphase = self.Cog.RunCognition(self.currTime)
+        if self.fphase == -2:
             self.land = True
 
         n, cmd = self.Cog.GetOutput()
@@ -524,7 +526,7 @@ class Icarous(IcarousInterface):
         self.missionStarted = True
 
     def CheckMissionComplete(self):
-        if self.land and self.fphase == 0:
+        if self.land:
             self.missionComplete = True
         return self.missionComplete
 

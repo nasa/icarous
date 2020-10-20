@@ -237,6 +237,7 @@ void COGNITION_ProcessSBData(void) {
         case TRAJECTORY_PARAMETERS_MID:{
             trajectory_parameters_t* msg = (trajectory_parameters_t*) appdataCog.CogMsgPtr;
             appdataCog.parameters.allowedXtrackDeviation = msg->crossTrackDeviation;
+            appdataCog.parameters.return2NextWP = msg->return2nextWP;
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
         }
@@ -322,7 +323,7 @@ void COGNITION_DecisionProcess(void){
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME,&ts);
     double time = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
-    FlightPhases(appdataCog.cog,time);
+    RunCognition(appdataCog.cog,time);
 
     Command command;
     int commands_remaining = 1;

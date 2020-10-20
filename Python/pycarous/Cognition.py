@@ -8,7 +8,8 @@ class CognitionParams(Structure):
         ("ZTHR",c_double),
         ("allowedXTrackDeviation",c_double),
         ("lookaheadTime",c_double),
-        ("persistence_time",c_double)]
+        ("persistence_time",c_double),
+        ("return2nextWP",c_int)]
 
 ARR3 = c_double*3
 
@@ -18,12 +19,11 @@ class Cognition():
         self.lib.CognitionInit.argtypes = [c_char_p]
         self.lib.CognitionInit.restype = c_void_p
         self.lib.Reset.argtypes = [c_void_p]
-        self.lib.ResetFlightPhases.argtypes = [c_void_p]
         self.lib.InputVehicleState.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
         self.lib.InputFlightPlanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool]
         self.lib.InputTrajectoryMonitorData.argtypes = [c_void_p,POINTER(TrajectoryMonitorData)]
         self.lib.InputParameters.argtypes = [c_void_p,POINTER(CognitionParams)]
-        self.lib.InputDitchStatus.argtypes = [c_void_p,c_double*3,c_bool]
+        self.lib.InputDitchStatus.argtypes = [c_void_p,c_double*3,c_double,c_bool]
         self.lib.InputMergeStatus.argtypes = [c_void_p,c_int]
         self.lib.InputTrackBands.argtypes = [c_void_p, POINTER(Bands)]
         self.lib.InputSpeedBands.argtypes = [c_void_p, POINTER(Bands)]
@@ -34,8 +34,8 @@ class Cognition():
         self.lib.GetCognitionOutput.argtypes = [c_void_p,POINTER(Command)]
         self.lib.GetCognitionOutput.restype = c_int
         self.lib.StartMission.argtypes = [c_void_p,c_int,c_double]
-        self.lib.FlightPhases.argtypes = [c_void_p,c_double]
-        self.lib.FlightPhases.restype = c_int
+        self.lib.RunCognition.argtypes = [c_void_p,c_double]
+        self.lib.RunCognition.restype = c_int
 
         self.obj = self.lib.CognitionInit(c_char_p(callSign.encode('utf-8')))
 
@@ -78,8 +78,11 @@ class Cognition():
     def InputStartMission(self,startWP,delay):
         self.lib.StartMission(self.obj,c_int(startWP),c_double(delay))
 
-    def RunFlightPhases(self,currTime):
-        val = self.lib.FlightPhases(self.obj,c_double(currTime))
+    def InputDitchSite(self,ditchSite,todAltitude,ditch):
+        self.lib.InputDitchStatus(self.obj,ARR3(*ditchSite),c_double(todAltitude),c_double(ditch))
+
+    def RunCognition(self,currTime):
+        val = self.lib.RunCognition(self.obj,c_double(currTime))
         return val
 
     def GetOutput(self):

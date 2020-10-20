@@ -153,6 +153,7 @@ void PublishParams(param_t *params) {
     localTrajectoryParams.dbparams.vAccel = localTrafficParams.vertical_accel;
     localTrajectoryParams.dbparams.vDaccel = -localTrafficParams.vertical_accel;
     localTrajectoryParams.crossTrackDeviation = (double)params[i].value;i++;;
+    localTrajectoryParams.return2nextWP = (int) params[i].value;i++;;
 
     SendSBMsg(localTrajectoryParams);
     #else

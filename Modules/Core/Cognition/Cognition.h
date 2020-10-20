@@ -10,7 +10,6 @@ extern "C" {
 
 void* CognitionInit(const char callsign[]);
 void Reset(void *obj);
-void ResetFlightPhases(void *obj);
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading);
 void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize);
 void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonData);
@@ -26,7 +25,7 @@ void ReachedWaypoint(void *obj, const char plan_id[], const int wp_reached_id);
 int GetCognitionOutput(void *obj,Command *command);
 void GetResolutionType(void *obj);
 void StartMission(void *obj,const int mission_start_value,const double delay);
-int FlightPhases(void *obj,double time);
+int RunCognition(void *obj,double time);
 
 #ifdef __cplusplus
 }

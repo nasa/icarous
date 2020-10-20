@@ -56,6 +56,7 @@ MAXCEILING       50.000000
 CLMB_SPEED       1.0
 ALT_DH           1.0
 XTRKDEV          1000.000000
+RETURN_WP        1.000000
 
 # Geofence parameters
 LOOKAHEAD        4.000000

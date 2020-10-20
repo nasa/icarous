@@ -259,6 +259,7 @@ def ConstructWaypointsFromList(fp,eta=False):
     speeds = []
     times  = []
     waypoints = []
+    tcp = False
     if eta:
         times = [wp[3] for wp in fp]
     else:

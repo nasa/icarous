@@ -6,7 +6,7 @@
 #include "Icarous_msgids.h"
 
 
-#define PARAM_COUNT 76    ///< Total number of ICAROUS parameters
+#define PARAM_COUNT 77    ///< Total number of ICAROUS parameters
 
 #define MAX_PARAMETER_NAME_SIZE 17
 

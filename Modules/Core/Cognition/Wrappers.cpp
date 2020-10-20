@@ -12,11 +12,6 @@ void Reset(void *obj){
     cog->Reset();
 }
 
-void ResetFlightPhases(void *obj){
-    Cognition* cog = (Cognition*)obj;
-    cog->ResetFlightPhases();
-}
-
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading){
     Cognition* cog = (Cognition*)obj;
     larcfm::Position position = larcfm::Position::makeLatLonAlt(pos[0],"deg",pos[1],"deg",pos[2],"m");
@@ -85,19 +80,15 @@ int GetCognitionOutput(void *obj,Command *command){
     return cog->GetCognitionOutput(*command);
 }
 
-void GetResolutionType(void *obj){
-    Cognition* cog = (Cognition*)obj;
-    cog->GetResolutionType();
-}
-
 void StartMission(void *obj,const int mission_start_value,const double delay){
     Cognition* cog = (Cognition*)obj;
     cog->StartMission(mission_start_value,delay);
 }
 
-int FlightPhases(void *obj,double time){
+int RunCognition(void *obj,double time){
     Cognition* cog = (Cognition*)obj;
-    return cog->FlightPhases(time);
+    cog->Run(time);
+    return cog->cogState.missionStart;
 }
 
 void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonData){

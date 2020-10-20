@@ -47,6 +47,7 @@ typedef struct{
  typedef struct{
     CCSDS_PriHdr_t hdr;
     DubinsParams_t dbparams; 
+    int return2nextWP;
     double crossTrackDeviation;
  }trajectory_parameters_t;
 

@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("--record", action="store_true", help="record animation to file")
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
-    parser.add_argument("--speed",type=float, default=25.0, help="increase playback speed by given factor")
+    parser.add_argument("--speed",type=int, default=1.0, help="increase playback speed by given factor")
     args = parser.parse_args()
 
     files = []
