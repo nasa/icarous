@@ -1,8 +1,8 @@
 import numpy as np
 import time
 
-from VehicleSim import VehicleSim
-from ichelper import distance
+from vehiclesim import UamVtolSim
+from ichelper import distance, ConvertVnedToTrkGsVs
 from Merger import LogData, MergerData, MAX_NODES
 from Interfaces import V2Vdata
 from communicationmodels import channelmodels as cm
@@ -98,12 +98,12 @@ class SimEnvironment:
         tvx = speed*np.sin(heading*np.pi/180)
         tvy = speed*np.cos(heading*np.pi/180)
         tvz = crate
-        traffic = VehicleSim(idx, tx, ty, tz, tvx, tvy, tvz)
-        traffic.home_gps = np.array(home)
+        traffic = UamVtolSim(idx, home, tx, ty, tz, tvx, tvy, tvz)
+        traffic.InputCommand(heading, speed, crate)
         self.tfList.append(traffic)
 
         # Create a transmitter for V2V communications
-        traffic.transmitter = get_transmitter(transmitter,idx,self.comm_channel)
+        traffic.transmitter = get_transmitter(transmitter, idx, self.comm_channel)
 
         return traffic
 
@@ -111,11 +111,13 @@ class SimEnvironment:
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:
             tf.dt = dT or self.dT
-            tf.run(self.windFrom, self.windSpeed)
+            tf.Run(self.windFrom, self.windSpeed)
+            tf_gps_pos = tf.GetOutputPositionLLA()
+            tf_vel = tf.GetOutputVelocityNED()
             tfdata = V2Vdata("INTRUDER", {"id":tf.vehicleID,
-                                          "pos": tf.pos_gps,
-                                          "vel": tf.getOutputVelocityNED()})
-            tf.transmitter.transmit(self.current_time, tf.pos_gps, tfdata)
+                                          "pos": tf_gps_pos,
+                                          "vel": tf_vel})
+            tf.transmitter.transmit(self.current_time, tf_gps_pos, tfdata)
 
     def AddWind(self, wind):
         """
@@ -276,6 +278,7 @@ class SimEnvironment:
         # Convert flightplans from all instances to a common reference frame
         to_local = self.icInstances[0].ConvertToLocalCoordinates
         for i, ic in enumerate(self.icInstances):
+            ic.home_pos = self.home_gps
             posNED = list(map(to_local, ic.ownshipLog["position"]))
             ic.ownshipLog["positionNED"] = posNED
             for tfid in ic.trafficLog.keys():

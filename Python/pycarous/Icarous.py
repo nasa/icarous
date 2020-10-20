@@ -2,20 +2,15 @@ from ctypes import byref
 import numpy as np
 import time
 
-from Interfaces import (CommandTypes,GeofenceConflict)
-from Cognition import (Cognition,
-                        CognitionParams)
-from Guidance import (Guidance,
-                      GuidanceParam,
-                      GuidanceMode)
-from Geofence import (GeofenceMonitor)
+from Interfaces import CommandTypes, GeofenceConflict
+from Cognition import Cognition, CognitionParams
+from Guidance import Guidance, GuidanceParam, GuidanceMode
+from Geofence import GeofenceMonitor
 from Trajectory import Trajectory,DubinsParams
 from TrafficMonitor import TrafficMonitor
-from Merger import (MAX_NODES,Merger,LogData,MergerData)
-from VehicleSim import (VehicleSim,
-                        StartTraffic,
-                        RunTraffic)
+from Merger import MAX_NODES, Merger, LogData, MergerData
 from ichelper import (ConvertTrkGsVsToVned,
+                      ConvertVnedToTrkGsVs,
                       distance,
                       Getfence,
                       gps_offset,
@@ -55,10 +50,11 @@ class Icarous(IcarousInterface):
 
         # Initialize vehicle sim
         if simtype == "UAM_VTOL":
-            self.ownship = VehicleSim(self.vehicleID, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-        else:
-            from quadsim import QuadSim
-            self.ownship = QuadSim()
+            from vehiclesim import UamVtolSim
+            self.ownship = UamVtolSim(self.vehicleID, home_pos)
+        elif simtype == "UAS_ROTOR":
+            from vehiclesim import QuadSim
+            self.ownship = QuadSim(self.vehicleID, home_pos)
 
         # Initialize ICAROUS apps
         self.Cog = Cognition(self.callsign)
@@ -100,7 +96,7 @@ class Icarous(IcarousInterface):
         self.land    = False
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
-        self.ownship.setpos_uncertainty(xx, yy, zz, xy, yz, xz, coeff)
+        self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
 
     def InputTraffic(self,idx,position,velocity):
         if idx is not self.vehicleID and 0 not in position:
@@ -296,11 +292,12 @@ class Icarous(IcarousInterface):
         self.SetMergerParams(params)
 
     def RunOwnship(self):
-        self.ownship.inputNED(*self.controlInput)
-        self.ownship.step(windFrom=self.windFrom,windSpeed=self.windSpeed)
+        trkgsvs_command = ConvertVnedToTrkGsVs(*self.controlInput)
+        self.ownship.InputCommand(*trkgsvs_command)
+        self.ownship.Run(windFrom=self.windFrom,windSpeed=self.windSpeed)
 
-        opos = self.ownship.getOutputPositionNED()
-        ovel = self.ownship.getOutputVelocityNED()
+        opos = self.ownship.GetOutputPositionNED()
+        ovel = self.ownship.GetOutputVelocityNED()
 
         self.localPos = opos
 
