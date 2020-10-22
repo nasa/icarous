@@ -28,7 +28,7 @@ class VehicleSimInterface(abc.ABC):
         # Current wind speed
         self.vw = np.array([0, 0, 0])
 
-    def SetPositionUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+    def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         """
         Set position uncertainty
         :param xx: x position variance [m^2] (East/West)
