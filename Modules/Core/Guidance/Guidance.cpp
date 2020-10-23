@@ -399,7 +399,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
-        double k = 10;
+        double k = 5;
 
         int trkErrorSign = larcfm::Util::turnDir(currentActualTrk,currentIdealTrk);
         double trkError = larcfm::Util::turnDelta(currentActualTrk,currentIdealTrk);
