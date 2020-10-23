@@ -436,12 +436,12 @@ void Guidance::FilterCommand(double &refHeading, double &refSpeed, double &refVS
 
     // Reduce speed if approaching final waypoint or if turning sharply
     if (currentPlan->isLinear()) {
-       const double ownship_heading = currentVel.compassAngle() * 180 / M_PI;
-       const double turn_angle = std::fmod(360 + std::fabs(ownship_heading - refHeading), 360);
-       if (turn_angle > 60) {
+       const double ownship_heading = currentVel.compassAngle();
+       const double turn_angle =larcfm::Util::turnDelta(ownship_heading,refHeading * M_PI/180) * 180/M_PI;
+       if (fabs(turn_angle) > 60) {
            const double range = params.maxSpeed - params.minSpeed;
-           if (refSpeed > (params.minSpeed + range * 0.5)) {
-               refSpeed = std::max(params.minSpeed,refSpeed / 2);
+           if (refSpeed > (params.minSpeed + range * 0.25)) {
+               refSpeed = std::max(params.minSpeed,refSpeed / 4);
            }
        }
     }
