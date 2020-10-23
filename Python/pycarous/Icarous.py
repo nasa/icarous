@@ -55,6 +55,9 @@ class Icarous(IcarousInterface):
         elif simtype == "UAS_ROTOR":
             from vehiclesim import QuadSim
             self.ownship = QuadSim(self.vehicleID, home_pos)
+        elif simtype == "UAM_SPQ":
+            from vehiclesim import SixPassengerQuadSim
+            self.ownship = SixPassengerQuadSim(self.vehicleID, home_pos)
 
         # Initialize ICAROUS apps
         self.Cog = Cognition(self.callsign)
