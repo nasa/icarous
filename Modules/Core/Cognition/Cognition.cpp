@@ -64,6 +64,7 @@ void Cognition::Run(double time){
     cogState.timeString = std::string(buffer);
     cogState.utcTime = time;
     eventMng.Run(&cogState);
+    cogState.log.flush();
 }
 
 void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velocity &vel,const double heading){

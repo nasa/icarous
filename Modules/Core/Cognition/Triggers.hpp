@@ -39,6 +39,12 @@ bool FlightPlanDeviationTrigger(CognitionState_t* state){
     if(state->activePlan == nullptr){
         return false;
     }
+
+    if(state->activePlan->getID() == "Plan0"){
+        if(state->nextWpId["Plan0"] >= state->activePlan->size()){
+            return false;
+        }
+    }
     state->XtrackConflict = (state->xtrackDeviation > state->parameters.allowedXtrackDeviation) &&
                             !state->trafficConflict;
     return state->XtrackConflict;

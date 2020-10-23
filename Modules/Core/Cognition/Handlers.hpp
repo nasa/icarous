@@ -44,6 +44,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
 
 class ReturnToMission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
+        LogMessage(state,"[HANDLER] Return to mission, initiated by "+eventName);
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
         larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
@@ -62,6 +63,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         }else{
             positionB = GetNextWP(fp,state->nextFeasibleWpId);
             velocityB = GetNextWPVelocity(fp,state->nextFeasibleWpId);
+            state->nextWpId[state->activePlan->getID()] = state->nextFeasibleWpId;
         }
         FindNewPath(state,pathName,positionA, velocityA, positionB, velocityB);
         SendStatus(state,(char*)"IC:Computing secondary path",6);
@@ -88,6 +90,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
 
 class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
+        LogMessage(state,"[HANDLER] Return to next feasible WP, initiated by "+eventName);
         state->nextWpId["Plan0"] = state->nextFeasibleWpId;
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
