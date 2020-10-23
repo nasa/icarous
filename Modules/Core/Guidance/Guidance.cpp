@@ -398,15 +398,15 @@ double Guidance::ComputeNewHeading(double& speedRef){
         speedRef = turnRadius*(turnRate*DEG2RAD);
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
-        double k = 1;
-
+        double offset = dist2center/fabs(turnRadius) - 1;
+        double k = 20;
 
         int trkErrorSign = larcfm::Util::turnDir(currentActualTrk,currentIdealTrk);
         double trkError = larcfm::Util::turnDelta(currentActualTrk,currentIdealTrk);
         if(turnRadius > 0){
-            outputHeading = currentIdealTrk + (dist2center-fabs(turnRadius))*k;
+            outputHeading = currentIdealTrk + (offset)*k;
         }else{
-            outputHeading = currentIdealTrk - (dist2center-fabs(turnRadius))*k;
+            outputHeading = currentIdealTrk - (offset)*k;
         }
         outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI;
     }else{
