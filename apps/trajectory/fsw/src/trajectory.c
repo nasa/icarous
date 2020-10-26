@@ -246,7 +246,7 @@ void TRAJECTORY_Monitor(void)
                     wp[i] = fp->waypoints[i];
                 } 
                 char name[] = "Plan0";
-                TrajManager_InputFlightPlan(TrajectoryAppData.pplanner, name, wp, fp->num_waypoints,0,false);
+                TrajManager_InputFlightPlan(TrajectoryAppData.pplanner, name, wp, fp->num_waypoints,0,false,0);
                 OS_MutSemTake(TrajectoryAppData.mutexAcState);
                 TrajectoryAppData.monitor = true;
                 OS_MutSemGive(TrajectoryAppData.mutexAcState);

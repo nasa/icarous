@@ -142,7 +142,7 @@ void COGNITION_ProcessSBData(void) {
             for(int i = 0; i<fplan->num_waypoints; ++i){
                 wp[i] = fplan->waypoints[i];
             }
-            InputFlightPlanData(appdataCog.cog,fplan->id,wp,fplan->num_waypoints,0,false);
+            InputFlightPlanData(appdataCog.cog,fplan->id,wp,fplan->num_waypoints,0,false,0);
             break;
         }
 

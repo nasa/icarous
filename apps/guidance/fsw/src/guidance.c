@@ -127,7 +127,7 @@ void GUIDANCE_ProcessPacket(void){
             for (int i=0;i<fp->num_waypoints;++i){
                 wp[i] = fp->waypoints[i];
             }
-            guidInputFlightplanData(guidanceAppData.Guidance,fp->id,wp,fp->num_waypoints,0,false);
+            guidInputFlightplanData(guidanceAppData.Guidance,fp->id,wp,fp->num_waypoints,0,false,0);
             SetGuidanceMode(guidanceAppData.Guidance,0,fp->id,0,false);
             break;
         }
