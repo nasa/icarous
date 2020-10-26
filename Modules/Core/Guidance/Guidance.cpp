@@ -247,6 +247,9 @@ double Guidance::ComputeSpeed(){
    int nextWP = nextWpId[activePlanId];
    const larcfm::NavPoint nextPos = currentPlan->point(nextWP); 
    double refSpeed;
+   if (!currentPlan->isLinear()){
+      etaControl = true;
+   }
    if (!etaControl) {
        refSpeed = currentPlan->gsIn(nextWP);
        if (refSpeed <= params.minSpeed) {
@@ -277,7 +280,6 @@ double Guidance::ComputeSpeed(){
                newSpeed = minSpeed;
            }
        }
-
        return newSpeed;
    }
 
@@ -382,7 +384,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double turnTargetDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk2,turnDirection),2*M_PI);
         double turnCurrentDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk3,turnDirection),2*M_PI);
         // If the turn still hasn't begun
-        if(turnCurrentDelta > 270){
+        if(turnCurrentDelta >= M_PI*3/2){
             // This assumes that that angle between BOT and EOT is no more than 180 degrees
             turnCurrentDelta = 0.0;
         }
@@ -399,14 +401,18 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
-        double k = 5;
+        double k = 10;
+        double addTurn = offset*k;
+        if(addTurn > M_PI/4){
+            addTurn = M_PI/4;
+        }
 
         int trkErrorSign = larcfm::Util::turnDir(currentActualTrk,currentIdealTrk);
         double trkError = larcfm::Util::turnDelta(currentActualTrk,currentIdealTrk);
         if(turnRadius > 0){
-            outputHeading = currentIdealTrk + (offset)*k;
+            outputHeading = currentIdealTrk + addTurn;
         }else{
-            outputHeading = currentIdealTrk - (offset)*k;
+            outputHeading = currentIdealTrk - addTurn;
         }
         outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI;
     }else{
