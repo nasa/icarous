@@ -217,7 +217,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             wps[1].time = ComputeDistance(pointA,pointB)/speed;
 
             char name[] = "P2P";
-            guidInputFlightplanData(guidanceAppData.Guidance,name,wps,2,0,false);
+            guidInputFlightplanData(guidanceAppData.Guidance,name,wps,2,0,false,0);
 
 
             SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1,false);
