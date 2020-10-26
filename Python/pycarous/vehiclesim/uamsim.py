@@ -1,6 +1,6 @@
 import numpy as np
 
-from ichelper import gps_offset, GetWindComponent, ConvertTrkGsVsToVned
+from ichelper import gps_offset, GetWindComponent, ConvertTrkGsVsToVned, ConvertVnedToTrkGsVs
 from vehiclesim import VehicleSimInterface
 
 class UamVtolSim(VehicleSimInterface):
@@ -18,17 +18,23 @@ class UamVtolSim(VehicleSimInterface):
         Other arguments are defined in VehicleSimInterface
         """
         super().__init__(idx, home_gps, dt)
+        g = 9.8
         self.U   = np.array([0.0, 0.0, 0.0])
         self.pos0 = np.array([x, y, z])
         self.vel0 = np.array([vx, vy, vz])
         self.pos = np.array([x, y, z])
         self.vel = np.array([vx, vy, vz])
+        self.turnRate = 15 
+        self.accel = 0.5*g
+        self.daccel = -0.5*g
+        self.vaccel = 1.5*g
+        self.trk,self.gs,self.vs = ConvertVnedToTrkGsVs(vy,vx,vz)
 
     def InputCommand(self, track, gs, climbrate):
-        vn, ve, vd = ConvertTrkGsVsToVned(track, gs, climbrate)
-        self.U[0] = ve
-        self.U[1] = vn
-        self.U[2] = -vd
+        #vn, ve, vd = ConvertTrkGsVsToVned(track, gs, climbrate)
+        self.U[0] = track
+        self.U[1] = gs
+        self.U[2] = climbrate
 
     def Run(self, windFrom=0, windSpeed=0):
         vw = GetWindComponent(windFrom, windSpeed, NED=False)
@@ -36,8 +42,42 @@ class UamVtolSim(VehicleSimInterface):
         if speed <= 0:
             vw     = np.array([0.0, 0.0, 0.0])
         self.vw   = vw
-        self.vel0 = self.vel0 + self.dt * (self.U - self.vel0 - vw)
-        self.pos0 = self.pos0 + (self.vel0 + vw) * self.dt
+
+        turnRate = 0 
+        if np.fabs(self.trk - self.U[0]) > 1e-1:
+            # if current track is different from
+            # target, use turn rate to determine new track
+            vec1 = np.array([np.sin(self.trk*np.pi/180),np.cos(self.trk*np.pi/180)])
+            vec2 = np.array([np.sin(self.U[0]*np.pi/180),np.cos(self.U[0]*np.pi/180)])
+            det = vec1[0]*vec2[1] - vec1[1]*vec2[0]
+            if det > 0:
+                turnRate = -self.turnRate 
+            else:
+                turnRate = self.turnRate
+
+        accel = 0
+        if np.fabs(self.U[1] - self.gs) > 1e-1:
+            if (self.U[1] >= self.gs):
+                accel = self.accel
+            else:
+                accel = self.daccel
+
+        vaccel = 0
+        if np.fabs(self.U[2] - self.vs) > 1e-1:
+            if (self.U[2] >= self.vs):
+                vaccel = self.vaccel
+            else:
+                vaccel = - self.vaccel
+
+        self.trk = self.trk + turnRate*self.dt
+        self.gs  = self.gs  + accel*self.dt
+        self.vs  = self.vs  + vaccel*self.dt
+
+        self.pos0    = self.pos0 + (self.vel0 + vw) * self.dt
+        self.vel0[0] = self.gs*np.sin(self.trk * np.pi/180)
+        self.vel0[1] = self.gs*np.cos(self.trk * np.pi/180)
+        self.vel0[2] = self.vs
+        
 
         n = np.zeros((1, 3))
         if self.noise:
