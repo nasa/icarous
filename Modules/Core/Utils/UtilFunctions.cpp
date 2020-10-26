@@ -345,7 +345,7 @@ void ComputeWaypointsETA(double scenarioTime,int numWP, double wpSpeed[], waypoi
     }
 }
 
-void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair){
+void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair,double turnRate){
    int count = 0;
    for(auto waypt: waypoints){
        double eta = waypt.time;
@@ -391,7 +391,7 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
 
    if(repair){
        double speed = fp->gsOut(1);
-       double bankAngle = larcfm::Kinematics::bankAngle(speed,10*M_PI/180);
+       double bankAngle = larcfm::Kinematics::bankAngle(speed,turnRate*M_PI/180);
        double turnRadius= larcfm::Kinematics::turnRadius(speed,bankAngle);
        *fp = larcfm::TrajGen::makeKinematicPlan(*fp,bankAngle,2,1.5,true,true,true);
    }

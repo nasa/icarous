@@ -73,7 +73,8 @@ public:
 
     void SetAircraftState(const larcfm::Position &pos,const larcfm::Velocity &vel);
 
-    void InputFlightplanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,const double initHeading,bool repair);
+    void InputFlightplanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,
+                            const double initHeading,bool repair,double repairTurnRate);
 
     int RunGuidance(double time);
     

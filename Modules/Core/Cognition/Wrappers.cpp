@@ -20,10 +20,11 @@ void InputVehicleState(void *obj,const double pos[3],const double vel[3],const d
 }
 
 
-void InputFlightPlanData(void* obj,char planid[],waypoint_t wpts[],int totalwp,double initHeading,bool kinematize){
+void InputFlightPlanData(void* obj,char planid[],waypoint_t wpts[],int totalwp,
+                         double initHeading,bool kinematize,double repairTurnRate){
     Cognition* cog = (Cognition*)obj;
     std::list<waypoint_t> waypoints(wpts,wpts+totalwp);
-    cog->InputFlightPlanData(planid,waypoints,initHeading,kinematize);
+    cog->InputFlightPlanData(planid,waypoints,initHeading,kinematize,repairTurnRate);
 }
 
 void InputParameters(void *obj,const cognition_params_t *new_params){

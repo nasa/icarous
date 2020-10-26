@@ -56,10 +56,11 @@ int TrajManager_InputTraffic(void* obj,int id, double *position, double *velocit
 }
 
 
-void TrajManager_InputFlightPlan(void* obj, char planID[],waypoint_t wpts[],int totalwp,double initHeading,bool kinematize){
+void TrajManager_InputFlightPlan(void* obj, char planID[],waypoint_t wpts[],int totalwp,
+                                 double initHeading,bool kinematize,double repairTurnRate){
    TrajManager* pp = (TrajManager*)obj;
    std::list<waypoint_t> waypoints(wpts,wpts+totalwp);
-   pp->InputFlightPlan(std::string(planID),waypoints,initHeading,kinematize);
+   pp->InputFlightPlan(std::string(planID),waypoints,initHeading,kinematize,repairTurnRate);
 }
 
 

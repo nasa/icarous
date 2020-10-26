@@ -217,15 +217,16 @@ larcfm::Plan* Guidance::GetPlan(const std::string &plan_id){
     return NULL;
 }
 
-void Guidance::InputFlightplanData(const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair){
+void Guidance::InputFlightplanData(const std::string &plan_id, const std::list<waypoint_t> &waypoints, 
+                                   const double initHeading,bool repair,double repairTurnRate){
     larcfm::Plan* fp = GetPlan(plan_id);
     larcfm::Plan newPlan(plan_id); 
     if (fp != NULL){
         fp->clear();
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
     }else{
         fp = &newPlan;
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
         planList.push_back(newPlan);
     }
     //std::cout<<newPlan.toString()<<std::endl;
@@ -401,7 +402,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
-        double k = 10;
+        double k = 5;
         double addTurn = offset*k;
         if(addTurn > M_PI/4){
             addTurn = M_PI/4;
@@ -702,10 +703,10 @@ void guidSetAircraftState(void* obj, double position[],double velocity[]){
     ((Guidance*)obj)->SetAircraftState(pos,vel);
 }
 
-void guidInputFlightplanData(void* obj, char planID[],waypoint_t wpts[],int totalwp,double initHeading,bool kinematize){
+void guidInputFlightplanData(void* obj, char planID[],waypoint_t wpts[],int totalwp,double initHeading,bool kinematize,double repairTurnRate){
      std::string planid(planID);
      std::list<waypoint_t> waypoints(wpts,wpts+totalwp);
-     ((Guidance*)obj)->InputFlightplanData(planid,waypoints,initHeading,kinematize);
+     ((Guidance*)obj)->InputFlightplanData(planid,waypoints,initHeading,kinematize,repairTurnRate);
 }
 
 void RunGuidance(void* obj,double time){

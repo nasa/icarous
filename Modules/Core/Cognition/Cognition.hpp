@@ -233,7 +233,8 @@ class Cognition{
 
         void InputVehicleState(const larcfm::Position &pos,const larcfm::Velocity &vel,const double heading);
 
-        void InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,const double initHeading,bool repair);
+        void InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,
+                                 const double initHeading,bool repair,double repairTurnRate);
 
         void InputTrajectoryMonitorData(const trajectoryMonitorData_t& tjMonData);
 

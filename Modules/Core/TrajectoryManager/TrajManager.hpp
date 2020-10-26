@@ -68,7 +68,8 @@ public:
     void ClearFences();
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, std::vector<larcfm::Position> &vertices);
-    void InputFlightPlan(const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair);
+    void InputFlightPlan(const std::string &plan_id, const std::list<waypoint_t> &waypoints, 
+                         const double initHeading,bool repair,double repairTurnRate);
     int InputTraffic(int id, larcfm::Position &position, larcfm::Velocity &velocity,double time);
     std::string PlanToString(std::string planID);
     void StringToPlan(std::string planID,std::string inputString);

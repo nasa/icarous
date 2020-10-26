@@ -82,16 +82,17 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
 }
 
 
-void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,const double initHeading,bool repair){
+void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,
+                                    const double initHeading,bool repair,double repairTurnRate){
 
     larcfm::Plan* fp = GetPlan(&cogState.flightPlans,plan_id);
     larcfm::Plan newPlan(plan_id); 
     if (fp != NULL){
         fp->clear();
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
     }else{
         fp = &newPlan;
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
         cogState.flightPlans.push_back(newPlan);
     }
 

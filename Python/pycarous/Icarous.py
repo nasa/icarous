@@ -92,6 +92,7 @@ class Icarous(IcarousInterface):
         self.guidanceMode = GuidanceMode.NOOP
         self.emergbreak = False
         self.daa_radius = 0
+        self.turnRate = 0
         self.fphases = -1
         self.land    = False
         self.ditch   = False
@@ -113,9 +114,9 @@ class Icarous(IcarousInterface):
         
         self.etaFP1 = eta
         self.localPlans.append(self.GetLocalFlightPlan(waypoints))
-        self.Cog.InputFlightplanData("Plan0",waypoints,repair)
-        self.Guidance.InputFlightplanData("Plan0",waypoints,repair)
-        self.Trajectory.InputFlightplanData("Plan0",waypoints,repair)
+        self.Cog.InputFlightplanData("Plan0",waypoints,repair,self.turnRate)
+        self.Guidance.InputFlightplanData("Plan0",waypoints,repair,self.turnRate)
+        self.Trajectory.InputFlightplanData("Plan0",waypoints,repair,self.turnRate)
 
         if repair: 
             waypoints = self.Guidance.GetKinematicPlan("Plan0")
@@ -273,6 +274,7 @@ class Icarous(IcarousInterface):
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
         self.daa_radius = params['DET_1_WCV_DTHR']/3
+        self.turnRate = params['TURN_RATE']
 
     def SetMergerParams(self,params):
         self.Merger.SetVehicleConstraints(params["MIN_GS"]*0.5,

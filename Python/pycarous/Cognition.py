@@ -20,7 +20,7 @@ class Cognition():
         self.lib.CognitionInit.restype = c_void_p
         self.lib.Reset.argtypes = [c_void_p]
         self.lib.InputVehicleState.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
-        self.lib.InputFlightPlanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool]
+        self.lib.InputFlightPlanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool,c_double]
         self.lib.InputTrajectoryMonitorData.argtypes = [c_void_p,POINTER(TrajectoryMonitorData)]
         self.lib.InputParameters.argtypes = [c_void_p,POINTER(CognitionParams)]
         self.lib.InputDitchStatus.argtypes = [c_void_p,c_double*3,c_double,c_bool]
@@ -45,14 +45,14 @@ class Cognition():
         self.lib.InputVehicleState(self.obj,cpos,cvel,c_double(hdg))
 
 
-    def InputFlightplanData(self,planID,fp,repair=False):
+    def InputFlightplanData(self,planID,fp,repair=False,repairTurnRate=0):
         n = len(fp)
         wparray = Waypoint*50
         wpts = wparray()
         for i,wp in enumerate(fp):
              wpts[i] = wp 
         self.lib.InputFlightPlanData(self.obj,c_char_p(planID.encode('utf-8')),
-                                          wpts,c_int(n),c_double(0),c_bool(repair))
+                                          wpts,c_int(n),c_double(0),c_bool(repair),c_double(repairTurnRate))
 
     def InputTrajectoryMonitorData(self,tjMonData):
        self.lib.InputTrajectoryMonitorData(self.obj,byref(tjMonData))

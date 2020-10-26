@@ -209,15 +209,15 @@ void TrajManager::SetPlanOffset(std::string planID,int ind,double offsetT){
     }
 }
 
-void TrajManager::InputFlightPlan(const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair){
+void TrajManager::InputFlightPlan(const std::string &plan_id, const std::list<waypoint_t> &waypoints, const double initHeading,bool repair,double repairTurnRate){
     larcfm::Plan* fp = GetPlan(plan_id);
     larcfm::Plan newPlan(plan_id); 
     if (fp != NULL){
         fp->clear();
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
     }else{
         fp = &newPlan;
-        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair);
+        ConvertWPList2Plan(fp,plan_id,waypoints,initHeading,repair,repairTurnRate);
         flightPlans.push_back(newPlan);
     }
     if(plan_id == "Plan0"){

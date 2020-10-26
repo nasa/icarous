@@ -11,7 +11,8 @@ extern "C" {
 void* CognitionInit(const char callsign[]);
 void Reset(void *obj);
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading);
-void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize);
+void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,
+                         double initHeading,bool kinematize,double repairTurnRate);
 void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonData);
 void InputParameters(void *obj,const cognition_params_t *new_params);
 void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested);
