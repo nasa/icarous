@@ -272,7 +272,7 @@ void COGNITION_ProcessSBData(void) {
             waypoint_t wp[MAX_WAYPOINTS];
             for(int i = 0;i < fp->num_waypoints; i++){
                 wp[i] = fp->waypoints[i];
-                InputFlightPlanData(appdataCog.cog,fp->id,wp,fp->num_waypoints,0,false);
+                InputFlightPlanData(appdataCog.cog,fp->id,wp,fp->num_waypoints,0,false,0);
             }
             break;
         }
