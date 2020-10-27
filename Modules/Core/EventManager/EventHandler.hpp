@@ -10,7 +10,7 @@ public:
     }execState_e;
 
     typedef enum{
-      SUCCESS, RESET, INPROGRESS
+      SUCCESS, RESET, INPROGRESS, SHUTDOWN
     }retVal_e;
 
     EventHandler(){execState = NOOP;};
@@ -39,6 +39,8 @@ bool EventHandler<T>::RunEvent(T* state){
             retVal_e val = Initialize(state);
             if ( val == SUCCESS) {
                 execState = EXECUTE;
+            }else if(val == SHUTDOWN){
+                execState = DONE;
             }
             break;
         }
@@ -49,6 +51,8 @@ bool EventHandler<T>::RunEvent(T* state){
                 execState = TERMINATE;
             }else if(val == RESET){
                 execState = INITIALIZE;
+            }else if(val == SHUTDOWN){
+                execState = DONE;
             }
             break;
         }

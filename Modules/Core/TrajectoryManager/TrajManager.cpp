@@ -424,6 +424,9 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             double eps = 1; // a small additional delta to add to the output
             double t = FindTimeToFenceViolation(localPoly,larcfm::Vect3(0,0,pos.alt()),vel) + eps;
             int seg = fp->getSegment(correctedtime + t);
+            if(seg < 0){
+               continue;
+            }
             larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
             larcfm::Vect3 qPos = projection.project(posOnPlan);
             bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
