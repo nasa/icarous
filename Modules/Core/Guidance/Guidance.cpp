@@ -271,7 +271,7 @@ double Guidance::ComputeSpeed(){
        if (distH > 0.5 && timediff > 0.001){
            newSpeed = distH / timediff;
        }else{
-           newSpeed = maxSpeed;
+           newSpeed = currentVel.gs();
        }
 
        if (newSpeed > maxSpeed) {
