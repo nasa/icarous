@@ -55,7 +55,7 @@ OBSBUFFER        1.000000
 MAXCEILING       50.000000
 CLMB_SPEED       1.000000
 ALT_DH           1.000000
-XTRKDEV          1000.000000
+XTRKDEV          10.000000
 RETURN_WP        1.000000
 
 # Geofence parameters
