@@ -84,6 +84,7 @@ public:
 
     std::vector<node_t> path;
     DubinsPlanner(){};
+    void Reset();
     void SetParameters(DubinsParams_t& prms);
     void SetVehicleInitialConditions(larcfm::Vect3& pos, larcfm::Velocity& vel);
     void SetTraffic(std::vector<larcfm::Vect3>& tfpos,std::vector<larcfm::Velocity>& tfvel);

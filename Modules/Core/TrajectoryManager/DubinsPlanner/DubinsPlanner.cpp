@@ -5,6 +5,11 @@
 void DubinsPlanner::SetParameters(DubinsParams_t &prms){
     params = prms;
 }
+void DubinsPlanner::Reset(){
+    trafficPlans.clear();
+    trafficPosition.clear();
+    trafficVelocity.clear();
+}
 
 void DubinsPlanner::SetVehicleInitialConditions(larcfm::Vect3& pos, larcfm::Velocity& vel){
     rootFix = pos; 

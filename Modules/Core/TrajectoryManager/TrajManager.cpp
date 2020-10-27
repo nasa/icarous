@@ -157,7 +157,7 @@ int64_t TrajManager::FindDubinsPath(std::string planID){
             obstacleList.push_back(gf.polygon.poly3D(proj));
         }
     }
-
+    dbPlanner.Reset();
     dbPlanner.SetBoundary(bbox);
     dbPlanner.SetObstacles(obstacleList);
     dbPlanner.SetVehicleInitialConditions(initPosR3,startVel);
