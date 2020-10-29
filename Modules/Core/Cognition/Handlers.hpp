@@ -47,7 +47,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
         }
-        LogMessage(state,"[HANDLER] Return to mission, initiated by "+eventName);
+        LogMessage(state,"[HANDLER] | Return to mission, initiated by "+eventName);
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
         larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
@@ -99,7 +99,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
         }
-        LogMessage(state,"[HANDLER] Return to next feasible WP, initiated by "+eventName);
+        LogMessage(state,"[HANDLER] | Return to next feasible WP, initiated by "+eventName);
         state->nextWpId["Plan0"] = state->nextFeasibleWpId;
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
