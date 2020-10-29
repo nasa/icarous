@@ -1,3 +1,6 @@
 from vehiclesim.VehicleSimInterface import VehicleSimInterface
-from vehiclesim.quadsim import QuadSim
+try:
+    from vehiclesim.quadsim import QuadSim
+except:
+    pass
 from vehiclesim.uamsim import UamVtolSim
