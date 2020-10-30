@@ -40,6 +40,10 @@ parser.add_argument("--cfs", action="store_true",
                    help='Run Icarous using cFS instead of pycarous')
 parser.add_argument("-u", "--uncertainty", type=bool, default=False,
                    help='Enable uncertainty')
+parser.add_argument("-r", "--repair", action="store_true",
+                   help='Convert the given flightplan into a EUTL plan')
+parser.add_argument("-e", "--eta", action="store_true",
+                   help='Enable eta control for waypoint arrivals')
 args = parser.parse_args()
 if args.cfs:
     args.fasttime = False
@@ -67,7 +71,7 @@ else:
 ic.SetParametersFromFile(args.params)
 
 # Input flightplan
-ic.InputFlightplanFromFile(args.flightplan,repair=False)
+ic.InputFlightplanFromFile(args.flightplan,eta=args.eta,repair=args.repair)
 
 # Input geofences from file
 if args.geofence != '':
