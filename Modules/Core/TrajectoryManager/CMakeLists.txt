@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(TrajectoryManager)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 add_subdirectory(DubinsPlanner)
