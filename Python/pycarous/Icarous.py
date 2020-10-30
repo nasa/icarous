@@ -97,6 +97,8 @@ class Icarous(IcarousInterface):
         self.land    = False
         self.ditch   = False
 
+        self.loopcount = 0
+
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
 
@@ -546,6 +548,8 @@ class Icarous(IcarousInterface):
         if self.CheckMissionComplete():
             return True
 
+        self.loopcount += 1
+
         time_ship_in = time.time()
         self.RunOwnship()
         time_ship_out = time.time()
@@ -556,10 +560,12 @@ class Icarous(IcarousInterface):
         time_cog_in = time.time()
         self.RunCognition()
         time_cog_out = time.time()
-
-        time_traff_in = time.time()
-        self.RunTrafficMonitor()
-        time_traff_out = time.time()
+        
+        time_traff_in = time_traff_out = 0.0
+        if self.loopcount%1 == 0:
+            time_traff_in = time.time()
+            self.RunTrafficMonitor()
+            time_traff_out = time.time()
 
         time_geof_in = time.time()
         self.RunGeofenceMonitor()
@@ -574,9 +580,9 @@ class Icarous(IcarousInterface):
         self.RunMerger()
 
         #print("cog     %f" % (time_cog_out - time_cog_in))
-        #print("traffic %f" % (time_traff_out - time_traff_in))
         #print("geofence %f" % (time_geof_out - time_geof_in))
         #print("ownship %f" % (time_ship_out - time_ship_in))
+        #print("traffic %f" % (time_traff_out - time_traff_in))
 
         return True
 
