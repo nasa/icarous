@@ -24,7 +24,7 @@ class UamVtolSim(VehicleSimInterface):
         self.vel0 = np.array([vx, vy, vz])
         self.pos = np.array([x, y, z])
         self.vel = np.array([vx, vy, vz])
-        self.turnRate = 15 
+        self.turnRate = 20
         self.accel = 0.5*g
         self.daccel = -0.5*g
         self.vaccel = 1.5*g

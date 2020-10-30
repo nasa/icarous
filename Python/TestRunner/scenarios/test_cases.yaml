@@ -41,7 +41,7 @@ scenarios:
     waypoint_file: Examples/InputData/flightplan.txt
     geofence_file: null
     parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"RES_TYPE": 2}
+    param_adjustments: {"RES_TYPE": 2, "TURN_RATE": 20}
     traffic:
     - [116, 81, 5, 1, 270, 0]
 
