@@ -2,44 +2,31 @@ defaults:
   apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
          "cognition", "guidance", "traffic", "trajectory",
          "geofence", "arducopter"]
-  python: False
-  sitl: true
+  python: True
+  sitl: False
 
 scenarios:
 - name: "STEReO"
-  time_limit: 1900
+  time_limit: 500 
   vehicles:
   - name: SR22
     cpu_id: 1
-    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/SR22_N501NA/flight_plan/SR22 2600_1600ft_msl_8_21_20.waypoints
+    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_manned.txt
     geofence_file: null
-    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/SR22_N501NA/Icarous_param/SR22_N501NA_icarous.parm
+    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_manned.parm
+    daa_file:  Python/TestRunner/scenarios/STEReO_scenario/DaidalusQuadConfig.txt
     param_adjustments: {}
     traffic: []
-    python: False
-    sitl: True
+    python: True
     
   - name: AltaX
     cpu_id: 2
-    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_X/flight_plan/alta x 1200ft_msl_8_21_20.waypoints
+    delay: 50
+    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_uav.txt
     geofence_file: null
-    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_X/Icarous_param/Alta_X_icarous.parm
+    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/STEReO_uav.parm
+    daa_file:  Python/TestRunner/scenarios/STEReO_scenario/DaidalusQuadConfig.txt
     param_adjustments: {}
     traffic: []
-    delay: 800
-#    python: False
-#    sitl: True
+    python: True
     
-  - name: Alta8
-    cpu_id: 3
-    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/flight_plan/Alta_8pro_iaa_demo.txt
-    geofence_file: null
-    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/Icarous_param/Alta_8pro_icarous.parm
-    param_adjustments: {}
-    traffic: []
-    delay: 1150
-#    python: False
-#    sitl: True
-    apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
-         "cognition", "guidance", "traffic", "trajectory",
-         "geofence", "safe2ditch", "rotorsim"]
