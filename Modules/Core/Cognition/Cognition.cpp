@@ -126,8 +126,7 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
     if(plan_id == "P2P"){
         cogState.p2pComplete = true;
     }else if(plan_id == "Takeoff"){
-        cogState.takeoffComplete = true;
-
+        cogState.takeoffComplete = 1;
     }else if(plan_id == "PlanM"){
         cogState.nextWpId["PlanM"] = reached_wp_id + 1;
         if(cogState.nextWpId["PlanM"] >= GetTotalWaypoints(&cogState.flightPlans,"PlanM")){

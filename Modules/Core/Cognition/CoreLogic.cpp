@@ -21,21 +21,21 @@ void Cognition::InitializeEventHandlers(){
     **/
 
    // Nominal mission related triggers
-   eventMng.AddEventHandler("Takeoff",1,TakeoffTrigger,&takeoffHandler);
-   eventMng.AddEventHandler("NominalDeparture",1,NominalDepartureTrigger,&engageNominalPlan);
-   eventMng.AddEventHandler("PrimaryPlanComplete",1,PrimaryPlanCompletionTrigger,&landHandler);
-   eventMng.AddEventHandler("Merging",3,MergingActivityTrigger,&mergingHandler);
-   eventMng.AddEventHandler("SecondaryPlanComplete",1,SecondaryPlanCompletionTrigger,&engageNominalPlan);
+   eventMng.AddEventHandler("Takeoff",1,TakeoffTrigger,new TakeoffPhaseHandler);
+   eventMng.AddEventHandler("NominalDeparture",1,NominalDepartureTrigger,new EngageNominalPlan);
+   eventMng.AddEventHandler("PrimaryPlanComplete",1,PrimaryPlanCompletionTrigger,new LandPhaseHandler);
+   eventMng.AddEventHandler("Merging",3,MergingActivityTrigger,new MergingHandler);
+   eventMng.AddEventHandler("SecondaryPlanComplete",1,SecondaryPlanCompletionTrigger,new EngageNominalPlan);
 
    // Conflict related triggers
-   eventMng.AddEventHandler("FenceConflict",1,FenceConflictTrigger,&returnToNextFeasibleWP);
-   eventMng.AddEventHandler("TrafficConflict1",2,TrafficConflictVectorResTrigger,&trafficConflictHandler);
-   eventMng.AddEventHandler("TrafficConflict2",2,TrafficConflictPathResTrigger,&returnToMission);
-   eventMng.AddEventHandler("FlightPlanDeviation",1,FlightPlanDeviationTrigger,&returnToMission);
+   eventMng.AddEventHandler("FenceConflict",1,FenceConflictTrigger,new ReturnToNextFeasibleWP);
+   eventMng.AddEventHandler("TrafficConflict1",2,TrafficConflictVectorResTrigger,new TrafficConflictHandler);
+   eventMng.AddEventHandler("TrafficConflict2",2,TrafficConflictPathResTrigger,new ReturnToMission);
+   eventMng.AddEventHandler("FlightPlanDeviation",1,FlightPlanDeviationTrigger,new ReturnToMission);
 
    // Ditching related triggers
-   eventMng.AddEventHandler("TrafficConflict3",4,TrafficConflictDitchTrigger,&requestDitchSite);
-   eventMng.AddEventHandler("Ditching",5,DitchingTrigger,&proceedToDitchSite);
-   eventMng.AddEventHandler("TODReached",1,DitchSiteTODTrigger,&proceedFromTODtoLand);
+   eventMng.AddEventHandler("TrafficConflict3",4,TrafficConflictDitchTrigger,new RequestDitchSite);
+   eventMng.AddEventHandler("Ditching",5,DitchingTrigger,new ProceedToDitchSite);
+   eventMng.AddEventHandler("TODReached",1,DitchSiteTODTrigger,new ProceedFromTODtoLand);
 
 }

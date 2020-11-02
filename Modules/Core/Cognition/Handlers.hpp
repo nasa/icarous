@@ -21,7 +21,7 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        }
        return INPROGRESS;
    }
-}takeoffHandler;
+};
 
 class EngageNominalPlan: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
@@ -40,7 +40,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
        SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
        return SUCCESS;
     }
-}engageNominalPlan;
+};
 
 class ReturnToMission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
@@ -92,7 +92,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
            return INPROGRESS;
         }
    }
-}returnToMission; 
+}; 
 
 class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
@@ -135,7 +135,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
            return INPROGRESS;
         }
     }
-}returnToNextFeasibleWP;
+};
 
 class LandPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Execute(CognitionState_t* state){
@@ -360,7 +360,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
         return SUCCESS;
     }
 
-}trafficConflictHandler;
+};
 
 
 class MergingHandler: public EventHandler<CognitionState_t>{
@@ -378,7 +378,7 @@ class MergingHandler: public EventHandler<CognitionState_t>{
         return SUCCESS;
     }
 
-}mergingHandler;
+};
 
 class RequestDitchSite: public EventHandler<CognitionState_t>{
     retVal_e Execute(CognitionState_t* state){
@@ -386,7 +386,7 @@ class RequestDitchSite: public EventHandler<CognitionState_t>{
         LogMessage(state,"[STATUS] | Sending Ditch Request Signal");
         return SUCCESS;
     }
-}requestDitchSite;
+};
 
 class ProceedToDitchSite: public EventHandler<CognitionState_t>{
    
@@ -420,7 +420,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
         
     }
 
-}proceedToDitchSite;
+};
 
 class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
@@ -446,4 +446,4 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
        return SUCCESS;
    }
 
-}proceedFromTODtoLand;
+};

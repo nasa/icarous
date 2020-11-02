@@ -58,6 +58,7 @@ void EventManagement<T>::RunEventMonitors(T* state){
             if(!avail){
                 if(handlers[elem.first] != nullptr){
                     handlers[elem.first]->eventName = elem.first;
+                    handlers[elem.first]->execState = EventHandler<T>::NOOP;
                     activeEventHandlers.push_back(handlers[elem.first]);
                     auto cmp = [] (EventHandler<T>* h1,EventHandler<T>* h2) {
                         return h1->priority >= h2->priority;
