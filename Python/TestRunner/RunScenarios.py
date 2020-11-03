@@ -77,7 +77,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
                          daaConfig=daa_file)
         else:
             sim.fasttime = False
-            shutil.copyfile(daa_file,icarous_exe+"/../ram/DaidalusQuadConfig.txt")
+            try:
+                shutil.copyfile(daa_file,icarous_exe+"/../ram/DaidalusQuadConfig.txt")
+            except shutil.SameFileError:
+                pass
             apps = v.get("apps", default_apps)
             sitl = v.get("sitl", False)
             if sitl:
