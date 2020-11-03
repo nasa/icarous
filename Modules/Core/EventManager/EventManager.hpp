@@ -31,6 +31,7 @@ void EventManagement<T>::AddEventHandler(std::string eventName,int priority,std:
     events[eventName] = monitorFunc;
     if(eventHandler != nullptr){
         eventHandler->priority = priority;
+        eventHandler->defaultPriority = priority;
         handlers[eventName] = eventHandler;
     }
 }
@@ -87,6 +88,7 @@ void EventManagement<T>::RunEventHandlers(T* state){
             val = handler->RunEvent(state);
         }
         if (val) {
+            handler->priority = handler->defaultPriority;
             activeEventHandlers.pop_front();
         }
 

@@ -23,6 +23,7 @@ public:
     execState_e execState;
     std::list<EventHandler<T>*> children;
     unsigned int priority;
+    unsigned int defaultPriority;
 };
 
 template <class T>
