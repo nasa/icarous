@@ -1174,7 +1174,7 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
 void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
-    double speed = appdataInt.storedparams[66].value;
+    double speed = appdataInt.storedparams[67].value;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
