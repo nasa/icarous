@@ -27,7 +27,7 @@ class UamVtolSim(VehicleSimInterface):
         self.turnRate = 20
         self.accel = 0.5*g
         self.daccel = -0.5*g
-        self.vaccel = 1.5*g
+        self.vaccel = 0.15*g
         self.trk,self.gs,self.vs = ConvertVnedToTrkGsVs(vy,vx,vz)
 
     def InputCommand(self, track, gs, climbrate):
@@ -56,14 +56,14 @@ class UamVtolSim(VehicleSimInterface):
                 turnRate = self.turnRate
 
         accel = 0
-        if np.fabs(self.U[1] - self.gs) > 1e-1:
+        if np.fabs(self.U[1] - self.gs) > 1e-2:
             if (self.U[1] >= self.gs):
                 accel = self.accel
             else:
                 accel = self.daccel
 
         vaccel = 0
-        if np.fabs(self.U[2] - self.vs) > 1e-1:
+        if np.fabs(self.U[2] - self.vs) > 1e-3:
             if (self.U[2] >= self.vs):
                 vaccel = self.vaccel
             else:

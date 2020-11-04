@@ -293,22 +293,31 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
     const double deltaH = nextWaypoint.alt() - position.alt();
     double climbrate;
-    if (fabs(deltaH) > params.climbAngleVRange &&
-        position.distanceH(nextWaypoint)  > params.climbAngleHRange){
-        // Over longer altitude changes and distances, control the ascent/descent angle
-        double angle = params.climbFpAngle;
-        if (deltaH < 0){
-            angle = -angle;
+    if(currentPlan->isLinear()){
+        if (fabs(deltaH) > params.climbAngleVRange &&
+            position.distanceH(nextWaypoint) > params.climbAngleHRange) {
+            // Over longer altitude changes and distances, control the ascent/descent angle
+            double angle = params.climbFpAngle;
+            if (deltaH < 0) {
+                angle = -angle;
+            }
+            const double cfactor = tan(angle * M_PI / 180);
+            climbrate = cfactor * speedRef;
         }
-        const double cfactor = tan(angle * M_PI/180);
-        climbrate = cfactor * speedRef;
-    } else {
-        // Over shorter altitude changes and distances, use proportional control
-        climbrate = deltaH * params.climbRateGain;
+        else {
+            // Over shorter altitude changes and distances, use proportional control
+            climbrate = deltaH * params.climbRateGain;
+        }
+    }else{
+        climbrate = currentPlan->vsIn(nextWP);
+        if(fabs(climbrate) < 1e-5){
+            climbrate  = deltaH * params.climbRateGain;
+        }
     }
     if (climbrate > params.maxClimbRate) {
         climbrate = params.maxClimbRate;
-    } else if (climbrate < params.minClimbRate) {
+    }
+    else if (climbrate < params.minClimbRate) {
         climbrate = params.minClimbRate;
     }
     return climbrate;
