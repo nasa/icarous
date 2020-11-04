@@ -338,25 +338,25 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Terminate(CognitionState_t* state){
+        std::string planid = state->activePlan->getID();
         if(state->resType == SPEED_RESOLUTION){
             SetGuidanceSpeedCmd(state,state->activePlan->getID(),state->resolutionStartSpeed);
+            SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
         }else if(state->resType == ALTITUDE_RESOLUTION){
-            std::string planid = state->activePlan->getID();
             double alt = state->activePlan->getPos(state->nextWpId[planid]).alt();
             if(fabs(state->prevResAlt - alt) > 1e-3){
                 SetGuidanceAltCmd(state,planid,alt,1);
                 state->prevResAlt = alt;
+                SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
             }
         }else{
            if(!state->XtrackConflict){
-               std::string planid = state->activePlan->getID();
                SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
-               std::cout<<"Returning to nominal plan"<<std::endl;
            }
         }
 
         SendStatus(state,(char*)"IC:traffic conflict resolved",6);
-        LogMessage(state,"| [RESOLVED] | Traffic conflict resolved");
+        LogMessage(state,"[RESOLVED] | Traffic conflict resolved");
         return SUCCESS;
     }
 
