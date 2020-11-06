@@ -270,8 +270,12 @@ def ConstructWaypointsFromList(fp,eta=False):
             if i == 0:
                 times.append(0)
             else:
-                dist = distance(fp[i-1][0],fp[i-1][1],fp[i][0],fp[i][1])
-                times.append(times[-1] + dist/speeds[i]) 
+                distH = distance(fp[i-1][0],fp[i-1][1],fp[i][0],fp[i][1])
+                distV = np.fabs(fp[i][2] - fp[i-1][2])
+                if distH > 1e-3:
+                    times.append(times[-1] + distH/speeds[i]) 
+                else:
+                    times.append(times[-1] + distV/2.0)
         
         wp = Waypoint()
         wp.index = i

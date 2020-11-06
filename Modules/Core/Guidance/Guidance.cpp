@@ -237,9 +237,9 @@ double Guidance::GetApproachPrecision(const larcfm::Position &position,const lar
     // with the position of the intersection in relative NED coordinates
     // dot product >= 0 IMPLIES we are approaching the intersection
     const larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(position);
-    const larcfm::Vect3 pos_wp = proj.project(waypoint);
-    const larcfm::Vect3 vhat  = velocity.Hat2D();
-    const larcfm::Vect3 pwhat = pos_wp.Hat2D();
+    const larcfm::Vect3 pos_wp = proj.project(waypoint) - larcfm::Vect3::makeXYZ(0,"m",0,"m",position.alt(),"m") ;
+    const larcfm::Vect3 vhat  = velocity.Hat(); 
+    const larcfm::Vect3 pwhat = pos_wp.Hat();
     return vhat.dot(pwhat);
 }
 
@@ -254,7 +254,12 @@ double Guidance::ComputeSpeed(){
    if (!etaControl) {
        refSpeed = currentPlan->gsIn(nextWP);
        if (refSpeed <= params.minSpeed) {
-           return params.minSpeed;
+           double distH = currentPos.distanceH(nextPos.position());
+           if(refSpeed < 1e-3 && distH > 3 && params.minSpeed < 1e-3){
+              return 1.0;
+           }else{
+              return params.minSpeed;
+           }
        } else if (refSpeed >= params.maxSpeed) {
            return params.maxSpeed;
        } else {
@@ -302,7 +307,11 @@ double Guidance::ComputeClimbRate(double speedRef){
                 angle = -angle;
             }
             const double cfactor = tan(angle * M_PI / 180);
-            climbrate = cfactor * speedRef;
+            if(speedRef > 1e-3){
+                climbrate = cfactor * speedRef;
+            }else{
+                climbrate = deltaH > 0? params.maxClimbRate : params.minClimbRate;
+            }
         }
         else {
             // Over shorter altitude changes and distances, use proportional control

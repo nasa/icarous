@@ -393,7 +393,7 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
        double speed = fp->gsOut(1);
        double bankAngle = larcfm::Kinematics::bankAngle(speed,turnRate*M_PI/180);
        double turnRadius= larcfm::Kinematics::turnRadius(speed,bankAngle);
-       *fp = larcfm::TrajGen::makeKinematicPlan(*fp,bankAngle,2,1.5,true,true,true);
+       *fp = larcfm::TrajGen::makeKinematicPlan(*fp,bankAngle,2,1.47,true,true,true);
    }
 }
 

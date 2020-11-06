@@ -74,9 +74,20 @@ def plotTcpPlan(flightplan,tcp,tcpValue,local=True):
         getHeading  = ComputeHeading
         getLocal    = ConvertLLA2NED
 
-    gs = getDistance(flightplan[0][1:4],flightplan[1][1:4])/(flightplan[1][0]-flightplan[0][0])
+    dist = getDistance(flightplan[0][1:4],flightplan[1][1:4])
+    distV = flightplan[1][3] - flightplan[0][3]
+    if dist - distV > 1e-3:
+        gs = dist/(flightplan[1][0] - flightplan[0][0])
+    else:
+        # if the first two waypoints indicate a direct climb, set gs = 0
+        gs = 0
+
     heading = getHeading(flightplan[0][1:4],flightplan[1][1:4])*np.pi/180
-    vs = 0
+
+    if distV > 0:
+        vs = 2
+    else:
+        vs = 0
 
     pos = flightplan[0][1:4]
     turnRate,haccel,vaccel = 0.0,0.0,0.0
