@@ -39,10 +39,16 @@ public:
   /* Wind vector in TO direction */
   Velocity wind_vector;
   DaidalusParameters parameters;
-  const UrgencyStrategy* urgency_strategy; // Strategy for most urgent aircraft
 
-  /* Cached values */
+  /* Strategy for most urgent aircraft */
+  const UrgencyStrategy* get_urgency_strategy() const;
+  bool set_urgency_strategy(const UrgencyStrategy* strat);
+
 private:
+
+  /* Strategy for most urgent aircraft */
+  const UrgencyStrategy* urgency_strategy_;
+
   /**** CACHED VARIABLES ****/
 
   /* Variable to control re-computation of cached values */
@@ -74,7 +80,6 @@ private:
   std::map<std::string,HysteresisData> alerting_hysteresis_acs_;
   std::map<std::string,HysteresisData> dta_hysteresis_acs_;
 
-  void init();
   void copyFrom(const DaidalusCore& core);
   void refresh_mua_eps();
 

@@ -24,40 +24,55 @@
 
 namespace larcfm {
 
-void DaidalusCore::init() {
-  // Public variables are initialized
-  // ownship = TrafficState::INVALID();      // Default initialization
-  current_time = 0;
-  // wind_vector = Velocity.ZERO;  // Default initialization
-  urgency_strategy = new NoneUrgencyStrategy();
-
-  // Cached arrays_ are initialized
-  acs_conflict_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
-
-  // Cached_ variables are cleared
-  cache_ = 0;
+DaidalusCore::DaidalusCore()
+: ownship()
+, traffic()
+, current_time(0)
+, wind_vector()
+, parameters()
+, urgency_strategy_(new NoneUrgencyStrategy())
+, cache_(0) // Cached_ variables are cleared
+, acs_conflict_bands_(std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS)) {
   stale();
 }
 
-DaidalusCore::DaidalusCore() {
-  init();
-}
-
-DaidalusCore::DaidalusCore(const Alerter& alerter) {
-  init();
+DaidalusCore::DaidalusCore(const Alerter& alerter)
+: ownship()
+, traffic()
+, current_time(0)
+, wind_vector()
+, parameters()
+, urgency_strategy_(new NoneUrgencyStrategy())
+, cache_(0) // Cached_ variables are cleared
+, acs_conflict_bands_(std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS)) {
   parameters.addAlerter(alerter);
+  stale();
 }
 
-DaidalusCore::DaidalusCore(const Detection3D* det, double T) {
-  init();
+DaidalusCore::DaidalusCore(const Detection3D* det, double T)
+: ownship()
+, traffic()
+, current_time(0)
+, wind_vector()
+, parameters()
+, urgency_strategy_(new NoneUrgencyStrategy())
+, cache_(0) // Cached_ variables are cleared
+, acs_conflict_bands_(std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS)) {
   parameters.addAlerter(Alerter::SingleBands(det,T,T));
   parameters.setLookaheadTime(T);
+  stale();
 }
 
-DaidalusCore::DaidalusCore(const DaidalusCore& core) {
-  // Cached arrays_ are initialized
-  acs_conflict_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
-  copyFrom(core);
+DaidalusCore::DaidalusCore(const DaidalusCore& core)
+: ownship(core.ownship)
+, traffic(core.traffic)
+, current_time(core.current_time)
+, wind_vector(core.wind_vector)
+, parameters(core.parameters)
+, urgency_strategy_(core.urgency_strategy_)
+, cache_(0) // Cached_ variables are cleared
+, acs_conflict_bands_(std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS)) {
+  stale();
 }
 
 void DaidalusCore::copyFrom(const DaidalusCore& core) {
@@ -67,10 +82,8 @@ void DaidalusCore::copyFrom(const DaidalusCore& core) {
     current_time = core.current_time;
     wind_vector = core.wind_vector;
     parameters = core.parameters;
-    if (urgency_strategy != NULL) {
-      delete urgency_strategy;
-    }
-    urgency_strategy = core.urgency_strategy != NULL ? core.urgency_strategy->copy() : NULL;
+    delete urgency_strategy_;
+    urgency_strategy_ = core.urgency_strategy_->copy();
     // Cached_ variables are cleared
     cache_ = 0;
     stale();
@@ -81,6 +94,21 @@ DaidalusCore& DaidalusCore::operator=(const DaidalusCore& core) {
   copyFrom(core);
   return *this;
 }
+
+const UrgencyStrategy* DaidalusCore::get_urgency_strategy() const {
+  return urgency_strategy_;
+}
+
+bool DaidalusCore::set_urgency_strategy(const UrgencyStrategy* strat) {
+  if (strat != NULL) {
+    delete urgency_strategy_;
+    urgency_strategy_ = strat->copy();
+    stale();
+    return true;
+  }
+  return false;
+}
+
 
 /**
  *  Clear ownship and traffic data from this object.
@@ -217,7 +245,7 @@ void DaidalusCore::refresh_mua_eps() {
   if (cache_ < 0) {
     int muac = -1;
     if (!traffic.empty()) {
-      muac = urgency_strategy->mostUrgentAircraft(ownship, traffic, parameters.getLookaheadTime());
+      muac = urgency_strategy_->mostUrgentAircraft(ownship, traffic, parameters.getLookaheadTime());
     }
     if (muac >= 0) {
       most_urgent_ac_ = traffic[muac];

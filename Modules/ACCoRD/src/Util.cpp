@@ -459,6 +459,7 @@ bool Util::is_double(const string& str) {
 
 	/* Execute regular expression */
 	reti = regexec(&regex, sb.c_str(), 0, NULL, 0);
+	regfree(&regex);
 	return !reti;
 }
 #endif

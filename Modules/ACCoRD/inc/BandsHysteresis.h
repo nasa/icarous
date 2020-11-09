@@ -40,6 +40,10 @@ public:
 
   double getLastResolutionUp() const;
 
+  double getRawResolutionLow() const;
+
+  double getRawResolutionUp() const;
+
   int getLastNFactorLow() const;
 
   int getLastNFactorUp() const;
@@ -66,9 +70,9 @@ public:
   void resolutionsHysteresis(const std::vector<BandsRange>& ranges,
       BandsRegion::Region corrective_region,
       double delta, int nfactor,
-      double val, int idx_l, double res_l, int idx_u, double res_u);
+      double val, int idx_l, int idx_u);
 
-  void preferredDirectionHysteresis(double delta, double val, double low, double up);
+  void preferredDirectionHysteresis(double delta, double nfactor, double val);
 
   void bandsHysteresis(const std::vector<BandsRange>& ranges,
       BandsRegion::Region corrective_region,
@@ -107,6 +111,8 @@ private:
    */
   double resolution_up_;
   double resolution_low_;
+  double raw_up_; // Resolution up without hysteresis
+  double raw_low_; // Resolution low without hysteresis
   // nfactor >= 0 means recovery bands. It's the reduction factor for the internal cylinder
   int    nfactor_up_;
   int    nfactor_low_;
@@ -127,6 +133,8 @@ private:
 
   // check if region is above corrective region (corrective or above)
   static bool is_up_from_corrective_region(BandsRegion::Region corrective_region, BandsRegion::Region region);
+
+  void switch_dir(bool dir, double nfactor);
 
 };
 

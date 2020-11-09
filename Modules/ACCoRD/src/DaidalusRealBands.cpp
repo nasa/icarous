@@ -581,6 +581,21 @@ double DaidalusRealBands::resolution(DaidalusCore& core, bool dir) {
 }
 
 /**
+ * Returns raw resolution maneuver (no hysteresis, no persistence).
+ * Return NaN if there is no conflict or if input is invalid.
+ * Return positive/negative infinity if there is no resolution to the
+ * right/up and negative infinity if there is no resolution to the left/down.
+ */
+double DaidalusRealBands::raw_resolution(DaidalusCore& core, bool dir) {
+  refresh(core);
+  if (dir) {
+    return bands_hysteresis_.getRawResolutionUp();
+  } else {
+    return bands_hysteresis_.getRawResolutionLow();
+  }
+}
+
+/**
  * Compute preferred direction based on resolution that is closer
  * to current value.
  */

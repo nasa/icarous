@@ -202,6 +202,7 @@ bool matches(const string& s, const string& rgx_str) {
 		regmatch_t matchptr[1];
 		const char* cstr = s.c_str();
 		reti = regexec(&rgx, cstr, 1, matchptr, 0);
+		regfree(&rgx);
 		return (reti != REG_NOMATCH);
 	}
 #endif

@@ -31,7 +31,7 @@ const double ACCoRDConfig::NMAC_H = Units::from("ft",100); // Defined in RTCA SC
 
 // internal units right now
 void ACCoRDConfig::setGsSearchLosDiscard(double val) {
-	gsSearchLosDiscard = val;
+  gsSearchLosDiscard = val;
 }
 
 

@@ -1922,6 +1922,22 @@ public:
   double lastTimeToHorizontalDirectionManeuver(const TrafficState& ac);
 
   /**
+   * Return last time to horizontal direction maneuver, in seconds, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToHorizontalDirectionManeuver(int ac_idx);
+
+  /**
+   * Return last time to horizontal direction maneuver, in given units, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToHorizontalDirectionManeuver(int ac_idx, const std::string& u);
+
+  /**
    * @return recovery information for horizontal direction bands.
    */
   RecoveryInformation horizontalDirectionRecoveryInformation();
@@ -1943,7 +1959,7 @@ public:
    * Compute horizontal direction resolution maneuver for a given direction.
    * @parameter dir is right (true)/left (false) of ownship current direction
    * @return direction resolution in internal units [rad] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no resolution to the right, and negative infinity if there
    * is no resolution to the left.
    */
@@ -1954,11 +1970,34 @@ public:
    * @parameter dir is right (true)/left (false) of ownship current direction
    * @parameter u units
    * @return direction resolution in specified units [u] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no resolution to the right, and negative infinity if there
    * is no resolution to the left.
    */
   double horizontalDirectionResolution(bool dir, const std::string& u);
+
+  /**
+   * Compute horizontal direction *raw* resolution maneuver for a given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is right (true)/left (false) of ownship current direction
+   * @return direction resolution in internal units [rad] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no resolution to the right, and negative infinity if there
+   * is no resolution to the left.
+   */
+  double horizontalDirectionRawResolution(bool dir);
+
+  /**
+   * Compute horizontal direction *raw* resolution maneuver for a given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is right (true)/left (false) of ownship current direction
+   * @parameter u units
+   * @return direction resolution in specified units [u] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no resolution to the right, and negative infinity if there
+   * is no resolution to the left.
+   */
+  double horizontalDirectionRawResolution(bool dir, const std::string& u);
 
   /**
    * Compute preferred horizontal direction based on resolution that is closer to current direction.
@@ -2030,6 +2069,22 @@ public:
   double lastTimeToHorizontalSpeedManeuver(const TrafficState& ac);
 
   /**
+   * Return last time to horizontal speed maneuver, in seconds, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToHorizontalSpeedManeuver(int ac_idx);
+
+  /**
+   * Return last time to horizontal speed maneuver, in given units, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToHorizontalSpeedManeuver(int ac_idx, const std::string& u);
+
+  /**
    * @return recovery information for horizontal speed bands.
    */
   RecoveryInformation horizontalSpeedRecoveryInformation();
@@ -2051,7 +2106,7 @@ public:
    * Compute horizontal speed resolution maneuver.
    * @parameter dir is up (true)/down (false) of ownship current horizontal speed
    * @return horizontal speed resolution in internal units [m/s] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
@@ -2062,11 +2117,34 @@ public:
    * @parameter dir is up (true)/down (false) of ownship current horizontal speed
    * @parameter u units
    * @return horizontal speed resolution in specified units [u] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
   double horizontalSpeedResolution(bool dir, const std::string& u);
+
+  /**
+   * Compute horizontal speed *raw* resolution maneuver.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current horizontal speed
+   * @return horizontal speed resolution in internal units [m/s] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double horizontalSpeedRawResolution(bool dir);
+
+  /**
+   * Compute horizontal speed *raw* resolution maneuver for corrective region.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current horizontal speed
+   * @parameter u units
+   * @return horizontal speed resolution in specified units [u] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double horizontalSpeedRawResolution(bool dir, const std::string& u);
 
   /**
    * Compute preferred horizontal speed direction on resolution that is closer to current horizontal speed.
@@ -2138,6 +2216,22 @@ public:
   double lastTimeToVerticalSpeedManeuver(const TrafficState& ac);
 
   /**
+   * Return last time to vertical speed maneuver, in seconds, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToVerticalSpeedManeuver(int ac_idx);
+
+  /**
+   * Return last time to vertical speed maneuver, in given units, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToVerticalSpeedManeuver(int ac_idx, const std::string& u);
+
+  /**
    * @return recovery information for vertical speed bands.
    */
   RecoveryInformation verticalSpeedRecoveryInformation();
@@ -2159,7 +2253,7 @@ public:
    * Compute vertical speed resolution maneuver for given direction.
    * @parameter dir is up (true)/down (false) of ownship current vertical speed
    * @return vertical speed resolution in internal units [m/s] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
@@ -2170,11 +2264,34 @@ public:
    * @parameter dir is up (true)/down (false) of ownship current vertical speed
    * @parameter u units
    * @return vertical speed resolution in specified units [u] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
   double verticalSpeedResolution(bool dir, const std::string& u);
+
+  /**
+   * Compute vertical speed *raw* resolution maneuver for given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current vertical speed
+   * @return vertical speed resolution in internal units [m/s] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double verticalSpeedRawResolution(bool dir);
+
+  /**
+   * Compute vertical speed *raw* resolution maneuver for given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current vertical speed
+   * @parameter u units
+   * @return vertical speed resolution in specified units [u] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double verticalSpeedRawResolution(bool dir, const std::string& u);
 
   /**
    * Compute preferred  vertical speed direction based on resolution that is closer to current vertical speed.
@@ -2247,6 +2364,22 @@ public:
   double lastTimeToAltitudeManeuver(const TrafficState& ac);
 
   /**
+   * Return last time to altitude maneuver, in seconds, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToAltitudeManeuver(int ac_idx);
+
+  /**
+   * Return last time to altitude maneuver, in given units, for ownship with respect to traffic
+   * aircraft at index ac_idx. Return positive infinity if the ownship is not in conflict with
+   * aircraft within lookahead time. Return negative infinity if there is no time to maneuver.
+   * Return NaN if ac_idx is not a valid index.
+   */
+  double lastTimeToAltitudeManeuver(int ac_idx, const std::string& u);
+
+  /**
    * @return recovery information for altitude speed bands.
    */
   RecoveryInformation altitudeRecoveryInformation();
@@ -2268,7 +2401,7 @@ public:
    * Compute altitude resolution maneuver for given direction.
    * @parameter dir is up (true)/down (false) of ownship current altitude
    * @return altitude resolution in internal units [m] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
@@ -2279,11 +2412,34 @@ public:
    * @parameter dir is up (true)/down (false) of ownship current altitude
    * @parameter u units
    * @return altitude resolution in specified units [u] in specified direction.
-   * Resolution maneuver is valid for early alerting time seconds. Return NaN if there is no conflict,
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
    * positive infinity if there is no up resolution, and negative infinity if there
    * is no down resolution.
    */
   double altitudeResolution(bool dir, const std::string& u);
+
+  /**
+   * Compute altitude *raw* resolution maneuver for given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current altitude
+   * @return altitude resolution in internal units [m] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double altitudeRawResolution(bool dir);
+
+  /**
+   * Compute altitude *raw* resolution maneuver for given direction.
+   * Raw resolution is the resolution without persistence
+   * @parameter dir is up (true)/down (false) of ownship current altitude
+   * @parameter u units
+   * @return altitude resolution in specified units [u] in specified direction.
+   * Resolution maneuver is valid for lookahead time in seconds. Return NaN if there is no conflict,
+   * positive infinity if there is no up resolution, and negative infinity if there
+   * is no down resolution.
+   */
+  double altitudeRawResolution(bool dir, const std::string& u);
 
   /**
    * Compute preferred  altitude direction on resolution that is closer to current altitude.
@@ -2379,7 +2535,145 @@ public:
    */
   int alertLevelOfRegion(int ac_idx, BandsRegion::Region region);
 
-  /* Getting and Setting DaidalusParameters (note that setters stale the Daidalus object) */
+  /* DAA Performance Metrics */
+
+  /**
+   * Returns current horizontal separation, in internal units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double currentHorizontalSeparation(int ac_idx) const;
+
+  /**
+   * Returns current horizontal separation, in given units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double currentHorizontalSeparation(int ac_idx,const std::string& u) const;
+
+  /**
+   * Returns current vertical separation, in internal units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double currentVerticalSeparation(int ac_idx) const;
+
+  /**
+   * Returns current vertical separation, in given units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double currentVerticalSeparation(int ac_idx,const std::string& u) const;
+
+  /**
+   * Returns horizontal closure rate, in internal units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double horizontalClosureRate(int ac_idx) const;
+
+  /**
+   * Returns current closure rate, in given units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double horizontalClosureRate(int ac_idx,const std::string& u) const;
+
+  /**
+   * Returns vertical closure rate, in internal units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double verticalClosureRate(int ac_idx) const;
+
+  /**
+   * Returns vertical closure rate, in given units, with aircraft at index ac_idx.
+   * Returns NaN if aircraft index is not valid
+   */
+  double verticalClosureRate(int ac_idx,const std::string& u) const;
+
+  /**
+   * Returns predicted HMD, in internal units, with aircraft at index ac_idx (up to lookahead time),
+   * assuming straight line trajectory. Returns NaN if aircraft index is not valid
+   */
+  double predictedHorizontalMissDistance(int ac_idx) const;
+
+  /**
+   * Returns predicted HMD, in provided units, with aircraft at index ac_idx (up to lookahead time),
+   * assuming straight line trajectory. Returns NaN if aircraft index is not valid
+   */
+  double predictedHorizontalMissDistance(int ac_idx, const std::string& u) const;
+
+  /**
+   * Returns predicted VMD, in internal units, with aircraft at index ac_idx (up to lookahead time),
+   * assuming straight line trajectory. Returns NaN if aircraft index is not valid
+   */
+  double predictedVerticalMissDistance(int ac_idx) const;
+
+
+  /**
+   * Returns predicted VMD, in provided units, with aircraft at index ac_idx (up to lookahead time),
+   * assuming straight line trajectory. Return NaN if aircraft index is not valid
+   */
+  double predictedVerticalMissDistance(int ac_idx, const std::string& u) const;
+
+  /**
+   * Returns time, in seconds, to horizontal closest point of approach with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, the returned time is 0.
+   * Returns NaN if aircraft index is not valid
+   */
+  double timeToHorizontalClosestPointOfApproach(int ac_idx) const;
+
+  /**
+   * Returns time, in given units, to horizontal closest point of approach with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, the returned time is 0.
+   * Returns NaN if aircraft index is not valid
+   */
+  double timeToHorizontalClosestPointOfApproach(int ac_idx, const std::string& u) const;
+
+  /**
+   * Returns distance, in internal units, at horizontal closest point of approach with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, the returned distance is current horizontal separation.
+   * Returns NaN if aircraft index is not valid
+   */
+  double distanceAtHorizontalClosestPointOfApproach(int ac_idx) const;
+
+  /**
+   * Returns distance, in given units, at horizontal closest point of approach with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, the returned distance is current horizontal separation.
+   * Returns NaN if aircraft index is not valid
+   */
+  double distanceAtHorizontalClosestPointOfApproach(int ac_idx, const std::string& u) const;
+
+  /**
+   * Returns time, in seconds, to co-altitude with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, returns negative time. If
+   * vertical closure is 0, returns negative infinite.
+   * Returns NaN if aircraft index is not valid or if vertical closure is 0.
+   */
+  double timeToCoAltitude(int ac_idx) const;
+
+  /**
+   * Returns time, in given units, to co-altitude with aircraft
+   * at index ac_idx, assuming straight line trajectory.
+   * If aircraft are diverging, returns negative value.
+   * Returns NaN if aircraft index is not valid or if vertical closure is 0
+   */
+  double timeToCoAltitude(int ac_idx, const std::string& u) const;
+
+  /**
+   * Returns modified tau time, in seconds, for distance DMOD (given in internal units),
+   * with respect to aircraft at index ac_idx.
+   * If aircraft are diverging or DMOD is greater than current range, returns -1.
+   * Returns NaN if aircraft index is not valid or if vertical closure is 0
+   */
+  double modifiedTau(int ac_idx, double DMOD) const;
+
+  /**
+   * Returns modified tau time, in given units, for distance DMOD (given in DMODu units),
+   * with respect to aircraft at index ac_idx.
+   * If aircraft are diverging or DMOD is greater than current range, returns -1.
+   * Returns NaN if aircraft index is not valid or if vertical closure is 0
+   */
+  double modifiedTau(int ac_idx, double DMOD, const std::string& DMODu, const std::string& u) const;
 
   /* Input/Output methods */
 

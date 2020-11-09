@@ -15,33 +15,33 @@
 
 namespace larcfm {
 
-  /**
-   * This class captures the default parameters for ACCORD.
-   *
-   */
-  class ACCoRDConfig {
-    
-    private:
+/**
+ * This class captures the default parameters for ACCORD.
+ *
+ */
+class ACCoRDConfig {
 
-    public:
+private:
 
-	  static const double minHorizExitSpeedLoS_default;   //  = Units.from("kn",100.0);
-	  static const double minVertExitSpeedLoS_default;
-	  static const double maxGs_default;                  //  = Units.from("kn",700.0);
-	  static const double minGs_default;                  // = Units.from("kn",150.0);       // must be greater than 0
-	  static const double maxVs_default;
-	  static double gsSearchLosDiscard;     // = Units.from("nm",1.5);
-	  static double vsDiscretization_default; //  = Units::from("fpm",10.0);
+public:
 
-	  static const double NMAC_D; // Defined in RTCA SC-147
-	  static const double NMAC_H; // Defined in RTCA SC-147
+  static const double minHorizExitSpeedLoS_default;   //  = Units.from("kn",100.0);
+  static const double minVertExitSpeedLoS_default;
+  static const double maxGs_default;                  //  = Units.from("kn",700.0);
+  static const double minGs_default;                  // = Units.from("kn",150.0);       // must be greater than 0
+  static const double maxVs_default;
+  static double gsSearchLosDiscard;     // = Units.from("nm",1.5);
+  static double vsDiscretization_default; //  = Units::from("fpm",10.0);
 
-	  static void setLosRepulsiveCrit(bool flag);
-	  static void setNewCesarAlgorithm(bool flag);
+  static const double NMAC_D; // Defined in RTCA SC-147
+  static const double NMAC_H; // Defined in RTCA SC-147
 
-	  static void setGsSearchLosDiscard(double val);
+  static void setLosRepulsiveCrit(bool flag);
+  static void setNewCesarAlgorithm(bool flag);
 
-  }; // ACCORDCONFIG
+  static void setGsSearchLosDiscard(double val);
+
+}; // ACCORDCONFIG
 }
 
 #endif /* ACCORDCONFIG_H_ */

@@ -669,6 +669,89 @@ std::pair<double,double> Kinematics::gsAccelToDist(double gsIn, double dist, dou
 }
 
 
+/**
+ * The time required to cover distance "dist" if initial speed is "gs" and acceleration is "gsAccel"
+ *
+ * @param gs       initial ground speed
+ * @param gsAccel  signed ground speed acceleration
+ * @param dist     non-negative distance
+ * @return time required to cover distance
+ *
+ * Warning:  This function can return NaN
+ *
+ */
+double Kinematics::distanceToGsAccelTime(double gs, double gsAccel, double dist) {
+	double t1 = Util::root(0.5 * gsAccel, gs, -dist, 1);
+	double t2 = Util::root(0.5 * gsAccel, gs, -dist, -1);
+	//f.pln("$$$ Kinematics.distanceToGsAccelTime t1="+t1+" t2="+t2);		
+	double dt = ISNAN(t1) || t1 < 0 ? t2 : (ISNAN(t2) || t2 < 0 ? t1 : Util::min(t1, t2));
+	return dt;
+}
+
+
+/** distance traveled when accelerating from gs0 to gsTarget for time dt (acceleration stops after gsTarget is reached)
+ *
+ *
+ * @param gs0             initial ground speed
+ * @param gsTarget        target ground speed
+ * @param gsAccel         positive ground speed acceleration
+ * @param dt              total time traveling
+ *
+ * @return                total distance traveled
+ *
+ * Note: if gsAccel = 0 it returns gs0*dt
+ */
+std::pair<double, double> Kinematics::distanceWithGsAccel(double gs0, double gsTarget, double gsAccel, double dt) {
+	double ds = -1;
+	if (Util::almost_equals(gsAccel, 0)) {
+		return std::pair<double, double>(gs0 * dt, gs0);
+	}
+	double deltaGs = gsTarget - gs0;
+	double t0 = std::abs(deltaGs / gsAccel);  // time to reach gsTarget
+	double a = Util::sign(deltaGs) * gsAccel;	// sign of acceleration
+	double gsFinal = gsTarget;
+	if (dt < t0) {
+		ds = gs0 * dt + 0.5 * a * dt * dt;
+		gsFinal = gs0 + a * dt;
+	}
+	else ds = gs0 * t0 + 0.5 * a * t0 * t0 + (dt - t0) * gsTarget;
+	return std::pair<double, double>(ds, gsFinal);
+}
+
+/** distance traveled when accelerating from gsIn to gsTarget
+ *
+ * @param gsIn            initial ground speed
+ * @param gsTarget        target ground speed
+ * @param gsAccel         positive ground speed acceleration
+ *
+ * See also gsAccelDist  will give same answer
+ *
+ * @return                total distance traveled when accelerating from gs0 to gsTarget
+ */
+double Kinematics::neededDistGsAccel(double gsIn, double gsTarget, double gsAccel) {
+	double accelTime = std::abs((gsIn - gsTarget) / gsAccel);
+	double neededDist = accelTime * (gsIn + gsTarget) / 2.0;
+	//f.pln(" $$$$$$$$$>>>>>>>>>>> neededDistGsAccel: gsIn = "+gsIn+" targetGs = "+targetGs+" gsAccel = "+gsAccel+" neededDist = "+neededDist);
+	return neededDist;
+}
+
+/**
+ * Distance traveled when accelerating from gs1 to gs2
+ *
+ * @param gs1 starting gs
+ * @param gs2 ending gs
+ * @param a acceleration value (unsigned)
+ *
+ * @return distance needed to accelerate from gs1 to gs2 with acceleration a.  This returns 0 if a=0 or gs1=gs2.
+ */
+double Kinematics::gsAccelDist(double gs1, double gs2, double a) {
+	if (gs1 == gs2 || a == 0.0) return 0.0;
+	int sign = Util::sign(gs2 - gs1);
+	double t = (gs2 - gs1) / (sign * a);
+	return gs1 * t + sign * 0.5 * a * t * t;
+}
+
+
 std::pair<double,double> Kinematics::gsAccelToRTA(double gsIn, double dist, double rta, double gsAccel) {
 
 	double avgGs = dist/rta;

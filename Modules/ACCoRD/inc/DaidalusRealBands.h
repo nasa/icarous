@@ -259,6 +259,14 @@ public:
   double resolution(DaidalusCore& core, bool dir);
 
   /**
+   * Returns raw resolution maneuver (no hysteresis, no persistence).
+   * Return NaN if there is no conflict or if input is invalid.
+   * Return positive/negative infinity if there is no resolution to the
+   * right/up and negative infinity if there is no resolution to the left/down.
+   */
+  double raw_resolution(DaidalusCore& core, bool dir);
+
+  /**
    * Compute preferred direction based on resolution that is closer
    * to current value.
    */

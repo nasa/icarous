@@ -61,6 +61,14 @@ double BandsHysteresis::getLastResolutionUp() const {
   return resolution_up_;
 }
 
+double BandsHysteresis::getRawResolutionLow() const {
+  return raw_low_;
+}
+
+double BandsHysteresis::getRawResolutionUp() const {
+  return raw_up_;
+}
+
 int BandsHysteresis::getLastNFactorLow() const {
   return nfactor_low_;
 }
@@ -90,6 +98,10 @@ void BandsHysteresis::reset() {
 
   resolution_up_ = NAN;
   resolution_low_ = NAN;
+
+  raw_up_ = NAN;
+  raw_low_ = NAN;
+
   nfactor_up_ = 0;
   nfactor_low_ = 0;
 }
@@ -265,30 +277,28 @@ bool BandsHysteresis::to_the_left(double a, double b) const {
 
 void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& ranges,
     BandsRegion::Region corrective_region, double delta, int nfactor,
-    double val, int idx_l, double res_l, int idx_u, double res_u) {
+    double val, int idx_l, int idx_u) {
   // last_time is never NaN
   if (hysteresis_time_ <= 0 || ISNAN(time_of_dir_) ||
       last_time_ <= time_of_dir_ || delta <= 0) {
     // No hysteresis at this time
-    resolution_low_ = res_l;
+    resolution_low_ = raw_low_;
     nfactor_low_ = nfactor;
-    resolution_up_ = res_u;
+    resolution_up_ = raw_up_;
     nfactor_up_ = nfactor;
     time_of_dir_ = NaN;
   } else {
     // Make sure that old resolutions are still valid. If not, reset them.
     // persistence of up/right resolutions
     int idx = -1;
-    if (ISFINITE(res_u) && // Exists a current resolution
+    if (ISFINITE(raw_up_) && // Exists a current resolution
         ISFINITE(resolution_up_) && // Previous resolution exists
-        // either up/right was the preferred direction or a up/right was a recovery resolution
-        (preferred_dir_ || (nfactor_up_ >= 0 && nfactor_up_ < nfactor)) &&
         // Previous resolution is in the same direction as new one
         to_the_left(val,resolution_up_) &&
         // Before persistence time or within delta of new resolution
         (last_time_-time_of_dir_ < persistence_time_ ||
             nfactor_up_ < nfactor ||
-            Util::almost_less(Util::safe_modulo(resolution_up_-res_u,mod_),delta,
+            Util::almost_less(Util::safe_modulo(resolution_up_-raw_up_,mod_),delta,
                 DaidalusParameters::ALMOST_))) {
       idx=BandsRange::index_of(ranges,resolution_up_,mod_);
     }
@@ -297,21 +307,19 @@ void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& range
             idx_u,idx)) {
       // Do nothing: keep old up/right resolution
     } else {
-      resolution_up_ = res_u;
+      resolution_up_ = raw_up_;
       nfactor_up_ = nfactor;
     }
     // persistence of low/left resolutions
     idx = -1;
-    if (ISFINITE(res_l) && // Exists a current resolution
+    if (ISFINITE(raw_low_) && // Exists a current resolution
         ISFINITE(resolution_low_) && // Previous resolution exists
-        // either low/left was the preferred direction or a low/left was a recovery resolution
-        (!preferred_dir_ || (nfactor_low_ >= 0 && nfactor_low_ < nfactor)) &&
         // Previous resolution is in the same direction as new one
         to_the_left(resolution_low_,val) &&
         // Before persistence time or within delta of new resolution
         (last_time_-time_of_dir_ < persistence_time_ ||
             nfactor_low_ < nfactor ||
-            Util::almost_less(Util::safe_modulo(res_l-resolution_low_,mod_),delta,
+            Util::almost_less(Util::safe_modulo(raw_low_-resolution_low_,mod_),delta,
                 DaidalusParameters::ALMOST_))) {
       idx=BandsRange::index_of(ranges,resolution_low_,mod_);
     }
@@ -320,30 +328,43 @@ void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& range
             idx_l,idx)) {
       // Do nothing: keep old low/left resolution
     } else {
-      resolution_low_ = res_l;
+      resolution_low_ = raw_low_;
       nfactor_low_ = nfactor;
     }
   }
 }
 
-void BandsHysteresis::preferredDirectionHysteresis(double delta, double val, double low, double up) {
-  if (!ISFINITE(up) && !ISFINITE(low)) {
+void BandsHysteresis::switch_dir(bool dir, double nfactor) {
+  preferred_dir_ = dir;
+  time_of_dir_ = last_time_;
+  if (nfactor <= nfactor_low_) {
+    resolution_low_ = raw_low_;
+  }
+  if (nfactor <= nfactor_up_) {
+    resolution_up_ = raw_up_;
+  }
+}
+
+void BandsHysteresis::preferredDirectionHysteresis(double delta, double nfactor, double val) {
+  if (!ISFINITE(raw_up_) && !ISFINITE(raw_low_)) {
     time_of_dir_ = NaN;
     preferred_dir_ = false;
-  } else if (!ISFINITE(up)) {
-    time_of_dir_ = last_time_;
-    preferred_dir_ = false;
-  } else if (!ISFINITE(low)) {
-    time_of_dir_ = last_time_;
-    preferred_dir_ = true;
+  } else if (!ISFINITE(raw_up_)) {
+    if (preferred_dir_) {
+      switch_dir(false,nfactor);
+    }
+  } else if (!ISFINITE(raw_low_)) {
+    if (!preferred_dir_) {
+      switch_dir(true,nfactor);
+    }
   } else {
-    double mod_up = Util::safe_modulo(up-val,mod_);
-    double mod_down = Util::safe_modulo(val-low,mod_);
+    double mod_up = Util::safe_modulo(raw_up_-val,mod_);
+    double mod_down = Util::safe_modulo(val-raw_low_,mod_);
     bool actual_dir = Util::almost_leq(mod_up,mod_down,DaidalusParameters::ALMOST_);
     if (hysteresis_time_ <= 0 || ISNAN(time_of_dir_) ||
         last_time_ < time_of_dir_ || delta <= 0) {
-      time_of_dir_ = last_time_;
       preferred_dir_ = actual_dir;
+      time_of_dir_ = last_time_;
     } else if (last_time_-time_of_dir_ < persistence_time_ ||
         std::abs(mod_up-mod_down) < delta) {
       // Keep the previous direction (persistence logic prevails)
@@ -352,8 +373,7 @@ void BandsHysteresis::preferredDirectionHysteresis(double delta, double val, dou
       // Keep the previous direction (do not change to a greater nfactor)
     } else if (preferred_dir_ != actual_dir) {
       // Change direction, update time_of_dir
-      preferred_dir_ = actual_dir;
-      time_of_dir_ = last_time_;
+      switch_dir(actual_dir,nfactor);
     }
   }
 }
@@ -370,8 +390,8 @@ bool BandsHysteresis::is_up_from_corrective_region(BandsRegion::Region correctiv
 
 void BandsHysteresis::bandsHysteresis(const std::vector<BandsRange>& ranges,
     BandsRegion::Region corrective_region, double delta, int nfactor, double val, int idx) {
-  double res_l = NaN;
-  double res_u = NaN;
+  raw_low_ = NaN;
+  raw_up_ = NaN;
   int idx_l = idx;
   int idx_u = idx;
   // Find actual resolutions closest to current value
@@ -379,7 +399,7 @@ void BandsHysteresis::bandsHysteresis(const std::vector<BandsRange>& ranges,
     // There is a conflict
     int last_index = ranges.size()-1;
     // Find low/left resolution
-    res_l = NINFINITY;
+    raw_low_ = NINFINITY;
     while (idx_l >= 0 && is_up_from_corrective_region(corrective_region,ranges[idx_l].region)) {
       if (to_the_left(ranges[idx_l].interval.low,val)) {
         //if (Util.almost_less(Util.safe_modulo(val-ranges.get(idx_l).interval.low,mod),min_relative,
@@ -399,13 +419,13 @@ void BandsHysteresis::bandsHysteresis(const std::vector<BandsRange>& ranges,
     }
     if (idx_l >= 0 && BandsRegion::isValidBand(ranges[idx_l].region)) {
       if (idx_l == last_index && mod_ > 0) {
-        res_l = 0;
+        raw_low_ = 0;
       } else {
-        res_l = ranges[idx_l].interval.up;
+        raw_low_ = ranges[idx_l].interval.up;
       }
     }
     // Find up/right resolution
-    res_u = PINFINITY;
+    raw_up_ = PINFINITY;
     while (idx_u <= last_index && is_up_from_corrective_region(corrective_region,ranges[idx_u].region)) {
       if (to_the_left(val,ranges[idx_u].interval.up)) {
         //if (Util.almost_less(Util.safe_modulo(ranges.get(idx_u).interval.up-val,mod),max_relative,
@@ -424,11 +444,11 @@ void BandsHysteresis::bandsHysteresis(const std::vector<BandsRange>& ranges,
       }
     }
     if (idx_u <= last_index && BandsRegion::isValidBand(ranges[idx_u].region)) {
-      res_u = ranges[idx_u].interval.low;
+      raw_up_ = ranges[idx_u].interval.low;
     }
   }
-  resolutionsHysteresis(ranges,corrective_region,delta,nfactor,val,idx_l,res_l,idx_u,res_u);
-  preferredDirectionHysteresis(delta,val,res_l,res_u);
+  resolutionsHysteresis(ranges,corrective_region,delta,nfactor,val,idx_l,idx_u);
+  preferredDirectionHysteresis(delta,nfactor,val);
 }
 
 std::string BandsHysteresis::toString() const {
@@ -447,6 +467,8 @@ std::string BandsHysteresis::toString() const {
   s += "time_of_dir_ = "+FmPrecision(time_of_dir_)+"\n";
   s += "resolution_low_ = "+FmPrecision(resolution_low_)+"\n";
   s += "resolution_up_ = "+FmPrecision(resolution_up_)+"\n";
+  s += "raw_low_ = "+FmPrecision(raw_low_)+"\n";
+  s += "raw_up_ = "+FmPrecision(raw_up_)+"\n";
   s += "nfactor_low_ = "+Fmi(nfactor_low_)+"\n";
   s += "nfactor_up_ = "+Fmi(nfactor_up_)+"\n";
   s += "conflict_region_ = "+BandsRegion::to_string(conflict_region_)+"\n";

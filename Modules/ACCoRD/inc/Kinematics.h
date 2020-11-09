@@ -82,7 +82,7 @@ public:
    * @param  R     radius
    * @return       bank angle (positive)
    */
-	static double bankAngleRadius(double speed, double radius);
+	static double bankAngleRadius(double R, double speed);
 
   /** 
    * Calculates the bank angle used for a given turn radius and ground speed.   Assumes 
@@ -570,6 +570,56 @@ public:
 
 
 	static std::pair<double,double> gsAccelToDist(double gsIn, double dist, double gsAccel);
+
+	/**
+   * The time required to cover distance "dist" if initial speed is "gs" and acceleration is "gsAccel"
+   *
+   * @param gs       initial ground speed
+   * @param gsAccel  signed ground speed acceleration
+   * @param dist     non-negative distance
+   * @return time required to cover distance
+   *
+   * Warning:  This function can return NaN
+   *
+   */
+	static double distanceToGsAccelTime(double gs, double gsAccel, double dist);
+
+	/** distance traveled when accelerating from gs0 to gsTarget for time dt (acceleration stops after gsTarget is reached)
+	 *
+	 *
+	 * @param gs0             initial ground speed
+	 * @param gsTarget        target ground speed
+	 * @param gsAccel         positive ground speed acceleration
+	 * @param dt              total time traveling
+	 *
+	 * @return                total distance traveled
+	 *
+	 * Note: if gsAccel = 0 it returns gs0*dt
+	 */
+	static std::pair<double, double> distanceWithGsAccel(double gs0, double gsTarget, double gsAccel, double dt);
+
+	/** distance traveled when accelerating from gsIn to gsTarget
+	 *
+	 * @param gsIn            initial ground speed
+	 * @param gsTarget        target ground speed
+	 * @param gsAccel         positive ground speed acceleration
+	 *
+	 * See also gsAccelDist  will give same answer
+	 *
+	 * @return                total distance traveled when accelerating from gs0 to gsTarget
+	 */
+	static double neededDistGsAccel(double gsIn, double gsTarget, double gsAccel);
+
+	/**
+	 * Distance traveled when accelerating from gs1 to gs2
+	 *
+	 * @param gs1 starting gs
+	 * @param gs2 ending gs
+	 * @param a acceleration value (unsigned)
+	 *
+	 * @return distance needed to accelerate from gs1 to gs2 with acceleration a.  This returns 0 if a=0 or gs1=gs2.
+	 */
+	static double gsAccelDist(double gs1, double gs2, double a);
 
 
 	/** Test for LoS(D,H) between two aircraft when only ownship gs accelerates, compute trajectories up to time stopTime
