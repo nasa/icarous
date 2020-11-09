@@ -19,23 +19,69 @@ void Cognition::InitializeEventHandlers(){
     * provide appropriate handlers to deal with the respective event.
     * The provided priority is used to determine which event is addressed first.
     **/
+   auto inputPriorities  = GetPriorityValues();
 
    // Nominal mission related triggers
-   eventMng.AddEventHandler("Takeoff",1,TakeoffTrigger,new TakeoffPhaseHandler);
-   eventMng.AddEventHandler("NominalDeparture",1,NominalDepartureTrigger,new EngageNominalPlan);
-   eventMng.AddEventHandler("PrimaryPlanComplete",1,PrimaryPlanCompletionTrigger,new LandPhaseHandler);
-   eventMng.AddEventHandler("Merging",3,MergingActivityTrigger,new MergingHandler);
-   eventMng.AddEventHandler("SecondaryPlanComplete",1,SecondaryPlanCompletionTrigger,new EngageNominalPlan);
+   eventMng.AddEventHandler("Takeoff",
+                            inputPriorities["Takeoff"],
+                            TakeoffTrigger,
+                            new TakeoffPhaseHandler);
+
+   eventMng.AddEventHandler("NominalDeparture",
+                            inputPriorities["NominalDeparture"],
+                            NominalDepartureTrigger,
+                            new EngageNominalPlan);
+
+   eventMng.AddEventHandler("PrimaryPlanComplete",
+                             inputPriorities["PrimaryPlanComplete"],
+                             PrimaryPlanCompletionTrigger,
+                             new LandPhaseHandler);
+
+   eventMng.AddEventHandler("Merging",
+                             inputPriorities["Merging"],
+                             MergingActivityTrigger,
+                             new MergingHandler);
+
+   eventMng.AddEventHandler("SecondaryPlanComplete",
+                             inputPriorities["SecondaryPlanComplete"],
+                             SecondaryPlanCompletionTrigger,
+                             new EngageNominalPlan);
 
    // Conflict related triggers
-   eventMng.AddEventHandler("FenceConflict",1,FenceConflictTrigger,new ReturnToNextFeasibleWP);
-   eventMng.AddEventHandler("TrafficConflict1",2,TrafficConflictVectorResTrigger,new TrafficConflictHandler);
-   eventMng.AddEventHandler("TrafficConflict2",2,TrafficConflictPathResTrigger,new ReturnToMission);
-   eventMng.AddEventHandler("FlightPlanDeviation",1,FlightPlanDeviationTrigger,new ReturnToMission);
+   eventMng.AddEventHandler("FenceConflict",
+                             inputPriorities["FenceConflict"],
+                             FenceConflictTrigger,
+                             new ReturnToNextFeasibleWP);
+
+   eventMng.AddEventHandler("TrafficConflict1",
+                             inputPriorities["TrafficConflict1"],
+                             TrafficConflictVectorResTrigger,
+                             new TrafficConflictHandler);
+
+   eventMng.AddEventHandler("TrafficConflict2",
+                             inputPriorities["TrafficConflict2"],
+                             TrafficConflictPathResTrigger,
+                             new ReturnToMission);
+
+   eventMng.AddEventHandler("FlightPlanDeviation",
+                             inputPriorities["FlightPlanDeviation"],
+                             FlightPlanDeviationTrigger,
+                             new ReturnToMission);
 
    // Ditching related triggers
-   eventMng.AddEventHandler("TrafficConflict3",4,TrafficConflictDitchTrigger,new RequestDitchSite);
-   eventMng.AddEventHandler("Ditching",5,DitchingTrigger,new ProceedToDitchSite);
-   eventMng.AddEventHandler("TODReached",1,DitchSiteTODTrigger,new ProceedFromTODtoLand);
+   eventMng.AddEventHandler("TrafficConflict3",
+                             inputPriorities["TrafficConflict3"],
+                             TrafficConflictDitchTrigger,
+                             new RequestDitchSite);
+
+   eventMng.AddEventHandler("Ditching",
+                             inputPriorities["Ditching"],
+                             DitchingTrigger,
+                             new ProceedToDitchSite);
+
+   eventMng.AddEventHandler("TODReached",
+                             inputPriorities["TODReached"],
+                             DitchSiteTODTrigger,
+                             new ProceedFromTODtoLand);
 
 }

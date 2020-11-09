@@ -303,3 +303,34 @@ int Cognition::GetCognitionOutput(Command &command){
     }
     return commands_remaining;
 }
+
+std::map<std::string,int> GetPriorityValues(){
+    std::ifstream priorityFile;
+    priorityFile.open("Priority.txt");
+    std::map<std::string,int> inputPriorities;
+    if (!priorityFile){
+        // Set default priority values if file is not available
+        inputPriorities["Takeoff"] = 1;
+        inputPriorities["NominalDeparture"] = 1;
+        inputPriorities["PrimaryPlanComplete"] = 1;
+        inputPriorities["SecondaryPlanComplete"] = 1;
+        inputPriorities["Merging"] = 3;
+        inputPriorities["FenceConflict"] = 1;
+        inputPriorities["TrafficConflict1"] = 2;
+        inputPriorities["TrafficConflict2"] = 2;
+        inputPriorities["FlightPlanDeviation"] = 1;
+        inputPriorities["TrafficConflict3"] = 4;
+        inputPriorities["Ditching"] = 5;
+        inputPriorities["TODReached"] = 1;
+    }
+    
+
+    std::string name;
+    int val;
+    while(priorityFile>>name){
+        priorityFile >> val;
+        inputPriorities[name] = (int)val;
+    }
+
+    return inputPriorities;
+}

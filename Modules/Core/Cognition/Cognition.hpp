@@ -337,6 +337,6 @@ bool CheckTurnConflict(const double low,
                     const double new_heading,
                     const double old_heading);
 
-
+std::map<std::string,int> GetPriorityValues();
 
 #endif
