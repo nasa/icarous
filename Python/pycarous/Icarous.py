@@ -313,10 +313,6 @@ class Icarous(IcarousInterface):
         self.velocity = ovel
         self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
         self.RecordOwnship()
-        self.trkband = None
-        self.gsband = None
-        self.altband = None
-        self.vsband = None
 
     def RunCognition(self):
         self.Cog.InputVehicleState(self.position,self.trkgsvs,self.trkgsvs[0])
