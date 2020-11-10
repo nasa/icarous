@@ -536,6 +536,7 @@ double Guidance::ComputeOffSetPositionOnPlan(larcfm::Plan* fp,int nextWP,double 
 
     if(distAB < 1e-3){
         offsetPos = currentPos;
+        return 0.0;
     }
 
     // Projection of AP onto AB
