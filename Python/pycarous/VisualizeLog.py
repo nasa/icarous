@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import json
 import os
 import glob
@@ -36,10 +38,12 @@ if __name__ == "__main__":
 
     xmin, ymin = 1e10, 1e10
     xmax, ymax = -1e10, -1e10 
+    valid = False
     for file in files:
         try:
             fp = open(file,'r')
             data = json.load(fp)
+            valid = True
             pb = playback()
             pb.ownshipLog = data['ownship']
             pb.trafficLog = data['traffic']
@@ -68,19 +72,20 @@ if __name__ == "__main__":
         except:
             continue
 
-    if (xmax-xmin) > (ymax-ymin):
-        ymin = ymin + (ymax - ymin)/2 - (xmax-xmin)/2
-        ymax = ymin + (xmax - xmin)
-    elif (ymax-ymin) > (xmax-xmin):
-        xmin = xmin + (xmax - xmin)/2 - (ymax-ymin)/2
-        xmax = xmin + (ymax - ymin)
+    if valid:
+         if (xmax-xmin) > (ymax-ymin):
+             ymin = ymin + (ymax - ymin)/2 - (xmax-xmin)/2
+             ymax = ymin + (xmax - xmin)
+         elif (ymax-ymin) > (xmax-xmin):
+             xmin = xmin + (xmax - xmin)/2 - (ymax-ymin)/2
+             xmax = xmin + (ymax - ymin)
 
-    padding = args.pad
-    xmin -= padding
-    ymin -= padding
-    xmax += padding
-    ymax += padding
-    VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output)
+         padding = args.pad
+         xmin -= padding
+         ymin -= padding
+         xmax += padding
+         ymax += padding
+         VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output)
 
     
 
