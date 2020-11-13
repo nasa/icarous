@@ -44,6 +44,8 @@ parser.add_argument("-r", "--repair", action="store_true",
                    help='Convert the given flightplan into a EUTL plan')
 parser.add_argument("-e", "--eta", action="store_true",
                    help='Enable eta control for waypoint arrivals')
+parser.add_argument("--daalog",  action="store_true",
+                   help='Enable daa logs')
 args = parser.parse_args()
 if args.cfs:
     args.fasttime = False
@@ -66,6 +68,11 @@ if args.cfs:
 else:
     ic = Icarous(HomePos,simtype="UAM_VTOL",monitor=args.daaType,verbose=args.verbosity,
                  daaConfig=args.daaConfig, fasttime=args.fasttime)
+
+if args.daalog:
+    # Dirty hack to silently update the daa logging parameter from commandline
+    import os
+    os.system("sed -Ein -e \'s/(LOGDAADATA)(\\ *)([0-1])(\\.0*)/\\1\\21\\4/\' "+args.params)
 
 # Read params from file and input params
 ic.SetParametersFromFile(args.params)
