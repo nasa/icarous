@@ -406,8 +406,9 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     bool trafficConflict = false;
     std::list<double> gfTimes, tfTimes;
     auto cmp = [](double x, double y) { return x < y; };
-    std::vector<double> offsets = ComputePlanOffsets(planID,nextWP2,pos,vel,time);
-    double toffset = offsets[2]; // Correct for any time delay (-ve offsets[2] indicate a delay)
+    std::vector<double> offsets1 = ComputePlanOffsets(planID,nextWP2,pos,vel,time);
+    std::vector<double> offsets2 = ComputePlanOffsets("Plan0",nextWP1,pos,vel,time);
+    double toffset = offsets1[2]; // Correct for any time delay (-ve offsets[2] indicate a delay)
     double correctedtime = time + toffset;
     for (auto &gf : fenceList)
     {
@@ -541,9 +542,12 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     data.trafficConflict = trafficConflict;
     data.timeToFenceViolation = gfTimes.front();
     data.timeToTrafficViolation = tfTimes.front();
-    data.offsets[0] = offsets[0];
-    data.offsets[1] = offsets[1];
-    data.offsets[2] = offsets[2];
+    data.offsets1[0] = offsets1[0];
+    data.offsets1[1] = offsets1[1];
+    data.offsets1[2] = offsets1[2];
+    data.offsets2[0] = offsets2[0];
+    data.offsets2[1] = offsets2[1];
+    data.offsets2[2] = offsets2[2];
     data.nextWP = nextWP2;
     data.nextFeasibleWP = findex;
 

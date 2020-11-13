@@ -86,7 +86,8 @@ typedef struct __attribute__((__packed__)){
     double timeToTrafficViolation;           /**< time to violating constraint at current speed */
     double timeToFenceViolation;             /**< time to violating constraint at current speed */
     double recoveryPosition[3];              /**< recovery position */
-    double offsets[3];                       /**< perp, striaght and time offsets with respect to nextWP */
+    double offsets1[3];                      /**< perp, striaght and time offsets with respect to nextWP on primary plan */
+    double offsets2[3];                      /**< perp, striaght and time offsets with respect to nextWP on current plan */
     int nextWP;                              /**< current nextWP */
     int nextFeasibleWP;                      /**< next feasible waypoint */
 }trajectoryMonitorData_t;

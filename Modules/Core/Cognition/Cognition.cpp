@@ -111,8 +111,8 @@ void Cognition::InputTrajectoryMonitorData(const trajectoryMonitorData_t & tjMon
     cogState.planProjectedFenceConflict = tjMonData.fenceConflict;
     cogState.planProjectedTrafficConflict = tjMonData.trafficConflict;
     cogState.nextFeasibleWpId = tjMonData.nextFeasibleWP;
-    cogState.xtrackDeviation = tjMonData.offsets[0];
-    if(tjMonData.offsets[0] > 10){
+    cogState.xtrackDeviation = tjMonData.offsets1[0];
+    if(tjMonData.offsets1[0] > 10){
         cogState.planProjectedTrafficConflict = false;
         cogState.planProjectedFenceConflict = false;
     }

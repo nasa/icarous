@@ -501,7 +501,8 @@ class Icarous(IcarousInterface):
         planID = "Plan+" if self.activePlan != "Plan0" else "Plan0"
         tjMonData = self.Trajectory.MonitorTrajectory(self.currTime,planID,self.position,self.trkgsvs,self.nextWP1,nextWP)
         self.Cog.InputTrajectoryMonitorData(tjMonData)
-        self.planoffsets = [tjMonData.offsets[0],tjMonData.offsets[1],tjMonData.offsets[2]]
+        self.planoffsets = [tjMonData.offsets1[0],tjMonData.offsets1[1],tjMonData.offsets1[2],\
+                            tjMonData.offsets2[0],tjMonData.offsets2[1],tjMonData.offsets2[2]]
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)

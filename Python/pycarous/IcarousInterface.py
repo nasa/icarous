@@ -77,7 +77,7 @@ class IcarousInterface(abc.ABC):
         self.trafficLog = {}
         self.logRateHz = logRateHz
         self.minLogInterval = 1/self.logRateHz - 0.01
-        self.planoffsets = [0,0,0]
+        self.planoffsets = [0,0,0,0,0,0]
 
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):

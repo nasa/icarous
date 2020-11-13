@@ -144,7 +144,8 @@ class TrajectoryMonitorData(Structure):
         ("timeToTrafficViolation",c_double),
         ("timeToFenceViolation",c_double),
         ("recoveryPosition",c_double*3),
-        ("offsets",c_double*3),
+        ("offsets1",c_double*3),
+        ("offsets2",c_double*3),
         ("nextWP",c_int),
         ("nextFeasibleWP",c_int)
     ]
