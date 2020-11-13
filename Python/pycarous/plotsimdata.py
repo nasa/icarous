@@ -34,7 +34,9 @@ traffic = False
 plt.figure()
 for log in logs:
     pos = np.array(log["ownship"]["positionNED"])
+    plan = np.array(log["ownship"]["localPlans"][0])
     plt.plot(pos[:, 1], pos[:, 0], label=log["callsign"])
+    plt.plot(plan[:, 2], plan[:, 1], '--o')
     if traffic:
         for tlog in log["traffic"].values():
             tpos = np.array(tlog["positionNED"])
