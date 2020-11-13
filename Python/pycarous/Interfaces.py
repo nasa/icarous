@@ -135,14 +135,14 @@ class GeofenceConflict(Structure):
         ("recoveryPosition",c_double*3)]
 
 class TrajectoryMonitorData(Structure):
-    _pack = 1
+    _pack_ = 1
     _fields_ =[
         ("fenceConflict",c_bool),
         ("trafficConflict",c_bool),
         ("conflictFenceID",c_uint8),
         ("conflictCallSign",c_char*20),
-        ("timeToFenceViolation",c_double),
         ("timeToTrafficViolation",c_double),
+        ("timeToFenceViolation",c_double),
         ("recoveryPosition",c_double*3),
         ("offsets",c_double*3),
         ("nextWP",c_int),

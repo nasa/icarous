@@ -329,7 +329,7 @@ std::vector<double> TrajManager::ComputePlanOffsets(std::string planID,int nextW
         double turnRate    = std::fmod((fp->gsIn(nextWP)/fabs(turnRadius))*180/M_PI,360) * turnDirection;
         double timeRemainingTurn = (turnTargetDelta - turnCurrentDelta)/(fabs(turnRate)*M_PI/180);
         double actualTimeRemaining = fp->time(nextWP) - timeAtPos;
-        offsets[0] = currentPos.distanceH(center);
+        offsets[0] = currentPos.distanceH(center) - fabs(turnRadius);
         offsets[1] = turnCurrentDelta/turnTargetDelta;
         offsets[2] = timeRemainingTurn - actualTimeRemaining;
 

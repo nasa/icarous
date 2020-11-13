@@ -67,6 +67,7 @@ class IcarousInterface(abc.ABC):
                            "velocityNED": [],
                            "commandedVelocityNED": [],
                            "positionNED": [],
+                           "planoffsets":[],
                            "trkbands": [],
                            "gsbands": [],
                            "altbands": [],
@@ -76,6 +77,7 @@ class IcarousInterface(abc.ABC):
         self.trafficLog = {}
         self.logRateHz = logRateHz
         self.minLogInterval = 1/self.logRateHz - 0.01
+        self.planoffsets = [0,0,0]
 
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
@@ -222,6 +224,7 @@ class IcarousInterface(abc.ABC):
         self.ownshipLog["velocityNED"].append(self.velocity)
         self.ownshipLog["positionNED"].append(self.localPos)
         self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
+        self.ownshipLog["planoffsets"].append(self.planoffsets)
 
         filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
         getbandlog = lambda bands: {} if bands is None else {

@@ -64,4 +64,12 @@ for log in logs:
 plt.legend()
 plt.xlabel("Time (s)"); plt.ylabel("Ground Speed (m/s)")
 plt.savefig("speed.png")
+
+plt.figure()
+for log in logs:
+    offsets = np.array(log["ownship"]["planoffsets"])
+    plt.plot(log["ownship"]["t"], offsets[:,0], label=log["callsign"])
+plt.legend()
+plt.xlabel("Time (s)"); plt.ylabel("offset (m)")
+plt.savefig("offset.png")
 plt.show()

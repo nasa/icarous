@@ -30,7 +30,7 @@ parser.add_argument("-g", "--geofence", type=str, default='',
                    help='geofence xml input. example: data/geofence2.xml')
 parser.add_argument("-c", "--daaConfig", type=str, default='data/DaidalusQuadConfig.txt',
                    help='specify configuration file if one is required by the DAA module specified by -d/--daaType')
-parser.add_argument("-v", "--verbosity", type=int, choices=[1,2], default=1,
+parser.add_argument("-v", "--verbosity", type=int, choices=[0,1,2], default=1,
                    help='Set print verbosity level')
 parser.add_argument("--realtime", dest="fasttime", action="store_false",
                    help='Run sim in real time')
@@ -49,7 +49,7 @@ if args.cfs:
     args.fasttime = False
 
 # Initialize simulation environment
-sim = SimEnvironment(fasttime=args.fasttime)
+sim = SimEnvironment(fasttime=args.fasttime,verbose=args.verbosity)
 
 # Set the home position for the simulation
 HomePos = GetHomePosition(args.flightplan)
