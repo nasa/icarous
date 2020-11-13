@@ -44,6 +44,24 @@ plt.xlabel("X (m)"); plt.ylabel("Y (m)")
 plt.axis('equal')
 plt.savefig("simplot.png")
 
+fig = plt.figure()
+ax = fig.add_subplot(111,projection='3d')
+for log in logs:
+    pos = np.array(log["ownship"]["positionNED"])
+    plan = np.array(log["ownship"]["localPlans"][0])
+    tcps = plan[:,4:7]
+    tcpValues = plan[:,7:10]
+    if np.sum(tcps) > 0:
+        from AccordUtil import plotTcpPlan
+        n,e,d,ptn,pte,ptd = plotTcpPlan(plan,tcps,tcpValues)
+
+    ax.plot(pos[:, 1], pos[:, 0], pos[:,2],'b')
+    ax.plot(e, n, d,'r')
+plt.legend()
+ax.set_xlabel("X (m)")
+ax.set_ylabel("Y (m)")
+ax.set_zlabel("Z (m)")
+
 plt.figure()
 for log in logs:
     pos = np.array(log["ownship"]["positionNED"])
