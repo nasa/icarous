@@ -88,3 +88,4 @@ CLIMB_RATE_GAIN  0.5
 MAX_CAP          15
 MIN_CAP          1
 YAW_FORWARD      1
+TURNRATE_GAIN    5
