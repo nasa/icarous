@@ -13,7 +13,7 @@ typedef struct{
     double defaultWpSpeed;        /**< Default waypoint to waypoint speed (m/s) */
     double captureRadiusScaling;  /**< Scaling factor to compute capture radius to determine if a wp has been reached */
     double guidanceRadiusScaling; /**< Scaling factor to compute guidance radius used for waypoint navigation */
-    double xtrkDev;               /**< Max deviation from flight plan to use guidance radius navigation method (m)*/
+    double turnRateGain;          /**< Max deviation from flight plan to use guidance radius navigation method (m)*/
     double climbAngle;            /**< Desired angle to climb/descend at (deg) */
     double climbAngleVRange;      /**< Use proportional control when within climbAngleVRange of target altitude (m) */
     double climbAngleHRange;      /**< Use proportional control when within climbAngleHRange of target wp (m) */

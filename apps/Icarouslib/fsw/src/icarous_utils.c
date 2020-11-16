@@ -198,7 +198,6 @@ void PublishParams(param_t *params) {
     localGuidanceParams.defaultWpSpeed = (double) params[i].value;i++;;
     localGuidanceParams.captureRadiusScaling = (double) params[i].value;i++;;
     localGuidanceParams.guidanceRadiusScaling = (double) params[i].value;i++;;
-    localGuidanceParams.xtrkDev = localTrajectoryParams.crossTrackDeviation;
     localGuidanceParams.climbAngle = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleVRange = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleHRange = (double) params[i].value;i++;;
@@ -210,6 +209,7 @@ void PublishParams(param_t *params) {
     localGuidanceParams.minSpeed = (double) params[6].value * 0.5;
     localGuidanceParams.maxSpeed = (double) params[7].value * 0.5;
     localGuidanceParams.yawForward = (bool) params[i].value;i++;;
+    localGuidanceParams.turnRateGain = (bool) params[i].value;
     SendSBMsg(localGuidanceParams);
     #endif
 

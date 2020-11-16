@@ -162,7 +162,6 @@ void GUIDANCE_ProcessPacket(void){
             guidanceAppData.guidance_params.defaultWpSpeed = msg->defaultWpSpeed;
             guidanceAppData.guidance_params.captureRadiusScaling = msg->captureRadiusScaling;
             guidanceAppData.guidance_params.guidanceRadiusScaling = msg->guidanceRadiusScaling;
-            guidanceAppData.guidance_params.xtrkDev = msg->xtrkDev;
             guidanceAppData.guidance_params.climbFpAngle = climbAngle;
             guidanceAppData.guidance_params.climbAngleVRange = msg->climbAngleVRange;
             guidanceAppData.guidance_params.climbAngleHRange = msg->climbAngleHRange;
@@ -174,6 +173,7 @@ void GUIDANCE_ProcessPacket(void){
             guidanceAppData.guidance_params.maxSpeed = msg->maxSpeed;
             guidanceAppData.guidance_params.minSpeed = msg->minSpeed;
             guidanceAppData.guidance_params.yawForward = msg->yawForward;
+            guidanceAppData.guidance_params.turnRateGain = msg->turnRateGain;
             guidSetParams(guidanceAppData.Guidance,&guidanceAppData.guidance_params);
             break;
         }

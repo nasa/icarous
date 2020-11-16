@@ -13,14 +13,14 @@ guidanceTable_t guidance_TblStruct = {
     .defaultWpSpeed = 1.0,
     .captureRadiusScaling = 2,
     .guidanceRadiusScaling = 2,
-    .xtrkDev = 1000,
     .climbFpAngle = 45,
     .climbAngleVRange = 10,
     .climbAngleHRange = 10,
     .climbRateGain = 0.5,
     .maxClimbRate = 5,
     .minClimbRate = -5,
-    .yawForward = false
+    .yawForward = false,
+    .turnRateGain = 5,
 };
 
 

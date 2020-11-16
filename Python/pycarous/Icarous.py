@@ -203,6 +203,7 @@ class Icarous(IcarousInterface):
         guidParams.maxSpeed = params['MAX_GS'] * 0.5
         guidParams.minSpeed = params['MIN_GS'] * 0.5
         guidParams.yawForward = True if params['YAW_FORWARD'] == 1 else False
+        guidParams.turnRateGain = params['TURNRATE_GAIN']
         self.defaultWPSpeed = guidParams.defaultWpSpeed
         self.Guidance.SetGuidanceParams(guidParams)
 

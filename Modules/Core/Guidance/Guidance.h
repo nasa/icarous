@@ -31,7 +31,7 @@ typedef struct{
     double defaultWpSpeed;
     double captureRadiusScaling;
     double guidanceRadiusScaling;
-    double xtrkDev;
+    double turnRateGain;
     double climbFpAngle;
     double climbAngleVRange;
     double climbAngleHRange;

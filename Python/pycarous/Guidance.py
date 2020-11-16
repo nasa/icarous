@@ -28,7 +28,7 @@ class GuidanceParam(Structure):
          ( "defaultWpSpeed",c_double ), \
          ( "captureRadiusScaling",c_double ), \
          ( "guidanceRadiusScaling",c_double ), \
-         ( "xtrkDev",c_double ), \
+         ( "turnRateGain",c_double ), \
          ( "climbFpAngle",c_double ), \
          ( "climbAngleVRange",c_double ), \
          ( "climbAngleHRange",c_double ), \

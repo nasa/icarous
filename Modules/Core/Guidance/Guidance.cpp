@@ -420,7 +420,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
-        double k = 5;
+        double k = params.turnRateGain;
         double addTurn = offset*k;
         if(addTurn > M_PI/4){
             addTurn = M_PI/4;
