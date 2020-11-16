@@ -134,7 +134,7 @@ void GUIDANCE_ProcessPacket(void){
 
         case ICAROUS_STARTMISSION_MID:{
             // This sets the proper times for the plans
-            SetGuidanceMode(guidanceAppData.Guidance,0,"Plan0",0,false);
+            SetGuidanceMode(guidanceAppData.Guidance,0,(char*)"Plan0",0,false);
         }
 
         
