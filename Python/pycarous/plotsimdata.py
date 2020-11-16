@@ -56,9 +56,8 @@ for log in logs:
     if np.sum(tcps) > 0:
         from AccordUtil import plotTcpPlan
         n,e,d,ptn,pte,ptd = plotTcpPlan(plan,tcps,tcpValues)
-
+        ax.plot(e, n, d,'r')
     ax.plot(pos[:, 1], pos[:, 0], pos[:,2],'b')
-    ax.plot(e, n, d,'r')
 plt.legend()
 ax.set_xlabel("X (m)")
 ax.set_ylabel("Y (m)")
