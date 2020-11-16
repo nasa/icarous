@@ -12,6 +12,8 @@ log
 *.so
 *.tbl
 *.bin
+*.png
+*.json
 elf2cfetbl
 #Ignore plexil files
 cmake-build-debug
