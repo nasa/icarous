@@ -1,6 +1,6 @@
 defaults:
   python: True
-  #simtype: "UAM_SPQ"
+  simtype: "UAM_SPQ"
   repair: True
 
 scenarios:
