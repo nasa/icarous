@@ -83,7 +83,8 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         python = v.get("python", False)
         if python:
             os.chdir("../pycarous")
-            ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
+            simtype = v.get("simtype", scenario.get("simtype", "UAM_VTOL"))
+            ic = Icarous(HomePos, simtype=simtype, vehicleID=spacecraft_id,
                          callsign=callsign, verbose=verbose, fasttime=fasttime,
                          daaConfig=daa_file)
         else:
@@ -117,7 +118,8 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
 
         # Input flight plan
         eta = v.get("eta", False)
-        ic.InputFlightplanFromFile(fp_file, eta=eta)
+        repair = v.get("repair", scenario.get("repair", False))
+        ic.InputFlightplanFromFile(fp_file, eta=eta, repair=repair)
 
         # Input geofences
         if v.get("geofence_file"):
