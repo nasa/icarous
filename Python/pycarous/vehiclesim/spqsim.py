@@ -23,17 +23,17 @@ class SixPassengerQuadSim(VehicleSimInterface):
 
         # Define controller gains
         self.gains = SpqGains()
-        self.gains.k_VTAS           = 0.5         # airspeed gain (1/s)
-        self.gains.gLimit_dVTAS     = 0.1         # max horizontal accel (g's)
+        self.gains.k_VTAS           = 1.5         # airspeed gain (1/s)
+        self.gains.gLimit_dVTAS     = 0.5         # max horizontal accel (g's)
         self.gains.k_ROCD           = 2*1.25*0.4  # climbrate gain (2*zeta*wn)
         self.gains.ROCD_max         = 2000        # max climbrate (fpm)
         self.gains.gLimit_dROCD     = 0.15        # max vertical accel (g's)
         self.gains.k_Alt            = 0.4**2*60   # altitude gain (wn^2)
         self.gains.k_deltaPsi       = 0.3         # turn rate gain (1/s)
-        self.gains.dPsi_desired_max = 3           # max turn rate command (deg/s)
-        self.gains.Phi_desired_max  = 30          # max bank angle (deg)
-        self.gains.k_Phi            = 1/1.4       # bank angle feedback gain
-        self.gains.dPhi_max         = 15          # max roll rate (deg/s)
+        self.gains.dPsi_desired_max = 10          # max turn rate command (deg/s)
+        self.gains.Phi_desired_max  = 60          # max bank angle (deg)
+        self.gains.k_Phi            = 2.0         # bank angle feedback gain
+        self.gains.dPhi_max         = 30          # max roll rate (deg/s)
         self.gains.P_MAX            = 2079        # max battery draw (MJ/hr)
         self.gains.usePowerLimitEnforcement = True  # limit accel based on P_MAX
 
