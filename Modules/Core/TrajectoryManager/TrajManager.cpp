@@ -343,7 +343,7 @@ std::vector<double> TrajManager::ComputePlanOffsets(std::string planID,int nextW
 
         double distAB = AB.norm();
         double perpProj = fabs(AC.dot(AB.PerpL().Hat()));
-        double straightProj = AC.dot(AB.Hat()) / distAB;
+        double straightProj = distAB > 0 ? AC.dot(AB.Hat()) / distAB: 1;
 
         double gs = fp->gsIn(nextWP);
         double expectedTimeAtPos = fp->time(nextWP - 1) + (gs > 1e-3 ? (straightProj * distAB) / gs : 0);
