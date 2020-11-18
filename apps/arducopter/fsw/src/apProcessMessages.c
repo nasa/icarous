@@ -1150,7 +1150,35 @@ void ARDUCOPTER_ProcessPacket(void) {
 
 uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
     int count = 0;
+    int speed = 1.0;
     for(int i=0;i<fp->num_waypoints;++i){
+        if(i > 0){
+           double dt = fp->waypoints[i].time - fp->waypoints[i-1].time;
+           double wpA[3] = {fp->waypoints[i-1].latitude,
+                            fp->waypoints[i-1].longitude,
+                            fp->waypoints[i].altitude};
+           double wpB[3] = {fp->waypoints[i].latitude,
+                            fp->waypoints[i].longitude,
+                            fp->waypoints[i].altitude};
+           double dist = ComputeDistance(wpA,wpB);
+           double newSpeed = dist/dt;
+           if (fabs(newSpeed - speed) > 1e-3) {
+               appdataInt.UplinkMissionItems[count].target_system = 1;
+               appdataInt.UplinkMissionItems[count].target_component = 0;
+               appdataInt.UplinkMissionItems[count].seq = (uint16_t)count;
+               appdataInt.UplinkMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+               appdataInt.UplinkMissionItems[count].command = MAV_CMD_DO_CHANGE_SPEED;
+               appdataInt.UplinkMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+               appdataInt.UplinkMissionItems[count].autocontinue = 1;
+               appdataInt.UplinkMissionItems[count].current = 0;
+               appdataInt.UplinkMissionItems[count].param1 = 0;
+               appdataInt.UplinkMissionItems[count].param2 = newSpeed;
+               appdataInt.UplinkMissionItems[count].param4 = 0;
+               appdataInt.waypoint_index[i] = count;
+               speed = newSpeed;
+               count++;
+           }
+        }
         appdataInt.UplinkMissionItems[count].target_system = 1;
         appdataInt.UplinkMissionItems[count].target_component = 0;
         appdataInt.UplinkMissionItems[count].seq = (uint16_t )count;
@@ -1163,6 +1191,7 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
         appdataInt.UplinkMissionItems[count].y = (float)fp->waypoints[i].longitude;
         appdataInt.UplinkMissionItems[count].z = (float)fp->waypoints[i].altitude;
         appdataInt.waypoint_index[i] = count;
+
 
         count++;
     }
