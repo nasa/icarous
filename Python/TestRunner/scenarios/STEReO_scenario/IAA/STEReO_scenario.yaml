@@ -5,7 +5,7 @@ defaults:
 
 scenarios:
 - name: "STEReO"
-  time_limit: 1100
+  time_limit: 1500
   vehicles:
   - name: SR22
     cpu_id: 1
@@ -15,8 +15,8 @@ scenarios:
     daa_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/SR22_N501NA/Icarous_param/DaidalusQuadConfig.txt 
     param_adjustments: {}
     traffic: []
-    python: True
-    sitl: False
+    python: False
+    sitl: True
     
   - name: AltaX
     cpu_id: 2
@@ -26,20 +26,20 @@ scenarios:
     daa_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_X/Icarous_param/DaidalusQuadConfig.txt 
     param_adjustments: {}
     traffic: []
-    delay: 700
-    python: True
-#    sitl: True
+    delay: 200
+    python: False
+    sitl: True
     
-  #- name: Alta8
-  #  cpu_id: 3
-  #  waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/flight_plan/Alta_8pro_iaa_demo.txt
-  #  geofence_file: null
-  #  parameter_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/Icarous_param/Alta_8pro_icarous.parm
-  #  param_adjustments: {}
-  #  traffic: []
-  #  delay: 900
-  #  python: False
-  #  sitl: True
+  - name: Alta8
+    cpu_id: 3
+    waypoint_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/flight_plan/Alta_8pro_iaa_demo.txt
+    geofence_file: null
+    parameter_file: Python/TestRunner/scenarios/STEReO_scenario/IAA/Alta_8pro/Icarous_param/Alta_8pro_icarous.parm
+    param_adjustments: {}
+    traffic: []
+    delay: 400
+    python: False
+    sitl: True
   #  apps: ["Icarouslib","port_lib", "scheduler", "gsInterface",
   #       "cognition", "guidance", "traffic", "trajectory",
   #       "geofence", "safe2ditch", "rotorsim"]
