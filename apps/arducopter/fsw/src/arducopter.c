@@ -140,7 +140,7 @@ void ARDUCOPTER_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataInt.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
+    CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_EXTERNAL_MID,sizeof(missionItemReached_t),TRUE);
     CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
     CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
     CFE_SB_InitMsg(&attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);

@@ -61,6 +61,7 @@ void GUIDANCE_AppInit(void) {
     CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_PARAMETERS_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_EXTERNAL_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
     CFE_TBL_Handle_t tblHandle;
@@ -146,6 +147,18 @@ void GUIDANCE_ProcessPacket(void){
 
         case FREQ_30_WAKEUP_MID:{
             GUIDANCE_Run();
+            break;
+        }
+
+        case ICAROUS_WPREACHED_EXTERNAL_MID:{
+            missionItemReached_t *msg = (missionItemReached_t*)guidanceAppData.guidance_MsgPtr;
+            SetGuidanceMode(guidanceAppData.Guidance,0,"Plan0",msg->reachedwaypoint+1,false);
+            missionItemReached_t output;
+            CFE_SB_InitMsg(&output, ICAROUS_WPREACHED_MID, sizeof(missionItemReached_t), TRUE);
+            output.feedback = true;
+            strcpy(output.planID, msg->planID);
+            output.reachedwaypoint = msg->reachedwaypoint;
+            SendSBMsg(output);
             break;
         }
 
