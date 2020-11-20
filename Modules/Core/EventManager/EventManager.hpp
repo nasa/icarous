@@ -64,7 +64,11 @@ void EventManagement<T>::RunEventMonitors(T* state){
                     auto cmp = [] (EventHandler<T>* h1,EventHandler<T>* h2) {
                         return h1->priority >= h2->priority;
                     };
+                    auto currHandler = activeEventHandlers.front();
                     activeEventHandlers.sort(cmp);
+                    if(currHandler != activeEventHandlers.front()){
+                        currHandler->execState = EventHandler<T>::DONE;
+                    }
                 }
             }
         }
