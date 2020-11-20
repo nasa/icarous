@@ -1,3 +1,5 @@
+#! python3
+
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
 from IcarousRunner import IcarousRunner
