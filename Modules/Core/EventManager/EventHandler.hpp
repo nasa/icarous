@@ -22,8 +22,8 @@ public:
     std::string eventName;
     execState_e execState;
     std::list<EventHandler<T>*> children;
-    unsigned int priority;
-    unsigned int defaultPriority;
+    float priority;
+    float defaultPriority;
 };
 
 template <class T>

@@ -81,7 +81,7 @@ void EventManagement<T>::RunEventHandlers(T* state){
             // if trigger is false, remove handler
             if(events[handler->eventName](state)){
                handler->execState = EventHandler<T>::INITIALIZE;
-               handler->priority = INT_MAX;
+               handler->priority = handler->defaultPriority + 0.5;
                val = handler->RunEvent(state);
             }
         }else{
