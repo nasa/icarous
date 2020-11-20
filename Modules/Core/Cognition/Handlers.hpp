@@ -54,8 +54,8 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
 
         larcfm::Position positionA,positionB;
         larcfm::Velocity velocityA,velocityB;
-        positionA = state->position;
         velocityA = state->velocity;
+        positionA = state->position.linear(velocityA,state->parameters.persistenceTime);
         if(state->parameters.return2NextWP == 0){
             int wpID = state->nextWpId[fp->getID()];
             double gs  = fp->gsIn(wpID);
