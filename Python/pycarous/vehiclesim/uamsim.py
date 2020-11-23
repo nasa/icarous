@@ -43,6 +43,9 @@ class UamVtolSim(VehicleSimInterface):
             vw     = np.array([0.0, 0.0, 0.0])
         self.vw   = vw
 
+        if np.linalg.norm(self.vel0[:-1]) < 1e-2:
+            self.trk = self.U[0]
+
         turnRate = 0 
         if np.fabs(self.trk - self.U[0]) > 1e-1:
             # if current track is different from

@@ -381,7 +381,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
 
     double outputHeading;
     const int nextWP = nextWpId[activePlanId]%currentPlan->size();
-    const double guidance_radius = currentVel.gs()*params.guidanceRadiusScaling;
+    const double guidance_radius = fmax(1,currentVel.gs()*params.guidanceRadiusScaling);
 
     /* Compute target heading */
 
