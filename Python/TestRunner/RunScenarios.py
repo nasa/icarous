@@ -55,7 +55,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
     sim = SimEnvironment(verbose=verbose, fasttime=fasttime,
                          time_limit=sim_time_limit)
     if "merge_fixes" in scenario:
-        sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
+        if scenario['merge_fixes'][0] != '/':
+            sim.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
+        else:
+            sim.InputMergeFixes(scenario["merge_fixes"])
     sim.AddWind(scenario.get("wind", [(0, 0)]))
     sitl_running = False
 
@@ -66,9 +69,15 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
         cpu_id = v.get("cpu_id", len(sim.icInstances) + 1)
         spacecraft_id = cpu_id - 1
         callsign = v.get("name", "vehicle%d" % spacecraft_id)
-        fp_file = os.path.join(icarous_home, v["waypoint_file"])
+        if v['waypoint_file'][0] != '/':
+            fp_file = os.path.join(icarous_home, v["waypoint_file"])
+        else:
+            fp_file = v["waypoint_file"]
         HomePos = GetHomePosition(fp_file)
-        daa_file = os.path.join(icarous_home,v.get("daa_file", default_daa_file))
+        if v.get("daa_file", default_daa_file)[0] != '/':
+            daa_file = os.path.join(icarous_home,v.get("daa_file", default_daa_file))
+        else:
+            daa_file = v.get("daa_file", default_daa_file)
 
         # Initialize Icarous class
         python = v.get("python", False)
@@ -96,7 +105,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
                                apps=apps, sitl=sitl, out=out)
 
         # Set parameters
-        param_file = os.path.join(icarous_home, v["parameter_file"])
+        if v['parameter_file'][0] != '/':
+            param_file = os.path.join(icarous_home, v["parameter_file"])
+        else:
+            param_file = v["parameter_file"]
         params = LoadIcarousParams(param_file)
         if v.get("param_adjustments"):
             params.update(v["param_adjustments"])
@@ -109,7 +121,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
 
         # Input geofences
         if v.get("geofence_file"):
-            gf_file = os.path.join(icarous_home, v["geofence_file"])
+            if v.get('geofence_file')[0] != '/':
+                gf_file = os.path.join(icarous_home, v["geofence_file"])
+            else:
+                gf_file = v["geofence_file"]
             ic.InputGeofence(gf_file)
 
         # Input simulated traffic
