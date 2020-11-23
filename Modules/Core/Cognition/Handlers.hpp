@@ -55,7 +55,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         larcfm::Position positionA,positionB;
         larcfm::Velocity velocityA,velocityB;
         velocityA = state->velocity;
-        positionA = state->position.linear(velocityA,state->parameters.persistenceTime);
+        positionA = state->position;
         if(state->parameters.return2NextWP == 0){
             int wpID = state->nextWpId[fp->getID()];
             double gs  = fp->gsIn(wpID);
@@ -151,6 +151,9 @@ class LandPhaseHandler: public EventHandler<CognitionState_t>{
 }landHandler;
 
 class TrafficConflictHandler: public EventHandler<CognitionState_t>{
+ public:
+    double startTime;
+
     retVal_e Initialize(CognitionState_t* state){
          state->resolutionStartSpeed = state->velocity.gs();
          state->prevResSpeed  = state->resolutionStartSpeed;
@@ -333,11 +336,15 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
         if(conflict){
             return INPROGRESS;
         }else{
+            startTime = state->utcTime;
             return SUCCESS;
         }
     }
 
     retVal_e Terminate(CognitionState_t* state){
+        if(state->utcTime - startTime < state->parameters.persistenceTime){
+            return INPROGRESS;
+        }
         std::string planid = state->activePlan->getID();
         if(state->resType == SPEED_RESOLUTION){
             SetGuidanceSpeedCmd(state,state->activePlan->getID(),state->resolutionStartSpeed);
