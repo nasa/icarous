@@ -127,23 +127,25 @@ class IcarousInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def InputFlightplan(self, fp, eta=False,tcp=False):
+    def InputFlightplan(self, fp, eta=False, repair=False):
         """
         Input a flight plan as a list of waypoints
         :param fp: a list of waypoints [lat, lon, alt, wp_metric]
         :param eta: when True, ICAROUS enforces wp arrival times, wp_metric (s)
                     when False, ICAROUS sets speed to each wp, wp_metric (m/s)
+        :param repair: when True, repair linear flight plan to EUTL format
         """
         pass
 
     @abc.abstractmethod
-    def InputFlightplanFromFile(self, filename, scenarioTime=0, eta=False):
+    def InputFlightplanFromFile(self, filename, eta=False, repair=False):
         """
         Input a flight plan from a MAVProxy formatted text file
         :param filename: path to the flight plan file
         :param scenarioTime: start time of the scenario (s)
         :param eta: when True, ICAROUS enforces wp arrival times, wp_metric (s)
                     when False, ICAROUS sets speed to each wp, wp_metric (m/s)
+        :param repair: when True, repair linear flight plan to EUTL format
         """
         pass
 

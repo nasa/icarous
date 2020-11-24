@@ -130,7 +130,7 @@ class Icarous(IcarousInterface):
         self.flightplan1 = waypoints 
         self.flightplan2 = []
 
-    def InputFlightplanFromFile(self,filename,scenarioTime=0,eta=False,repair=False):
+    def InputFlightplanFromFile(self,filename,eta=False,repair=False):
         fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
         self.InputFlightplan(fp,eta,repair)
 

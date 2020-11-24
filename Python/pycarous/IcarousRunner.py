@@ -116,7 +116,7 @@ class IcarousRunner(IcarousInterface):
             positionNED = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(idx, position, velocity, positionNED)
 
-    def InputFlightplan(self, fp, scenarioTime=0, eta=False):
+    def InputFlightplan(self, fp, eta=False, repair=False):
 
         waypoints = ConstructWaypointsFromList(fp,eta) 
         self.flightplan1 = waypoints 
@@ -130,7 +130,7 @@ class IcarousRunner(IcarousInterface):
         self.gs.send_all_waypoints()
         time.sleep(1)
 
-    def InputFlightplanFromFile(self, filename, scenarioTime=0, eta=False):
+    def InputFlightplanFromFile(self, filename, eta=False, repair=False):
         self.gs.loadWaypoint(filename)
         time.sleep(1)
         fp = GetFlightplan(filename, self.defaultWPSpeed, eta)
