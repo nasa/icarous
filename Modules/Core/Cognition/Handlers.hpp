@@ -163,6 +163,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
          state->preferredSpeed = state->prevResSpeed;
          state->preferredTrack = state->prevResTrack;
          state->preferredAlt   = state->prevResAlt;
+         state->trafficConflictStartTime = state->utcTime;
 
          state->resType = GetResolutionType(state);
          
