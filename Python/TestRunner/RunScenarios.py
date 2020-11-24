@@ -136,7 +136,10 @@ def RunScenario(scenario, verbose=0, fasttime=True, use_python=False,
 
         delay = v.get("delay", 0)
         time_limit = min(sim_time_limit, v.get("time_limit", sim_time_limit))
-        sim.AddIcarousInstance(ic, delay, time_limit)
+        transmitter = v.get("transmitter", "GroundTruth")
+        receiver = v.get("receiver", "GroundTruth")
+        sim.AddIcarousInstance(ic, delay, time_limit,
+                               transmitter=transmitter, receiver=receiver)
 
     # Run the simulation
     sim.RunSimulation()
