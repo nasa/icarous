@@ -13,6 +13,7 @@ from Icarous import Icarous
 from IcarousRunner import IcarousRunner
 from SimEnvironment import SimEnvironment
 from ichelper import (ReadFlightplanFile, LoadIcarousParams, GetHomePosition)
+from AccordInputUtilities import GetScenariosFromAccordInput
 
 
 sim_home = os.getcwd()
@@ -231,10 +232,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load scenarios from file
-    with open(args.scenario, 'r') as f:
-        scenario_data = yaml.load(f, Loader=yaml.FullLoader)
-        scenario_list = scenario_data.get("scenarios", [])
-        defaults = scenario_data.get("defaults", {})
+
+    # If provided file doesn't have the .{yaml,yml} extension
+    # assume the provided file has the accord input format
+    import re
+    match = re.search('.*\.ya?ml',args.scenario)
+    if match is not None:
+        with open(args.scenario, 'r') as f:
+            scenario_data = yaml.load(f, Loader=yaml.FullLoader)
+            scenario_list = scenario_data.get("scenarios", [])
+            defaults = scenario_data.get("defaults", {})
+    else:
+        scenario_data = GetScenariosFromAccordInput(args.scenario,args.output_dir)
+        scenario_list = scenario_data['scenarios']
+        defaults      = {}
+        
     if args.num is not None:
         selected_scenarios = [scenario_list[i] for i in args.num]
         scenario_list = selected_scenarios
