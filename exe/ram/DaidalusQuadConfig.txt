@@ -23,7 +23,7 @@ step_vs = 5.0 [fpm]
 step_alt = 1.0 [ft]
 horizontal_accel = 1.0 [m/s^2]
 vertical_accel = 1.0 [m/s^2]
-turn_rate = 0.0 [deg/s]
+turn_rate = 10.0 [deg/s]
 bank_angle = 0.0 [deg]
 vertical_rate = 0.0 [fpm]
 # Recovery Bands Parameters
