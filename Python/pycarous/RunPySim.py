@@ -46,6 +46,8 @@ parser.add_argument("-r", "--repair", action="store_true",
                    help='Convert the given flightplan into a EUTL plan')
 parser.add_argument("-e", "--eta", action="store_true",
                    help='Enable eta control for waypoint arrivals')
+parser.add_argument("-w", "--wind", nargs=2, type=float, metavar=("SOURCE", "SPEED"), default=[0.0, 0.0],
+                   help='Simulate constant wind: SOURCE (deg, 0=North), SPEED (m/s)')
 parser.add_argument("--daalog",  action="store_true",
                    help='Enable daa logs')
 args = parser.parse_args()
@@ -54,6 +56,7 @@ if args.cfs:
 
 # Initialize simulation environment
 sim = SimEnvironment(fasttime=args.fasttime,verbose=args.verbosity)
+sim.AddWind([args.wind])
 
 # Set the home position for the simulation
 HomePos = GetHomePosition(args.flightplan)
