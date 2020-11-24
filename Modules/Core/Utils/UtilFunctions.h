@@ -12,6 +12,13 @@
 extern "C" {
 #endif
 
+typedef struct{
+   char key[50];
+   char valueString[50];
+   char unitString[10];
+   double value;
+}ParsedParam_t;
+
 double ComputeDistance(double positionA[],double positionB[]);
 double ComputeHeading(double positionA[],double positionB[]);
 void ComputeOffsetPosition(double position[],double track,double dist,double output[]);
@@ -34,6 +41,7 @@ void ManueverToIntercept(double wpA[],double wpB[],double currPosition[],double 
                         double xtrkDevGain,double resolutionSpeed,double allowedDev);
 double GetInterceptHeadingToPlan(double wpA[],double wpB[],double currentPos[]);
 void ComputeWaypointsETA(double scenarioTime,int numWP, double wpSpeed[], waypoint_t wpts[]);
+int ParseParameterFile(char filename[],ParsedParam_t params[]);
 
 #ifdef __cplusplus
 };

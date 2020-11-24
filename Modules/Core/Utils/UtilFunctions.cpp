@@ -12,6 +12,8 @@
 #include <Plan.h>
 #include <TrajGen.h>
 #include <Units.h>
+#include <fstream>
+#include <StateReader.h>
 
 using namespace larcfm;
 
@@ -438,4 +440,28 @@ void GetWaypointFromPlan(const larcfm::Plan* fp,const int id,waypoint_t &wp){
        }else{
            wp.tcp[2] = TCP_NONEv;
        }
+}
+
+int ParseParameterFile(char filename[],ParsedParam_t params[]){
+    std::ifstream in;
+    in.open(filename);
+    if (!in.is_open()){
+        return -1;
+    }
+
+    larcfm::StateReader reader;
+    reader.open(&in);
+    larcfm::ParameterData parameters;
+    reader.updateParameterData(parameters);
+
+    int i = 0;
+    for(auto &key: parameters.getKeyList()){
+        strcpy(params[i].key,key.c_str());
+        strcpy(params[i].valueString,parameters.getString(key).c_str());
+        strcpy(params[i].unitString,parameters.getUnit(key).c_str());
+        params[i].value = parameters.getValue(key);
+        i++;
+    }
+
+    return i;
 }
