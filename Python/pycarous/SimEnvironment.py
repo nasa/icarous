@@ -61,9 +61,9 @@ class SimEnvironment:
         :param delay: Time to delay before starting mission (s)
         :param time_limit: Time limit to fly before shutting vehicle down (s)
         :param transmitter: A Transmitter to send V2V position data,
-        ex: "ADS-B" or "GroundTruth"
+        ex: "ADS-B" or "GroundTruth", or None for no transmitter
         :param receiver: A Receiver to get V2V position data,
-        ex: "ADS-B" or "GroundTruth"
+        ex: "ADS-B" or "GroundTruth", or None for no receiver
         """
         self.icInstances.append(ic)
         self.icStartDelay.append(delay)
@@ -90,7 +90,7 @@ class SimEnvironment:
         :param heading: traffic heading [deg], 0 is North
         :param crate: traffic climbrate [m/s]
         :param transmitter: A Transmitter to send V2V position data,
-        ex: "ADS-B" or "GroundTruth"
+        ex: "ADS-B" or "GroundTruth", or None for no Transmitter
         """
         tx = rng*np.sin(brng*np.pi/180)
         ty = rng*np.cos(brng*np.pi/180)

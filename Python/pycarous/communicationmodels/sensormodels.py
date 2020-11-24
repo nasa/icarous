@@ -20,6 +20,7 @@ class Transmitter:
         self.timeLastTransmit = 0
     """
     Class to represent a transmitter
+    :param id: the id of the transmitter
     :param channel: communications channel to transmit on
     :param sensor_type: name of the sensor
     :param tx_power: transmit power (W)
@@ -58,6 +59,7 @@ class Receiver:
         self.messages = []
     """
     Class to represent a receiver
+    :param id: the id of the receiver
     :param channel: communications channel to receive from
     :param sensor_type: name of the sensor
     :param sensitivity: minimum received power threshold for reception (W)
@@ -81,52 +83,56 @@ class Receiver:
 
 
 class DummyTransmitter(Transmitter):
-    def __init__(self, channel):
-        super().__init__(channel)
+    def __init__(self, id, channel):
+        super().__init__(id, channel)
 
-    def transmit(self, current_time, callsign, tx_pos_gps, data):
+    def transmit(self, current_time, tx_pos_gps, data):
         pass
 
 
 class DummyReceiver(Receiver):
-    def __init__(self, channel):
-        super().__init__(channel)
+    def __init__(self, id, channel):
+        super().__init__(id, channel)
 
     def receive(self, current_time, rx_pos_gps):
         return []
 
 
 class ADSBTransmitter(Transmitter):
-    def __init__(self, channel, tx_power=40, update_interval=1):
-        super().__init__(channel,
-                         sensor_type="ADS-B",
-                         tx_power=tx_power,
-                         freq=978e6,
-                         update_interval=update_interval)
+    def __init__(self, id, channel, tx_power=40, update_interval=1):
+        super().__init__(
+            id, channel,
+            sensor_type="ADS-B",
+            tx_power=tx_power,
+            freq=978e6,
+            update_interval=update_interval)
 
 
 class ADSBReceiver(Receiver):
-    def __init__(self, channel, sensitivity=1e-10):
-        super().__init__(channel,
-                         sensor_type="ADS-B",
-                         sensitivity=sensitivity,
-                         latency=0.5)
+    def __init__(self, id, channel, sensitivity=1e-10):
+        super().__init__(
+            id, channel,
+            sensor_type="ADS-B",
+            sensitivity=sensitivity,
+            latency=0.5)
 
 
 class FLARMTransmitter(Transmitter):
-    def __init__(self, channel):
-        super().__init__(channel,
-                         sensor_type="FLARM",
-                         freq=928e6,
-                         update_interval=1)
+    def __init__(self, id, channel):
+        super().__init__(
+            id, channel,
+            sensor_type="FLARM",
+            freq=928e6,
+            update_interval=1)
 
 
 class FLARMReceiver(Receiver):
-    def __init__(self, channel, sensitivity=1e-10):
-        super().__init__(channel,
-                         sensor_type="FLARM",
-                         sensitivity=sensitivity,
-                         latency=0.5)
+    def __init__(self, id, channel, sensitivity=1e-10):
+        super().__init__(
+            id, channel,
+            sensor_type="FLARM",
+            sensitivity=sensitivity,
+            latency=0.5)
 
 
 TRANSMITTER_TABLE = {
@@ -150,6 +156,7 @@ def get_transmitter(key, id, channel):
     Return the requested transmitter
     :param key: name of transmitter type to return.
     If key is an instance of Transmitter return key
+    :param id: the id of the transmitter
     :param channel: the communication channel this transmitter will use
     """
     if isinstance(key, Transmitter):
@@ -162,6 +169,7 @@ def get_receiver(key, id, channel):
     Return the requested receiver
     :param key: name of receiver type to return.
     If key is an instance of Receiver return key
+    :param id: the id of the receiver
     :param channel: the communication channel this receiver will use
     """
     if isinstance(key, Receiver):
