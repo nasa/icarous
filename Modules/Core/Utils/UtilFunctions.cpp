@@ -13,6 +13,7 @@
 #include <TrajGen.h>
 #include <Units.h>
 #include <fstream>
+#include <cstring>
 #include <StateReader.h>
 
 using namespace larcfm;
@@ -456,9 +457,9 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
 
     int i = 0;
     for(auto &key: parameters.getKeyList()){
-        strcpy(params[i].key,key.c_str());
-        strcpy(params[i].valueString,parameters.getString(key).c_str());
-        strcpy(params[i].unitString,parameters.getUnit(key).c_str());
+        std::strcpy(params[i].key,key.c_str());
+        std::strcpy(params[i].valueString,parameters.getString(key).c_str());
+        std::strcpy(params[i].unitString,parameters.getUnit(key).c_str());
         params[i].value = parameters.getValue(key);
         i++;
     }
