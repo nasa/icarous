@@ -25,63 +25,63 @@ void Cognition::InitializeEventHandlers(){
    eventMng.AddEventHandler("Takeoff",
                             inputPriorities["Takeoff"],
                             TakeoffTrigger,
-                            new TakeoffPhaseHandler);
+                            MAKE_HANDLER(TakeoffPhaseHandler));
 
    eventMng.AddEventHandler("NominalDeparture",
                             inputPriorities["NominalDeparture"],
                             NominalDepartureTrigger,
-                            new EngageNominalPlan);
+                            MAKE_HANDLER(EngageNominalPlan));
 
    eventMng.AddEventHandler("PrimaryPlanComplete",
                              inputPriorities["PrimaryPlanComplete"],
                              PrimaryPlanCompletionTrigger,
-                             new LandPhaseHandler);
+                             MAKE_HANDLER(LandPhaseHandler));
 
    eventMng.AddEventHandler("Merging",
                              inputPriorities["Merging"],
                              MergingActivityTrigger,
-                             new MergingHandler);
+                             MAKE_HANDLER(MergingHandler));
 
    eventMng.AddEventHandler("SecondaryPlanComplete",
                              inputPriorities["SecondaryPlanComplete"],
                              SecondaryPlanCompletionTrigger,
-                             new EngageNominalPlan);
+                             MAKE_HANDLER(EngageNominalPlan));
 
    // Conflict related triggers
    eventMng.AddEventHandler("FenceConflict",
                              inputPriorities["FenceConflict"],
                              FenceConflictTrigger,
-                             new ReturnToNextFeasibleWP);
+                             MAKE_HANDLER(ReturnToNextFeasibleWP));
 
    eventMng.AddEventHandler("TrafficConflict1",
                              inputPriorities["TrafficConflict1"],
                              TrafficConflictVectorResTrigger,
-                             new TrafficConflictHandler);
+                             MAKE_HANDLER(TrafficConflictHandler));
 
    eventMng.AddEventHandler("TrafficConflict2",
                              inputPriorities["TrafficConflict2"],
                              TrafficConflictPathResTrigger,
-                             new ReturnToMission);
+                             MAKE_HANDLER(ReturnToMission));
 
    eventMng.AddEventHandler("FlightPlanDeviation",
                              inputPriorities["FlightPlanDeviation"],
                              FlightPlanDeviationTrigger,
-                             new ReturnToMission);
+                             MAKE_HANDLER(ReturnToMission));
 
    // Ditching related triggers
    eventMng.AddEventHandler("TrafficConflict3",
                              inputPriorities["TrafficConflict3"],
                              TrafficConflictDitchTrigger,
-                             new RequestDitchSite);
+                             MAKE_HANDLER(RequestDitchSite));
 
    eventMng.AddEventHandler("Ditching",
                              inputPriorities["Ditching"],
                              DitchingTrigger,
-                             new ProceedToDitchSite);
+                             MAKE_HANDLER(ProceedToDitchSite));
 
    eventMng.AddEventHandler("TODReached",
                              inputPriorities["TODReached"],
                              DitchSiteTODTrigger,
-                             new ProceedFromTODtoLand);
+                             MAKE_HANDLER(ProceedFromTODtoLand));
 
 }

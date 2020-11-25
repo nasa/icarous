@@ -1,6 +1,7 @@
 #include "EventHandler.hpp"
 #include "Cognition.hpp"
 
+#define MAKE_HANDLER(NAME) std::make_shared<NAME>()
 
 class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
@@ -148,7 +149,7 @@ class LandPhaseHandler: public EventHandler<CognitionState_t>{
        LogMessage(state,"[FLIGHT_PHASES] | LANDING -> IDLE");
        return SUCCESS;
    }
-}landHandler;
+};
 
 class TrafficConflictHandler: public EventHandler<CognitionState_t>{
  public:
@@ -358,7 +359,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
             }
         }else{
-            ExecuteHandler(new ReturnToMission);
+            ExecuteHandler(MAKE_HANDLER(ReturnToMission));
         }
 
         SendStatus(state,(char*)"IC:traffic conflict resolved",6);
@@ -448,7 +449,7 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    }
 
    retVal_e Terminate(CognitionState_t* state){
-       ExecuteHandler(&landHandler);
+       ExecuteHandler(MAKE_HANDLER(LandPhaseHandler));
        return SUCCESS;
    }
 
