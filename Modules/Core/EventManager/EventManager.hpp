@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <climits>
+#include <memory>
 #include <EventHandler.hpp>
 
 template <class T>
@@ -13,7 +14,7 @@ class EventManagement{
 
   public:
      EventManagement(){};
-     void AddEventHandler(std::string eventName,int priority,std::function<bool(T*)> monitorFunc, EventHandler<T>* eventHandler=nullptr);
+     void AddEventHandler(std::string eventName,int priority,std::function<bool(T*)> monitorFunc, std::shared_ptr<EventHandler<T>> eventHandler=nullptr);
      void RunEventMonitors(T*);
      void RunEventHandlers(T*);
      void Run(T*);
@@ -22,12 +23,12 @@ class EventManagement{
 
      // List of monitor functions
      std::map<std::string,std::function<bool(T*)>> events;
-     std::map<std::string,EventHandler<T>*> handlers;
-     std::list<EventHandler<T>*>activeEventHandlers;
+     std::map<std::string,std::shared_ptr<EventHandler<T>>> handlers;
+     std::list<std::shared_ptr<EventHandler<T>>>activeEventHandlers;
 };
 
 template <class T>
-void EventManagement<T>::AddEventHandler(std::string eventName,int priority,std::function<bool(T*)> monitorFunc,EventHandler<T>* eventHandler){
+void EventManagement<T>::AddEventHandler(std::string eventName,int priority,std::function<bool(T*)> monitorFunc,std::shared_ptr<EventHandler<T>> eventHandler){
     events[eventName] = monitorFunc;
     if(eventHandler != nullptr){
         eventHandler->priority = priority;
@@ -47,9 +48,9 @@ void EventManagement<T>::RunEventMonitors(T* state){
             bool avail = false;
             // Check if the event handler for this event is currently being executed
             for(auto &activehdl: activeEventHandlers){
-                EventHandler<T>* hdl = handlers[elem.first];
+                EventHandler<T>* hdl = handlers[elem.first].get();
                 if (hdl != nullptr){
-                    if (activehdl == hdl) {
+                    if (activehdl.get() == hdl) {
                         avail = true;
                         break;
                     }
@@ -61,7 +62,7 @@ void EventManagement<T>::RunEventMonitors(T* state){
                     handlers[elem.first]->eventName = elem.first;
                     handlers[elem.first]->execState = EventHandler<T>::NOOP;
                     activeEventHandlers.push_back(handlers[elem.first]);
-                    auto cmp = [] (EventHandler<T>* h1,EventHandler<T>* h2) {
+                    auto cmp = [] (std::shared_ptr<EventHandler<T>> h1,std::shared_ptr<EventHandler<T>> h2) {
                         return h1->priority >= h2->priority;
                     };
                     auto currHandler = activeEventHandlers.front();
