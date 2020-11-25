@@ -78,7 +78,7 @@ void EventManagement<T>::RunEventMonitors(T* state){
 
 template<class T>
 void EventManagement<T>::RunEventHandlers(T* state){
-    for (auto &handler : activeEventHandlers) {
+    for (auto handler : activeEventHandlers) {
         bool val = true;
         // If this handler is just starting, 
         if(handler->execState == EventHandler<T>::NOOP && handler->eventName != ""){
