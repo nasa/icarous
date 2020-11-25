@@ -1,0 +1,24 @@
+# Wind speed and  direction
+WIND_SPEED = 2
+WING_DIRECTION = 10
+DEFAULT_DAA_CONF = data/DaidalusQuadConfig.txt
+
+# flight plans, aircraft ID, performance of aircraft.
+FP, ac_id, wps, equipped, daa_conf
+A, N1, 3, true, _
+
+# Waypoints.
+WP,     lat,     lon,    alt, speed
+# [none],[deg], [deg], [ft], [knots]
+A1, 37.102177, -76.387207, 0, 0.0
+A2, 37.102177, -76.386207, 50, 5.0
+A3, 37.102177, -76.381207, 50, 5.0
+
+
+FP, ac_id, wps, equipped, daa_conf
+B, N2, 2, false, _
+
+WP,     lat,     lon,    alt, speed
+# [none],[deg], [deg], [ft], [knots]
+B1, 37.102177, -76.384207, 50, 0.0
+B1, 37.102177, -76.388207, 50, 5.0
