@@ -358,9 +358,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
             }
         }else{
-           if(!state->XtrackConflict){
-               SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
-           }
+            ExecuteHandler(new ReturnToMission);
         }
 
         SendStatus(state,(char*)"IC:traffic conflict resolved",6);
