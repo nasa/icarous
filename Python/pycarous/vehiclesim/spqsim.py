@@ -79,7 +79,7 @@ class SixPassengerQuadSim(VehicleSimInterface):
         self.command.GT   = track
 
     def Run(self, windFrom=0, windSpeed=0):
-        self.wind_mps = GetWindComponent(windFrom, windSpeed, NED=False)[0:2]
+        self.wind_mps = GetWindComponent(windFrom, windSpeed, NED=True)[0:2]
         wind_kts = self.wind_mps*1.94384449 # m/s to kts
         last_pos = [self.state.N_pos, self.state.E_pos]
 
