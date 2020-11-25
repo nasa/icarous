@@ -238,7 +238,7 @@ def GetScenariosFromAccordInput(filename,datalocation):
     scenario['vehicles'] = []
     icInputConfig['scenarios'].append(scenario)
     
-    datalocation = cwd + "/" datalocation + '/.%s_%s'%(scenario['name'],date_time)   
+    datalocation = cwd + "/" + datalocation + '/.%s_%s'%(scenario['name'],date_time)   
     os.makedirs(datalocation,exist_ok=True)
     daaFile = ""
     for i in range(numAC):
