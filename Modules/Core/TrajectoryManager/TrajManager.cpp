@@ -157,14 +157,23 @@ int64_t TrajManager::FindDubinsPath(std::string planID){
             obstacleList.push_back(gf.polygon.poly3D(proj));
         }
     }
-    dbPlanner.Reset();
-    dbPlanner.SetBoundary(bbox);
-    dbPlanner.SetObstacles(obstacleList);
-    dbPlanner.SetVehicleInitialConditions(initPosR3,startVel);
-    dbPlanner.SetGoal(gpos,endVel);
-    dbPlanner.SetTraffic(TrafficPos,TrafficVel);
-    dbPlanner.ComputePath(computationTime);
+    bool status = false;
+    double sFac = 1;
+    while (!status) {
+        dbPlanner.Reset();
+        dbPlanner.ShrinkTrafficVolume(sFac);
+        dbPlanner.SetBoundary(bbox);
+        dbPlanner.SetObstacles(obstacleList);
+        dbPlanner.SetVehicleInitialConditions(initPosR3, startVel);
+        dbPlanner.SetGoal(gpos, endVel);
+        dbPlanner.SetTraffic(TrafficPos, TrafficVel);
+        status = dbPlanner.ComputePath(computationTime);
+        sFac *= 0.5;
 
+        if(trafficList.size() == 0){
+            status = true;
+        }
+    }
 
     larcfm::Plan output;
     output.add(startPos,0);

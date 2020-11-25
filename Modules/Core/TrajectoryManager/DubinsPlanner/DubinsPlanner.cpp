@@ -5,10 +5,17 @@
 void DubinsPlanner::SetParameters(DubinsParams_t &prms){
     params = prms;
 }
+
+void DubinsPlanner::ShrinkTrafficVolume(double nfac){
+    params.wellClearDistH *= nfac;
+    params.wellClearDistV *= nfac;
+}
+
 void DubinsPlanner::Reset(){
     trafficPlans.clear();
     trafficPosition.clear();
     trafficVelocity.clear();
+    path.clear();
 }
 
 void DubinsPlanner::SetVehicleInitialConditions(larcfm::Vect3& pos, larcfm::Velocity& vel){
@@ -653,7 +660,6 @@ bool DubinsPlanner::ComputePath(double startTime){
    //bool status = DijkstraSearch(root,goal);
    bool status = AstarSearch(root,goal);
 
-   //bool status = true;
    return status;
 }
 
