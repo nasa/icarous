@@ -20,10 +20,14 @@ before_script:
   - chmod -R 777 /builds/larc-nia-fm/icarous
   - cd /builds/larc-nia-fm/icarous
   - git submodule update --init --force --recursive
+  - git clone git@gitlab.larc.nasa.gov:larc-nia-fm/sirius.git 
   - mkdir -p /builds/larc-nia-fm/icarous/exe/cpu1/cf
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
+  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/Python/pycarous
+  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/sirius/Validator
+  - export ICAROUS_HOME=/builds/larc-nia-fm/icarous
   
 build:
   stage: build
@@ -50,11 +54,11 @@ test:
   script:
     - chmod -R 777 /builds/larc-nia-fm/icarous
     - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
-    - cd Python/TestRunner
-    - su myuser -c 'python3 RunScenarios.py scenarios/test_cases.yaml --test'
+    - cd sirius/Runner
+    - su myuser -c 'python3 RunScenarios.py ../scenarios/CITest/test_cases.yaml --test'
   artifacts:
     when: always
     paths:
-      - Python/TestRunner/sim_output/*
+      - sirius/Runner/sim_output/*
     expire_in: 2 days
 
