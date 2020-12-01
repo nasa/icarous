@@ -20,6 +20,7 @@ private:
     std::list<larcfm::Plan> planList; 
     std::map<std::string,int> nextWpId;                    ///< Map from flight plan id to next waypoint id
     std::string activePlanId;
+    std::string prevPlan;
     larcfm::Plan* currentPlan;
     larcfm::Position currentPos;
     larcfm::Velocity currentVel;

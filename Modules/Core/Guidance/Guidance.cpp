@@ -55,6 +55,7 @@ int Guidance::GetWaypoint(std::string planID,int id, waypoint_t& wp){
 }
 
 void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const double val){
+   prevPlan = planID;
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
    std::string speedChange("PlanSpeedChange");
@@ -98,6 +99,7 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
 void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const double val,const bool updateAll){
    // For altitude changes, create a copy of the original plan
    // and modify altitudes in the copy.
+   prevPlan = planID;
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
@@ -180,7 +182,7 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
    output.nextWP = -1;
    if(currentPlan != nullptr){
         if(activePlanId == "PlanAltChange" || activePlanId == "PlanSpeedChange"){
-            strcpy(output.activePlan,"Plan0");
+            strcpy(output.activePlan,prevPlan.c_str());
         }else{
             strcpy(output.activePlan,activePlanId.c_str());
         }

@@ -38,6 +38,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Execute(CognitionState_t* state){
+       LogMessage(state,"[HANDLER] | Engage nominal plan");
        SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
        return SUCCESS;
     }
@@ -431,6 +432,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
 
 class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
+       LogMessage(state,"[STATUS] | Reached TOD, proceeding to land");
        SetGuidanceP2P(state,state->ditchSite,1.5);
        return SUCCESS;
    }
@@ -449,6 +451,7 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    }
 
    retVal_e Terminate(CognitionState_t* state){
+       LogMessage(state,"[STATUS] | Execute land handler");
        ExecuteHandler(MAKE_HANDLER(LandPhaseHandler));
        return SUCCESS;
    }
