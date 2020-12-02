@@ -135,8 +135,7 @@ class Icarous(IcarousInterface):
         self.InputFlightplan(fp,eta,repair)
 
     def InputGeofence(self,filename):
-        import yaml
-        self.fenceList = yaml.load(open(filename),yaml.Loader)
+        self.fenceList = Getfence(filename)
         for fence in self.fenceList:
             self.Geofence.InputData(fence)
             self.Trajectory.InputGeofenceData(fence)

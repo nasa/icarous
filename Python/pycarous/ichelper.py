@@ -220,30 +220,35 @@ def ConvertToLocalCoordinates(home_pos,pos):
         return [dy*sgnY,dx*sgnX,pos[2]]
 
 def Getfence(filename):
-    '''add geofences from a file'''
-    import xml.etree.ElementTree as ET
-    tree = ET.parse(filename)
-    root = tree.getroot()        
-    fenceList = []    
-    for child in root:
-        id    = int(child.get('id'));
-        type  = int(child.find('type').text);
-        numV  = int(child.find('num_vertices').text);            
-        floor = float(child.find('floor').text);
-        roof  = float(child.find('roof').text);
-        Vertices = [];
-    
-        if(len(child.findall('vertex')) >= numV):        
-            for vertex in child.findall('vertex'):
-                coord = (float(vertex.find('lat').text),
-                         float(vertex.find('lon').text))
-            
-                Vertices.append(coord)
+    import re,yaml
+    match = re.match('.*\.ya?ml',filename)
+    if match is None:
+        '''add geofences from a file'''
+        import xml.etree.ElementTree as ET
+        tree = ET.parse(filename)
+        root = tree.getroot()        
+        fenceList = []    
+        for child in root:
+            id    = int(child.get('id'));
+            type  = child.find('type').text;
+            numV  = int(child.find('num_vertices').text);            
+            floor = float(child.find('floor').text);
+            roof  = float(child.find('roof').text);
+            Vertices = [];
+        
+            if(len(child.findall('vertex')) >= numV):        
+                for vertex in child.findall('vertex'):
+                    coord = (float(vertex.find('lat').text),
+                            float(vertex.find('lon').text))
+                
+                    Vertices.append(coord)
 
-        # Check geofence niceness
-        Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
-                    'roof':roof,'Vertices':Vertices[:numV]}
-        fenceList.append(Geofence)
+            # Check geofence niceness
+            Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
+                        'roof':roof,'vertices':Vertices[:numV]}
+            fenceList.append(Geofence)
+    else:
+        fenceList = yaml.load(open(filename),yaml.Loader)
     return fenceList
 
 def ConstructWaypointsFromList(fp,eta=False):
