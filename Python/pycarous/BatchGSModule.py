@@ -176,9 +176,10 @@ class BatchGSModule():
         '''send fence points from fenceloader'''
         target_system = 2
         target_component = 0
+        numV = len(fence["vertices"])
         self.master.mav.command_long_send(target_system, target_component,
                                           mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE, 0,
-                                          0, fence["id"], fence["type"], fence["numV"],
+                                          0, fence["id"], 0 if fence["type"] == "KEEPIN" else 1, numV,
                                           fence["floor"], fence["roof"], 0)
 
         fence_sent = False
@@ -191,9 +192,9 @@ class BatchGSModule():
 
             if (msg.get_type() == "FENCE_FETCH_POINT"):
                 print("received fetch point")
-                numV = fence["numV"]
-                lat = fence["Vertices"][msg.idx][0]
-                lon = fence["Vertices"][msg.idx][1]
+                numV = len(fence["vertices"])
+                lat = fence["vertices"][msg.idx][0]
+                lon = fence["vertices"][msg.idx][1]
 
                 self.master.mav.fence_point_send(1, 0, msg.idx, numV, lat, lon)
 
@@ -206,7 +207,7 @@ class BatchGSModule():
                     self.Send_fence(fence)
                     fence_sent = True
 
-        points = fence["Vertices"][:]
+        points = fence["vertices"][:]
         points.append(points[0])
         return
 
@@ -217,7 +218,7 @@ class BatchGSModule():
 
         for child in root:
             id = int(child.get('id'))
-            type = int(child.find('type').text)
+            type = child.find('type').text
             numV = int(child.find('num_vertices').text)
             floor = float(child.find('floor').text)
             roof = float(child.find('roof').text)
@@ -231,7 +232,7 @@ class BatchGSModule():
                     Vertices.append(coord)
 
                 Geofence = {'id': id, 'type': type, 'numV': numV, 'floor': floor,
-                            'roof': roof, 'Vertices': Vertices}
+                            'roof': roof, 'vertices': Vertices}
 
                 self.fenceList.append(Geofence)
 

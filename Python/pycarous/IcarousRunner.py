@@ -145,7 +145,7 @@ class IcarousRunner(IcarousInterface):
         for fence in self.fenceList:
             localFence = []
             gf = []
-            for vertex in fence['Vertices']:
+            for vertex in fence['vertices']:
                 localFence.append(self.ConvertToLocalCoordinates([*vertex,0]))
                 gf.append([*vertex,0])
             self.localFences.append(localFence)
