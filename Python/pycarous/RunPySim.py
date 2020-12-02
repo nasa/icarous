@@ -87,7 +87,7 @@ ic.InputFlightplanFromFile(args.flightplan,eta=args.eta,repair=args.repair)
 
 # Input geofences from file
 if args.geofence != '':
-    ic.InputGeofence("data/geofence2.xml")
+    ic.InputGeofence(args.geofence)
 
 # Add icarous instance to sim environment
 sim.AddIcarousInstance(ic,time_limit=args.tlimit)

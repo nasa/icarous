@@ -23,16 +23,17 @@ class GeofenceMonitor():
         self.lib.GeofenceMonitor_SetGeofenceParameters(self.module,_params(*params))
 
     def InputData(self,gf):
-        Vert = (c_double*2)*gf['numV']
+        numV = len(gf['vertices'])
+        Vert = (c_double*2)*numV
         vert = Vert()
-        for i in range(gf['numV']):
-            vert[i][0] = gf['Vertices'][i][0]
-            vert[i][1] = gf['Vertices'][i][1]
+        for i in range(numV):
+            vert[i][0] = gf['vertices'][i][0]
+            vert[i][1] = gf['vertices'][i][1]
 
         self.lib.GeofenceMonitor_InputGeofenceData(self.module,
-                                              c_int(gf['type']),
+                                              c_int(0 if gf['type'] == 'KEEPIN' else 1),
                                               c_int(gf['id']),
-                                              c_int(gf['numV']),
+                                              numV,
                                               c_double(gf['floor']),
                                               c_double(gf['roof']),
                                               vert)

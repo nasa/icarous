@@ -1,7 +1,6 @@
 import math
 import random
 import numpy as np
-import xml.etree.ElementTree as ET
 
 radius_of_earth = 6378100.0
 
@@ -230,6 +229,7 @@ def ConvertToLocalCoordinates(home_pos,pos):
 
 def Getfence(filename):
     '''add geofences from a file'''
+    import xml.etree.ElementTree as ET
     tree = ET.parse(filename)
     root = tree.getroot()        
     fenceList = []    

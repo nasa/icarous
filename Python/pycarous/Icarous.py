@@ -135,7 +135,8 @@ class Icarous(IcarousInterface):
         self.InputFlightplan(fp,eta,repair)
 
     def InputGeofence(self,filename):
-        self.fenceList = Getfence(filename)
+        import yaml
+        self.fenceList = yaml.load(open(filename),yaml.Loader)
         for fence in self.fenceList:
             self.Geofence.InputData(fence)
             self.Trajectory.InputGeofenceData(fence)
@@ -143,7 +144,7 @@ class Icarous(IcarousInterface):
 
             localFence = []
             gf = []
-            for vertex in fence['Vertices']:
+            for vertex in fence['vertices']:
                 localFence.append(self.ConvertToLocalCoordinates([*vertex,0]))
                 gf.append([*vertex,0])
 

@@ -1,0 +1,23 @@
+# Fence ids must be unique.
+# Type can be KEEPIN or KEEPOUT
+# Define floor, ceiling heights (in meters) 
+# Provide lat,lon (in degrees) for all the vertices in a fence
+
+- id: 0
+  type: KEEPIN
+  floor: -10
+  roof: 100
+  vertices:
+  - [37.1019155568,-76.3874832128]
+  - [37.1018933307,-76.3863718062]
+  - [37.1025842477,-76.3863467217]
+  - [37.1025931444,-76.387466495]
+- id: 1
+  type: KEEPOUT
+  floor: -10
+  roof: 100
+  vertices:
+  - [37.1022176897,-76.3868425474]
+  - [37.1022132444,-76.386641992]
+  - [37.1024220748,-76.3866475593]
+  - [37.1024331851,-76.3868676136]
