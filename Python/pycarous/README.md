@@ -17,8 +17,8 @@ Follow the [module instructions](../../Modules/README.md) to compile the core IC
 The `RunPySim.py` script can be used to simulate a scenario. Provide as input the flightplan the unmanned vehicle is required to fly, zero or more Keep-in and/or Keep-out geofence constraints the vehicle should satisfy and zero or more intruders. 
 
 - Input flightplans are provided in the [mavlink format](https://mavlink.io/en/file_formats/#mission_plain_text_file). 
-- Geofences are defined using a simple custom xml schema. Refer to [geofence.xml](data/geofence.xml) for an example. 
-- Intruder initial conditions are defined using a simple text file. See [traffic.txt](data/traffic.txt) for an example.
+- Geofences are defined using a simple yaml file. Refer to [geofence.yaml](data/geofence.yaml) for an example. 
+- Intruder initial conditions are defined using a simple yaml file. See [traffic.yaml](data/traffic.yaml) for an example.
 
 Refer to the help for more information on flags:
 ```

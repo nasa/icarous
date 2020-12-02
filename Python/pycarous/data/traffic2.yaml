@@ -1,2 +1,4 @@
 # id, range [m], bearing [deg], altitude [m], speed [m/s], heading [deg], climb rate [m/s]
-1, 100, 80, 5, 2, 270, 0
+- [1, 100, 80, 5, 2, 270, 0]
+- [2, 210, 85, 5, 2, 270, 0]
+- [3, 259, 86, 5, 2, 270, 0]

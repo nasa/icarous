@@ -191,21 +191,13 @@ def GetHomePosition(filename):
     return [wp[0][0],wp[0][1],0]
 
 def ReadTrafficInput(filename):
+    import yaml
     try:
         f = open(filename,mode='r')
     except (IOError,TypeError):
         print("Failed to open file '%s'" % filename)
         return
-    
-    tfinput = []
-    # Read the comment line
-    line = f.readline()
-    while line != '':
-        line = f.readline()
-        if line != '':
-            lc = line.replace(' ','').split(',')
-            tfinput.append([int(lc[0])] + [float(i) for i in lc[1:]])
-
+    tfinput =  yaml.load(f,yaml.Loader)
     return tfinput
 
 def ConvertToLocalCoordinates(home_pos,pos):
