@@ -36,6 +36,8 @@ parser.add_argument("-v", "--verbosity", type=int, choices=[0,1,2], default=1,
                    help='Set print verbosity level')
 parser.add_argument("--realtime", dest="fasttime", action="store_false",
                    help='Run sim in real time')
+parser.add_argument("--simtype", choices=["UAM_VTOL","UAM_SPQ","UAS_ROTOR"], default="UAM_VTOL",
+                   help='select vehicle simulator')
 parser.add_argument("--fasttime", dest="fasttime", action="store_true",
                    help='Run sim in fast time (not available for cFS simulations)')
 parser.add_argument("--cfs", action="store_true",
@@ -71,7 +73,7 @@ if args.traffic != '':
 if args.cfs:
     ic = IcarousRunner(HomePos, verbose=args.verbosity)
 else:
-    ic = Icarous(HomePos,simtype="UAM_VTOL",monitor=args.daaType,verbose=args.verbosity,
+    ic = Icarous(HomePos,simtype=args.simtype,monitor=args.daaType,verbose=args.verbosity,
                  daaConfig=args.daaConfig, fasttime=args.fasttime)
 
 if args.daalog:
