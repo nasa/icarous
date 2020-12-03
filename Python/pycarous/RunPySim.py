@@ -1,4 +1,4 @@
-#! python3
+#!/usr/bin/env python3
 
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
