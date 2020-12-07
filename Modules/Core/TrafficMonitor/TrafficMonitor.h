@@ -13,7 +13,7 @@ void delDaidalusTrafficMonitor(void * obj);
 void TrafficMonitor_UpdateParameters(void * obj, char * carg2,bool log);
 int TrafficMonitor_InputIntruderData(void * obj, int carg2, char* calls, double *position,double * velocity, double time);
 void TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time);
-void TrafficMonitor_MonitorTraffic(void* obj);
+void TrafficMonitor_MonitorTraffic(void* obj,double* windfrom);
 bool TrafficMonitor_CheckPointFeasibility(void * obj, double * point, double speed);
 void TrafficMonitor_GetTrackBands(void *obj,bands_t*);
 void TrafficMonitor_GetSpeedBands(void *obj,bands_t*);

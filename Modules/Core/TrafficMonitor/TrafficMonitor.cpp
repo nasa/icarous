@@ -29,9 +29,10 @@ void TrafficMonitor_InputOwnshipData(void * obj, double * position, double * vel
     monitor->InputOwnshipData(pos,vel,time);
 }
 
-void TrafficMonitor_MonitorTraffic(void* obj){
+void TrafficMonitor_MonitorTraffic(void* obj,double* windfrom){
+    larcfm::Velocity wind = larcfm::Velocity::makeTrkGsVs(windfrom[0]+180,"degree",windfrom[1],"m/s",0,"m/s");
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
-    monitor->MonitorTraffic();
+    monitor->MonitorTraffic(wind);
 }
 
 bool TrafficMonitor_CheckPointFeasibility(void * obj, double * position,double speed){

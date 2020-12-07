@@ -62,7 +62,7 @@ private:
 public:
 
     DaidalusMonitor(std::string callsign, std::string daaConfig,bool reclog);
-    void MonitorTraffic(void);
+    void MonitorTraffic(larcfm::Velocity windfrom);
     bool CheckPositionFeasibility(const larcfm::Position pos,const double speed);
     void UpdateParameters(std::string daaParameters,bool log);
     int GetTrafficAlerts(int index,std::string& trafficID,int& alertLevel);

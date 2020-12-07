@@ -71,8 +71,8 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
     }
 }
 
-void DaidalusMonitor::MonitorTraffic() {
-
+void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
+    DAA1.setWindVelocityFrom(windfrom);
     int numTraffic = trafficList.size();
     if(numTraffic == 0){
         conflictTrack = false;

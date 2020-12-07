@@ -29,7 +29,7 @@ class TrafficMonitor{
     virtual void InputOwnshipData(const larcfm::Position pos,const larcfm::Velocity vel,double time){
         position = pos; velocity = vel; elapsedTime = time;
     }
-    virtual void MonitorTraffic(void)=0;
+    virtual void MonitorTraffic(larcfm::Velocity windfrom)=0;
     virtual bool CheckPositionFeasibility(const larcfm::Position pos,const double speed) = 0;
     virtual void UpdateParameters(std::string params, bool log) = 0;
     virtual int GetTrafficAlerts(int index,std::string& trafficID,int& alertLevel)=0;
