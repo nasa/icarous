@@ -11,7 +11,7 @@ class TrafficMonitor():
         self.lib.TrafficMonitor_UpdateParameters.argtypes = [c_void_p,c_char_p,c_bool]
         self.lib.TrafficMonitor_InputIntruderData.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
         self.lib.TrafficMonitor_InputOwnshipData.argtypes  = [c_void_p,c_double*3,c_double*3,c_double]
-        self.lib.TrafficMonitor_MonitorTraffic.argtypes = [c_void_p]
+        self.lib.TrafficMonitor_MonitorTraffic.argtypes = [c_void_p,c_double*2]
         self.lib.TrafficMonitor_CheckPointFeasibility.argtypes = [c_void_p,c_double*3,c_double]
         self.lib.TrafficMonitor_CheckPointFeasibility.restype = c_bool
         self.lib.TrafficMonitor_GetTrackBands.argtypes = [c_void_p,POINTER(Bands)]
@@ -50,12 +50,13 @@ class TrafficMonitor():
         callsign = "traffic"+str(index)
         ret.value = self.lib.TrafficMonitor_InputIntruderData(self.obj,_index,c_char_p(callsign.encode('utf-8')),_pos,_vel,_time)
         
-    def monitor_traffic(self,position,velocity,time):
+    def monitor_traffic(self,position,velocity,windFrom,windSpeed,time):
         cpos = c_double*3
         _pos = cpos(position[0],position[1],position[2])
         _vel = cpos(velocity[0],velocity[1],velocity[2])
+        _wind = (c_double*2)(windFrom,windSpeed)
         self.lib.TrafficMonitor_InputOwnshipData(self.obj,_pos,_vel,c_double(time))
-        self.lib.TrafficMonitor_MonitorTraffic(self.obj)
+        self.lib.TrafficMonitor_MonitorTraffic(self.obj,_wind)
 
     def monitor_wp_feasibility(self,wp,speed):
         cpos = c_double*3

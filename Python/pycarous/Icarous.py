@@ -101,6 +101,8 @@ class Icarous(IcarousInterface):
         self.ditch   = False
 
         self.loopcount = 0
+        self.windFrom = 0.0
+        self.windSpeed = 0.0
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
@@ -478,7 +480,7 @@ class Icarous(IcarousInterface):
         self.Cog.InputGeofenceConflictData(gfConflictData)
 
     def RunTrafficMonitor(self):
-        self.tfMonitor.monitor_traffic(self.position,self.trkgsvs,self.currTime)
+        self.tfMonitor.monitor_traffic(self.position,self.trkgsvs,self.windFrom,self.windSpeed,self.currTime)
        
         trkband = self.tfMonitor.GetTrackBands()
         gsband = self.tfMonitor.GetGSBands()
