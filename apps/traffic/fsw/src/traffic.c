@@ -164,9 +164,10 @@ void TRAFFIC_ProcessPacket(void){
 
             if(trafficAppData.numTraffic == 0)
                 break;
-
+            
+            double winds[2] = {0.0,0.0}; // wind from, wind speed
             TrafficMonitor_InputOwnshipData(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time);
-            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor);
+            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,winds);
 
             TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor, &trafficAppData.trackBands);
 
