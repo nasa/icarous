@@ -28,6 +28,18 @@ class VehicleSimInterface(abc.ABC):
         # Current wind speed
         self.vw = np.array([0, 0, 0])
 
+    def SetInitialConditions(self,x=0,y=0,z=0,vx=0,vy=0,vz=0):
+        """
+        Set initial conditions
+        :param x: x position [m] East
+        :param y: y position [m] North
+        :param z: z position [m] Up
+        :param vx: velocity [m/s] east component
+        :param vy: velocity [m/s] north component
+        :param vz: velocity [m/s] down component
+        """
+        pass
+
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         """
         Set position uncertainty

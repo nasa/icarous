@@ -103,6 +103,7 @@ class Icarous(IcarousInterface):
         self.loopcount = 0
         self.windFrom = 0.0
         self.windSpeed = 0.0
+        self.defaultWPSpeed = 1.0
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
@@ -131,6 +132,13 @@ class Icarous(IcarousInterface):
         self.plans.append(waypoints)
         self.flightplan1 = waypoints 
         self.flightplan2 = []
+
+        # Set initial conditions of model based on flightplan waypoints
+        dist  = distance(waypoints[1].latitude,waypoints[1].longitude,waypoints[0].latitude,waypoints[0].longitude)
+        speed = dist/(waypoints[1].time-waypoints[0].time)
+        hdg   = ComputeHeading([waypoints[0].latitude,waypoints[0].longitude,0],[waypoints[1].latitude,waypoints[1].longitude,0])
+        vn,ve,vd = ConvertTrkGsVsToVned(hdg,speed,0)
+        self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
     def InputFlightplanFromFile(self,filename,eta=False,repair=False):
         fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
