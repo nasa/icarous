@@ -5,6 +5,7 @@ from Icarous import Icarous
 from IcarousRunner import IcarousRunner
 from ichelper import GetHomePosition,ReadTrafficInput
 import argparse
+import os
 
 def checkDAAType(value):
     if value.upper() not in ['DAIDALUS','ACAS']:
@@ -56,6 +57,14 @@ args = parser.parse_args()
 if args.cfs:
     args.fasttime = False
 
+# Create log folder for module logs
+try:
+    os.mkdir(os.path.join(os.getcwd(),'log'))
+except FileExistsError:
+    pass
+except:
+    raise
+
 # Initialize simulation environment
 sim = SimEnvironment(fasttime=args.fasttime,verbose=args.verbosity)
 sim.AddWind([args.wind])
@@ -78,7 +87,6 @@ else:
 
 if args.daalog:
     # Dirty hack to silently update the daa logging parameter from commandline
-    import os
     os.system("sed -Ein -e \'s/(LOGDAADATA)(\\ *)([0-1])(\\.0*)/\\1\\21\\4/\' "+args.params)
 
 # Read params from file and input params
