@@ -283,7 +283,7 @@ class IcarousInterface(abc.ABC):
         self.ownshipLog['localFences'] = self.localFences
 
         if logname == "":
-            logname = "simlog-%s.json" % self.callsign
+            logname = "log/simlog-%s.json" % self.callsign
         if self.verbose > 0:
             print("writing log: %s" % logname)
         waypoints = [[wp.time,wp.latitude,wp.longitude,wp.altitude,*wp.tcp,*wp.tcpValue]\
