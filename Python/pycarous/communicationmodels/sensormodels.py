@@ -18,6 +18,8 @@ class Transmitter:
         self.frequencyHz = freq
         self.updateInterval = update_interval
         self.timeLastTransmit = 0
+        self.description = "%s/%.2fW/%.3eHz (transmits every %.2f seconds)" % \
+            (self.sensorType, self.transmitPower, self.frequencyHz, self.updateInterval)
     """
     Class to represent a transmitter
     :param id: the id of the transmitter
@@ -57,6 +59,8 @@ class Receiver:
         self.sensitivity = sensitivity
         self.latency = latency
         self.messages = []
+        self.description = "%s/%.3eW sensitivity (added latency: %.2f seconds)" % \
+            (self.sensorType, self.sensitivity, self.latency)
     """
     Class to represent a receiver
     :param id: the id of the receiver
@@ -85,6 +89,7 @@ class Receiver:
 class DummyTransmitter(Transmitter):
     def __init__(self, id, channel):
         super().__init__(id, channel)
+        self.description = "None"
 
     def transmit(self, current_time, tx_pos_gps, data):
         pass
@@ -93,6 +98,7 @@ class DummyTransmitter(Transmitter):
 class DummyReceiver(Receiver):
     def __init__(self, id, channel):
         super().__init__(id, channel)
+        self.description = "None"
 
     def receive(self, current_time, rx_pos_gps):
         return []
@@ -161,6 +167,8 @@ def get_transmitter(key, id, channel):
     """
     if isinstance(key, Transmitter):
         return key
+    if isinstance(key, dict):
+        return Transmitter(id=id, channel=channel, **key)
     return TRANSMITTER_TABLE[key](id,channel)
 
 
@@ -174,4 +182,6 @@ def get_receiver(key, id, channel):
     """
     if isinstance(key, Receiver):
         return key
+    if isinstance(key, dict):
+        return Receiver(id=id, channel=channel, **key)
     return RECEIVER_TABLE[key](id,channel)

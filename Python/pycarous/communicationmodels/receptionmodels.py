@@ -166,14 +166,14 @@ class DeterministicReception(ReceptionModel):
 
 
 class ConstantReception(ReceptionModel):
-    def __init__(self, rx_rate=1, propagation_model=pm.NoLossPropagation()):
+    def __init__(self, reception_rate=1, propagation_model=pm.NoLossPropagation()):
         super().__init__()
-        self.reception_rate = rx_rate
+        self.reception_rate = reception_rate
         self.model_name = "Constant Reception (P = %.2f)" % self.reception_rate
     """
     An unrealistic reception model where every message has an equal chance of
     being received, regardless of transmitter/receiver positions.
-    :param rx_rate: rate of successful message reception (0 <= rx_rate <= 1)
+    :param reception_rate: rate of successful message reception (0 <= rx_rate <= 1)
     """
 
     def p_reception(self, tx_power, freq, tx_pos_gps,
@@ -210,9 +210,9 @@ class RayleighReception(ReceptionModel):
 
 
 class NakagamiReception(ReceptionModel):
-    def __init__(self, m=3, propagation_model=pm.FreeSpacePropagation()):
+    def __init__(self, nakagami_fade_factor=3, propagation_model=pm.FreeSpacePropagation()):
         super().__init__(propagation_model=propagation_model)
-        self.m = m          # Nakagami fading parameter
+        self.m = nakagami_fade_factor  # Nakagami fading parameter
         pm_name = self.propagation_model.model_name
         self.model_name = "Nakagami Reception (%s, m = %d)" % (pm_name, self.m)
     """

@@ -12,16 +12,11 @@ from communicationmodels import get_transmitter, get_receiver
 
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
-    def __init__(self, propagation_model="NoLoss", reception_model="Perfect",
-                 propagation_params={}, reception_params={}, verbose=1,
-                 fasttime=True, time_limit=None):
+    def __init__(self, verbose=1, fasttime=True, time_limit=None):
         """
-        :param propagation_model: name of signal propagation model
-            ex: "NoLoss", "FreeSpace", "TwoRayGround"
-        :param reception_model: name of V2V reception model,
-            ex: "Perfect", "Deterministic", "Rayleigh", "Nakagami"
-        :param propagation_params: dict of keyword params for propagation model
-        :param reception_params: dict of keyword params for reception model
+        :param verbose: Control amount of printed messages (0 for none, 1+ for more)
+        :param fasttime: When True run in fasttime, otherwise run in real time
+        :param time_limit: Maximum simulation time (in seconds). None for no limit
         """
         self.verbose = verbose
 
@@ -31,17 +26,11 @@ class SimEnvironment:
         self.icTimeLimit = []
         self.tfList = []
 
-        # Communication channel
-        pm = get_propagation_model(propagation_model, propagation_params)
-        reception_params["propagation_model"] = pm
-        rm = get_reception_model(reception_model, reception_params)
-        self.comm_channel = cm.ChannelModel(pm, rm)
-        if verbose > 0:
-            print("Reception model: %s" % rm.model_name)
+        # Set default communication channel
+        self.comm_channel = cm.ChannelModel()
 
         # Simulation environment conditions
         self.wind = [(0, 0)]
-        self.commDelay = 0
         self.mergeFixFile = None
         self.home_gps = [0, 0, 0]
         self.fasttime = fasttime
@@ -52,6 +41,21 @@ class SimEnvironment:
         self.count = 0
         self.current_time = 0
         self.windFrom, self.windSpeed = self.wind[0]
+
+    def SetCommunicationModel(self, propagation_model, reception_model,
+                              propagation_params, reception_params):
+        """
+        :param propagation_model: name of signal propagation model
+            ex: "NoLoss", "FreeSpace", "TwoRayGround"
+        :param reception_model: name of V2V reception model,
+            ex: "Perfect", "Deterministic", "Rayleigh", "Nakagami"
+        :param propagation_params: dict of keyword params for propagation model
+        :param reception_params: dict of keyword params for reception model
+        """
+        pm = get_propagation_model(propagation_model, propagation_params)
+        reception_params["propagation_model"] = pm
+        rm = get_reception_model(reception_model, reception_params)
+        self.comm_channel = cm.ChannelModel(pm, rm)
 
     def AddIcarousInstance(self, ic, delay=0, time_limit=1000,
                            transmitter="GroundTruth", receiver="GroundTruth"):
@@ -76,6 +80,11 @@ class SimEnvironment:
         # Set simulation home position
         if self.home_gps == [0, 0, 0]:
             self.home_gps = ic.home_pos
+
+        if self.verbose > 0:
+            print(ic.callsign)
+            print("\ttransmitter:", ic.transmitter.description)
+            print("\treceiver:", ic.receiver.description)
 
     def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
                    transmitter="GroundTruth"):
@@ -204,6 +213,8 @@ class SimEnvironment:
 
     def RunSimulation(self):
         """ Run simulation until mission complete or time limit reached """
+        if self.verbose > 0:
+            print("Reception model: %s" % self.comm_channel.reception_model.model_name)
         simComplete = False
         if self.mergeFixFile is not None:
             for ic in self.icInstances:

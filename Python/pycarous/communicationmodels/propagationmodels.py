@@ -4,12 +4,14 @@ from communicationmodels import util
 
 
 class PropagationModel:
-    def __init__(self, L=1):
-        self.L = L  # Path loss factor
-        self.model_name = "Constant Propagation (L = %.2f)" % self.L
+    def __init__(self, path_loss_factor=1):
+        self.L = path_loss_factor
+        self.model_name = "Constant Propagation"
+        if path_loss_factor != 1:
+            self.model_name += " (L = %.1f)" % path_loss_factor
     """
     A model to determine path loss for a transmitted signal.
-    :param L: constant factor to reduce transmit power by
+    :param pathLossFactor: constant factor to reduce transmit power by
     (default is 1 = no loss)
     """
 
@@ -72,7 +74,7 @@ class PropagationModel:
 
 class NoLossPropagation(PropagationModel):
     def __init__(self):
-        super().__init__(L=1)
+        super().__init__(path_loss_factor=1)
         self.model_name = "Lossless Propagation"
     """
     An completely unrealistic and simplistic model for path loss that assumes
@@ -81,9 +83,11 @@ class NoLossPropagation(PropagationModel):
 
 
 class FreeSpacePropagation(PropagationModel):
-    def __init__(self, L=1):
-        super().__init__(L=L)
+    def __init__(self, path_loss_factor=1):
+        super().__init__(path_loss_factor=path_loss_factor)
         self.model_name = "Free Space Propagation"
+        if path_loss_factor != 1:
+            self.model_name += " (L = %.1f)" % path_loss_factor
     """
     A model to determine path loss for a transmitted signal using Free Space
     Path Loss equation. Assumes free, open space and isotropic antennae.
@@ -109,9 +113,11 @@ class FreeSpacePropagation(PropagationModel):
 
 
 class TwoRayGroundPropagation(PropagationModel):
-    def __init__(self, L=1):
-        super().__init__(L=L)
+    def __init__(self, path_loss_factor=1):
+        super().__init__(path_loss_factor=path_loss_factor)
         self.model_name = "Two Ray Ground Propagation"
+        if path_loss_factor != 1:
+            self.model_name += " (L = %.1f)" % path_loss_factor
     """
     A model to determine path loss for a transmitted signal using Two Ray
     Ground equation. Assumes free, open space and isotropic antennae. Accounts
