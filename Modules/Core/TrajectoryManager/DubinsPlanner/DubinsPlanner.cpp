@@ -454,6 +454,10 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         // Compute tcps for altitude changes
         tcpData_t finalTCPdata = ComputeAltTcp(tcp[pathType],startVel.gs(),endVel.gs());
 
+        if(finalTCPdata.size() == 4 && (startVel.gs()-endVel.gs()) > 0.1){
+             finalTCPdata = ComputeSpeedTcp(tcp[pathType],startVel.gs(),endVel.gs());
+        } 
+
         // Check for fence conflicts
         bool gfConflict = CheckFenceConflict(finalTCPdata);
 
@@ -505,6 +509,57 @@ bool DubinsPlanner::CheckAltFeasibility(double startZ,double endZ,double dist,do
         return false;
     }
     return true;
+}
+
+tcpData_t DubinsPlanner::ComputeSpeedTcp(tcpData_t &TCPdata,double startgs,double stopgs){
+    larcfm::Vect3 posA = TCPdata[1].first.position().vect3();
+    larcfm::Vect3 posB = TCPdata[2].first.position().vect3();
+    larcfm::Vect3 posC = TCPdata[3].first.position().vect3();
+    larcfm::Vect2 center = TCPdata[2].second.turnCenter().vect2();
+
+    double radius = std::fabs(TCPdata[2].second.getRadiusSigned());
+    double trkAB = (posB - posA).vect2().compassAngle(); 
+    double len = posA.distanceH(posB);
+    double v0 = startgs;
+    double v1 = stopgs;
+    double ax = params.hAccel;
+    double dax = params.hDaccel;
+    double t = 0;
+    double a = 0;
+    double s = 0;
+    if(v1 < v0){
+        a = dax;
+    }else{
+        a = ax;
+    }
+    t = (v1-v0)/a;
+    s = fabs(v0*t + 0.5*a*t*t);
+    double dist = len - s;
+    double tintermediate = TCPdata[1].first.time() + dist/v0;
+    double tdiff = (TCPdata[2].first.time() - (tintermediate + t));
+    TCPdata[2].first = TCPdata[2].first.makeTime(TCPdata[2].first.time() - tdiff);
+    double turnAngle2 = larcfm::Util::turnDelta((posB.vect2()-center).trk(),(posC.vect2()-center).trk(),TCPdata[2].second.turnDir());
+    if (fabs(turnAngle2) > 1e-3) {
+        double turnRate2 = v1 / radius;
+        double turnTime2 = turnAngle2 / turnRate2;
+        TCPdata[3].first = TCPdata[3].first.makeTime(TCPdata[2].first.time() + turnTime2);
+    }
+    if(dist > 0){
+        larcfm::Vect3 pos = posA.linearByDist2D(trkAB, dist);
+        larcfm::NavPoint interim_pt = larcfm::NavPoint(larcfm::Position(pos), tintermediate);
+        larcfm::TcpData bgstcp = larcfm::TcpData().setBGS(a);
+        TCPdata[2].second.setEGS();
+
+        tcpData_t newtcp;
+        newtcp.push_back(TCPdata[0]);
+        newtcp.push_back(TCPdata[1]);
+        newtcp.push_back(std::make_pair(interim_pt, bgstcp));
+        newtcp.push_back(TCPdata[2]);
+        newtcp.push_back(TCPdata[3]);
+        return newtcp;
+    }else{
+        return TCPdata;
+    }
 }
 
 tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double stopgs){
@@ -987,7 +1042,6 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
                 larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(trk1*180/M_PI,"degree",gs1,"m/s",vs1,"m/s"); 
                 double trk3 = std::fmod(larcfm::Util::turnDelta(trk1,trk2,dir),2*M_PI);
                 if(trk3 > M_PI){
-                    std::cout<<"turn delta:"<<trk3<<" ("<<trk3*180/M_PI<<")"<<std::endl;
                     trk3 = trk3/2;
                     larcfm::Vect3 posA = proj.project(newRoute.getPos(iBOT));
                     double turnTime = trk3 / (params.turnRate * M_PI / 180);

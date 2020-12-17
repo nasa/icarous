@@ -405,7 +405,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
         larcfm::Position positionB = state->ditchSite.linearDist2D(trk,state->todAltitude).mkAlt(state->todAltitude);
         double trkGoal = positionA.track(positionB)*180/M_PI;
         larcfm::Velocity velocityA = state->velocity;
-        larcfm::Velocity velocityB = larcfm::Velocity::makeTrkGsVs(trkGoal,"degree",velocityA.gs(),"m/s",0,"m/s");
+        larcfm::Velocity velocityB = larcfm::Velocity::makeTrkGsVs(trkGoal,"degree",3,"m/s",0,"m/s");
         FindNewPath(state,"DitchPath",positionA, velocityA, positionB, velocityB);
         SendStatus(state,(char*)"IC:Computing ditch path",6);
         state->request = REQUEST_PROCESSING;

@@ -120,6 +120,7 @@ private:
     bool GetDubinsParams(node_t* start,node_t* end);
     bool CheckAltFeasibility(double startz,double endz,double dist,double gs1,double gs2);
     tcpData_t ComputeAltTcp(tcpData_t &TCPdata,double startgs,double stopgs);
+    tcpData_t ComputeSpeedTcp(tcpData_t &TCPdata,double startgs,double stopgs);
     bool CheckFenceConflict(tcpData_t trajectory);
     bool CheckTrafficConflict(tcpData_t trajectory);
     bool CheckTrafficConflict(double startTime,larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1,
