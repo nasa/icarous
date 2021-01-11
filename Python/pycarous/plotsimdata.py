@@ -5,6 +5,7 @@ import glob
 import os
 import numpy as np
 from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 import argparse
@@ -25,16 +26,15 @@ logs = []
 for f in files:
     with open(f) as fx:
         log = json.load(fx)
-        log["callsign"] = os.path.basename(f).strip(".json")
-        logs.append(log)
+    logs.append(log)
 os.chdir(output_dir)
 
 
 traffic = False
 plt.figure()
 for log in logs:
-    pos = np.array(log["ownship"]["positionNED"])
-    plan = np.array(log["ownship"]["localPlans"][0])
+    pos = np.array(log["state"]["positionNED"])
+    plan = np.array(log["flightplans_local"][0])
     plt.plot(pos[:, 1], pos[:, 0], label=log["callsign"])
     plt.plot(plan[:, 2], plan[:, 1], '--o')
     if traffic:
@@ -49,8 +49,8 @@ plt.savefig("simplot.png")
 fig = plt.figure()
 ax = fig.add_subplot(111,projection='3d')
 for log in logs:
-    pos = np.array(log["ownship"]["positionNED"])
-    plan = np.array(log["ownship"]["localPlans"][0])
+    pos = np.array(log["state"]["positionNED"])
+    plan = np.array(log["flightplans_local"][0])
     tcps = plan[:,4:7]
     tcpValues = plan[:,7:10]
     if np.sum(tcps) > 0:
@@ -65,29 +65,29 @@ ax.set_zlabel("Z (m)")
 
 plt.figure()
 for log in logs:
-    pos = np.array(log["ownship"]["positionNED"])
-    plt.plot(log["ownship"]["t"], pos[:, 2], label=log["callsign"])
+    pos = np.array(log["state"]["positionNED"])
+    plt.plot(log["state"]["time"], pos[:, 2], label=log["callsign"])
     if traffic:
         for tlog in log["traffic"].values():
             tpos = np.array(tlog["positionNED"])
-            plt.plot(tlog["t"], tpos[:, 2], '.', label="traffic "+log["callsign"])
+            plt.plot(tlog["time"], tpos[:, 2], '.', label="traffic "+log["callsign"])
 plt.legend()
 plt.xlabel("Time (s)"); plt.ylabel("Altitude (m)")
 plt.savefig("alt.png")
 
 plt.figure()
 for log in logs:
-    vel = np.array(log["ownship"]["velocityNED"])
+    vel = np.array(log["state"]["velocityNED"])
     gs = [np.sqrt(vx**2 + vy**2) for vx,vy,vz in vel]
-    plt.plot(log["ownship"]["t"], gs, label=log["callsign"])
+    plt.plot(log["state"]["time"], gs, label=log["callsign"])
 plt.legend()
 plt.xlabel("Time (s)"); plt.ylabel("Ground Speed (m/s)")
 plt.savefig("speed.png")
 
 plt.figure()
 for log in logs:
-    offsets = np.array(log["ownship"]["planoffsets"])
-    plt.plot(log["ownship"]["t"], offsets[:,0], label=log["callsign"])
+    offsets = np.array(log["state"]["planOffsets"])
+    plt.plot(log["state"]["time"], offsets[:,0], label=log["callsign"])
 plt.legend()
 plt.xlabel("Time (s)"); plt.ylabel("offset (m)")
 plt.savefig("offset.png")

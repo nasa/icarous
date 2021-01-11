@@ -62,18 +62,16 @@ class IcarousInterface(abc.ABC):
         self.land = False
 
         # Vehicle logs
-        self.ownshipLog = {"t": [],
+        self.ownshipLog = {"time": [],
                            "position": [],
                            "velocityNED": [],
                            "commandedVelocityNED": [],
                            "positionNED": [],
-                           "planoffsets":[],
+                           "planOffsets":[],
                            "trkbands": [],
                            "gsbands": [],
                            "altbands": [],
-                           "vsbands": [],
-                           "localPlans": [],
-                           "localFences": []}
+                           "vsbands": []}
         self.trafficLog = {}
         self.logRateHz = logRateHz
         self.minLogInterval = 1/self.logRateHz - 0.01
@@ -212,8 +210,8 @@ class IcarousInterface(abc.ABC):
         return local
 
     def RecordOwnship(self):
-        if self.ownshipLog["t"]:
-            last_time = self.ownshipLog["t"][-1]
+        if self.ownshipLog["time"]:
+            last_time = self.ownshipLog["time"][-1]
         else:
             last_time = -1
         if self.currTime - last_time < self.minLogInterval:
@@ -221,12 +219,12 @@ class IcarousInterface(abc.ABC):
         if sum(abs(p) for p in self.position) < 1e-3:
             return
 
-        self.ownshipLog["t"].append(self.currTime)
+        self.ownshipLog["time"].append(self.currTime)
         self.ownshipLog["position"].append(self.position)
         self.ownshipLog["velocityNED"].append(self.velocity)
         self.ownshipLog["positionNED"].append(self.localPos)
         self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
-        self.ownshipLog["planoffsets"].append(self.planoffsets)
+        self.ownshipLog["planOffsets"].append(self.planoffsets)
 
         filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
         getbandlog = lambda bands: {} if bands is None else {
@@ -244,16 +242,16 @@ class IcarousInterface(abc.ABC):
 
     def RecordTraffic(self, traffic_id, position, velocity, localPos):
         if traffic_id not in self.trafficLog:
-            self.trafficLog[traffic_id] = {"t": [],
+            self.trafficLog[traffic_id] = {"time": [],
                                            "position": [],
                                            "velocityNED": [],
                                            "positionNED": []}
             last_time = -1
         else:
-            last_time = self.trafficLog[traffic_id]["t"][-1]
+            last_time = self.trafficLog[traffic_id]["time"][-1]
         if self.currTime - last_time < self.minLogInterval:
             return
-        self.trafficLog[traffic_id]["t"].append(self.currTime)
+        self.trafficLog[traffic_id]["time"].append(self.currTime)
         self.trafficLog[traffic_id]["position"].append(list(position))
         self.trafficLog[traffic_id]["velocityNED"].append(velocity)
         self.trafficLog[traffic_id]["positionNED"].append(localPos)
@@ -278,23 +276,27 @@ class IcarousInterface(abc.ABC):
         Save log data to a json file
         :param logname: name for the log file, default is simlog-[callsign].json
         """
-
-        self.ownshipLog['localPlans'] = self.localPlans
-        self.ownshipLog['localFences'] = self.localFences
-
         if logname == "":
             logname = "log/simlog-%s.json" % self.callsign
         if self.verbose > 0:
             print("writing log: %s" % logname)
+
         waypoints = [[wp.time,wp.latitude,wp.longitude,wp.altitude,*wp.tcp,*wp.tcpValue]\
                       for wp in self.flightplan1]
-        log_data = {"ownship": self.ownshipLog,
+        geofences_local = [fence.copy() for fence in self.fenceList]
+        for fence, vertices in zip(geofences_local, self.localFences):
+            fence["vertices"] = vertices
+
+        log_data = {"state": self.ownshipLog,
+                    "callsign": self.callsign,
                     "traffic": self.trafficLog,
                     "origin": self.home_pos,
-                    "waypoints": waypoints,
+                    "flightplans": [waypoints],
+                    "flightplans_local": self.localPlans,
                     "geofences": self.fenceList,
+                    "geofences_local": geofences_local,
+                    "mergefixes_local": self.localMergeFixes,
                     "parameters": self.params,
-                    "mergefixes": self.localMergeFixes,
                     "sim_type": self.simType}
 
         import json

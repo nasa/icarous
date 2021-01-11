@@ -45,13 +45,13 @@ if __name__ == "__main__":
             data = json.load(fp)
             valid = True
             pb = playback()
-            pb.ownshipLog = data['ownship']
+            pb.ownshipLog = data['state']
             pb.trafficLog = data['traffic']
-            pb.localPlans = pb.ownshipLog['localPlans']
-            pb.localFences = pb.ownshipLog['localFences']
+            pb.localPlans = data['flightplans_local']
+            pb.localFences = [fence["vertices"] for fence in data['geofences_local']]
             pb.params = data['parameters']
             pb.daa_radius = pb.params['DET_1_WCV_DTHR']*0.3048
-            pb.localMergeFixes = data['mergefixes']
+            pb.localMergeFixes = data['mergefixes_local']
             pbs.append(pb)
             _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])
             _xmax = np.max(np.array(pb.ownshipLog['positionNED'])[:,1])
