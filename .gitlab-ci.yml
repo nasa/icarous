@@ -26,8 +26,12 @@ before_script:
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/Python/pycarous
-  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/sirius/Validator
   - export ICAROUS_HOME=/builds/larc-nia-fm/icarous
+  - cd sirius
+  - make pipPkg
+  - make setenv
+  - source setenv.sh
+  - cd /builds/larc-nia-fm/icarous
   
 build:
   stage: build
