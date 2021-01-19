@@ -27,6 +27,7 @@ class AgentAnimation():
         self.status  = {}
         self.filename = filename
         self.speed = playbkspeed
+        self.minlen = 0
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
@@ -35,7 +36,7 @@ class AgentAnimation():
         self.agents.append(agt)
         self.agentNames.append(name)
         self.data[name] = data
-        self.minlen = len(data['positionNED'])
+        self.minlen = max(self.minlen,len(data['positionNED']))
         line, = plt.plot(0,0)
         self.paths[name] = line
         self.agentsRadius[name] = radius
@@ -159,6 +160,8 @@ class AgentAnimation():
         if i < self.minlen-1:
             for j, vehicle in enumerate(self.agents):
                 id = self.agentNames[j]
+                if i >= len(self.data[id]['positionNED']):
+                    continue
                 #vehicle.center = (self.data[id][i][0], self.data[id][i][1])
                 position = (self.data[id]["positionNED"][i][1], self.data[id]["positionNED"][i][0],self.data[id]["positionNED"][i][2])
                 velocity = (self.data[id]["velocityNED"][i][1], self.data[id]["velocityNED"][i][0])
@@ -166,7 +169,6 @@ class AgentAnimation():
                 self.UpdateTriangle(radius,position,velocity,vehicle)
                 self.paths[id].set_xdata(np.array(self.data[id]["positionNED"])[:i,1])
                 self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
-                
                 if "trkbands" in self.data[id].keys():
                     if i < len(self.data[id]["trkbands"]):
                         if self.data[id]["trkbands"][i] != {}:
@@ -183,7 +185,7 @@ class AgentAnimation():
         init = lambda:self.init()
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,
-                                       frames=int(self.minlen/self.speed),
+                                       frames=self.minlen,
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
