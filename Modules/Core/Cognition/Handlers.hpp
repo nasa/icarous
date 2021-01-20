@@ -168,15 +168,20 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
          state->trafficConflictStartTime = state->utcTime;
 
          state->resType = GetResolutionType(state);
-         
-         if(state->resType == SPEED_RESOLUTION){
-            LogMessage(state,"[STATUS] | Resolving conflict with speed resolution");
-         }else if(state->resType == ALTITUDE_RESOLUTION){
-            LogMessage(state,"[STATUS] | Resolving conflict with altitude resolution");
-            LogMessage(state,"[MODE] | Guidance Vector Request");
-         }else if(state->resType == TRACK_RESOLUTION){
-            LogMessage(state,"[STATUS] | Resolving conflict with track resolution");
-            LogMessage(state,"[MODE] | Guidance Vector Request");
+
+         int ind = state->resType;
+         if (state->validResolution[ind]) {
+             if (state->resType == SPEED_RESOLUTION) {
+                 LogMessage(state, "[STATUS] | Resolving conflict with speed resolution");
+             }
+             else if (state->resType == ALTITUDE_RESOLUTION) {
+                 LogMessage(state, "[STATUS] | Resolving conflict with altitude resolution");
+                 LogMessage(state, "[MODE] | Guidance Vector Request");
+             }
+             else if (state->resType == TRACK_RESOLUTION) {
+                 LogMessage(state, "[STATUS] | Resolving conflict with track resolution");
+                 LogMessage(state, "[MODE] | Guidance Vector Request");
+             }
          }
 
          return SUCCESS;
