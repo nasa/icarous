@@ -33,6 +33,10 @@ void Cognition::InitializeState(){
     cogState.allTrafficConflicts[1] = false;
     cogState.allTrafficConflicts[2] = false;
     cogState.allTrafficConflicts[3] = false;
+    cogState.validResolution[0] = false;
+    cogState.validResolution[1] = false;
+    cogState.validResolution[2] = false;
+    cogState.validResolution[3] = false;
     cogState.planProjectedFenceConflict = false;
     cogState.planProjectedTrafficConflict = false;
     cogState.XtrackConflictState = NOOPC;
