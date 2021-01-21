@@ -182,6 +182,8 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                  LogMessage(state, "[STATUS] | Resolving conflict with track resolution");
                  LogMessage(state, "[MODE] | Guidance Vector Request");
              }
+         }else{
+             return RESET;
          }
 
          return SUCCESS;
@@ -191,12 +193,6 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
 
         int resolutionType = state->resType;
       
-        int ind = state->resType;
-        bool val = !state->validResolution[ind];
-        if(val){
-            return RESET;
-        }
-
         // If track, gs and vs are in recovery, don't allow combined resolution
         if (state->recovery[TRACK_RESOLUTION] && 
             state->recovery[SPEED_RESOLUTION] && 
