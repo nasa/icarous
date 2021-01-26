@@ -194,7 +194,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 }
             }else if(msg.mission_type == MAV_MISSION_TYPE_RALLY){
                 ap_stopTimer(&appdataInt.tjtimer);
-                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,0,0,0,
+                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,appdataInt.trajectory.waypoints[msg.seq].tcp[0],appdataInt.trajectory.waypoints[msg.seq].tcpValue[0],0,
                                               appdataInt.trajectory.waypoints[msg.seq].latitude,
                                               appdataInt.trajectory.waypoints[msg.seq].longitude,
                                               appdataInt.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
