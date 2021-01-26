@@ -105,8 +105,11 @@ class Icarous(IcarousInterface):
         self.windSpeed = 0.0
         self.defaultWPSpeed = 1.0
 
-    def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
-        self.ownship.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
+    def SetPosUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
+        self.ownship.SetPosUncertainty(xx, yy, zz, xy, xz, yz, coeff)
+
+    def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
+        self.ownship.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
     def InputTraffic(self,idx,position,velocity):
         if idx is not self.vehicleID and 0 not in position:
@@ -446,6 +449,7 @@ class Icarous(IcarousInterface):
             return
 
         self.Guidance.SetAircraftState(self.position,self.trkgsvs)
+        self.Guidance.SetWindData(self.windFrom,self.windSpeed)
 
         self.Guidance.RunGuidance(self.currTime)
 
@@ -488,7 +492,11 @@ class Icarous(IcarousInterface):
         self.Cog.InputGeofenceConflictData(gfConflictData)
 
     def RunTrafficMonitor(self):
-        self.tfMonitor.monitor_traffic(self.position,self.trkgsvs,self.windFrom,self.windSpeed,self.currTime)
+        sigmaPos = self.ownship.sigma_pos
+        sigmaVel = self.ownship.sigma_vel
+        sumPos = [sigmaPos[0,0],sigmaPos[1,1],sigmaPos[2,2],sigmaPos[0,1],sigmaPos[0,2],sigmaPos[1,2]]
+        sumVel = [sigmaVel[0,0],sigmaVel[1,1],sigmaVel[2,2],sigmaVel[0,1],sigmaVel[0,2],sigmaVel[1,2]]
+        self.tfMonitor.monitor_traffic(self.position,self.trkgsvs,self.windFrom,self.windSpeed,self.currTime,sumPos,sumVel)
        
         trkband = self.tfMonitor.GetTrackBands()
         gsband = self.tfMonitor.GetGSBands()

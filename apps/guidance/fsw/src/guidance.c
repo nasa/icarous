@@ -152,7 +152,7 @@ void GUIDANCE_ProcessPacket(void){
 
         case ICAROUS_WPREACHED_EXTERNAL_MID:{
             missionItemReached_t *msg = (missionItemReached_t*)guidanceAppData.guidance_MsgPtr;
-            SetGuidanceMode(guidanceAppData.Guidance,0,"Plan0",msg->reachedwaypoint+1,false);
+            SetGuidanceMode(guidanceAppData.Guidance,0,(char*)"Plan0",msg->reachedwaypoint+1,false);
             missionItemReached_t output;
             CFE_SB_InitMsg(&output, ICAROUS_WPREACHED_MID, sizeof(missionItemReached_t), TRUE);
             output.feedback = true;

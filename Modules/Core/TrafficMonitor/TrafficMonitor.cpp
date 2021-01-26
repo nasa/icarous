@@ -1,6 +1,5 @@
 #include "TrafficMonitor.h"
 #include "DaidalusMonitor.hpp"
-#include <cstring>
 
 void* newDaidalusTrafficMonitor(char *callsign,char *carg2,bool carg1){
     TrafficMonitor* obj = new DaidalusMonitor(callsign,std::string(carg2),carg1);
@@ -12,21 +11,23 @@ void TrafficMonitor_UpdateParameters(void * obj, char * carg2,bool log){
     monitor->UpdateParameters(std::string(carg2),log);
 }
 
-int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time){
+int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6]){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
     object tf = {std::string(calls),
                  id,
                  time,
                  larcfm::Position::makeLatLonAlt(pos[0],"degree",pos[1],"degree",pos[2],"m"),
                  larcfm::Velocity::makeTrkGsVs(vel[0],"degree",vel[1],"m/s",vel[2],"m/s")};
+    std::memcpy(tf.posSigma,sumPos,sizeof(double)*6);
+    std::memcpy(tf.velSigma,sumVel,sizeof(double)*6);
     return monitor->InputIntruderData(tf); 
 }
 
-void TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time){
+void TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time,double sumPos[6],double sumVel[6]){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
     larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
-    monitor->InputOwnshipData(pos,vel,time);
+    monitor->InputOwnshipData(pos,vel,time,sumPos,sumVel);
 }
 
 void TrafficMonitor_MonitorTraffic(void* obj,double* windfrom){

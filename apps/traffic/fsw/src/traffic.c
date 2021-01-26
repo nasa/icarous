@@ -124,8 +124,10 @@ void TRAFFIC_ProcessPacket(void){
 
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double trkGsVs[3] = {0,0,0};
+            double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
+            double sumVel[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
             ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-            int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
+            int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
             trafficAppData.numTraffic = val;
             break;
         }
@@ -139,7 +141,9 @@ void TRAFFIC_ProcessPacket(void){
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
                 double trkGsVs[3] = {0,0,0};
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-                int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time);
+                double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
+                double sumVel[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
+                int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
                 trafficAppData.numTraffic = val;
             }else{
 
@@ -166,7 +170,9 @@ void TRAFFIC_ProcessPacket(void){
                 break;
             
             double winds[2] = {0.0,0.0}; // wind from, wind speed
-            TrafficMonitor_InputOwnshipData(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time);
+            double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
+            double sumVel[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
+            TrafficMonitor_InputOwnshipData(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time,sumPos,sumVel);
             TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,winds);
 
             TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor, &trafficAppData.trackBands);

@@ -84,14 +84,18 @@ class UamVtolSim(VehicleSimInterface):
         self.vel0[0] = self.gs*np.sin(self.trk * np.pi/180)
         self.vel0[1] = self.gs*np.cos(self.trk * np.pi/180)
         self.vel0[2] = self.vs
-        
-
         n = np.zeros((1, 3))
         if self.noise:
+            n = np.random.multivariate_normal(mean=np.array([0.0, 0.0, 0.0]), cov = self.sigma_vel, size=1)
+            self.vel[0] = self.vcoeff*self.vel[0] + (1 - self.vcoeff)*(self.vel[0] + n[0, 0])
+            self.vel[1] = self.vcoeff*self.vel[1] + (1 - self.vcoeff)*(self.vel[1] + n[0, 1])
+            self.vel[2] = self.vcoeff*self.vel[2] + (1 - self.vcoeff)*(self.vel[2] + n[0, 2])
+
+        if self.noise:
             n = np.random.multivariate_normal(mean=np.array([0.0, 0.0, 0.0]), cov = self.sigma_pos, size=1)
-        self.pos[0] = self.coeff*self.pos[0] + (1 - self.coeff)*(self.pos0[0] + n[0, 0])
-        self.pos[1] = self.coeff*self.pos[1] + (1 - self.coeff)*(self.pos0[1] + n[0, 1])
-        self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0, 2])
+        self.pos[0] = self.pcoeff*self.pos[0] + (1 - self.pcoeff)*(self.pos0[0] + n[0, 0])
+        self.pos[1] = self.pcoeff*self.pos[1] + (1 - self.pcoeff)*(self.pos0[1] + n[0, 1])
+        self.pos[2] = self.pcoeff*self.pos[2] + (1 - self.pcoeff)*(self.pos0[2] + n[0, 2])
 
     def GetOutputPositionNED(self):
         return (self.pos[1], self.pos[0], self.pos[2])

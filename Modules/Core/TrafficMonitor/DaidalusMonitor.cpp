@@ -81,7 +81,21 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
         return;
     }
 
+    // Set sensor uncertainty mitigation parameters
+    auto SetSUM = [&] (int id,double sumPos[6],double sumVel[6]) {
+        double pstdN = sumPos[0]; double pstdE = sumPos[1];
+        double pstdZ = sumPos[2]; double pstdNE = sumPos[3];
+        double vstdN = sumVel[0]; double vstdE = sumVel[1];
+        double vstdZ = sumVel[2]; double vstdNE = sumVel[3];
+        DAA1.setHorizontalPositionUncertainty(0,pstdE,pstdN,pstdNE);
+        DAA1.setVerticalPositionUncertainty(0,pstdZ);
+        DAA1.setHorizontalVelocityUncertainty(0,vstdE,vstdN,vstdNE);
+        DAA1.setVerticalSpeedUncertainty(0,vstdZ);
+    };
+
+
     DAA1.setOwnshipState("Ownship", position, velocity, elapsedTime);
+    SetSUM(0,posSigma,velSigma); 
     int count = 0;
     bool conflict = false;
     std::list<object> staleData;
@@ -90,6 +104,7 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
         // Use traffic only if its data has been updated within the last 10s.
         if(elapsedTime - elem.second.time < 120){
             DAA1.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
+            SetSUM(count,elem.second.posSigma,elem.second.velSigma);
         }else{
             staleData.push_back(elem.second);
         }

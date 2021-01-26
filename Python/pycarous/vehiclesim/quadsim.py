@@ -61,9 +61,9 @@ class QuadSim(VehicleSimInterface):
         y = _pos[1]
         z = _pos[2]
         # Adding noise to the sim output along with a simple smoothing filter
-        outx = self.coeff*self.old_x + (1 - self.coeff)*(x + n[0, 0])
-        outy = self.coeff*self.old_y + (1 - self.coeff)*(y + n[0, 1])
-        outz = self.coeff*self.old_z + (1 - self.coeff)*(z + n[0, 2])
+        outx = self.pcoeff*self.old_x + (1 - self.pcoeff)*(x + n[0, 0])
+        outy = self.pcoeff*self.old_y + (1 - self.pcoeff)*(y + n[0, 1])
+        outz = self.pcoeff*self.old_z + (1 - self.pcoeff)*(z + n[0, 2])
         self.old_x = outx
         self.old_y = outy
         self.old_z = outz

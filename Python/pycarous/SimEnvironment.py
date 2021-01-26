@@ -142,7 +142,7 @@ class SimEnvironment:
         i = min(len(self.wind) - 1, self.count)
         return self.wind[i]
 
-    def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+    def SetPosUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         """
         Set position uncertainty for all existing Icarous and traffic instances
         :param xx: x position variance [m^2] (East/West)
@@ -154,7 +154,21 @@ class SimEnvironment:
         :param coeff: smoothing factor used for uncertainty (default=0.8)
         """
         for vehicle in (self.icInstances + self.tfList):
-            vehicle.SetPosUncertainty(xx, yy, zz, xy, yz, xz, coeff)
+            vehicle.SetPosUncertainty(xx, yy, zz, xy, xz, yz, coeff)
+
+    def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
+        """
+        Set velocity uncertainty for all existing Icarous and traffic instances
+        :param xx: x velocity variance [m^2] (East/West)
+        :param yy: y velocity variance [m^2] (North/South)
+        :param zz: z velocity variance [m^2] (Up/Down)
+        :param xy: xy velocity covariance [m^2]
+        :param yz: yz velocity covariance [m^2]
+        :param xz: xz velocity covariance [m^2]
+        :param coeff: smoothing factor used for uncertainty (default=0.8)
+        """
+        for vehicle in (self.icInstances + self.tfList):
+            vehicle.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
     def InputMergeFixes(self, filename):
         """ Input a file to read merge fixes from """

@@ -5,6 +5,7 @@
 #define TRAFFICMONITOR_H
 
 #include <string>
+#include <cstring>
 #include <Position.h>
 #include <Velocity.h>
 #include <map>
@@ -16,6 +17,8 @@ typedef struct{
     double time;
     larcfm::Position position;
     larcfm::Velocity velocity;
+    double posSigma[6];
+    double velSigma[6];
 }object;
 
 class TrafficMonitor{
@@ -24,10 +27,14 @@ class TrafficMonitor{
     larcfm::Position position;
     larcfm::Velocity velocity;
     double elapsedTime;
+    double posSigma[6];
+    double velSigma[6];
   public:
     virtual int InputIntruderData(const object obj){trafficList[obj.callsign] = obj; return trafficList.size();}
-    virtual void InputOwnshipData(const larcfm::Position pos,const larcfm::Velocity vel,double time){
-        position = pos; velocity = vel; elapsedTime = time;
+    virtual void InputOwnshipData(const larcfm::Position pos,const larcfm::Velocity vel,double time,double sigPos[6],double sigVel[6]){
+        position = pos; velocity = vel; elapsedTime = time; 
+        std::memcpy(posSigma,sigPos,sizeof(double)*6);
+        std::memcpy(velSigma,sigVel,sizeof(double)*6);
     }
     virtual void MonitorTraffic(larcfm::Velocity windfrom)=0;
     virtual bool CheckPositionFeasibility(const larcfm::Position pos,const double speed) = 0;

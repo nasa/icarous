@@ -110,6 +110,10 @@ class IcarousRunner(IcarousInterface):
         # Setting position uncertainty isn't supported for cFS simulations
         pass
 
+    def SetVelUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+        # Setting velocity uncertainty isn't supported for cFS simulations
+        pass
+
     def InputTraffic(self, idx, position, velocity):
         self.gs.Send_traffic(idx, position, velocity)
         if 0 not in position:

@@ -22,8 +22,10 @@ class VehicleSimInterface(abc.ABC):
 
         # Uncertainty settings
         self.noise = False
-        self.coeff = 0.8
-        self.sigma_pos = 0
+        self.pcoeff = 0.8
+        self.vcoeff = 0.8
+        self.sigma_pos = np.zeros((3,3)) 
+        self.sigma_vel = np.zeros((3,3)) 
 
         # Current wind speed
         self.vw = np.array([0, 0, 0])
@@ -40,7 +42,7 @@ class VehicleSimInterface(abc.ABC):
         """
         pass
 
-    def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+    def SetPosUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         """
         Set position uncertainty
         :param xx: x position variance [m^2] (East/West)
@@ -52,8 +54,25 @@ class VehicleSimInterface(abc.ABC):
         :param coeff: smoothing factor used for uncertainty (default=0.8)
         """
         self.noise = True
-        self.coeff = coeff
+        self.pcoeff = coeff
         self.sigma_pos = np.array([[xx, xy, xz],
+                                   [xy, yy, yz],
+                                   [xz, yz, zz]])
+
+    def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
+        """
+        Set velocity uncertainty
+        :param xx: x velocity variance [m^2] (East/West)
+        :param yy: y velocity variance [m^2] (North/South)
+        :param zz: z velocity variance [m^2] (Up/Down)
+        :param xy: xy velocity covariance [m^2]
+        :param yz: yz velocity covariance [m^2]
+        :param xz: xz velocity covariance [m^2]
+        :param coeff: smoothing factor used for uncertainty (default=0.8)
+        """
+        self.noise = True
+        self.vcoeff = coeff
+        self.sigma_vel = np.array([[xx, xy, xz],
                                    [xy, yy, yz],
                                    [xz, yz, zz]])
 

@@ -91,6 +91,20 @@ class IcarousInterface(abc.ABC):
         """
         pass
 
+    @abc.abstractmethod
+    def SetVelUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
+        """
+        Set velocity uncertainty for vehicle model
+        :param xx: x velocity variance [m^2] (East/West)
+        :param yy: y velocity variance [m^2] (North/South)
+        :param zz: z velocity variance [m^2] (Up/Down)
+        :param xy: xy velocity covariance [m^2]
+        :param yz: yz velocity covariance [m^2]
+        :param xz: xz velocity covariance [m^2]
+        :param coeff: smoothing factor used for uncertainty (default=0.8)
+        """
+        pass
+
     def InputWind(self, windFrom, windSpeed):
         """
         Set the current wind vector for vehicle simulation
