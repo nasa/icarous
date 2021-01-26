@@ -23,7 +23,8 @@ private:
     std::string prevPlan;
     larcfm::Plan* currentPlan;
     larcfm::Position currentPos;
-    larcfm::Velocity currentVel;
+    larcfm::Velocity currentAirspeed;
+    larcfm::Velocity currentGroundSpeed;
     larcfm::Velocity outputCmd;
     GuidanceMode mode;
     double currTime;
@@ -34,6 +35,8 @@ private:
     double xtrackDist;
     double prevTrackControllerTime;
     double prevTrackControllerTarget;
+    larcfm::Velocity wind;
+    
     
 
     // Guidance parameters
@@ -72,7 +75,9 @@ public:
 
     void SetGuidanceParams(const GuidanceParams_t* params);
 
-    void SetAircraftState(const larcfm::Position &pos,const larcfm::Velocity &vel);
+    void SetAircraftState(const larcfm::Position &pos,const larcfm::Velocity &groundSpeed);
+
+    void SetWindData(const double windFrom,const double windSpeed);
 
     void InputFlightplanData(const std::string &plan_id,const std::list<waypoint_t> &waypoints,
                             const double initHeading,bool repair,double repairTurnRate);

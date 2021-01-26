@@ -20,9 +20,14 @@ void Guidance::SetGuidanceParams(const GuidanceParams_t* inputParams){
     std::memcpy(&params,inputParams,sizeof(GuidanceParams_t)); 
 }
 
-void Guidance::SetAircraftState(const larcfm::Position &pos,const larcfm::Velocity &vel){
+void Guidance::SetAircraftState(const larcfm::Position &pos,const larcfm::Velocity &groundSpeed){
     currentPos = pos;
-    currentVel = vel;
+    currentGroundSpeed = groundSpeed;
+}
+
+void Guidance::SetWindData(const double windFrom,const double windSpeed){
+    wind = larcfm::Velocity::makeTrkGsVs(windFrom+180,"degree",windSpeed,"m/s",0,"m/s");
+    currentAirspeed = larcfm::Velocity::make(currentGroundSpeed.vect2() - wind.vect2());
 }
 
 void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID,const int nextWP,const bool eta){
@@ -253,32 +258,33 @@ double Guidance::ComputeSpeed(){
    if (!currentPlan->isLinear()){
       etaControl = true;
    }
+   double windSpeed = wind.gs();
    if (!etaControl) {
        refSpeed = currentPlan->gsIn(nextWP);
-       if (refSpeed <= params.minSpeed) {
+       if (refSpeed <= params.minSpeed + windSpeed) {
            double distH = currentPos.distanceH(nextPos.position());
            if(refSpeed < 1e-3 && distH > 3 && params.minSpeed < 1e-3){
               return 1.0;
            }else{
-              return params.minSpeed;
+              return params.minSpeed + windSpeed;
            }
-       } else if (refSpeed >= params.maxSpeed) {
-           return params.maxSpeed;
+       } else if (refSpeed >= params.maxSpeed + windSpeed) {
+           return params.maxSpeed + windSpeed;
        } else {
            return refSpeed;
        }
    } else {
        double distH = currentPos.distanceH(nextPos.position());
        double nextWP_STA = nextPos.time();
-       double maxSpeed = params.maxSpeed;
-       double minSpeed = params.minSpeed;
+       double maxSpeed = params.maxSpeed + windSpeed;
+       double minSpeed = params.minSpeed + windSpeed;
        double newSpeed;
        double timediff = nextWP_STA - currTime;
 
        if (distH > 0.5 && timediff > 0.001){
            newSpeed = distH / timediff;
        }else{
-           newSpeed = currentVel.gs();
+           newSpeed = currentGroundSpeed.gs();
        }
 
        if (newSpeed > maxSpeed) {
@@ -337,7 +343,7 @@ double Guidance::ComputeClimbRate(double speedRef){
 double Guidance::ConstrainTurnRate(double targetHeading,double reqTurnRate){
     // Controller time step
     double dt = currTime - prevTrackControllerTime;
-    double currHeading = currentVel.compassAngle() * RAD2DEG; 
+    double currHeading = currentGroundSpeed.compassAngle() * RAD2DEG; 
 
     // If the controller has been on pause, reset the prev target
     if(dt > 1){
@@ -348,7 +354,7 @@ double Guidance::ConstrainTurnRate(double targetHeading,double reqTurnRate){
 
 
     // Find shortest turn direction
-    double err = larcfm::Util::turnDelta(currentVel.compassAngle(),targetHeading*DEG2RAD,reqTurnRate>0?true:false) * RAD2DEG;
+    double err = larcfm::Util::turnDelta(currentGroundSpeed.compassAngle(),targetHeading*DEG2RAD,reqTurnRate>0?true:false) * RAD2DEG;
     double turnRate;
     //double rightTurn = std::fmod(360 + (targetHeading - currHeading),360);
     //double leftTurn  = std::fmod(360 + (currHeading - targetHeading),360);
@@ -383,7 +389,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
 
     double outputHeading;
     const int nextWP = nextWpId[activePlanId]%currentPlan->size();
-    const double guidance_radius = fmax(1,currentVel.gs()*params.guidanceRadiusScaling);
+    const double guidance_radius = fmax(1,currentGroundSpeed.gs()*params.guidanceRadiusScaling);
 
     /* Compute target heading */
 
@@ -401,7 +407,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         double turnRadius  = currentPlan->getTcpData(id).getRadiusSigned();
         int turnDirection = (turnRadius>0?+1:-1);
         double currentIdealTrk = (trk3 + (turnDirection > 0? M_PI/2: - M_PI/2));
-        double currentActualTrk = currentVel.trk();
+        double currentActualTrk = currentGroundSpeed.trk();
         double turnTargetDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk2,turnDirection),2*M_PI);
         double turnCurrentDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk3,turnDirection),2*M_PI);
         // If the turn still hasn't begun
@@ -443,7 +449,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         larcfm::Position newPositionToTrack;
         double xdev = ComputeOffSetPositionOnPlan(currentPlan, nextWP, guidance_radius, newPositionToTrack);
         double targetHeading = currentPos.track(newPositionToTrack) * RAD2DEG;
-        double currHeading = currentVel.compassAngle() * RAD2DEG;
+        double currHeading = currentGroundSpeed.compassAngle() * RAD2DEG;
         outputHeading = targetHeading;
     }
 
@@ -452,18 +458,18 @@ double Guidance::ComputeNewHeading(double& speedRef){
 
 
 void Guidance::FilterCommand(double &refHeading, double &refSpeed, double &refVS){
-    const double currSpeed = currentVel.norm2D();
+    const double currSpeed = currentGroundSpeed.norm2D();
     double n_gs,n_vs;
     double ownship_gs = currSpeed;
-    double ownship_vd = currentVel.z;
-    double ownship_hd = std::fmod(360 + currentVel.trk()*RAD2DEG,360);
+    double ownship_vd = currentGroundSpeed.z;
+    double ownship_hd = std::fmod(360 + currentGroundSpeed.trk()*RAD2DEG,360);
     double heading_change = std::fmod(360 + (refHeading - ownship_hd),360);
     double gs_range = params.maxSpeed - params.minSpeed;
 
 
     // Reduce speed if approaching final waypoint or if turning sharply
     if (currentPlan->isLinear()) {
-       const double ownship_heading = currentVel.compassAngle();
+       const double ownship_heading = currentGroundSpeed.compassAngle();
        const double turn_angle =larcfm::Util::turnDelta(ownship_heading,refHeading * M_PI/180) * 180/M_PI;
        if (fabs(turn_angle) > 60) {
            const double range = params.maxSpeed - params.minSpeed;
@@ -496,7 +502,7 @@ void Guidance::CheckWaypointArrival(){
     int nextWP = nextWpId[activePlanId];
     const larcfm::Position waypoint = currentPlan->getPos(nextWP);
 
-    const double currSpeed = currentVel.norm2D();
+    const double currSpeed = currentGroundSpeed.norm2D();
     distH2nextWP = currentPos.distanceH(waypoint);
     distV2nextWP = fabs(currentPos.distanceV(waypoint));
 
@@ -508,7 +514,7 @@ void Guidance::CheckWaypointArrival(){
         capture_radius = params.maxCap;
     }
 
-    double approachPrec = GetApproachPrecision(currentPos,currentVel,waypoint);
+    double approachPrec = GetApproachPrecision(currentPos,currentGroundSpeed,waypoint);
     if(currentPlan->isLinear()){
        approachPrec = -1;
     }
@@ -768,4 +774,8 @@ void ChangeWaypointETA(void* obj,char planID[],int wpID,double eta,bool updateAl
 int guidGetWaypoint(void* obj,char planID[],int wpid,waypoint_t* wp){
     std::string planid(planID);
     return ((Guidance*)obj)->GetWaypoint(planid,wpid,*wp);
+}
+
+void guidSetWindData(void* obj,double windFrom,double windSpeed){
+    return ((Guidance*)obj)->SetWindData(windFrom,windSpeed);
 }

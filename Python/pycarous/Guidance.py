@@ -51,6 +51,7 @@ class Guidance():
           self.lib.InitGuidance.restype  = c_void_p
           self.lib.guidSetParams.argtypes = [c_void_p,POINTER(GuidanceParam)]
           self.lib.guidSetAircraftState.argtypes = [c_void_p,c_double*3,c_double*3]
+          self.lib.guidSetWindData.argtypes = [c_void_p,c_double,c_double]
           self.lib.guidInputFlightplanData.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool,c_double]
           self.lib.RunGuidance.argtypes = [c_void_p, c_double]
           self.lib.guidInputVelocityCmd.argtypes = [c_void_p, c_double*3]
@@ -70,6 +71,9 @@ class Guidance():
           cpos = double3(*pos)
           cvel = double3(*vel)
           self.lib.guidSetAircraftState(self.obj,cpos,cvel)
+
+     def SetWindData(self,windFrom,windSpeed):
+          self.lib.guidSetWindData(self.obj,c_double(windFrom),c_double(windSpeed))
 
      def GetKinematicPlan(self,planID):
           id = 0

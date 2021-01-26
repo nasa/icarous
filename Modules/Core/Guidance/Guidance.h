@@ -60,6 +60,7 @@ typedef struct{
 void* InitGuidance(GuidanceParams_t* params);
 void guidSetParams(void* obj,GuidanceParams_t* params);
 void guidSetAircraftState(void* obj, double position[],double velocity[]);
+void guidSetWindData(void* obj,double windFrom,double windSpeed);
 void guidInputFlightplanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize,double repairTurnRate);
 void RunGuidance(void* obj,double time);
 void guidInputVelocityCmd(void* obj,double velcmd[]);
