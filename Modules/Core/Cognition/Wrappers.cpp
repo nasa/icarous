@@ -32,6 +32,12 @@ void InputParameters(void *obj,const cognition_params_t *new_params){
     cog->InputParameters(*new_params);
 }
 
+void InputTrafficAlert(void* obj,const char callsign[20],int alert){
+    Cognition* cog = (Cognition*)obj;
+    cog->InputTrafficAlert(std::string(callsign),alert);
+}
+
+
 void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested){
     Cognition* cog = (Cognition*)obj;
     larcfm::Position ditch_location = larcfm::Position::makeLatLonAlt(ditch_pos[0],"deg",

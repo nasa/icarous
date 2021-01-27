@@ -170,7 +170,8 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
          state->resType = GetResolutionType(state);
 
          int ind = state->resType;
-         if (state->validResolution[ind]) {
+         if (state->validResolution[ind]){
+             
              if (state->resType == SPEED_RESOLUTION) {
                  LogMessage(state, "[STATUS] | Resolving conflict with speed resolution");
              }
@@ -346,6 +347,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Terminate(CognitionState_t* state){
+        
         if(state->utcTime - startTime < state->parameters.persistenceTime){
             return INPROGRESS;
         }
@@ -363,9 +365,15 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
         }else{
             ExecuteHandler(MAKE_HANDLER(ReturnToMission));
         }
-
+        std::string message = " against ";
+        for(auto id: state->conflictTraffics){
+            if (id != ""){
+                message += id + ", ";
+            }
+        }
         SendStatus(state,(char*)"IC:traffic conflict resolved",6);
-        LogMessage(state,"[RESOLVED] | Traffic conflict resolved");
+        LogMessage(state,"[RESOLVED] | Traffic conflict resolved"+message);
+        state->conflictTraffics.clear();
         return SUCCESS;
     }
 

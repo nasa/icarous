@@ -503,6 +503,12 @@ class Icarous(IcarousInterface):
         altband = self.tfMonitor.GetAltBands()
         vsband = self.tfMonitor.GetVSBands()
 
+        alerts = self.tfMonitor.GetAlerts()
+        if len(alerts) > 0:
+            for alert in alerts:
+                if alert[1] > 0:
+                    self.Cog.InputTrafficAlert(alert[0],alert[1])
+
         trkband.time = self.currTime
         gsband.time = self.currTime
         altband.time = self.currTime

@@ -27,6 +27,7 @@ class Cognition():
         self.lib.InputMergeStatus.argtypes = [c_void_p,c_int]
         self.lib.InputTrackBands.argtypes = [c_void_p, POINTER(Bands)]
         self.lib.InputSpeedBands.argtypes = [c_void_p, POINTER(Bands)]
+        self.lib.InputTrafficAlert.argtypes = [c_void_p,c_char_p,c_int]
         self.lib.InputAltBands.argtypes = [c_void_p, POINTER(Bands)]
         self.lib.InputVSBands.argtypes = [c_void_p, POINTER(Bands)]
         self.lib.InputGeofenceConflictData.argtypes = [c_void_p, POINTER(GeofenceConflict)]
@@ -56,6 +57,9 @@ class Cognition():
 
     def InputTrajectoryMonitorData(self,tjMonData):
        self.lib.InputTrajectoryMonitorData(self.obj,byref(tjMonData))
+
+    def InputTrafficAlert(self,callsign,alert):
+       self.lib.InputTrafficAlert(self.obj,c_char_p(callsign.encode('utf-8')),c_int(alert))
 
     def InputParameters(self,cogParam):
         self.lib.InputParameters(self.obj,byref(cogParam))

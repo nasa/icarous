@@ -17,6 +17,7 @@ void InputTrajectoryMonitorData(void* obj,const trajectoryMonitorData_t* tjMonDa
 void InputParameters(void *obj,const cognition_params_t *new_params);
 void InputDitchStatus(void *obj,const double ditch_pos[3],const double todAltitude,const bool ditch_requested);
 void InputMergeStatus(void *obj,const int merge_status);
+void InputTrafficAlert(void *obj,const char callsign[20],const int alertid);
 void InputTrackBands(void *obj,const bands_t *track_bands);
 void InputSpeedBands(void *obj,const bands_t *speed_bands);
 void InputAltBands(void *obj,const bands_t *alt_bands);

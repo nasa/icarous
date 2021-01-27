@@ -337,3 +337,9 @@ std::map<std::string,int> GetPriorityValues(){
 
     return inputPriorities;
 }
+
+void Cognition::InputTrafficAlert(std::string callsign, int alert){
+    if(alert > 0){
+        cogState.conflictTraffics.insert(callsign);
+    }
+}

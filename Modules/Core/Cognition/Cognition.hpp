@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cmath>
 #include <memory>
+#include <set>
 
 
 #include "Interfaces.h"
@@ -163,6 +164,8 @@ typedef struct{
     double resVUp;
     double resVDown;
 
+    std::set<std::string> conflictTraffics;
+
     double prevResSpeed;
     double prevResAlt;
     double prevResTrack;
@@ -261,6 +264,8 @@ class Cognition{
         void StartMission(const int mission_start_value,const double scenario_time);
 
         void Run(double time);
+
+        void InputTrafficAlert(std::string, int alert);
 
         CognitionState_t cogState;
 

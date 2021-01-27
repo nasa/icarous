@@ -18,6 +18,8 @@ class TrafficMonitor():
         self.lib.TrafficMonitor_GetSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetAltBands.argtypes = [c_void_p,POINTER(Bands)]
         self.lib.TrafficMonitor_GetVerticalSpeedBands.argtypes = [c_void_p,POINTER(Bands)]
+        self.lib.TrafficMonitor_GetTrafficAlerts.argtypes = [c_void_p,c_int,c_char_p,POINTER(c_int)]
+        self.lib.TrafficMonitor_GetTrafficAlerts.restype = c_int
         self.obj = self._get_monitor_module_loader(monitor)(callsign,cfgFile,log)
 
     def _get_monitor_module_loader(self,monitorType):
@@ -84,3 +86,22 @@ class TrafficMonitor():
         bands = Bands()
         self.lib.TrafficMonitor_GetVerticalSpeedBands(self.obj,byref(bands))
         return bands
+
+    def GetAlerts(self):
+        trafficid = c_char_p()
+        trafficid.value=b' '*20
+        alert = c_int()
+        size = self.lib.TrafficMonitor_GetTrafficAlerts(self.obj,0,trafficid,byref(alert))
+        alerts = []
+        if size >= 0:
+            alerts.append((trafficid.value.decode('utf-8'),alert.value))
+            for i in range(1,size):
+                trafficid = c_char_p()
+                trafficid.value=b' '*20
+                self.lib.TrafficMonitor_GetTrafficAlerts(self.obj,i,trafficid,byref(alert))
+                alerts.append((trafficid.value.decode('utf-8'),alert.value))
+
+        return alerts
+                
+
+
