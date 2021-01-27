@@ -193,7 +193,7 @@ class AgentAnimation():
         
         # Save animation as a movie
         if self.record:
-            end_time = time.time()
+            self.anim.save(self.filename, writer= "ffmpeg", fps=60)
         else:
             #plt.axis('off')
             plt.show()
