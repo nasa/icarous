@@ -124,11 +124,11 @@ class AgentAnimation():
         plt.plot(fence[:,1],fence[:,0],color)
         plt.scatter(fence[:,1],fence[:,0])
 
-    def UpdateBands(self,position,bands,sectors):
-        numBands = bands["numBands"]
-        low      = bands["low"]
-        high     = bands["high"]
-        btype    = bands["bandTypes"]
+    def UpdateBands(self,position,bands,i,sectors):
+        numBands = bands["numBands"][i]
+        low      = bands["low"][i]
+        high     = bands["high"][i]
+        btype    = bands["bandTypes"][i]
         h2c = lambda x:np.mod((360 -  (x - 90)),360)
         for sector in sectors:
             sector.set_theta1(0)
@@ -157,6 +157,7 @@ class AgentAnimation():
 
     def animate(self,i):
         i = int(i*self.speed)
+        print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
         if i < self.minlen-1:
             for j, vehicle in enumerate(self.agents):
                 id = self.agentNames[j]
@@ -170,9 +171,9 @@ class AgentAnimation():
                 self.paths[id].set_xdata(np.array(self.data[id]["positionNED"])[:i,1])
                 self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
                 if "trkbands" in self.data[id].keys():
-                    if i < len(self.data[id]["trkbands"]):
-                        if self.data[id]["trkbands"][i] != {}:
-                            self.UpdateBands(position,self.data[id]["trkbands"][i],self.bands[id])
+                    if i < len(self.data[id]["trkbands"]["numBands"]):
+                        if self.data[id]["trkbands"]["numBands"][i] != 0:
+                            self.UpdateBands(position,self.data[id]["trkbands"],i,self.bands[id])
                 if id in self.circle.keys():
                     if self.circle[id] is not None:
                         self.circle[id].center = position
@@ -192,7 +193,7 @@ class AgentAnimation():
         
         # Save animation as a movie
         if self.record:
-            self.anim.save(self.filename, writer= "ffmpeg", fps=60)
+            end_time = time.time()
         else:
             #plt.axis('off')
             plt.show()

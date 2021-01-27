@@ -62,16 +62,18 @@ class IcarousInterface(abc.ABC):
         self.land = False
 
         # Vehicle logs
-        self.ownshipLog = {"time": [],
-                           "position": [],
-                           "velocityNED": [],
-                           "commandedVelocityNED": [],
-                           "positionNED": [],
-                           "planOffsets":[],
-                           "trkbands": [],
-                           "gsbands": [],
-                           "altbands": [],
-                           "vsbands": []}
+        self.ownshipLog = {
+            "time": [],
+            "position": [],
+            "velocityNED": [],
+            "commandedVelocityNED": [],
+            "positionNED": [],
+            "planOffsets":[],
+            "trkbands": BandsLog(),
+            "gsbands": BandsLog(),
+            "altbands": BandsLog(),
+            "vsbands": BandsLog(),
+        }
         self.trafficLog = {}
         self.logRateHz = logRateHz
         self.minLogInterval = 1/self.logRateHz - 0.01
@@ -240,19 +242,10 @@ class IcarousInterface(abc.ABC):
         self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
         self.ownshipLog["planOffsets"].append(self.planoffsets)
 
-        filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
-        getbandlog = lambda bands: {} if bands is None else {
-                                                             #"conflict": bands.currentConflictBand,
-                                                             #"resup": filterinfnan(bands.resUp),
-                                                             #"resdown": filterinfnan(bands.resDown),
-                                                             "numBands": bands.numBands,
-                                                             "bandTypes": [bands.type[i] for i in range(20)],
-                                                             "low": [bands.min[i] for i in range(20)],
-                                                             "high": [bands.max[i] for i in range(20)]}
-        self.ownshipLog["trkbands"].append(getbandlog(self.trkband))
-        #self.ownshipLog["gsbands"].append(getbandlog(self.gsband))
-        #self.ownshipLog["altbands"].append(getbandlog(self.altband))
-        #self.ownshipLog["vsbands"].append(getbandlog(self.vsband))
+        record_bands(self.ownshipLog["trkbands"], self.trkband)
+        record_bands(self.ownshipLog["gsbands"], self.gsband)
+        record_bands(self.ownshipLog["altbands"], self.altband)
+        record_bands(self.ownshipLog["vsbands"], self.vsband)
 
     def RecordTraffic(self, traffic_id, position, velocity, localPos):
         if traffic_id not in self.trafficLog:
@@ -316,3 +309,35 @@ class IcarousInterface(abc.ABC):
         import json
         with open(logname, 'w') as f:
             json.dump(log_data, f)
+
+
+def BandsLog():
+    return {
+        "conflict": [],
+        "resUp": [],
+        "resDown": [],
+        "numBands": [],
+        "bandTypes": [],
+        "low": [],
+        "high": [],
+    }
+
+
+def record_bands(log, bands):
+    filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
+    if bands is not None:
+        log["conflict"].append(bands.currentConflictBand)
+        log["resUp"].append(filterinfnan(bands.resUp))
+        log["resDown"].append(filterinfnan(bands.resDown))
+        log["numBands"].append(bands.numBands)
+        log["bandTypes"].append([bands.type[i] for i in range(bands.numBands)])
+        log["low"].append([bands.min[i] for i in range(bands.numBands)])
+        log["high"].append([bands.max[i] for i in range(bands.numBands)])
+    else:
+        log["conflict"].append(0)
+        log["resUp"].append("nan")
+        log["resDown"].append("nan")
+        log["numBands"].append(0)
+        log["bandTypes"].append([])
+        log["low"].append([])
+        log["high"].append([])
