@@ -444,7 +444,7 @@ class BatchGSModule():
         gs = np.sqrt(vn**2 + ve**2) * 1e2
         vs = - vd * 1e2
         self.master.mav.adsb_vehicle_send(0,int(position[0]*1e7),int(position[1]*1e7),0,int(position[2]*1e7),
-          int(trk),int(gs),int(vs),callsign,0,0,0,0)
+          int(trk),int(gs),int(vs),callsign.encode('utf-8'),0,0,0,0)
 
         """
         self.master.mav.command_long_send(
