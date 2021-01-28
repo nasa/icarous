@@ -115,7 +115,7 @@ class IcarousRunner(IcarousInterface):
         pass
 
     def InputTraffic(self, callsign, position, velocity):
-        self.gs.Send_traffic(idx, position, velocity)
+        self.gs.Send_traffic(callsign, position, velocity)
         if 0 not in position:
             positionNED = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, position, velocity, positionNED)
