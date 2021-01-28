@@ -114,11 +114,11 @@ class IcarousRunner(IcarousInterface):
         # Setting velocity uncertainty isn't supported for cFS simulations
         pass
 
-    def InputTraffic(self, idx, position, velocity):
+    def InputTraffic(self, callsign, position, velocity):
         self.gs.Send_traffic(idx, position, velocity)
         if 0 not in position:
             positionNED = self.ConvertToLocalCoordinates(position)
-            self.RecordTraffic(idx, position, velocity, positionNED)
+            self.RecordTraffic(callsign, position, velocity, positionNED)
 
     def InputFlightplan(self, fp, eta=False, repair=False):
 
@@ -216,8 +216,8 @@ class IcarousRunner(IcarousInterface):
             vy = msg.hor_velocity*1e-2*np.sin(np.radians(heading))
             vx = msg.hor_velocity*1e-2*np.cos(np.radians(heading))
             velocityNED = [vx, vy, msg.ver_velocity*1e-2]
-            traffic_id = msg.callsign
-            self.RecordTraffic(traffic_id, position, velocityNED, positionNED)
+            callsign = msg.callsign
+            self.RecordTraffic(callsign, position, velocityNED, positionNED)
         elif msg.get_type() == "STATUSTEXT":
             print("%s : %s" % (self.callsign, msg.text))
             if "Landing" in msg.text:

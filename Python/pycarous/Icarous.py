@@ -111,13 +111,13 @@ class Icarous(IcarousInterface):
     def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         self.ownship.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
-    def InputTraffic(self,idx,position,velocity):
-        if idx is not self.vehicleID and 0 not in position:
+    def InputTraffic(self,callsign,position,velocity):
+        if callsign != self.callsign and 0 not in position:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
-            self.tfMonitor.input_traffic(idx,position,trkgsvs,self.currTime)
-            self.Trajectory.InputTrafficData(idx,position,trkgsvs,self.currTime)
+            self.tfMonitor.input_traffic(callsign,position,trkgsvs,self.currTime)
+            self.Trajectory.InputTrafficData(callsign,position,trkgsvs,self.currTime)
             localPos = self.ConvertToLocalCoordinates(position)
-            self.RecordTraffic(idx, position, velocity, localPos)
+            self.RecordTraffic(callsign, position, velocity, localPos)
 
     def InputFlightplan(self,fp,eta=False,repair=False):
         

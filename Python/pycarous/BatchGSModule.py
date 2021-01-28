@@ -428,14 +428,25 @@ class BatchGSModule():
                    self.traffic_list[i].vy0]
             self.Send_traffic(i, pos, vel)
 
-    def Send_traffic(self, idx, position, velocity):
+    def Send_traffic(self, callsign, position, velocity):
         '''
         Send traffic position updates to ICAROUS
         Input traffic surveillance data to ICAROUS
-        :param idx: ID of the traffic vehicle
+        :param callsign: callsign of the traffic vehicle
         :param position: traffic position [lat, lon, alt] (deg, deg, m)
         :param velocity: traffic velocity [vn, ve, vd] (m/s, m/s, m/s)
         '''
+        vn = velocity[0]
+        ve = velocity[1]
+        vd = velocity[2]
+        angle = 360 + np.arctan2(ve,vn) * 180/np.pi
+        trk = np.fmod(angle,360) * 1e2
+        gs = np.sqrt(vn**2 + ve**2) * 1e2
+        vs = - vd * 1e2
+        self.master.mav.adsb_vehicle_send(0,position[0]*1e7,position[1]*1e7,0,position[2]*1e7,
+          trk,gs,vs,callsign,0,0,0,0)
+
+        """
         self.master.mav.command_long_send(
             self.target_system,    # target_system
             self.target_component, # target_component
@@ -448,3 +459,4 @@ class BatchGSModule():
             position[0], # param5 (lat)
             position[1], # param6 (lon)
             position[2]) # param7 (alt)
+        """

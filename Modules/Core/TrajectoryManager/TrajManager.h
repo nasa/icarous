@@ -14,7 +14,7 @@ int TrajManager_GetTotalWaypoints(void * obj, char * planid);
 int TrajManager_GetWaypoint(void * obj, char * planid, int id,  waypoint_t * wp);
 void TrajManager_ClearAllPlans(void * obj);
 void TrajManager_InputGeofenceData(void * obj,int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
-int TrajManager_InputTraffic(void* obj,int id, double *position, double *velocity,double time);
+int TrajManager_InputTraffic(void* obj,char* callsign, double *position, double *velocity,double time);
 void TrajManager_InputFlightPlan(void* obj, char planID[],waypoint_t wpts[],int totalwp,
                                  double initHeading,bool kinematize,double repairTurnRate);
 void TrajManager_CombinePlan(void* obj,char planID_A[],char planID_B[],int index);

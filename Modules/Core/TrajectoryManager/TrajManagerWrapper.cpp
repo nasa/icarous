@@ -48,11 +48,11 @@ void TrajManager_InputGeofenceData(void * obj,int type,int index, int totalVerti
 
 }
 
-int TrajManager_InputTraffic(void* obj,int id, double *position, double *velocity,double time){
+int TrajManager_InputTraffic(void* obj,char* callsign, double *position, double *velocity,double time){
    TrajManager* pp = (TrajManager*)obj;
    larcfm::Position pos = larcfm::Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
    larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
-   return pp->InputTraffic(id, pos, vel,time);
+   return pp->InputTraffic(std::string(callsign), pos, vel,time);
 }
 
 

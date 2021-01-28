@@ -52,11 +52,10 @@ void TrajManager::ClearFences() {
     fenceList.clear();
 }
 
-int TrajManager::InputTraffic(int id, larcfm::Position &position, larcfm::Velocity &velocity,double time) {
+int TrajManager::InputTraffic(std::string callsign, larcfm::Position &position, larcfm::Velocity &velocity,double time) {
  
-    std::string tfprefix("traffic");
-    pObject obj = {.callsign = tfprefix + std::to_string(id),
-                   .id = id,
+    pObject obj = {.callsign = callsign, 
+                   .id = 0,
                    .time = time,
                    .position = position,
                    .velocity = velocity};

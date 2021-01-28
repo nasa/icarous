@@ -36,7 +36,7 @@ class Trajectory():
         self.lib.TrajManager_GetWaypoint.restype = c_int
         self.lib.TrajManager_SetPlanOffset.argtypes = [c_void_p,c_char_p,c_int,c_double]
         self.lib.TrajManager_InputGeofenceData.argtypes = [c_void_p,c_int,c_int,c_int,c_double,c_double,POINTER(c_double*2)]
-        self.lib.TrajManager_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3,c_double]
+        self.lib.TrajManager_InputTraffic.argtypes = [c_void_p,c_char_p,c_double*3,c_double*3,c_double]
         self.lib.TrajManager_InputTraffic.restype = c_int
         self.lib.TrajManager_InputFlightPlan.argtypes = [c_void_p,c_char_p,Waypoint*50,c_int,c_double,c_bool,c_double]
         self.lib.TrajManager_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
@@ -112,13 +112,12 @@ class Trajectory():
                                               vert)
 
 
-    def InputTrafficData(self,index,position,velocity,time):
+    def InputTrafficData(self,callsign,position,velocity,time):
         cpos = c_double*3
         cvel = c_double*3
         _pos = cpos(position[0],position[1],position[2])
         _vel = cvel(velocity[0],velocity[1],velocity[2])
-        _index = c_int(index)
-        return self.lib.TrajManager_InputTraffic(self.module,_index,_pos,_vel,c_double(time))
+        return self.lib.TrajManager_InputTraffic(self.module,c_char_p(callsign.encode('utf-8')),_pos,_vel,c_double(time))
 
     def ComputeXtrackDistance(self,wpA,wpB,position):
         cpos = c_double*3

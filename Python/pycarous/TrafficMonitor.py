@@ -41,15 +41,14 @@ class TrafficMonitor():
     def SetParameters(self,params,log):
         self.lib.TrafficMonitor_UpdateParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
 
-    def input_traffic(self,index,position,velocity,time,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):
+    def input_traffic(self,callsign,position,velocity,time,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):
         cpos = c_double*3
         cvel = c_double*3
         _pos = cpos(position[0],position[1],position[2])
         _vel = cvel(velocity[0],velocity[1],velocity[2])
         _time = c_double(time)
-        _index = c_int(index)
+        _index = c_int(0)
         ret = c_int(0)
-        callsign = "traffic"+str(index)
         ret.value = self.lib.TrafficMonitor_InputIntruderData(self.obj,_index,c_char_p(callsign.encode('utf-8')),_pos,_vel,_time,(c_double*6)(*sumPos),(c_double*6)(*sumVel))
         
     def monitor_traffic(self,position,velocity,windFrom,windSpeed,time,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):

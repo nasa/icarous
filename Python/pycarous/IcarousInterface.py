@@ -123,7 +123,7 @@ class IcarousInterface(abc.ABC):
         """
         for d in data:
             if d.type == "INTRUDER":
-                self.InputTraffic(d.payload["id"], d.payload["pos"], d.payload["vel"])
+                self.InputTraffic(d.payload["callsign"], d.payload["pos"], d.payload["vel"])
             elif d.type == "MERGER":
                 if self.arrTime is None:
                     return
@@ -131,10 +131,10 @@ class IcarousInterface(abc.ABC):
                     self.InputMergeLogs(d.payload, 0.0)
 
     @abc.abstractmethod
-    def InputTraffic(self, idx, position, velocity):
+    def InputTraffic(self, callsign, position, velocity):
         """
         Input traffic surveillance data to ICAROUS
-        :param idx: ID of the traffic vehicle
+        :param idx: callsign of the traffic vehicle
         :param position: traffic position [lat, lon, alt] (deg, deg, m)
         :param velocity: traffic velocity [vn, ve, vd] (m/s, m/s, m/s)
         """
@@ -247,21 +247,21 @@ class IcarousInterface(abc.ABC):
         record_bands(self.ownshipLog["altbands"], self.altband)
         record_bands(self.ownshipLog["vsbands"], self.vsband)
 
-    def RecordTraffic(self, traffic_id, position, velocity, localPos):
-        if traffic_id not in self.trafficLog:
-            self.trafficLog[traffic_id] = {"time": [],
-                                           "position": [],
-                                           "velocityNED": [],
-                                           "positionNED": []}
+    def RecordTraffic(self, callsign, position, velocity, localPos):
+        if callsign not in self.trafficLog.keys():
+            self.trafficLog[callsign] = {"time": [],
+                                          "position": [],
+                                          "velocityNED": [],
+                                          "positionNED": []}
             last_time = -1
         else:
-            last_time = self.trafficLog[traffic_id]["time"][-1]
+            last_time = self.trafficLog[callsign]["time"][-1]
         if self.currTime - last_time < self.minLogInterval:
             return
-        self.trafficLog[traffic_id]["time"].append(self.currTime)
-        self.trafficLog[traffic_id]["position"].append(list(position))
-        self.trafficLog[traffic_id]["velocityNED"].append(velocity)
-        self.trafficLog[traffic_id]["positionNED"].append(localPos)
+        self.trafficLog[callsign]["time"].append(self.currTime)
+        self.trafficLog[callsign]["position"].append(list(position))
+        self.trafficLog[callsign]["velocityNED"].append(velocity)
+        self.trafficLog[callsign]["positionNED"].append(localPos)
 
     @abc.abstractmethod
     def Run(self):

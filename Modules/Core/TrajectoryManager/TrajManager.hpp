@@ -70,7 +70,7 @@ public:
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, std::vector<larcfm::Position> &vertices);
     void InputFlightPlan(const std::string &plan_id, const std::list<waypoint_t> &waypoints, 
                          const double initHeading,bool repair,double repairTurnRate);
-    int InputTraffic(int id, larcfm::Position &position, larcfm::Velocity &velocity,double time);
+    int InputTraffic(std::string callsign, larcfm::Position &position, larcfm::Velocity &velocity,double time);
     std::string PlanToString(std::string planID);
     void StringToPlan(std::string planID,std::string inputString);
     void CombinePlan(std::string planA,std::string planB,int index);

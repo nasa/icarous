@@ -515,6 +515,39 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 			break;
 		}
+
+        case MAVLINK_MSG_ID_ADSB_VEHICLE:{
+            mavlink_adsb_vehicle_t msg;
+            mavlink_msg_adsb_vehicle_decode(&message,&msg);
+
+            // Ignore vehicles with "NONE" callsign. These are echoes of 
+            // ADSB messages sent to the pixhawk from this app.
+            if(strcmp(msg.callsign,"NONE") == 0 ){
+                break;
+            }
+
+            appdataIntGS.traffic.index = msg.ICAO_address;
+            callsign_t_set(&appdataIntGS.traffic.callsign,msg.callsign);
+            appdataIntGS.traffic.type = _TRAFFIC_SIM_;
+            appdataIntGS.traffic.latitude = msg.lat/1.0E7;
+            appdataIntGS.traffic.longitude = msg.lon/1.0E7;
+            appdataIntGS.traffic.altitude = msg.altitude/1.0E3;
+
+            double track = msg.heading / 1.0E2;
+            double groundspeed = msg.hor_velocity / 1.0E2;
+            double verticalspeed = msg.ver_velocity / 1.0E2;
+
+            double vn = groundspeed * cos(track * M_PI / 180);
+            double ve = groundspeed * sin(track * M_PI / 180);
+            double vu = verticalspeed;
+            appdataIntGS.traffic.vn = vn;
+            appdataIntGS.traffic.ve = ve;
+            appdataIntGS.traffic.vd = vu;
+
+            CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
+            CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
+            break;
+        }
 	}
 }
 

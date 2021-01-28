@@ -123,7 +123,7 @@ class SimEnvironment:
             tf.Run(self.windFrom, self.windSpeed)
             tf_gps_pos = tf.GetOutputPositionLLA()
             tf_vel = tf.GetOutputVelocityNED()
-            tfdata = V2Vdata("INTRUDER", {"id":tf.vehicleID,
+            tfdata = V2Vdata("INTRUDER", {"callsign":"SimTraffic"+str(tf.vehicleID),
                                           "pos": tf_gps_pos,
                                           "vel": tf_vel})
             tf.transmitter.transmit(self.current_time, tf_gps_pos, tfdata)
@@ -185,7 +185,7 @@ class SimEnvironment:
             if not ic.missionStarted or ic.missionComplete:
                 continue
             # broadcast position data to all other vehicles in the airspace
-            tfdata = V2Vdata("INTRUDER", {"id":ic.vehicleID,
+            tfdata = V2Vdata("INTRUDER", {"id":ic.callsign,
                                           "pos": ic.position,
                                           "vel": ic.velocity})
             ic.transmitter.transmit(self.current_time, ic.position, tfdata)
