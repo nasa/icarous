@@ -316,7 +316,7 @@ void TRAJECTORY_Monitor(void)
                     double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
                     double trkGsVs[3] = {0.0,0.0,0.0};
                     ConvertVnedToTrkGsVs(pos->vn,pos->ve,pos->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-                    TrajManager_InputTraffic(TrajectoryAppData.pplanner, pos->aircraft_id, _pos, trkGsVs, TrajectoryAppData.timeNow);
+                    TrajManager_InputTraffic(TrajectoryAppData.pplanner, pos->callsign.value, _pos, trkGsVs, TrajectoryAppData.timeNow);
                 }
                 else
                 {
@@ -345,7 +345,7 @@ void TRAJECTORY_Monitor(void)
                 double pos[3] = {msg->latitude, msg->longitude, msg->altitude};
                 double trkGsVs[3] = {0.0,0.0,0.0};
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-                TrajManager_InputTraffic(TrajectoryAppData.pplanner, msg->index, pos, trkGsVs, TrajectoryAppData.timeNow);
+                TrajManager_InputTraffic(TrajectoryAppData.pplanner, msg->callsign.value, pos, trkGsVs, TrajectoryAppData.timeNow);
                 break;
             }
 
