@@ -49,7 +49,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
         }
-        LogMessage(state,"[HANDLER] | Return to mission, initiated by "+eventName);
+        LogMessage(state, "[STATUS] | " + eventName + " | Return to mission");
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
         larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
@@ -101,7 +101,8 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
         }
-        LogMessage(state,"[HANDLER] | Return to next feasible WP, initiated by "+eventName);
+
+        LogMessage(state, "[STATUS] | " + eventName + " | Return to next feasible waypoint");
         state->nextWpId["Plan0"] = state->nextFeasibleWpId;
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
@@ -173,14 +174,17 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
          if (state->validResolution[ind]){
              
              if (state->resType == SPEED_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | Resolving conflict with speed resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with speed resolution");
              }
              else if (state->resType == ALTITUDE_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | Resolving conflict with altitude resolution");
-                 LogMessage(state, "[MODE] | Guidance Vector Request");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with altitude resolution");
              }
              else if (state->resType == TRACK_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | Resolving conflict with track resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with track resolution");
+                 LogMessage(state, "[MODE] | Guidance Vector Request");
+             }
+             else if(state->resType == VERTICALSPEED_RESOLUTION ){
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with vertical speed resolution");
                  LogMessage(state, "[MODE] | Guidance Vector Request");
              }
          }else{
@@ -363,7 +367,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
             }
         }else{
-            ExecuteHandler(MAKE_HANDLER(ReturnToMission));
+            ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
         }
         std::string message = " against ";
         for(auto id: state->conflictTraffics){
@@ -461,7 +465,7 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 
    retVal_e Terminate(CognitionState_t* state){
        LogMessage(state,"[STATUS] | Execute land handler");
-       ExecuteHandler(MAKE_HANDLER(LandPhaseHandler));
+       ExecuteHandler(MAKE_HANDLER(LandPhaseHandler),"PostTODtoLand");
        return SUCCESS;
    }
 

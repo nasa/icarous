@@ -20,7 +20,7 @@ public:
     virtual retVal_e Execute(T* state){return SUCCESS;};
     virtual retVal_e Terminate(T* state){return SUCCESS;};
     bool RunEvent(T* state);
-    void ExecuteHandler(std::shared_ptr<EventHandler<T>> hdl);
+    void ExecuteHandler(std::shared_ptr<EventHandler<T>> hdl,std::string eventName);
     std::string eventName;
     execState_e execState;
     std::list<std::shared_ptr<EventHandler<T>>> children;
@@ -29,9 +29,10 @@ public:
 };
 
 template <class T>
-void EventHandler<T>::ExecuteHandler(std::shared_ptr<EventHandler<T>> hdl){
+void EventHandler<T>::ExecuteHandler(std::shared_ptr<EventHandler<T>> hdl,std::string eventName){
     hdl->priority = priority;
     hdl->execState = INITIALIZE;
+    hdl->eventName = eventName;
     children.push_back(hdl);
 }
 
