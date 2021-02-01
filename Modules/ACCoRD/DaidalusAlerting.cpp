@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 
   // Create a Daidalus object for an unbuffered well-clear volume and instantaneous bands
   Daidalus daa;
-  daa.set_WC_DO_365();
+  daa.set_DO_365A();
   std::string input_file = "";
   std::string output_file = "";
   ParameterData params;
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
       conf = "nomb";
     } else if (arga == "--std" || arga == "-std") {
       // Configure DAIDALUS to WC standard parameters: Instantaneous Bands
-      daa.set_WC_DO_365();
+      daa.set_DO_365A();
       conf = "std";
     } else if (arga == "--cd3d" || arga == "-cd3d") {
       // Configure DAIDALUS to CD3D: Instantaneous Bands, Cylinder

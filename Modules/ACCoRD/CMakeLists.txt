@@ -13,3 +13,8 @@ set(SOURCE_FILES ${SRC_FILES})
 include_directories(inc)
 
 add_library(ACCoRD SHARED ${SOURCE_FILES})
+
+add_executable(DaidalusAlerting DaidalusAlerting.cpp)
+
+target_link_libraries(DaidalusAlerting ACCoRD)
+
