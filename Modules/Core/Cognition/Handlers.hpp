@@ -359,12 +359,14 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
         if(state->resType == SPEED_RESOLUTION){
             SetGuidanceSpeedCmd(state,state->activePlan->getID(),state->resolutionStartSpeed);
             SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
+            LogMessage(state,"[HANDLER] | Engage nominal plan");
         }else if(state->resType == ALTITUDE_RESOLUTION){
             double alt = state->activePlan->getPos(state->nextWpId[planid]).alt();
             if(fabs(state->prevResAlt - alt) > 1e-3){
                 SetGuidanceAltCmd(state,planid,alt,1);
                 state->prevResAlt = alt;
                 SetGuidanceFlightPlan(state,planid,state->nextWpId[planid]);
+                LogMessage(state,"[HANDLER] | Engage nominal plan");
             }
         }else{
             ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
