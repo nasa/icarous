@@ -229,6 +229,10 @@ class Icarous(IcarousInterface):
         cogParams.lookaheadTime = params['LOOKAHEAD_TIME']
         cogParams.persistence_time = params['PERSIST_TIME']
         cogParams.return2nextWP = int(params['RETURN_WP'])
+        if cogParams.resolutionType < 0:
+            cogParams.active = False
+        else:
+            cogParams.active = True
         self.Cog.InputParameters(cogParams)
 
     def SetTrafficParams(self,params):

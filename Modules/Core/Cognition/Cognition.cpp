@@ -7,6 +7,7 @@ Cognition::Cognition(const std::string callsign){
     cogState.parameters.DTHR = 30;
     cogState.parameters.ZTHR = 1000;
     cogState.parameters.allowedXtrackDeviation = 1000;
+    cogState.parameters.active = true;
     // Open a log file
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
@@ -155,7 +156,6 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
 
 void Cognition::InputParameters(const cognition_params_t &new_params){
     cogState.parameters = new_params;
-    
 }
 
 void Cognition::InputDitchStatus(const larcfm::Position &ditch_site,const double todAlt,const bool ditch_requested){

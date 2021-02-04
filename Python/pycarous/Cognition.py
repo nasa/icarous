@@ -9,7 +9,8 @@ class CognitionParams(Structure):
         ("allowedXTrackDeviation",c_double),
         ("lookaheadTime",c_double),
         ("persistence_time",c_double),
-        ("return2nextWP",c_int)]
+        ("return2nextWP",c_int),
+        ("active",c_bool)]
 
 ARR3 = c_double*3
 

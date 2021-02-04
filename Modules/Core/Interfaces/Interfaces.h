@@ -101,6 +101,7 @@ typedef struct{
     double lookaheadTime;           // lookahead time for traffic conflicts;
     double persistenceTime;         // traffic conflict persistence time
     int return2NextWP;              // Return to path behavior. 0 return to nearest point. 1. next WP
+    bool active;                    // Make cognition active                   
 }cognition_params_t;
 
 
