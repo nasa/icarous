@@ -230,6 +230,11 @@ void COGNITION_ProcessSBData(void) {
             appdataCog.parameters.resolutionType = msg->resType;
             appdataCog.parameters.lookaheadTime = msg->lookahead_time;
             appdataCog.parameters.persistenceTime = msg->persistence_time;
+            if(appdataCog.parameters.resolutionType < 0){
+                appdataCog.parameters.active = 0;
+            }else{
+                appdataCog.parameters.active = 1;
+            }
             InputParameters(appdataCog.cog,&appdataCog.parameters);
             break;
         }
