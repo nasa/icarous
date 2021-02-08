@@ -114,5 +114,11 @@ class Controller:
                     count = 0
 
 if __name__ == '__main__':
-    controller = Controller(2,14550,14551)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("portin", type=int,help='Specify port number for controller server',nargs=1)
+    parser.add_argument("portout",type=int,help='Specify port number for telemetry outputs',nargs=1)
+ 
+    args = parser.parse_args()
+    controller = Controller(2,args.input,args.output)
     controller.Run()
