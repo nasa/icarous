@@ -121,12 +121,6 @@ class SimEnvironment:
         for tf in self.tfList:
             tf.dt = dT or self.dT
             tf.Run(self.windFrom, self.windSpeed)
-            tf_gps_pos = tf.GetOutputPositionLLA()
-            tf_vel = tf.GetOutputVelocityNED()
-            tfdata = V2Vdata("INTRUDER", {"callsign":"tf"+str(tf.vehicleID),
-                                          "pos": tf_gps_pos,
-                                          "vel": tf_vel})
-            tf.transmitter.transmit(self.current_time, tf_gps_pos, tfdata)
 
     def AddWind(self, wind):
         """
@@ -174,9 +168,7 @@ class SimEnvironment:
         """ Input a file to read merge fixes from """
         self.mergeFixFile = filename
 
-    def ExchangeV2VData(self):
-        """ Exchange V2V communications between the Icarous instances """
-
+    def TransmitV2VData(self):
         # Transmit all V2V data
         for ic in self.icInstances:
             # Do not broadcast if running SBN
@@ -189,6 +181,14 @@ class SimEnvironment:
                                           "pos": ic.position,
                                           "vel": ic.velocity})
             ic.transmitter.transmit(self.current_time, ic.position, tfdata)
+
+        for tf in self.tfList:
+            tf_gps_pos = tf.GetOutputPositionLLA()
+            tf_vel = tf.GetOutputVelocityNED()
+            tfdata = V2Vdata("INTRUDER", {"callsign":"tf"+str(tf.vehicleID),
+                                          "pos": tf_gps_pos,
+                                          "vel": tf_vel})
+            tf.transmitter.transmit(self.current_time, tf_gps_pos, tfdata)
 
         # Gather logs to be exchanged for merging activity
         log = {}
@@ -215,6 +215,7 @@ class SimEnvironment:
                 mergelog = V2Vdata("MERGER",datalog)
                 ic.transmitter.transmit(self.current_time, ic.position, mergelog)
 
+    def ReceiveV2VData(self):
         # Receive all V2V data
         for ic in self.icInstances:
             if not ic.missionStarted or ic.missionComplete:
@@ -223,7 +224,15 @@ class SimEnvironment:
             data = [m.data for m in received_msgs]
             ic.InputV2VData(data)
 
+        # Clear all the messages in the channel for the new cycle
         self.comm_channel.flush()
+
+    def ExchangeV2VData(self):
+        """ Exchange V2V communications between the Icarous instances """
+
+        self.TransmitV2VData() 
+
+        self.ReceiveV2VData()
 
     def RunSimulation(self):
         """ Run simulation until mission complete or time limit reached """
@@ -241,6 +250,10 @@ class SimEnvironment:
 
         while not simComplete:
             status = False
+
+            # Wait for request to run simulation step
+
+            # Receive all traffic data
 
             # Advance time
             duration = self.current_time - t0
