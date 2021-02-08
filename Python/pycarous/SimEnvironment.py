@@ -12,7 +12,7 @@ from communicationmodels import get_transmitter, get_receiver
 
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
-    def __init__(self, verbose=1, fasttime=True, time_limit=None):
+    def __init__(self, verbose=1, network = None, fasttime=True, time_limit=None):
         """
         :param verbose: Control amount of printed messages (0 for none, 1+ for more)
         :param fasttime: When True run in fasttime, otherwise run in real time
@@ -28,6 +28,7 @@ class SimEnvironment:
 
         # Set default communication channel
         self.comm_channel = cm.ChannelModel()
+        self.network = network
 
         # Simulation environment conditions
         self.wind = [(0, 0)]
@@ -169,6 +170,7 @@ class SimEnvironment:
         self.mergeFixFile = filename
 
     def TransmitV2VData(self):
+
         # Transmit all V2V data
         for ic in self.icInstances:
             # Do not broadcast if running SBN
@@ -215,7 +217,14 @@ class SimEnvironment:
                 mergelog = V2Vdata("MERGER",datalog)
                 ic.transmitter.transmit(self.current_time, ic.position, mergelog)
 
+        if self.network is not None:
+            self.network.Transmit(self.comm_channel.messages)
+
     def ReceiveV2VData(self):
+
+        if self.network is not None:
+            self.comm_channel.messages = self.network.Receive()
+
         # Receive all V2V data
         for ic in self.icInstances:
             if not ic.missionStarted or ic.missionComplete:
@@ -226,13 +235,6 @@ class SimEnvironment:
 
         # Clear all the messages in the channel for the new cycle
         self.comm_channel.flush()
-
-    def ExchangeV2VData(self):
-        """ Exchange V2V communications between the Icarous instances """
-
-        self.TransmitV2VData() 
-
-        self.ReceiveV2VData()
 
     def RunSimulation(self):
         """ Run simulation until mission complete or time limit reached """
@@ -250,10 +252,9 @@ class SimEnvironment:
 
         while not simComplete:
             status = False
-
-            # Wait for request to run simulation step
-
-            # Receive all traffic data
+            
+            # Receive all V2V data
+            self.ReceiveV2VData()
 
             # Advance time
             duration = self.current_time - t0
@@ -306,8 +307,8 @@ class SimEnvironment:
                     if self.verbose > 0:
                         print("Time limit reached at %f" % self.current_time)
             
-            # Exchange all V2V data between vehicles in the environment
-            self.ExchangeV2VData()
+            # Transmit all V2V data between vehicles in the environment
+            self.TransmitV2VData()
 
             simComplete = all(ic.missionComplete for ic in self.icInstances)
         self.ConvertLogsToLocalCoordinates()
