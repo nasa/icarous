@@ -223,25 +223,30 @@ class SimEnvironment:
                 ic.transmitter.transmit(self.current_time, ic.position, mergelog)
 
         if self.network is not None:
-            self.network.Transmit(self.comm_channel.messages)
+            messages = []
+            for msg in self.comm_channel.messages:
+                msg = msg._asdict()
+                msg['data'] = msg['data']._asdict()
+                messages.append(msg)
+            self.network.Transmit(messages)
+            self.comm_channel.flush()
 
     def ReceiveV2VData(self):
 
         if self.network is not None:
             rcvmsgs = self.network.Receive()
-
             for msg in rcvmsgs:
-                self.comm_channel.messages.append(cm.Message(*msg[:-1],V2Vdata(*msg[-1])))
+                self.comm_channel.messages.append(cm.Message(**msg))
 
-
-
+        
         # Receive all V2V data
         for ic in self.icInstances:
             if not ic.missionStarted or ic.missionComplete:
                 continue
             received_msgs = ic.receiver.receive(self.current_time, ic.position)
-            data = [m.data for m in received_msgs]
-            ic.InputV2VData(data)
+            if len(received_msgs) > 0:
+                data = [V2Vdata(**m.data) for m in received_msgs]
+                ic.InputV2VData(data)
 
         # Clear all the messages in the channel for the new cycle
         self.comm_channel.flush()
