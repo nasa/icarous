@@ -1,14 +1,6 @@
-class Network():
-    def __init__(self):
-        pass
+#!/usr/bin/env python3
 
-    def Transmit(self):
-        pass
-
-    def Receive(self):
-        pass
-
-class ZMQNetwork(Network):
+class ZMQNetwork:
     import zmq
     def __init__(self,id,controllerAddress,requestPortNumber,pubPortNumber):
         self.context = self.zmq.Context()
@@ -18,14 +10,6 @@ class ZMQNetwork(Network):
         self.sockclient.connect('tcp://'+controllerAddress+':'+str(requestPortNumber))
         self.socksub.connect('tcp://'+controllerAddress+':'+str(pubPortNumber))
         self.socksub.setsockopt(self.zmq.SUBSCRIBE,b'')
-
-    def Transmit(self,messages):
-        n = len(messages)
-        for i,msg in enumerate(messages):
-            self.sockclient.send_json({'type':'report','count':(n-1)-i,'payload':msg})
-            request = self.sockclient.recv_json() 
-
-        messages = []
 
     def Synchronize(self):
         synchronized = False
@@ -37,6 +21,13 @@ class ZMQNetwork(Network):
             self.sockclient.send_json({'type':'sync_rep','status':synchronized})
             self.sockclient.recv_json()
 
+    def Transmit(self,messages):
+        n = len(messages)
+        for i,msg in enumerate(messages):
+            self.sockclient.send_json({'type':'report','count':(n-1)-i,'payload':msg})
+            request = self.sockclient.recv_json() 
+
+        messages = []
 
     def Receive(self):
         messages = []

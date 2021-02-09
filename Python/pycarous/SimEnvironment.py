@@ -45,7 +45,7 @@ class SimEnvironment:
 
     def InitializeNetwork(self,controllerAddress,serverport,pubport):
 
-        from communicationmodels import ZMQNetwork
+        from Network import ZMQNetwork
         self.network = ZMQNetwork('zmqnet',controllerAddress,serverport,pubport)
 
     def SetCommunicationModel(self, propagation_model, reception_model,
