@@ -116,9 +116,11 @@ class Controller:
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("portin", type=int,help='Specify port number for controller server',nargs=1)
-    parser.add_argument("portout",type=int,help='Specify port number for telemetry outputs',nargs=1)
+    parser.add_argument("subs", type=int,help='Specify total number of simulation instances')
+    parser.add_argument("portin", type=int,help='Specify port number for controller server')
+    parser.add_argument("portout",type=int,help='Specify port number for telemetry outputs')
  
     args = parser.parse_args()
-    controller = Controller(2,args.input,args.output)
+    print('Opening controller on port '+str(args.portin)+' and publishing telemetry on port '+str(args.portout))
+    controller = Controller(args.subs,args.portin,args.portout)
     controller.Run()

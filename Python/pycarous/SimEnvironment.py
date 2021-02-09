@@ -12,7 +12,7 @@ from communicationmodels import get_transmitter, get_receiver
 
 class SimEnvironment:
     """ Class to manage pycarous fast time simulations """
-    def __init__(self, verbose=1, network = None, fasttime=True, time_limit=None):
+    def __init__(self, verbose=1, fasttime=True, time_limit=None):
         """
         :param verbose: Control amount of printed messages (0 for none, 1+ for more)
         :param fasttime: When True run in fasttime, otherwise run in real time
@@ -28,7 +28,7 @@ class SimEnvironment:
 
         # Set default communication channel
         self.comm_channel = cm.ChannelModel()
-        self.network = network
+        self.network = None
 
         # Simulation environment conditions
         self.wind = [(0, 0)]
@@ -42,6 +42,11 @@ class SimEnvironment:
         self.count = 0
         self.current_time = 0
         self.windFrom, self.windSpeed = self.wind[0]
+
+    def InitializeNetwork(self,controllerAddress,serverport,pubport):
+
+        from communicationmodels import ZMQNetwork
+        self.network = ZMQNetwork('zmqnet',controllerAddress,serverport,pubport)
 
     def SetCommunicationModel(self, propagation_model, reception_model,
                               propagation_params, reception_params):
@@ -223,7 +228,12 @@ class SimEnvironment:
     def ReceiveV2VData(self):
 
         if self.network is not None:
-            self.comm_channel.messages = self.network.Receive()
+            rcvmsgs = self.network.Receive()
+
+            for msg in rcvmsgs:
+                self.comm_channel.messages.append(cm.Message(*msg[:-1],V2Vdata(*msg[-1])))
+
+
 
         # Receive all V2V data
         for ic in self.icInstances:
@@ -249,6 +259,9 @@ class SimEnvironment:
         else:
             t0 = time.time()
         self.current_time = t0
+
+        if self.network is not None:
+            self.network.Synchronize()
 
         while not simComplete:
             status = False
