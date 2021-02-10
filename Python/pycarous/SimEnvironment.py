@@ -176,7 +176,6 @@ class SimEnvironment:
         self.mergeFixFile = filename
 
     def TransmitV2VData(self):
-
         # Gather logs to be exchanged for merging activity
         log = {}
         for ic in self.icInstances:
@@ -202,6 +201,7 @@ class SimEnvironment:
                 mergelog = V2Vdata("MERGER",datalog)
                 ic.transmitter.transmit(self.current_time, ic.position, mergelog)
 
+        # Send messages to distributed sim instances
         if self.network is not None:
             messages = []
             for msg in self.comm_channel.messages:
@@ -212,24 +212,15 @@ class SimEnvironment:
             self.comm_channel.flush()
 
     def ReceiveV2VData(self):
-
+        # Receive messages from distributed sim instances
         if self.network is not None:
             rcvmsgs = self.network.Receive()
             for msg in rcvmsgs:
+                msg["data"] = V2Vdata(**msg["data"])
                 self.comm_channel.messages.append(cm.Message(**msg))
-
         # Receive all V2V data
         for ic in self.icInstances:
-            if not ic.missionStarted or ic.missionComplete:
-                continue
-            received_msgs = ic.receiver.receive(self.current_time, ic.position)
-            if len(received_msgs) > 0:
-                if self.network is not None:
-                    data = [V2Vdata(**m.data) for m in received_msgs]
-                else:
-                    data = [m.data for m in received_msgs]
-                ic.InputV2VData(data)
-
+            ic.ReceiveV2VData()
         # Clear all the messages in the channel for the new cycle
         self.comm_channel.flush()
 

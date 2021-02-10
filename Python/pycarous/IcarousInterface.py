@@ -35,7 +35,9 @@ class IcarousInterface(abc.ABC):
         self.defaultWPSpeed = 1
         self.windFrom = 0
         self.windSpeed = 0
+
         self.transmitter = None
+        self.receiver = None
 
         # Aircraft data
         self.apps         = []
@@ -123,19 +125,30 @@ class IcarousInterface(abc.ABC):
         self.windFrom = windFrom
         self.windSpeed = windSpeed
 
+    def ReceiveV2VData(self):
+        """
+        Receive any V2V messages available to receiver model and input to ICAROUS
+        """
+        if self.receiver is None:
+            return
+        if not self.missionStarted or self.missionComplete:
+            return
+        received_msgs = self.receiver.receive(self.currTime, self.position)
+        for msg in received_msgs:
+            self.InputV2VData(msg.data)
+
     def InputV2VData(self, data):
         """
         Input V2V data to ICAROUS
-        :param data: the V2V data to input
+        :param data: V2VData to input
         """
-        for d in data:
-            if d.type == "INTRUDER":
-                self.InputTraffic(d.payload["callsign"], d.payload["pos"], d.payload["vel"])
-            elif d.type == "MERGER":
-                if self.arrTime is None:
-                    return
-                elif self.arrTime.intersectionID == d.payload.intersectionID:
-                    self.InputMergeLogs(d.payload, 0.0)
+        if data.type == "INTRUDER":
+            self.InputTraffic(data.payload["callsign"], data.payload["pos"], data.payload["vel"])
+        elif data.type == "MERGER":
+            if self.arrTime is None:
+                return
+            elif self.arrTime.intersectionID == data.payload.intersectionID:
+                self.InputMergeLogs(data.payload, 0.0)
 
     @abc.abstractmethod
     def InputTraffic(self, callsign, position, velocity):
