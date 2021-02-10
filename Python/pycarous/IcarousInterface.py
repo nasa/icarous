@@ -7,6 +7,7 @@ from ichelper import (LoadIcarousParams,
                       distance,
                       ConvertToLocalCoordinates,
                       ParseDaidalusConfiguration)
+from Interfaces import V2Vdata
 
 class IcarousInterface(abc.ABC):
     """
@@ -34,6 +35,7 @@ class IcarousInterface(abc.ABC):
         self.defaultWPSpeed = 1
         self.windFrom = 0
         self.windSpeed = 0
+        self.transmitter = None
 
         # Aircraft data
         self.apps         = []
@@ -267,6 +269,23 @@ class IcarousInterface(abc.ABC):
         self.trafficLog[callsign]["position"].append(list(position))
         self.trafficLog[callsign]["velocityNED"].append(velocity)
         self.trafficLog[callsign]["positionNED"].append(localPos)
+
+    def TransmitPosition(self):
+        """ Transmit current position """
+        # Do not broadcast if running SBN
+        if "SBN" in self.apps:
+            return
+        if self.transmitter is None:
+            return
+        if not self.missionStarted or self.missionComplete:
+            return
+        msg_data = {
+            "callsign": self.callsign,
+            "pos": self.position,
+            "vel": self.velocity,
+        }
+        msg = V2Vdata("INTRUDER", msg_data)
+        self.transmitter.transmit(self.currTime, self.position, msg)
 
     @abc.abstractmethod
     def Run(self):

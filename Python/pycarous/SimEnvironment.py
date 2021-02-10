@@ -127,6 +127,7 @@ class SimEnvironment:
         for tf in self.tfList:
             tf.dt = dT or self.dT
             tf.Run(self.windFrom, self.windSpeed)
+            tf.TransmitPosition(self.current_time)
 
     def AddWind(self, wind):
         """
@@ -176,27 +177,6 @@ class SimEnvironment:
 
     def TransmitV2VData(self):
 
-        # Transmit all V2V data
-        for ic in self.icInstances:
-            # Do not broadcast if running SBN
-            if "SBN" in ic.apps:
-                continue
-            if not ic.missionStarted or ic.missionComplete:
-                continue
-            # broadcast position data to all other vehicles in the airspace
-            tfdata = V2Vdata("INTRUDER", {"callsign":ic.callsign,
-                                          "pos": ic.position,
-                                          "vel": ic.velocity})
-            ic.transmitter.transmit(self.current_time, ic.position, tfdata)
-
-        for tf in self.tfList:
-            tf_gps_pos = tf.GetOutputPositionLLA()
-            tf_vel = tf.GetOutputVelocityNED()
-            tfdata = V2Vdata("INTRUDER", {"callsign":"tf"+str(tf.vehicleID),
-                                          "pos": tf_gps_pos,
-                                          "vel": tf_vel})
-            tf.transmitter.transmit(self.current_time, tf_gps_pos, tfdata)
-
         # Gather logs to be exchanged for merging activity
         log = {}
         for ic in self.icInstances:
@@ -238,7 +218,6 @@ class SimEnvironment:
             for msg in rcvmsgs:
                 self.comm_channel.messages.append(cm.Message(**msg))
 
-        
         # Receive all V2V data
         for ic in self.icInstances:
             if not ic.missionStarted or ic.missionComplete:

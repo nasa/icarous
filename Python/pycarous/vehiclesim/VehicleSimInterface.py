@@ -2,6 +2,7 @@ import abc
 import numpy as np
 
 from ichelper import gps_offset
+from Interfaces import V2Vdata
 
 class VehicleSimInterface(abc.ABC):
     """
@@ -19,6 +20,8 @@ class VehicleSimInterface(abc.ABC):
         self.vehicleID = idx
         self.home_gps = home_gps
         self.dt = dt
+
+        self.transmitter = None
 
         # Uncertainty settings
         self.noise = False
@@ -121,3 +124,17 @@ class VehicleSimInterface(abc.ABC):
         :return: [vn (m/s), vn (m/s), vn (m/s)]
         """
         pass
+
+    def TransmitPosition(self, current_time):
+        """ Transmit current position """
+        if self.transmitter is None:
+            return
+        gps_position = self.GetOutputPositionLLA()
+        velocity = self.GetOutputVelocityNED()
+        msg_data = {
+            "callsign": "tf" + str(self.vehicleID),
+            "pos": gps_position,
+            "vel": velocity,
+        }
+        msg = V2Vdata("INTRUDER", msg_data)
+        self.transmitter.transmit(current_time, gps_position, msg)

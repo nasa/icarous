@@ -223,6 +223,9 @@ class IcarousRunner(IcarousInterface):
             print("%s : %s" % (self.callsign, msg.text))
             if "Landing" in msg.text:
                 self.land = True
+
+        self.TransmitPosition()
+
         return False
 
     def Terminate(self):

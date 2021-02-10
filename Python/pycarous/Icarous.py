@@ -612,6 +612,8 @@ class Icarous(IcarousInterface):
 
         self.RunMerger()
 
+        self.TransmitPosition()
+
         #print("cog     %f" % (time_cog_out - time_cog_in))
         #print("geofence %f" % (time_geof_out - time_geof_in))
         #print("ownship %f" % (time_ship_out - time_ship_in))
