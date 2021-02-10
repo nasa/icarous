@@ -245,7 +245,10 @@ class SimEnvironment:
                 continue
             received_msgs = ic.receiver.receive(self.current_time, ic.position)
             if len(received_msgs) > 0:
-                data = [V2Vdata(**m.data) for m in received_msgs]
+                if self.network is not None:
+                    data = [V2Vdata(**m.data) for m in received_msgs]
+                else:
+                    data = [m.data for m in received_msgs]
                 ic.InputV2VData(data)
 
         # Clear all the messages in the channel for the new cycle
