@@ -64,7 +64,7 @@ class Icarous(IcarousInterface):
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3, 2, 2, 20, 20])
         self.Trajectory = Trajectory(self.callsign)
-        self.tfMonitor = TrafficMonitor(self.callsign, daaConfig, False, monitor)
+        self.tfMonitor = TrafficMonitor(self.callsign, daaConfig, True, monitor)
         self.Merger = Merger(self.callsign, self.vehicleID)
 
         # Merger data
@@ -236,6 +236,7 @@ class Icarous(IcarousInterface):
         self.Cog.InputParameters(cogParams)
 
     def SetTrafficParams(self,params):
+        '''
         paramString = "" \
         +"lookahead_time="+str(params['LOOKAHEAD_TIME'])+ "[s];"\
         +"left_hdir="+str(params['LEFT_TRK'])+ "[deg];"\
@@ -296,6 +297,7 @@ class Icarous(IcarousInterface):
         +"default_load_core_detection_det_2="+"gov.nasa.larcfm.ACCoRD.CDCylinder;"
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
+        '''
         self.daa_radius = params['DET_1_WCV_DTHR']/3
         self.turnRate = params['TURN_RATE']
 

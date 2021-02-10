@@ -252,9 +252,9 @@ void TRAFFIC_ProcessPacket(void){
             traffic_parameters_t* msg = (traffic_parameters_t*) trafficAppData.Traffic_MsgPtr;
             memcpy(&trafficAppData.params,msg,sizeof(traffic_parameters_t));
             char params[2000];
-            ConstructDAAParamString(msg, params);
+            //ConstructDAAParamString(msg, params);
             if(trafficAppData.updateDaaParams){
-                TrafficMonitor_UpdateParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
+                //TrafficMonitor_UpdateParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
             }
             trafficAppData.trafficSrc = msg->trafficSource;
             break;
