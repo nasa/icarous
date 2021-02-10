@@ -24,6 +24,7 @@ class SimEnvironment:
         self.icInstances = []
         self.icStartDelay = []
         self.icTimeLimit = []
+        self.gsInstances = []
         self.tfList = []
 
         # Set default communication channel
@@ -91,6 +92,22 @@ class SimEnvironment:
             print(ic.callsign)
             print("\ttransmitter:", ic.transmitter.description)
             print("\treceiver:", ic.receiver.description)
+
+    def AddGroundSystem(self, gs, transmitter="GroundTruth", receiver="GroundTruth"):
+        """
+        Add a GroundSystem instance to the simulation environment
+        (A ground-based system that interacts with vehicles by transmitting/receiving messages)
+        :param gs: A GroundSystem instance
+        :param transmitter: A Transmitter to send V2V position data,
+        ex: "ADS-B" or "GroundTruth", or None for no transmitter
+        :param receiver: A Receiver to get V2V position data,
+        ex: "ADS-B" or "GroundTruth", or None for no receiver
+        """
+        self.gsInstances.append(gs)
+
+        # Create a transmitter and receiver for V2V communications
+        gs.transmitter = get_transmitter(transmitter, gs.id, self.comm_channel)
+        gs.receiver = get_receiver(receiver, gs.id, self.comm_channel)
 
     def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
                    transmitter="GroundTruth"):
@@ -221,6 +238,8 @@ class SimEnvironment:
         # Receive all V2V data
         for ic in self.icInstances:
             ic.ReceiveV2VData()
+        for gs in self.gsInstances:
+            gs.ReceiveV2VData()
         # Clear all the messages in the channel for the new cycle
         self.comm_channel.flush()
 
@@ -265,6 +284,10 @@ class SimEnvironment:
                     if self.verbose > 0:
                         print("Sim Duration: %.1fs" % (duration), end="\r")
             self.windFrom, self.windSpeed = self.GetWind()
+
+            # Run Ground Systems
+            for gs in self.gsInstances:
+                gs.Run(current_time=self.current_time)
 
             # Update Icarous instances
             for i, ic in enumerate(self.icInstances):
