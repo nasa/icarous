@@ -229,8 +229,37 @@ class IcarousInterface(abc.ABC):
         """ Return True if the mission is complete """
         pass
 
-    def ConvertToLocalCoordinates(self,pos):
-        return ConvertToLocalCoordinates(self.home_pos,pos)
+    def ConvertToLocalCoordinates(self, pos):
+        return ConvertToLocalCoordinates(self.home_pos, pos)
+
+    def ConvertLogsToLocalCoordinates(self, origin=None):
+        """
+        Convert all logs to local coordinates with origin at home_pos
+        :param origin: origin for local coordinates - if None, use home position
+        """
+        origin = origin or self.home_pos
+        self.home_pos = origin
+        to_local = self.ConvertToLocalCoordinates
+        posNED = list(map(to_local, self.ownshipLog["position"]))
+        self.ownshipLog["positionNED"] = posNED
+        for tfid in self.trafficLog.keys():
+            tfPosNED = list(map(to_local, self.trafficLog[tfid]["position"]))
+            self.trafficLog[tfid]["positionNED"] = tfPosNED
+        self.localPlans = []
+        self.localFences = []
+        self.localMergeFixes = []
+        for plan in self.plans:
+            wps = [[wp.latitude,wp.longitude,wp.altitude] for wp in plan]
+            times = [wp.time for wp in plan]
+            tcps = [[*wp.tcp] for wp in plan]
+            tcpValues = [[*wp.tcpValue] for wp in plan]
+            localwps = list(map(to_local,wps))
+            localFP = [[val[0],*val[1],*val[2],*val[3]] for val in zip(times,localwps,tcps,tcpValues)]
+            self.localPlans.append(localFP)
+        for fence in self.fences:
+            localFence = list(map(to_local, fence))
+            self.localFences.append(localFence)
+        self.localMergeFixes = list(map(to_local, self.mergeFixes))
 
     def GetLocalFlightPlan(self, fp):
         local = []

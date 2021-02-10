@@ -302,33 +302,10 @@ class SimEnvironment:
             self.TransmitV2VData()
 
             simComplete = all(ic.missionComplete for ic in self.icInstances)
-        self.ConvertLogsToLocalCoordinates()
 
-    def ConvertLogsToLocalCoordinates(self):
         # Convert flightplans from all instances to a common reference frame
-        to_local = self.icInstances[0].ConvertToLocalCoordinates
-        for i, ic in enumerate(self.icInstances):
-            ic.home_pos = self.home_gps
-            posNED = list(map(to_local, ic.ownshipLog["position"]))
-            ic.ownshipLog["positionNED"] = posNED
-            for tfid in ic.trafficLog.keys():
-                tfPosNED = list(map(to_local, ic.trafficLog[tfid]["position"]))
-                ic.trafficLog[tfid]["positionNED"] = tfPosNED
-            ic.localPlans = []
-            ic.localFences = []
-            ic.localMergeFixes = []
-            for plan in ic.plans:
-                wps = [[wp.latitude,wp.longitude,wp.altitude] for wp in plan]
-                times = [wp.time for wp in plan]
-                tcps = [[*wp.tcp] for wp in plan]
-                tcpValues = [[*wp.tcpValue] for wp in plan]
-                localwps = list(map(to_local,wps))
-                localFP = [[val[0],*val[1],*val[2],*val[3]] for val in zip(times,localwps,tcps,tcpValues)]
-                ic.localPlans.append(localFP)
-            for fence in ic.fences:
-                localFence = list(map(to_local, fence))
-                ic.localFences.append(localFence)
-            ic.localMergeFixes = list(map(to_local, ic.mergeFixes))
+        for ic in self.icInstances:
+            ic.ConvertLogsToLocalCoordinates(self.home_gps)
 
     def WriteLog(self):
         """ Write json logs for each icarous instance """
