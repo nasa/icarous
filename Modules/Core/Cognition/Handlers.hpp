@@ -44,6 +44,34 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
     }
 };
 
+class Vector2Mission: public EventHandler<CognitionState_t>{
+   retVal_e Initialize(CognitionState_t* state){
+       LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
+       return SUCCESS;
+   }
+
+   retVal_e Execute(CognitionState_t* state){
+       
+       larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
+       larcfm::Position positionB = GetNextWP(fp,state->nextFeasibleWpId);
+       double trk = state->position.track(positionB) * 180/M_PI;
+       double gs = state->velocity.gs();
+       double vs = 0;
+       SetGuidanceVelCmd(state,trk,gs,vs);
+       double dist = state->position.distanceH(positionB);
+       if ( dist < fmax(10,2.5*gs)){
+           return SUCCESS;
+       }else{
+           return INPROGRESS;
+       }
+   }
+
+   retVal_e Terminate(CognitionState_t* state){
+       ExecuteHandler(MAKE_HANDLER(EngageNominalPlan),"");
+       return SUCCESS;
+   }
+};
+
 class ReturnToMission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
         if(PrimaryPlanCompletionTrigger(state)){
@@ -65,7 +93,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
             double vs  = fp->vsIn(wpID);
             positionB = state->clstPoint;
             velocityB = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-        }else{
+        }else if(state->parameters.return2NextWP == 1){
             positionB = GetNextWP(fp,state->nextFeasibleWpId);
             velocityB = GetNextWPVelocity(fp,state->nextFeasibleWpId);
             state->nextWpId[state->activePlan->getID()] = state->nextFeasibleWpId;
@@ -369,7 +397,11 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 LogMessage(state,"[HANDLER] | Engage nominal plan");
             }
         }else{
-            ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
+            if(state->parameters.return2NextWP < 2){
+                ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
+            }else{
+                ExecuteHandler(MAKE_HANDLER(Vector2Mission),"PostTrafficConflict");
+            }
         }
         std::string message = " against ";
         for(auto id: state->conflictTraffics){
