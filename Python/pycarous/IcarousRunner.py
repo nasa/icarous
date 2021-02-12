@@ -37,6 +37,7 @@ class IcarousRunner(IcarousInterface):
         super().__init__(home_pos, callsign, vehicleID, verbose)
 
         self.SetApps(apps=apps)
+        self.daaConfig = os.path.join(icarous_home, "exe", "ram", "DaidalusQuadConfig.txt")
         self.sitl = sitl
         self.out = out
         self.cpu_id = self.vehicleID + 1

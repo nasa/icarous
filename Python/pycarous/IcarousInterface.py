@@ -2,7 +2,11 @@ import abc
 import sys
 import numpy as np
 
-from ichelper import LoadIcarousParams, ReadFlightplanFile, distance, ConvertToLocalCoordinates
+from ichelper import (LoadIcarousParams,
+                      ReadFlightplanFile,
+                      distance,
+                      ConvertToLocalCoordinates,
+                      ParseDaidalusConfiguration)
 
 class IcarousInterface(abc.ABC):
     """
@@ -78,6 +82,7 @@ class IcarousInterface(abc.ABC):
         self.logRateHz = logRateHz
         self.minLogInterval = 1/self.logRateHz - 0.01
         self.planoffsets = [0,0,0,0,0,0]
+        self.daaConfig = ""
 
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
@@ -293,6 +298,19 @@ class IcarousInterface(abc.ABC):
         geofences_local = [fence.copy() for fence in self.fenceList]
         for fence, vertices in zip(geofences_local, self.localFences):
             fence["vertices"] = vertices
+
+        # Extract some daa parameters so they can be used for analysis
+        if self.daaConfig:
+            daaparams = ParseDaidalusConfiguration(self.daaConfig)
+            m2ft = 3.28084
+            alerter = daaparams['alerters'][1].split(',')[0].lower()
+            self.params["AL_1_ALERT_T"] = daaparams[alerter+'_alert_1_alerting_time'][0]
+            self.params["DET_1_WCV_DTHR"] = daaparams[alerter+'_det_1_wcv_dthr'][0]*m2ft
+            self.params["DET_1_WCV_TCOA"] = daaparams[alerter+'_det_1_wcv_tcoa'][0]
+            self.params["DET_1_WCV_TTHR"] = daaparams[alerter+'_det_1_wcv_tthr'][0]
+            self.params["DET_1_WCV_ZTHR"] = daaparams[alerter+'_det_1_wcv_zthr'][0]*m2ft
+            self.params["HORIZONTAL_NMAC"] = daaparams['horizontal_nmac'][0]*m2ft
+            self.params["VERTICAL_NMAC"] = daaparams['vertical_nmac'][0]*m2ft
 
         log_data = {"state": self.ownshipLog,
                     "callsign": self.callsign,

@@ -74,7 +74,7 @@ class Icarous(IcarousInterface):
         self.mergerLog = LogData()
         self.localMergeFixes = []
 
-        # Fligh plan data
+        # Flight plan data
         self.flightplan1 = []
         self.flightplan2 = []
         self.etaFP1      = False
@@ -92,6 +92,7 @@ class Icarous(IcarousInterface):
         self.numFences = 0
 
         # Other aircraft data
+        self.daaConfig = daaConfig
         self.guidanceMode = GuidanceMode.NOOP
         self.emergbreak = False
         self.daa_radius = 0

@@ -296,3 +296,28 @@ def ConstructWaypointsFromList(fp,eta=False):
         
         waypoints.append(wp)
     return waypoints
+
+def ParseDaidalusConfiguration(filename):
+    from ctypes import Structure, CDLL, c_char_p, c_int, c_char, c_double
+    lib = CDLL('libUtils.so')
+    class ParsedParam(Structure):
+        _fields_=[
+            ("key",c_char*50),
+            ("valueString",c_char*50),
+            ("unitString",c_char*10),
+            ("value",c_double)
+        ]
+
+    lib.ParseParameterFile.argtype = [c_char_p,ParsedParam*100]
+    lib.ParseParameterFile.restype = c_int
+
+    ParamsArray = ParsedParam * 100
+    params = ParamsArray()
+    n = lib.ParseParameterFile(c_char_p(filename.encode('utf-8')),params)
+    DaidalusParam = {}
+    for param in params:
+        key = param.key.decode('utf-8')
+        if key != "":
+            DaidalusParam[key] =[param.value, param.valueString.decode('utf-8')]
+
+    return DaidalusParam
