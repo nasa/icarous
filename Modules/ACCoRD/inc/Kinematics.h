@@ -612,11 +612,11 @@ public:
 
 	/**
 	 * Distance traveled when accelerating from gs1 to gs2
-	 *
-	 * @param gs1 starting gs
-	 * @param gs2 ending gs
+	 * 
+	 * @param gs1 starting ground speed
+	 * @param gs2 ending ground speed
 	 * @param a acceleration value (unsigned)
-	 *
+	 * 
 	 * @return distance needed to accelerate from gs1 to gs2 with acceleration a.  This returns 0 if a=0 or gs1=gs2.
 	 */
 	static double gsAccelDist(double gs1, double gs2, double a);

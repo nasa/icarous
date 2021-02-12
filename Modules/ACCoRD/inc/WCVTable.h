@@ -58,10 +58,16 @@ public:
   static const WCVTable& DO_365_DWC_Phase_I();
 
   /**
-   * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=0.66nmi, ZTHR=450ft,
-   * TTHR=35s, TCOA=0.
+   * @return DO-365 Well-Clear thresholds Phase II (DTA), i.e., DTHR=1500ft, ZTHR=450ft,
+   * TTHR=0, TCOA=0.
    */
   static const WCVTable& DO_365_DWC_Phase_II();
+
+  /**
+   * @return DO-365 Well-Clear thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0, TCOA=0.
+   */
+  static const WCVTable& DO_365_DWC_Non_Coop();
 
   /**
    * @return buffered preventive thresholds Phase I (en-route), i.e., DTHR=1.0nmi, ZTHR=750ft,

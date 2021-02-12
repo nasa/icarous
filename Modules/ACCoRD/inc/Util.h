@@ -46,6 +46,7 @@ const unsigned long lnan[2]={0xffffffff, 0x7fffffff};
 // this is a "signaling NaN" that may throw a fp exception, but this is implementation dependent (and the flag can be set by other libraries).  In general, don't use this.
 #define SIGNaN std::numeric_limits<double>::signaling_NaN()
 
+#define CONSTEXPR constexpr
 
 #else /* ********** GCC *************** */
 
@@ -61,6 +62,8 @@ typedef int64_t INT64FM;
 
 // this is a "signaling NaN" that may throw a fp exception, but this is implementation dependent (and the flag can be set by other libraries).  In general, don't use this.
 #define SIGNaN std::numeric_limits<double>::signaling_NaN()
+
+#define CONSTEXPR 
 
 #endif /* ************************* */
 
@@ -185,12 +188,12 @@ public:
 	 * in floating point, generally almostEquals(a, b) is not the same
 	 * as almostEquals(a - b, 0).  The form without the subtraction is
 	 * preferred.  <p>
-	 *
+	 * 
 	 * Consistent with the IEEE-754 floating point specification, "not a number"
 	 * (NaN) won't compare as equal to anything (including itself or another
 	 * NaN).
 	 * <p>
-	 *
+	 * 
 	 * If two doubles are almost_equals() with a maxUlps parameter of 16348, then
 	 * this means there can be at most 16347 floating point
 	 * numbers between them. A value of 16348 for "units of least
@@ -198,16 +201,16 @@ public:
 	 * decimal places.  Said another way, the two numbers have an
 	 * absolute difference of (approximately) 1e-13 if the two floating
 	 * point numbers are near 1.  <p>
-	 *
+	 * 
 	 * The maxUlps parameter must be positive and smaller than 2^50
 	 * <p>
-	 *
+	 * 
 	 * The implementation is based on the discussion (but not the code) in
 	 * (google: comparing floats cygnus)
-	 *
+	 * 
 	 * @param a one number
 	 * @param b another number
-	 * @param maxUlps maximum units of least precision
+	 * @param maxUlps the precision, or more specifically, the maximum units of least precision
 	 * @return true, if almost equals
 	 */
 	static bool almost_equals(double a, double b, INT64FM maxUlps);
@@ -361,9 +364,9 @@ public:
 
 	/**
 	 * Computes the modulo of val and mod. The returned value is in the range [0,mod)
-	 *
+	 * 
 	 * @param val numerator
-	 * @param mod denominator
+	 * @param mod denominator, assumed/required to be non-zero
 	 * @return modulo value
 	 */
 	static double modulo(double val, double mod);
@@ -402,8 +405,9 @@ public:
 
 	/**
 	 * Converts <code>rad</code> radians to the range
-	 * [<code>0</code>, <code>2*pi</code>].
-	 * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_2pi(x))
+	 * [<code>0</code>, <code>2*pi</code>]. 
+	 * <p>Note: this should <b>not</b> be used for argument reduction for trigonometric functions (Math.sin(to_2pi(x)).  Bad
+	 * roundoff errors could occur.</p>
 	 *
 	 * @param rad Radians
 	 *
@@ -464,10 +468,12 @@ public:
 
 	/**
 	 * Returns the smallest angle between two track angles [0,PI].
-	 *
+	 * Reminder: This is also the angle from BOT to EOT from the point of view of the turn center.  
+	 * It is not angle between two segments from the vertex's point of view.  
+	 * 
 	 * @param alpha one angle
 	 * @param beta another angle
-	 * @return difference in angle
+	 * @return non-negative difference in angle
 	 */
 	static double turnDelta(double alpha, double beta);
 

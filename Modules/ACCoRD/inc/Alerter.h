@@ -109,6 +109,35 @@ public:
   static const Alerter& DWC_Phase_II();
 
   /**
+   * @return DO-365B HAZ preventive thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s,
+   * bands region = NONE
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_preventive();
+
+  /**
+   * @return DO-365B HAZ corrective thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s,
+   * bands region = MID
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_corrective();
+
+  /**
+   * @return DO-365B HAZ warning thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 25s, early alerting time = 90s,
+   * bands region = NEAR
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_warning();
+
+  /**
+   * @return alerting thresholds as defined in RTCA DO-365B Non-Cooperative
+   * Maneuver guidance logic produces multilevel bands:
+   * MID: Corrective
+   * NEAR: Warning
+   */
+  static const Alerter& DWC_Non_Coop();
+
+  /**
    * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
    * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
    * bands region = NONE, with SUM
@@ -165,6 +194,35 @@ public:
    * NEAR: Warning
    */
   static const Alerter& DWC_Phase_II_SUM();
+
+  /**
+   * @return DO-365B HAZ preventive thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s,
+   * bands region = NONE, with SUM
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_preventive_SUM();
+
+  /**
+   * @return DO-365B HAZ corrective thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s,
+   * bands region = MID, with SUM
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_corrective_SUM();
+
+  /**
+   * @return DO-365B HAZ warning thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+   * TTHR=0s, TCOA=0, alerting time = 20s, early alerting time = 90s,
+   * bands region = NEAR, with SUM
+   */
+  static const AlertThresholds& DO_365_Non_Coop_HAZ_warning_SUM();
+
+  /**
+   * @return alerting thresholds as defined in RTCA DO-365B Non-Cooperative, with SUM
+   * Maneuver guidance logic produces multilevel bands:
+   * MID: Corrective
+   * NEAR: Warning
+   */
+  static const Alerter& DWC_Non_Coop_SUM();
 
   /**
    * @return buffered HAZ preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,

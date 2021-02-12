@@ -87,7 +87,7 @@ namespace larcfm {
 /**
  * Construct an empty Daidalus object.
  * NOTE: This object doesn't have any alert configured. Alerters can be
- * configured either programmatically, set_DO_365A(true,true) or
+ * configured either programmatically, set_DO_365B() or
  * via a configuration file with the method loadFromFile(configurationfile)
  **/
 Daidalus::Daidalus() : error("Daidalus") {}
@@ -151,6 +151,24 @@ void Daidalus::set_DO_365A(bool type, bool sum) {
   setDTARadius(4.2,"nmi");
   setDTAHeight(2000,"ft");
   setDTAAlerter(2);
+}
+
+/*
+ * Set Daidalus object such that
+ * - Configure two alerters (Phase I, Phase II, and Non-Cooperative) as defined as in RTCA DO-365B
+ * - Maneuver guidance logic assumes kinematic maneuvers
+ * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+ *   when type is false.
+ * - Configure Sensor Uncertainty Migitation (SUM) when sum is true
+ * - Bands don't saturate until NMAC
+ */
+void Daidalus::set_DO_365B(bool type, bool sum) {
+  set_DO_365A(type,sum);
+  if (sum) {
+    addAlerter(Alerter::DWC_Non_Coop_SUM());
+  } else {
+    addAlerter(Alerter::DWC_Non_Coop());
+  }
 }
 
 /*

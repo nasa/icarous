@@ -70,6 +70,7 @@ namespace larcfm {
  * If a unit type is specified, their values will be converted into internal units
  * and stored.  The end user is responsible for converting values if the unspecified
  * default units are something other than the internal ones.
+ * <li>This format essentially follows RFC 4180 (when using commas)   
  * </ul>
  * 
  * Parameters are essentially a "key/value" pair.  Once an parameter is entered
@@ -137,6 +138,9 @@ namespace larcfm {
 	 */ 
     std::string getHeading(int i) const;
  
+	/** Return the number of columns 
+	 * @return number of columns 
+	 */
     int size() const;
 
 	/** 
@@ -176,8 +180,37 @@ namespace larcfm {
     bool getCaseSensitive() const;
   
 
+	/**
+	 * <p>This sets the 'quote' character.  The quote character is a way to contain a delimiter within a field of the data.
+	 * So if the delimiter is a comma and ' is the quote character, then 'hello, folks' is a valid field.</p>
+	 * 
+	 * <p>A quote character does not need to be set, the default is null, meaning, don't use a quote characters.  
+	 * </p>
+	 * 
+	 * <p>A quote character can be put in the field by duplicating it.  So if the delimiter is a comma and ' is a quote character, then
+	 * ''hello'', fol''ks will be two fields: 'hello' and fol'ks.  Be careful with nested quotes 'a''b' is interpreted as a'b not as two 
+	 * quoted strings: a and b.  However, 'a' 'b' will be interpreted as the string: a b
+	 * </p>
+	 * 
+	 * Notes
+	 * <ul>
+	 * <li>Quotes do not apply to parameters
+	 * <li>This will generate an error if the quote character matches the delimiters
+	 * <li>This is not used for parameters or fixed-width columns.
+	 * </ul>
+	 * 
+	 * @param q quotation character, if set to null do not treat quote characters specially
+	 */
 	void setQuoteCharacter(char q);
 
+	/**
+	 * Sets this object to formally read comma-separated-value (CSV) input.  This format the 
+	 * delimiter is a comma and the quote character is a double-quote.  Any amount of 
+	 * whitespace before or after a comma is removed.
+	 * So the string a,  "b " ,c will be read three fields: a, b with a trailing space, and c.
+	 * Like any quote character, if you to put the quote in the field, duplicate it, so the 
+	 * line: a, b"", c will be three fields: a, b" and c. 
+	 */
     void setCsv();
 
 	void setQuoteCharacter(char q, const std::vector<char>& delims, const std::string& sub);

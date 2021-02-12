@@ -21,7 +21,10 @@
 namespace larcfm {
 
 /**
- * 3-Dimensional mathematical vectors.
+ * <p>3-Dimensional mathematical vectors. Vect3 is immutable.  Once these objects are created they can never
+ * be changed so multiple references to the same object will never cause problems.  However, it does
+ * mean that for most vector operations new objects are created.  Methods that start with a capital 
+ * letter create a new object, just as a reminder of this behavior.</p>
  */
 class Vect3 {
 
@@ -63,6 +66,14 @@ public:
 	 */
 	Vect3(const Vect2& v, const double vz);
 
+	/**
+	 * Creates a new vector with coordinates (<code>x</code>,<code>y</code>,<code>z</code>) in internal units.
+	 * 
+	 * @param x Real value [internal units]
+	 * @param y Real value [internal units]
+	 * @param z Real value [internal units]
+	 * @return a new vector 
+	 */
 	static Vect3 mk(double x, double y, double z);
 
 	/** Destructor */
@@ -200,11 +211,11 @@ public:
 	Vect3  ScalAdd(const double k, const Vect3& v) const;
 
 	/**
-	 * Addition and scalar multiplication.  Compute: this + k*<code>v</code>;
-	 *
+	 * Addition and scalar multiplication.  Compute: <code>this + k*v</code>;
+	 * 
 	 * @param k real value
 	 * @param v vector
-	 *
+	 * 
 	 * @return the addition of <code>this</code> vector to <code>v</code> scaled by <code>k</code>.
 	 */
 	Vect3 AddScal(double k, const Vect3& v) const;

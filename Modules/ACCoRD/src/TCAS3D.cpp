@@ -452,40 +452,40 @@ void TCAS3D::horizontalHazardZone(std::vector<Position>& haz, const TrafficState
   haz.clear();
   Position po = ownship.getPosition();
   Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
-  Vect3 sD = Horizontal::hmd_tangent_point(DMOD,v);
-  Velocity vD = Velocity::make(sD);
-  if (TAUMOD+T == 0) {
-      CDCylinder::circular_arc(haz,po,vD,2*Pi,false);
+  if (Util::almost_equals(TAUMOD+T,0) || Util::almost_equals(v.norm2D(),0)) {
+    CDCylinder::circular_arc(haz,po,Velocity::mkVxyz(DMOD,0,0),2*Pi,false);
   } else {
-      CDCylinder::circular_arc(haz,po,vD,Pi,usehmdf);
-      Position TAU_center = WCV_TAUMOD::TAU_center(po,v,TAUMOD,T);
-      Vect3 vC = v.Scal(0.5*TAUMOD);     // TAUMOD Center (relative)
-      if (usehmdf) {
-          Vect3 vDC = vC.Sub(vD); // Far end point opposite to -vD (vC-relative);
-          Vect3 nvDC = vC.Add(vD); // Far end point opposite to vD (vC-relative);
-          double sqa = vDC.sqv2D();
-          double alpha = Util::atan2_safe(vDC.det2D(nvDC)/sqa,vDC.dot2D(nvDC)/sqa);
-          Velocity velDC = Velocity::make(vDC);
-          CDCylinder::circular_arc(haz,TAU_center,velDC,alpha,true);
-      } else {
-          Vect3 nsCD=sD.Neg().Sub(vC);
-          Vect3 sCD=sD.Sub(vC);
-          double sqa = sCD.sqv2D();
-          Velocity nvCD = Velocity::make(nsCD);
-          if (T==0) { // Two circles: DMOD and TAUMO. They intersect at +/-vD
-              double alpha = Util::atan2_safe(nsCD.det2D(sCD)/sqa,nsCD.dot2D(sCD)/sqa);
-              CDCylinder::circular_arc(haz,TAU_center,nvCD,alpha,false);
-          } else { // Two circles: DMOD and TAUMOD. They intersect at +/- vD.
-              Vect3 sT = Horizontal::hmd_tangent_point(std::sqrt(sqa),v);
-              Velocity vT = Velocity::make(sT);
-              Vect3 nsT = sT.Neg();
-              Velocity nvT = Velocity::make(nsT);
-              double alpha = Util::atan2_safe(nsCD.det2D(nsT)/sqa,nsCD.dot2D(nsT)/sqa);
-              Position TAU_center_0 = WCV_TAUMOD::TAU_center(po,v,TAUMOD,0);
-              CDCylinder::circular_arc(haz,TAU_center_0,nvCD,alpha,true);
-              CDCylinder::circular_arc(haz,TAU_center,nvT,Pi,true);
-              CDCylinder::circular_arc(haz,TAU_center_0,vT,alpha,false);                }
-      }
+    Vect3 sD = Horizontal::unit_perpL(v).Scal(DMOD);
+    Velocity vD = Velocity::make(sD);
+    CDCylinder::circular_arc(haz,po,vD,Pi,usehmdf);
+    Position TAU_center = WCV_TAUMOD::TAU_center(po,v,TAUMOD,T);
+    Vect3 vC = v.Scal(0.5*TAUMOD);     // TAUMOD Center (relative)
+    if (usehmdf) {
+      Vect3 vDC = vC.Sub(vD); // Far end point opposite to -vD (vC-relative);
+      Vect3 nvDC = vC.Add(vD); // Far end point opposite to vD (vC-relative);
+      double sqa = vDC.sqv2D();
+      double alpha = Util::atan2_safe(vDC.det2D(nvDC)/sqa,vDC.dot2D(nvDC)/sqa);
+      Velocity velDC = Velocity::make(vDC);
+      CDCylinder::circular_arc(haz,TAU_center,velDC,alpha,true);
+    } else {
+      Vect3 nsCD=sD.Neg().Sub(vC);
+      Vect3 sCD=sD.Sub(vC);
+      double sqa = sCD.sqv2D();
+      Velocity nvCD = Velocity::make(nsCD);
+      if (Util::almost_equals(T,0)) { // Two circles: DMOD and TAUMO. They intersect at +/-vD
+        double alpha = Util::atan2_safe(nsCD.det2D(sCD)/sqa,nsCD.dot2D(sCD)/sqa);
+        CDCylinder::circular_arc(haz,TAU_center,nvCD,alpha,false);
+      } else { // Two circles: DMOD and TAUMOD. They intersect at +/- vD.
+        Vect3 sT = Horizontal::unit_perpL(v).Scal(std::sqrt(sqa));
+        Velocity vT = Velocity::make(sT);
+        Vect3 nsT = sT.Neg();
+        Velocity nvT = Velocity::make(nsT);
+        double alpha = Util::atan2_safe(nsCD.det2D(nsT)/sqa,nsCD.dot2D(nsT)/sqa);
+        Position TAU_center_0 = WCV_TAUMOD::TAU_center(po,v,TAUMOD,0);
+        CDCylinder::circular_arc(haz,TAU_center_0,nvCD,alpha,true);
+        CDCylinder::circular_arc(haz,TAU_center,nvT,Pi,true);
+        CDCylinder::circular_arc(haz,TAU_center_0,vT,alpha,false);                }
+    }
   }
 }
 

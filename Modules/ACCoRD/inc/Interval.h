@@ -128,12 +128,12 @@ public:
 	 */
 	bool overlap(const Interval& r) const;
 
-	/** Returns a new interval which is the intersection of the current
-	 * Interval and the given Interval.  If the two regions do not
-	 * overlap, then an empty region is returned.
-	 * @param r interval
-	 * @return true if intersection
-	 */
+  /** Returns a new interval which is the intersection of the current
+   * Interval and the given Interval.  If the two regions do not
+   * overlap, then an empty region is returned. 
+   * @param r interval
+   * @return intersection or empty
+   */
 	Interval intersect(const Interval& r) const;
 
 	std::string toPVS() const;

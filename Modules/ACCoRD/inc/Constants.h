@@ -28,6 +28,9 @@ static const double FormalATM_TIME_LIMIT_EPSILON = 1.0;// in order to keep both 
 static const double FormalATM_NO_TIME_LIMIT_EPSILON = -1;
 static const double FormalATM_NO_TIME = -1;
 
+/** Key parameters for all of Util.  Despite the name, not everything is a constant.
+ * 
+ */
 class Constants {
 private:
 	static double HORIZONTAL_ACCURACY;
@@ -148,6 +151,7 @@ public:
 	static void set_trailing_zeros(bool b);
 
 	/** return true if trailing zeros are enabled
+	 * @return true, if trailing zeros
 	 * */
 	static bool get_trailing_zeros();
 

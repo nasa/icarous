@@ -1,5 +1,5 @@
 /*
- * SimpleProjection.h
+ * EuclideanProjection.h
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
@@ -47,7 +47,8 @@
 
  /* Not used in C++ in a functional way. */
  namespace larcfm {
-  enum ProjectionType {UNKNOWN_PROJECTION, SIMPLE, SIMPLE_NO_POLAR, ENU, AZIEQUI, ORTHO};
+  typedef int ProjectionType;
+  enum {UNKNOWN_PROJECTION, SIMPLE, SIMPLE_NO_POLAR, ENU, AZIEQUI, ORTHO};
  }
 
 

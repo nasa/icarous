@@ -21,7 +21,11 @@
 namespace larcfm {
 
 /**
- * 2-Dimensional mathematical vectors.
+ * <p>2-Dimensional mathematical vectors.  Vect2 is immutable.  Once these objects are created they can never
+ * be changed so multiple references to the same object will never cause problems.  However, it does
+ * mean that for most vector operations new objects are created.  Methods that start with a capital 
+ * letter create a new object, just as a reminder of this behavior.</p>
+ * 
  */
 class Vect2 {
 

@@ -694,7 +694,7 @@ double AircraftState::avgTrackRate(int numPtsTrkRateCalc) {
 	}
 	//return pair<double,bool>(trackRateSum/(numPts-1),turnRight);
 	if (numPts < 2) return 0;
-	else return trackRateSum/(numPts-1);
+	else return trackRateSum/((double)numPts-1);
 }
 
 
@@ -729,7 +729,7 @@ double AircraftState::avgVsRate(int numPtsVsRateCalc) {
 	//f.pln(" >>>> avgvsRate: numPts = "+numPts+" vsRateSum = "+Units.str("deg/s",vsRateSum));
 	//return new Pair<Double,Boolean>(vsRateSum/(numPts-1),turnRight);
 	if (numPts < 2) return 0;
-	else return vsRateSum/(numPts-1);
+	else return vsRateSum/((double)numPts-1);
 }
 
 

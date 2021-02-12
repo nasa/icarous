@@ -220,10 +220,10 @@ public:
   static Horizontal opt_vertical(const Vect3& s,const Vect3& vo,const Vect3& vi,const TangentLine& l,
       const int epsv,const double D,const double H);
 
-  /* Point in relative coordinates that is tangent to the circle of radius D, around
-   * so, in the direction of the relative velocity vo-vi.
+  /*
+   * Unit left perpendicular vector to v
    */
-  static Vect3 hmd_tangent_point(double D, const Vect3& v);
+  static Vect3 unit_perpL(const Vect3& v);
 
 };
 

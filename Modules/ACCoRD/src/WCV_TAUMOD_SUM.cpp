@@ -81,6 +81,15 @@ const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::DO_365_DWC_Phase_II() {
   return dwc;
 }
 
+/**
+ * @return DO-365 Well-Clear thresholds Non-Cooperative, i.e., DTHR=2200 [ft], ZTHR=450ft,
+ * TTHR=0s, TCOA=0.
+ */
+const WCV_TAUMOD_SUM& WCV_TAUMOD_SUM::DO_365_DWC_Non_Coop() {
+  static WCV_TAUMOD_SUM dwc(WCVTable::DO_365_DWC_Non_Coop());
+  return dwc;
+}
+
 void WCV_TAUMOD_SUM::copyFrom(const WCV_TAUMOD_SUM& wcv) {
   if (&wcv != this) {
     id = wcv.id;

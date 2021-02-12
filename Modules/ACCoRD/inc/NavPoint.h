@@ -21,7 +21,7 @@
 namespace larcfm {
   
 /** 
- * An immutable class representing a position at a time. In addition a label (or name) can be attached 
+ * An immutable class representing a position at a time. In addition a name (or label) can be attached 
  * to one of these NavPoints.
  */
 class NavPoint {

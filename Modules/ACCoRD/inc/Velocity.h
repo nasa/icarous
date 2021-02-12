@@ -25,8 +25,12 @@
 namespace larcfm {
 
 /**
- * This class represents a 3-dimensional velocity vector.  The 
- * track angle is defined by the "true north, clockwise convention."
+ * This class represents a 3-dimensional velocity vector.  The components of 
+ * the vector represent East-North-Up (ENU) coordinates; thus x is positive
+ * in the east direction, y is positive in the north, and z is positive up.
+ * The other right handed coordinate system, East-North-Down can probably 
+ * be used without error, but this has not be tested very well. 
+ * The track angle is defined by the "true north, clockwise convention."
  *
  */
 class Velocity: public Vect3 {

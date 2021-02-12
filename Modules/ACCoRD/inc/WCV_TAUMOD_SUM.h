@@ -48,6 +48,12 @@ public:
    */
   static const WCV_TAUMOD_SUM& DO_365_DWC_Phase_II();
 
+  /**
+   * @return DO-365 Well-Clear thresholds Non-Cooperative, i.e., DTHR=2200 [ft], ZTHR=450ft,
+   * TTHR=0s, TCOA=0.
+   */
+  static const WCV_TAUMOD_SUM& DO_365_DWC_Non_Coop();
+
   virtual ConflictData conflictDetectionWithTrafficState(const TrafficState& ownship, const TrafficState& intruder,
       double B, double T) const;
 

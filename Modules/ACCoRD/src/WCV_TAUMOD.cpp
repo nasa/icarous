@@ -68,6 +68,15 @@ const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Phase_II() {
 }
 
 /**
+ * @return DO-365 Well-Clear thresholds Non-Cooperative, i.e., DTHR=2200 [ft], ZTHR=450ft,
+ * TTHR=0s, TCOA=0.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Non_Coop() {
+  static WCV_TAUMOD dwc(WCVTable::DO_365_DWC_Non_Coop());
+  return dwc;
+}
+
+/**
  * @return buffered preventive thresholds Phase I (en-route), i.e., DTHR=1nmi, ZTHR=750ft,
  * TTHR=35s, TCOA=20.
  */
@@ -160,7 +169,8 @@ double WCV_TAUMOD::TAU_radius(const Velocity& v, double DTHR, double TTHR) {
 }
 
 void WCV_TAUMOD::hazard_zone_far_end(std::vector<Position>& haz,
-    const Position& po, const Velocity& v, const Velocity& vD, double T) const {
+    const Position& po, const Velocity& v, const Vect3& pu, double T) const {
+  Vect3 vD = pu.Scal(getDTHR());
   Vect3 vC = v.Scal(0.5*getTTHR());     // TAUMOD Center (relative)
   Vect3 vDC = vC.Sub(vD); // Far end point opposite to -vD (vC-relative);
   Vect3 nvDC = vC.Add(vD); // Far end point opposite to vD (vC-relative);

@@ -142,6 +142,98 @@ const Alerter& Alerter::DWC_Phase_II() {
 }
 
 /**
+ * @return DO-365B HAZ preventive thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s,
+ * bands region = NONE
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_preventive() {
+  static AlertThresholds preventive(&WCV_TAUMOD::DO_365_DWC_Non_Coop(),55,110,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365B HAZ corrective thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s,
+ * bands region = MID
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_corrective() {
+  static AlertThresholds preventive(&WCV_TAUMOD::DO_365_DWC_Non_Coop(),55,110,BandsRegion::MID);
+  return preventive;
+}
+
+/**
+ * @return DO-365B HAZ warning thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 25s, early alerting time = 90s,
+ * bands region = NEAR
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_warning() {
+  static AlertThresholds warning(&WCV_TAUMOD::DO_365_DWC_Non_Coop(),25,90,BandsRegion::NEAR);
+  return warning;
+}
+
+/**
+ * @return alerting thresholds as defined in RTCA DO-365B Non-Cooperative
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
+const Alerter& Alerter::DWC_Non_Coop() {
+  static Alerter alerter("DWC_Non_Coop");
+  if (!alerter.isValid()) {
+    alerter.addLevel(DO_365_Non_Coop_HAZ_preventive());
+    alerter.addLevel(DO_365_Non_Coop_HAZ_corrective());
+    alerter.addLevel(DO_365_Non_Coop_HAZ_warning());
+  }
+  return alerter;
+}
+
+/**
+ * @return DO-365B HAZ preventive thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s,
+ * bands region = NONE, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_preventive_SUM() {
+  static AlertThresholds preventive(&WCV_TAUMOD_SUM::DO_365_DWC_Non_Coop(),50,110,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365B HAZ corrective thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s,
+ * bands region = MID, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_corrective_SUM() {
+  static AlertThresholds preventive(&WCV_TAUMOD_SUM::DO_365_DWC_Non_Coop(),50,110,BandsRegion::MID);
+  return preventive;
+}
+
+/**
+ * @return DO-365B HAZ warning thresholds Non-Cooperative, i.e., DTHR=2200ft, ZTHR=450ft,
+ * TTHR=0s, TCOA=0, alerting time = 20s, early alerting time = 90s,
+ * bands region = NEAR, with SUM
+ */
+const AlertThresholds& Alerter::DO_365_Non_Coop_HAZ_warning_SUM() {
+  static AlertThresholds warning(&WCV_TAUMOD_SUM::DO_365_DWC_Non_Coop(),20,90,BandsRegion::NEAR);
+  return warning;
+}
+
+/**
+ * @return alerting thresholds as defined in RTCA DO-365B Non-Cooperative, with SUM
+ * Maneuver guidance logic produces multilevel bands:
+ * MID: Corrective
+ * NEAR: Warning
+ */
+const Alerter& Alerter::DWC_Non_Coop_SUM() {
+  static Alerter alerter("DWC_Non_Coop_SUM");
+  if (!alerter.isValid()) {
+    alerter.addLevel(DO_365_Non_Coop_HAZ_preventive_SUM());
+    alerter.addLevel(DO_365_Non_Coop_HAZ_corrective_SUM());
+    alerter.addLevel(DO_365_Non_Coop_HAZ_warning_SUM());
+  }
+  return alerter;
+}
+
+/**
  * @return DO-365 HAZ preventive thresholds Phase I (en-route), i.e., DTHR=0.66nmi, ZTHR=700ft,
  * TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s,
  * bands region = NONE, with SUM

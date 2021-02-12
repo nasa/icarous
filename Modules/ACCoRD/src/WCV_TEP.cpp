@@ -107,8 +107,9 @@ bool WCV_TEP::contains(const Detection3D* cd) const {
 }
 
 void WCV_TEP::hazard_zone_far_end(std::vector<Position>& haz,
-    const Position& po, const Velocity& v, const Velocity& vD, double T) const {
-  CDCylinder::circular_arc(haz,po.linear(v,getTTHR()+T),Velocity::make(vD.Neg()),Pi,true);
+    const Position& po, const Velocity& v, const Vect3& pu, double T) const {
+  CDCylinder::circular_arc(haz,po.linear(v,getTTHR()+T),
+      Velocity::make(pu.Scal(-getDTHR())),Pi,true);
 }
 
 }

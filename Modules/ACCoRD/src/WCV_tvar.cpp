@@ -199,13 +199,13 @@ void WCV_tvar::horizontalHazardZone(std::vector<Position>& haz, const TrafficSta
   haz.clear();
   const Position& po = ownship.getPosition();
   Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
-  Vect3 sD = Horizontal::hmd_tangent_point(getDTHR(),v);
-  Velocity vD = Velocity::make(sD);
-  if (getTTHR()+T == 0) {
-      CDCylinder::circular_arc(haz,po,vD,2*Pi,false);
+  if (Util::almost_equals(getTTHR()+T,0) || Util::almost_equals(v.norm2D(),0)) {
+    CDCylinder::circular_arc(haz,po,Velocity::mkVxyz(getDTHR(),0,0),2*Pi,false);
   } else {
-      CDCylinder::circular_arc(haz,po,vD,Pi,true);
-      hazard_zone_far_end(haz,po,v,vD,T);
+    Vect3 pu = Horizontal::unit_perpL(v);
+    Velocity vD = Velocity::make(pu.Scal(getDTHR()));
+    CDCylinder::circular_arc(haz,po,vD,Pi,true);
+    hazard_zone_far_end(haz,po,v,pu,T);
   }
 }
 

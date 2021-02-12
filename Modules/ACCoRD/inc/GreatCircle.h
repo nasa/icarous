@@ -27,10 +27,10 @@
 namespace larcfm {
 
 /**
- * This class contains common formulas used for Great Circle calculations. All
- * of these calculations assume a spherical earth. Much of this is based on the
+ * <p>This class contains common formulas used for modeling a spherical Earth, 
+ * in particular, Great Circle calculations. Many of the formulas are based on the
  * Aviation Formulary (v1.44) by Ed Williams.
- * <p>
+ * </p>
  * 
  * Notes:
  * <ul>
@@ -38,11 +38,10 @@ namespace larcfm {
  * <li>Positive latitude is north and positive longitude is east.
  * <li>All course angles (i.e., desired chord angles) are in radians clockwise
  * from true north.
- * <li>When the returned value is in lat/long and it is a Vect2, latitude is in
- * the "x" position and longitude is in the "y" position.
  * <li>For any of these calculations that rely on a radius for the earth, the
- * value used is GreatCircle.spherical_earth_radius.
- * <li>Great circles cannot be defined by antipodal points
+ * value used is <code>GreatCircle.spherical_earth_radius</code>.
+ * <li>Great circles cannot be defined by antipodal points. (e.g., the north pole and the 
+ * south pole)
  * </ul>
  */
   class GreatCircle {
@@ -114,7 +113,7 @@ namespace larcfm {
 	 * @param lon1 longitude of point 1
 	 * @param lat2 latitude of point 2
 	 * @param lon2 longitude of point 2
-	 * @return distance
+	 * @return distance in meters
 	 */
   static double distance(double lat1, double lon1, double lat2, double lon2);
 
@@ -148,7 +147,7 @@ namespace larcfm {
 	 * @param lon1 longitude of point 1
 	 * @param lat2 latitude of point 2
 	 * @param lon2 longitude of point 2
-	 * @param epsilon maximum difference
+	 * @param epsilon maximum difference in meters
 	 * @return true, if almost equals
 	 */							  
   static bool almost_equals(double lat1, double lon1, double lat2,
@@ -186,15 +185,15 @@ namespace larcfm {
   static double initial_course(double lat1, double lon1, double lat2, double lon2);
 
 	/**
-	 * The initial true course (course relative to true north) at point #1 on
+	 * <p>The initial true course (course relative to true north) at point #1 on
 	 * the great circle route from point #1 to point #2. The value is in
 	 * internal units of angles (radians), and is a compass angle [0..2*Pi]:
 	 * clockwise from true north.
-	 * <p>
+	 * </p>
 	 * 
-	 * Usage Note: If point #1 and #2 are close to each other, then the initial
+	 * <p>Usage Note: If point #1 and #2 are close to each other, then the 
 	 * course may become unstable. In the extreme case when point #1 equals
-	 * point #2, then the initial course is undefined.
+	 * point #2, then the course is undefined.</p>
 	 * 
 	 * @param p1 a point
 	 * @param p2 another point
@@ -202,6 +201,19 @@ namespace larcfm {
 	 */
   static double initial_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
+	/**
+	 * <p>Course of the great circle coming in from point #1 to point #2.  This
+	 * value is NOT a compass angle (in the 0 to 2 Pi range), but is in radians 
+	 * from clockwise from true north.</p>
+	 * 
+	 * <p>Usage Note: If point #1 and #2 are close to each other, then the 
+	 * course may become unstable. In the extreme case when point #1 equals
+	 * point #2, then the course is undefined.</p>
+	 * 
+	 * @param p1 point #1
+	 * @param p2 point #2
+	 * @return final course
+	 */
   static double final_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
 	/**
@@ -223,9 +235,9 @@ namespace larcfm {
   static double representative_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
 	/**
-	 * Find the maximum latitude of the great circle defined by the
+	 * Estimate the maximum latitude of the great circle defined by the 
 	 * two points.
-	 *
+	 * 
 	 * @param lat1 latitude of point 1
 	 * @param lon1 longitude of point 1
 	 * @param lat2 latitude of point 2
@@ -238,12 +250,20 @@ namespace larcfm {
 	static double max_latitude_gc_course(double lat1, double trk) ;
 
   public:
+	/**
+	 * Estimate the maximum latitude of the great circle defined by the 
+	 * two points.
+	 * 
+	 * @param p1 point 1
+	 * @param p2 point 2
+	 * @return maximum latitude
+	 */
 	static double max_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);
 
 	/**
-	 * Find the minimum latitude of the great circle defined by the
+	 * Estimate the minimum latitude of the great circle defined by the 
 	 * two points.
-	 *
+	 * 
 	 * @param lat1 latitude of point 1
 	 * @param lon1 longitude of point 1
 	 * @param lat2 latitude of point 2
@@ -256,6 +276,14 @@ namespace larcfm {
 	static double min_latitude_gc_course(double lat1, double trk);
 
   public:
+	/**
+	 * Estimate the minimum latitude of the great circle defined by the 
+	 * two points.
+	 * 
+	 * @param p1 point 1
+	 * @param p2 point 2
+	 * @return minimum latitude
+	 */
 	static double min_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);
 
 	// Given a great circle defined by Point 1 and 2, find the longitude of where it
@@ -493,7 +521,9 @@ namespace larcfm {
 	 * Given two great circle segments defined by a1,a2 and b1,b2, return the intersection point that is closest a1.  
 	 * This assumes that the arc distance between a1,a2 &lt; 90 and b1,b2 &lt; 90
 	 * The altitude of the return value is equal to a1.alt()
-	 * This returns an INVALID value if both segments are collinear
+	 * This returns an INVALID value if both segments are collinear or there is no intersection
+	 * 
+	 * Note: This is very slow compared to the equivalent Vect3 method.
 	 * 
 	 * @param so  starting point of segment [so,so2]
 	 * @param so2 ending point of segment [so,so2]
@@ -532,33 +562,34 @@ public:
 	 * 
 	 * 
 	 * @param s     a position
-	 * @param track the second point to define the great circle
-	 * @param dist  distance from point #1 over the surface of the Earth [m]
+	 * @param track the initial course coming from point s, assuming a great circle is followed
+	 * @param dist  distance from point #1 over the surface of the Earth [m], for very small distances, this 
+	 *              method returns inaccurate results.
 	 * @return a new position that is distance d from point #1
 	 */
   static LatLonAlt linear_initial(const LatLonAlt& s, double track, double dist);
 
-  /**
-   * This function forms a great circle from p1 to p2, then computes
-   * the shortest distance of another point (offCircle) to the great circle.  This is the
-   * cross track distance. A positive
-   * value means offCircle is to the right of the path from p1 to p2.  A
-   * negative value means offCircle is to the left of the path from p1 to p2.<p>
-   *
-   * @param p1 the starting point of the great circle
-   * @param p2 another point on the great circle
-   * @param offCircle the point to measure the cross track distance
-   * @return the cross track distance [m]
-   */
+	/**
+	 * <p>This function forms a great circle from p1 to p2, then computes 
+	 * the shortest distance of another point (offCircle) to the great circle.  This is the 
+	 * cross track distance. A positive 
+	 * value means offCircle is to the right of the path from p1 to p2.  A 
+	 * negative value means offCircle is to the left of the path from p1 to p2.</p>
+	 *  
+	 * @param p1 the starting point of the great circle
+	 * @param p2 another point on the great circle
+	 * @param offCircle the point to measure the cross track distance
+	 * @return the signed cross track distance [m]
+	 */
   static double cross_track_distance(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& offCircle);
 
-    /**
-     * Determines if the three points are on the same great circle.
-     * @param p1 One point
-     * @param p2 Second point
-     * @param p3 Third point
-     * @return true, if the three points are collinear
-     */
+	/**
+	 * Determines if the three points are on the same great circle.
+	 * @param p1 One point
+	 * @param p2 Second point
+	 * @param p3 Third point
+	 * @return true, if the three points are collinear (2d)
+	 */
     static bool collinear(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3);
 
 	/**
@@ -608,15 +639,19 @@ public:
     static std::pair<LatLonAlt,double> intersection(const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const Velocity& vi);
 
 	/**
-	 * Given two great circles defined by so, so2 and si, si2 return the angle between them at the intersection point.  
+	 * <p>Given two great circles defined by a1, a2 and b1, b2 return the angle between them at the intersection point.  
 	 * This is the same as the dihedral angle, or angle between the two GC planes. 
-	 * Note this may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point). 
+	 * This may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point). 
 	 * and will generally not be the same as the (non-projected) track angle difference between them (though that can be very close).
-	 * This will always return a value between 0 and PI.
+	 * This will always return a value between 0 and PI.</p>
 	 * 
-	 * Note: If a1 and b1 or if a2 and b2 are the "closest" to the intersection point (and both a's are on the same side of the 
-	 * intersection point, similarly for both b's), this will return the angle "between" them, the one you
-	 * would go through to make the shortest turn from a2 to b2 (or from b2 to a2), which may or may not be acute.  
+	 * <p>Note: When two great circles intersect, they form supplementary angles, that is, two angles that sum to 180.  This 
+	 * method can return either the smaller (less than 90) or the larger (greater than 90).  It is a little
+	 * complicated to determine which one will be returned.  Imagine a 'right-handed' vector going from a1 to a2 and another one going
+	 * from b1 to b2.  If these two vectors point mostly in the same direction, then the smaller supplementary angle will be returned.
+	 * If they point in mostly opposite directions, then the larger supplementary angle will be returned.  As an example.  Imagine three points,
+	 * two points (a and c) on the equator, less than 90 degrees apart and point b at the north pole. angleBetween(a,b,c,b) will
+	 * return the smaller supplementary angle, and angleBetween(a,b,b,c) will return the larger supplementary angle. </p>
 	 * 
 	 * @param a1 one point on the first great circle
 	 * @param a2 second point on the first great circle

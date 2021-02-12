@@ -61,16 +61,18 @@ public:
 
 	/**
 	 * Returns time to first loss in seconds.
+	 * Note: this returns positive infinity if there is not a conflict!
 	 */
 	double getTimeIn() const;
 
 	/**
 	 * Returns time to last loss in seconds.
+	 * Note: this returns negative infinity if there is not a conflict!
 	 */
 	double getTimeOut() const;
 
 	/**
-	 * Returns time interval to loss in seconds
+	 * Returns time interval to loss in seconds.
 	 */
 	Interval getTimeInterval() const;
 

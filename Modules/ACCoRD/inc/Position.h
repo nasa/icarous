@@ -56,9 +56,10 @@ public:
 	 * */
 	explicit Position(const LatLonAlt& lla);
 
-	/** Construct a new Position object from a Point object.  The position will be a Euclidean position.
-	 * @param v a Point object
-	 * */
+	/** Construct a new Position object from a Vect3 object. This method
+	 * assumes the Vect3 is in internal units. 
+	 * @param v three dimensional vector
+	 */
 	explicit Position(const Vect3& v);
 
 	Position(const Position& p);
@@ -132,8 +133,18 @@ public:
 	 */
 	static Position makeXYZ(double x, std::string x_unit, double y, std::string y_unit, double z, std::string z_unit);
 
+	/** Construct a new Position object from a LatLonAlt object. The position will be a Lat/Lon position. 
+	 * 
+	 * @param lla a latitude/longitude/altitude object
+	 * @return new Position object
+	 * */
 	static Position make(const LatLonAlt& lla);
 
+	/** Construct a new Position object from a Vect3 object. This method
+	 * assumes the Vect3 is in internal units. 
+	 * @param v three dimensional vector
+	 * @return new Position object
+	 */
 	static Position make(const Vect3& p);
 
 	//  private:
@@ -173,6 +184,12 @@ public:
 	 */
 	bool almostEquals(const Position& pp, double epsilon_horiz, double epsilon_vert) const;
 
+	/**
+	 * 
+	 * @param pp
+	 * @param epsilon_horiz max distance in meters
+	 * @return
+	 */
 	bool almostEquals2D(const Position& pp, double epsilon_horiz) const;
 
 	/** Are these two positions equal? */
@@ -361,9 +378,9 @@ public:
 	Position interpolate(const Position& p2, double f) const;
 
 
-	/** Return the track angle of the vector from the current Position to the given Position, based on initial course
+	/** Return the track angle of the vector from the current Position to the given Position, based on initial course 
 	 * @param p another position
-	 * @return track angle
+	 * @return track angle within [0..2PI]
 	 * */
 	double track(const Position& p) const;
 
@@ -392,12 +409,13 @@ public:
 	 */
 	static std::pair<Position,double> intersection(const Position& so, const Position& so2, double dto, const Position& si, const Position& si2);
 
-	/** Returns intersection point 
+	/** Returns intersection point between two lines defined by the four positions.  If the Postions are LatLonAlt
+	 * then the lines are Great Circle lines, otherwise they are infinite lines in Euclidean space. 
 	 * @param so     first point of infinite line A 
 	 * @param so2    second point of infinite line A 
 	 * @param si     first point of infinite line B
 	 * @param si2    second point of infinite line B 
-	 * @return       the intersection point,  if parallel returns INVALID
+	 * @return       the intersection point.  If parallel, return INVALID
 	 */
 	static Position intersection2D(const Position& so, const Position& so2, const Position& si, const Position& si2);
 
@@ -477,8 +495,8 @@ public:
 	 * */
 	std::string toStringNP() const;
 
-	/** Return a string representation, with a user-specified digits of precision (0-15) without parentheses.
-	 * @param precision digits of precision
+	/** Return a string representation, with a user-specified digits of precision (0-15) without units or parentheses.
+	 * @param precision digits of precision 
 	 * @return string representation
 	 * */
 	std::string toStringNP(int precision) const;

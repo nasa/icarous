@@ -48,22 +48,21 @@ public:
 	static const std::string defaultEntrySeparator;
 
 	ParameterData();
+	/** A database of parameters.  The database is initially empty.
+	 */
 	static ParameterData make();
 
 	/** 
-	 * Will set methods update the units in the database, or will the units
-	 * in the database be preserved?
+	 * Will the units in the database will be updated if a subsequent set operation changes them.
 	 * @return true, if the units in the database will be preserved when a set method is called.
 	 */
 	bool isPreserveUnits();
 	/**
-	 * If true, then all subsequent calls to "set.." methods will not update 
+	 * Controls whether all subsequent calls to "set.." methods will update 
 	 * the units in the database to the units supplied through a "set.." method.
-	 * The only exception is if the units in the database are "unspecified" then
-	 * the units in the database will be updated with the value of units supplied through 
-	 * a "set.." method.
+	 * The "unspecified" unit is never preserved.
 	 * 
-	 * @param v true when the units in the database should be preserved
+	 * @param v If true, then the units in the database should be preserved
 	 */
 	void setPreserveUnits(bool v);
 	/** 
@@ -75,7 +74,7 @@ public:
 	 */
 	bool isUnitCompatibility();
 	/**
-	 * Will set methods disallow updating a unit if the new unit is incompatible with the
+	 * Controls whether set methods disallow updating a unit if the new unit is incompatible with the
 	 * old unit.  Meters and feet are compatible, whereas meters and kilograms are not.
 	 * Most of the time, one wants the enforcement that compatible units are required,
 	 * but there may be some situations where this is undesired.
@@ -354,23 +353,23 @@ public:
 	 */
 	bool setInternal(const std::string& key, double value, const std::string& units, int prec);
 
-	/** 
-	 * Updates the unit for an existing entry. This ignores the setPreservedUnits() flag. 
-	 * You may create a blank entry in order to preemptively store a units value. 
-	 *  
-	 * @param key name of parameter 
-	 * @param unit unit for this parameter 
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, 
-	 *         otherwise it returns true. 
-	 * */
+	/**
+	 * Updates the unit for an existing entry. This ignores the setPreservedUnits() flag.
+	 * You may create a blank entry in order to preemptively store a units value.
+	 * 
+	 * @param key name of parameter
+	 * @param unit unit for this parameter
+	 * @return If the unit was changed then return true, otherwise false.  The unit may not
+	 * be changed because it was duplicative, incompatible, not a unit, etc.
+	 */
 	bool updateUnit(const std::string& key, const std::string& unit); 
 
 	/**
 	 * Updates entry's comment
-	 *
+	 * 
 	 * @param key name of parameter
 	 * @param msg the new comment of the parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 * @return If the entry does not exist, this returns false, otherwise it returns true.
 	 */
 	bool updateComment(const std::string& key, const std::string& msg);
 
@@ -409,9 +408,6 @@ public:
 
 
 
-	//	bool setValueOnly(const std::string& key, double value);
-	//	bool setDefaultUnit(const std::string& key, const std::string& unit);
-
 	/**
 	 * Checks the parameters against the supplied list, and returns a list of
 	 * unrecognized parameters that have been read, possible empty
@@ -433,9 +429,10 @@ public:
 	void listCopy(const ParameterData& p, const std::vector<std::string>& plist, bool overwrite);
 
 	/**
-	 * Copy a ParameterData object into this object.  That is, A.copy(B,true) means A &lt;--- B.
+	 * Copy a ParameterData object into this object.  That is, A.copy(B,true) means A &lt;--- B.  If either units or comments are not
+	 * defined in B, then the values in A are used.
 	 * @param p source ParameterData
-	 * @param overwrite if a parameter key exists in both this object and p, if overwrite is true then p's value will be used, otherwise this object's value will be used
+	 * @param overwrite if true and a key exists in both this object and p, then use p's value, otherwise keep the original value
 	 */
 	void copy(const ParameterData& p, bool overwrite);
 
@@ -451,12 +448,13 @@ public:
 	void removeAll(const std::vector<std::string>& key);
 
 	/**
-	 * Return this ParameterData as a single line string that can subsequently be parsed by parseLine()
-	 * @param separator A unique (to the key and value set) character string to separate each entry.  If this is null or the empty string, use the defaultEntrySeparator string instead.
-	 * @return Single-line string representation of this ParameterData object, possibly empty, or null if the separator is a substring of any key/value entry.
-	 *
-	 * Note that the delimiter will be included after each entry, including the last one.
-	 */
+	* Return this ParameterData as a single line string that can subsequently be parsed by parseLine()
+	* 
+	* @param separator A unique (to the key and value set) character string to separate each entry.  If this 
+	* is null or the empty string, use the defaultEntrySeparator string instead.
+	* @return Single-line string representation of this ParameterData object, possibly empty, or null 
+	* if the separator is a substring of any key/value entry. 
+	*/
 	std::string toParameterList(const std::string& separator) const;
 
 	/**
@@ -536,7 +534,8 @@ public:
 	 * the same, the result will be an empty ParameterData object.
 	 * @param base "base" or "default" ParameterData to compare this object to
 	 * @return A ParameterData object containing all parameters that are in this object, but not in the base, or that are in both but have different values.  This return may be empty.
-	 */	ParameterData delta(const ParameterData& base) const;
+	 */	
+	ParameterData delta(const ParameterData& base) const;
 
 
 	std::vector<int> getListInteger(const std::string& key) const;

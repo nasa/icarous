@@ -252,12 +252,12 @@ void CDCylinder::horizontalHazardZone(std::vector<Position>& haz,
   haz.clear();
   const Position& po = ownship.getPosition();
   Velocity v = Velocity::make(ownship.getVelocity().Sub(intruder.getVelocity()));
-  Vect3 sD = Horizontal::hmd_tangent_point(D_,v);
-  Velocity vD = Velocity::make(sD);
-  Velocity vnD = Velocity::make(sD.Neg());
-  if (T == 0) {
-    circular_arc(haz,po,vD,2*Pi,false);
+  if (Util::almost_equals(T,0) || Util::almost_equals(v.norm2D(),0)) {
+    circular_arc(haz,po,Velocity::mkVxyz(D_,0,0),2*Pi,false);
   } else {
+    Vect3 sD = Horizontal::unit_perpL(v).Scal(D_);
+    Velocity vD = Velocity::make(sD);
+    Velocity vnD = Velocity::make(sD.Neg());
     circular_arc(haz,po,vD,Pi,true);
     circular_arc(haz,po.linear(v,T),vnD,Pi,true);
   }

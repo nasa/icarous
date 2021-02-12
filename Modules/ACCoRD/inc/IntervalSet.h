@@ -215,7 +215,7 @@ public:
 	std::string toString() const;
 
 
-	/** Print the contents of this IntervalSet */
+
 	std::string toString(const std::string& unit) const;
 
 private:

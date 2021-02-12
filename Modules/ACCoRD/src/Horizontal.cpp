@@ -369,11 +369,11 @@ Horizontal Horizontal::opt_vertical(const Vect3& s,const Vect3& vo,const Vect3& 
   return NoHorizontalSolution();
 }
 
-/* Point in relative coordinates that is tangent to the circle of radius D, around
- * so, in the direction of the relative velocity vo-vi.
+/*
+ * Unit left perpendicular vector to v
  */
-Vect3 Horizontal::hmd_tangent_point(double D, const Vect3& v) {
-  return v.Hat2D().PerpL().Scal(D);
+Vect3 Horizontal::unit_perpL(const Vect3& v) {
+  return v.Hat2D().PerpL();
 }
 
 

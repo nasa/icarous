@@ -28,10 +28,12 @@ namespace larcfm {
 
 
 /**
- * A class to writes a separated value file (separated by commas, spaces, or tabs).<p>
- * only one file can be created from an object.<p>
+ * <p>A class to writes a separated value file (separated by commas, spaces, or tabs).<p>
+ * only one file can be created from an object.</p>
  * 
- * TODO Future: handle a memory buffer, standard output/error, file, socket?
+ * <p>
+ * Future: handle a memory buffer, standard output/error, file, socket?
+ * </p>
  */
 class SeparatedOutput : public ErrorReporter {
 private:

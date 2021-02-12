@@ -5,6 +5,7 @@
  * Rights Reserved.
  */
 
+#include "CDCylinder.h"
 #include "WCV_TCPA.h"
 #include "WCV_TCOA.h"
 #include "Vect3.h"
@@ -113,10 +114,20 @@ bool WCV_TCPA::contains(const Detection3D* cd) const {
 }
 
 void WCV_TCPA::hazard_zone_far_end(std::vector<Position>& haz,
-    const Position& po, const Velocity& v, const Velocity& vD, double T) const {
+    const Position& po, const Velocity& v, const Vect3& pu, double T) const {
   Position npo = po.linear(v,getTTHR()+T);
-  haz.push_back(npo.linear(vD,-1));
-  haz.push_back(npo.linear(vD,1));
+  Velocity vu = Velocity::make(pu);
+  haz.push_back(npo.linear(vu,-getDTHR()));
+  double b = v.norm2D()*getTTHR();
+  if (Util::almost_greater(getDTHR(),b)) {
+      // Far end has the form of a cap
+      double a = Util::sqrt_safe(Util::sq(getDTHR())-Util::sq(b));
+      double alpha = Util::acos_safe(b/getDTHR());
+      Vect3 vD = pu.ScalAdd(-a,v.Hat().Scal(b));
+      CDCylinder::circular_arc(haz,po.linear(v,T),
+              Velocity::make(vD),2*alpha,true);
+  }
+  haz.push_back(npo.linear(vu,getDTHR()));
 }
 
 
