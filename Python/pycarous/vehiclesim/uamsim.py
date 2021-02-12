@@ -39,6 +39,8 @@ class UamVtolSim(VehicleSimInterface):
     def SetInitialConditions(self,x=0,y=0,z=0,vx=0,vy=0,vz=0):
         self.pos0 = np.array([x,y,z])
         self.vel0 = np.array([vx,vy,vz])
+        self.trk,self.gs,self.vs = ConvertVnedToTrkGsVs(vy,vx,vz)
+        
 
     def Run(self, windFrom=0, windSpeed=0):
         vw = GetWindComponent(windFrom, windSpeed, NED=False)
