@@ -82,55 +82,55 @@ void PublishParams(param_t *params) {
     localTrafficParams.resType = (uint32_t) params[i].value;i++;;
     localTrafficParams.logDAAdata = (bool) params[i].value;i++;;
     localTrafficParams.lookahead_time = params[i].value;i++;;
-    localTrafficParams.left_trk = params[i].value;i++;;
-    localTrafficParams.right_trk = params[i].value;i++;;
+    //localTrafficParams.left_trk = params[i].value;i++;;
+    //localTrafficParams.right_trk = params[i].value;i++;;
     localTrafficParams.min_gs = params[i].value;i++;;
     localTrafficParams.max_gs = params[i].value;i++;;
     localTrafficParams.min_vs = params[i].value;i++;;
     localTrafficParams.max_vs = params[i].value;i++;;
     localTrafficParams.min_alt = params[i].value;i++;;
     localTrafficParams.max_alt = params[i].value;i++;;
-    localTrafficParams.trk_step = params[i].value;i++;;
-    localTrafficParams.gs_step = params[i].value;i++;;
-    localTrafficParams.vs_step = params[i].value;i++;;
-    localTrafficParams.alt_step = params[i].value;i++;;
+    //localTrafficParams.trk_step = params[i].value;i++;;
+    //localTrafficParams.gs_step = params[i].value;i++;;
+    //localTrafficParams.vs_step = params[i].value;i++;;
+    //localTrafficParams.alt_step = params[i].value;i++;;
     localTrafficParams.horizontal_accel = params[i].value;i++;;
     localTrafficParams.vertical_accel = params[i].value;i++;;
     localTrafficParams.turn_rate = params[i].value;i++;;
-    localTrafficParams.bank_angle = params[i].value;i++;;
-    localTrafficParams.vertical_rate = params[i].value;i++;;
-    localTrafficParams.recovery_stability_time = params[i].value;i++;;
+    //localTrafficParams.bank_angle = params[i].value;i++;;
+    //localTrafficParams.vertical_rate = params[i].value;i++;;
+    //localTrafficParams.recovery_stability_time = params[i].value;i++;;
     localTrafficParams.persistence_time = params[i].value;i++;;
-    localTrafficParams.min_horizontal_recovery = params[i].value;i++;;
-    localTrafficParams.min_vertical_recovery = params[i].value;i++;;
-    localTrafficParams.recovery_trk = (bool) params[i].value;i++;;
-    localTrafficParams.recovery_gs = (bool) params[i].value;i++;;
-    localTrafficParams.recovery_vs = (bool) params[i].value;i++;;
-    localTrafficParams.recovery_alt = (bool) params[i].value;i++;;
-    localTrafficParams.ca_bands = (bool) params[i].value;i++;;
-    localTrafficParams.ca_factor = params[i].value;i++;;
-    localTrafficParams.horizontal_nmac = params[i].value;i++;;
-    localTrafficParams.vertical_nmac = params[i].value;i++;;
-    localTrafficParams.conflict_crit = (bool) params[i].value;i++;;
-    localTrafficParams.recovery_crit = (bool) params[i].value;i++;;
-    localTrafficParams.contour_thr = params[i].value;i++;;
-    localTrafficParams.alert_1_alerting_time = params[i].value;i++;;
-    strcpy(localTrafficParams.alert_1_detector, "det_1");   //Hard coded, not parameter
-    localTrafficParams.alert_1_early_alerting_time = params[i].value;i++;;
-    strcpy(localTrafficParams.alert_1_region, "NEAR");      //Hard coded, not parameter
-    localTrafficParams.alert_1_spread_alt = params[i].value;i++;;
-    localTrafficParams.alert_1_spread_gs = params[i].value;i++;;
-    localTrafficParams.alert_1_spread_trk = params[i].value;i++;;
-    localTrafficParams.alert_1_spread_vs = params[i].value;i++;;
-    strcpy(localTrafficParams.load_core_detection_det_1, "WCV_TAUMOD"); //Hard coded, not parameter
+    //localTrafficParams.min_horizontal_recovery = params[i].value;i++;;
+    //localTrafficParams.min_vertical_recovery = params[i].value;i++;;
+    //localTrafficParams.recovery_trk = (bool) params[i].value;i++;;
+    //localTrafficParams.recovery_gs = (bool) params[i].value;i++;;
+    //localTrafficParams.recovery_vs = (bool) params[i].value;i++;;
+    //localTrafficParams.recovery_alt = (bool) params[i].value;i++;;
+    //localTrafficParams.ca_bands = (bool) params[i].value;i++;;
+    //localTrafficParams.ca_factor = params[i].value;i++;;
+    //localTrafficParams.horizontal_nmac = params[i].value;i++;;
+    //localTrafficParams.vertical_nmac = params[i].value;i++;;
+    //localTrafficParams.conflict_crit = (bool) params[i].value;i++;;
+    //localTrafficParams.recovery_crit = (bool) params[i].value;i++;;
+    //localTrafficParams.contour_thr = params[i].value;i++;;
+    //localTrafficParams.alert_1_alerting_time = params[i].value;i++;;
+    //strcpy(localTrafficParams.alert_1_detector, "det_1");   //Hard coded, not parameter
+    //localTrafficParams.alert_1_early_alerting_time = params[i].value;i++;;
+    //strcpy(localTrafficParams.alert_1_region, "NEAR");      //Hard coded, not parameter
+    //localTrafficParams.alert_1_spread_alt = params[i].value;i++;;
+    //localTrafficParams.alert_1_spread_gs = params[i].value;i++;;
+    //localTrafficParams.alert_1_spread_trk = params[i].value;i++;;
+    //localTrafficParams.alert_1_spread_vs = params[i].value;i++;;
+    //strcpy(localTrafficParams.load_core_detection_det_1, "WCV_TAUMOD"); //Hard coded, not parameter
     localTrafficParams.det_1_WCV_DTHR = params[i].value;i++;;
-    localTrafficParams.det_1_WCV_TCOA = params[i].value;i++;;
-    localTrafficParams.det_1_WCV_TTHR = params[i].value;i++;;
+    //localTrafficParams.det_1_WCV_TCOA = params[i].value;i++;;
+    //localTrafficParams.det_1_WCV_TTHR = params[i].value;i++;;
     localTrafficParams.det_1_WCV_ZTHR = params[i].value;i++;;
 
     SendSBMsg(localTrafficParams);
     #else
-       for(int k=0;k<45;++k) i++;
+       for(int k=0;k<16;++k) i++;
     #endif
 
     // Trajectory parameters
@@ -202,14 +202,14 @@ void PublishParams(param_t *params) {
     localGuidanceParams.climbAngleVRange = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleHRange = (double) params[i].value;i++;;
     localGuidanceParams.climbRateGain = (double) params[i].value;i++;;
-    localGuidanceParams.minClimbRate = (double) params[8].value * 0.00508;
-    localGuidanceParams.maxClimbRate = (double) params[9].value * 0.00508;
+    localGuidanceParams.minClimbRate = (double) params[6].value * 0.00508;
+    localGuidanceParams.maxClimbRate = (double) params[7].value * 0.00508;
     localGuidanceParams.maxCap = (double) params[i].value;i++;;
     localGuidanceParams.minCap = (double) params[i].value;i++;;
-    localGuidanceParams.minSpeed = (double) params[6].value * 0.5;
-    localGuidanceParams.maxSpeed = (double) params[7].value * 0.5;
+    localGuidanceParams.minSpeed = (double) params[4].value * 0.5;
+    localGuidanceParams.maxSpeed = (double) params[5].value * 0.5;
     localGuidanceParams.yawForward = (bool) params[i].value;i++;;
-    localGuidanceParams.turnRateGain = (bool) params[i].value;
+    localGuidanceParams.turnRateGain = (double) params[i].value;
     SendSBMsg(localGuidanceParams);
     #endif
 
