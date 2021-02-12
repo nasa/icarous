@@ -156,7 +156,7 @@ class IcarousRunner(IcarousInterface):
             self.fences.append(gf)
 
     def InputMergeFixes(self, filename):
-        wp, _, _ = ReadFlightplanFile(filename)
+        wp, _, _, _, _ = ReadFlightplanFile(filename)
         self.localMergeFixes = list(map(self.ConvertToLocalCoordinates, wp))
         self.mergeFixes = wp
         dest = os.path.join(icarous_home, "exe", "ram", "merge_fixes.txt")
