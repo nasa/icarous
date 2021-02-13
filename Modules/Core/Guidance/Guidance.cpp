@@ -14,6 +14,7 @@ Guidance::Guidance(const GuidanceParams_t* inputParams){
     currTime = 0;
     prevTrackControllerTime = 0.0;
     prevTrackControllerTarget = 0.0;
+    currentPlan = NULL;
 }
 
 void Guidance::SetGuidanceParams(const GuidanceParams_t* inputParams){

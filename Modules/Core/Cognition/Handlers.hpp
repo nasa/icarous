@@ -3,6 +3,22 @@
 
 #define MAKE_HANDLER(NAME) std::make_shared<NAME>()
 
+class EngageNominalPlan: public EventHandler<CognitionState_t>{
+    retVal_e Initialize(CognitionState_t* state){
+        if(state->missionStart > 0){
+            state->nextWpId["Plan0"] = state->missionStart;
+            state->missionStart = -1;
+        }
+        return SUCCESS;
+    }
+
+    retVal_e Execute(CognitionState_t* state){
+       LogMessage(state,"[HANDLER] | Engage nominal plan");
+       SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+       return SUCCESS;
+    }
+};
+
 class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
        TakeoffCommand takeoff_command;
@@ -15,6 +31,7 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 
    retVal_e Terminate(CognitionState_t* state){
        if(state->takeoffComplete == 1){
+           SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
            return SUCCESS;
        }else if(state->takeoffComplete != 0){
            LogMessage(state,"[WARNING] | Takeoff failed");
@@ -22,26 +39,6 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        }
        return INPROGRESS;
    }
-};
-
-class EngageNominalPlan: public EventHandler<CognitionState_t>{
-    retVal_e Initialize(CognitionState_t* state){
-        if(state->missionStart > 0){
-            state->nextWpId["Plan0"] = state->missionStart;
-            state->missionStart = -1;
-        }
-
-        if(state->takeoffComplete == 1){
-            state->takeoffComplete = 0;
-        }
-        return SUCCESS;
-    }
-
-    retVal_e Execute(CognitionState_t* state){
-       LogMessage(state,"[HANDLER] | Engage nominal plan");
-       SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
-       return SUCCESS;
-    }
 };
 
 class Vector2Mission: public EventHandler<CognitionState_t>{
@@ -93,7 +90,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
             double vs  = fp->vsIn(wpID);
             positionB = state->clstPoint;
             velocityB = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-        }else if(state->parameters.return2NextWP == 1){
+        }else{
             positionB = GetNextWP(fp,state->nextFeasibleWpId);
             velocityB = GetNextWPVelocity(fp,state->nextFeasibleWpId);
             state->nextWpId[state->activePlan->getID()] = state->nextFeasibleWpId;
@@ -400,7 +397,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
             if(state->parameters.return2NextWP < 2){
                 ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
             }else{
-                ExecuteHandler(MAKE_HANDLER(Vector2Mission),"PostTrafficConflict");
+                ExecuteHandler(MAKE_HANDLER(Vector2Mission),"PostTrafficConflict",priority-0.6);
             }
         }
         std::string message = " against ";

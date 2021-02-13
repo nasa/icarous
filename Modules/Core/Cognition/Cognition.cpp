@@ -314,7 +314,7 @@ std::map<std::string,int> GetPriorityValues(){
     std::map<std::string,int> inputPriorities;
     // Set default priority values 
     inputPriorities["Takeoff"] = 1;
-    inputPriorities["NominalDeparture"] = 1;
+    inputPriorities["NominalDeparture"] = 6;
     inputPriorities["PrimaryPlanComplete"] = 1;
     inputPriorities["SecondaryPlanComplete"] = 1;
     inputPriorities["Merging"] = 3;

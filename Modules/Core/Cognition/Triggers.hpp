@@ -6,10 +6,6 @@ bool TakeoffTrigger(CognitionState_t* state){
            !state->keepOutConflict;
 }
 
-bool NominalDepartureTrigger(CognitionState_t* state){
-    return state->takeoffComplete == 1 || state->missionStart > 0;
-}
-
 bool FenceConflictTrigger(CognitionState_t* state){
     return state->planProjectedFenceConflict && state->timeToFenceViolation < 10 &&
            !state->trafficConflict && state->parameters.active;
@@ -61,7 +57,9 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
     conflict = conflict || state->allTrafficConflicts[ALTITUDE_RESOLUTION];
     conflict = conflict || state->allTrafficConflicts[VERTICALSPEED_RESOLUTION];
 
-    conflict = conflict && state->planProjectedTrafficConflict;
+    if(state->parameters.return2NextWP < 2){
+        conflict = conflict && state->planProjectedTrafficConflict;
+    }
 
     state->trafficConflict = conflict && state->parameters.active;
     return state->trafficConflict;
