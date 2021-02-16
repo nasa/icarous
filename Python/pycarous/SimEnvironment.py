@@ -221,12 +221,20 @@ class SimEnvironment:
         # Send messages to distributed sim instances
         if self.network is not None:
             messages = []
+
+            if all(ic.missionComplete for ic in self.icInstances):
+                self.network.Unsubscribe()
+                return
+
             for msg in self.comm_channel.messages:
                 msg = msg._asdict()
                 msg['data'] = msg['data']._asdict()
                 messages.append(msg)
             self.network.Transmit(messages)
             self.comm_channel.flush()
+
+            
+
 
     def ReceiveV2VData(self):
         # Receive messages from distributed sim instances
@@ -325,6 +333,7 @@ class SimEnvironment:
             self.TransmitV2VData()
 
             simComplete = all(ic.missionComplete for ic in self.icInstances)
+
 
         # Convert flightplans from all instances to a common reference frame
         for ic in self.icInstances:

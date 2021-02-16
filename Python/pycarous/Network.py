@@ -21,11 +21,15 @@ class ZMQNetwork:
             self.sockclient.send_json({'type':'sync_rep','status':synchronized})
             self.sockclient.recv_json()
 
-    def Transmit(self,messages):
+    def Transmit(self,messages=[]):
         n = len(messages)
-        for i,msg in enumerate(messages):
-            self.sockclient.send_json({'type':'report','count':(n-1)-i,'payload':msg})
+        if n == 0:
+            self.sockclient.send_json({'type':'report','count':-1,'payload':{}})
             request = self.sockclient.recv_json() 
+        else:
+            for i,msg in enumerate(messages):
+                self.sockclient.send_json({'type':'report','count':(n-1)-i,'payload':msg})
+                request = self.sockclient.recv_json() 
 
         messages = []
 
@@ -40,6 +44,10 @@ class ZMQNetwork:
                 complete = True
 
         return messages
+
+    def Unsubscribe(self):
+        self.sockclient.send_json({'type':'report','count':-2,'payload':{}})
+        request = self.sockclient.recv_json() 
 
 class Controller:
     import zmq;
@@ -77,7 +85,7 @@ class Controller:
         # Trigger the first step in all simulations
         self.sockpub.send_json({'type':'run'})
         count = 0
-        while True:
+        while self.numSubs > 0:
             # Listen for reports from clients
             socks = dict(self.poller.poll(self.timeout))
             if socks.get(self.sockserver) == self.zmq.POLLIN:
@@ -85,18 +93,23 @@ class Controller:
                 if msg['type'] == 'report':
                     #print(msg['count'],msg['payload'])
                     # If report is multipart, requests parts
-                    if msg['count'] != 0:
+                    if msg['count'] > 0:
                         #print('sending report')
                         self.sockserver.send_json({'type':'send_report'})
                     else:
                         # Acknowledge final receipt
                         #print('sending ack')
                         self.sockserver.send_json({'type':'received'})
-                        count = count + 1
+                        if msg['count'] >= -1:
+                            count += 1
+                        else:
+                            self.numSubs -= 1
+                            print('Removing subscriber')
 
                 # Send telemtry to all subscribers
-                #print('send to all subs')
-                self.sockpub.send_json({'type':'telemetry','payload':msg['payload']})
+                if msg['payload'] != {}:
+                    #print('send to all subs')
+                    self.sockpub.send_json({'type':'telemetry','payload':msg['payload']})
 
                 # Trigger to run simulation step
                 if count == self.numSubs:
