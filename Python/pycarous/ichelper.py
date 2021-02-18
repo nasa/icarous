@@ -308,10 +308,10 @@ def ParseDaidalusConfiguration(filename):
             ("value",c_double)
         ]
 
-    lib.ParseParameterFile.argtype = [c_char_p,ParsedParam*100]
+    lib.ParseParameterFile.argtypes = [c_char_p,ParsedParam*500]
     lib.ParseParameterFile.restype = c_int
 
-    ParamsArray = ParsedParam * 100
+    ParamsArray = ParsedParam * 500
     params = ParamsArray()
     n = lib.ParseParameterFile(c_char_p(filename.encode('utf-8')),params)
     DaidalusParam = {}
