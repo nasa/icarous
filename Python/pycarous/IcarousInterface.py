@@ -364,12 +364,30 @@ class IcarousInterface(abc.ABC):
         if self.daaConfig:
             daaparams = ParseDaidalusConfiguration(self.daaConfig)
             m2ft = 3.28084
-            alerter = daaparams['alerters'][1].split(',')[0].lower()
-            self.params["AL_1_ALERT_T"] = daaparams[alerter+'_alert_1_alerting_time'][0]
-            self.params["DET_1_WCV_DTHR"] = daaparams[alerter+'_det_1_wcv_dthr'][0]*m2ft
-            self.params["DET_1_WCV_TCOA"] = daaparams[alerter+'_det_1_wcv_tcoa'][0]
-            self.params["DET_1_WCV_TTHR"] = daaparams[alerter+'_det_1_wcv_tthr'][0]
-            self.params["DET_1_WCV_ZTHR"] = daaparams[alerter+'_det_1_wcv_zthr'][0]*m2ft
+
+            correctiveRegion = daaparams['corrective_region'][1]
+            alerterFound = False
+            alerterList = daaparams['alerters'][1].split(',')
+            alerterCorrective = ''
+            detector = ''
+            for alerter in alerterList:
+                count = 1
+                while alerterCorrective == '':
+                    alerter = alerter.lower()
+                    if daaparams[alerter+'_alert_'+str(count)+'_region'][1] == correctiveRegion:
+                        alerterCorrective = alerter
+                        detector = daaparams[alerter+'_alert_'+str(count)+'_detector'][1]
+                        break
+                    else:
+                        count += 1
+                if alerterCorrective != '':
+                    break
+
+            self.params["DET_1_WCV_DTHR"]=daaparams[alerterCorrective+'_'+detector+'_wcv_dthr'][0]*m2ft
+            self.params["DET_1_WCV_ZTHR"]=daaparams[alerterCorrective+'_'+detector+'_wcv_zthr'][0]*m2ft
+            self.params["DET_1_WCV_TCOA"] = daaparams[alerterCorrective+'_'+detector+'_wcv_tcoa'][0]*m2ft
+            self.params["DET_1_WCV_TTHR"] = daaparams[alerterCorrective+'_'+detector+'_wcv_tthr'][0]*m2ft
+            self.params["AL_1_ALERT_T"] = daaparams[alerterCorrective+'_alert_'+str(count)+'_alerting_time'][0]
             self.params["HORIZONTAL_NMAC"] = daaparams['horizontal_nmac'][0]*m2ft
             self.params["VERTICAL_NMAC"] = daaparams['vertical_nmac'][0]*m2ft
 
