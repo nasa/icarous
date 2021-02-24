@@ -2,6 +2,7 @@ import sys
 import os
 import time
 import shutil
+import signal
 import subprocess
 import numpy as np
 from pymavlink import mavutil, mavwp
@@ -25,29 +26,26 @@ class IcarousRunner(IcarousInterface):
     Interface to launch and control a cFS instance of ICAROUS from python
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0,
-                 verbose=1, logRateHz=5, apps="default", sitl=False, out=None):
+                 verbose=1, logRateHz=5, apps="default", sim_app="rotorsim", out=None):
         """
         Initialize an instance of ICAROUS running in cFS
         :param apps: List of the apps to run, or "default" to use default apps
-        :param sitl: When True, launch arducopter for vehicle simulation
+        :param sim_app: Icarous app to use for vehicle simulation (default is "rotorsim")
         :param out: port number to forward MAVLink data for visualization
                     (use out=None to turn off MAVLink output)
         Other parameters are defined in parent class, see IcarousInterface.py
         """
         super().__init__(home_pos, callsign, vehicleID, verbose)
 
+        self.sim_app = sim_app
+        self.sim_process = None
         self.SetApps(apps=apps)
+        print("%s sim app: %s" % (self.callsign, sim_app))
         self.daaConfig = os.path.join(icarous_home, "exe", "ram", "DaidalusQuadConfig.txt")
-        self.sitl = sitl
         self.out = out
         self.cpu_id = self.vehicleID + 1
         self.spacecraft_id = self.vehicleID
-        if "rotorsim" in self.apps:
-            self.simType = "cFS/rotorsim"
-        elif "arducopter" in self.apps:
-            self.simType = "cFS/SITL"
-        else:
-            self.simType = "cFS"
+        self.simType = "cFS/%s" % sim_app
 
         # Set up mavlink connections
         icarous_port = 14553 + 10*self.spacecraft_id
@@ -86,26 +84,31 @@ class IcarousRunner(IcarousInterface):
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, target_system=1, target_component=0)
 
-        # Launch SITL
-        if self.sitl:
+        # Launch SITL if necessary
+        if sim_app == "arducopter":
             self.launch_arducopter()
+        elif sim_app == "px4":
+            self.launch_px4()
 
     def launch_arducopter(self):
         start_point = ','.join(str(x) for x in self.home_pos + [0])
-        sitl_param_file = os.path.join(icarous_home, "Python", "TestRunner",
-                                       "sitl_files", "sitl_defaults.parm")
-        arguments = ["sim_vehicle.py", "-v", "ArduCopter",
-                     "-l", str(start_point),
-                     "--add-param-file", sitl_param_file,
-                     "--use-dir", "sitl_files",
-                     "-I", str(self.spacecraft_id)]
         logfile = "sitl-%s-%f.tlog" % (self.callsign, time.time())
-        arguments += ["-m", "--logfile="+logfile]
-        subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
+        arguments = [
+            "sim_vehicle.py",
+            "-v", "ArduCopter",
+            "-l", str(start_point),
+            "--use-dir", "sitl_files",
+            "-I", str(self.spacecraft_id),
+            "-m", "--logfile="+logfile,
+        ]
+        self.sim_process = subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
 
         if self.verbose:
             print("Waiting several seconds to allow ArduCopter to start up")
         time.sleep(60)
+
+    def launch_px4(self):
+        print("launching px4")
 
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         # Setting position uncertainty isn't supported for cFS simulations
@@ -238,7 +241,9 @@ class IcarousRunner(IcarousInterface):
         self.terminated = True
         self.ic.kill()
         if self.out is not None:
-            subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
+            self.mav_forwarding.send_signal(signal.SIGINT)
+        if self.sim_process is not None:
+            self.sim_process.send_signal(signal.SIGINT)
 
     def SetApps(self, apps="default"):
         """
@@ -246,15 +251,19 @@ class IcarousRunner(IcarousInterface):
         :param apps: List of the apps to run, or "default" to use default apps
         """
         if apps == "default":
-            app_list = ["Icarouslib","port_lib", "scheduler", "gsInterface",
-                        "cognition", "guidance", "traffic", "trajectory",
-                        "geofence", "rotorsim"]
-        else:
-            app_list = apps
+            apps = ["Icarouslib","port_lib", "scheduler", "gsInterface",
+                    "cognition", "guidance", "traffic", "trajectory",
+                    "geofence", "rotorsim"]
+
+        # Set app used for vehicle simulation (remove other sim apps if present)
+        if "rotorsim" in apps: apps.remove("rotorsim")
+        if "arducopter" in apps: apps.remove("arducopter")
+        if "px4" in apps: apps.remove("px4")
+        apps.append(self.sim_app)
 
         approot = os.path.join(icarous_home, "apps")
         outputloc = os.path.join(icarous_exe, "cf")
         script = os.path.join(icarous_home, "Python/cFS_Utils/ConfigureApps.py")
 
-        subprocess.call(["python3", script, approot, outputloc, *app_list])
-        self.apps = app_list
+        subprocess.call(["python3", script, approot, outputloc, *apps])
+        self.apps = apps
