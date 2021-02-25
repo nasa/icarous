@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define MAX_NODES 5
+#define MAX_NODES 10 
 #define INTERSECTION_MAX 5
 #define MERGER_MAXAIRCRAFT MAX_NODES
 

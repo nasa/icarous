@@ -193,31 +193,6 @@ class SimEnvironment:
         self.mergeFixFile = filename
 
     def TransmitV2VData(self):
-        # Gather logs to be exchanged for merging activity
-        log = {}
-        for ic in self.icInstances:
-            if ic.arrTime is not None:
-                intsid = ic.arrTime.intersectionID
-                if intsid in log.keys():
-                    log[intsid].append(ic.arrTime)
-                else:
-                    log[intsid] = [ic.arrTime]
-
-        # Transmit all merger log data
-        for lg in log:
-            datalog = LogData()
-            datalog.intersectionID = log[lg][0].intersectionID
-            datalog.nodeRole = 1
-            datalog.totalNodes = len(log[lg])
-            mg = MergerData*MAX_NODES
-            datalog.log = mg(*log[lg])
-            for ic in self.icInstances:
-                # Do not broadcast if running SBN
-                if "SBN" in ic.apps:
-                    continue
-                mergelog = V2Vdata("MERGER",datalog)
-                ic.transmitter.transmit(self.current_time, ic.position, mergelog)
-
         # Send messages to distributed sim instances
         if self.network is not None:
             messages = []
@@ -234,8 +209,6 @@ class SimEnvironment:
             self.comm_channel.flush()
 
             
-
-
     def ReceiveV2VData(self):
         # Receive messages from distributed sim instances
         if self.network is not None:

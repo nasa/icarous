@@ -121,6 +121,9 @@ class IcarousRunner(IcarousInterface):
             positionNED = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, position, velocity, positionNED)
 
+    def InputMergeData(self, logs, delay):
+        pass
+
     def InputFlightplan(self, fp, eta=False, repair=False):
 
         waypoints = ConstructWaypointsFromList(fp,eta) 

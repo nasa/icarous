@@ -2,7 +2,7 @@ from ctypes import byref
 import numpy as np
 import time
 
-from Interfaces import CommandTypes, GeofenceConflict
+from Interfaces import CommandTypes, GeofenceConflict, V2Vdata
 from Cognition import Cognition, CognitionParams
 from Guidance import Guidance, GuidanceParam, GuidanceMode
 from Geofence import GeofenceMonitor
@@ -71,7 +71,6 @@ class Icarous(IcarousInterface):
         self.arrTime = None
         self.logLatency = 0
         self.prevLogUpdate = 0
-        self.mergerLog = LogData()
         self.localMergeFixes = []
 
         # Flight plan data
@@ -105,6 +104,9 @@ class Icarous(IcarousInterface):
         self.windFrom = 0.0
         self.windSpeed = 0.0
         self.defaultWPSpeed = 1.0
+        self.mergeLogs = {}
+        self.intersectionID = -2
+        self.arrData = None
 
     def SetPosUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         self.ownship.SetPosUncertainty(xx, yy, zz, xy, xz, yz, coeff)
@@ -538,25 +540,27 @@ class Icarous(IcarousInterface):
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)
-        if self.currTime - self.prevLogUpdate > self.logLatency:
-            self.Merger.SetMergerLog(self.mergerLog)
-            self.prevLogUpdate = self.currTime
 
         mergingActive = self.Merger.Run(self.currTime)
         self.Cog.InputMergeStatus(mergingActive)
-        outAvail, arrTime =  self.Merger.GetArrivalTimes()
-        if outAvail:
-            if arrTime.intersectionID > 0:
-                self.arrTime = arrTime
         if mergingActive == 3:
             velCmd = self.Merger.GetVelocityCmd()
             speedChange = velCmd[1]
             nextWP = self.nextWP1
             self.Guidance.ChangeWaypointSpeed("Plan0",nextWP,speedChange,False)
 
-    def InputMergeLogs(self,logs,delay):
-        self.mergerLog = logs
-        self.logLatency = delay
+    def InputMergeData(self,data):
+        if data['intersectionID'] == self.intersectionID:
+            self.mergeLogs[data['aircraftID']] = data
+            sortkeys = list(self.mergeLogs.keys()).sort()
+            datalog = LogData()
+            datalog.intersectionID = data['intersectionID']
+            datalog.nodeRole = 1
+            datalog.totalNodes = len(self.mergeLogs)
+            mg = MergerData*MAX_NODES
+            for i,key in enumerate(self.mergeLogs):
+                datalog.log[i].fromJson(self.mergeLogs[key])
+            self.Merger.SetMergerLog(datalog)
 
     def StartMission(self):
         self.Cog.InputStartMission(0, 0)
@@ -566,6 +570,26 @@ class Icarous(IcarousInterface):
         if self.land:
             self.missionComplete = True
         return self.missionComplete
+
+    def TransmitMergingData(self):
+        """ Transmit data to coordinate merges """
+        # Do not broadcast if running SBN
+        if self.transmitter is None:
+            return
+        if not self.missionStarted or self.missionComplete:
+            return
+
+        out,arrdata = self.Merger.GetArrivalTimes()
+        if out:
+            self.arrdata = arrdata.toJson()
+            if self.intersectionID != self.arrdata['intersectionID']:
+                self.mergeLogs = {}
+            self.mergeLogs[self.arrdata['aircraftID']] = self.arrdata
+            self.intersectionID = self.arrdata['intersectionID']
+        if self.intersectionID > 0:
+            msg = V2Vdata('MERGER',self.arrdata)
+            self.transmitter.transmit(self.currTime, self.position, msg)
+
 
     def Run(self):
         time_now = time.time()
@@ -613,6 +637,8 @@ class Icarous(IcarousInterface):
         self.RunMerger()
 
         self.TransmitPosition()
+
+        self.TransmitMergingData()
 
         #print("cog     %f" % (time_cog_out - time_cog_in))
         #print("geofence %f" % (time_geof_out - time_geof_in))

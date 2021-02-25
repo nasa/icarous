@@ -145,10 +145,7 @@ class IcarousInterface(abc.ABC):
         if data.type == "INTRUDER":
             self.InputTraffic(data.payload["callsign"], data.payload["pos"], data.payload["vel"])
         elif data.type == "MERGER":
-            if self.arrTime is None:
-                return
-            elif self.arrTime.intersectionID == data.payload.intersectionID:
-                self.InputMergeLogs(data.payload, 0.0)
+            self.InputMergeData(data.payload)
 
     @abc.abstractmethod
     def InputTraffic(self, callsign, position, velocity):
@@ -216,7 +213,7 @@ class IcarousInterface(abc.ABC):
         self.SetParameters(params)
 
     @abc.abstractmethod
-    def InputMergeLogs(self, logs, delay):
+    def InputMergeData(self, logs, delay):
         """
         Input V2V merge coordination data
         :param logs: merging log data
