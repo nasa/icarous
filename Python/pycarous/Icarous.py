@@ -144,17 +144,19 @@ class Icarous(IcarousInterface):
         speed = dist/(waypoints[1].time-waypoints[0].time)
         hdg   = ComputeHeading([waypoints[0].latitude,waypoints[0].longitude,0],[waypoints[1].latitude,waypoints[1].longitude,0])
         vn,ve,vd = ConvertTrkGsVsToVned(hdg,speed,0)
-        self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
+        if not eta:
+            self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
     def InputFlightplanFromFile(self,filename,eta=False,repair=False):
         import re
         match = re.search('\.eutl',filename)
         waypoints = []
-        if match is null:
+        if match is None:
             fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
             waypoints = ConstructWaypointsFromList(fp,eta) 
         else:
             waypoints = GetEUTLPlanFromFile(filename,self.vehicleID)
+            eta = True
         self.InputFlightplan(waypoints,eta,repair)
 
     def InputGeofence(self,filename):
