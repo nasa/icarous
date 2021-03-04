@@ -15,6 +15,7 @@
 #include <fstream>
 #include <cstring>
 #include <StateReader.h>
+#include <PlanReader.h>
 
 using namespace larcfm;
 
@@ -465,4 +466,15 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     }
 
     return i;
+}
+
+int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[]){
+    larcfm::PlanReader planReader;
+    planReader.open(std::string(filename));
+    larcfm::Plan plan = planReader.getPlan(id);
+    int n = plan.size();
+    for(int i=0;i<n;++i){
+        GetWaypointFromPlan(&plan,i,waypoints[i]);
+    }
+    return n;
 }

@@ -321,3 +321,19 @@ def ParseDaidalusConfiguration(filename):
             DaidalusParam[key] =[param.value, param.valueString.decode('utf-8')]
 
     return DaidalusParam
+
+def GetEUTLPlanFromFile(filename,index):
+    from ctypes import CDLL,c_char_p,c_int
+    from Interfaces import Waypoint,TcpType
+    lib = CDLL('libUtils.so')
+    wpArray = Waypoint*100
+    wps = wpArray()
+    lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray]
+    lib.GetEUTLPlanFromFile.restype  = c_int
+    n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps)
+    return wps,n
+    
+  
+
+
+

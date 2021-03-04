@@ -19,6 +19,7 @@ from ichelper import (ConvertTrkGsVsToVned,
                       ComputeHeading,
                       LoadIcarousParams,
                       ReadFlightplanFile,
+                      GetEUTLPlanFromFile,
                       ConstructWaypointsFromList)
 import time
 from IcarousInterface import IcarousInterface
@@ -122,9 +123,8 @@ class Icarous(IcarousInterface):
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, position, velocity, localPos)
 
-    def InputFlightplan(self,fp,eta=False,repair=False):
+    def InputFlightplan(self,waypoints,eta=False,repair=False):
         
-        waypoints = ConstructWaypointsFromList(fp,eta) 
         
         self.etaFP1 = eta
         self.localPlans.append(self.GetLocalFlightPlan(waypoints))
@@ -147,8 +147,15 @@ class Icarous(IcarousInterface):
         self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
     def InputFlightplanFromFile(self,filename,eta=False,repair=False):
-        fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
-        self.InputFlightplan(fp,eta,repair)
+        import re
+        match = re.search('\.eutl',filename)
+        waypoints = []
+        if match is null:
+            fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
+            waypoints = ConstructWaypointsFromList(fp,eta) 
+        else:
+            waypoints = GetEUTLPlanFromFile(filename,self.vehicleID)
+        self.InputFlightplan(waypoints,eta,repair)
 
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
