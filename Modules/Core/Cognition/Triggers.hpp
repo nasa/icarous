@@ -3,7 +3,8 @@
 bool TakeoffTrigger(CognitionState_t* state){
     return state->missionStart == 0 && 
            !state->keepInConflict &&
-           !state->keepOutConflict;
+           !state->keepOutConflict &&
+           state->utcTime >= state->scenarioTime;
 }
 
 bool FenceConflictTrigger(CognitionState_t* state){
