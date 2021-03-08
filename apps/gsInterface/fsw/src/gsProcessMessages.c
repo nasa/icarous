@@ -7,6 +7,9 @@
 #include "gsInterface.h"
 #include "UtilFunctions.h"
 
+
+extern appdataIntGS_t appdataIntGS;
+
 const mavlink_icarous_kinematic_bands_t EMPTY_BAND_MSG = {
   .type1 = END_OF_REGION,
   .min1 = 0,

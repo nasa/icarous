@@ -191,7 +191,6 @@ void gsSendCallsign(void);
  */
 int32_t gsInterfaceTableValidationFunc(void *TblPtr);
 
-appdataIntGS_t appdataIntGS;
 
 /**
  *  Send all locally stored params over the SB

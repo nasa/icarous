@@ -10,6 +10,9 @@
 #include "gsInterface_events.h"
 #include "gsIntf_tbl.c"
 
+
+appdataIntGS_t appdataIntGS;
+
 /// Event filter definition for ardupilot
 CFE_EVS_BinFilter_t  gsInterface_EventFilters[] =
 {  /* Event ID    mask */
