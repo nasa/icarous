@@ -1,7 +1,7 @@
 future==0.18.2
 ipython==7.16.1
 ipython-genutils==0.2.0
-lxml==4.5.2
+lxml==4.6.2
 Markdown==3.2.2
 matplotlib==3.2.2
 numpy==1.19.0
