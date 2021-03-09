@@ -104,21 +104,14 @@ class AgentAnimation():
         speed = np.sqrt(vel[0]**2 + vel[1]**2)
         poly.labelText.set_text('Z:%.2f[m]\nS:%.2f[mps]' % (z,speed))
 
-    def AddPath(self,path,color):
+    def AddPath(self,path,color,points = []):
         if (path.shape[0] < 2):
             return
-        if path.shape[1] == 10:
-            tcps = path[:,4:7]
-            tcpValues = path[:,7:10]
-            if np.sum(tcps) > 0:
-                from AccordUtil import plotTcpPlan
-                n,e,d,ptn,pte,ptd = plotTcpPlan(path,tcps,tcpValues)
-                plt.plot(e,n,color)
-            else:
-                plt.plot(path[:,2],path[:,1],color)
+        if len(points) > 0:
+            plt.plot(points[:,1],points[:,0],color)
         else:
-            plt.plot(path[:,2],path[:,1],color)
-        plt.scatter(path[:,2],path[:,1])
+            plt.plot(path[:,1],path[:,0],color)
+        plt.scatter(path[:,1],path[:,0])
 
     def AddFence(self,fence,color):
         plt.plot(fence[:,1],fence[:,0],color)

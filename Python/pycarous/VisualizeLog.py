@@ -5,6 +5,7 @@ import os
 import glob
 import numpy as np
 from Icarous import VisualizeSimData
+from ichelper import GetPlanPositions
 
 class playback():
     def __init__(self):
@@ -47,6 +48,7 @@ if __name__ == "__main__":
             pb = playback()
             pb.ownshipLog = data['state']
             pb.trafficLog = data['traffic']
+            pb.plans = data['flightplans']
             pb.localPlans = data['flightplans_local']
             pb.localFences = [fence["vertices"] for fence in data['geofences_local']]
             pb.params = data['parameters']

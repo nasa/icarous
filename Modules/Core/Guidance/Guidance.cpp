@@ -307,7 +307,7 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
     const double deltaH = nextWaypoint.alt() - position.alt();
     double climbrate;
-    if(currentPlan->isLinear()){
+    if(currentPlan->isLinear() || fabs(deltaH) < 5){
         if (fabs(deltaH) > params.climbAngleVRange &&
             position.distanceH(nextWaypoint) > params.climbAngleHRange) {
             // Over longer altitude changes and distances, control the ascent/descent angle
@@ -328,9 +328,6 @@ double Guidance::ComputeClimbRate(double speedRef){
         }
     }else{
         climbrate = currentPlan->vsIn(nextWP);
-        if(fabs(climbrate) < 1e-5){
-            climbrate  = deltaH * params.climbRateGain;
-        }
     }
     if (climbrate > params.maxClimbRate) {
         climbrate = params.maxClimbRate;
@@ -392,12 +389,25 @@ double Guidance::ComputeNewHeading(double& speedRef){
     const int nextWP = nextWpId[activePlanId]%currentPlan->size();
     const double guidance_radius = fmax(1,currentGroundSpeed.gs()*params.guidanceRadiusScaling);
 
+    
     /* Compute target heading */
 
     /* If prev waypoint is a Track TCP (i.e. BOT or MOT),
      * Compute new heading based on heading delta in segment
      */
-    if(currentPlan->isBOT(nextWP-1) || currentPlan->isMOT(nextWP-1)){
+    if(currentPlan->isBOT(nextWP-1) || currentPlan->isBOT(nextWP-1) && currentPlan->isEOT(nextWP-1)){
+        inTurn = true;
+    }else if(currentPlan->isEOT(nextWP-1)){
+        inTurn = false;
+    }
+
+    if(inTurn){
+
+        double queryTime = std::min(currentPlan->getLastTime(),currTime+0.25); 
+        larcfm::Position newPositionToTrack = currentPlan->position(queryTime);
+        double targetheading = currentPos.track(newPositionToTrack) * RAD2DEG;
+        outputHeading = targetheading;
+    /*
         int id = currentPlan->prevTRK(nextWP);
         larcfm::Position center = currentPlan->getTcpData(id).turnCenter();
         //larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(center);
@@ -425,7 +435,8 @@ double Guidance::ComputeNewHeading(double& speedRef){
         }else{ 
              turnRate *= 0.9;
         }
-        speedRef = turnRadius*(turnRate*DEG2RAD);
+
+        speedRef = std::min(params.maxSpeed,turnRadius*(turnRate*DEG2RAD));
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
@@ -442,7 +453,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         }else{
             outputHeading = currentIdealTrk - addTurn;
         }
-        outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI;
+        outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI; */
     }else{
         /* If prev waypoint is not Track TCP or is EOT, 
          * use  offset position on plan to get heading.
@@ -522,7 +533,6 @@ void Guidance::CheckWaypointArrival(){
     // If distance to next waypoint is < captureRadius, switch to next waypoint
     if (distH2nextWP <= capture_radius && 
         distV2nextWP <= params.climbAngleVRange && (approachPrec < 0 || currSpeed < 0.5)) {
-        //std::cout<<currentPlan->getID()<<":Reached waypoint: "<<nextWP<<", at: "<<currTime<<"/"<<currentPlan->time(nextWP)<<std::endl;
         wpReached = true;
         nextWP++;
         nextWpId[activePlanId] = nextWP;

@@ -30,6 +30,7 @@ private:
     double currTime;
     bool wpReached;
     bool etaControl;
+    bool inTurn;
     double distH2nextWP;
     double distV2nextWP;
     double xtrackDist;

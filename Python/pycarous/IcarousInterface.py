@@ -48,6 +48,7 @@ class IcarousInterface(abc.ABC):
         self.fences       = []
         self.localFences  = []
         self.flightplan1  = []
+        self.flightplan2  = []
         self.controlInput = [0.0, 0.0, 0.0]
         self.fenceList    = []
         self.mergeFixes   = []
@@ -351,8 +352,12 @@ class IcarousInterface(abc.ABC):
         if self.verbose > 0:
             print("writing log: %s" % logname)
 
-        waypoints = [[wp.time,wp.latitude,wp.longitude,wp.altitude,*wp.tcp,*wp.tcpValue]\
-                      for wp in self.flightplan1]
+        plans = []
+        for plan in self.plans:
+            wps = [[wp.time,wp.latitude,wp.longitude,wp.altitude,*wp.tcp,*wp.tcpValue]\
+                   for wp in plan]
+            plans.append(wps)
+
         geofences_local = [fence.copy() for fence in self.fenceList]
         for fence, vertices in zip(geofences_local, self.localFences):
             fence["vertices"] = vertices
@@ -392,7 +397,7 @@ class IcarousInterface(abc.ABC):
                     "callsign": self.callsign,
                     "traffic": self.trafficLog,
                     "origin": self.home_pos,
-                    "flightplans": [waypoints],
+                    "flightplans": plans,
                     "flightplans_local": self.localPlans,
                     "geofences": self.fenceList,
                     "geofences_local": geofences_local,

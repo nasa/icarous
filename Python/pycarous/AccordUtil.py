@@ -1,6 +1,7 @@
 from ctypes import *
 from Interfaces import TcpType
 import numpy as np
+from ichelper import GetPlanPositions
 
 libUtils = CDLL('libUtils.so')
 
@@ -39,7 +40,7 @@ def ComputeDistance(posA,posB):
     return libUtils.ComputeDistance(home,query)
 
 
-def plotTcpPlan(flightplan,tcp,tcpValue,local=True):
+def plotTcpPlan(flightplan):
     '''
     Generate a set of points representing the track of the flightplan
     flightplan : list of [lat,lon,alt,time]. Units: [deg,deg,m,s]
@@ -76,13 +77,18 @@ def plotTcpPlan(flightplan,tcp,tcpValue,local=True):
 
     dist = getDistance(flightplan[0][1:4],flightplan[1][1:4])
     distV = flightplan[1][3] - flightplan[0][3]
+    import pdb; pdb.set_trace()
     if dist - distV > 1e-3:
         gs = dist/(flightplan[1][0] - flightplan[0][0])
+        heading = getHeading(flightplan[0][1:4],flightplan[1][1:4])*np.pi/180
     else:
         # if the first two waypoints indicate a direct climb, set gs = 0
         gs = 0
+        for i,elem in enumerate(tcp):
+            if elem[1] == TcpType.TCP_BGS:
+                heading = getHeading(flightplan[i][1:4],flightplan[i+1][1:4])*np.pi/180
+                break
 
-    heading = getHeading(flightplan[0][1:4],flightplan[1][1:4])*np.pi/180
 
     if distV > 0:
         vs = 2
@@ -117,6 +123,7 @@ def plotTcpPlan(flightplan,tcp,tcpValue,local=True):
         timeA = flightplan[i-1][0]
         timeB = flightplan[i][0]
 
+        """
         if tcp[i-1][0] == TcpType.TCP_BOT or tcp[i-1][0] == TcpType.TCP_MOT or tcp[i-1][0] == TcpType.TCP_EOTBOT: 
             radius = tcpValue[i-1][0]
             turnRate = gs/radius
@@ -154,6 +161,7 @@ def plotTcpPlan(flightplan,tcp,tcpValue,local=True):
         heading = heading + turnRate*(timeB-timeA)
         gs = gs + haccel*(timeB-timeA)
         vs = vs + vaccel*(timeB-timeA)
+        """
 
 
         """ 

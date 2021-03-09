@@ -186,9 +186,15 @@ def GetWindComponent(windFrom,windSpeed,NED=True):
         vw     = np.array([vw_x,vw_y,0])
     return vw
 
-def GetHomePosition(filename):
-    wp,_,_,_,_ = ReadFlightplanFile(filename)
-    return [wp[0][0],wp[0][1],0]
+def GetHomePosition(filename,id=0):
+    import re
+    match = re.search('\.eutl',filename)
+    if match is not None:
+        wps,totalwps = GetEUTLPlanFromFile(filename,id) 
+        return [wps[0].latitude,wps[0].longitude,0]
+    else:
+        wp,_,_,_,_ = ReadFlightplanFile(filename)
+        return [wp[0][0],wp[0][1],0]
 
 def ReadTrafficInput(filename):
     import yaml
@@ -322,16 +328,58 @@ def ParseDaidalusConfiguration(filename):
 
     return DaidalusParam
 
-def GetEUTLPlanFromFile(filename,index):
-    from ctypes import CDLL,c_char_p,c_int
+def GetEUTLPlanFromFile(filename,index,linearize=False):
+    from ctypes import CDLL,c_char_p,c_int,c_bool
     from Interfaces import Waypoint,TcpType
     lib = CDLL('libUtils.so')
     wpArray = Waypoint*100
     wps = wpArray()
-    lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray]
+    lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray,c_bool]
     lib.GetEUTLPlanFromFile.restype  = c_int
-    n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps)
+    n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps,c_bool(linearize))
     return wps,n
+
+def GetPlanPositions(waypoints,timeDelta):
+    from ctypes import CDLL,c_char_p,c_int,c_bool,c_double,c_void_p
+    from Interfaces import Waypoint,TcpType
+    lib = CDLL('libUtils.so')
+    wpArray = Waypoint*100
+    pos = (c_double*3)()
+    wps = wpArray()
+    timeStart = waypoints[0][0]
+    timeEnd   = waypoints[-1][0]
+    lenWPs = len(waypoints)
+    waypoints = []
+    wps, n = GetEUTLPlanFromFile('TigarOutput_PostRef.eutl',0)
+    lib.GetPlanPosition.argtypes = [c_void_p,wpArray,c_int,c_double,c_double*3]
+    lib.GetPlanPosition.restype = c_void_p
+    '''
+    for i,wp in enumerate(waypoints):
+        wps[i].time = wp[0]
+        wps[i].latitude = wp[1]
+        wps[i].longitude = wp[2]
+        wps[i].altitude = wp[3]
+        wps[i].tcp[0] = wp[4]
+        wps[i].tcp[1] = wp[5]
+        wps[i].tcp[2] = wp[6]
+        wps[i].tcpValue[0] = wp[7]
+        wps[i].tcpValue[1] = wp[8]
+        wps[i].tcpValue[2] = wp[9]
+    '''
+
+    positions = []
+    
+
+    t = timeStart
+    plan = c_void_p()
+    while t < timeEnd:
+       plan = lib.GetPlanPosition(plan,wps,c_int(lenWPs),c_double(t),pos)
+       positions.append([pos[0],pos[1],pos[2]])
+       t = t + 0.1
+
+    return positions
+
+    
     
   
 

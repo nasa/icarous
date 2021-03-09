@@ -11,6 +11,7 @@ from TrafficMonitor import TrafficMonitor
 from Merger import MAX_NODES, Merger, LogData, MergerData
 from ichelper import (ConvertTrkGsVsToVned,
                       ConvertVnedToTrkGsVs,
+                      ConvertToLocalCoordinates,
                       distance,
                       Getfence,
                       gps_offset,
@@ -20,6 +21,7 @@ from ichelper import (ConvertTrkGsVsToVned,
                       LoadIcarousParams,
                       ReadFlightplanFile,
                       GetEUTLPlanFromFile,
+                      GetPlanPositions,
                       ConstructWaypointsFromList)
 import time
 from IcarousInterface import IcarousInterface
@@ -125,7 +127,6 @@ class Icarous(IcarousInterface):
 
     def InputFlightplan(self,waypoints,eta=False,repair=False):
         
-        
         self.etaFP1 = eta
         self.localPlans.append(self.GetLocalFlightPlan(waypoints))
         self.Cog.InputFlightplanData("Plan0",waypoints,repair,self.turnRate)
@@ -155,7 +156,9 @@ class Icarous(IcarousInterface):
             fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
             waypoints = ConstructWaypointsFromList(fp,eta) 
         else:
-            waypoints = GetEUTLPlanFromFile(filename,self.vehicleID)
+            wps,totalwps = GetEUTLPlanFromFile(filename,self.vehicleID)
+            for i in range(totalwps):
+                waypoints.append(wps[i])
             eta = True
         self.InputFlightplan(waypoints,eta,repair)
 
@@ -677,11 +680,16 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     vehicleSize1 = np.abs(xmax - xmin)/100
     vehicleSize2 = np.abs(ymax - ymin)/100
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
+    homePos = icList[0].plans[0][0]
     for j,ic in enumerate(icList):
         anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
-        for i,pln in enumerate(ic.localPlans):
+        for i,pln in enumerate(ic.plans):
+            planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
+            getLocPos = lambda pos: np.array(ConvertToLocalCoordinates([homePos[1],homePos[2]],pos))
+            points = np.array(list(map(getLocPos,planPositions)))
             if i == 0:
-                anim.AddPath(np.array(pln),'k--')
+                planWPs = np.array(pln)[:,1:] 
+                anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points)
 
             if i > 0 and allplans:
                 anim.AddPath(np.array(pln),'k--')

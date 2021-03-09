@@ -42,7 +42,9 @@ void ManueverToIntercept(double wpA[],double wpB[],double currPosition[],double 
 double GetInterceptHeadingToPlan(double wpA[],double wpB[],double currentPos[]);
 void ComputeWaypointsETA(double scenarioTime,int numWP, double wpSpeed[], waypoint_t wpts[]);
 int ParseParameterFile(char filename[],ParsedParam_t params[]);
-int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[]);
+int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize);
+void* GetPlanPosition(void* fp,waypoint_t waypoints[],int len,double t,double position[]);
+
 #ifdef __cplusplus
 };
 #endif

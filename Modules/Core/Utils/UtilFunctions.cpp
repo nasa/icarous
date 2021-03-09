@@ -16,6 +16,7 @@
 #include <cstring>
 #include <StateReader.h>
 #include <PlanReader.h>
+#include <TrajGen.h>
 
 using namespace larcfm;
 
@@ -468,13 +469,101 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     return i;
 }
 
-int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[]){
+int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize){
     larcfm::PlanReader planReader;
     planReader.open(std::string(filename));
     larcfm::Plan plan = planReader.getPlan(id);
-    int n = plan.size();
+    larcfm::Plan modPlan;
+    if(linearize){
+         modPlan = larcfm::TrajGen::makeLinearPlan(plan);
+    }else{
+        modPlan = plan; 
+    }
+    int n = modPlan.size();
     for(int i=0;i<n;++i){
-        GetWaypointFromPlan(&plan,i,waypoints[i]);
+
+        GetWaypointFromPlan(&modPlan,i,waypoints[i]);
     }
     return n;
+}
+
+void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double position[]){
+
+   if((larcfm::Plan*)planIn  == nullptr){
+   larcfm::Plan *plan = new Plan();
+   for(int i=0;i<planlen;++i){
+       double lat = wpts[i].latitude;
+       double lon = wpts[i].longitude;
+       double alt = wpts[i].altitude;
+       larcfm::Position wp = larcfm::Position::makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");
+       larcfm::NavPoint np = larcfm::NavPoint(wp,wpts[i].time);
+       larcfm::Position center;
+       std::string trackTCP,gsTCP,vsTCP; 
+       switch(wpts[i].tcp[0]){
+            case TCP_BOT:{
+                trackTCP = "BOT";
+                double sign;
+                if (wpts[i].tcpValue[0] > 0)
+                    sign = 1;
+                else
+                    sign = -1;
+                double hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
+                center = plan->getLastPoint().position().linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
+                break;
+            }
+            case TCP_MOT:
+                 trackTCP = "MOT";
+                 break;
+            case TCP_EOT:
+                 trackTCP = "EOT";
+                 break;
+            case TCP_EOTBOT:
+                 trackTCP = "EOTBOT";
+                 break;
+            default:
+                 trackTCP = "NONE";
+       }
+
+       switch(wpts[i].tcp[1]){
+            case TCP_BGS:
+                 gsTCP = "BGS";
+                 break;
+            case TCP_EGS:
+                 gsTCP = "EGS";
+                 break;
+            case TCP_EGSBGS:
+                 gsTCP = "EGSBGS";
+                 break;
+            default:
+                 gsTCP = "NONE";
+       }
+
+        switch(wpts[i].tcp[2]){
+            case TCP_BVS:
+                 vsTCP = "BVS";
+                 break;
+            case TCP_EVS:
+                 vsTCP = "EVS";
+                 break;
+            case TCP_EVSBVS:
+                 vsTCP = "EVSBVS";
+                 break;
+            default:
+                 vsTCP = "NONE";
+       }
+
+       larcfm::TcpData tcpData = larcfm::TcpData::makeFull("Orig",trackTCP,gsTCP,vsTCP,wpts[i].tcpValue[0],center,wpts[i].tcpValue[1],wpts[i].tcpValue[2]);
+       plan->add(np,tcpData);
+       
+   }
+
+       planIn = plan;
+       std::cout<<plan->toString()<<std::endl;
+   }
+
+   larcfm::Position output = static_cast<larcfm::Plan*>(planIn)->position(t);
+   position[0] = output.latitude();
+   position[1] = output.longitude();
+   position[2] = output.alt();
+   return planIn;
 }
