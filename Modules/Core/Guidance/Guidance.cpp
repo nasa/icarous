@@ -693,9 +693,11 @@ int Guidance::RunGuidance(double time){
             currentPlan = GetPlan(activePlanId);
             if(currentPlan != nullptr)
                 ComputePlanGuidance();
-
-            if(currentPlan->getTcpData(nextWpId[activePlanId]-1).getInformation() == "<BOD>"){
-                mode = LAND;
+            
+            if(nextWpId[activePlanId] > 1){
+                if (currentPlan->getTcpData(nextWpId[activePlanId] - 1).getInformation() == "<BOD>") {
+                    mode = LAND;
+                }
             }
             break;
         }
