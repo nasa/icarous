@@ -403,11 +403,6 @@ double Guidance::ComputeNewHeading(double& speedRef){
 
     if(inTurn){
 
-        double queryTime = std::min(currentPlan->getLastTime(),currTime+0.25); 
-        larcfm::Position newPositionToTrack = currentPlan->position(queryTime);
-        double targetheading = currentPos.track(newPositionToTrack) * RAD2DEG;
-        outputHeading = targetheading;
-    /*
         int id = currentPlan->prevTRK(nextWP);
         larcfm::Position center = currentPlan->getTcpData(id).turnCenter();
         //larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(center);
@@ -453,7 +448,7 @@ double Guidance::ComputeNewHeading(double& speedRef){
         }else{
             outputHeading = currentIdealTrk - addTurn;
         }
-        outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI; */
+        outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI; 
     }else{
         /* If prev waypoint is not Track TCP or is EOT, 
          * use  offset position on plan to get heading.
@@ -698,6 +693,10 @@ int Guidance::RunGuidance(double time){
             currentPlan = GetPlan(activePlanId);
             if(currentPlan != nullptr)
                 ComputePlanGuidance();
+
+            if(currentPlan->getTcpData(nextWpId[activePlanId]-1).getInformation() == "<BOD>"){
+                mode = LAND;
+            }
             break;
         }
 
@@ -710,6 +709,14 @@ int Guidance::RunGuidance(double time){
         }
 
         case LAND:{
+            larcfm::Position lastPos = currentPlan->getLastPoint().position();
+            double trk = currentPos.track(lastPos) * 180/M_PI;
+            double gs = 0.1*currentPos.distanceH(lastPos);
+            double vs = std::max(0.5*(lastPos.alt() - currentPos.alt()),params.minClimbRate);
+            outputCmd = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
+            if(currentPos.distanceV(lastPos) < 1){
+                nextWpId[activePlanId] = currentPlan->size();
+            }
             break;
         }
 
