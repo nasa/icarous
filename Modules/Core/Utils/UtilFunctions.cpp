@@ -17,6 +17,7 @@
 #include <StateReader.h>
 #include <PlanReader.h>
 #include <TrajGen.h>
+#include <iomanip>
 
 using namespace larcfm;
 
@@ -390,6 +391,7 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
        }else if(waypt.tcp[2] == TCP_EVS){
             fp->setEVS(count);
        }
+       fp->getTcpDataRef(count).setInformation(std::string(waypt.info));
 
        count++;
    }
@@ -443,6 +445,7 @@ void GetWaypointFromPlan(const larcfm::Plan* fp,const int id,waypoint_t &wp){
        }else{
            wp.tcp[2] = TCP_NONEv;
        }
+       strcpy(wp.info,fp->getTcpData(id).getInformation().c_str());
 }
 
 int ParseParameterFile(char filename[],ParsedParam_t params[]){
@@ -500,15 +503,24 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
        larcfm::Position center;
        std::string trackTCP,gsTCP,vsTCP; 
        switch(wpts[i].tcp[0]){
-            case TCP_BOT:{
-                trackTCP = "BOT";
+            case TCP_BOT:
+            case TCP_EOTBOT:{
+                if(wpts[i].tcp[0] == TCP_BOT)
+                    trackTCP = "BOT";
+                else
+                    trackTCP = "EOTBOT";
                 double sign;
                 if (wpts[i].tcpValue[0] > 0)
                     sign = 1;
                 else
                     sign = -1;
-                double hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
-                center = plan->getLastPoint().position().linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
+                double hdg;
+                if (plan->size() > 1){
+                    hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
+                }else{
+                    hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
+                }
+                center = wp.linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
                 break;
             }
             case TCP_MOT:
@@ -516,9 +528,6 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
                  break;
             case TCP_EOT:
                  trackTCP = "EOT";
-                 break;
-            case TCP_EOTBOT:
-                 trackTCP = "EOTBOT";
                  break;
             default:
                  trackTCP = "NONE";
@@ -558,7 +567,6 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
    }
 
        planIn = plan;
-       std::cout<<plan->toString()<<std::endl;
    }
 
    larcfm::Position output = static_cast<larcfm::Plan*>(planIn)->position(t);
