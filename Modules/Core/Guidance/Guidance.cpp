@@ -395,9 +395,18 @@ double Guidance::ComputeNewHeading(double& speedRef){
     /* If prev waypoint is a Track TCP (i.e. BOT or MOT),
      * Compute new heading based on heading delta in segment
      */
-    if(currentPlan->isBOT(nextWP-1) || currentPlan->isBOT(nextWP-1) && currentPlan->isEOT(nextWP-1)){
-        inTurn = true;
-    }else if(currentPlan->isEOT(nextWP-1)){
+    if (nextWP > 1) {
+        if (currentPlan->isBOT(nextWP - 1) || currentPlan->isBOT(nextWP - 1) && currentPlan->isEOT(nextWP - 1)) {
+            inTurn = true;
+        }
+        else if (currentPlan->isEOT(nextWP - 1)) {
+            inTurn = false;
+        }
+    }else{
+        inTurn = false;
+    }
+
+    if(currentPlan->isLinear()){
         inTurn = false;
     }
 
