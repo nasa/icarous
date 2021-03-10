@@ -349,11 +349,9 @@ def GetPlanPositions(waypoints,timeDelta):
     timeStart = waypoints[0][0]
     timeEnd   = waypoints[-1][0]
     lenWPs = len(waypoints)
-    waypoints = []
-    wps, n = GetEUTLPlanFromFile('TigarOutput_PostRef.eutl',0)
     lib.GetPlanPosition.argtypes = [c_void_p,wpArray,c_int,c_double,c_double*3]
     lib.GetPlanPosition.restype = c_void_p
-    '''
+    
     for i,wp in enumerate(waypoints):
         wps[i].time = wp[0]
         wps[i].latitude = wp[1]
@@ -365,17 +363,15 @@ def GetPlanPositions(waypoints,timeDelta):
         wps[i].tcpValue[0] = wp[7]
         wps[i].tcpValue[1] = wp[8]
         wps[i].tcpValue[2] = wp[9]
-    '''
-
+    
     positions = []
     
-
     t = timeStart
     plan = c_void_p()
     while t < timeEnd:
        plan = lib.GetPlanPosition(plan,wps,c_int(lenWPs),c_double(t),pos)
        positions.append([pos[0],pos[1],pos[2]])
-       t = t + 0.1
+       t = t + 0.25
 
     return positions
 

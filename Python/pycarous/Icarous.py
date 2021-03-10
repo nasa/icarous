@@ -2,7 +2,7 @@ from ctypes import byref
 import numpy as np
 import time
 
-from Interfaces import CommandTypes, GeofenceConflict, V2Vdata
+from Interfaces import CommandTypes, GeofenceConflict, V2Vdata, TcpType
 from Cognition import Cognition, CognitionParams
 from Guidance import Guidance, GuidanceParam, GuidanceMode
 from Geofence import GeofenceMonitor
@@ -689,10 +689,13 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
             points = np.array(list(map(getLocPos,planPositions)))
             if i == 0:
                 planWPs = np.array(pln)[:,1:] 
-                anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points)
+                labels = [[TcpType.getString(val[3]),TcpType.getString(val[4]),TcpType.getString(val[5])]\
+                           for val in planWPs]
+                anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,labels)
 
             if i > 0 and allplans:
-                anim.AddPath(np.array(pln),'k--')
+                planWPs = np.array(pln)[:,1:] 
+                anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points)
         tfids = ic.trafficLog.keys()
         if showtraffic:
             for key in tfids:

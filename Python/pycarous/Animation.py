@@ -104,7 +104,7 @@ class AgentAnimation():
         speed = np.sqrt(vel[0]**2 + vel[1]**2)
         poly.labelText.set_text('Z:%.2f[m]\nS:%.2f[mps]' % (z,speed))
 
-    def AddPath(self,path,color,points = []):
+    def AddPath(self,path,color,points = [],labels = []):
         if (path.shape[0] < 2):
             return
         if len(points) > 0:
@@ -112,6 +112,8 @@ class AgentAnimation():
         else:
             plt.plot(path[:,1],path[:,0],color)
         plt.scatter(path[:,1],path[:,0])
+        #for i,label in enumerate(labels):
+        #    plt.text(path[i,1],path[i,0],','.join(label))
 
     def AddFence(self,fence,color):
         plt.plot(fence[:,1],fence[:,0],color)
