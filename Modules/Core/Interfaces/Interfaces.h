@@ -49,6 +49,7 @@ typedef struct __attribute__((__packed__))
     double  altitude;                       /**< altitude Meters */
     tcp_e tcp[3];                           /**< see @see wp_metric_e */
     double  tcpValue[3];                    /**< wp_metric value applicable at this waypoint */
+    char info[100];                         /**< info field */
 }waypoint_t;
 
 typedef struct __attribute__((__packed__)){

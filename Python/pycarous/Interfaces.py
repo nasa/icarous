@@ -85,6 +85,35 @@ class TcpType(IntEnum):
     TCP_EVS       = 12
     TCP_EVSBVS    = 13
 
+    def getString(val):
+        if val == TcpType.TCP_NONE:
+            return "NONE"
+        elif val == TcpType.TCP_BOT:
+            return "BOT"
+        elif val == TcpType.TCP_EOT:
+            return "EOT"
+        elif val == TcpType.TCP_MOT:
+            return "MOT"
+        elif val == TcpType.TCP_EOTBOT:
+            return "EOTBOT"
+        elif val == TcpType.TCP_NONEg:
+            return "NONE"
+        elif val == TcpType.TCP_BGS:
+            return "BGS"
+        elif val == TcpType.TCP_EGS:
+            return "EGS"
+        elif val == TcpType.TCP_EGSBGS:
+            return "EGSBGS"
+        elif val == TcpType.TCP_NONEv:
+            return "NONE"
+        elif val == TcpType.TCP_BVS:
+            return "BVS"
+        elif val == TcpType.TCP_EVS:
+            return "EVS"
+        elif val == TcpType.TCP_EVSBVS:
+            return "EVSBVS"
+        
+
 class Command(Structure):
     _fields_ = [("commandType",c_int),
                 ("commandU",CommandU)]
@@ -99,7 +128,8 @@ class Waypoint(Structure):
                 ("longitude",c_double),
                 ("altitude",c_double),
                 ("tcp",c_int*3),
-                ("tcpValue",c_double*3)]
+                ("tcpValue",c_double*3),
+                ("info",c_char*100)]
 
 int20arr = c_int*20
 double20arr = c_double*20
