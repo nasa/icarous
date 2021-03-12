@@ -68,7 +68,9 @@ void Cognition::Run(double time){
     std::sprintf(buffer,"%10.5f",time);
     cogState.timeString = std::string(buffer);
     cogState.utcTime = time;
-    eventMng.Run(&cogState);
+    if(cogState.utcTime >= cogState.scenarioTime){
+        eventMng.Run(&cogState);
+    }
     cogState.log.flush();
 }
 

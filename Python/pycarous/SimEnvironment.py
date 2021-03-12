@@ -277,7 +277,7 @@ class SimEnvironment:
                     ic.Terminate()
 
                 # Send mission start command
-                if not ic.missionStarted and duration >= self.icStartDelay[i]:
+                if not ic.missionStarted and duration >= self.icStartDelay[i] and duration >= self.icInstances[i].plans[0][0].time:
                     ic.StartMission()
                     if self.verbose > 0:
                         print("%s : Start command sent at %f" %

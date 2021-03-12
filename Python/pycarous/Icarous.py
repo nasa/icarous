@@ -118,7 +118,7 @@ class Icarous(IcarousInterface):
         self.ownship.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
     def InputTraffic(self,callsign,position,velocity):
-        if callsign != self.callsign and 0 not in position:
+        if callsign != self.callsign and np.abs(np.sum(position)) > 0:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.tfMonitor.input_traffic(callsign,position,trkgsvs,self.currTime)
             self.Trajectory.InputTrafficData(callsign,position,trkgsvs,self.currTime)
@@ -680,12 +680,12 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     vehicleSize1 = np.abs(xmax - xmin)/100
     vehicleSize2 = np.abs(ymax - ymin)/100
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
-    homePos = icList[0].plans[0][0]
+    homePos = icList[0].home_pos
     for j,ic in enumerate(icList):
         anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
         for i,pln in enumerate(ic.plans):
             planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
-            getLocPos = lambda pos: np.array(ConvertToLocalCoordinates([homePos[1],homePos[2]],pos))
+            getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
             points = np.array(list(map(getLocPos,planPositions)))
             if i == 0:
                 planWPs = np.array(pln)[:,1:] 
