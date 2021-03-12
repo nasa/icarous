@@ -240,7 +240,7 @@ void FindNewPath(CognitionState_t* state,const std::string &PlanID,
          larcfm::Units::to(larcfm::Units::mps,velocityB.vs())}
     };
     strcpy(fp_request.name,PlanID.c_str());
-    Command cmd = {.commandType=Command::FP_REQUEST};
+    Command cmd = {.commandType=CommandType_e::FP_REQUEST};
     cmd.fpRequest = fp_request;
     state->cognitionCommands.push_back(cmd);
 
@@ -289,7 +289,7 @@ void SetGuidanceVelCmd(CognitionState_t* state,const double track,const double g
         .ve = gs*sin(track* M_PI/180),
         .vu = vs
     };
-    Command cmd = {.commandType = Command::VELOCITY_COMMAND};
+    Command cmd = {.commandType = CommandType_e::VELOCITY_COMMAND};
     cmd.velocityCommand = velocity_command;
     state->cognitionCommands.push_back(cmd);
 }
@@ -297,7 +297,7 @@ void SetGuidanceVelCmd(CognitionState_t* state,const double track,const double g
 void SetGuidanceSpeedCmd(CognitionState_t* state,const std::string &planID,const double speed,const int hold){
     SpeedChange speed_change = {"",speed, hold };
     strcpy(speed_change.name,planID.c_str());
-    Command cmd = {.commandType = Command::SPEED_CHANGE_COMMAND};
+    Command cmd = {.commandType = CommandType_e::SPEED_CHANGE_COMMAND};
     cmd.speedChange = speed_change;
     state->cognitionCommands.push_back(cmd);
 }
@@ -305,7 +305,7 @@ void SetGuidanceSpeedCmd(CognitionState_t* state,const std::string &planID,const
 void SetGuidanceAltCmd(CognitionState_t* state,const std::string &planID,const double alt,const int hold){
     AltChange alt_change = {"",alt, hold };
     strcpy(alt_change.name,planID.c_str());
-    Command cmd = {.commandType = Command::ALT_CHANGE_COMMAND};
+    Command cmd = {.commandType = CommandType_e::ALT_CHANGE_COMMAND};
     cmd.altChange = alt_change;
     state->cognitionCommands.push_back(cmd);
 }
@@ -319,7 +319,7 @@ void SetGuidanceFlightPlan(CognitionState_t* state,const std::string &plan_id,co
     strcpy(fp_change.name,plan_id.c_str());
     fp_change.wpIndex = wp_index;
     fp_change.nextFeasibleWp = state->nextFeasibleWpId;
-    Command cmd = {.commandType = Command::FP_CHANGE};
+    Command cmd = {.commandType = CommandType_e::FP_CHANGE};
     cmd.fpChange = fp_change;
     state->cognitionCommands.push_back(cmd);
     if(plan_id == "Plan0"){
@@ -333,21 +333,21 @@ void SetGuidanceP2P(CognitionState_t* state,const larcfm::Position &point,const 
         .point = {point.latitude(), point.longitude(), point.alt()},
         .speed = speed
     };
-    Command cmd = {.commandType = Command::P2P_COMMAND};
+    Command cmd = {.commandType = CommandType_e::P2P_COMMAND};
     cmd.p2PCommand = p2p_command;
     state->cognitionCommands.push_back(cmd);
 }
 
 void SetDitchSiteRequestCmd(CognitionState_t* state){
     DitchCommand ditch_command;
-    Command cmd = {.commandType=Command::DITCH_COMMAND};
+    Command cmd = {.commandType=CommandType_e::DITCH_COMMAND};
     cmd.ditchCommand = ditch_command;
     state->cognitionCommands.push_back(cmd);
 }
 
 void SetLandCmd(CognitionState_t* state){
     LandCommand land_command;
-    Command cmd = {.commandType=Command::LAND_COMMAND};
+    Command cmd = {.commandType=CommandType_e::LAND_COMMAND};
     cmd.landCommand = land_command;
     state->cognitionCommands.push_back(cmd);
 }
@@ -366,7 +366,7 @@ void SendStatus(CognitionState_t* state,const char buffer[],const uint8_t severi
     strcpy(status_message.buffer,buffer);
     status_message.severity = severity;
 
-    Command cmd = {.commandType = Command::STATUS_MESSAGE};
+    Command cmd = {.commandType = CommandType_e::STATUS_MESSAGE};
     cmd.statusMessage = status_message;
     state->cognitionCommands.push_back(cmd);
 }

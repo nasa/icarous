@@ -48,7 +48,7 @@ public:
     bool CheckWPFeasibility(double fromPosition[],double toPosition[]);
     int GetNumConflicts();
     void GetConflictStatus(bool conflicts[]);
-    void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double recoveryPoint[],int& type);
+    void GetConflict(int id,int& fenceId,uint8_t& conflict,uint8_t& violation,double recoveryPoint[],uint8_t& type);
     void GetClosestRecoveryPoint(double currentPosition[],double recoveryPosition[]);
     void ClearFences();
 };

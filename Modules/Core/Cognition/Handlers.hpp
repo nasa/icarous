@@ -22,7 +22,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
 class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
        TakeoffCommand takeoff_command;
-       Command cmd = {.commandType=Command::TAKEOFF_COMMAND};
+       Command cmd = {.commandType=CommandType_e::TAKEOFF_COMMAND};
        cmd.takeoffCommand = takeoff_command;
        state->cognitionCommands.push_back(cmd);
        state->missionStart = -1;
@@ -169,7 +169,7 @@ class LandPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Execute(CognitionState_t* state){
        SendStatus(state, (char *)"IC: Landing", 6);
        LandCommand land_command;
-       Command cmd = {.commandType = Command::LAND_COMMAND};
+       Command cmd = {.commandType = CommandType_e::LAND_COMMAND};
        cmd.landCommand = land_command;
        state->cognitionCommands.push_back(cmd);
        state->missionStart = -2;

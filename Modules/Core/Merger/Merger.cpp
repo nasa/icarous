@@ -79,7 +79,11 @@ void Merger::SetMergefixParams(double sepTime,double coordzone,double schzone,do
     corridorWidth = corridor_width;
 }
 
-void Merger::SetVehicleState(double pos[],double vel[]){
+void Merger::SetVehicleState(double pos[],double trkgsvs[]){
+    double vel[3];
+    vel[0] = trkgsvs[1] * cos(trkgsvs[0]*M_PI/180);
+    vel[1] = trkgsvs[1] * sin(trkgsvs[0]*M_PI/180);
+    vel[2] = trkgsvs[2];
     memcpy(position,pos,sizeof(double)*3);
     memcpy(velocity,vel,sizeof(double)*3);
     currentSpeed = sqrt(pow(velocity[0],2) + 

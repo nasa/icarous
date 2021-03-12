@@ -425,13 +425,13 @@ def BandsLog():
 def record_bands(log, bands):
     filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
     if bands is not None:
-        log["conflict"].append(bands.currentConflictBand)
-        log["resUp"].append(filterinfnan(bands.resUp))
-        log["resDown"].append(filterinfnan(bands.resDown))
-        log["numBands"].append(bands.numBands)
-        log["bandTypes"].append([bands.type[i] for i in range(bands.numBands)])
-        log["low"].append([bands.min[i] for i in range(bands.numBands)])
-        log["high"].append([bands.max[i] for i in range(bands.numBands)])
+        log["conflict"].append(bands['currentConflictBand'])
+        log["resUp"].append(filterinfnan(bands['resUp']))
+        log["resDown"].append(filterinfnan(bands['resDown'])) 
+        log["numBands"].append(bands['numBands'])
+        log["bandTypes"].append([bands['type'][i] for i in range(bands['numBands'])])
+        log["low"].append([bands['min'][i] for i in range(bands['numBands'])])
+        log["high"].append([bands['max'][i] for i in range(bands['numBands'])])
     else:
         log["conflict"].append(0)
         log["resUp"].append("nan")

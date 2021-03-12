@@ -64,9 +64,7 @@ typedef struct{
     char buffer[250];
 }StatusMessage;
 
-// Union type for all cognition output commands
-typedef struct{
-    enum {
+typedef enum{
         VELOCITY_COMMAND,
         P2P_COMMAND,
         SPEED_CHANGE_COMMAND,
@@ -77,8 +75,12 @@ typedef struct{
         FP_CHANGE,
         FP_REQUEST,
         STATUS_MESSAGE
-    } commandType;
+}CommandType_e;
 
+// Union type for all cognition output commands
+typedef struct{
+    
+    CommandType_e commandType;
     union {
         VelocityCommand velocityCommand;
         P2PCommand p2PCommand;

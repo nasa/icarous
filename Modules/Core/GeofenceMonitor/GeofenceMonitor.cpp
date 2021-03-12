@@ -171,7 +171,7 @@ int GeofenceMonitor::GetNumConflicts() {
     return conflictList.size();
 }
 
-void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& violation, double recoveryPoint[],int& type) {
+void GeofenceMonitor::GetConflict(int id, int& fenceId, uint8_t& conflict, uint8_t& violation, double recoveryPoint[],uint8_t& type) {
     int count = -1;
     for(GeofenceConflict it:conflictList){
         count++;
@@ -295,7 +295,7 @@ void GeofenceMonitor_GetConflictStatus(void * obj, bool*conflictStatus){
     gf->GetConflictStatus(conflictStatus);
 }
 
-void GeofenceMonitor_GetConflict(void * obj, int id, int * fenceId, bool * conflict, bool * violation, double * recoveryPos, int * type){
+void GeofenceMonitor_GetConflict(void * obj, int id, int * fenceId, uint8_t * conflict, uint8_t * violation, double * recoveryPos, uint8_t * type){
     GeofenceMonitor *gf = (GeofenceMonitor*)obj;
     gf->GetConflict(id, *fenceId, *conflict, *violation, recoveryPos, *type);
 
