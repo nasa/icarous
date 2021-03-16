@@ -19,7 +19,7 @@ ext_modules = [
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','EventManager')],
                library_dirs = [os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')],
                language = 'c++11',
-               extra_compile_args = ['-stdlib=libc++'],
+               #extra_compile_args = ['-stdlib=libc++'],
               )
 ]
 
