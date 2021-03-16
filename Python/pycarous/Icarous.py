@@ -81,7 +81,6 @@ class Icarous(IcarousInterface):
 
         # Other aircraft data
         self.daaConfig = daaConfig
-        self.guidanceMode = GuidanceMode.NOOP
         self.emergbreak = False
         self.daa_radius = 0
         self.turnRate = 0
