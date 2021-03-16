@@ -1,5 +1,5 @@
 from ctypes import *
-from Interfaces import TcpType
+from CustomTypes import TcpType
 import numpy as np
 from ichelper import GetPlanPositions
 

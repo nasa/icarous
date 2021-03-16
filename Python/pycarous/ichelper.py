@@ -258,7 +258,7 @@ def Getfence(filename):
     return fenceList
 
 def ConstructWaypointsFromList(fp,eta=False):
-    from Interfaces import Waypoint,TcpType
+    from CustomTypes import Waypoint,TcpType
     speeds = []
     times  = []
     waypoints = []
@@ -330,7 +330,7 @@ def ParseDaidalusConfiguration(filename):
 
 def GetEUTLPlanFromFile(filename,index,linearize=False):
     from ctypes import CDLL,c_char_p,c_int,c_bool
-    from Interfaces import Waypoint,TcpType
+    from CustomTypes import Waypoint,TcpType
     lib = CDLL('libUtils.so')
     wpArray = Waypoint*100
     wps = wpArray()
@@ -341,7 +341,7 @@ def GetEUTLPlanFromFile(filename,index,linearize=False):
 
 def GetPlanPositions(waypoints,timeDelta):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double,c_void_p
-    from Interfaces import Waypoint,TcpType
+    from CustomTypes import Waypoint,TcpType
     lib = CDLL('libUtils.so')
     wpArray = Waypoint*100
     pos = (c_double*3)()

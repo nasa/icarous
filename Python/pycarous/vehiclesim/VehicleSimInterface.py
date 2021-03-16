@@ -2,7 +2,7 @@ import abc
 import numpy as np
 
 from ichelper import gps_offset
-from Interfaces import V2Vdata
+from CustomTypes import V2Vdata
 
 class VehicleSimInterface(abc.ABC):
     """

@@ -4,7 +4,7 @@ import time
 from vehiclesim import UamVtolSim
 from ichelper import distance, ConvertVnedToTrkGsVs
 from Merger import LogData, MergerData, MAX_NODES
-from Interfaces import V2Vdata
+from CustomTypes import V2Vdata
 from communicationmodels import channelmodels as cm
 from communicationmodels import get_propagation_model, get_reception_model
 from communicationmodels import get_transmitter, get_receiver

@@ -7,7 +7,7 @@ from ichelper import (LoadIcarousParams,
                       distance,
                       ConvertToLocalCoordinates,
                       ParseDaidalusConfiguration)
-from Interfaces import V2Vdata
+from CustomTypes import V2Vdata
 
 class IcarousInterface(abc.ABC):
     """
