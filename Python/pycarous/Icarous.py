@@ -2,7 +2,7 @@ from ctypes import byref
 import numpy as np
 import time
 from AutonomyStack import AutonomyStack
-from CustomTypes import V2Vdata, TcpType
+from CustomTypes import V2Vdata, TcpType, WPoint
 from ichelper import (ConvertTrkGsVsToVned,
                       ConvertVnedToTrkGsVs,
                       ConvertToLocalCoordinates,
@@ -275,8 +275,15 @@ class Icarous(IcarousInterface):
         return True
 
     def Terminate(self):
-        # No special shut down action required when using pycarous
-        pass
+        outfp = self.core.GetAllSecondaryPlans()
+        fps = []
+        for fp in outfp:
+            wps = []
+            for wp in fp:
+                wps.append(WPoint(**wp))
+            fps.append(wps)
+            
+        self.plans.extend(fps)
 
 
 def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename=""):

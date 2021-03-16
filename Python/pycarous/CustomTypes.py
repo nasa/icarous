@@ -60,3 +60,5 @@ class Waypoint(Structure):
 # Datastructure used for V2V data exchange
 datafields = ['type','payload']
 V2Vdata = namedtuple('V2Vdata',field_names=datafields)
+
+WPoint = namedtuple('WPoint',['time','latitude','longitude','altitude','tcp','tcpValue','info'])

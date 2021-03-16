@@ -272,8 +272,6 @@ class SimEnvironment:
             # Update Icarous instances
             for i, ic in enumerate(self.icInstances):
                 ic.InputWind(self.windFrom, self.windSpeed)
-                if ic.CheckMissionComplete():
-                    ic.Terminate()
 
                 # Send mission start command
                 if not ic.missionStarted and duration >= self.icStartDelay[i] and duration >= self.icInstances[i].plans[0][0].time:
@@ -293,13 +291,16 @@ class SimEnvironment:
                         if self.verbose > 0:
                             print("%s : Time limit reached at %f" %
                                   (ic.callsign, self.current_time))
+                    elif ic.CheckMissionComplete():
+                        ic.missionComplete = True
+                        ic.Terminate()
 
             if self.time_limit is not None and duration >= self.time_limit:
                 for ic in self.icInstances:
-                    ic.missionComplete = True
-                    ic.Terminate()
-                    if self.verbose > 0:
-                        print("Time limit reached at %f" % self.current_time)
+                    if ic.missionComplete != True:
+                        ic.Terminate()
+                        if self.verbose > 0:
+                            print("Time limit reached at %f" % self.current_time)
             
             # Transmit all V2V data between vehicles in the environment
             self.TransmitV2VData()

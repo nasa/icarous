@@ -401,7 +401,7 @@ cdef class AutonomyStack:
                 self.secPlanSize = numWP 
                 if numWP > 0:
                     if self.verbose > 0:
-                        print("%s : At %f s, Computed flightplan %s with %d waypoints" % (self.callsign.decode('utf-8'),time,cmd.fpRequest.name,numWP))
+                        print("%s : At %f s, Computed flightplan %s with %d waypoints" % (self.callsign.decode('utf-8'),time,cmd.fpRequest.name.decode('utf-8'),numWP))
                     # offset the new path with current time (because new paths start with t=0) 
                     TrajManager_SetPlanOffset(self.TrajManager,cmd.fpRequest.name,0,time)
 
@@ -536,6 +536,32 @@ cdef class AutonomyStack:
 
     def IsMissionComplete(self):
         return self.land
+
+    def GetAllSecondaryPlans(self):
+        cdef string planid
+        cdef int n
+        cdef waypoint_t wp
+        cdef list fp = []
+        cdef list fps = []
+        for i in range(self.numSecPlan):
+            planid = ('Plan'+str(i+1)).encode('utf-8')
+            n = TrajManager_GetTotalWaypoints(self.TrajManager,<char*>planid.c_str())
+            for j in range(n):
+                TrajManager_GetWaypoint(self.TrajManager,<char*>planid.c_str(),j,&wp)
+                fp.append({
+                    'time': wp.time,
+                    'latitude': wp.latitude,
+                    'longitude': wp.longitude,
+                    'altitude': wp.altitude,
+                    'tcp': [wp.tcp[k] for k in range(3)],
+                    'tcpValue': [wp.tcpValue[k] for k in range(3)],
+                    'info': wp.info.decode('utf-8')})
+
+            fps.append(fp) 
+
+        return fps
+            
+            
 
     def GetBands(self,bandType):
         cdef bands_t band
