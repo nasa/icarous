@@ -12,3 +12,4 @@ PyYAML==5.3.1
 scipy==1.4.1
 pymavlink==2.4.9
 pyzmq==20.0.0
+Cython==0.29.22
