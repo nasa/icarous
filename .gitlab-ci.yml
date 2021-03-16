@@ -30,6 +30,7 @@ before_script:
   - cd sirius
   - make pipPkg
   - make setenv
+  - make getIcarous
   - source setenv.sh
   - cd /builds/larc-nia-fm/icarous
   
