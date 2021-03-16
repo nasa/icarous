@@ -377,7 +377,6 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
             larcfm::Position center = pos.linearDist2D((startHeading+turn)*M_PI/180,fabs(waypt.tcpValue[0]));
             fp->addEOT(count);
             fp->addBOT(count,waypt.tcpValue[0],center);
-            std::cout<<startHeading<<std::endl;
        }
 
        if(waypt.tcp[1] ==  TCP_BGS){

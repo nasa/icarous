@@ -1058,7 +1058,7 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
         }
     }
 
-    std::cout<<newRoute.toString()<<std::endl;
+    //std::cout<<newRoute.toString()<<std::endl;
 }
 
 
