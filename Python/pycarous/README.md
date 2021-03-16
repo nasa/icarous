@@ -13,6 +13,12 @@ Pycarous requires several python packages. These packages can be easily installe
 ## Compile ICAROUS Modules
 Follow the [module instructions](../../Modules/README.md) to compile the core ICAROUS modules.
 
+After compiling the ICAROUS modules, run
+
+```
+python3 setup.py build_ext --inplace
+```
+
 ## Running a simulation
 The `RunPySim.py` script can be used to simulate a scenario. Provide as input the flightplan the unmanned vehicle is required to fly, zero or more Keep-in and/or Keep-out geofence constraints the vehicle should satisfy and zero or more intruders. 
 
