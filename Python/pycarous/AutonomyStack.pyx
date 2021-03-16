@@ -280,7 +280,7 @@ cdef class AutonomyStack:
         
         cdef double Vert[50][2]
         cdef int numV
-        for fence in self.fenceList:
+        for fence in fenceList:
             numV = len(fence['vertices'])
             for i in range(numV):
                 Vert[i][0] = fence['vertices'][i][0]

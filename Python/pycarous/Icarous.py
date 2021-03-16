@@ -154,9 +154,8 @@ class Icarous(IcarousInterface):
 
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
+        self.core.InputGeofence(self.fenceList)
         for fence in self.fenceList:
-            self.Geofence.InputData(fence)
-            self.Trajectory.InputGeofenceData(fence)
             self.numFences += 1
 
             localFence = []
