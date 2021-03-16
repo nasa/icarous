@@ -3,3 +3,8 @@ __pycache__
 *.json
 *.txt
 *.pyc
+*.c
+*.cpp
+build
+dist
+AutonomyStack.egg-info
