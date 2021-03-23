@@ -327,7 +327,7 @@ double Guidance::ComputeClimbRate(double speedRef){
             climbrate = deltaH * params.climbRateGain;
         }
     }else{
-        climbrate = currentPlan->vsIn(nextWP);
+        climbrate = currentPlan->vsIn(nextWP) + deltaH * params.climbRateGain;
     }
     if (climbrate > params.maxClimbRate) {
         climbrate = params.maxClimbRate;
@@ -529,7 +529,6 @@ void Guidance::CheckWaypointArrival(){
     }else if(capture_radius > params.maxCap){
         capture_radius = params.maxCap;
     }
-
     double approachPrec = GetApproachPrecision(currentPos,currentGroundSpeed,waypoint);
     if(currentPlan->isLinear()){
        approachPrec = -1;
