@@ -471,10 +471,11 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     return i;
 }
 
-int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize){
+int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize,double timeshift){
     larcfm::PlanReader planReader;
     planReader.open(std::string(filename));
     larcfm::Plan plan = planReader.getPlan(id);
+    plan.timeShiftPlan(0,timeshift);
     larcfm::Plan modPlan;
     if(linearize){
          modPlan = larcfm::TrajGen::makeLinearPlan(plan);
@@ -493,6 +494,7 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
 
    if((larcfm::Plan*)planIn  == nullptr){
    larcfm::Plan *plan = new Plan();
+   
    for(int i=0;i<planlen;++i){
        double lat = wpts[i].latitude;
        double lon = wpts[i].longitude;
@@ -514,11 +516,13 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
                 else
                     sign = -1;
                 double hdg;
+                hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
+                /*
                 if (plan->size() > 1){
                     hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
                 }else{
                     hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
-                }
+                }*/
                 center = wp.linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
                 break;
             }
@@ -567,7 +571,6 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
 
        planIn = plan;
    }
-
    larcfm::Position output = static_cast<larcfm::Plan*>(planIn)->position(t);
    position[0] = output.latitude();
    position[1] = output.longitude();
