@@ -138,7 +138,7 @@ class Icarous(IcarousInterface):
         if not eta:
             self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
-    def InputFlightplanFromFile(self,filename,eta=False,repair=False):
+    def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0):
         import re
         match = re.search('\.eutl',filename)
         waypoints = []
@@ -146,7 +146,7 @@ class Icarous(IcarousInterface):
             fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
             waypoints = ConstructWaypointsFromList(fp,eta) 
         else:
-            wps,totalwps = GetEUTLPlanFromFile(filename,self.vehicleID)
+            wps,totalwps = GetEUTLPlanFromFile(filename,self.vehicleID,timeshift=startTimeShift)
             for i in range(totalwps):
                 waypoints.append(wps[i])
             eta = True
@@ -274,6 +274,7 @@ class Icarous(IcarousInterface):
         return True
 
     def Terminate(self):
+        self.missionComplete = True
         outfp = self.core.GetAllSecondaryPlans()
         fps = []
         for fp in outfp:

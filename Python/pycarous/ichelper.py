@@ -328,15 +328,15 @@ def ParseDaidalusConfiguration(filename):
 
     return DaidalusParam
 
-def GetEUTLPlanFromFile(filename,index,linearize=False):
-    from ctypes import CDLL,c_char_p,c_int,c_bool
+def GetEUTLPlanFromFile(filename,index,linearize=False,timeshift=0):
+    from ctypes import CDLL,c_char_p,c_int,c_bool,c_double
     from CustomTypes import Waypoint,TcpType
     lib = CDLL('libUtils.so')
     wpArray = Waypoint*100
     wps = wpArray()
-    lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray,c_bool]
+    lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray,c_bool,c_double]
     lib.GetEUTLPlanFromFile.restype  = c_int
-    n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps,c_bool(linearize))
+    n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps,c_bool(linearize),c_double(timeshift))
     return wps,n
 
 def GetPlanPositions(waypoints,timeDelta):

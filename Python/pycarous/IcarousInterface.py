@@ -170,7 +170,7 @@ class IcarousInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def InputFlightplanFromFile(self, filename, eta=False, repair=False):
+    def InputFlightplanFromFile(self, filename, eta=False, repair=False,startTimeShift=0):
         """
         Input a flight plan from a MAVProxy formatted text file
         :param filename: path to the flight plan file
