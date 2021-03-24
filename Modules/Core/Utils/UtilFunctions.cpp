@@ -474,20 +474,24 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
 int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize,double timeshift){
     larcfm::PlanReader planReader;
     planReader.open(std::string(filename));
-    larcfm::Plan plan = planReader.getPlan(id);
-    plan.timeShiftPlan(0,timeshift);
-    larcfm::Plan modPlan;
-    if(linearize){
-         modPlan = larcfm::TrajGen::makeLinearPlan(plan);
-    }else{
-        modPlan = plan; 
-    }
-    int n = modPlan.size();
-    for(int i=0;i<n;++i){
+    if(id < planReader.size()){
+        larcfm::Plan plan = planReader.getPlan(id);
+        plan.timeShiftPlan(0,timeshift);
+        larcfm::Plan modPlan;
+        if(linearize){
+             modPlan = larcfm::TrajGen::makeLinearPlan(plan);
+        }else{
+            modPlan = plan; 
+        }
+        int n = modPlan.size();
+        for(int i=0;i<n;++i){
 
-        GetWaypointFromPlan(&modPlan,i,waypoints[i]);
+            GetWaypointFromPlan(&modPlan,i,waypoints[i]);
+        }
+        return n;
+    }else{
+        return 0;
     }
-    return n;
 }
 
 void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double position[]){

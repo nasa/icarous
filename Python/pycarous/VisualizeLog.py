@@ -5,7 +5,7 @@ import os
 import glob
 import numpy as np
 from Icarous import VisualizeSimData
-from ichelper import GetPlanPositions
+from ichelper import GetPlanPositions,GetEUTLPlanFromFile
 
 class playback():
     def __init__(self):
@@ -27,6 +27,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
     parser.add_argument("--speed",type=int, default=1.0, help="increase playback speed by given factor")
+    parser.add_argument("--routes",default='',help="routes file")
     args = parser.parse_args()
 
     files = []
@@ -40,6 +41,17 @@ if __name__ == "__main__":
     xmin, ymin = 1e10, 1e10
     xmax, ymax = -1e10, -1e10 
     valid = False
+    routes = []
+    if args.routes != '':
+        n = 1
+        index = -1
+        while n != 0:
+            index = index + 1
+            wps,n = GetEUTLPlanFromFile(args.routes,index)
+            if n > 0:
+                locplan = [[wps[i].time,wps[i].latitude,wps[i].longitude,wps[i].altitude] for i in range(n)]
+                routes.append(locplan)
+
     for file in files:
         try:
             fp = open(file,'r')
@@ -88,7 +100,7 @@ if __name__ == "__main__":
          ymin -= padding
          xmax += padding
          ymax += padding
-         VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output)
+         VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output,network=routes)
 
     
 

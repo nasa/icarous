@@ -77,7 +77,6 @@ def plotTcpPlan(flightplan):
 
     dist = getDistance(flightplan[0][1:4],flightplan[1][1:4])
     distV = flightplan[1][3] - flightplan[0][3]
-    import pdb; pdb.set_trace()
     if dist - distV > 1e-3:
         gs = dist/(flightplan[1][0] - flightplan[0][0])
         heading = getHeading(flightplan[0][1:4],flightplan[1][1:4])*np.pi/180

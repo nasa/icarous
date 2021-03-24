@@ -286,7 +286,7 @@ class Icarous(IcarousInterface):
         self.plans.extend(fps)
 
 
-def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename=""):
+def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename="",network=[]):
     '''
     ic: icarous object
     allplans: True - plot all computed plans, False - plot only the mission plan
@@ -303,11 +303,11 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
     vehicleSize2 = np.abs(ymax - ymin)/100
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
     homePos = icList[0].home_pos
+    getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
     for j,ic in enumerate(icList):
         anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
         for i,pln in enumerate(ic.plans):
             planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
-            getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
             points = np.array(list(map(getLocPos,planPositions)))
             if i == 0:
                 planWPs = np.array(pln)[:,1:] 
@@ -329,5 +329,10 @@ def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,
         anim.AddZone(fix[::-1][1:3],icList[0].params['COORD_ZONE'],'r')
         anim.AddZone(fix[::-1][1:3],icList[0].params['SCHEDULE_ZONE'],'b')
         anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
+
+    for plan in network:
+        planWPs = np.array(plan)[:,1:]
+        anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',color2='k')
+
 
     anim.run()
