@@ -34,6 +34,7 @@ void Guidance::SetWindData(const double windFrom,const double windSpeed){
 void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID,const int nextWP,const bool eta){
     mode = gmode;
     etaControl = eta;
+    inTurn = false;
     if(gmode == VECTOR || gmode == LAND){
         return;
     }
