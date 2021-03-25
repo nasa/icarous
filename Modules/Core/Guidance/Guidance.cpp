@@ -260,6 +260,11 @@ double Guidance::ComputeSpeed(){
    if (!currentPlan->isLinear()){
       etaControl = true;
    }
+
+   if(activePlanId == "PlanSpeedChange"){
+       etaControl = false;
+   }
+
    double windSpeed = wind.gs();
    if (!etaControl) {
        refSpeed = currentPlan->gsIn(nextWP);

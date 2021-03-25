@@ -73,6 +73,7 @@ class Icarous(IcarousInterface):
         self.localPlans = []
         self.activePlan = "Plan0"
         self.numSecPlan = 0
+        self.repair = False
 
         # Geofence data
         self.fences = []
@@ -120,6 +121,7 @@ class Icarous(IcarousInterface):
     def InputFlightplan(self,waypoints,eta=False,repair=False):
         
         self.etaFP1 = eta
+        self.repair = repair
         self.localPlans.append(self.GetLocalFlightPlan(waypoints))
         self.core.InputMissionFlightPlan(waypoints,repair,eta)
 
@@ -282,8 +284,11 @@ class Icarous(IcarousInterface):
             for wp in fp:
                 wps.append(WPoint(**wp))
             fps.append(wps)
-            
-        self.plans.extend(fps)
+
+        if self.repair:
+            self.plans.extend(fps)
+        else:
+            self.plans.extend(fps[1:])
 
 
 def VisualizeSimData(icList,allplans=False,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename="",network=[]):
