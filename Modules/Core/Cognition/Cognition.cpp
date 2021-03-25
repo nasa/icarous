@@ -130,7 +130,7 @@ void Cognition::InputTrajectoryMonitorData(const trajectoryMonitorData_t & tjMon
 void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp_id){
 
     cogState.log<<cogState.timeString + "| [WPREACHED] | Plan: " << plan_id<<", wp: "<<reached_wp_id<<"\n";
-    if(plan_id == "P2P"){
+    if(plan_id == "P2P" && reached_wp_id == 1){
         cogState.p2pComplete = true;
     }else if(plan_id == "Takeoff"){
         cogState.takeoffComplete = 1;

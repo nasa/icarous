@@ -224,6 +224,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             wps[0].latitude = guidanceAppData.pos.latitude;
             wps[0].longitude = guidanceAppData.pos.longitude;
             wps[0].altitude = guidanceAppData.pos.altitude_abs;
+            wps[0].time = 0;
             wps[1].latitude  = cmd->param1;
             wps[1].longitude = cmd->param2;
             wps[1].altitude = cmd->param3; 
