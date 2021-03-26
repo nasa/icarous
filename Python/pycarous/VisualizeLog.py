@@ -4,8 +4,8 @@ import json
 import os
 import glob
 import numpy as np
-from Icarous import VisualizeSimData
-from ichelper import GetPlanPositions,GetEUTLPlanFromFile
+from ichelper import GetPlanPositions,GetEUTLPlanFromFile,ConvertToLocalCoordinates
+from CustomTypes import TcpType
 
 class playback():
     def __init__(self):
@@ -17,13 +17,68 @@ class playback():
         self.daa_radius = []
         self.params = {}
 
+def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtraffic=True,xmin=-100,ymin=-100,xmax=100,ymax=100,playbkspeed=1,interval=30,record=False,filename="",network=[]):
+    '''
+    ic: icarous object
+    allplans: True - plot all computed plans, False - plot only the mission plan
+    xmin,ymin : plot axis min values
+    xmax,ymax : plot axis max values
+    interval  : Interval between frames
+    '''
+    if record:
+        import matplotlib; matplotlib.use('Agg')
+    from Animation import AgentAnimation
+    anim= AgentAnimation(xmin,ymin, xmax,ymax,showtrace,playbkspeed,interval,record,filename)
+
+    vehicleSize1 = np.abs(xmax - xmin)/100
+    vehicleSize2 = np.abs(ymax - ymin)/100
+    vehicleSize  = np.max([vehicleSize1,vehicleSize2])
+    homePos = icList[0].home_pos
+    getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
+    for j,ic in enumerate(icList):
+        anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
+        for i,pln in enumerate(ic.plans):
+            planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
+            points = np.array(list(map(getLocPos,planPositions)))
+            if i == 0:
+                planWPs = np.array(pln)[:,1:] 
+                labels = [[TcpType.getString(val[3]),TcpType.getString(val[4]),TcpType.getString(val[5])]\
+                           for val in planWPs]
+                if showpaths:
+                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,labels)
+
+            if i > 0 and allplans:
+                planWPs = np.array(pln)[:,1:] 
+                if showpaths:
+                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points)
+        tfids = ic.trafficLog.keys()
+        for key in tfids:
+            if showtraffic or key[0:2] == 'tf':
+                anim.AddAgent('traffic_'+str(key),vehicleSize,'b',ic.trafficLog[key])
+        for fence in ic.localFences:
+            fence.append(fence[0])
+            anim.AddFence(np.array(fence),'c-.')
+    for fix in icList[0].localMergeFixes:
+        anim.AddZone(fix[::-1][1:3],icList[0].params['COORD_ZONE'],'r')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['SCHEDULE_ZONE'],'b')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
+
+    for plan in network:
+        planWPs = np.array(plan)[:,1:]
+        anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',color2='k')
+
+
+    anim.run()
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Visualize Icarous log")
     parser.add_argument("logfile", help="Icarous json log file or directory containing multiple json logs")
-    parser.add_argument("--allplans", action="store_true", help="plot all planned paths")
-    parser.add_argument("--notraffic", action="store_true", help="only show icarous vehicles")
+    parser.add_argument("--allplans", action="store_true", help="plot all paths")
+    parser.add_argument("--notraffic", action="store_true", help="don't consider icarous vehicles as traffic")
     parser.add_argument("--record", action="store_true", help="record animation to file")
+    parser.add_argument("--nopaths", action="store_true", help="don't show flightplans")
+    parser.add_argument("--notrace", action="store_true", help="don't show flight traces")
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
     parser.add_argument("--speed",type=int, default=1.0, help="increase playback speed by given factor")
@@ -100,7 +155,4 @@ if __name__ == "__main__":
          ymin -= padding
          xmax += padding
          ymax += padding
-         VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output,network=routes)
-
-    
-
+         VisualizeSimData(pbs,allplans=args.allplans,showtraffic=not args.notraffic,showtrace=not args.notrace,showpaths=not args.nopaths,xmin=xmin,ymin=ymin,xmax=xmax,ymax=ymax,playbkspeed=args.speed,interval=5,record=args.record,filename=args.output,network=routes)

@@ -109,7 +109,7 @@ class SimEnvironment:
         gs.receiver = get_receiver(receiver, gs.id, self.comm_channel)
 
     def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
-                   transmitter="GroundTruth"):
+                   transmitter="GroundTruth",delay=0.0):
         """
         Add a simulated virtual traffic vehicle to the simulation environment
         :param idx: traffic vehicle id
@@ -131,6 +131,7 @@ class SimEnvironment:
         tvz = crate
         traffic = UamVtolSim(idx, home, tx, ty, tz, tvx, tvy, tvz)
         traffic.InputCommand(heading, speed, crate)
+        traffic.delay = delay
         self.tfList.append(traffic)
 
         # Create a transmitter for V2V communications
@@ -142,8 +143,9 @@ class SimEnvironment:
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:
             tf.dt = dT or self.dT
-            tf.Run(self.windFrom, self.windSpeed)
-            tf.TransmitPosition(self.current_time)
+            if self.current_time > tf.delay:
+                tf.Run(self.windFrom, self.windSpeed)
+                tf.TransmitPosition(self.current_time)
 
     def AddWind(self, wind):
         """

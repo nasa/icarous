@@ -5,10 +5,10 @@ from matplotlib import text
 from math import sin,cos,atan2,pi
 import numpy as np
 import math
-
+from scipy import interpolate
 
 class AgentAnimation():
-    def __init__(self,xmin,ymin,xmax,ymax,playbkspeed=1,interval=5,record=False,filename=""):
+    def __init__(self,xmin,ymin,xmax,ymax,traces=True,playbkspeed=1,interval=5,record=False,filename=""):
         self.fig = plt.figure(frameon=True)
         plt.xlabel("x [m]")
         plt.ylabel("y [m]")
@@ -28,17 +28,55 @@ class AgentAnimation():
         self.filename = filename
         self.speed = playbkspeed
         self.minlen = 0
+        self.tmin = 0
+        self.tmax = 0
+        self.dt = -1
+        self.agentIndex = {}
+        self.traces = traces
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
-        agt = self.GetTriangle(radius,(0.0,0,0),(1.0,0.0),color)
-        self.ax.add_patch(agt)
-        self.agents.append(agt)
-        self.agentNames.append(name)
-        self.data[name] = data
+        if name not in self.agentNames:
+            self.agentNames.append(name)
+            self.data[name] = data
+            agt = self.GetTriangle(radius,(0.0,0,0),(1.0,0.0),color)
+            self.ax.add_patch(agt)
+            self.agents.append(agt)
+            self.agentIndex[name] = 0
+        else:
+            t0 = self.data[name]['time'][0]
+            t1 = self.data[name]['time'][-1]
+            index = 0
+            if data['time'][0] < t0:
+                for key in data.keys():
+                    self.data[name][key]= data[key] + self.data[name][key]
+            else:
+                while data['time'][index] < t1:
+                    index = index + 1
+                    if index >= len(data['time']):
+                        return
+                for key in data.keys():
+                    self.data[name][key].extend(data[key][index:])
+        self.tmin = min(self.tmin,data['time'][0])
+        self.tmax = max(self.tmax,data['time'][-1])
+        if self.dt < 0:
+            self.dt = data['time'][1] - data['time'][0]
         self.minlen = max(self.minlen,len(data['positionNED']))
-        line, = plt.plot(0,0)
-        self.paths[name] = line
+        positionNED = np.array(self.data[name]['positionNED'])
+        velocityNED = np.array(self.data[name]['velocityNED'])
+        time = self.data[name]['time']
+        self.data[name]['positionNED_intp'] = [interpolate.interp1d(time,positionNED[:,0],bounds_error=False,fill_value=(positionNED[0][0],positionNED[-1][0])),
+                                               interpolate.interp1d(time,positionNED[:,1],bounds_error=False,fill_value=(positionNED[0][1],positionNED[-1][1])),
+                                               interpolate.interp1d(time,positionNED[:,2],bounds_error=False,fill_value=(positionNED[0][2],positionNED[-1][2]))]
+        self.data[name]['velocityNED_intp'] = [interpolate.interp1d(time,velocityNED[:,0],bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,velocityNED[:,1],bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,velocityNED[:,2],bounds_error=False,fill_value=(0,0))]
+        self.data[name]['reverseTime_intp'] = interpolate.interp1d(time,np.arange(len(time)),bounds_error=False,fill_value=(0,len(time)-1))
+        self.data[name]['plotX'] = []
+        self.data[name]['plotY'] = []
+        if self.traces:
+            line, = plt.plot(0,0)
+            self.paths[name] = line
         self.agentsRadius[name] = radius
         if show_circle:
             circlePatch = plt.Circle((0, 0), radius=circle_rad, fc='y',alpha=0.5)
@@ -122,8 +160,11 @@ class AgentAnimation():
         plt.plot(fence[:,1],fence[:,0],color)
         plt.scatter(fence[:,1],fence[:,0])
 
-    def UpdateBands(self,position,bands,i,sectors):
+    def UpdateBands(self,position,bands,timeLookUp,t,sectors):
+        i = int(timeLookUp(t))
         numBands = bands["numBands"][i]
+        if(numBands) == 0:
+            return
         low      = bands["low"][i]
         high     = bands["high"][i]
         btype    = bands["bandTypes"][i]
@@ -153,25 +194,29 @@ class AgentAnimation():
     def init(self):
         return self.agents,self.paths,self.circle
 
-    def animate(self,i):
+    def animate(self,time,i):
         i = int(i*self.speed)
         print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
         if i < self.minlen-1:
             for j, vehicle in enumerate(self.agents):
+                k = time[i]
                 id = self.agentNames[j]
-                if i >= len(self.data[id]['positionNED']):
-                    continue
                 #vehicle.center = (self.data[id][i][0], self.data[id][i][1])
-                position = (self.data[id]["positionNED"][i][1], self.data[id]["positionNED"][i][0],self.data[id]["positionNED"][i][2])
-                velocity = (self.data[id]["velocityNED"][i][1], self.data[id]["velocityNED"][i][0])
+                
+                position = (self.data[id]["positionNED_intp"][1](k), self.data[id]["positionNED_intp"][0](k),self.data[id]["positionNED_intp"][2](k))
+                velocity = (self.data[id]["velocityNED_intp"][1](k), self.data[id]["velocityNED_intp"][0](k),self.data[id]["velocityNED_intp"][2](k))
+                if np.linalg.norm(velocity) < 1e-3:
+                    continue
+                self.data[id]['plotX'].append(float(position[0]))
+                self.data[id]['plotY'].append(float(position[1]))
+                
                 radius = self.agentsRadius[id]
                 self.UpdateTriangle(radius,position,velocity,vehicle)
-                self.paths[id].set_xdata(np.array(self.data[id]["positionNED"])[:i,1])
-                self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
+                if self.traces:
+                    self.paths[id].set_xdata(self.data[id]['plotX'])
+                    self.paths[id].set_ydata(self.data[id]['plotY'])
                 if "trkbands" in self.data[id].keys():
-                    if i < len(self.data[id]["trkbands"]["numBands"]):
-                        if self.data[id]["trkbands"]["numBands"][i] != 0:
-                            self.UpdateBands(position,self.data[id]["trkbands"],i,self.bands[id])
+                    self.UpdateBands(position,self.data[id]["trkbands"],self.data[id]["reverseTime_intp"],k,self.bands[id])
                 if id in self.circle.keys():
                     if self.circle[id] is not None:
                         self.circle[id].center = position
@@ -180,7 +225,8 @@ class AgentAnimation():
         return self.agents,self.paths,self.circle
 
     def run(self):
-        animate = lambda x: self.animate(x)
+        time = np.arange(self.tmin,self.tmax+self.dt,self.dt)
+        animate = lambda x: self.animate(time,x)
         init = lambda:self.init()
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,

@@ -29,6 +29,7 @@ class VehicleSimInterface(abc.ABC):
         self.vcoeff = 0.8
         self.sigma_pos = np.zeros((3,3)) 
         self.sigma_vel = np.zeros((3,3)) 
+        self.delay = 0
 
         # Current wind speed
         self.vw = np.array([0, 0, 0])

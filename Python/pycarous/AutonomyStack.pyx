@@ -544,6 +544,7 @@ cdef class AutonomyStack:
         cdef list fp = []
         cdef list fps = []
         for i in range(self.numSecPlan+1):
+            fp = []
             planid = ('Plan'+str(i)).encode('utf-8')
             n = TrajManager_GetTotalWaypoints(self.TrajManager,<char*>planid.c_str())
             for j in range(n):
