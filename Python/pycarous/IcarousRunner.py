@@ -141,7 +141,7 @@ class IcarousRunner(IcarousInterface):
         self.gs.send_all_waypoints()
         time.sleep(1)
 
-    def InputFlightplanFromFile(self, filename, eta=False, repair=False):
+    def InputFlightplanFromFile(self, filename, eta=False, repair=False,startTimeShift=0):
         self.gs.loadWaypoint(filename)
         time.sleep(1)
         fp = GetFlightplan(filename, self.defaultWPSpeed, eta)
