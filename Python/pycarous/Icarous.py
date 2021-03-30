@@ -148,7 +148,7 @@ class Icarous(IcarousInterface):
             fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
             waypoints = ConstructWaypointsFromList(fp,eta) 
         else:
-            wps,totalwps = GetEUTLPlanFromFile(filename,self.vehicleID,timeshift=startTimeShift)
+            wps,totalwps = GetEUTLPlanFromFile(filename,0,timeshift=startTimeShift)
             for i in range(totalwps):
                 waypoints.append(wps[i])
             eta = True

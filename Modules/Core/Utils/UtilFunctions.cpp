@@ -16,6 +16,7 @@
 #include <cstring>
 #include <StateReader.h>
 #include <PlanReader.h>
+#include <PlanWriter.h>
 #include <TrajGen.h>
 #include <iomanip>
 
@@ -469,6 +470,21 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     }
 
     return i;
+}
+
+void IsolateEUTLPlans(char filename[],char prefix[]){
+    larcfm::PlanReader planReader;
+    larcfm::PlanWriter planWriter;
+    planReader.open(std::string(filename));
+    int n = planReader.size();
+    for(int i=0;i<n;++i){
+        larcfm::Plan plan = planReader.getPlan(i);
+        std::string filename = std::string(prefix) + to_string(i) + ".eutl";
+        std::vector<larcfm::Plan> planlist;
+        std::vector<larcfm::PolyPath> polyPath;
+        planlist.push_back(plan);
+        planWriter.write(filename,planlist,polyPath,true);
+    }    
 }
 
 int GetEUTLPlanFromFile(char filename[],int id,waypoint_t waypoints[],bool linearize,double timeshift){

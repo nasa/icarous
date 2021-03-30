@@ -332,18 +332,24 @@ def GetEUTLPlanFromFile(filename,index,linearize=False,timeshift=0):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double
     from CustomTypes import Waypoint,TcpType
     lib = CDLL('libUtils.so')
-    wpArray = Waypoint*100
+    wpArray = Waypoint*500
     wps = wpArray()
     lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray,c_bool,c_double]
     lib.GetEUTLPlanFromFile.restype  = c_int
     n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps,c_bool(linearize),c_double(timeshift))
     return wps,n
 
+def IsolateEUTLPlans(filename,prefix):
+    from ctypes import CDLL,c_char_p
+    lib = CDLL('libUtils.so')
+    lib.IsolateEUTLPlans.argtypes = [c_char_p,c_char_p]
+    lib.IsolateEUTLPlans(filename.encode('utf-8'),prefix.encode('utf-8'))
+
 def GetPlanPositions(waypoints,timeDelta):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double,c_void_p
     from CustomTypes import Waypoint,TcpType
     lib = CDLL('libUtils.so')
-    wpArray = Waypoint*100
+    wpArray = Waypoint*500
     pos = (c_double*3)()
     wps = wpArray()
     timeStart = waypoints[0][0]

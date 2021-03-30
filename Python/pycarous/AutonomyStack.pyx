@@ -155,7 +155,7 @@ cdef class AutonomyStack:
         guidSetWindData(self.Guidance,windFrom,windSpeed)
 
     def InputMissionFlightPlan(self,waypoints,repair=False,eta=False):
-        cdef waypoint_t inputWPs[100]; 
+        cdef waypoint_t inputWPs[500]; 
         cdef bint _repair = repair
         self.etaFP1 = eta
         self.missionPlanSize = len(waypoints)
