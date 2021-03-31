@@ -102,7 +102,7 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
     for (auto elem:trafficList){
         count++;
         // Use traffic only if its data has been updated within the last 10s.
-        if(elapsedTime - elem.second.time < 120){
+        if(elapsedTime - elem.second.time < 120 && elem.second.position.alt() > 1){
             DAA1.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
             SetSUM(count,elem.second.posSigma,elem.second.velSigma);
         }else{
