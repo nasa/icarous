@@ -191,17 +191,17 @@ cdef class AutonomyStack:
         cdef int n
 
         n = len(logs)
-        datalogs.intersectionID = logs[0]['intersectionID']
         datalogs.nodeRole = 1
         datalogs.totalNodes = n
-        for i in range(n):
-            datalogs.log[i].aircraftID = logs[i]['aircraftID'] 
-            datalogs.log[i].intersectionID = logs[i]['intersectionID']
-            datalogs.log[i].earlyArrivalTime = logs[i]['earlyArrivalTime']
-            datalogs.log[i].currentArrivalTime = logs[i]['currentArrivalTime']
-            datalogs.log[i].lateArrivalTime = logs[i]['lateArrivalTime']
-            datalogs.log[i].numSchedulesComputed = logs[i]['numSchedulesComputed']
-            datalogs.log[i].zoneStatus = logs[i]['zoneStatus']
+        for i,key in enumerate(logs.keys()):
+            datalogs.intersectionID = logs[key]['intersectionID']
+            datalogs.log[i].aircraftID = logs[key]['aircraftID'] 
+            datalogs.log[i].intersectionID = logs[key]['intersectionID']
+            datalogs.log[i].earlyArrivalTime = logs[key]['earlyArrivalTime']
+            datalogs.log[i].currentArrivalTime = logs[key]['currentArrivalTime']
+            datalogs.log[i].lateArrivalTime = logs[key]['lateArrivalTime']
+            datalogs.log[i].numSchedulesComputed = logs[key]['numSchedulesComputed']
+            datalogs.log[i].zoneStatus = logs[key]['zoneStatus']
 
         MergerSetNodeLog(self.Merger,&datalogs)
     
