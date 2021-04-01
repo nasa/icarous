@@ -36,6 +36,9 @@ class AgentAnimation():
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
+        if len(data['time']) < 2:
+            return
+
         if name not in self.agentNames:
             self.agentNames.append(name)
             self.data[name] = data

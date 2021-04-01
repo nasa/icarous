@@ -76,7 +76,7 @@ HomePos = GetHomePosition(args.flightplan)
 if args.traffic != '':
     tfinputs = ReadTrafficInput(args.traffic)
     for tf in tfinputs:
-        sim.AddTraffic(tf[0], HomePos, *tf[1:])
+        sim.AddTraffic(tf[0], HomePos, *tf[1:-1],delay=tf[-1])
 
 # Initialize Icarous class
 if args.cfs:
