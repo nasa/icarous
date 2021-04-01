@@ -418,97 +418,102 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     std::vector<double> offsets2 = ComputePlanOffsets("Plan0",nextWP1,pos,vel,time);
     double toffset = offsets1[2]; // Correct for any time delay (-ve offsets[2] indicate a delay)
     double correctedtime = time + toffset;
-    for (auto &gf : fenceList)
-    {
-        larcfm::Vect3 locpos(0, 0, 0);
-        larcfm::CDPolycarp geoPolycarp(gf.polygon.getBottom(), gf.polygon.getTop(), false);
-
-        // Check fence conflict with current position
-        if (gf.fenceType == fenceObject::FENCE_TYPE::KEEP_IN)
+    if(offsets1[0] < 50){
+        for (auto &gf : fenceList)
         {
-            larcfm::Poly3D localPoly = gf.polygon.poly3D(projection);
-            bool conflict = geoPolycarp.definitelyOutside(locpos, localPoly);
-            if (conflict) gfTimes.push_back(0.0);
-            // Check for projected fence conflict based on flightplan
-            double eps = 1; // a small additional delta to add to the output
-            double t = FindTimeToFenceViolation(localPoly,larcfm::Vect3(0,0,pos.alt()),vel) + eps;
-            int seg = fp->getSegment(correctedtime + t);
-            if(seg < 0){
-               continue;
-            }
-            larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
-            larcfm::Vect3 qPos = projection.project(posOnPlan);
-            bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
-            projConflict |= geoPolycarp.nearEdge(qPos,localPoly,2,2);
-            if (projConflict)
+            larcfm::Vect3 locpos(0, 0, 0);
+            larcfm::CDPolycarp geoPolycarp(gf.polygon.getBottom(), gf.polygon.getTop(), false);
+
+            // Check fence conflict with current position
+            if (gf.fenceType == fenceObject::FENCE_TYPE::KEEP_IN)
             {
-                conflict |= true;
-                gfTimes.push_back(t);
+                larcfm::Poly3D localPoly = gf.polygon.poly3D(projection);
+                bool conflict = geoPolycarp.definitelyOutside(locpos, localPoly);
+                if (conflict)
+                    gfTimes.push_back(0.0);
+                // Check for projected fence conflict based on flightplan
+                double eps = 1; // a small additional delta to add to the output
+                double t = FindTimeToFenceViolation(localPoly, larcfm::Vect3(0, 0, pos.alt()), vel) + eps;
+                int seg = fp->getSegment(correctedtime + t);
+                if (seg < 0)
+                {
+                    continue;
+                }
+                larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
+                larcfm::Vect3 qPos = projection.project(posOnPlan);
+                bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
+                projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 2, 2);
+                if (projConflict)
+                {
+                    conflict |= true;
+                    gfTimes.push_back(t);
+                }
+                fenceConflict |= conflict;
             }
-            fenceConflict |= conflict;
-        }
-        else
-        {
-            bool conflict = geoPolycarp.definitelyInside(locpos, gf.polygon.poly3D(projection));
-            if (conflict)
-                gfTimes.push_back(0.0);
-            // Check for projected fence conflict based on flightplan
-            larcfm::CDIIPolygon cdiipolygon;
-            larcfm::PolyPath objpath(std::to_string(gf.id), gf.polygon);
-            bool pathConflict = cdiipolygon.detection(*fp, objpath, correctedtime, fp->getLastTime());
-            conflict |= pathConflict;
-
-            int n = cdiipolygon.size();
-            std::list<double> timeAs;
-            for (int i = 0; i < n; i++)
+            else
             {
-                timeAs.push_back(cdiipolygon.getTimeIn(i) - correctedtime);
+                bool conflict = geoPolycarp.definitelyInside(locpos, gf.polygon.poly3D(projection));
+                if (conflict)
+                    gfTimes.push_back(0.0);
+                // Check for projected fence conflict based on flightplan
+                larcfm::CDIIPolygon cdiipolygon;
+                larcfm::PolyPath objpath(std::to_string(gf.id), gf.polygon);
+                bool pathConflict = cdiipolygon.detection(*fp, objpath, correctedtime, fp->getLastTime());
+                conflict |= pathConflict;
+
+                int n = cdiipolygon.size();
+                std::list<double> timeAs;
+                for (int i = 0; i < n; i++)
+                {
+                    timeAs.push_back(cdiipolygon.getTimeIn(i) - correctedtime);
+                }
+                if (n > 0)
+                {
+                    timeAs.sort(cmp);
+                    gfTimes.push_back(timeAs.front());
+                }
+                fenceConflict |= conflict;
             }
-            if(n > 0){
-                timeAs.sort(cmp);
-                gfTimes.push_back(timeAs.front());
+        }
+
+        // Check for projected traffic conflict based on flightplan
+        for (auto &tp : trafficPlans)
+        {
+            larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
+            cdii.detection(*fp, tp, time, fp->getLastTime());
+            int n = cdii.size();
+            if (n > 0)
+            {
+                tfTimes.push_back(cdii.getTimeIn(0) - correctedtime);
+                trafficConflict = true;
             }
-            fenceConflict |= conflict;
         }
-    }
 
-    // Check for projected traffic conflict based on flightplan
-    for (auto &tp : trafficPlans)
-    {
-        larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
-        cdii.detection(*fp, tp, time, fp->getLastTime());
-        int n = cdii.size();
-        if (n > 0)
+        // Check for projected traffic conflicts for state based traffic
+        for (auto &tf : trafficList)
         {
-            tfTimes.push_back(cdii.getTimeIn(0) - correctedtime);
-            trafficConflict = true;
+            larcfm::Position posA = tf.second.position;
+            larcfm::Velocity velA = tf.second.velocity;
+            double projT = 1000;
+            double timeA = tf.second.time + toffset;
+            double timeB = timeA + projT;
+            larcfm::Position posB = posA.linear(velA, projT);
+            larcfm::Plan tp("traffic");
+            tp.add(posA, timeA);
+            tp.add(posB, timeB);
+            larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
+            cdii.detection(*fp, tp, correctedtime, fp->getLastTime());
+            int n = cdii.size();
+            if (n > 0)
+            {
+                tfTimes.push_back(cdii.getTimeIn(0) - correctedtime);
+                trafficConflict = true;
+            }
         }
-    }
 
-    // Check for projected traffic conflicts for state based traffic
-    for (auto &tf : trafficList)
-    {
-        larcfm::Position posA = tf.second.position;
-        larcfm::Velocity velA = tf.second.velocity;
-        double projT = 1000;
-        double timeA = tf.second.time + toffset;
-        double timeB = timeA + projT;
-        larcfm::Position posB = posA.linear(velA, projT);
-        larcfm::Plan tp("traffic");
-        tp.add(posA, timeA);
-        tp.add(posB, timeB);
-        larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
-        cdii.detection(*fp, tp, correctedtime, fp->getLastTime());
-        int n = cdii.size();
-        if (n > 0)
-        {
-            tfTimes.push_back(cdii.getTimeIn(0) - correctedtime);
-            trafficConflict = true;
-        }
+        tfTimes.sort(cmp);
+        gfTimes.sort(cmp);
     }
-
-    tfTimes.sort(cmp);
-    gfTimes.sort(cmp);
 
     // Check for next feasible waypoint in the main plan
     fp = GetPlan("Plan0");
@@ -533,7 +538,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     };
     for (; findex < fp->size(); ++findex)
     {
-        if(fp->time(findex) < correctedtime + tfTimes.front()){
+        if(fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50){
             continue;
         }
         if (fp->isBOT(findex) || fp->isMOT(findex))
