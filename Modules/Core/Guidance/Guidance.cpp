@@ -180,7 +180,17 @@ void Guidance::ChangeWaypointETA(const std::string planID,const int wpid,const d
 
 
 void Guidance::SetVelocityCommands(const larcfm::Velocity &inputs){
-    outputCmd = inputs;
+    double windSpeed = wind.gs();
+    double maxSpeed = params.maxSpeed + windSpeed;
+    double minSpeed = params.minSpeed + windSpeed;
+    double gs =inputs.gs();
+    if (gs < minSpeed){
+        gs = minSpeed;
+    }else if(gs > params.maxSpeed){
+        gs= maxSpeed;
+    }
+    larcfm::Velocity outVel = inputs.mkGs(gs);
+    outputCmd = outVel;
 }
 
 void Guidance::GetOutput(GuidanceOutput_t& output){
@@ -291,7 +301,8 @@ double Guidance::ComputeSpeed(){
        if (distH > 0.5 && timediff > 0.001){
            newSpeed = distH / timediff;
        }else{
-           newSpeed = currentGroundSpeed.gs();
+           // Speed if eta cannot be met
+           newSpeed = currentPlan->gsOut(nextWP-1);
        }
 
        if (newSpeed > maxSpeed) {
@@ -304,7 +315,6 @@ double Guidance::ComputeSpeed(){
        return newSpeed;
    }
 
-   
 }
 
 double Guidance::ComputeClimbRate(double speedRef){

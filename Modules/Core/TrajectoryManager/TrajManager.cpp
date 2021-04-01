@@ -536,7 +536,19 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         }
         return conflict;
     };
-    for (; findex < fp->size(); ++findex)
+    double maxdist = 1e10;
+    int maxwp = fp->size();
+    int mini;
+    // Get the next nearest waypoint in the mission
+    for(int i=findex;i<maxwp;++i){
+        double dist =  pos.distanceH(fp->getPos(i));
+        if (dist <= maxdist){
+            mini = i;
+            maxdist = dist;
+        }
+    }
+    findex = mini;
+    for (; findex < maxwp; ++findex)
     {
         if(fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50){
             continue;
@@ -551,6 +563,10 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             break;
         }
     }
+
+    if(findex >= maxwp){
+        findex = maxwp-1;
+    }
     data.fenceConflict = fenceConflict;
     data.trafficConflict = trafficConflict;
     data.timeToFenceViolation = gfTimes.front();
@@ -563,7 +579,6 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     data.offsets2[2] = offsets2[2];
     data.nextWP = nextWP2;
     data.nextFeasibleWP = findex;
-
     return data;
 }
 

@@ -42,20 +42,26 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 };
 
 class Vector2Mission: public EventHandler<CognitionState_t>{
+   int targetWP;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
+       targetWP = state->nextFeasibleWpId;
+       state->nextWpId["Plan0"] = targetWP+1;
        return SUCCESS;
    }
 
    retVal_e Execute(CognitionState_t* state){
        
        larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-       larcfm::Position positionB = GetNextWP(fp,state->nextFeasibleWpId);
+       larcfm::Position positionB = GetNextWP(fp,targetWP);
        double trk = state->position.track(positionB) * 180/M_PI;
        double gs = state->velocity.gs();
        double vs = 0;
-       SetGuidanceVelCmd(state,trk,gs,vs);
        double dist = state->position.distanceH(positionB);
+       if(dist < 200){
+           gs = fmin(gs,dist*0.25);
+       }
+       SetGuidanceVelCmd(state,trk,gs,vs);
        if ( dist < fmax(10,2.5*gs)){
            return SUCCESS;
        }else{
