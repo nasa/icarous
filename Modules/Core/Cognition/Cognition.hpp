@@ -324,9 +324,8 @@ double ComputeXtrackDistance(const larcfm::Position &prev_wp,
                             const larcfm::Position &next_wp,
                             const larcfm::Position &pos,
                             double offset[]);
-larcfm::Position GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
-                        const larcfm::Position &next_wp,
-                        const larcfm::Position &current_pos);
+larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan* fp,
+                                          const larcfm::Position &current_pos,int& nextWP);
 void ManeuverToIntercept(const larcfm::Position &prev_wp,
                             const larcfm::Position &next_wp,
                             const larcfm::Position &curr_position,

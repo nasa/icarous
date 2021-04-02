@@ -42,22 +42,25 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 };
 
 class Vector2Mission: public EventHandler<CognitionState_t>{
-   int targetWP;
+   larcfm::Position target;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
-       targetWP = state->nextFeasibleWpId;
-       state->nextWpId["Plan0"] = targetWP+1;
+       if(state->parameters.return2NextWP == 3){
+           larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
+           target = fp->getPos(state->nextFeasibleWpId);
+           state->nextWpId["Plan0"] =state->nextFeasibleWpId + 1;
+       }else{
+           target = state->clstPoint;
+       }
        return SUCCESS;
    }
 
    retVal_e Execute(CognitionState_t* state){
        
-       larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-       larcfm::Position positionB = GetNextWP(fp,targetWP);
-       double trk = state->position.track(positionB) * 180/M_PI;
+       double trk = state->position.track(target) * 180/M_PI;
        double gs = state->velocity.gs();
        double vs = 0;
-       double dist = state->position.distanceH(positionB);
+       double dist = state->position.distanceH(target);
        if(dist < 200){
            gs = fmin(gs,dist*0.25);
        }
@@ -198,7 +201,6 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
          state->preferredTrack = state->prevResTrack;
          state->preferredAlt   = state->prevResAlt;
          state->trafficConflictStartTime = state->utcTime;
-
          state->resType = GetResolutionType(state);
 
          int ind = state->resType;
@@ -282,9 +284,11 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
             double climb_rate = 0;
             SetGuidanceVelCmd(state,state->preferredTrack, speed, climb_rate);
             state->prevResTrack = state->preferredTrack;
-            state->returnSafe = ComputeTargetFeasibility(state,state->clstPoint);
-            state->closestPointFeasible = state->returnSafe;
-            state->returnSafe &= ComputeTargetFeasibility(state,target);
+            state->returnSafe = ComputeTargetFeasibility(state,target);
+            if(state->parameters.return2NextWP == 0 || state->parameters.return2NextWP == 2){
+                state->returnSafe &= ComputeTargetFeasibility(state,state->clstPoint);
+                state->closestPointFeasible = state->returnSafe;
+            }
             break;
         }
 
@@ -431,7 +435,7 @@ class MergingHandler: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Terminate(CognitionState_t* state){
-        SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextFeasibleWpId);
+        SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
         LogMessage(state,"[FLIGHT_PHASES] | MERGING -> CRUISE");
         return SUCCESS;
     }

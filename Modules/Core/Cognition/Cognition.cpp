@@ -81,10 +81,13 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
     cogState.speed = vel.gs();
 
     //Update nearest point with respect to active flightplan
-    larcfm::Plan* fp = cogState.activePlan; 
-    if(fp != nullptr){
-        int nextWP = cogState.nextWpId[fp->getID()];
-        cogState.clstPoint = GetNearestPositionOnPlan(GetPrevWP(fp,nextWP), GetNextWP(fp,nextWP), cogState.position);
+    if(cogState.parameters.return2NextWP == 0 || cogState.parameters.return2NextWP == 2){
+        larcfm::Plan *fp = cogState.activePlan;
+        if (fp != nullptr) {
+            int nextWP = cogState.nextWpId[fp->getID()];
+            cogState.clstPoint = GetNearestPositionOnPlan(fp, cogState.position, nextWP);
+            cogState.nextWpId[fp->getID()] = nextWP;
+        }
     }
 }
 
@@ -143,6 +146,9 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
     }else{
         int next_wp_id = reached_wp_id + 1;
         larcfm::Plan* fp = GetPlan(&cogState.flightPlans,plan_id);
+        if(fp->getInfo(next_wp_id-1) == "<BOD>"){
+            next_wp_id = fp->size()+1;
+        }
         if (fp != nullptr) {
             cogState.activePlan  = fp;
             int total_waypoints = GetTotalWaypoints(&cogState.flightPlans,plan_id);

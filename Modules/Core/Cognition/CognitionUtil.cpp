@@ -99,28 +99,32 @@ void ManeuverToIntercept(const larcfm::Position &prev_wp,
     output_velocity = larcfm::Velocity::makeTrkGsVs(track,"degree", resolution_speed,"m/s", 0,"m/s");
 }
 
-larcfm::Position GetNearestPositionOnPlan(const larcfm::Position &prev_wp,
-                                          const larcfm::Position &next_wp,
-                                          const larcfm::Position &current_pos){
+larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan *fp,
+                                          const larcfm::Position &current_pos,int &nextWP){
     double offsets[2];
-    ComputeXtrackDistance(prev_wp,next_wp,current_pos,offsets);
-
-    double distAB = prev_wp.distanceH(next_wp); 
-    if(distAB < 1e-3){
-        return prev_wp;
+    int totalwp = fp->size();
+    larcfm::Position nearest;
+    double mindist = MAXDOUBLE;
+    for(int i=nextWP;i < totalwp; ++i){
+        larcfm::Position prev_wp = fp->getPos(i-1);
+        larcfm::Position next_wp = fp->getPos(i);
+        if(fp->isMOT(i) || fp->isEOT(i)){
+            continue;
+        }
+        ComputeXtrackDistance(prev_wp,next_wp,current_pos,offsets);
+        double distAB = prev_wp.distanceH(next_wp); 
+        double heading2nextWP  = prev_wp.track(next_wp);;
+        larcfm::Position computedPos = prev_wp.linearDist2D(heading2nextWP,offsets[1]*distAB);
+        double dist2pos = current_pos.distanceH(computedPos);
+        if(dist2pos < mindist){
+            nearest = computedPos;
+            mindist = dist2pos; 
+            nextWP  = i;
+        }
     }
-
-    double heading2nextWP  = prev_wp.track(next_wp);;
-    return prev_wp.linearDist2D(heading2nextWP,offsets[1]*distAB);
+    return nearest;
 }
 
-double GetInterceptHeadingToPlan(const larcfm::Position &prev_wp,
-                                 const larcfm::Position &next_wp,
-                                 const larcfm::Position &current_pos){
-    larcfm::Position positionOnPlan;
-    positionOnPlan = GetNearestPositionOnPlan(prev_wp,next_wp,current_pos);
-    return current_pos.track(positionOnPlan)*180/M_PI;
-}
 
 bool CheckTurnConflict(double low,double high,double new_heading,double old_heading){
 

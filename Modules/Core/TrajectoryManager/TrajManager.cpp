@@ -536,27 +536,28 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         }
         return conflict;
     };
-    double maxdist = 1e10;
     int maxwp = fp->size();
-    int mini;
-    // Get the next nearest waypoint in the mission
-    for(int i=findex;i<maxwp;++i){
-        double dist =  pos.distanceH(fp->getPos(i));
-        if (dist <= maxdist){
-            mini = i;
-            maxdist = dist;
-        }
-    }
-    findex = mini;
     for (; findex < maxwp; ++findex)
     {
+        // Check if next wp is before the conflict time
         if(fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50){
             continue;
         }
+
+        // Avoid BOT and MOT
         if (fp->isBOT(findex) || fp->isMOT(findex))
         {
             continue;
         }
+
+        // The next segment should be sufficient long to facilitate plan capture
+        double segdist = fp->pathDistance(findex,findex+1);
+
+        if(segdist < vel.gs()*3){
+            continue;
+        }
+
+        // Check fence feasibility
         bool conflict = CheckWPFeasibility(findex);
         if (!conflict)
         {
