@@ -103,23 +103,40 @@ larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan *fp,
                                           const larcfm::Position &current_pos,int &nextWP){
     double offsets[2];
     int totalwp = fp->size();
-    larcfm::Position nearest;
+    larcfm::Position nearest = fp->getPos(nextWP);
     double mindist = MAXDOUBLE;
-    for(int i=nextWP;i < totalwp; ++i){
+    for(int i=1;i < totalwp; ++i){
         larcfm::Position prev_wp = fp->getPos(i-1);
         larcfm::Position next_wp = fp->getPos(i);
         if(fp->isMOT(i) || fp->isEOT(i)){
-            continue;
+            //continue;
         }
-        ComputeXtrackDistance(prev_wp,next_wp,current_pos,offsets);
         double distAB = prev_wp.distanceH(next_wp); 
-        double heading2nextWP  = prev_wp.track(next_wp);;
-        larcfm::Position computedPos = prev_wp.linearDist2D(heading2nextWP,offsets[1]*distAB);
+        larcfm::Position computedPos;
+        if(distAB > 1e-3){
+            ComputeXtrackDistance(prev_wp, next_wp, current_pos, offsets);
+            double heading2nextWP = prev_wp.track(next_wp);
+            double revHeading = next_wp.track(prev_wp);
+            if (offsets[1] > 0 && offsets[1] <= 1) {
+                computedPos = prev_wp.linearDist2D(heading2nextWP, abs(offsets[1] * distAB));
+            }
+            else {
+                //computedPos = prev_wp.linearDist2D(revHeading, abs(offsets[1] * distAB));
+            }
+        }else{
+            computedPos = next_wp;
+        }
         double dist2pos = current_pos.distanceH(computedPos);
-        if(dist2pos < mindist){
+        if (dist2pos <= mindist)
+        {
             nearest = computedPos;
-            mindist = dist2pos; 
-            nextWP  = i;
+            mindist = dist2pos;
+            nextWP = i;
+            if(nextWP == totalwp-1){
+                if(dist2pos < 5){
+                    nextWP = totalwp;
+                }
+            }
         }
     }
     return nearest;

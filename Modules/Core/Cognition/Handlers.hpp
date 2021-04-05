@@ -51,6 +51,10 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
            state->nextWpId["Plan0"] =state->nextFeasibleWpId + 1;
        }else{
            target = state->clstPoint;
+           //larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
+           //int nextWP = state->nextWpId["Plan0"];
+           //GetNearestPositionOnPlan(fp, state->position, nextWP);
+           //state->nextWpId["Plan0"] =nextWP;
        }
        return SUCCESS;
    }

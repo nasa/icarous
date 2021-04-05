@@ -116,7 +116,7 @@ cdef class AutonomyStack:
         cogParams.lookaheadTime = self.params[b'LOOKAHEAD_TIME']
         cogParams.persistenceTime = self.params[b'PERSIST_TIME']
         cogParams.return2NextWP = int(self.params[b'RETURN_WP'])
-        cogParams.active = True if cogParams.resolutionType > 0 else False
+        cogParams.active = True if cogParams.resolutionType >= 0 else False
         InputParameters(self.Cognition,&cogParams)
 
     def SetGeofenceParams(self):

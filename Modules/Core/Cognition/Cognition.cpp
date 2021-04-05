@@ -83,7 +83,7 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
     //Update nearest point with respect to active flightplan
     if(cogState.parameters.return2NextWP == 0 || cogState.parameters.return2NextWP == 2){
         larcfm::Plan *fp = cogState.activePlan;
-        if (fp != nullptr) {
+        if (fp != nullptr && fp->getID() == "Plan0") {
             int nextWP = cogState.nextWpId[fp->getID()];
             cogState.clstPoint = GetNearestPositionOnPlan(fp, cogState.position, nextWP);
             cogState.nextWpId[fp->getID()] = nextWP;
