@@ -86,7 +86,7 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
    larcfm::Position next_position = fp->getPos(newInd);
    double start_time = fp->time(wpidprev);
    double old_time   = fp->time(newInd);
-   double dist       = prev_position.distanceH(next_position);
+   double dist       = fp->pathDistance(wpidprev,newInd);
    double new_time   = start_time + dist/speed;
    double delta      = new_time - old_time;
    fp2.timeShiftPlan(newInd,delta);

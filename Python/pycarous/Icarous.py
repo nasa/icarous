@@ -100,7 +100,7 @@ class Icarous(IcarousInterface):
         opts = {}
         opts['callsign'] = self.callsign
         opts['daaConfig'] = self.daaConfig
-        opts['daaLog'] = False
+        opts['daaLog'] = True
         opts['verbose'] = verbose
         opts['vehicleID'] = self.vehicleID
         self.core = AutonomyStack(opts)
