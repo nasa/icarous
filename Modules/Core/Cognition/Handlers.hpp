@@ -51,24 +51,41 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
            state->nextWpId["Plan0"] =state->nextFeasibleWpId + 1;
        }else{
            target = state->clstPoint;
-           //larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-           //int nextWP = state->nextWpId["Plan0"];
-           //GetNearestPositionOnPlan(fp, state->position, nextWP);
-           //state->nextWpId["Plan0"] =nextWP;
+           larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
+           int nextWP = state->nextWpId["Plan0"];
+           GetNearestPositionOnPlan(fp, state->position, nextWP);
+           state->nextWpId["Plan0"] =nextWP;
        }
        return SUCCESS;
    }
 
    retVal_e Execute(CognitionState_t* state){
        
-       double trk = state->position.track(target) * 180/M_PI;
+       double trkRef = state->position.track(target) * 180/M_PI;
        double gs = state->velocity.gs();
        double vs = 0;
        double dist = state->position.distanceH(target);
-       if(dist < 200){
-           gs = fmin(gs,dist*0.25);
+       double trkCurrent = state->velocity.track("degree");
+       double trkCmd;
+       double turnRate = 0.1;
+       int direction = 1;
+       double diff = fmod(360 + (trkCurrent - trkRef),360);
+       if(fabs(diff) >= 30){
+           if (state->rightTurnConflict) {
+               direction = -1;
+           }
+
+           trkCmd = trkCurrent + 2*direction;
+           
+       }else{
+           trkCmd = trkRef;
        }
-       SetGuidanceVelCmd(state,trk,gs,vs);
+       
+       // speed reduction when near target to facilitate capture
+       if (dist < 200) {
+          gs = fmin(gs, dist * 0.25);
+       }
+       SetGuidanceVelCmd(state,trkCmd,gs,vs);
        if ( dist < fmax(10,2.5*gs)){
            return SUCCESS;
        }else{

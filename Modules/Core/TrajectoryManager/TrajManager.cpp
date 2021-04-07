@@ -544,10 +544,20 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             continue;
         }
 
+        
         // Avoid BOT and MOT
         if (fp->isBOT(findex) || fp->isMOT(findex))
         {
             continue;
+        }
+
+        // Avoid other tcps in a turn segment
+        if (!fp->isEOT(findex)) {
+            int prevTurnTCP = fp->prevTrkTCP(findex);
+            if (fp->getTcpData(prevTurnTCP).isBOT() && !fp->getTcpData(prevTurnTCP).isEOT())
+            {
+                continue;
+            }
         }
 
         // The next segment should be sufficient long to facilitate plan capture

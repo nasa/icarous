@@ -47,6 +47,12 @@ void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID
             currentPlan = fp;
             nextWpId[planID] = nextWP;
             activePlanId = planID;
+            int prevTrkTCP = fp->prevTrkTCP(nextWP);
+            if(prevTrkTCP > 0){
+                if (fp->getTcpData(prevTrkTCP).isBOT()) {
+                    inTurn = true;
+                }
+            }
         }
     }
 }

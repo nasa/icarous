@@ -199,6 +199,9 @@ typedef struct{
     bool endDitch;
     bool ditchRouteFeasible;
 
+    bool leftTurnConflict;
+    bool rightTurnConflict;
+
     status_e takeoffState;
     status_e cruiseState;
     status_e emergencyDescentState;
@@ -339,7 +342,7 @@ double GetInterceptHeadingToPlan(const larcfm::Position &prev_wp,
 bool CheckTurnConflict(const double low,
                     const double high,
                     const double new_heading,
-                    const double old_heading);
+                    const double old_heading,bool& rightTurnConflict,bool& leftTurnConflict);
 
 std::map<std::string,int> GetPriorityValues();
 

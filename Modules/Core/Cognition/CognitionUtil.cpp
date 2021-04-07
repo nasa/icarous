@@ -108,9 +108,20 @@ larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan *fp,
     for(int i=1;i < totalwp; ++i){
         larcfm::Position prev_wp = fp->getPos(i-1);
         larcfm::Position next_wp = fp->getPos(i);
+
+        /* 
         if(fp->isMOT(i) || fp->isEOT(i)){
-            //continue;
+            continue;
         }
+
+        // Avoid other tcps in a turn segment
+        int prevTurnTCP = fp->prevTrkTCP(i);
+        if(prevTurnTCP >= 0){
+            if (fp->getTcpData(prevTurnTCP).isBOT() && !fp->getTcpData(prevTurnTCP).isEOT()) {
+                continue;
+            }
+        }*/
+
         double distAB = prev_wp.distanceH(next_wp); 
         larcfm::Position computedPos;
         if(distAB > 1e-3){
@@ -143,7 +154,7 @@ larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan *fp,
 }
 
 
-bool CheckTurnConflict(double low,double high,double new_heading,double old_heading){
+bool CheckTurnConflict(double low,double high,double new_heading,double old_heading,bool& rightConflict,bool& leftConflict){
 
     low  = std::fmod(360+low,360);
     high = std::fmod(360+high,360);
@@ -157,34 +168,47 @@ bool CheckTurnConflict(double low,double high,double new_heading,double old_head
     if (low > high){
         low -= 360;
     }
-
-    if(rightTurn){
-        if (new_heading < old_heading){
-            old_heading -= 360;
-        }
-        if( old_heading <= low && high <= new_heading ){
-            return true;
-        }
-    }else{
-        if (new_heading > old_heading){
-            new_heading -= 360;
-        }
-        
-        if( new_heading <= low && high <= old_heading ){
-            return true;
-        }
-    }
+    rightConflict = false;
+    leftConflict = false;
 
     bool cond1 = new_heading >= low && new_heading <= high;
     bool cond2 = old_heading >= low && old_heading <= high;
 
     if(cond1 || cond2){
+        rightConflict = true;
+        leftConflict = true;
         return true;
     }
 
-    return false;
+    // Check for right turn conflict
+    double nheading = new_heading;
+    double oheading = old_heading;
 
-    
+    if (nheading < oheading){
+        oheading -= 360;
+    }
+    if( oheading <= low && high <= nheading ){
+        rightConflict = true;
+    }
+
+    // Check for left turn conflict
+    nheading = new_heading;
+    oheading = old_heading;
+
+    if (nheading > oheading){
+        nheading -= 360;
+    }
+        
+    if( nheading <= low && high <= oheading ){
+        leftConflict = true;
+    }
+
+    if(rightConflict && leftConflict){
+        return true;
+    }else{
+        return false;
+    }
+
 }
 
 bool ComputeTargetFeasibility(CognitionState_t* state,larcfm::Position target){
@@ -201,11 +225,16 @@ bool ComputeTargetFeasibility(CognitionState_t* state,larcfm::Position target){
     bool conflict = false;
     // Check if it is safe to turn given the current bands available
     // Check feasibility based on trk bands
+    state->rightTurnConflict = true;
+    state->leftTurnConflict = true;
     for(int i=0;i<state->trkBandNum;++i){
         double low = state->trkBandMin[i];
         double high = state->trkBandMax[i];
         if(state->trkBandType[i] != BANDREGION_NONE && state->trkBandType[i] != BANDREGION_RECOVERY){
-            conflict |= CheckTurnConflict(low,high,newtrk,oldtrk);
+            bool leftConflict, rightConflict;
+            conflict |= CheckTurnConflict(low,high,newtrk,oldtrk,rightConflict,leftConflict);
+            state->rightTurnConflict &= rightConflict;
+            state->leftTurnConflict &= leftConflict;
         }
         if(conflict){
             return !conflict; // Negate conflict to denote feasibility

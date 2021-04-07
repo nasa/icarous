@@ -86,7 +86,7 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
         if (fp != nullptr && fp->getID() == "Plan0") {
             int nextWP = cogState.nextWpId[fp->getID()];
             cogState.clstPoint = GetNearestPositionOnPlan(fp, cogState.position, nextWP);
-            cogState.nextWpId[fp->getID()] = nextWP;
+            //cogState.nextWpId[fp->getID()] = nextWP;
         }
     }
 }
