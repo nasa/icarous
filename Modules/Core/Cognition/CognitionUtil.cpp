@@ -202,6 +202,14 @@ bool CheckTurnConflict(double low,double high,double new_heading,double old_head
     if( nheading <= low && high <= oheading ){
         leftConflict = true;
     }
+    
+    if(!rightConflict && !leftConflict){
+        if(rightTurn){
+            leftConflict = true;
+        }else{
+            rightConflict = true;
+        }
+    }
 
     if(rightConflict && leftConflict){
         return true;
