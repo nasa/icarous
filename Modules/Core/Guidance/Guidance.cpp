@@ -87,15 +87,16 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
 
    double speed = val;
    
-
-   larcfm::Position prev_position = fp->getPos(wpidprev);
-   larcfm::Position next_position = fp->getPos(newInd);
-   double start_time = fp->time(wpidprev);
-   double old_time   = fp->time(newInd);
-   double dist       = fp->pathDistance(wpidprev,newInd);
-   double new_time   = start_time + dist/speed;
-   double delta      = new_time - old_time;
-   fp2.timeShiftPlan(newInd,delta);
+   int size = fp2.size();
+   double prevTime = fp->time(newInd-1);
+   for(int i=newInd;i<size;++i){
+       double old_time   = fp2.time(i);
+       double dist       = fp2.pathDistance(i-1,i);
+       double new_time   = prevTime + dist/speed;
+       double delta      = new_time - old_time;
+       fp2.timeShiftPlan(i,delta);
+       prevTime = new_time;
+   }
 
    fp = GetPlan(speedChange);
    if(fp == nullptr){
@@ -452,17 +453,20 @@ double Guidance::ComputeNewHeading(double& speedRef){
             // This assumes that that angle between BOT and EOT is no more than 180 degrees
             turnCurrentDelta = 0.0;
         }
-        double targetTime  = currentPlan->time(nextWP);
-        double turnRate    = std::fmod((currentPlan->gsIn(nextWP)/fabs(turnRadius))*RAD2DEG,360) * turnDirection;
-        double timeRemainingTurn = fabs((turnTargetDelta - turnCurrentDelta)/(turnRate*DEG2RAD));
-        double actualTimeRemaining = currentPlan->time(nextWP) - currTime;
-        if (actualTimeRemaining < timeRemainingTurn){
-             turnRate *= 1.3;
-        }else{ 
-             turnRate *= 0.9;
-        }
+        if(etaControl){
+            double targetTime = currentPlan->time(nextWP);
+            double turnRate = std::fmod((currentPlan->gsIn(nextWP) / fabs(turnRadius)) * RAD2DEG, 360) * turnDirection;
+            double timeRemainingTurn = fabs((turnTargetDelta - turnCurrentDelta) / (turnRate * DEG2RAD));
+            double actualTimeRemaining = currentPlan->time(nextWP) - currTime;
+            if (actualTimeRemaining < timeRemainingTurn) {
+                turnRate *= 1.3;
+            }
+            else {
+                turnRate *= 0.9;
+            }
 
-        speedRef = std::min(params.maxSpeed,turnRadius*(turnRate*DEG2RAD));
+            speedRef = std::min(params.maxSpeed, turnRadius * (turnRate * DEG2RAD));
+        }
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
         double offset = dist2center/fabs(turnRadius) - 1;
