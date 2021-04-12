@@ -447,16 +447,22 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
 
 
 class MergingHandler: public EventHandler<CognitionState_t>{
+    bool mergingSpeedChange = false;
     retVal_e Execute(CognitionState_t* state){
         if(state->mergingActive == 2 || state->mergingActive == 0){
             return SUCCESS;
         }else{
+            if(state->mergingActive == 3){
+                mergingSpeedChange = true;
+            }
             return INPROGRESS;
         }
     }
 
     retVal_e Terminate(CognitionState_t* state){
-        SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+        if(mergingSpeedChange){
+            SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+        }
         LogMessage(state,"[FLIGHT_PHASES] | MERGING -> CRUISE");
         return SUCCESS;
     }
