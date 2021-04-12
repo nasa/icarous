@@ -14,6 +14,8 @@
 #include <Units.h>
 #include <fstream>
 #include <cstring>
+#include <cstdlib>
+#include <ctime>
 #include <StateReader.h>
 #include <PlanReader.h>
 #include <PlanWriter.h>
@@ -472,13 +474,19 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     return i;
 }
 
-void IsolateEUTLPlans(char filename[],char prefix[]){
+void IsolateEUTLPlans(char filename[],char prefix[],bool randomizeStart){
     larcfm::PlanReader planReader;
     larcfm::PlanWriter planWriter;
     planReader.open(std::string(filename));
+    srand(time(NULL)); 
     int n = planReader.size();
     for(int i=0;i<n;++i){
+        double randStart;
+        if(randomizeStart){
+            randStart = rand() % 50 - 50; 
+        }
         larcfm::Plan plan = planReader.getPlan(i);
+        plan.timeShiftPlan(0,randStart);
         std::string filename = std::string(prefix) + to_string(i) + ".eutl";
         std::vector<larcfm::Plan> planlist;
         std::vector<larcfm::PolyPath> polyPath;

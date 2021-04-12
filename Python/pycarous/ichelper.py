@@ -339,11 +339,11 @@ def GetEUTLPlanFromFile(filename,index,linearize=False,timeshift=0):
     n = lib.GetEUTLPlanFromFile(c_char_p(filename.encode('utf-8')),index,wps,c_bool(linearize),c_double(timeshift))
     return wps,n
 
-def IsolateEUTLPlans(filename,prefix):
-    from ctypes import CDLL,c_char_p
+def IsolateEUTLPlans(filename,prefix,randomize=False):
+    from ctypes import CDLL,c_char_p,c_bool
     lib = CDLL('libUtils.so')
-    lib.IsolateEUTLPlans.argtypes = [c_char_p,c_char_p]
-    lib.IsolateEUTLPlans(filename.encode('utf-8'),prefix.encode('utf-8'))
+    lib.IsolateEUTLPlans.argtypes = [c_char_p,c_char_p,c_bool]
+    lib.IsolateEUTLPlans(filename.encode('utf-8'),prefix.encode('utf-8'),c_bool(randomize))
 
 def GetPlanPositions(waypoints,timeDelta):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double,c_void_p
