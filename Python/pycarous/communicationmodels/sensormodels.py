@@ -80,9 +80,9 @@ class Receiver:
         received_msgs = self.channel.receive(rx_pos_gps, self.sensitivity)
         self.messages += [m for m in received_msgs if m.sender_id != self.id]
         msgs = [m for m in self.messages
-                if m.sent_time + self.latency >= current_time]
+                if m.sent_time + self.latency <= current_time]
         self.messages = [m for m in self.messages
-                         if m.sent_time + self.latency < current_time]
+                         if m.sent_time + self.latency > current_time]
         return msgs
 
 
