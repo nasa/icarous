@@ -1,15 +1,10 @@
 future==0.18.2
-ipython==7.16.1
-ipython-genutils==0.2.0
 lxml==4.6.3
-Markdown==3.2.2
 matplotlib==3.2.2
 numpy==1.19.0
-pandas==1.1.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
 PyYAML==5.4
-scipy==1.4.1
 pymavlink==2.4.9
 pyzmq==20.0.0
 Cython==0.29.22
