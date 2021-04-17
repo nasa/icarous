@@ -120,8 +120,9 @@ all: modules
 	$(MAKE) --no-print-directory -C "$(O)" mission-all
 
 modules:
-	mkdir -p build/Modules
-	cd build/Modules && cmake ../../Modules && make all -j8 
+	mkdir -p "$(O)/Modules"
+	cd "$(O)/Modules" && cmake "$(CURDIR)/Modules"
+	+make -C "$(O)/Modules" all
 
 install:
 	$(MAKE) --no-print-directory -C "$(O)" mission-install
