@@ -61,7 +61,7 @@ void ConvertLLA2END(double gpsOrigin[],double LLA[],double outputEND[]){
    Vect3 output = proj.project(query);
    outputEND[0] = output.x;
    outputEND[1] = output.y;
-   outputEND[2] = output.z;
+   outputEND[2] = -output.z;
 }
 
 void ConvertEND2LLA(double gpsOrigin[],double END[],double outputLLA[]){

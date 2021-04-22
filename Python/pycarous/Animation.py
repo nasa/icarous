@@ -2,10 +2,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import patches
 from matplotlib import text
+from matplotlib.patches import Ellipse
+import matplotlib.transforms as transforms
 from math import sin,cos,atan2,pi
 import numpy as np
 import math
 from scipy import interpolate
+
 
 class AgentAnimation():
     def __init__(self,xmin,ymin,xmax,ymax,traces=True,playbkspeed=1,interval=5,record=False,filename=""):
@@ -32,8 +35,9 @@ class AgentAnimation():
         self.dt = -1
         self.agentIndex = {}
         self.traces = traces
+        self.ellipses = {}
 
-    def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
+    def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10,show_ellipse=False,sensor_view=False):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
         if len(data['time']) < 2:
             return
@@ -67,13 +71,18 @@ class AgentAnimation():
         positionNED = np.array(self.data[name]['positionNED'])
         velocityNED = np.array(self.data[name]['velocityNED'])
         time = self.data[name]['time']
-        self.data[name]['positionNED_intp'] = [interpolate.interp1d(time,positionNED[:,0],bounds_error=False,fill_value=(positionNED[0][0],positionNED[-1][0])),
-                                               interpolate.interp1d(time,positionNED[:,1],bounds_error=False,fill_value=(positionNED[0][1],positionNED[-1][1])),
-                                               interpolate.interp1d(time,positionNED[:,2],bounds_error=False,fill_value=(positionNED[0][2],positionNED[-1][2]))]
-        self.data[name]['velocityNED_intp'] = [interpolate.interp1d(time,velocityNED[:,0],bounds_error=False,fill_value=(0,0)),
-                                               interpolate.interp1d(time,velocityNED[:,1],bounds_error=False,fill_value=(0,0)),
-                                               interpolate.interp1d(time,velocityNED[:,2],bounds_error=False,fill_value=(0,0))]
-        self.data[name]['reverseTime_intp'] = interpolate.interp1d(time,np.arange(len(time)),bounds_error=False,fill_value=(0,len(time)-1))
+        if sensor_view:
+            interptype = 'previous'
+        else:
+            interptype = 'linear'
+        self.data[name]['positionNED_intp'] = [interpolate.interp1d(time,positionNED[:,0],kind=interptype,bounds_error=False,fill_value=(positionNED[0][0],positionNED[-1][0])),
+                                               interpolate.interp1d(time,positionNED[:,1],kind=interptype,bounds_error=False,fill_value=(positionNED[0][1],positionNED[-1][1])),
+                                               interpolate.interp1d(time,positionNED[:,2],kind=interptype,bounds_error=False,fill_value=(positionNED[0][2],positionNED[-1][2]))]
+        self.data[name]['velocityNED_intp'] = [interpolate.interp1d(time,velocityNED[:,0],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,velocityNED[:,1],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,velocityNED[:,2],kind=interptype,bounds_error=False,fill_value=(0,0))]
+        
+        self.data[name]['reverseTime_intp'] = interpolate.interp1d(time,np.arange(len(time)),kind=interptype,bounds_error=False,fill_value=(0,len(time)-1))
         self.data[name]['plotX'] = []
         self.data[name]['plotY'] = []
         if self.traces:
@@ -91,6 +100,16 @@ class AgentAnimation():
             sectors.append(ep)
             self.ax.add_patch(ep)
         self.bands[name] = sectors
+
+        if show_ellipse:
+            cov = np.array([[0.1, 0.0],[0.0, 0.1]])
+            ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor='red')
+            self.ax.add_patch(ellipse)
+            self.ellipses[name] = ellipse
+            sigma       = np.array(self.data[name]['sigma'])
+            self.data[name]['sigma_intp']   = [interpolate.interp1d(time,sigma[:,0],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,sigma[:,1],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                               interpolate.interp1d(time,sigma[:,2],kind=interptype,bounds_error=False,fill_value=(0,0))]
 
     def AddZone(self,xy,radius,color):
         circlePatch = patches.Arc((xy[0], xy[1]), width=2*radius,height =2*radius, fill =False, color=color)
@@ -237,6 +256,12 @@ class AgentAnimation():
                 if id in self.circle.keys():
                     if self.circle[id] is not None:
                         self.circle[id].center = position
+                if id in self.ellipses.keys():
+                    sigma_xx = self.data[id]["sigma_intp"][0](k)
+                    sigma_yy = self.data[id]["sigma_intp"][1](k)
+                    sigma_xy = self.data[id]["sigma_intp"][2](k)
+                    cov = np.array([[sigma_xx, sigma_xy],[sigma_xy, sigma_yy]])
+                    confidence_ellipse(position[0],position[1],cov, self.ax, self.ellipses[id], edgecolor='red')
         else:
             plt.close(self.fig)
         return self.agents,self.paths,self.circle
@@ -261,3 +286,57 @@ class AgentAnimation():
             plt.ylabel("y [m]")
             #plt.axis('off')
             plt.show()
+
+
+def confidence_ellipse(x,y,cov, ax, ellipse, n_std=3.0, facecolor='none', **kwargs):
+    """
+    src: https://matplotlib.org/devdocs/gallery/statistics/confidence_ellipse.html
+    Create a plot of the covariance confidence ellipse
+
+    Parameters
+    ----------
+    covariance : covariance matrix
+
+    ax : matplotlib.axes.Axes
+        The axes object to draw the ellipse into.
+
+    ellipse: prev ellipse
+
+    n_std : float
+        The number of standard deviations to determine the ellipse's radiuses.
+
+    **kwargs
+        Forwarded to `~matplotlib.patches.Ellipse`
+
+    Returns
+    -------
+    matplotlib.patches.Ellipse
+    """
+
+    pearson = cov[0, 1]/np.sqrt(cov[0, 0] * cov[1, 1])
+    # Using a special case to obtain the eigenvalues of this
+    # two-dimensionl dataset.
+    ell_radius_x = np.sqrt(1 + pearson)
+    ell_radius_y = np.sqrt(1 - pearson)
+    if ellipse is None:
+        ellipse = Ellipse((0, 0), width=ell_radius_x * 2, height=ell_radius_y * 2,
+                          facecolor=facecolor, **kwargs)
+
+    # Calculating the stdandard deviation of x from
+    # the squareroot of the variance and multiplying
+    # with the given number of standard deviations.
+    scale_x = np.sqrt(cov[0, 0]) * n_std
+    mean_x = x
+
+    # calculating the stdandard deviation of y ...
+    scale_y = np.sqrt(cov[1, 1]) * n_std
+    mean_y = y
+
+    transf = transforms.Affine2D() \
+        .rotate_deg(45) \
+        .scale(scale_x, scale_y) \
+        .translate(mean_x, mean_y)
+
+    ellipse.set_transform(transf + ax.transData)
+
+    return ellipse
