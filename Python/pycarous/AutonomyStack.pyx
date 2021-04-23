@@ -15,6 +15,7 @@ cdef class AutonomyStack:
     cdef void* Geofence
     cdef void* TfMonitor
     cdef void* Merger
+    cdef void* Tracker
     cdef string callsign
     cdef string intCallsign
     cdef int verbose
@@ -53,6 +54,7 @@ cdef class AutonomyStack:
         self.Guidance = InitGuidance(icConfig.encode('utf-8')) 
         self.TrajManager = new_TrajManager(<char*>self.callsign.c_str(),icConfig.encode('utf-8'))
         self.Merger = MergerInit(<char*>self.callsign.c_str(),icConfig.encode('utf-8'),opts['vehicleID'])
+        self.Tracker = new_TargetTracker(<char*>self.callsign.c_str());
         self.activePlan = b''
         self.etaFP1 = False
         self.nextWP1 = 1
@@ -87,6 +89,7 @@ cdef class AutonomyStack:
     def InputMissionFlightPlan(self,waypoints,repair=False,eta=False):
         cdef waypoint_t inputWPs[500]; 
         cdef bint _repair = repair
+        cdef double homePos[3];
         self.etaFP1 = eta
         self.missionPlanSize = len(waypoints)
         for i,wp in enumerate(waypoints):
@@ -101,10 +104,16 @@ cdef class AutonomyStack:
             inputWPs[i].tcpValue[1] = wp.tcpValue[1]
             inputWPs[i].tcpValue[2] = wp.tcpValue[2]
             strcpy(inputWPs[i].info,wp.info)
+            if i == 0:
+                homePos[0] = wp.latitude;
+                homePos[1] = wp.longitude;
+                homePos[2] = 0.0;
 
         InputFlightPlanData(self.Cognition,b'Plan0',inputWPs,self.missionPlanSize,0,_repair,self.params[b'TURN_RATE'])
         guidInputFlightplanData(self.Guidance,b'Plan0',inputWPs,self.missionPlanSize,0,_repair,self.params[b'TURN_RATE'])
         TrajManager_InputFlightPlan(self.TrajManager,b'Plan0',inputWPs,self.missionPlanSize,0,_repair,self.params[b'TURN_RATE'])
+        TargetTracker_SetHomePosition(self.Tracker,homePos);
+
 
     def SetIntersectionData(self,fp):
         cdef int n,fid
@@ -148,7 +157,12 @@ cdef class AutonomyStack:
             'numSchedulesComputed':arrData.numSchedulesComputed,
             'zoneStatus':arrData.zoneStatus
         })
-            
+
+    def InputDitchStatus(self,pos,alt):
+        cdef double ditchSite[3];
+        for i in range(3):
+            ditchSite[i] = pos[i]
+        InputDitchStatus(self.Cognition,ditchSite,alt,True);
 
     def GetKinematicPlan(self,planID):
         cdef waypoint_t wp
@@ -172,6 +186,45 @@ cdef class AutonomyStack:
           
         return fp
 
+    def ProcessTargets(self,time,callsign,pos,vel,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):
+        cdef double position[3];
+        cdef double velocity[3];
+        cdef double sigmaP[6];
+        cdef double sigmaV[6];
+
+        position[0] = pos[0]
+        position[1] = pos[1]
+        position[2] = pos[2]
+        
+        velocity[0] = vel[1]
+        velocity[1] = vel[0]
+        velocity[2] = vel[2]
+
+        for i in range(6):
+            sigmaP[i] = sumPos[i]
+            sigmaV[i] = sumVel[i]
+        
+        callsignarr = callsign.encode('utf-8')
+        TargetTracker_InputMeasurement(self.Tracker,<char*>callsignarr,time,position,velocity,sigmaP,sigmaV)
+
+    def GetTotalAcquiredTargets(self,time):
+        return TargetTracker_GetTotalIntruders(self.Tracker,time); 
+
+    def GetIntruder(self,time,i):
+        cdef char callsign[15]
+        cdef double position[3];
+        cdef double velocity[3];
+        cdef double velocityNED[3];
+        cdef double sigmaP[6];
+        cdef double sigmaV[6];
+        cdef double querytime = time;
+        TargetTracker_GetIntruderData(self.Tracker,i,callsign,&querytime,position,velocity,sigmaP,sigmaV)
+        velocityNED[0] = velocity[1]
+        velocityNED[1] = velocity[0]
+        velocityNED[2] = velocity[2]
+        return [time,callsign,position,velocityNED,sigmaP,sigmaV]
+
+
     def InputOwnshipState(self,time,position,velocity,sigmaPos,sigmaVel):
         for i in range(3):
             self.position[i] = position[i]
@@ -184,6 +237,7 @@ cdef class AutonomyStack:
         InputVehicleState(self.Cognition,self.position,self.trkgsvs,self.trkgsvs[0])
         guidSetAircraftState(self.Guidance,self.position,self.trkgsvs)
         TrafficMonitor_InputOwnshipData(self.TrafficMonitor,self.position,self.trkgsvs,time,self.sigmaPos,self.sigmaVel)
+        TargetTracker_InputCurrentState(self.Tracker,self.position,self.trkgsvs);
         MergerSetAircraftState(self.Merger,self.position,self.trkgsvs)
 
 

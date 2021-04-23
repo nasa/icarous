@@ -30,6 +30,8 @@ class VehicleSimInterface(abc.ABC):
         self.sigma_pos = np.zeros((3,3)) 
         self.sigma_vel = np.zeros((3,3)) 
         self.delay = 0
+        self.lastBroadcastTime = 0.0
+        self.broadcastInterval = 1.0
 
         # Current wind speed
         self.vw = np.array([0, 0, 0])
@@ -139,4 +141,6 @@ class VehicleSimInterface(abc.ABC):
             "vel": velocity,
         }
         msg = V2Vdata("INTRUDER", msg_data)
-        self.transmitter.transmit(current_time, gps_position, msg)
+        if current_time - self.lastBroadcastTime > self.broadcastInterval:
+            self.lastBroadcastTime = current_time
+            self.transmitter.transmit(current_time, gps_position, msg)

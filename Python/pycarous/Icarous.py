@@ -117,13 +117,21 @@ class Icarous(IcarousInterface):
     def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         self.ownship.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
-    def InputTraffic(self,source,callsign,position,velocity):
+    def InputTraffic(self,source,callsign,position,velocity,sigmaP=[1.0,1.0,1.0,0.0,0.0,0.0],sigmaV=[1.0,1.0,1.0,0.0,0.0,0.0]):
         if callsign != self.callsign and np.abs(np.sum(position)) > 0:
-            trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
-            self.core.InputIntruderState(self.currTime,source,callsign,position,trkgsvs)
+            self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, source, position, velocity, localPos)
 
+    def GetAcquiredTargets(self,time):
+        n = self.core.GetTotalAcquiredTargets(self.currTime)
+        for i in range(n):
+            time,callsign,position,velocityNED,sigmaP,sigmaV = self.core.GetIntruder(time,i)
+            trkgsvs = ConvertVnedToTrkGsVs(*velocityNED)
+            localPos = self.ConvertToLocalCoordinates(position)
+            self.RecordTraffic(callsign.decode('utf-8'), position, velocityNED, localPos,[sigmaP[0],sigmaP[1],sigmaP[3]])
+            self.core.InputIntruderState(time,callsign,position,trkgsvs,sigmaP,sigmaV)
+    
     def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialPosition=True,setInitialVelocity=False):
         
         self.etaFP1 = eta
@@ -294,6 +302,7 @@ class Icarous(IcarousInterface):
             return True
 
         self.RunOwnship()
+        self.GetAcquiredTargets(self.currTime)
 
         self.core.Run(self.currTime)
 

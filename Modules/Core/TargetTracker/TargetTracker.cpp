@@ -424,7 +424,6 @@ int TargetTracker::GetTotalTraffic(double time){
         oldTracks.pop_back();
         //std::cout<<"Removing stale track"<<std::endl;
     }
-    std::cout<<tracks.size()-1<<std::endl;
     return tracks.size()-1;
 }
 

@@ -199,6 +199,14 @@ cdef extern from "TrafficMonitor.h":
     void TrafficMonitor_GetVerticalSpeedBands(void* obj,bands_t* bands)
     int TrafficMonitor_GetTrafficAlerts(void* obj,int,char* id,int* alert)
 
+cdef extern from "TargetTracker.h":
+    void* new_TargetTracker(char* callsign)
+    void TargetTracker_SetHomePosition(void* obj,double position[3])
+    void TargetTracker_InputMeasurement(void* obj,char* callsign,double time,double position[3],double velocity[3],double sigmaPos[6],double sigmaVel[6])
+    void TargetTracker_InputCurrentState(void* obj,double position[3],double velocity[3]);
+    int TargetTracker_GetTotalIntruders(void* obj,double time)
+    void TargetTracker_GetIntruderData(void* obj,int i,char* callsign,double* time,double position[3],double velocity[3],double sigmaPos[6],double sigmaVel[6])
+
 cdef extern from "Cognition.h":
     void* CognitionInit(const char callsign[],const char config[])
     void ReadParamFromFile(void* obj,char config[]);

@@ -95,6 +95,9 @@ class IcarousInterface(abc.ABC):
         self.planoffsets = [0,0,0,0,0,0]
         self.daaConfig = ""
 
+        self.lastBroadcastTime = 0
+        self.broadcastInterval = 0.5
+
     @abc.abstractmethod
     def SetPosUncertainty(self, xx, yy, zz, xy, yz, xz, coeff=0.8):
         """
@@ -150,14 +153,20 @@ class IcarousInterface(abc.ABC):
         :param data: V2VData to input
         """
         if data.type == "INTRUDER":
-            self.InputTraffic(data.payload["source"],data.payload["callsign"], data.payload["pos"], data.payload["vel"])
+            if data.payload["callsign"][:2] == 'tf':
+                sigmaP=[5.0,5.0,5.0,0.0,0.0,0.0]
+                sigmaV=[1.0,1.0,1.0,0.0,0.0,0.0]
+            else:
+                sigmaP=[25.0,25.0,25.0,0.0,0.0,0.0]
+                sigmaV=[5.0,5.0,5.0,0.0,0.0,0.0]
+            self.InputTraffic(data.payload["source"],data.payload["callsign"], data.payload["pos"], data.payload["vel"],sigmaP,sigmaV)
         elif data.type == "MERGER":
             self.InputMergeData(data.payload)
         elif data.type == "FLIGHTPLAN":
             self.InputFlightplan(data.payload.WPs,data.payload.eta,data.payload.repair,False)
 
     @abc.abstractmethod
-    def InputTraffic(self, source, callsign, position, velocity):
+    def InputTraffic(self, source, callsign, position, velocity,sigmaP=[0.0,0.0,0.0,0.0,0.0,0.0],sigmaV=[0.0,0.0,0.0,0.0,0.0,0.0]):
         """
         Input traffic surveillance data to ICAROUS
         :param source: surveillance source type (see transmitter type, ADS-B, FLARM, etc..)
@@ -304,13 +313,14 @@ class IcarousInterface(abc.ABC):
         record_bands(self.ownshipLog["altbands"], self.altband)
         record_bands(self.ownshipLog["vsbands"], self.vsband)
 
-    def RecordTraffic(self, callsign, source, position, velocity, localPos):
+    def RecordTraffic(self, callsign, source, position, velocity, localPos, sigma = [0.0,0.0,0.0]):
         if callsign not in self.trafficLog.keys():
             self.trafficLog[callsign] = {"source": source,
                                          "time": [],
                                          "position": [],
                                          "velocityNED": [],
-                                         "positionNED": []}
+                                         "positionNED": [],
+                                         "sigma": []}
             last_time = -1
         else:
             last_time = self.trafficLog[callsign]["time"][-1]
@@ -320,6 +330,7 @@ class IcarousInterface(abc.ABC):
         self.trafficLog[callsign]["position"].append(list(position))
         self.trafficLog[callsign]["velocityNED"].append(velocity)
         self.trafficLog[callsign]["positionNED"].append(localPos)
+        self.trafficLog[callsign]["sigma"].append(sigma)
 
     def TransmitPosition(self):
         """ Transmit current position """
@@ -337,7 +348,9 @@ class IcarousInterface(abc.ABC):
             "vel": self.velocity,
         }
         msg = V2Vdata("INTRUDER", msg_data)
-        self.transmitter.transmit(self.currTime, self.position, msg)
+        if self.currTime - self.lastBroadcastTime > self.broadcastInterval:
+            self.lastBroadcastTime = self.currTime
+            self.transmitter.transmit(self.currTime, self.position, msg)
 
     @abc.abstractmethod
     def Run(self):

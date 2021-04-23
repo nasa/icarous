@@ -1,6 +1,8 @@
 import abc
 
 from communicationmodels import get_transmitter, get_receiver
+from ichelper import ConvertToLocalCoordinates,ConvertToGPS
+import numpy as np
 
 class GroundSystem(abc.ABC):
     """
@@ -39,10 +41,10 @@ class GroundSystem(abc.ABC):
             return
         received_msgs = self.receiver.receive(self.current_time, self.position)
         for msg in received_msgs:
-            self.InputV2VData(msg.data)
+            self.InputV2VData(msg.sent_time,msg.data)
 
     @abc.abstractmethod
-    def InputV2VData(self, data):
+    def InputV2VData(self,time, data):
         """
         Input V2V data to ground system. This could be ADS-B traffic data or other
         messages from aircraft or other ground systems.
@@ -52,20 +54,34 @@ class GroundSystem(abc.ABC):
 
 
 class AdsbRebroadcast(GroundSystem):
-    def __init__(self, position, system_id, callsign="GroundSystem1", verbose=1):
+    
+    def __init__(self, position, system_id, callsign="GroundSystem1", interval=1,verbose=1):
         super().__init__(position, system_id, callsign, verbose)
         self.log = []
+        self.lastBroadCast = 0
+        self.interval = interval
 
     def Run(self, current_time):
-        print("Running %s" % self.name)
+        if self.verbose > 0:
+            print("Running %s" % self.name)
         self.current_time = current_time
-        while len(self.log):
-            data = self.log.pop()
-            data.payload["callsign"] = "REBROADCAST_" + data.payload["callsign"]
-            if self.transmitter is not None:
-                self.transmitter.transmit(current_time, self.position, data)
+        if self.current_time - self.lastBroadCast > self.interval:
+            self.lastBroadCast = self.current_time
+            while len(self.log):
+                (t,data) = self.log.pop()
+                data.payload["callsign"] = "REBROADCAST_" + data.payload["callsign"]
+                anchor = self.position
+                anchor[2] = 0.0
+                localPos = ConvertToLocalCoordinates(anchor,data.payload["pos"])
+                noise = np.random.randn(2)
+                localPos[0] += noise[0]
+                localPos[1] += noise[1]
+                pos = ConvertToGPS(anchor,localPos)
+                data.payload["pos"] = pos
+                if self.transmitter is not None:
+                    self.transmitter.transmit(current_time, self.position, data)
 
-    def InputV2VData(self, data):
+    def InputV2VData(self,time, data):
         if data.type == "INTRUDER" and not data.payload["callsign"].startswith("REBROADCAST"):
             print("GS received:", data.payload["callsign"], data.payload["pos"], data.payload["vel"])
             self.log.append(data)

@@ -118,7 +118,7 @@ class IcarousRunner(IcarousInterface):
         # Setting velocity uncertainty isn't supported for cFS simulations
         pass
 
-    def InputTraffic(self,source, callsign, position, velocity):
+    def InputTraffic(self, source, callsign, position, velocity,sigmaP=[0.0,0.0,0.0,0.0,0.0,0.0],sigmaV=[0.0,0.0,0.0,0.0,0.0,0.0]):
         self.gs.Send_traffic(callsign, position, velocity)
         positionNED = self.ConvertToLocalCoordinates(position)
         self.RecordTraffic(callsign, source, position, velocity, positionNED)

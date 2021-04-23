@@ -59,8 +59,16 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
                     anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,time=planTime)
         tfids = ic.trafficLog.keys()
         for key in tfids:
+            ellipse = False
             if showtraffic or key[0:2] == 'tf':
-                anim.AddAgent('traffic_'+str(key),vehicleSize,'b',ic.trafficLog[key])
+                if key[0:2] == 'tf':
+                    c = 'b'
+                elif key[0:2] == 'kf':
+                    c = 'm'
+                    ellipse = True
+                else:
+                    c = 'g'
+                anim.AddAgent('traffic_'+str(key),vehicleSize,c,ic.trafficLog[key],show_ellipse=ellipse,sensor_view=True)
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')

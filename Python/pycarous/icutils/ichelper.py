@@ -213,6 +213,10 @@ def ReadTrafficInput(filename):
     tfinput =  yaml.load(f,yaml.Loader)
     return tfinput
 
+def ConvertToGPS(home_pos,locpos):
+    from AccordUtil import ConvertNED2LLA
+    return ConvertNED2LLA(home_pos,locpos)
+
 def ConvertToLocalCoordinates(home_pos,pos):
     try:
         from icutils.AccordUtil import ConvertLLA2NED

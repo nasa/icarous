@@ -5,11 +5,12 @@ import os
 ext_modules = [
     Extension("AutonomyStack",
               sources=["AutonomyStack.pyx"],
-              libraries=["TrafficMonitor","Cognition","Guidance","TrajectoryManager","GeofenceMonitor","Merger","Utils"], 
+              libraries=["TrafficMonitor","Cognition","Guidance","TrajectoryManager","GeofenceMonitor","Merger","TargetTracker","Utils"], 
               include_dirs=[os.path.join(os.environ['ICAROUS_HOME'],'Modules'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','Cognition'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','Guidance'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','TrafficMonitor'),
+                            os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','TargetTracker'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','GeofenceMonitor'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','TrajectoryManager'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','TrajectoryManager','DubinsPlanner'),
