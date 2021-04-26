@@ -5,6 +5,7 @@ from ichelper import IsolateEUTLPlans
 
 eutlFile = sys.argv[1]
 prefix = sys.argv[2]
-randomize = True if sys.argv[3].lower() == 'true' else False
+zeroStart = True if sys.argv[3].lower() == 'true' else False
+randomize = True if sys.argv[4].lower() == 'true' else False
 
-IsolateEUTLPlans(eutlFile,prefix,bool(randomize))
+IsolateEUTLPlans(eutlFile,prefix,bool(zeroStart),bool(randomize))

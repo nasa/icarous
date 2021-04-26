@@ -474,18 +474,23 @@ int ParseParameterFile(char filename[],ParsedParam_t params[]){
     return i;
 }
 
-void IsolateEUTLPlans(char filename[],char prefix[],bool randomizeStart){
+void IsolateEUTLPlans(char filename[],char prefix[],bool zeroTimeStart,bool randomizeStart){
     larcfm::PlanReader planReader;
     larcfm::PlanWriter planWriter;
     planReader.open(std::string(filename));
     srand(time(NULL)); 
     int n = planReader.size();
     for(int i=0;i<n;++i){
-        double randStart;
+        larcfm::Plan plan = planReader.getPlan(i);
+        if(zeroTimeStart){
+            double time0 = plan.time(0);
+            plan.timeShiftPlan(0,-time0);
+        }
+        
+        double randStart = 0;
         if(randomizeStart){
             randStart = rand() % 50 - 50; 
         }
-        larcfm::Plan plan = planReader.getPlan(i);
         plan.timeShiftPlan(0,randStart);
         std::string filename = std::string(prefix) + to_string(i) + ".eutl";
         std::vector<larcfm::Plan> planlist;
