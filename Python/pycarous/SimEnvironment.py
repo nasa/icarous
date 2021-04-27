@@ -1,7 +1,7 @@
 import numpy as np
 import time
 
-from vehiclesim import UamVtolSim
+from vehiclesim import UamVtolSim, TrafficReplay
 from ichelper import distance, ConvertVnedToTrkGsVs
 from CustomTypes import V2Vdata
 from communicationmodels import channelmodels as cm
@@ -40,6 +40,7 @@ class SimEnvironment:
 
         # Simulation status
         self.count = 0
+        self.t0 = 0
         self.current_time = 0
         self.windFrom, self.windSpeed = self.wind[0]
 
@@ -139,11 +140,16 @@ class SimEnvironment:
 
         return traffic
 
+    def AddReplayTraffic(self, logfile, delay=0):
+        """ Replay traffic updates from a csv log """
+        traffic = TrafficReplay(logfile, self.comm_channel, delay)
+        self.tfList.append(traffic)
+
     def RunSimulatedTraffic(self, dT=None):
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:
             tf.dt = dT or self.dT
-            if self.current_time > tf.delay:
+            if self.current_time - self.t0 > tf.delay:
                 tf.Run(self.windFrom, self.windSpeed)
                 tf.TransmitPosition(self.current_time)
 
@@ -234,10 +240,10 @@ class SimEnvironment:
             for ic in self.icInstances:
                 ic.InputMergeFixes(self.mergeFixFile)
         if self.fasttime:
-            t0 = 0
+            self.t0 = 0
         else:
-            t0 = time.time()
-        self.current_time = t0
+            self.t0 = time.time()
+        self.current_time = self.t0
 
         if self.network is not None:
             self.network.Synchronize()
@@ -249,7 +255,7 @@ class SimEnvironment:
             self.ReceiveV2VData()
 
             # Advance time
-            duration = self.current_time - t0
+            duration = self.current_time - self.t0
             if self.fasttime:
                 self.count += 1
                 self.current_time += self.dT
