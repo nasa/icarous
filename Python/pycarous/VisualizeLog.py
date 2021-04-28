@@ -60,15 +60,19 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
         tfids = ic.trafficLog.keys()
         for key in tfids:
             ellipse = False
+            sview = False
             if showtraffic or key[0:2] == 'tf':
                 if key[0:2] == 'tf':
                     c = 'b'
                 elif key[0:2] == 'kf':
                     c = 'm'
                     ellipse = True
+                elif key[0:5] == 'Truth':
+                    c = 'b'
                 else:
                     c = 'g'
-                anim.AddAgent('traffic_'+str(key),vehicleSize,c,ic.trafficLog[key],show_ellipse=ellipse,sensor_view=True)
+                    sview = True
+                anim.AddAgent('traffic_'+str(key),vehicleSize,c,ic.trafficLog[key],show_ellipse=ellipse,sensor_view=sview)
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
@@ -157,14 +161,15 @@ if __name__ == "__main__":
             _xmax = np.max(np.array(pb.ownshipLog['positionNED'])[:,1])
             _ymin = np.min(np.array(pb.ownshipLog['positionNED'])[:,0])
             _ymax = np.max(np.array(pb.ownshipLog['positionNED'])[:,0])
-            _xminfp = np.min(np.array(pb.localPlans[0])[:,2])
-            _xmaxfp = np.max(np.array(pb.localPlans[0])[:,2])
-            _yminfp = np.min(np.array(pb.localPlans[0])[:,1])
-            _ymaxfp = np.max(np.array(pb.localPlans[0])[:,1])
-            _xmin = np.min([_xmin,_xminfp])
-            _xmax = np.max([_xmax,_xmaxfp])
-            _ymin = np.min([_ymin,_yminfp])
-            _ymax = np.max([_ymax,_ymaxfp])
+            if len(pb.localPlans) > 0:
+                _xminfp = np.min(np.array(pb.localPlans[0])[:,2])
+                _xmaxfp = np.max(np.array(pb.localPlans[0])[:,2])
+                _yminfp = np.min(np.array(pb.localPlans[0])[:,1])
+                _ymaxfp = np.max(np.array(pb.localPlans[0])[:,1])
+                _xmin = np.min([_xmin,_xminfp])
+                _xmax = np.max([_xmax,_xmaxfp])
+                _ymin = np.min([_ymin,_yminfp])
+                _ymax = np.max([_ymax,_ymaxfp])
             xmin = np.min([xmin,_xmin])
             ymin = np.min([ymin,_ymin])
             xmax = np.max([xmax,_xmax])

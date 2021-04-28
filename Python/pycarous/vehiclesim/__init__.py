@@ -1,5 +1,6 @@
 from vehiclesim.VehicleSimInterface import VehicleSimInterface
 from vehiclesim.trafficreplay import TrafficReplay
+from vehiclesim.AccordReplay import AccordReplay
 availableSimTypes = []
 try:
     from vehiclesim.quadsim import QuadSim

@@ -151,6 +151,10 @@ class SimEnvironment:
         ic.ditchSite = ditchSite
         ic.ditchTOD = todAltitude
 
+    def AddAccordTraffic(self,callsign,homepos,logfile,vehicleid):
+        traffic = AccordReplay(callsign,homepos,logfile,self.comm_channel,id=vehicleid)
+        self.tfList.append(traffic)
+
     def RunSimulatedTraffic(self, dT=None):
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:
@@ -288,11 +292,12 @@ class SimEnvironment:
                 ic.InputWind(self.windFrom, self.windSpeed)
 
                 # Send mission start command
-                if not ic.missionStarted and duration >= self.icStartDelay[i] and duration >= self.icInstances[i].plans[0][0].time:
-                    ic.StartMission()
-                    if self.verbose > 0:
-                        print("%s : Start command sent at %f" %
-                              (ic.callsign, self.current_time))
+                if len(ic.plans) > 0:
+                    if not ic.missionStarted and duration >= self.icStartDelay[i] and duration >= self.icInstances[i].plans[0][0].time:
+                        ic.StartMission()
+                        if self.verbose > 0:
+                            print("%s : Start command sent at %f" %
+                                  (ic.callsign, self.current_time))
 
                 # Run Icarous
                 status |= ic.Run()

@@ -128,17 +128,39 @@ class VehicleSimInterface(abc.ABC):
         """
         pass
 
+    def GetCovariances(self):
+        """
+        Return the 6 covariance elements
+        """
+        sigmaPos = [self.sigma_pos[0][0],
+                    self.sigma_pos[1][1],
+                    self.sigma_pos[2][2],
+                    self.sigma_pos[0][1],
+                    self.sigma_pos[0][2],
+                    self.sigma_pos[1][2]]
+
+        sigmaVel = [self.sigma_vel[0][0],
+                    self.sigma_vel[1][1],
+                    self.sigma_vel[2][2],
+                    self.sigma_vel[0][1],
+                    self.sigma_vel[0][2],
+                    self.sigma_vel[1][2]]
+        return sigmaPos,sigmaVel
+
     def TransmitPosition(self, current_time):
         """ Transmit current position """
         if self.transmitter is None:
             return
         gps_position = self.GetOutputPositionLLA()
         velocity = self.GetOutputVelocityNED()
+        sigmaP,sigmaV = self.GetCovariances()
         msg_data = {
             "source": self.transmitter.sensorType,
             "callsign": "tf" + str(self.vehicleID),
             "pos": gps_position,
             "vel": velocity,
+            "sigmaP": sigmaP,
+            "sigmaV": sigmaV
         }
         msg = V2Vdata("INTRUDER", msg_data)
         if current_time - self.lastBroadcastTime > self.broadcastInterval:

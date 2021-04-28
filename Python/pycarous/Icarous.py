@@ -119,7 +119,8 @@ class Icarous(IcarousInterface):
 
     def InputTraffic(self,source,callsign,position,velocity,sigmaP=[1.0,1.0,1.0,0.0,0.0,0.0],sigmaV=[1.0,1.0,1.0,0.0,0.0,0.0]):
         if callsign != self.callsign and np.abs(np.sum(position)) > 0:
-            self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
+            if callsign[:5] != "Truth":
+                self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, source, position, velocity, localPos)
 
@@ -229,26 +230,13 @@ class Icarous(IcarousInterface):
         ovel = self.ownship.GetOutputVelocityNED()
 
         self.localPos = opos
-
         (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
        
         self.position = [ogx, ogy, opos[2]]
         self.velocity = ovel
         self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
         self.RecordOwnship()
-        sigmaPos = [self.ownship.sigma_pos[0][0],
-                    self.ownship.sigma_pos[1][1],
-                    self.ownship.sigma_pos[2][2],
-                    self.ownship.sigma_pos[0][1],
-                    self.ownship.sigma_pos[0][2],
-                    self.ownship.sigma_pos[1][2]]
-
-        sigmaVel = [self.ownship.sigma_vel[0][0],
-                    self.ownship.sigma_vel[1][1],
-                    self.ownship.sigma_vel[2][2],
-                    self.ownship.sigma_vel[0][1],
-                    self.ownship.sigma_vel[0][2],
-                    self.ownship.sigma_vel[1][2]]
+        sigmaPos,sigmaVel = self.ownship.GetCovariances()
         self.core.InputOwnshipState(self.currTime,self.position,self.trkgsvs,sigmaPos,sigmaVel)
         
     def InputMergeData(self,data):
