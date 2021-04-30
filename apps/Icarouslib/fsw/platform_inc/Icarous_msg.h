@@ -162,7 +162,9 @@ typedef struct{
     double altitude;                          /**< altitude (degrees) */
     double ve;                                /**< velocity East component */
     double vn;                                /**< velocity North component */
-    double vd;                                /**< velocity Up component */
+    double vd;                                /**< velocity Down component */
+    double sigmaP[6];                         /**< position covariance */
+    double sigmaV[6];                         /**< velocity covariance */
 }object_t;
 
 /**

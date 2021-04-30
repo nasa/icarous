@@ -112,6 +112,7 @@ class SixPassengerQuadSim(VehicleSimInterface):
         dN = self.state.N_pos - last_pos[0]
         dE = self.state.E_pos - last_pos[1]
         self.groundtrack = np.degrees(np.arctan2(dE, dN)) % 360
+        return True
 
     def GetOutputPositionNED(self):
         pos_n = self.state.N_pos*1852       # nm to m

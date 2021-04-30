@@ -4,10 +4,11 @@ from vehiclesim import VehicleSimInterface
 from communicationmodels import get_transmitter
 from CustomTypes import V2Vdata
 from ichelper import ConvertToLocalCoordinates
+import numpy as np
 
 class AccordReplay(VehicleSimInterface):
     """ Vehicle sim to replay """
-    def __init__(self, callsign,homepos,logfile,channel,id='vehicle',delay=0):
+    def __init__(self, callsign,homepos,logfile,channel,id='vehicle',delay=0,SigmaP=[1,1,1,0,0,0],SigmaV=[1,1,1,0,0,0]):
         """
         Initialize traffic log replay
         :param logfile: filename for csv traffic log containing columns for:
@@ -29,6 +30,8 @@ class AccordReplay(VehicleSimInterface):
         self.vel= None
         self.sigmaP = None
         self.sigmaV = None
+        self.minSigmaP = SigmaP
+        self.minSigmaV = SigmaV
 
         self.current_time = 0.0
         self.i = 0
@@ -43,6 +46,8 @@ class AccordReplay(VehicleSimInterface):
     def Run(self, windFrom=0, windSpeed=0):
         """ Replaying log doesn't need to simulate vehicles """
         self.current_time = self.current_time + self.dt
+        if self.nextTime > self.current_time:
+            return False
         while self.nextTime <= self.current_time:
             self.pos=[self.data.lat.at[self.nextTime],
                       self.data.lon.at[self.nextTime],
@@ -51,14 +56,24 @@ class AccordReplay(VehicleSimInterface):
                       self.data.vy.at[self.nextTime] * 0.5144,
                       self.data.vz.at[self.nextTime] * 0.00508] 
             if self.data.shape[1] > 8:
-                self.sigmaP = [(self.data.s_EW_std.at[self.nextTime]*1852)**2,
-                               (self.data.s_NS_std.at[self.nextTime]*1852)**2,
-                               (self.data.sz_std.at[self.nextTime]*0.3048)**2,
-                               (self.data.s_EN_std.at[self.nextTime]*0.3048)**2,0,0]
-                self.sigmaV = [(self.data.v_EW_std.at[self.nextTime]*0.5144)**2,
-                               (self.data.v_NS_std.at[self.nextTime]*0.5144)**2,
-                               (self.data.vz_std.at[self.nextTime]*0.00508)**2,
-                               (self.data.v_EN_std.at[self.nextTime]*0.5144)**2,0,0]
+                sxx = (self.data.s_EW_std.at[self.nextTime]*1852) ** 2
+                syy = (self.data.s_NS_std.at[self.nextTime]*1852) ** 2
+                sxy = (self.data.s_EN_std.at[self.nextTime]*1852) ** 2
+                szz = (self.data.sz_std.at[self.nextTime]*0.3048) ** 2
+
+                vxx = (self.data.v_EW_std.at[self.nextTime]*0.5144) ** 2
+                vyy = (self.data.v_NS_std.at[self.nextTime]*0.5144) ** 2
+                vxy = (self.data.v_EN_std.at[self.nextTime]*0.5144) ** 2
+                vzz = (self.data.vz_std.at[self.nextTime]*0.00508) ** 2
+
+                self.sigmaP = [np.max([sxx,self.minSigmaP[0]]),
+                               np.max([syy,self.minSigmaP[1]]),
+                               np.max([szz,self.minSigmaP[2]]),
+                               np.min([sxy,np.sqrt(sxx*syy * 0.95)]),0,0]
+                self.sigmaV = [np.max([vxx,self.minSigmaV[0]]),
+                               np.max([vyy,self.minSigmaV[1]]),
+                               np.max([vzz,self.minSigmaV[2]]),
+                               np.min([vxy,np.sqrt(vxx*vyy * 0.1)]),0,0]
             else:
                 self.sigmaP = [0 for i in range(6)]
                 self.sigmaV = [0 for i in range(6)]
@@ -66,13 +81,13 @@ class AccordReplay(VehicleSimInterface):
             self.i = self.i + 1
             if self.i < self.numRows:
                 self.nextTime = self.data.index[self.i]
-            else:
-                return
 
-        pass
+        return True  
 
     def GetOutputPositionNED(self):
-        return ConvertToLocalCoordinates(self.home_gps,self.pos)
+        locPos = ConvertToLocalCoordinates(self.home_gps,self.pos)
+        locPos[2] = -locPos[2]
+        return locPos
 
     def GetOutputVelocityNED(self):
         return [self.vel[1],self.vel[0],self.vel[2]]

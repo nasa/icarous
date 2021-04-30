@@ -122,12 +122,13 @@ class Icarous(IcarousInterface):
             if callsign[:5] != "Truth":
                 self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
             localPos = self.ConvertToLocalCoordinates(position)
-            self.RecordTraffic(callsign, source, position, velocity, localPos)
+            sigma = [sigmaP[0],sigmaP[1],sigmaP[3]]
+            self.RecordTraffic(callsign, source, position, velocity, localPos, sigma)
 
-    def GetAcquiredTargets(self,time):
-        n = self.core.GetTotalAcquiredTargets(self.currTime)
+    def GetAcquiredTargets(self):
+        n = self.core.GetTotalAcquiredTargets()
         for i in range(n):
-            time,callsign,position,velocityNED,sigmaP,sigmaV = self.core.GetIntruder(time,i)
+            time,callsign,position,velocityNED,sigmaP,sigmaV = self.core.GetIntruder(i)
             trkgsvs = ConvertVnedToTrkGsVs(*velocityNED)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign.decode('utf-8'), position, velocityNED, localPos,[sigmaP[0],sigmaP[1],sigmaP[3]])
@@ -224,20 +225,21 @@ class Icarous(IcarousInterface):
     def RunOwnship(self):
         self.controlInput = self.core.GetOutput()
         self.ownship.InputCommand(*self.controlInput)
-        self.ownship.Run(windFrom=self.windFrom,windSpeed=self.windSpeed)
+        status = self.ownship.Run(windFrom=self.windFrom,windSpeed=self.windSpeed)
 
-        opos = self.ownship.GetOutputPositionNED()
-        ovel = self.ownship.GetOutputVelocityNED()
+        if status:
+            opos = self.ownship.GetOutputPositionNED()
+            ovel = self.ownship.GetOutputVelocityNED()
 
-        self.localPos = opos
-        (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
+            self.localPos = opos
+            (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
        
-        self.position = [ogx, ogy, opos[2]]
-        self.velocity = ovel
-        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
-        self.RecordOwnship()
-        sigmaPos,sigmaVel = self.ownship.GetCovariances()
-        self.core.InputOwnshipState(self.currTime,self.position,self.trkgsvs,sigmaPos,sigmaVel)
+            self.position = [ogx, ogy, opos[2]]
+            self.velocity = ovel
+            self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
+            self.RecordOwnship()
+            sigmaPos,sigmaVel = self.ownship.GetCovariances()
+            self.core.InputOwnshipState(self.currTime,self.position,self.trkgsvs,sigmaPos,sigmaVel)
         
     def InputMergeData(self,data):
         if data['intersectionID'] == self.intersectionID:
@@ -290,7 +292,7 @@ class Icarous(IcarousInterface):
             return True
 
         self.RunOwnship()
-        self.GetAcquiredTargets(self.currTime)
+        self.GetAcquiredTargets()
 
         self.core.Run(self.currTime)
 

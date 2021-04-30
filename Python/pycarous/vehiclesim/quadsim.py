@@ -48,6 +48,7 @@ class QuadSim(VehicleSimInterface):
 
     def Run(self, windFrom=0, windSpeed=0):
         lib.PC_Quadcopter_Simulation_step()
+        return True
 
     def GetOutputPositionNED(self):
         n = np.zeros((1, 3))

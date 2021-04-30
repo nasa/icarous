@@ -207,22 +207,22 @@ cdef class AutonomyStack:
         callsignarr = callsign.encode('utf-8')
         TargetTracker_InputMeasurement(self.Tracker,<char*>callsignarr,time,position,velocity,sigmaP,sigmaV)
 
-    def GetTotalAcquiredTargets(self,time):
-        return TargetTracker_GetTotalIntruders(self.Tracker,time); 
+    def GetTotalAcquiredTargets(self):
+        return TargetTracker_GetTotalIntruders(self.Tracker); 
 
-    def GetIntruder(self,time,i):
+    def GetIntruder(self,i):
         cdef char callsign[15]
         cdef double position[3];
         cdef double velocity[3];
         cdef double velocityNED[3];
         cdef double sigmaP[6];
         cdef double sigmaV[6];
-        cdef double querytime = time;
+        cdef double querytime;
         TargetTracker_GetIntruderData(self.Tracker,i,callsign,&querytime,position,velocity,sigmaP,sigmaV)
         velocityNED[0] = velocity[1]
         velocityNED[1] = velocity[0]
         velocityNED[2] = velocity[2]
-        return [time,callsign,position,velocityNED,sigmaP,sigmaV]
+        return [querytime,callsign,position,velocityNED,sigmaP,sigmaV]
 
 
     def InputOwnshipState(self,time,position,velocity,sigmaPos,sigmaVel):
@@ -237,7 +237,7 @@ cdef class AutonomyStack:
         InputVehicleState(self.Cognition,self.position,self.trkgsvs,self.trkgsvs[0])
         guidSetAircraftState(self.Guidance,self.position,self.trkgsvs)
         TrafficMonitor_InputOwnshipData(self.TrafficMonitor,self.position,self.trkgsvs,time,self.sigmaPos,self.sigmaVel)
-        TargetTracker_InputCurrentState(self.Tracker,self.position,self.trkgsvs);
+        TargetTracker_InputCurrentState(self.Tracker,time,self.position,self.trkgsvs,self.sigmaPos,self.sigmaVel);
         MergerSetAircraftState(self.Merger,self.position,self.trkgsvs)
 
 
@@ -495,12 +495,20 @@ cdef class AutonomyStack:
             MergerOutputVelocity(self.Merger,&trk,&gs,&vs)
             ChangeWaypointSpeed(self.Guidance,<char*>b'Plan0',self.nextWP1,gs,False)
 
+    def _RunTracker_(self,time):
+        TargetTracker_UpdatePredictions(self.Tracker,time);
+
     def Run(self,time):
         self._RunGuidance_(time)
         self._RunTrafficMonitor_(time)
         self._RunTrajectoryMonitor_(time)
         self._RunMerger_(time)
+<<<<<<< HEAD
         self._RunCognition_(time)
+=======
+        self._RunTracker_(time)
+        self._RunGeofenceMonitor_()
+>>>>>>> [pycarous/Modules] Debugging updates, refactoring
 
     def GetOutput(self):
         return self.controlInput

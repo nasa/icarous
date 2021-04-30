@@ -8,12 +8,25 @@ TargetTracker::TargetTracker(std::string name){
     callsign = name;
     timeout = 5;
     totalTracks = 0;
-    modelUncertainty[0] = 1.0;
-    modelUncertainty[1] = 1.0;
-    modelUncertainty[2] = 1.0;
-    modelUncertainty[3] = 0.0;
-    modelUncertainty[4] = 0.0;
-    modelUncertainty[5] = 0.0;
+    modelUncertaintyP[0] = 1.0;
+    modelUncertaintyP[1] = 1.0;
+    modelUncertaintyP[2] = 1.0;
+    modelUncertaintyP[3] = 0.0;
+    modelUncertaintyP[4] = 0.0;
+    modelUncertaintyP[5] = 0.0;
+    modelUncertaintyV[0] = 1.0;
+    modelUncertaintyV[1] = 1.0;
+    modelUncertaintyV[2] = 1.0;
+    modelUncertaintyV[3] = 0.0;
+    modelUncertaintyV[4] = 0.0;
+    modelUncertaintyV[5] = 0.0;
+    pThreshold = 16.27;
+    vThreshold = 16.27;
+}
+
+void TargetTracker::SetGateThresholds(double p, double v){
+    pThreshold = p;
+    vThreshold = v;
 }
 
 void TargetTracker::SetHomePosition(larcfm::Position& home){
@@ -21,27 +34,29 @@ void TargetTracker::SetHomePosition(larcfm::Position& home){
     proj = larcfm::Projection::createProjection(homePos);
 }
 
-void TargetTracker::SetModelUncertainty(double sigma[6]){
-    std::memcpy(modelUncertainty,sigma,sizeof(double)*6);
+void TargetTracker::SetModelUncertainty(double sigmaP[6],double sigmaV[6]){
+    std::memcpy(modelUncertaintyP,sigmaP,sizeof(double)*6);
+    std::memcpy(modelUncertaintyV,sigmaV,sizeof(double)*6);
 }
 
-void TargetTracker::InputCurrentState(larcfm::Position& pos,larcfm::Velocity& vel){
+void TargetTracker::InputCurrentState(double time,larcfm::Position& pos,larcfm::Velocity& vel,double sigmaP[6],double sigmaV[6]){
+    currentState.time = time;
     currentState.position = pos;
     currentState.velocity = vel;
     currentState.locPos = proj.project(pos);
-    currentState.sigmaP[0] = 5.0;
-    currentState.sigmaP[1] = 5.0;
-    currentState.sigmaP[2] = 5.0;
-    currentState.sigmaP[3] = 0.0;
-    currentState.sigmaP[4] = 0.0;
-    currentState.sigmaP[5] = 0.0;
+    currentState.sigmaP[0] = sigmaP[0];
+    currentState.sigmaP[1] = sigmaP[1];
+    currentState.sigmaP[2] = sigmaP[2];
+    currentState.sigmaP[3] = sigmaP[3];
+    currentState.sigmaP[4] = sigmaP[4];
+    currentState.sigmaP[5] = sigmaP[5];
 
-    currentState.sigmaV[0] = 1.0;
-    currentState.sigmaV[1] = 1.0;
-    currentState.sigmaV[2] = 1.0;
-    currentState.sigmaV[3] = 0.0;
-    currentState.sigmaV[4] = 0.0;
-    currentState.sigmaV[5] = 0.0;
+    currentState.sigmaV[0] = sigmaV[0];
+    currentState.sigmaV[1] = sigmaV[1];
+    currentState.sigmaV[2] = sigmaV[2];
+    currentState.sigmaV[3] = sigmaV[3];
+    currentState.sigmaV[4] = sigmaV[4];
+    currentState.sigmaV[5] = sigmaV[5];
 
     currentState.sigma[0*6+0] = currentState.sigmaP[0]; 
     currentState.sigma[2*6+2] = currentState.sigmaP[1]; 
@@ -79,9 +94,9 @@ int TargetTracker::CheckValidationGate(measurement& value){
     for(int i=0;i<n;++i){
         measurement &candidate = tracks[i];
         gsl_matrix *posSigma = gsl_matrix_alloc(3,3);
-        gsl_matrix *velSigma = gsl_matrix_alloc(3,3);
+        gsl_matrix *velSigma = gsl_matrix_alloc(2,2);
         gsl_matrix *errorP = gsl_matrix_alloc(3,1);
-        gsl_matrix *errorV = gsl_matrix_alloc(3,1);
+        gsl_matrix *errorV = gsl_matrix_alloc(2,1);
 
         gsl_matrix_set(errorP,0,0,value.locPos.x - candidate.locPos.x);
         gsl_matrix_set(errorP,1,0,value.locPos.y - candidate.locPos.y);
@@ -89,7 +104,7 @@ int TargetTracker::CheckValidationGate(measurement& value){
 
         gsl_matrix_set(errorV,0,0,value.velocity.x - candidate.velocity.x);
         gsl_matrix_set(errorV,1,0,value.velocity.y - candidate.velocity.y);
-        gsl_matrix_set(errorV,2,0,value.velocity.z - candidate.velocity.z);
+        //gsl_matrix_set(errorV,2,0,value.velocity.z - candidate.velocity.z);
 
         gsl_matrix_set_zero(posSigma);
         gsl_matrix_set_zero(velSigma);
@@ -105,13 +120,13 @@ int TargetTracker::CheckValidationGate(measurement& value){
 
         gsl_matrix_set(velSigma,0,0,value.sigmaV[0] + candidate.sigma[1*6+1]);
         gsl_matrix_set(velSigma,1,1,value.sigmaV[1] + candidate.sigma[3*6+3]);
-        gsl_matrix_set(velSigma,2,2,value.sigmaV[2] + candidate.sigma[5*6+5]);
+        //gsl_matrix_set(velSigma,2,2,value.sigmaV[2] + candidate.sigma[5*6+5]);
         gsl_matrix_set(velSigma,0,1,value.sigmaV[3] + candidate.sigma[1*6+3]);
         gsl_matrix_set(velSigma,1,0,value.sigmaV[3] + candidate.sigma[3*6+1]);
-        gsl_matrix_set(velSigma,0,2,value.sigmaV[4] + candidate.sigma[1*6+5]);
-        gsl_matrix_set(velSigma,2,0,value.sigmaV[4] + candidate.sigma[5*6+1]);
-        gsl_matrix_set(velSigma,1,2,value.sigmaV[5] + candidate.sigma[3*6+5]);
-        gsl_matrix_set(velSigma,2,1,value.sigmaV[5] + candidate.sigma[5*6+3]);
+        //gsl_matrix_set(velSigma,0,2,value.sigmaV[4] + candidate.sigma[1*6+5]);
+        //gsl_matrix_set(velSigma,2,0,value.sigmaV[4] + candidate.sigma[5*6+1]);
+        //gsl_matrix_set(velSigma,1,2,value.sigmaV[5] + candidate.sigma[3*6+5]);
+        //gsl_matrix_set(velSigma,2,1,value.sigmaV[5] + candidate.sigma[5*6+3]);
 
 
         gsl_linalg_cholesky_decomp1(posSigma);
@@ -120,7 +135,7 @@ int TargetTracker::CheckValidationGate(measurement& value){
         gsl_linalg_cholesky_invert(velSigma);
 
         gsl_matrix *tempP = gsl_matrix_alloc(1,3);
-        gsl_matrix *tempV = gsl_matrix_alloc(1,3);
+        gsl_matrix *tempV = gsl_matrix_alloc(1,2);
 
         gsl_matrix *valP = gsl_matrix_alloc(1,1);
         gsl_matrix *valV = gsl_matrix_alloc(1,1);
@@ -134,13 +149,12 @@ int TargetTracker::CheckValidationGate(measurement& value){
         // p(x<=X) = 0.90
         // using inverse chi2 cdf (quantile function), X = 6.2513886311 for degree of freedom 3
         // X = 7.81472 for p = 0.95
-        double gate = 9.21;
-        if(gsl_matrix_get(valP,0,0) <= gate){
+        if(gsl_matrix_get(valP,0,0) <= pThreshold){
             // Check validation gate around velocity estimate
             gsl_blas_dgemm(CblasTrans,CblasNoTrans,1,(const gsl_matrix *)errorV,(const gsl_matrix *)velSigma,0,tempV);
             gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)tempV,(const gsl_matrix *)errorV,0,valV);
 
-            if(gsl_matrix_get(valV,0,0) <= gate){
+            if(gsl_matrix_get(valV,0,0) <= vThreshold){
                   gsl_matrix_free(posSigma);
                   gsl_matrix_free(velSigma);
                   gsl_matrix_free(errorP);
@@ -185,7 +199,7 @@ void TargetTracker::InputMeasurement(measurement& value){
     if(!associated){
 
         totalTracks++;
-        //std::cout<<"new association:"<<value.callsign<<std::endl;
+        //std::cout<<"new association:"<<value.callsign<<" at "<<value.time;
         value.callsign = "kf"+std::to_string(totalTracks);
         
 
@@ -214,7 +228,9 @@ void TargetTracker::InputMeasurement(measurement& value){
         value.sigma[3*6+5] = value.sigmaV[5];
         value.sigma[5*6+3] = value.sigmaV[5];
 
+        CheckValidationGate(value); 
         tracks.push_back(value);
+        //std::cout<<",Total:"<<tracks.size()-1<<std::endl;
     }
 
 }
@@ -283,15 +299,27 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
    // Motion model uncertainty
    gsl_matrix * modelP = gsl_matrix_alloc(6,6);
    gsl_matrix_set_zero(modelP);
-   gsl_matrix_set(modelP,1,1,modelUncertainty[0]);
-   gsl_matrix_set(modelP,3,3,modelUncertainty[1]);
-   gsl_matrix_set(modelP,5,5,modelUncertainty[2]);
-   gsl_matrix_set(modelP,1,3,modelUncertainty[3]);
-   gsl_matrix_set(modelP,3,1,modelUncertainty[3]);
-   gsl_matrix_set(modelP,1,5,modelUncertainty[4]);
-   gsl_matrix_set(modelP,5,1,modelUncertainty[4]);
-   gsl_matrix_set(modelP,3,5,modelUncertainty[5]);
-   gsl_matrix_set(modelP,5,3,modelUncertainty[5]);
+   gsl_matrix_set(modelP,0,0,modelUncertaintyP[0]);
+   gsl_matrix_set(modelP,1,1,modelUncertaintyV[0]);
+   gsl_matrix_set(modelP,2,2,modelUncertaintyP[1]);
+   gsl_matrix_set(modelP,3,3,modelUncertaintyV[1]);
+   gsl_matrix_set(modelP,4,4,modelUncertaintyP[2]);
+   gsl_matrix_set(modelP,5,5,modelUncertaintyV[2]);
+
+   gsl_matrix_set(modelP,0,2,modelUncertaintyP[3]);
+   gsl_matrix_set(modelP,2,0,modelUncertaintyP[3]);
+   gsl_matrix_set(modelP,1,3,modelUncertaintyV[3]);
+   gsl_matrix_set(modelP,3,1,modelUncertaintyV[3]);
+
+   gsl_matrix_set(modelP,0,4,modelUncertaintyP[4]);
+   gsl_matrix_set(modelP,4,0,modelUncertaintyP[4]);
+   gsl_matrix_set(modelP,1,5,modelUncertaintyV[4]);
+   gsl_matrix_set(modelP,5,1,modelUncertaintyV[4]);
+
+   gsl_matrix_set(modelP,2,4,modelUncertaintyP[5]);
+   gsl_matrix_set(modelP,4,2,modelUncertaintyP[5]);
+   gsl_matrix_set(modelP,3,5,modelUncertaintyV[5]);
+   gsl_matrix_set(modelP,5,3,modelUncertaintyV[5]);
 
    // Prediction step
    // Xpred = A*xprev
@@ -319,7 +347,7 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
    gsl_matrix_set(innovation,2,0,update.locPos.y - prev.locPos.y);
    gsl_matrix_set(innovation,3,0,update.velocity.y - prev.velocity.y);
    gsl_matrix_set(innovation,4,0,update.locPos.z - prev.locPos.z);
-   gsl_matrix_set(innovation,5,0,update.velocity.z - prev.velocity.y);
+   gsl_matrix_set(innovation,5,0,update.velocity.z - prev.velocity.z);
 
    // Measurement noise
    gsl_matrix *innovCov = gsl_matrix_alloc(6,6);
@@ -403,7 +431,7 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
   
 }
 
-int TargetTracker::GetTotalTraffic(double time){
+void TargetTracker::UpdatePredictions(double time){
     std::vector<int> oldTracks;
     for(int i=0;i<tracks.size();++i){
         if(i==0){
@@ -424,11 +452,16 @@ int TargetTracker::GetTotalTraffic(double time){
         oldTracks.pop_back();
         //std::cout<<"Removing stale track"<<std::endl;
     }
+    for(int i=0;i<tracks.size();++i){
+        UpdateEstimate(tracks[i],tracks[i],time);
+    }
+}
+
+int TargetTracker::GetTotalTraffic(){
     return tracks.size()-1;
 }
 
-measurement TargetTracker::GetIntruderData(double time,int i){
-    UpdateEstimate(tracks[i+1],tracks[i+1],time);
+measurement TargetTracker::GetIntruderData(int i){
     return tracks[i+1];
 }
 
@@ -439,6 +472,14 @@ void* new_TargetTracker(char* callsign){
 void TargetTracker_SetHomePosition(void* obj,double position[3]){
     larcfm::Position home = larcfm::Position::makeLatLonAlt(position[0],"deg",position[1],"deg",position[2],"m");
     ((TargetTracker*)obj)->SetHomePosition(home);
+}
+
+void TargetTracker_SetGateThresholds(void* obj,double p,double v){
+    ((TargetTracker*)obj)->SetGateThresholds(p,v);
+}
+
+void TargetTracker_SetModelUncertainty(void* obj,double sigmaP[6],double sigmaV[6]){
+    ((TargetTracker*)obj)->SetModelUncertainty(sigmaP,sigmaV);
 }
 
 void TargetTracker_InputMeasurement(void* obj,char* callsign,double time,double position[3],double velocity[3],double sigmaPos[6],double sigmaVel[6]){
@@ -452,12 +493,12 @@ void TargetTracker_InputMeasurement(void* obj,char* callsign,double time,double 
     ((TargetTracker*)obj)->InputMeasurement(input);
 }
 
-int TargetTracker_GetTotalIntruders(void* obj,double time){
-    return ((TargetTracker*)obj)->GetTotalTraffic(time);
+int TargetTracker_GetTotalIntruders(void* obj){
+    return ((TargetTracker*)obj)->GetTotalTraffic();
 }
 
 void TargetTracker_GetIntruderData(void* obj,int i,char* callsign,double* time,double position[3],double velocity[3],double sigmaPos[6],double sigmaVel[6]){
-    measurement output = ((TargetTracker*)obj)->GetIntruderData(*time,i);
+    measurement output = ((TargetTracker*)obj)->GetIntruderData(i);
     std::strcpy(callsign,output.callsign.c_str());
     position[0] = output.position.latitude();
     position[1] = output.position.longitude();
@@ -465,13 +506,17 @@ void TargetTracker_GetIntruderData(void* obj,int i,char* callsign,double* time,d
     velocity[0] = output.velocity.x;
     velocity[1] = output.velocity.y;
     velocity[2] = output.velocity.z;
+    *time       = output.time;
     std::memcpy(sigmaPos,output.sigmaP,sizeof(double)*6);
     std::memcpy(sigmaVel,output.sigmaV,sizeof(double)*6);
 }
 
-void TargetTracker_InputCurrentState(void* obj,double position[3],double velocity[3]){
+void TargetTracker_InputCurrentState(void* obj,double time,double position[3],double velocity[3],double sigmaP[6],double sigmaV[6]){
     larcfm::Position currentPos = larcfm::Position::makeLatLonAlt(position[0],"deg",position[1],"deg",position[2],"m");
     larcfm::Velocity currentVel = larcfm::Velocity::makeTrkGsVs(velocity[0],"deg",velocity[1],"m/s",velocity[2],"m/s");
-    ((TargetTracker*)obj)->InputCurrentState(currentPos,currentVel);
+    ((TargetTracker*)obj)->InputCurrentState(time,currentPos,currentVel,sigmaP,sigmaV);
 }
 
+void TargetTracker_UpdatePredictions(void* obj,double time){
+    ((TargetTracker*)obj)->UpdatePredictions(time);
+}

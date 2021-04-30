@@ -153,12 +153,8 @@ class IcarousInterface(abc.ABC):
         :param data: V2VData to input
         """
         if data.type == "INTRUDER":
-            if data.payload["callsign"][:2] == 'tf':
-                sigmaP=[5.0,5.0,5.0,0.0,0.0,0.0]
-                sigmaV=[1.0,1.0,1.0,0.0,0.0,0.0]
-            else:
-                sigmaP=[25.0,25.0,25.0,0.0,0.0,0.0]
-                sigmaV=[5.0,5.0,5.0,0.0,0.0,0.0]
+            sigmaP=data.payload["sigmaP"]
+            sigmaV=data.payload["sigmaV"]
             self.InputTraffic(data.payload["source"],data.payload["callsign"], data.payload["pos"], data.payload["vel"],sigmaP,sigmaV)
         elif data.type == "MERGER":
             self.InputMergeData(data.payload)

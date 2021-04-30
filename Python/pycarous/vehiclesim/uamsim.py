@@ -97,6 +97,7 @@ class UamVtolSim(VehicleSimInterface):
         self.pos[0] = self.pcoeff*self.pos[0] + (1 - self.pcoeff)*(self.pos0[0] + n[0, 0])
         self.pos[1] = self.pcoeff*self.pos[1] + (1 - self.pcoeff)*(self.pos0[1] + n[0, 1])
         self.pos[2] = self.pcoeff*self.pos[2] + (1 - self.pcoeff)*(self.pos0[2] + n[0, 2])
+        return True
 
     def GetOutputPositionNED(self):
         return (self.pos[1], self.pos[0], self.pos[2])

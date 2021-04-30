@@ -14,5 +14,6 @@ add_subdirectory(Core/Guidance)
 add_subdirectory(Core/Merger)
 add_subdirectory(Core/Cognition)
 add_subdirectory(Core/QuadCopterSim)
+add_subdirectory(Core/TargetTracker)
 
 

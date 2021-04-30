@@ -69,9 +69,14 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
                     ellipse = True
                 elif key[0:5] == 'Truth':
                     c = 'b'
+                elif key[0:5] == 'RADAR':
+                    c = 'y'
+                    sview = True
+                    ellipse = True
                 else:
                     c = 'g'
                     sview = True
+                    ellipse = True
                 anim.AddAgent('traffic_'+str(key),vehicleSize,c,ic.trafficLog[key],show_ellipse=ellipse,sensor_view=sview)
         for fence in ic.localFences:
             fence.append(fence[0])
@@ -112,7 +117,7 @@ if __name__ == "__main__":
     parser.add_argument("--notrace", action="store_true", help="don't show flight traces")
     parser.add_argument("--output", default="animation.mp4", help="video file name with .mp4 extension")
     parser.add_argument("--pad",type=float, default=25.0, help="extend the min/max values of the axes by the padding (in meters), default = 25.0 [m]")
-    parser.add_argument("--speed",type=int, default=1.0, help="increase playback speed by given factor")
+    parser.add_argument("--speed",type=float, default=1.0, help="increase playback speed by given factor")
     parser.add_argument("--routes",default='',help="routes file")
     args = parser.parse_args()
 

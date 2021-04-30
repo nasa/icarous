@@ -31,7 +31,10 @@ class TargetTracker{
     private:
        std::string callsign;
        double timeout;
-       double modelUncertainty[6];
+       double modelUncertaintyP[6];
+       double modelUncertaintyV[6];
+       double pThreshold;
+       double vThreshold;
        larcfm::Position homePos;
        measurement currentState;
        std::vector<measurement> tracks;        
@@ -43,11 +46,13 @@ class TargetTracker{
         
        TargetTracker(std::string callsign);
        void SetHomePosition(larcfm::Position& home);
-       void SetModelUncertainty(double sigma[6]);
-       void InputCurrentState(larcfm::Position& pos,larcfm::Velocity& vel);
+       void SetGateThresholds(double p, double v);
+       void UpdatePredictions(double time);
+       void SetModelUncertainty(double sigmaP[6],double sigmaV[6]);
+       void InputCurrentState(double time,larcfm::Position& pos,larcfm::Velocity& vel,double sigmaP[6],double sigmaV[6]);
        void InputMeasurement(measurement& traffic);
-       int GetTotalTraffic(double time);
-       measurement GetIntruderData(double time,int i);
+       int GetTotalTraffic();
+       measurement GetIntruderData(int i);
 
 };
 

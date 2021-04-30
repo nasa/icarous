@@ -151,8 +151,8 @@ class SimEnvironment:
         ic.ditchSite = ditchSite
         ic.ditchTOD = todAltitude
 
-    def AddAccordTraffic(self,callsign,homepos,logfile,vehicleid):
-        traffic = AccordReplay(callsign,homepos,logfile,self.comm_channel,id=vehicleid)
+    def AddAccordTraffic(self,callsign,homepos,logfile,vehicleid,sigmaP=[1,1,1,0,0,0],sigmaV=[1,1,1,0,0,0]):
+        traffic = AccordReplay(callsign,homepos,logfile,self.comm_channel,id=vehicleid,SigmaP=sigmaP,SigmaV=sigmaV)
         self.tfList.append(traffic)
 
     def RunSimulatedTraffic(self, dT=None):
@@ -160,8 +160,9 @@ class SimEnvironment:
         for tf in self.tfList:
             tf.dt = dT or self.dT
             if self.current_time - self.t0 > tf.delay:
-                tf.Run(self.windFrom, self.windSpeed)
-                tf.TransmitPosition(self.current_time)
+                status = tf.Run(self.windFrom, self.windSpeed)
+                if status:
+                    tf.TransmitPosition(self.current_time)
 
     def AddWind(self, wind):
         """

@@ -46,6 +46,7 @@ class AgentAnimation():
             self.agentNames.append(name)
             self.data[name] = data
             agt = self.GetTriangle(radius,(0.0,0,0),(1.0,0.0),color)
+            agt.set_alpha(0.5)
             self.ax.add_patch(agt)
             self.agents.append(agt)
             self.agentIndex[name] = 0
@@ -103,7 +104,7 @@ class AgentAnimation():
 
         if show_ellipse:
             cov = np.array([[0.1, 0.0],[0.0, 0.1]])
-            ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor='red')
+            ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor=color)
             self.ax.add_patch(ellipse)
             self.ellipses[name] = ellipse
             sigma       = np.array(self.data[name]['sigma'])
@@ -135,7 +136,7 @@ class AgentAnimation():
 
 
         triangle = plt.Polygon([[x1, y1], [x2, y2], [x3, y3]], color=col, fill=True)
-        triangle.labelText = plt.text(x+2*tfsize, y+2*tfsize, "", fontsize=8)
+        #triangle.labelText = plt.text(x+2*tfsize, y+2*tfsize, "", fontsize=8)
 
         return triangle
 
@@ -220,6 +221,7 @@ class AgentAnimation():
         return self.agents,self.paths,self.circle
 
     def animate(self,time,i):
+<<<<<<< HEAD
         i = int(i*self.speed)
         maxLen = len(time)
         print("generating animation: %.1f%%" % (i/maxLen*100), end="\r")
@@ -234,6 +236,11 @@ class AgentAnimation():
                     self.plans[key] = None
 
         if i < maxLen:
+=======
+        i = int(np.floor(i*self.speed))
+        print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
+        if i < len(time):
+>>>>>>> [pycarous/Modules] Debugging updates, refactoring
             for j, vehicle in enumerate(self.agents):
                 k = time[i]
                 id = self.agentNames[j]
@@ -273,7 +280,11 @@ class AgentAnimation():
 
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,
+<<<<<<< HEAD
                                        frames=len(time),
+=======
+                                       frames=np.max([self.minlen,int(self.minlen/self.speed)]),
+>>>>>>> [pycarous/Modules] Debugging updates, refactoring
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
