@@ -545,7 +545,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             double vu = verticalspeed;
             appdataIntGS.traffic.vn = vn;
             appdataIntGS.traffic.ve = ve;
-            appdataIntGS.traffic.vd = vu;
+            appdataIntGS.traffic.vd = -vu;
 
             CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
             CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);

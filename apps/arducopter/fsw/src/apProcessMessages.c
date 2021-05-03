@@ -444,7 +444,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 double vu = verticalspeed;
                 traffic.vn = vn;
                 traffic.ve = ve;
-                traffic.vd = vu;
+                traffic.vd = -vu;
 
                 CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
                 CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
