@@ -203,6 +203,7 @@ class LandPhaseHandler: public EventHandler<CognitionState_t>{
        cmd.landCommand = land_command;
        state->cognitionCommands.push_back(cmd);
        state->missionStart = -2;
+       state->activePlan = nullptr;
        LogMessage(state,"[FLIGHT_PHASES] | LANDING -> IDLE");
        return SUCCESS;
    }
