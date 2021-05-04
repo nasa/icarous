@@ -2,6 +2,7 @@
 #define SENSOR_FUSION_HPP
 
 #include <string>
+#include <cstring>
 #include <vector>
 #include <array>
 #include <Projection.h>

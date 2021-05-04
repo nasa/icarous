@@ -15,6 +15,7 @@
 
 #include "sch_msgids.h"
 #include "tracker_tbl.h"
+#include <time.h>
 
 #define TRACKER_STARTUP_INF_EID 0
 #define TRACKER_COMMAND_ERR_EID 1
@@ -59,12 +60,12 @@ void TRACKER_AppInit(void);
 /**
  * Deallocates memory
  */
-void TRACKER_AppCleanUp();
+void TRACKER_AppCleanUp(void);
 
 /**
  * Processes incoming software bus messages
  */
-void TRACKER_ProcessPacket();
+void TRACKER_ProcessPacket(void);
 
 /**
  * Validates table parameters

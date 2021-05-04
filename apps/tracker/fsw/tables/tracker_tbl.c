@@ -8,10 +8,10 @@
 #include "tracker_tbl.h"
 
 trackerTable_t tracker_TblStruct = {
-     .modelUncertaintyP = {100,100,100,0,0,0};
-     .modelUncertaintyV = {25,25,25,0,0,0};
-     .pThreshold        = 16.27;
-     .vThreshold        = 13.82;
+     .modelUncertaintyP = {100,100,100,0,0,0},
+     .modelUncertaintyV = {25,25,25,0,0,0},
+     .pThreshold        = 16.27,
+     .vThreshold        = 13.82
 };
 
 
