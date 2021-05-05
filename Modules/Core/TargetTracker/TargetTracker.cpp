@@ -228,7 +228,7 @@ void TargetTracker::InputMeasurement(measurement& value){
         value.sigma[3*6+5] = value.sigmaV[5];
         value.sigma[5*6+3] = value.sigmaV[5];
 
-        CheckValidationGate(value); 
+        //CheckValidationGate(value); 
         tracks.push_back(value);
         //std::cout<<",Total:"<<tracks.size()-1<<std::endl;
     }
@@ -432,6 +432,7 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
 }
 
 void TargetTracker::UpdatePredictions(double time){
+    //std::cout<<"Updating prediction"<<std::endl;
     std::vector<int> oldTracks;
     for(int i=0;i<tracks.size();++i){
         if(i==0){
