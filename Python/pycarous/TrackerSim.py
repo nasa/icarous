@@ -93,9 +93,9 @@ ic.ownship = AccordReplay(ic.callsign,HomePos,'Truth/'+args.scenario+'.csv',sim.
 ic.missionStarted = True
 
 sim.AddAccordTraffic('TruthIntruder1',HomePos,'Truth/'+args.scenario+'.csv','Intruder1')
-#sim.AddAccordTraffic('ADSBOwnship',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Ownship',sigmaP=[1,1,1,0,0,0],sigmaV=[1,1,1,0,0,0])
-sim.AddAccordTraffic('ADSBIntruder1',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Intruder1',sigmaP=[.001,.001,.001,0,0,0],sigmaV=[.001,.001,.001,0,0,0])
-sim.AddAccordTraffic('RADARIntruder1',HomePos,'RADAR/'+args.scenario+'_RADAR.csv','Intruder1',sigmaP=[.001,.001,.001,0,0,0],sigmaV=[.001,.001,.001,0,0,0])
+sim.AddAccordTraffic('ADSBOwnship',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Ownship',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
+sim.AddAccordTraffic('ADSBIntruder1',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Intruder1',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
+sim.AddAccordTraffic('RADARIntruder1',HomePos,'RADAR/'+args.scenario+'_RADAR.csv','Intruder1',sigmaP=[1000.0,1000.0,1000.0,0.0,0.0,0.0],sigmaV=[100.0,100.0,100.0,0.0,0.0,0.0])
 
 if args.daalog:
     # Dirty hack to silently update the daa logging parameter from commandline

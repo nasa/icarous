@@ -3,6 +3,7 @@ import matplotlib.animation as animation
 from matplotlib import patches
 from matplotlib import text
 from matplotlib.patches import Ellipse
+from matplotlib.widgets import Slider, Button
 import matplotlib.transforms as transforms
 from math import sin,cos,atan2,pi
 import numpy as np
@@ -21,6 +22,7 @@ class AgentAnimation():
         self.agentsRadius = {}
         self.agentNames = []
         self.agentLines = []
+        self.agentColors = {}
         self.data = {}
         self.interval = interval
         self.circle = {}
@@ -36,6 +38,8 @@ class AgentAnimation():
         self.agentIndex = {}
         self.traces = traces
         self.ellipses = {}
+        self.slider = None
+        self.paused = False
 
     def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10,show_ellipse=False,sensor_view=False):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
@@ -44,6 +48,7 @@ class AgentAnimation():
 
         if name not in self.agentNames:
             self.agentNames.append(name)
+            self.agentColors[name] = color
             self.data[name] = data
             agt = self.GetTriangle(radius,(0.0,0,0),(1.0,0.0),color)
             agt.set_alpha(0.5)
@@ -87,7 +92,7 @@ class AgentAnimation():
         self.data[name]['plotX'] = []
         self.data[name]['plotY'] = []
         if self.traces:
-            line, = plt.plot(0,0)
+            line, = plt.plot(0,0,color)
             self.paths[name] = line
         self.agentsRadius[name] = radius
         if show_circle:
@@ -217,30 +222,17 @@ class AgentAnimation():
                 sectors[i].set_alpha(0.6)
 
 
-    def init(self):
+    def initanim(self):
         return self.agents,self.paths,self.circle
 
-    def animate(self,time,i):
-<<<<<<< HEAD
-        i = int(i*self.speed)
-        maxLen = len(time)
-        print("generating animation: %.1f%%" % (i/maxLen*100), end="\r")
-
-        for key in self.plans:
-            tFuncPair = self.plans[key]
-            if tFuncPair is not None:
-                t = tFuncPair[0]
-                plotFunc = tFuncPair[1]
-                if time[i] >= t:
-                    plotFunc()
-                    self.plans[key] = None
-
-        if i < maxLen:
-=======
+    def Update(self,time,i):
         i = int(np.floor(i*self.speed))
         print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
         if i < len(time):
->>>>>>> [pycarous/Modules] Debugging updates, refactoring
+            self.slider.eventson = False
+            self.slider.set_val(i)
+            self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
+            self.slider.eventson = True
             for j, vehicle in enumerate(self.agents):
                 k = time[i]
                 id = self.agentNames[j]
@@ -273,18 +265,41 @@ class AgentAnimation():
             plt.close(self.fig)
         return self.agents,self.paths,self.circle
 
+    def SetTime(self,val):
+        self.anim.event_source.stop()
+        for id in self.agentNames:
+            self.data[id]['plotX'] = []
+            self.data[id]['plotY'] = []
+        self.anim = animation.FuncAnimation(self.fig, self.animate,
+                                       init_func=self.init,
+                                       frames=range(int(val),np.max([self.minlen,int(self.minlen/self.speed)])),
+                                       interval=self.interval,
+                                       repeat = False,
+                                       blit=False)
+
+    def Pause(self,event):
+        if self.paused:
+            self.anim.event_source.start()
+            self.paused = False
+        else:
+            self.paused = True
+            self.anim.event_source.stop()
+
     def run(self):
         time = np.arange(self.tmin,self.tmax+self.dt,self.dt)
-        animate = lambda x: self.animate(time,x)
-        init = lambda:self.init()
-
-        self.anim = animation.FuncAnimation(self.fig, animate,
-                                       init_func=init,
-<<<<<<< HEAD
-                                       frames=len(time),
-=======
+        self.animate = lambda x: self.Update(time,x)
+        self.init = lambda:self.initanim()
+        slider_ax = self.fig.add_axes((0.15, 0.025, 0.5, 0.04))
+        slider_ax.set_xticks([])
+        slider_ax.set_yticks([])
+        pause_ax = self.fig.add_axes((0.8, 0.025, 0.1, 0.04))
+        pause_button = Button(pause_ax, 'pause', hovercolor='0.975')
+        pause_button.on_clicked(self.Pause)
+        self.slider = Slider(slider_ax,label='Time',valmin=0,valmax= time[-1],valinit=0.0)
+        self.slider.on_changed(self.SetTime)
+        self.anim = animation.FuncAnimation(self.fig, self.animate,
+                                       init_func=self.init,
                                        frames=np.max([self.minlen,int(self.minlen/self.speed)]),
->>>>>>> [pycarous/Modules] Debugging updates, refactoring
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
