@@ -342,6 +342,8 @@ class IcarousInterface(abc.ABC):
             "callsign": self.callsign,
             "pos": self.position,
             "vel": self.velocity,
+            "sigmaP": [0.0,0.0,0.0,0.0,0.0,0.0],
+            "sigmaV": [0.0,0.0,0.0,0.0,0.0,0.0],
         }
         msg = V2Vdata("INTRUDER", msg_data)
         if self.currTime - self.lastBroadcastTime > self.broadcastInterval:
