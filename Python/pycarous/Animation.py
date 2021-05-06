@@ -108,7 +108,7 @@ class AgentAnimation():
         self.bands[name] = sectors
 
         if show_ellipse:
-            if 'sigma' in self.data.keys():
+            if 'sigma' in self.data[name].keys():
                 cov = np.array([[0.1, 0.0],[0.0, 0.1]])
                 ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor=color)
                 self.ax.add_patch(ellipse)
@@ -231,7 +231,7 @@ class AgentAnimation():
         print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
         if i < len(time):
             self.slider.eventson = False
-            self.slider.set_val(int(time[i]))
+            self.slider.set_val(i)
             self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
             self.slider.eventson = True
             for j, vehicle in enumerate(self.agents):
@@ -271,9 +271,11 @@ class AgentAnimation():
         for id in self.agentNames:
             self.data[id]['plotX'] = []
             self.data[id]['plotY'] = []
+
+        val = int(np.floor(val/self.speed))
         self.anim = animation.FuncAnimation(self.fig, self.animate,
                                        init_func=self.init,
-                                       frames=range(int(val/self.dt),np.max([self.minlen,int(self.minlen/self.speed)])),
+                                       frames=range(int(val),np.max([self.minlen,int(self.minlen/self.speed)])),
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
@@ -296,7 +298,7 @@ class AgentAnimation():
         pause_ax = self.fig.add_axes((0.8, 0.025, 0.1, 0.04))
         pause_button = Button(pause_ax, 'pause', hovercolor='0.975')
         pause_button.on_clicked(self.Pause)
-        self.slider = Slider(slider_ax,label='Time',valmin=0,valmax= time[-1],valinit=0.0)
+        self.slider = Slider(slider_ax,label='Time',valmin=0,valmax= len(time),valinit=0.0)
         self.slider.on_changed(self.SetTime)
         self.anim = animation.FuncAnimation(self.fig, self.animate,
                                        init_func=self.init,
