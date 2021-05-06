@@ -108,14 +108,15 @@ class AgentAnimation():
         self.bands[name] = sectors
 
         if show_ellipse:
-            cov = np.array([[0.1, 0.0],[0.0, 0.1]])
-            ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor=color)
-            self.ax.add_patch(ellipse)
-            self.ellipses[name] = ellipse
-            sigma       = np.array(self.data[name]['sigma'])
-            self.data[name]['sigma_intp']   = [interpolate.interp1d(time,sigma[:,0],kind=interptype,bounds_error=False,fill_value=(0,0)),
-                                               interpolate.interp1d(time,sigma[:,1],kind=interptype,bounds_error=False,fill_value=(0,0)),
-                                               interpolate.interp1d(time,sigma[:,2],kind=interptype,bounds_error=False,fill_value=(0,0))]
+            if 'sigma' in self.data.keys():
+                cov = np.array([[0.1, 0.0],[0.0, 0.1]])
+                ellipse = confidence_ellipse(0,0,cov, self.ax, None,edgecolor=color)
+                self.ax.add_patch(ellipse)
+                self.ellipses[name] = ellipse
+                sigma       = np.array(self.data[name]['sigma'])
+                self.data[name]['sigma_intp']   = [interpolate.interp1d(time,sigma[:,0],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                                   interpolate.interp1d(time,sigma[:,1],kind=interptype,bounds_error=False,fill_value=(0,0)),
+                                                   interpolate.interp1d(time,sigma[:,2],kind=interptype,bounds_error=False,fill_value=(0,0))]
 
     def AddZone(self,xy,radius,color):
         circlePatch = patches.Arc((xy[0], xy[1]), width=2*radius,height =2*radius, fill =False, color=color)
@@ -230,7 +231,7 @@ class AgentAnimation():
         print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
         if i < len(time):
             self.slider.eventson = False
-            self.slider.set_val(i)
+            self.slider.set_val(int(time[i]))
             self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
             self.slider.eventson = True
             for j, vehicle in enumerate(self.agents):
@@ -272,7 +273,7 @@ class AgentAnimation():
             self.data[id]['plotY'] = []
         self.anim = animation.FuncAnimation(self.fig, self.animate,
                                        init_func=self.init,
-                                       frames=range(int(val),np.max([self.minlen,int(self.minlen/self.speed)])),
+                                       frames=range(int(val/self.dt),np.max([self.minlen,int(self.minlen/self.speed)])),
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
