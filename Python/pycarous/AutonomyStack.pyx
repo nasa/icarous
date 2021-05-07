@@ -562,7 +562,8 @@ cdef class AutonomyStack:
 
         return fps
             
-            
+    def GetPlanOffsets(self):
+        return self.planOffsets
 
     def GetBands(self,bandType):
         cdef bands_t band

@@ -272,6 +272,7 @@ class Icarous(IcarousInterface):
         self.gsband = self.core.GetBands('gs')
         self.vsband = self.core.GetBands('vs')
         self.altband = self.core.GetBands('alt')
+        self.planoffsets = self.core.GetPlanOffsets()
         
         return True
 
