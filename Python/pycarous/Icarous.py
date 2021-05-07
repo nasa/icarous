@@ -257,10 +257,10 @@ class Icarous(IcarousInterface):
 
         self.loopcount += 1
 
-        self.RunOwnship()
-
         if not self.missionStarted:
             return True
+
+        self.RunOwnship()
 
         self.core.Run(self.currTime)
 
