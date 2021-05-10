@@ -9,6 +9,7 @@ from CustomTypes import TcpType
 
 class playback():
     def __init__(self):
+        self.callsign = ''
         self.ownshipLog = []
         self.trafficLog = []
         self.localPlans = []
@@ -36,7 +37,7 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
     homePos = icList[0].home_pos
     getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
     for j,ic in enumerate(icList):
-        anim.AddAgent('ownship'+str(j),vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
+        anim.AddAgent(ic.callsign,vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
         for i,pln in enumerate(ic.plans):
             planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
             points = np.array(list(map(getLocPos,planPositions)))
@@ -114,6 +115,7 @@ if __name__ == "__main__":
             valid = True
             pb = playback()
             pb.ownshipLog = data['state']
+            pb.callsign = data['callsign']
             pb.trafficLog = data['traffic']
             pb.plans = data['flightplans']
             pb.home_pos = data['origin']

@@ -121,7 +121,7 @@ class AgentAnimation():
 
         return triangle
 
-    def UpdateTriangle(self,tfsize, pos, vel, poly):
+    def UpdateTriangle(self,tfsize, pos, vel, poly, id=''):
         x = pos[0]
         y = pos[1]
         z = pos[2]
@@ -143,7 +143,7 @@ class AgentAnimation():
         poly.set_xy([[x1, y1], [x2, y2], [x3, y3]])
         poly.labelText.set_position((x + 2*tfsize,y+2*tfsize))
         speed = np.sqrt(vel[0]**2 + vel[1]**2)
-        poly.labelText.set_text('Z:%.2f[m]\nS:%.2f[mps]' % (z,speed))
+        poly.labelText.set_text('%s Z:%.2f[m]\nS:%.2f[mps]' % (id,z,speed))
 
     def AddPath(self,path,color1,points = [],labels = [],color2=''):
         if (path.shape[0] < 2):
@@ -214,7 +214,7 @@ class AgentAnimation():
                 self.data[id]['plotY'].append(float(position[1]))
                 
                 radius = self.agentsRadius[id]
-                self.UpdateTriangle(radius,position,velocity,vehicle)
+                self.UpdateTriangle(radius,position,velocity,vehicle,id)
                 if self.traces:
                     self.paths[id].set_xdata(self.data[id]['plotX'])
                     self.paths[id].set_ydata(self.data[id]['plotY'])
