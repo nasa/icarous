@@ -309,7 +309,7 @@ double Guidance::ComputeSpeed(){
            newSpeed = distH / timediff;
        }else{
            // Speed if eta cannot be met
-           newSpeed = currentPlan->gsOut(nextWP-1);
+           newSpeed = maxSpeed * 0.75;
        }
 
        if (newSpeed > maxSpeed) {
