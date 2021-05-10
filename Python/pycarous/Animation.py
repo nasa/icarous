@@ -199,8 +199,9 @@ class AgentAnimation():
 
     def animate(self,time,i):
         i = int(i*self.speed)
-        print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
-        if i < self.minlen-1:
+        maxLen = len(time)
+        print("generating animation: %.1f%%" % (i/maxLen*100), end="\r")
+        if i < maxLen:
             for j, vehicle in enumerate(self.agents):
                 k = time[i]
                 id = self.agentNames[j]
@@ -233,7 +234,7 @@ class AgentAnimation():
         init = lambda:self.init()
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,
-                                       frames=self.minlen,
+                                       frames=len(time),
                                        interval=self.interval,
                                        repeat = False,
                                        blit=False)
