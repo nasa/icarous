@@ -329,7 +329,7 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position position = currentPos;
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
     const double deltaH = nextWaypoint.alt() - position.alt();
-    double climbrate;
+    double climbrate = 0;
     if(currentPlan->isLinear() || fabs(deltaH) < 5){
         if (fabs(deltaH) > params.climbAngleVRange &&
             position.distanceH(nextWaypoint) > params.climbAngleHRange) {
@@ -350,7 +350,10 @@ double Guidance::ComputeClimbRate(double speedRef){
             climbrate = deltaH * params.climbRateGain;
         }
     }else{
-        climbrate = currentPlan->vsIn(nextWP) + deltaH * params.climbRateGain;
+        if(fabs(deltaH) > 5){
+            climbrate = currentPlan->vsIn(nextWP);
+        }
+        climbrate += deltaH * params.climbRateGain;
     }
     if (climbrate > params.maxClimbRate) {
         climbrate = params.maxClimbRate;
@@ -560,8 +563,9 @@ void Guidance::CheckWaypointArrival(){
        approachPrec = -1;
     }
     // If distance to next waypoint is < captureRadius, switch to next waypoint
-    if (distH2nextWP <= capture_radius && 
-        distV2nextWP <= params.climbAngleVRange && (approachPrec < 0 || currSpeed < 0.5)) {
+    bool altReached = distV2nextWP <= params.climbAngleVRange;
+    if (distH2nextWP <= capture_radius && altReached
+         && (approachPrec < 0 || currSpeed < 0.5)) {
         wpReached = true;
         nextWP++;
         nextWpId[activePlanId] = nextWP;

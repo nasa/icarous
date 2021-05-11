@@ -339,7 +339,7 @@ std::vector<double> TrajManager::ComputePlanOffsets(std::string planID,int nextW
         double actualTimeRemaining = fp->time(nextWP) - timeAtPos;
         offsets[0] = currentPos.distanceH(center) - fabs(turnRadius);
         offsets[1] = turnCurrentDelta/turnTargetDelta;
-        offsets[2] = timeRemainingTurn - actualTimeRemaining;
+        offsets[2] = actualTimeRemaining - timeRemainingTurn;
 
     }else{
         larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(posA);
@@ -353,7 +353,7 @@ std::vector<double> TrajManager::ComputePlanOffsets(std::string planID,int nextW
         double perpProj = fabs(AC.dot(AB.PerpL().Hat()));
         double straightProj = distAB > 0 ? AC.dot(AB.Hat()) / distAB: 1;
 
-        double gs = fp->gsIn(nextWP);
+        double gs = (fp->gsOut(nextWP-1) + fp->gsIn(nextWP))/2;
         double expectedTimeAtPos = fp->time(nextWP - 1) + (gs > 1e-3 ? (straightProj * distAB) / gs : 0);
 
         offsets[0] = perpProj;
