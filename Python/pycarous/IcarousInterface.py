@@ -6,6 +6,7 @@ from ichelper import (LoadIcarousParams,
                       ReadFlightplanFile,
                       distance,
                       ConvertToLocalCoordinates,
+                      ConvertTrkGsVsToVned,
                       ParseDaidalusConfiguration)
 from CustomTypes import V2Vdata
 
@@ -282,11 +283,12 @@ class IcarousInterface(abc.ABC):
         if sum(abs(p) for p in self.position) < 1e-3:
             return
 
+        commanded_vel_NED = ConvertTrkGsVsToVned(*self.controlInput)
         self.ownshipLog["time"].append(self.currTime)
         self.ownshipLog["position"].append(self.position)
         self.ownshipLog["velocityNED"].append(self.velocity)
         self.ownshipLog["positionNED"].append(self.localPos)
-        self.ownshipLog["commandedVelocityNED"].append(self.controlInput)
+        self.ownshipLog["commandedVelocityNED"].append(commanded_vel_NED)
         self.ownshipLog["planOffsets"].append(self.planoffsets)
 
         record_bands(self.ownshipLog["trkbands"], self.trkband)
