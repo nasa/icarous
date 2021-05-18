@@ -249,6 +249,11 @@ bool ComputeTargetFeasibility(CognitionState_t* state,larcfm::Position target){
         }
     }
 
+    if(!conflict){
+        state->rightTurnConflict = false;
+        state->leftTurnConflict = false;
+    }
+
     // Check feasibility based on speed bands
     for(int i=0;i<state->gsBandNum;++i){
         double low = state->gsBandMin[i];
