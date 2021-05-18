@@ -87,7 +87,7 @@ class AgentAnimation():
             self.ax.add_patch(circlePatch)
             # Draw bands
             sectors = []
-            for i in range(10):
+            for i in range(15):
                 ep = patches.Wedge((0,0),circle_rad,theta1=0,theta2=0,fill=True,alpha=0.6)
                 sectors.append(ep)
                 self.ax.add_patch(ep)
