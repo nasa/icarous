@@ -72,11 +72,13 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
        double diff = fmod(360 + fabs(trkCurrent - trkRef),360);
        if(diff >= 45){
            if (state->rightTurnConflict) {
-               direction = -1;
+               trkCmd = trkCurrent -2;
+           }else if(state->leftTurnConflict){
+               trkCmd = trkCurrent + 2;
+           }else{
+               trkCmd = trkRef;
            }
 
-           trkCmd = trkCurrent + 2*direction;
-           
        }else{
            trkCmd = trkRef;
        }
