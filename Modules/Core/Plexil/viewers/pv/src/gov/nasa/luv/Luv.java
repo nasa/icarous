@@ -135,8 +135,7 @@ public class Luv extends JFrame {
      * and initializing a SocketServer to start listening for events from the 
      * Universal Executive. Starts socket server with requested port.
      */
-    public Luv(String[] args) throws IOException
-    {
+    public Luv(String[] args) throws IOException {
         earlyInit(args);
         lateInit();
 
@@ -173,8 +172,7 @@ public class Luv extends JFrame {
         constructFrame();
     }
 
-    private void lateInit()
-    {
+    private void lateInit() {
         // Create these on demand
         portGui = null;
         hideOrShowWindow = null;
@@ -627,8 +625,7 @@ public class Luv extends JFrame {
 
     /** Returns the current instance of the Luv HideOrShowWindow.
      *  @return the current instance of the Luv HideOrShowWindow */
-    public HideOrShowWindow getHideOrShowWindow()
-    {
+    public HideOrShowWindow getHideOrShowWindow() {
         if (hideOrShowWindow == null)
             hideOrShowWindow =
                 new HideOrShowWindow(Settings.instance().getStringList(PROP_HIDE_SHOW_LIST));
@@ -710,22 +707,20 @@ public class Luv extends JFrame {
 	 * application opens for the first time.
      * @note Should only be called from within this class.
 	 */
-	private void startState()
-    {
-        setLocation(theLuv.getLocation());
-        setPreferredSize(theLuv.getSize());
+	private void startState() {
+        	setLocation(theLuv.getLocation());
+        	setPreferredSize(theLuv.getSize());
 		disableAllMenus();
 		exitMenuItem.setEnabled(true);
 		fileMenu.setEnabled(true);
 		debugMenu.setEnabled(true);
-        setVisible(true);
+        	setVisible(true);
 	}
 
 	/**
 	 * Sets the Luv application to a Ready State.
 	 */
-	public void readyState()
-    {
+	public void readyState() {
 		// set only certain luv viewer variables
 		FileHandler.instance().setStopSearchForMissingLibs(false);
 		exitMenuItem.setEnabled(true);
@@ -750,12 +745,10 @@ public class Luv extends JFrame {
 		statusMessageHandler.showChangeOnPort("Listening on port " + Settings.instance().getPort());
 	}
 
-    // Utility used in startState()
-	private void disableAllMenus()
-    {
+        // Utility used in startState()
+	private void disableAllMenus() {
 		exitMenuItem.setEnabled(false);
 		fileMenu.setEnabled(false);
-
 		debugMenu.setEnabled(false);
 	}
 
