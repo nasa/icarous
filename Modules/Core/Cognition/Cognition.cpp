@@ -44,7 +44,7 @@ void Cognition::InitializeState(){
     cogState.return2NextWPState = NOOPC;
     cogState.requestGuidance2NextWP = -1;
     cogState.topOfDescent = false;
-    cogState.todAltitude = 0;
+    cogState.todAltitude = -1;
     cogState.ditch = false;
     cogState.endDitch = false;
     cogState.resetDitch = false;

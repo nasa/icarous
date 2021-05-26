@@ -270,7 +270,11 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 resolutionType = TRACK_RESOLUTION;
             }
         }
-        larcfm::Position target = GetPlan(&state->flightPlans,state->missionPlan)->getPos(state->nextFeasibleWpId);
+        if(state->missionPlan == "Plan0"){
+            state->nextWpId[state->missionPlan] = state->nextFeasibleWpId;
+        }
+        int index = state->nextWpId[state->missionPlan];
+        larcfm::Position target = GetPlan(&state->flightPlans,state->missionPlan)->getPos(index);
 
         switch (resolutionType) {
 
@@ -289,7 +293,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
             double diff;
 
             double current_alt = state->position.alt();
-            double alt_pref = state->preferredAlt;
+            double alt_pref = std::max(state->todAltitude,state->preferredAlt);
             bool newTargetAlt = fabs(alt_pref - state->prevResAlt) > 1e-3;
             bool prevTargetReached = fabs(current_alt - state->prevResAlt) < 2;
             /* 
