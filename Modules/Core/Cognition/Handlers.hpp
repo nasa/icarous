@@ -6,7 +6,7 @@
 class EngageNominalPlan: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
         if(state->missionStart > 0){
-            state->nextWpId["Plan0"] = state->missionStart;
+            state->nextWpId[state->missionPlan] = state->missionStart;
             state->missionStart = -1;
         }
         return SUCCESS;
@@ -14,7 +14,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
 
     retVal_e Execute(CognitionState_t* state){
        LogMessage(state,"[HANDLER] | Engage nominal plan");
-       SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+       SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
        return SUCCESS;
     }
 };
@@ -31,7 +31,7 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 
    retVal_e Terminate(CognitionState_t* state){
        if(state->takeoffComplete == 1){
-           SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+           SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
            return SUCCESS;
        }else if(state->takeoffComplete != 0){
            LogMessage(state,"[WARNING] | Takeoff failed");
@@ -46,15 +46,18 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
        if(state->parameters.return2NextWP == 3){
-           larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-           target = fp->getPos(state->nextFeasibleWpId);
-           state->nextWpId["Plan0"] =state->nextFeasibleWpId + 1;
+           larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
+           if(state->missionPlan == "Plan0"){
+               state->nextWpId[state->missionPlan] =state->nextFeasibleWpId;
+           }
+           target = fp->getPos(state->nextWpId[state->missionPlan]);
+           state->nextWpId[state->missionPlan] += 1;
        }else{
            target = state->clstPoint;
-           larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-           int nextWP = state->nextWpId["Plan0"];
+           larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
+           int nextWP = state->nextWpId[state->missionPlan];
            GetNearestPositionOnPlan(fp, state->position, nextWP);
-           state->nextWpId["Plan0"] =nextWP;
+           state->nextWpId[state->missionPlan] =nextWP;
        }
        return SUCCESS;
    }
@@ -109,7 +112,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         LogMessage(state, "[STATUS] | " + eventName + " | Return to mission");
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
-        larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
+        larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
 
         larcfm::Position positionA,positionB;
         larcfm::Velocity velocityA,velocityB;
@@ -123,11 +126,14 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
             positionB = state->clstPoint;
             velocityB = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
         }else{
-            positionB = GetNextWP(fp,state->nextFeasibleWpId);
-            velocityB = GetNextWPVelocity(fp,state->nextFeasibleWpId);
-            state->nextWpId[state->activePlan->getID()] = state->nextFeasibleWpId;
-            if(state->activePlan->getID() == "Plan0"){
-                state->nextWpId["Plan0"] += 1;
+            if(state->missionPlan == "Plan0"){
+                state->nextWpId[state->missionPlan] = state->nextFeasibleWpId;
+            }
+            int index = state->nextWpId[state->missionPlan];
+            positionB = GetNextWP(fp,index);
+            velocityB = GetNextWPVelocity(fp,index);
+            if(state->activePlan->getID() == state->missionPlan){
+                state->nextWpId[state->missionPlan] += 1;
             }
         }
         FindNewPath(state,pathName,positionA, velocityA, positionB, velocityB);
@@ -159,23 +165,24 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
             return SHUTDOWN;
         }
 
+        if(state->missionPlan == "Plan0"){
+            state->nextWpId[state->missionPlan] = state->nextFeasibleWpId;
+        }
+        int index = state->nextWpId[state->missionPlan];
+
         LogMessage(state, "[STATUS] | " + eventName + " | Return to next feasible waypoint");
-        state->nextWpId["Plan0"] = state->nextFeasibleWpId;
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
         larcfm::Position positionB;
-        state->nextWpId[state->activePlan->getID()] = state->nextFeasibleWpId;
-        larcfm::Plan* fp = GetPlan(&state->flightPlans,"Plan0");
-        positionB = GetNextWP(fp,state->nextFeasibleWpId);
+        larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
+        positionB = GetNextWP(fp,index);
 
         larcfm::Position positionA = state->position;
         larcfm::Velocity velocityA = state->velocity;
-        larcfm::Velocity velocityB = GetNextWPVelocity(fp,state->nextFeasibleWpId);
+        larcfm::Velocity velocityB = GetNextWPVelocity(fp,index);
         FindNewPath(state,pathName,positionA, velocityA, positionB, velocityB);
         SendStatus(state,(char*)"IC:Computing secondary path",6);
-        if(state->activePlan->getID() == "Plan0"){
-            state->nextWpId["Plan0"] += 1;
-        }
+        state->nextWpId[state->missionPlan] += 1;
         state->request = REQUEST_PROCESSING;
         return SUCCESS;
     }
@@ -263,7 +270,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 resolutionType = TRACK_RESOLUTION;
             }
         }
-        larcfm::Position target = GetPlan(&state->flightPlans,"Plan0")->getPos(state->nextFeasibleWpId);
+        larcfm::Position target = GetPlan(&state->flightPlans,state->missionPlan)->getPos(state->nextFeasibleWpId);
 
         switch (resolutionType) {
 
@@ -464,7 +471,7 @@ class MergingHandler: public EventHandler<CognitionState_t>{
 
     retVal_e Terminate(CognitionState_t* state){
         if(mergingSpeedChange){
-            SetGuidanceFlightPlan(state,(char*)"Plan0",state->nextWpId["Plan0"]);
+            SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
         }
         LogMessage(state,"[FLIGHT_PHASES] | MERGING -> CRUISE");
         return SUCCESS;
@@ -501,6 +508,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
         if(state->request == REQUEST_RESPONDED){
             state->request = REQUEST_NIL;
             SetGuidanceFlightPlan(state,"DitchPath",1);
+            state->missionPlan = "DitchPath";
            return SUCCESS;
         }else{
             larcfm::Plan *fp = GetPlan(&state->flightPlans,"DitchPath");

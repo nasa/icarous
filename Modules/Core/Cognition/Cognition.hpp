@@ -106,6 +106,7 @@ typedef struct{
     double utcTime;                ///< Current time
     std::string timeString;        ///< Formatted time string
     std::string callSign;          ///< Vehicle's callsign string
+    std::string missionPlan;       ///< Mission plan
     cognition_params_t parameters; ///< Configurable parameters used by Cognition
 
     // Flight plan book keeping

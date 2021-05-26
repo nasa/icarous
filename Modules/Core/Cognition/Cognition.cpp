@@ -57,6 +57,7 @@ void Cognition::InitializeState(){
     cogState.numSecPaths = 0;
     cogState.scenarioTime = 0;
     cogState.xtrackDeviation = 0;
+    cogState.missionPlan = "Plan0";
 }
 
 void Cognition::Reset(){
