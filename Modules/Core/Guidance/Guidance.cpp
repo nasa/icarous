@@ -264,8 +264,8 @@ double Guidance::GetApproachPrecision(const larcfm::Position &position,const lar
     // dot product >= 0 IMPLIES we are approaching the intersection
     const larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(position);
     const larcfm::Vect3 pos_wp = proj.project(waypoint) - larcfm::Vect3::makeXYZ(0,"m",0,"m",position.alt(),"m") ;
-    const larcfm::Vect3 vhat  = velocity.Hat(); 
-    const larcfm::Vect3 pwhat = pos_wp.Hat();
+    const larcfm::Vect2 vhat  = velocity.vect2().Hat(); 
+    const larcfm::Vect2 pwhat = pos_wp.vect2().Hat();
     return vhat.dot(pwhat);
 }
 
@@ -564,6 +564,7 @@ void Guidance::CheckWaypointArrival(){
     }
     // If distance to next waypoint is < captureRadius, switch to next waypoint
     bool altReached = distV2nextWP <= params.climbAngleVRange;
+    altReached = true;
     if (distH2nextWP <= capture_radius && altReached
          && (approachPrec < 0 || currSpeed < 0.5)) {
         wpReached = true;

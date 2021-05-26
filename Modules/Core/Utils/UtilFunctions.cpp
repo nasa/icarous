@@ -362,6 +362,9 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
                                                               waypt.longitude,"degree",
                                                               waypt.altitude,"m");
        fp->add(pos,eta);
+       bool tcp1Available = true;
+       bool tcp2Available = true;
+       bool tcp3Available = true;
        if(waypt.tcp[0] == TCP_BOT){
            double startHeading = initHeading;
            if(count > 0){
@@ -380,20 +383,29 @@ void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::
             larcfm::Position center = pos.linearDist2D((startHeading+turn)*M_PI/180,fabs(waypt.tcpValue[0]));
             fp->addEOT(count);
             fp->addBOT(count,waypt.tcpValue[0],center);
+       }else{
+           tcp1Available = false;
        }
 
        if(waypt.tcp[1] ==  TCP_BGS){
             fp->setBGS(count,waypt.tcpValue[1]); 
        }else if(waypt.tcp[1] == TCP_EGS){
             fp->setEGS(count); 
+       }else{
+           tcp2Available = false;
        }
 
        if(waypt.tcp[2] == TCP_BVS){
             fp->setBVS(count,waypt.tcpValue[2]); 
        }else if(waypt.tcp[2] == TCP_EVS){
             fp->setEVS(count);
+       }else{
+           tcp3Available = false;
        }
-       fp->getTcpDataRef(count).setInformation(std::string(waypt.info));
+
+       if(tcp1Available || tcp2Available || tcp3Available){
+           fp->getTcpDataRef(count).setInformation(std::string(waypt.info));
+       }
 
        count++;
    }
