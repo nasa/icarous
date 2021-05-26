@@ -154,6 +154,11 @@ cdef class AutonomyStack:
         self.windSpeed = windSpeed
         guidSetWindData(self.Guidance,windFrom,windSpeed)
 
+    def StartDitch(self,pos,todAltitude):
+        cdef double ditchSite[3]
+        ditchSite = pos
+        InputDitchStatus(self.Cognition,ditchSite,todAltitude,True)
+
     def InputMissionFlightPlan(self,waypoints,repair=False,eta=False):
         cdef waypoint_t inputWPs[500]; 
         cdef bint _repair = repair
@@ -348,12 +353,18 @@ cdef class AutonomyStack:
                 wp[0].longitude = currPosition[1] 
                 wp[0].altitude = currPosition[2] 
                 wp[0].time = 0
+                wp[0].tcp[0] = TCP_NONE
+                wp[0].tcp[1] = TCP_NONE
+                wp[0].tcp[2] = TCP_NONE
 
                 # Second wp is destination
                 wp[1].latitude = point[0]
                 wp[1].longitude = point[1]
                 wp[1].altitude = point[2]
-                wp[2].time = ComputeDistance(currPosition,point)/speed;
+                wp[1].time = ComputeDistance(currPosition,point)/speed;
+                wp[1].tcp[0] = TCP_NONE
+                wp[1].tcp[1] = TCP_NONE
+                wp[1].tcp[2] = TCP_NONE
  
                 guidInputFlightplanData(self.Guidance,b'P2P',wp,2,0,False,self.params[b'TURN_RATE'])
                 self.activePlan = b'P2P'
@@ -543,9 +554,12 @@ cdef class AutonomyStack:
         cdef waypoint_t wp
         cdef list fp = []
         cdef list fps = []
-        for i in range(self.numSecPlan+1):
+        for i in range(self.numSecPlan+2):
             fp = []
-            planid = ('Plan'+str(i)).encode('utf-8')
+            if i < self.numSecPlan+1:
+                planid = ('Plan'+str(i)).encode('utf-8')
+            else:
+                planid = 'DitchPath'.encode('utf-8')
             n = TrajManager_GetTotalWaypoints(self.TrajManager,<char*>planid.c_str())
             for j in range(n):
                 TrajManager_GetWaypoint(self.TrajManager,<char*>planid.c_str(),j,&wp)
@@ -558,7 +572,8 @@ cdef class AutonomyStack:
                     'tcpValue': [wp.tcpValue[k] for k in range(3)],
                     'info': wp.info.decode('utf-8')})
 
-            fps.append(fp) 
+            if len(fp) > 0:
+                fps.append(fp) 
 
         return fps
             

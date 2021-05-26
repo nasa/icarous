@@ -145,6 +145,12 @@ class SimEnvironment:
         traffic = TrafficReplay(logfile, self.comm_channel, delay)
         self.tfList.append(traffic)
 
+    def SetDitchingCriteria(self,index,ditchCriteria,ditchSite,todAltitude):
+        ic  = self.icInstances[index]
+        ic.DitchCriteria = ditchCriteria
+        ic.ditchSite = ditchSite
+        ic.ditchTOD = todAltitude
+
     def RunSimulatedTraffic(self, dT=None):
         """ Update all simulated traffic vehicles """
         for tf in self.tfList:

@@ -264,6 +264,12 @@ class Icarous(IcarousInterface):
 
         self.core.Run(self.currTime)
 
+        if self.DitchCriteria is not None:
+            if self.DitchCriteria(self.currTime,self.position,self.trkgsvs) and not self.ditch:
+                self.core.StartDitch(self.ditchSite,self.ditchTOD)
+                self.ditch = True
+
+
         self.TransmitPosition()
 
         self.TransmitMergingData()

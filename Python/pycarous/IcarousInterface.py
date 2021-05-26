@@ -70,6 +70,9 @@ class IcarousInterface(abc.ABC):
         self.missionStarted = False
         self.missionComplete = False
         self.land = False
+        self.DitchCriteria = None
+        self.ditchSite = None
+        self.ditchTOD = None
 
         # Vehicle logs
         self.ownshipLog = {
