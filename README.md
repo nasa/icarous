@@ -37,7 +37,7 @@ The code in this repository is released under NASA's Open Source
 Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright notice at the end of this file. 
 
 ### Contact
-[Aaron Dutle](http://shemesh.larc.nasa.gov/people/amd) (aaron.m.dutle@nasa.gov), NASA Langley Research Center.
+Maria Consiglio (maria.c.consiglio@nasa.gov), NASA Langley Research Center.
 
 ### Detect and Avoid (DAA) and Geofencing Capabilities
 
