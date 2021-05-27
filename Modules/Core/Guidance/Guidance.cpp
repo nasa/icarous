@@ -278,7 +278,7 @@ double Guidance::ComputeSpeed(){
       etaControl = true;
    }
 
-   if(activePlanId == "PlanSpeedChange"){
+   if(activePlanId == "PlanSpeedChange" || activePlanId == "PlanAltChange" || activePlanId == "DitchPath"){
        etaControl = false;
    }
 
