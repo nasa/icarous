@@ -225,10 +225,16 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             wps[0].longitude = guidanceAppData.pos.longitude;
             wps[0].altitude = guidanceAppData.pos.altitude_abs;
             wps[0].time = 0;
+            wps[0].tcp[0] = TCP_NONE;
+            wps[0].tcp[1] = TCP_NONE;
+            wps[0].tcp[2] = TCP_NONE;
             wps[1].latitude  = cmd->param1;
             wps[1].longitude = cmd->param2;
             wps[1].altitude = cmd->param3; 
             wps[1].time = ComputeDistance(pointA,pointB)/speed;
+            wps[1].tcp[0] = TCP_NONE;
+            wps[1].tcp[1] = TCP_NONE;
+            wps[1].tcp[2] = TCP_NONE;
 
             char name[] = "P2P";
             guidInputFlightplanData(guidanceAppData.Guidance,name,wps,2,0,false,0);
