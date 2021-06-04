@@ -39,6 +39,7 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
     for j,ic in enumerate(icList):
         anim.AddAgent(ic.callsign,vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
         for i,pln in enumerate(ic.plans):
+            planTime = pln[0][0]
             planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
             points = np.array(list(map(getLocPos,planPositions)))
             if i == 0:
@@ -46,12 +47,12 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
                 labels = [[TcpType.getString(val[3]),TcpType.getString(val[4]),TcpType.getString(val[5])]\
                            for val in planWPs]
                 if showpaths:
-                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,labels)
+                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,labels,time=planTime)
 
             if i > 0 and allplans:
                 planWPs = np.array(pln)[:,1:] 
                 if showpaths:
-                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points)
+                    anim.AddPath(np.array(list(map(getLocPos,planWPs))),'k--',points,time=planTime)
         tfids = ic.trafficLog.keys()
         for key in tfids:
             if showtraffic or key[0:2] == 'tf':

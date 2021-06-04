@@ -15,6 +15,7 @@ class AgentAnimation():
 
         self.ax = plt.axes(xlim=(xmin, xmax), ylim=(ymin, ymax))
         self.paths = {}
+        self.plans = {}
         self.agents = []
         self.agentsRadius = {}
         self.agentNames = []
@@ -145,19 +146,22 @@ class AgentAnimation():
         speed = np.sqrt(vel[0]**2 + vel[1]**2)
         poly.labelText.set_text('%s Z:%.2f[m]\nS:%.2f[mps]' % (id,z,speed))
 
-    def AddPath(self,path,color1,points = [],labels = [],color2=''):
-        if (path.shape[0] < 2):
-            return
-        if len(points) > 0:
-            plt.plot(points[:,1],points[:,0],color1)
-        else:
-            plt.plot(path[:,1],path[:,0],color1)
-        if color2 == '':
-            plt.scatter(path[:,1],path[:,0])
-        else:
-            plt.scatter(path[:,1],path[:,0],c=color2)
-        #for i,label in enumerate(labels):
-        #    plt.text(path[i,1],path[i,0],','.join(label))
+    def AddPath(self,path,color1,points = [],labels = [],color2='',time=0):
+        def PlotPath():
+            if (path.shape[0] < 2):
+                return
+            if len(points) > 0:
+                plt.plot(points[:,1],points[:,0],color1)
+            else:
+                plt.plot(path[:,1],path[:,0],color1)
+            if color2 == '':
+                plt.scatter(path[:,1],path[:,0])
+            else:
+                plt.scatter(path[:,1],path[:,0],c=color2)
+            #for i,label in enumerate(labels):
+            #    plt.text(path[i,1],path[i,0],','.join(label))
+        id = len(self.plans.keys())
+        self.plans[id] = (time,PlotPath)
 
     def AddFence(self,fence,color):
         plt.plot(fence[:,1],fence[:,0],color)
@@ -201,6 +205,16 @@ class AgentAnimation():
         i = int(i*self.speed)
         maxLen = len(time)
         print("generating animation: %.1f%%" % (i/maxLen*100), end="\r")
+
+        for key in self.plans:
+            tFuncPair = self.plans[key]
+            if tFuncPair is not None:
+                t = tFuncPair[0]
+                plotFunc = tFuncPair[1]
+                if time[i] >= t:
+                    plotFunc()
+                    self.plans[key] = None
+
         if i < maxLen:
             for j, vehicle in enumerate(self.agents):
                 k = time[i]
