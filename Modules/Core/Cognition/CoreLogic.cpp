@@ -27,11 +27,11 @@ void Cognition::InitializeEventHandlers(){
                             TakeoffTrigger,
                             MAKE_HANDLER(TakeoffPhaseHandler));
 
-/*
+
    eventMng.AddEventHandler("NominalDeparture",
                             inputPriorities["NominalDeparture"],
                             NominalDepartureTrigger,
-                            MAKE_HANDLER(EngageNominalPlan));*/
+                            MAKE_HANDLER(EngageNominalPlan));
 
    eventMng.AddEventHandler("PrimaryPlanComplete",
                              inputPriorities["PrimaryPlanComplete"],

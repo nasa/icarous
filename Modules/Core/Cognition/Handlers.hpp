@@ -8,6 +8,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
         if(state->missionStart > 0){
             state->nextWpId[state->missionPlan] = state->missionStart;
             state->missionStart = -1;
+            state->icReady = true;
         }
         return SUCCESS;
     }
@@ -31,7 +32,8 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 
    retVal_e Terminate(CognitionState_t* state){
        if(state->takeoffComplete == 1){
-           SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
+           state->missionStart = 1;
+           //SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
            return SUCCESS;
        }else if(state->takeoffComplete != 0){
            LogMessage(state,"[WARNING] | Takeoff failed");

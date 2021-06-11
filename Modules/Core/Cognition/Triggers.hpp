@@ -7,9 +7,14 @@ bool TakeoffTrigger(CognitionState_t* state){
            state->utcTime >= state->scenarioTime;
 }
 
+bool NominalDepartureTrigger(CognitionState_t* state){
+    return state->missionStart > 0;
+}
+
+
 bool FenceConflictTrigger(CognitionState_t* state){
     return state->planProjectedFenceConflict && state->timeToFenceViolation < 10 &&
-           !state->trafficConflict && state->parameters.active;
+           !state->trafficConflict && state->parameters.active && state->icReady;
 }
 
 bool SecondaryPlanCompletionTrigger(CognitionState_t* state){
@@ -17,7 +22,7 @@ bool SecondaryPlanCompletionTrigger(CognitionState_t* state){
         std::string planID = state->activePlan->getID();
         return (planID != "Plan0" &&
                 planID != "DitchPath" &&
-                state->nextWpId[planID] >= state->activePlan->size() && state->parameters.active);
+                state->nextWpId[planID] >= state->activePlan->size() && state->parameters.active) && state->icReady;
     }else{
         return false;
     }
@@ -43,7 +48,7 @@ bool FlightPlanDeviationTrigger(CognitionState_t* state){
         }
     }
     state->XtrackConflict = (state->xtrackDeviation > state->parameters.allowedXtrackDeviation) &&
-                            !state->trafficConflict && state->parameters.active;
+                            !state->trafficConflict && state->parameters.active && state->icReady;
     return state->XtrackConflict;
 
 }
@@ -62,7 +67,7 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
         conflict = conflict && state->planProjectedTrafficConflict;
     }
 
-    state->trafficConflict = conflict && state->parameters.active;
+    state->trafficConflict = conflict && state->parameters.active && state->icReady;
     return state->trafficConflict;
 }
 
@@ -83,7 +88,7 @@ bool TrafficConflictPathResTrigger(CognitionState_t* state){
           state->trafficConflict = true; 
        }
     }
-    return state->trafficConflict && state->parameters.active;
+    return state->trafficConflict && state->parameters.active && state->icReady;
 
 }
 
@@ -92,18 +97,18 @@ bool TrafficConflictDitchTrigger(CognitionState_t* state){
 }
 
 bool MergingActivityTrigger(CognitionState_t* state){
-    return state->mergingActive == 1 && state->parameters.active;
+    return state->mergingActive == 1 && state->parameters.active && state->icReady;
 }
 
 bool DitchingTrigger(CognitionState_t* state){
-    return state->ditch && state->parameters.active;
+    return state->ditch && state->parameters.active && state->icReady;
 }
 
 bool DitchSiteTODTrigger(CognitionState_t* state){
     if(state->activePlan != nullptr){
         std::string planID = state->activePlan->getID();
         return (planID == "DitchPath" &&
-                state->nextWpId[planID] >= state->activePlan->size()) && state->parameters.active;
+                state->nextWpId[planID] >= state->activePlan->size()) && state->parameters.active && state->icReady;
     }else{
         return false;
     }

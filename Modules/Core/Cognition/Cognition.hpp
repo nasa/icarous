@@ -108,7 +108,7 @@ typedef struct{
     std::string callSign;          ///< Vehicle's callsign string
     std::string missionPlan;       ///< Mission plan
     cognition_params_t parameters; ///< Configurable parameters used by Cognition
-
+    bool icReady;
     // Flight plan book keeping
     std::list<larcfm::Plan> flightPlans; ///< List of flight plans
     larcfm::Plan *activePlan;            ///< Pointer to the active flight plan
