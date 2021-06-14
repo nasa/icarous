@@ -13,6 +13,11 @@ Pycarous requires several python packages. These packages can be easily installe
 ## Compile ICAROUS Modules
 Follow the [module instructions](../../Modules/README.md) to compile the core ICAROUS modules.
 
+## Set Environment variables
+
+Define the `ICAROUS_HOME` environment variable to point to the ICAROUS root directory.
+
+
 After compiling the ICAROUS modules, run
 
 ```
