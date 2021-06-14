@@ -27,8 +27,9 @@ before_script:
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/Python/pycarous
   - export ICAROUS_HOME=/builds/larc-nia-fm/icarous
+  - pip3 install -r Python/pycarous/requirements.txt --upgrade
   - cd sirius
-  - make pipPkg
+  #- make pipPkg
   - make setenv
   - make getIcarous
   - source setenv.sh
