@@ -698,11 +698,7 @@ void Merger::ExecuteNewPath()
     {
         case _MERGER_NOOP_:
         {
-            if(mergeConflict){
-                navState = _MERGER_VECTOR_CONTROL_;
-            }else{
-                navState = _MERGER_GIVECONTROL_;
-            }
+            navState = _MERGER_VECTOR_CONTROL_;
             break;
         }
 
