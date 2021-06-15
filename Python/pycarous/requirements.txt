@@ -10,3 +10,4 @@ pandas
 pyzmq
 Cython
 scipy
+jsonschema
