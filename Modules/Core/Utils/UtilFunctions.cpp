@@ -21,6 +21,8 @@
 #include <PlanWriter.h>
 #include <TrajGen.h>
 #include <iomanip>
+#include <functional>
+#include "WP2Plan.hpp"
 
 using namespace larcfm;
 
@@ -621,4 +623,59 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
    position[1] = output.longitude();
    position[2] = output.alt();
    return planIn;
+}
+
+trajTimeFunction ConvertEUTL2TimeFunction(const larcfm::Plan* fp){
+
+    const int n = fp->size();
+    larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(fp->getPos(0));
+    double accel = 0;
+    double R = 0;
+    larcfm::Vect3 center;
+    trajTimeFunction trajmap;
+    std::function<double(double)> psi, omega, fX, fY, fVx, fVy;
+    bool turn = false;
+    for(int i=1;i<n;++i){
+       larcfm::TcpData tcpA = fp->getTcpData(i-1); 
+       larcfm::TcpData tcpB = fp->getTcpData(i); 
+       larcfm::Vect3 start = projection.project(fp->getPos(i-1));
+       double t0 = fp->time(i-1);
+       double trk = fp->trkOut(i-1);
+       double gs = fp->gsOut(i-1);
+       
+       if(tcpA.isBGS()){
+         accel  = tcpA.getGsAccel(); 
+       }else if(tcpA.isEGS()){
+         accel = 0.0;
+       }
+
+       if(tcpA.isBOT()){
+          turn = true;
+          center = projection.project(tcpA.turnCenter());
+          R = tcpA.getRadiusSigned();
+       }else if(tcpA.isEOT()){
+          turn = false;
+       }
+
+       if(!turn){
+           fX     = [=] (double t) { t = t - t0; return start.x + gs*sin(trk) * t + accel*sin(trk)*t*t/2;};
+           fY     = [=] (double t) { t = t - t0; return start.y + gs*cos(trk) * t + accel*cos(trk)*t*t/2;};
+           fVx    = [=] (double t) {return gs*sin(trk) + accel*sin(trk)*(t-t0);};
+           fVy    = [=] (double t) {return gs*cos(trk) + accel*cos(trk)*(t-t0);};
+           psi    = [=] (double t) {return trk;};
+           omega  = [=] (double t) {return 0;};
+       }else{
+           psi      = [=] (double t) { t = t - t0;  return trk + gs*t/R + accel*t*t/(2*R);};
+           omega    = [=] (double t) { return (accel*(t-t0) + gs)/R;};
+           fX       = [=] (double t) { return -R*cos(psi(t)) + center.x; };
+           fY       = [=] (double t) { return R*sin(psi(t)) + center.y; };
+           fVx      = [=] (double t) { return accel*(t-t0)*sin(psi(t)) + gs*sin(psi(t));};
+           fVy      = [=] (double t) { return accel*(t-t0)*cos(psi(t)) + gs*cos(psi(t));};
+       }
+       
+       std::vector<std::function<double(double)>> trajelem = {fX,fY,fVx,fVy,psi,omega};
+       trajmap.push_back(trajelem);
+    }
+
+    return trajmap;
 }
