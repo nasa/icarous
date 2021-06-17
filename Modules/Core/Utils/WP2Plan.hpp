@@ -3,9 +3,9 @@
 
 #include <string>
 #include <list>
+#include <functional>
 #include "Plan.h"
 #include "Interfaces.h"
-
 typedef std::vector<std::vector<std::function<double(double)>>> trajTimeFunction;
 
 void ConvertWPList2Plan(larcfm::Plan* fp,const std::string &plan_id, const std::list<waypoint_t> &waypoints, 

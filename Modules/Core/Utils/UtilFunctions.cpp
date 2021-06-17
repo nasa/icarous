@@ -21,7 +21,6 @@
 #include <PlanWriter.h>
 #include <TrajGen.h>
 #include <iomanip>
-#include <functional>
 #include "WP2Plan.hpp"
 
 using namespace larcfm;
