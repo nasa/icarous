@@ -149,7 +149,7 @@ void TRAFFIC_ProcessPacket(void){
 
                 trafficAppData.position[0] = msg->latitude;
                 trafficAppData.position[1] = msg->longitude;
-                trafficAppData.position[2] = msg->altitude_rel;
+                trafficAppData.position[2] = msg->altitude_abs;
 
                 double track,groundSpeed,verticalSpeed;
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,&track,&groundSpeed,&verticalSpeed);
