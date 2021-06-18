@@ -138,7 +138,7 @@ void TRAFFIC_ProcessPacket(void){
 
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
 
-                double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
+                double pos[3] = {msg->latitude,msg->longitude,msg->altitude_abs};
                 double trkGsVs[3] = {0,0,0};
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
                 double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
