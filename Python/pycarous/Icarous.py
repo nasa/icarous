@@ -74,6 +74,7 @@ class Icarous(IcarousInterface):
         self.activePlan = "Plan0"
         self.numSecPlan = 0
         self.repair = False
+        self.daaType = monitor
 
         # Geofence data
         self.fences = []

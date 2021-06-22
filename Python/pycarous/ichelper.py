@@ -381,7 +381,16 @@ def GetPlanPositions(waypoints,timeDelta):
 
     return positions
 
-    
+def ParseAcasConfiguration(daaConfig):
+    configs = {
+        "DTHR":0,
+        "ZTHR":0,
+        "TTHR":0,
+        "ALERT_TIME":0,
+        "HNMAC":0,
+        "VNMAC":0,
+    }
+    return configs 
     
   
 
