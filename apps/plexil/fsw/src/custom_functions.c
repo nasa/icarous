@@ -96,7 +96,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,&trk,&gs,&vs);
                 plexilCustomData.position[0] = msg->latitude;
                 plexilCustomData.position[1] = msg->longitude;
-                plexilCustomData.position[2] = msg->altitude_rel;
+                plexilCustomData.position[2] = msg->altitude_abs;
                 plexilCustomData.velocity[0] = trk;
                 plexilCustomData.velocity[1] = gs;
                 plexilCustomData.velocity[2] = vs;

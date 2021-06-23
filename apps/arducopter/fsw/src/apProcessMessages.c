@@ -430,7 +430,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             traffic.longitude = msg.lon/1.0E7;
             traffic.altitude = msg.altitude/1.0E3;
 
-            double positionA[3] = {position.latitude,position.longitude,position.altitude_rel};
+            double positionA[3] = {position.latitude,position.longitude,position.altitude_abs};
             double positionB[3] = {traffic.latitude,traffic.longitude,traffic.altitude};
             double dist = ComputeDistance(positionA,positionB);
 

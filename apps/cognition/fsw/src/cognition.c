@@ -183,7 +183,7 @@ void COGNITION_ProcessSBData(void) {
             position_t* pos = (position_t*) appdataCog.CogMsgPtr;
             if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()){
                 memcpy(&appdataCog.position, pos, sizeof(position_t));
-                double position[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
+                double position[3] = {pos->latitude, pos->longitude, pos->altitude_abs};
                 double velocity[3] = {pos->vn, pos->ve, pos->vd};
                 double velTrkGsVs[3];
                 ConvertVnedToTrkGsVs(velocity[0], velocity[1], velocity[2], velTrkGsVs, velTrkGsVs + 1, velTrkGsVs + 2);

@@ -144,7 +144,7 @@ void GEOFENCE_ProcessPacket(void){
             if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()) {
                 geofenceAppData.position[0] = pos->latitude;
                 geofenceAppData.position[1] = pos->longitude;
-                geofenceAppData.position[2] = pos->altitude_rel;
+                geofenceAppData.position[2] = pos->altitude_abs;
 
                 geofenceAppData.velocity[0] = pos->vn;
                 geofenceAppData.velocity[1] = pos->ve;

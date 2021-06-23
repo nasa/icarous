@@ -313,7 +313,7 @@ void TRAJECTORY_Monitor(void)
 
                 if (pos->aircraft_id != CFE_PSP_GetSpacecraftId())
                 {
-                    double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_rel};
+                    double _pos[3] = {pos->latitude, pos->longitude, pos->altitude_abs};
                     double trkGsVs[3] = {0.0,0.0,0.0};
                     ConvertVnedToTrkGsVs(pos->vn,pos->ve,pos->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
                     TrajManager_InputTraffic(TrajectoryAppData.pplanner, pos->callsign.value, _pos, trkGsVs, TrajectoryAppData.timeNow);
@@ -323,7 +323,7 @@ void TRAJECTORY_Monitor(void)
                     OS_MutSemTake(TrajectoryAppData.mutexAcState);
                     TrajectoryAppData.position[0] = pos->latitude;
                     TrajectoryAppData.position[1] = pos->longitude;
-                    TrajectoryAppData.position[2] = pos->altitude_rel;
+                    TrajectoryAppData.position[2] = pos->altitude_abs;
 
                     double trk, gs, vs;
                     ConvertVnedToTrkGsVs(pos->vn, pos->ve, pos->vd, &trk, &gs, &vs);

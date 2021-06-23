@@ -112,7 +112,7 @@ void GUIDANCE_ProcessPacket(void){
             if(position->aircraft_id == CFE_PSP_GetSpacecraftId()){
                 double posLLA[3] = {position->latitude,
                                     position->longitude,
-                                    position->altitude_rel}; 
+                                    position->altitude_abs}; 
                 double TrkGsVs[3] = {0.0,0.0,0.0};
                 ConvertVnedToTrkGsVs(position->vn,position->ve, position->vd,
                                      TrkGsVs, TrkGsVs+1, TrkGsVs+2);

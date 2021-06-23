@@ -644,10 +644,10 @@ void gsInterface_ProcessPacket(void) {
               (int32_t)(pos->latitude*1E7),
               (int32_t)(pos->longitude*1E7),
               ADSB_ALTITUDE_TYPE_GEOMETRIC,
-              (int32_t)(pos->altitude_rel*1E3),
+              (int32_t)(pos->altitude_abs*1E3),
               (uint16_t) (heading*1E2),
               (uint16_t) (speed*1E2),
-              (uint16_t) (pos->vd*1E2),
+              (uint16_t) (-pos->vd*1E2),
               callsign.value,0,0,0,0);
 
           writeMavlinkData(&appdataIntGS.gs,&msg);
