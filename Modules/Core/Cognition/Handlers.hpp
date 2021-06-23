@@ -295,9 +295,12 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
             double diff;
 
             double current_alt = state->position.alt();
-            double alt_pref = std::max(state->todAltitude,state->preferredAlt);
+            double alt_pref = state->preferredAlt;
+            if(state->todAltitude > 0){
+                alt_pref = state->todAltitude;
+            }
             bool newTargetAlt = fabs(alt_pref - state->prevResAlt) > 1e-3;
-            bool prevTargetReached = fabs(current_alt - state->prevResAlt) < 2;
+            bool prevTargetReached = fabs(current_alt - state->prevResAlt) < 10;
             /* 
              * Implement an altitude resolution with the following criteria:
              * Check if the previous target altitude has already been reached 
