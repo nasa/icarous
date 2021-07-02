@@ -632,7 +632,7 @@ trajTimeFunction ConvertEUTL2TimeFunction(const larcfm::Plan* fp){
     double R = 0;
     larcfm::Vect3 center;
     trajTimeFunction trajmap;
-    std::function<double(double)> psi, omega, fX, fY, fVx, fVy;
+    std::function<double(double)> psi, omega, fX, fY, fVx, fVy, fV, fA, falpha;
     bool turn = false;
     for(int i=1;i<n;++i){
        larcfm::TcpData tcpA = fp->getTcpData(i-1); 
@@ -659,20 +659,26 @@ trajTimeFunction ConvertEUTL2TimeFunction(const larcfm::Plan* fp){
        if(!turn){
            fX     = [=] (double t) { t = t - t0; return start.x + gs*sin(trk) * t + accel*sin(trk)*t*t/2;};
            fY     = [=] (double t) { t = t - t0; return start.y + gs*cos(trk) * t + accel*cos(trk)*t*t/2;};
-           fVx    = [=] (double t) {return gs*sin(trk) + accel*sin(trk)*(t-t0);};
-           fVy    = [=] (double t) {return gs*cos(trk) + accel*cos(trk)*(t-t0);};
+           //fVx    = [=] (double t) {return gs*sin(trk) + accel*sin(trk)*(t-t0);};
+           //fVy    = [=] (double t) {return gs*cos(trk) + accel*cos(trk)*(t-t0);};
+           fV     = [=] (double t) {return gs + accel*(t-t0);};
            psi    = [=] (double t) {return trk;};
            omega  = [=] (double t) {return 0;};
+           fA     = [=] (double t) {return accel;};
+           falpha = [=] (double t) {return 0;};
        }else{
            psi      = [=] (double t) { t = t - t0;  return trk + gs*t/R + accel*t*t/(2*R);};
            omega    = [=] (double t) { return (accel*(t-t0) + gs)/R;};
            fX       = [=] (double t) { return -R*cos(psi(t)) + center.x; };
            fY       = [=] (double t) { return R*sin(psi(t)) + center.y; };
-           fVx      = [=] (double t) { return accel*(t-t0)*sin(psi(t)) + gs*sin(psi(t));};
-           fVy      = [=] (double t) { return accel*(t-t0)*cos(psi(t)) + gs*cos(psi(t));};
+           //fVx      = [=] (double t) { return accel*(t-t0)*sin(psi(t)) + gs*sin(psi(t));};
+           //fVy      = [=] (double t) { return accel*(t-t0)*cos(psi(t)) + gs*cos(psi(t));};
+           fV       = [=] (double t) {return gs + accel*(t-t0);};
+           fA       = [=] (double t) {return accel;};
+           falpha   = [=] (double t) {return 0;};
        }
        
-       std::vector<std::function<double(double)>> trajelem = {fX,fY,fVx,fVy,psi,omega};
+       std::vector<std::function<double(double)>> trajelem = {fX,fY,fV,psi,omega,fA,falpha};
        trajmap.push_back(trajelem);
     }
 
