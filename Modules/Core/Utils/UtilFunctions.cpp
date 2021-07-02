@@ -675,7 +675,7 @@ trajTimeFunction ConvertEUTL2TimeFunction(const larcfm::Plan* fp){
            //fVy      = [=] (double t) { return accel*(t-t0)*cos(psi(t)) + gs*cos(psi(t));};
            fV       = [=] (double t) {return gs + accel*(t-t0);};
            fA       = [=] (double t) {return accel;};
-           falpha   = [=] (double t) {return 0;};
+           falpha   = [=] (double t) {return accel/R;};
        }
        
        std::vector<std::function<double(double)>> trajelem = {fX,fY,fV,psi,omega,fA,falpha};
