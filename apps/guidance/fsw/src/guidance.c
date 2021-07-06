@@ -130,6 +130,9 @@ void GUIDANCE_ProcessPacket(void){
             }
             guidInputFlightplanData(guidanceAppData.Guidance,fp->id,wp,fp->num_waypoints,0,false,0);
             SetGuidanceMode(guidanceAppData.Guidance,0,fp->id,0,false);
+            if(strcmp(fp->id,"Plan0") == 0){
+                memcpy(&guidanceAppData.plan,fp,sizeof(flightplan_t));
+            }
             break;
         }
 
@@ -329,7 +332,24 @@ void GUIDANCE_Run(void){
                 argsCmd_t speedChange;
                 CFE_SB_InitMsg(&speedChange, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
                 speedChange.name = _SETSPEED_;
-                speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
+                if(guidOutput.nextWP < guidanceAppData.plan.num_waypoints){
+                    double A[3] = {guidanceAppData.plan.waypoints[guidOutput.nextWP-1].latitude,
+                                   guidanceAppData.plan.waypoints[guidOutput.nextWP-1].longitude,
+                                   guidanceAppData.plan.waypoints[guidOutput.nextWP-1].altitude};
+                    double B[3] = {guidanceAppData.plan.waypoints[guidOutput.nextWP].latitude,
+                                   guidanceAppData.plan.waypoints[guidOutput.nextWP].longitude,
+                                   guidanceAppData.plan.waypoints[guidOutput.nextWP].altitude};
+                    double dist = ComputeDistance(A,B);
+                    if(dist > 1e-2){
+                        double timeA = guidanceAppData.plan.waypoints[guidOutput.nextWP-1].time;
+                        double timeB = guidanceAppData.plan.waypoints[guidOutput.nextWP].time;
+                        speedChange.param1 = dist/(timeB-timeA);
+                    }else{
+                        speedChange.param1 = 0; 
+                    }
+                }else{
+                    speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
+                }
                 SendSBMsg(speedChange);
 
                 guidanceAppData.sentPos = false;

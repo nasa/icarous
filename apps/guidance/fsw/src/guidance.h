@@ -62,6 +62,7 @@ typedef struct{
     status_t statustxt;
     bool sentPos;
     int lastReachedWaypoint;
+    flightplan_t plan;
 }guidanceAppData_t;
 
 /**
