@@ -422,7 +422,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         for (auto &gf : fenceList)
         {
             larcfm::Vect3 locpos(0, 0, 0);
-            larcfm::CDPolycarp geoPolycarp(gf.polygon.getBottom(), gf.polygon.getTop(), false);
+            larcfm::CDPolycarp geoPolycarp(0.01, 0.001, false);
 
             // Check fence conflict with current position
             if (gf.fenceType == fenceObject::FENCE_TYPE::KEEP_IN)
@@ -523,7 +523,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         bool conflict = false;
         for (auto &gf : fenceList)
         {
-            larcfm::CDPolycarp geoPolycarp(gf.polygon.getBottom(), gf.polygon.getTop(), false);
+            larcfm::CDPolycarp geoPolycarp(0.01, 0.001, false);
             // Check fence conflict with waypoint
             if (gf.fenceType == fenceObject::FENCE_TYPE::KEEP_IN)
             {
