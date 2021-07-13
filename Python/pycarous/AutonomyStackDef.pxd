@@ -279,6 +279,7 @@ cdef extern from "DubinsParams.h":
 cdef extern from "TrajManager.h":
     void* new_TrajManager(char callsign[]);
     void TrajManager_UpdateDubinsPlannerParameters(void * obj,DubinsParams_t* params);
+    void TrafficMonitor_UpdateParameters(void * obj, char * carg2,bint log);
     int TrajManager_FindPath(void * obj,char planID[], double fromPosition[],double toPosition[],double fromVelocity[],double toVelocity[]);
     int TrajManager_GetTotalWaypoints(void * obj, char * planid);
     int TrajManager_GetWaypoint(void * obj, char * planid, int id,  waypoint_t * wp);

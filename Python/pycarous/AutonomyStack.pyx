@@ -141,13 +141,17 @@ cdef class AutonomyStack:
                                        self.params[b'CORRIDOR_WIDTH'])
 
     def SetParams(self,params):
+        cdef bint log 
         for key in params.keys():
             self.params[key.encode('utf-8')] = params[key]
+        log = True if self.params[b'LOGDAADATA'] > 0 else False
+
         self.SetCognitionParams()
         self.SetGuidanceParams()
         self.SetGeofenceParams()
         self.SetTrajectoryParams()
         self.SetMergerParams()
+        TrafficMonitor_UpdateParameters(self.TrafficMonitor,''.encode('utf-8'),log)
 
     def InputWind(self,windFrom,windSpeed):
         self.windFrom = windFrom
