@@ -126,7 +126,7 @@ class IcarousRunner(IcarousInterface):
     def InputMergeData(self, logs, delay):
         pass
 
-    def InputFlightplan(self, fp, eta=False, repair=False):
+    def InputFlightplan(self, fp, eta=False, repair=False,setInitialConditions=True):
 
         waypoints = ConstructWaypointsFromList(fp,eta) 
         self.flightplan1 = waypoints 

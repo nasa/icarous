@@ -69,3 +69,27 @@ class AdsbRebroadcast(GroundSystem):
         if data.type == "INTRUDER" and not data.payload["callsign"].startswith("REBROADCAST"):
             print("GS received:", data.payload["callsign"], data.payload["pos"], data.payload["vel"])
             self.log.append(data)
+
+class GroundPlanner(GroundSystem):
+    def __init__(self,position,system_id,callsign,verbose=1,filename=None):
+        super().__init__(position,system_id,callsign,verbose)
+        import ichelper as ich
+        self.fp = ich.GetFlightplan(filename) 
+        self.waypoints = ich.ConstructWaypointsFromList(self.fp) 
+        self.sent = False
+
+    def Run(self,current_time):
+        if not self.sent:
+            if current_time > 10:
+                if self.transmitter is not None:
+                    import CustomTypes as ictypes
+                    # shift waypoints to current time
+                    for wp in self.waypoints:
+                        wp.time += current_time
+                    plan = ictypes.FPlan(False,False,self.waypoints)
+                    data = ictypes.V2Vdata('FLIGHTPLAN',plan)
+                    self.transmitter.transmit(current_time,self.position,data)
+                    self.sent = True
+    
+    def InputV2VData(self, data):
+        return 

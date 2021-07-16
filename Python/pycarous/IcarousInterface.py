@@ -153,6 +153,8 @@ class IcarousInterface(abc.ABC):
             self.InputTraffic(data.payload["callsign"], data.payload["pos"], data.payload["vel"])
         elif data.type == "MERGER":
             self.InputMergeData(data.payload)
+        elif data.type == "FLIGHTPLAN":
+            self.InputFlightplan(data.payload.WPs,data.payload.eta,data.payload.repair,False)
 
     @abc.abstractmethod
     def InputTraffic(self, callsign, position, velocity):
@@ -165,7 +167,7 @@ class IcarousInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def InputFlightplan(self, fp, eta=False, repair=False):
+    def InputFlightplan(self, fp, eta=False, repair=False,setInitialConditions=True):
         """
         Input a flight plan as a list of waypoints
         :param fp: a list of waypoints [lat, lon, alt, wp_metric]

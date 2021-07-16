@@ -119,7 +119,7 @@ class Icarous(IcarousInterface):
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, position, velocity, localPos)
 
-    def InputFlightplan(self,waypoints,eta=False,repair=False):
+    def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialConditions=True):
         
         self.etaFP1 = eta
         self.repair = repair
@@ -138,7 +138,7 @@ class Icarous(IcarousInterface):
         speed = dist/(waypoints[1].time-waypoints[0].time)
         hdg   = ComputeHeading([waypoints[0].latitude,waypoints[0].longitude,0],[waypoints[1].latitude,waypoints[1].longitude,0])
         vn,ve,vd = ConvertTrkGsVsToVned(hdg,speed,0)
-        if not eta:
+        if setInitialConditions:
             self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
     def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0):
