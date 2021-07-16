@@ -115,7 +115,7 @@ void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<w
     }
 
     if(cogState.activePlan != nullptr){
-        if (cogState.activePlan->getID() == "Plan0") {
+        if (cogState.activePlan->getID() == "Plan0" && plan_id == "Plan0") {
             cogState.nextWpId["Plan0"] = 1;
             SetGuidanceFlightPlan(&cogState, "Plan0", 1);
         }
