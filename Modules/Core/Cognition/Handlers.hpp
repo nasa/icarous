@@ -15,7 +15,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
 
     retVal_e Execute(CognitionState_t* state){
        LogMessage(state,"[HANDLER] | Engage nominal plan");
-       SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
+       SetGuidanceFlightPlan(state,state->missionPlan,state->nextWpId[state->missionPlan]);
        return SUCCESS;
     }
 };
@@ -148,7 +148,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         if(state->request == REQUEST_RESPONDED){
             state->request = REQUEST_NIL;
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
-            SetGuidanceFlightPlan(state,(char*)pathName.c_str(),1);
+            SetGuidanceFlightPlan(state,pathName,1);
            return SUCCESS;
         }else{
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
@@ -193,7 +193,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
         if(state->request == REQUEST_RESPONDED){
             state->request = REQUEST_NIL;
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
-            SetGuidanceFlightPlan(state,(char*)pathName.c_str(),1);
+            SetGuidanceFlightPlan(state,pathName,1);
            return SUCCESS;
         }else{
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
@@ -480,7 +480,7 @@ class MergingHandler: public EventHandler<CognitionState_t>{
 
     retVal_e Terminate(CognitionState_t* state){
         if(mergingSpeedChange){
-            SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
+            SetGuidanceFlightPlan(state,state->missionPlan,state->nextWpId[state->missionPlan]);
         }
         LogMessage(state,"[FLIGHT_PHASES] | MERGING -> CRUISE");
         return SUCCESS;

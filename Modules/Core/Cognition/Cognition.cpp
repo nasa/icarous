@@ -113,6 +113,13 @@ void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<w
         cogState.primaryFPReceived = true;
         cogState.scenarioTime = fp->time(0);
     }
+
+    if(cogState.activePlan != nullptr){
+        if (cogState.activePlan->getID() == "Plan0") {
+            cogState.nextWpId["Plan0"] = 1;
+            SetGuidanceFlightPlan(&cogState, "Plan0", 1);
+        }
+    }
     
     cogState.resolutionStartSpeed = fp->gsIn(1);
 }
