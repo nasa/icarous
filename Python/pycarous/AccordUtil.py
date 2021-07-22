@@ -2,8 +2,10 @@ from ctypes import *
 from CustomTypes import TcpType
 import numpy as np
 from ichelper import GetPlanPositions
+import os
 
-libUtils = CDLL('libUtils.so')
+icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
+libUtils = CDLL(os.path.join(icmodules,'libUtils.so'))
 
 libUtils.ConvertLLA2END.argtypes = [c_double*3,c_double*3,c_double*3]
 libUtils.ConvertEND2LLA.argtypes = [c_double*3,c_double*3,c_double*3]

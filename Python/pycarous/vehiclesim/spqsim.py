@@ -1,12 +1,14 @@
 from ctypes import *
 import numpy as np
+import os
 
 from ichelper import GetWindComponent
 from vehiclesim import VehicleSimInterface
 from vehiclesim.SpqInterface import SpqState, SpqGains, SpqCommand, rtString
 
 # Initialize c library (libspq.so must be on the path)
-libspq = CDLL("libspq.so")
+icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
+libspq = CDLL(os.path.join(icmodules,"libspq.so"))
 libspq.advance_sim.argtypes = [POINTER(SpqGains), c_double, c_double*8,
                                POINTER(SpqCommand), c_double, c_double*2]
 

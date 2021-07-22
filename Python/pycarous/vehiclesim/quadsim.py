@@ -1,11 +1,13 @@
 from ctypes import *
 import numpy as np
 from matplotlib import pyplot as plt
+import os
 
 from ichelper import ConvertTrkGsVsToVned
 from vehiclesim import VehicleSimInterface
 
-lib = CDLL("libquadsim.so")
+icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
+lib = CDLL(os.path.join(icmodules,"libquadsim.so"))
 
 lib.PC_Quadcopter_Simulation_initialize.restype = None
 lib.PC_Quadcopter_Simulation_initialize.argtype = None

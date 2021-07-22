@@ -1,8 +1,10 @@
 import math
 import random
 import numpy as np
+import os
 
 radius_of_earth = 6378100.0
+icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
 
 def distance(lat1, lon1, lat2, lon2):
     '''return distance between two points in meters,
@@ -305,7 +307,7 @@ def ConstructWaypointsFromList(fp,eta=False):
 
 def ParseDaidalusConfiguration(filename):
     from ctypes import Structure, CDLL, c_char_p, c_int, c_char, c_double
-    lib = CDLL('libUtils.so')
+    lib = CDLL(os.path.join(icmodules,'libUtils.so'))
     class ParsedParam(Structure):
         _fields_=[
             ("key",c_char*50),
@@ -331,7 +333,7 @@ def ParseDaidalusConfiguration(filename):
 def GetEUTLPlanFromFile(filename,index,linearize=False,timeshift=0):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double
     from CustomTypes import Waypoint,TcpType
-    lib = CDLL('libUtils.so')
+    lib = CDLL(os.path.join(icmodules,'libUtils.so'))
     wpArray = Waypoint*500
     wps = wpArray()
     lib.GetEUTLPlanFromFile.argtypes = [c_char_p,c_int,wpArray,c_bool,c_double]
@@ -341,14 +343,14 @@ def GetEUTLPlanFromFile(filename,index,linearize=False,timeshift=0):
 
 def IsolateEUTLPlans(filename,prefix,zeroStart=False,randomize=False):
     from ctypes import CDLL,c_char_p,c_bool
-    lib = CDLL('libUtils.so')
+    lib = CDLL(os.path.join(icmodules,'libUtils.so'))
     lib.IsolateEUTLPlans.argtypes = [c_char_p,c_char_p,c_bool,c_bool]
     lib.IsolateEUTLPlans(filename.encode('utf-8'),prefix.encode('utf-8'),c_bool(zeroStart),c_bool(randomize))
 
 def GetPlanPositions(waypoints,timeDelta):
     from ctypes import CDLL,c_char_p,c_int,c_bool,c_double,c_void_p
     from CustomTypes import Waypoint,TcpType
-    lib = CDLL('libUtils.so')
+    lib = CDLL(os.path.join(icmodules,'libUtils.so'))
     wpArray = Waypoint*500
     pos = (c_double*3)()
     wps = wpArray()
