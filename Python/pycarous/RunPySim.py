@@ -102,6 +102,11 @@ if args.geofence != '':
 # Add icarous instance to sim environment
 sim.AddIcarousInstance(ic,time_limit=args.tlimit)
 
+#from GroundSystem import GroundPlanner
+# Add ground planner instance
+#sim.AddGroundSystem(GroundPlanner(HomePos,2,"GSPlanner",filename='data/flightplan_gs.txt'))
+
+
 # Set position uncertainty for vehicles in the simulation
 if args.uncertainty:
     sim.SetPosUncertainty(0.1, 0.1, 0, 0, 0, 0)

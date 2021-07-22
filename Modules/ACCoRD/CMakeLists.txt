@@ -10,9 +10,13 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRC_FILES)
 
 set(SOURCE_FILES ${SRC_FILES})
 
+
 include_directories(inc)
 
 add_library(ACCoRD SHARED ${SOURCE_FILES})
+IF(WIN32)
+target_link_libraries(ACCoRD regex)
+ENDIF(WIN32)
 
 add_executable(DaidalusAlerting DaidalusAlerting.cpp)
 
