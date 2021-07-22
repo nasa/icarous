@@ -7,7 +7,7 @@ from ichelper import ConvertTrkGsVsToVned
 from vehiclesim import VehicleSimInterface
 
 icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
-lib = CDLL(os.path.join(icmodules,"libquadsim.so"))
+lib = CDLL(os.path.join(icmodules,"libquadsim.so"),winmode=0)
 
 lib.PC_Quadcopter_Simulation_initialize.restype = None
 lib.PC_Quadcopter_Simulation_initialize.argtype = None

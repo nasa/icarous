@@ -8,7 +8,7 @@ from vehiclesim.SpqInterface import SpqState, SpqGains, SpqCommand, rtString
 
 # Initialize c library (libspq.so must be on the path)
 icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
-libspq = CDLL(os.path.join(icmodules,"libspq.so"))
+libspq = CDLL(os.path.join(icmodules,"libspq.so"),winmode=0)
 libspq.advance_sim.argtypes = [POINTER(SpqGains), c_double, c_double*8,
                                POINTER(SpqCommand), c_double, c_double*2]
 

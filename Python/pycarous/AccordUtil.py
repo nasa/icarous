@@ -5,7 +5,7 @@ from ichelper import GetPlanPositions
 import os
 
 icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
-libUtils = CDLL(os.path.join(icmodules,'libUtils.so'))
+libUtils = CDLL(os.path.join(icmodules,'libUtils.so'),winmode=0)
 
 libUtils.ConvertLLA2END.argtypes = [c_double*3,c_double*3,c_double*3]
 libUtils.ConvertEND2LLA.argtypes = [c_double*3,c_double*3,c_double*3]
