@@ -17,11 +17,11 @@
 #include "Constants.h"
 #include "format.h"
 #include "string_util.h"
-#if defined(_MSC_VER)
+//#if defined(_MSC_VER)
 #include <regex>
-#else
-#include <regex.h>
-#endif
+//#else
+//#include <regex.h>
+//#endif
 #include <cstdio>
 #include <sstream>
 #include <string.h>
@@ -652,7 +652,7 @@ double Units::parse(const std::string& defaultUnitsFrom, const std::string& str)
   }
 
 
-#if defined(_MSC_VER)
+//#if defined(_MSC_VER)
 
 double getd(string str, double def) {
 	std::istringstream stream;
@@ -727,6 +727,7 @@ std::string Units::parseUnits(const std::string& s) {
 	return unit;
 }
 
+/*
 #else
 
 double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
@@ -735,7 +736,7 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 	int reti;
 	char msgbuf[100];
 
-	/* Compile regular expression, use C regular expression library */
+	// Compile regular expression, use C regular expression library 
 	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED); //TODO: does not recognize e-notation
 	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 	if (reti != 0) {
@@ -743,7 +744,7 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 		//		DebugSupport::halt();
 	}
 
-	/* Execute regular expression */
+	// Execute regular expression 
 	regmatch_t matchptr[4];
 	reti = regexec(&regex, s.c_str(), 4, matchptr, 0);
 	if (!reti) {
@@ -803,7 +804,7 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 		fdln("Regex match failed: "+m1);
 	}
 
-	/* Free compiled regular expression if you want to use the regex_t again */
+	// Free compiled regular expression if you want to use the regex_t again 
 	regfree(&regex);
 	return ret;
 }
@@ -814,7 +815,7 @@ std::string Units::parseUnits(const std::string& s) {
 	int reti;
 	char msgbuf[100];
 
-	/* Compile regular expression */
+	// Compile regular expression 
 	//reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([/^_a-zA-Z0-9]*)[[:blank:]]*\\]?(.*)", REG_EXTENDED);
 	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED); //TODO: does not recognize e-notation
 	if (reti != 0) {
@@ -822,7 +823,7 @@ std::string Units::parseUnits(const std::string& s) {
 //		DebugSupport::halt();
 	}
 
-	/* Execute regular expression */
+	// Execute regular expression 
 	regmatch_t matchptr[4];
 	char match[100];
 
@@ -846,8 +847,9 @@ std::string Units::parseUnits(const std::string& s) {
 //		DebugSupport::halt();
 	}
 
-	/* Free compiled regular expression if you want to use the regex_t again */
+	// Free compiled regular expression if you want to use the regex_t again 
 	regfree(&regex);
 	return ret;
 }
 #endif
+*/
