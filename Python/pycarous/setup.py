@@ -5,7 +5,7 @@ import os
 ext_modules = [
     Extension("AutonomyStack",
               sources=["AutonomyStack.pyx"],
-              libraries=["TrafficMonitor","Cognition","Guidance","TrajectoryManager","GeofenceMonitor","Merger"], 
+              libraries=["TrafficMonitor","Cognition","Guidance","TrajectoryManager","GeofenceMonitor","Merger","Utils"], 
               include_dirs=[os.path.join(os.environ['ICAROUS_HOME'],'Modules'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','Cognition'),
                             os.path.join(os.environ['ICAROUS_HOME'],'Modules','Core','Guidance'),
