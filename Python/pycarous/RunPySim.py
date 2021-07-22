@@ -2,7 +2,6 @@
 
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
-from IcarousRunner import IcarousRunner
 from ichelper import GetHomePosition,ReadTrafficInput
 import argparse
 import os
@@ -80,6 +79,7 @@ if args.traffic != '':
 
 # Initialize Icarous class
 if args.cfs:
+    from IcarousRunner import IcarousRunner
     ic = IcarousRunner(HomePos, verbose=args.verbosity)
 else:
     ic = Icarous(HomePos,simtype=args.simtype,monitor=args.daaType,verbose=args.verbosity,
