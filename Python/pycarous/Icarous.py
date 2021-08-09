@@ -116,10 +116,10 @@ class Icarous(IcarousInterface):
     def SetVelUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
         self.ownship.SetVelUncertainty(xx, yy, zz, xy, xz, yz, coeff)
 
-    def InputTraffic(self,callsign,position,velocity):
+    def InputTraffic(self,source,callsign,position,velocity):
         if callsign != self.callsign and np.abs(np.sum(position)) > 0:
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
-            self.core.InputIntruderState(self.currTime,callsign,position,trkgsvs)
+            self.core.InputIntruderState(self.currTime,source,callsign,position,trkgsvs)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, position, velocity, localPos)
 

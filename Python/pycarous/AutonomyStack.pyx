@@ -184,11 +184,12 @@ cdef class AutonomyStack:
         MergerSetAircraftState(self.Merger,self.position,self.trkgsvs)
 
 
-    def InputIntruderState(self,time,callsign,pos,vel,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):
+    def InputIntruderState(self,time,source,callsign,pos,vel,sumPos=[0,0,0,0,0,0],sumVel=[0,0,0,0,0,0]):
         cdef double position[3]
         cdef double velocity[3]
         cdef double sigmaPos[6]
         cdef double sigmaVel[6]
+        cdef int type
 
         for i in range(3):
             position[i] = pos[i]
@@ -198,9 +199,14 @@ cdef class AutonomyStack:
             sigmaPos[i] = sumPos[i]
             sigmaVel[i] = sumVel[i]
 
-        self.intCallsign = callsign.encode('utf-8')
 
-        TrafficMonitor_InputIntruderData(self.TrafficMonitor,0,<char*>self.intCallsign.c_str(),position,velocity,time,sigmaPos,sigmaVel)
+        self.intCallsign = callsign.encode('utf-8')
+        if source == 'FLARM':
+            type = _TRAFFIC_FLARM_ 
+        else:
+            type = _TRAFFIC_ADSB_
+
+        TrafficMonitor_InputIntruderData(self.TrafficMonitor,type,0,<char*>self.intCallsign.c_str(),position,velocity,time,sigmaPos,sigmaVel)
         TrajManager_InputTraffic(self.TrajManager,<char*>self.intCallsign.c_str(),position,velocity,time)
 
     def InputGeofence(self,fenceList):

@@ -150,16 +150,17 @@ class IcarousInterface(abc.ABC):
         :param data: V2VData to input
         """
         if data.type == "INTRUDER":
-            self.InputTraffic(data.payload["callsign"], data.payload["pos"], data.payload["vel"])
+            self.InputTraffic(data.payload["source"],data.payload["callsign"], data.payload["pos"], data.payload["vel"])
         elif data.type == "MERGER":
             self.InputMergeData(data.payload)
         elif data.type == "FLIGHTPLAN":
             self.InputFlightplan(data.payload.WPs,data.payload.eta,data.payload.repair,False)
 
     @abc.abstractmethod
-    def InputTraffic(self, callsign, position, velocity):
+    def InputTraffic(self, source, callsign, position, velocity):
         """
         Input traffic surveillance data to ICAROUS
+        :param source: surveillance source type (see transmitter type, ADS-B, FLARM, etc..)
         :param idx: callsign of the traffic vehicle
         :param position: traffic position [lat, lon, alt] (deg, deg, m)
         :param velocity: traffic velocity [vn, ve, vd] (m/s, m/s, m/s)
@@ -329,6 +330,7 @@ class IcarousInterface(abc.ABC):
         if not self.missionStarted or self.missionComplete:
             return
         msg_data = {
+            "source" : self.transmitter.sensorType,
             "callsign": self.callsign,
             "pos": self.position,
             "vel": self.velocity,

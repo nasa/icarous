@@ -136,6 +136,13 @@ cdef extern from "Interfaces.h":
         TCP_BVS       = 11
         TCP_EVS       = 12
         TCP_EVSBVS    = 13
+
+    ctypedef enum objectType_e:
+        _TRAFFIC_SIM_   = 0
+        _TRAFFIC_ADSB_  = 1
+        _TRAFFIC_RADAR_ = 2
+        _TRAFFIC_FLARM_ = 3
+        _OBSTACLE_      = 4
     
     ctypedef packed struct waypoint_t:
         uint16_t  index
@@ -181,7 +188,7 @@ cdef extern from "Interfaces.h":
 
 cdef extern from "TrafficMonitor.h":
     void* newDaidalusTrafficMonitor(char* callsign,char* filename)
-    int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6])
+    int TrafficMonitor_InputIntruderData(void * obj,int source, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6])
     int TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time,double sumPos[6],double sumVel[6]) 
     void TrafficMonitor_MonitorTraffic(void * obj,double *wind)
     bint TrafficMonitor_CheckPointFeasibility(void *obj,double *pos,double speed)

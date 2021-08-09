@@ -133,6 +133,7 @@ class VehicleSimInterface(abc.ABC):
         gps_position = self.GetOutputPositionLLA()
         velocity = self.GetOutputVelocityNED()
         msg_data = {
+            "source": self.transmitter.sensorType,
             "callsign": "tf" + str(self.vehicleID),
             "pos": gps_position,
             "vel": velocity,
