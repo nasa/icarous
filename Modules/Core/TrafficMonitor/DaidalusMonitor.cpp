@@ -58,6 +58,14 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters) {
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
 }
 
+std::string DaidalusMonitor::GetAlerter(object& intruder){
+   if(intruder.source == _TRAFFIC_FLARM_){
+       return "flarm";
+   }else{
+       return "default";
+   }
+}
+
 void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
     DAA1.setWindVelocityFrom(windfrom);
     int numTraffic = trafficList.size();
@@ -92,6 +100,8 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
         if(elapsedTime - elem.second.time < 120 && elem.second.position.alt() > 1){
             DAA1.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
             SetSUM(count,elem.second.posSigma,elem.second.velSigma);
+            std::string alerter = GetAlerter(elem.second);
+            DAA1.setAlerter(count,alerter);
         }else{
             staleData.push_back(elem.second);
         }
@@ -226,6 +236,8 @@ bool DaidalusMonitor::CheckPositionFeasibility(const larcfm::Position wp,double 
     for (auto elem:trafficList){
         count++;
         DAA2.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
+        std::string alerter = GetAlerter(elem.second);
+        DAA2.setAlerter(count,alerter);
         if(DAA2.alerting(count) > 0) {
             conflict = true;
         }

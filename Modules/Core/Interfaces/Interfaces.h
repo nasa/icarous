@@ -36,6 +36,20 @@ typedef enum{
 }bandRegion_e;
 
 /**
+ * @enum objectType_e
+ * @brief object type
+ */
+typedef enum{
+    _TRAFFIC_SIM_,   ///< traffic data from simulation
+    _TRAFFIC_ADSB_,  ///< traffic data from ADSB
+    _TRAFFIC_RADAR_, ///< traffic data from radar
+    _TRAFFIC_FLARM_, ///< traffic data from flarm
+    _OBSTACLE_       ///< obstacle
+}objectType_e;
+
+
+
+/**
  * @struct waypoint_t
  * @brief waypoint data.
  */

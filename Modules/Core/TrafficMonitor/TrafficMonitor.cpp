@@ -11,9 +11,10 @@ void TrafficMonitor_UpdateParameters(void * obj, char * carg2){
     monitor->UpdateParameters(std::string(carg2));
 }
 
-int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6]){
+int TrafficMonitor_InputIntruderData(void * obj, int source, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6]){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
     object tf = {std::string(calls),
+                 source,
                  id,
                  time,
                  larcfm::Position::makeLatLonAlt(pos[0],"degree",pos[1],"degree",pos[2],"m"),

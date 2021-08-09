@@ -63,6 +63,7 @@ public:
 
     DaidalusMonitor(std::string callsign, std::string daaConfig);
     void MonitorTraffic(larcfm::Velocity windfrom);
+    std::string GetAlerter(object& intruder);
     bool CheckPositionFeasibility(const larcfm::Position pos,const double speed);
     void UpdateParameters(std::string daaParameters);
     int GetTrafficAlerts(int index,std::string& trafficID,int& alertLevel);

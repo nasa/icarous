@@ -13,6 +13,7 @@
 
 typedef struct{
     std::string callsign;
+    int source;
     int id;
     double time;
     larcfm::Position position;

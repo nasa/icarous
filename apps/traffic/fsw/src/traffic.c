@@ -128,7 +128,7 @@ void TRAFFIC_ProcessPacket(void){
             double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
             double sumVel[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
             ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
-            int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
+            int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->type,msg->index,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
             trafficAppData.numTraffic = val;
             break;
         }
@@ -144,7 +144,7 @@ void TRAFFIC_ProcessPacket(void){
                 ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
                 double sumPos[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
                 double sumVel[6] = {0.0,0.0,0.0,0.0,0.0,0.0};
-                int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
+                int val = TrafficMonitor_InputIntruderData(trafficAppData.tfMonitor,msg->type,msg->aircraft_id,(char*)msg->callsign.value,pos,trkGsVs,trafficAppData.time,sumPos,sumVel);
                 trafficAppData.numTraffic = val;
             }else{
 
