@@ -42,6 +42,7 @@ build:
     - sed -i s/#raft/raft/ Icarous_defs/apps.cmake
     - sed -i s/#SBN/SBN/ Icarous_defs/apps.cmake
     - sed -i s/#udp/udp/ Icarous_defs/apps.cmake
+    - sed -i s/#flarm/flarm/ Icarous_defs/apps.cmake
     - sed -i s/#safe2ditch/safe2ditch/ Icarous_defs/apps.cmake
     - make 
     - make install
