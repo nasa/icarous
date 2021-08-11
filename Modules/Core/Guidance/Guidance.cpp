@@ -750,7 +750,7 @@ int Guidance::RunGuidance(double time){
         }
 
         case LAND:{
-            if (!activePlanId.empty()) {
+            if (currentPlan != nullptr) {
                 larcfm::Position lastPos = currentPlan->getLastPoint().position();
                 double trk = currentPos.track(lastPos) * 180 / M_PI;
                 double gs = 0.1 * currentPos.distanceH(lastPos);
