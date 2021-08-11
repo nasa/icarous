@@ -750,13 +750,16 @@ int Guidance::RunGuidance(double time){
         }
 
         case LAND:{
-            larcfm::Position lastPos = currentPlan->getLastPoint().position();
-            double trk = currentPos.track(lastPos) * 180/M_PI;
-            double gs = 0.1*currentPos.distanceH(lastPos);
-            double vs = std::max(0.5*(lastPos.alt() - currentPos.alt()),params.minClimbRate);
-            outputCmd = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-            if(currentPos.distanceV(lastPos) < 1){
-                nextWpId[activePlanId] = currentPlan->size();
+            if (!activePlanId.empty()) {
+                larcfm::Position lastPos = currentPlan->getLastPoint().position();
+                double trk = currentPos.track(lastPos) * 180 / M_PI;
+                double gs = 0.1 * currentPos.distanceH(lastPos);
+                double vs = std::max(0.5 * (lastPos.alt() - currentPos.alt()), params.minClimbRate);
+                outputCmd = larcfm::Velocity::makeTrkGsVs(trk, "degree", gs, "m/s", vs, "m/s");
+                if (currentPos.distanceV(lastPos) < 1)
+                {
+                    nextWpId[activePlanId] = currentPlan->size();
+                }
             }
             break;
         }
