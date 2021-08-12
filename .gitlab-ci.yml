@@ -19,8 +19,8 @@ before_script:
   - chmod 600 ~/.ssh/id_rsa
   - chmod -R 777 /builds/larc-nia-fm/icarous
   - cd /builds/larc-nia-fm/icarous
-  - git submodule update --init --force --recursive
-  - git clone git@gitlab.larc.nasa.gov:larc-nia-fm/sirius.git --recurse-submodules
+  - retry.sh 5 timeout 20 git submodule update --init --force --recursive
+  - retry.sh 5 timeout 20 git clone git@gitlab.larc.nasa.gov:larc-nia-fm/sirius.git --recurse-submodules
   - mkdir -p /builds/larc-nia-fm/icarous/exe/cpu1/cf
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
