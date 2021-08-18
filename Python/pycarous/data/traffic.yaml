@@ -2,3 +2,4 @@
 # - [id, range [m], bearing [deg], altitude [m], speed [m/s], heading [deg], climb rate [m/s], delay [s, transmitter type [FLARM,ADS-B]]
 # Note: Each intruder should have uniqe id > 0 
 - [1, 100, 80, 5, 2, 270, 0, 0, "ADS-B"]
+- [2, 130, 75, 5, 2, 270, 0, 0, "ADS-B"]
