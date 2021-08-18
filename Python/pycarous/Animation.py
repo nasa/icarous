@@ -86,13 +86,13 @@ class AgentAnimation():
             circlePatch = plt.Circle((0, 0), radius=circle_rad, fc='y',alpha=0.5)
             self.circle[name] = circlePatch
             self.ax.add_patch(circlePatch)
-            # Draw bands
-            sectors = []
-            for i in range(15):
-                ep = patches.Wedge((0,0),circle_rad,theta1=0,theta2=0,fill=True,alpha=0.6)
-                sectors.append(ep)
-                self.ax.add_patch(ep)
-            self.bands[name] = sectors
+        # Draw bands
+        sectors = []
+        for i in range(15):
+            ep = patches.Wedge((0,0),circle_rad,theta1=0,theta2=0,fill=True,alpha=0.6)
+            sectors.append(ep)
+            self.ax.add_patch(ep)
+        self.bands[name] = sectors
 
     def AddZone(self,xy,radius,color):
         circlePatch = patches.Arc((xy[0], xy[1]), width=2*radius,height =2*radius, fill =False, color=color)
