@@ -432,7 +432,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 if (conflict)
                     gfTimes.push_back(0.0);
                 // Check for projected fence conflict based on flightplan
-                double eps = 1; // a small additional delta to add to the output
+                double eps = 5; // a small additional delta to add to the output
                 double t = FindTimeToFenceViolation(localPoly, larcfm::Vect3(0, 0, pos.alt()), vel) + eps;
                 int seg = fp->getSegment(correctedtime + t);
                 if (seg < 0)
