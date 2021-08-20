@@ -24,8 +24,10 @@ void DubinsPlanner::SetVehicleInitialConditions(larcfm::Vect3& pos, larcfm::Velo
 }
 
 void DubinsPlanner::SetBoundary(larcfm::Poly3D& bBox){
-    boundingBox = bBox; 
-    SetZBoundary(boundingBox.getBottom(),boundingBox.getTop());
+    SetZBoundary(bBox.getBottom(),bBox.getTop());
+    auto origVertices = bBox.getVerticesRef();
+    std::vector<larcfm::Vect2> shrunkbbox = larcfm::PolycarpResolution::contract_polygon_2D(0.1,params.vertexBuffer,origVertices);
+    boundingBox = larcfm::Poly3D(larcfm::Poly2D(shrunkbbox),bBox.getBottom(),bBox.getTop());
 }
 
 void DubinsPlanner::SetZBoundary(double zMin,double zMax){
@@ -164,7 +166,7 @@ void DubinsPlanner::GetPotentialFixes(){
     }
 
     // If potential fixes are not available, generate potential fixes
-    if(potentialFixes.size() == 2 || trafficPlans.size() > 0){
+    //if(potentialFixes.size() == 2 || trafficPlans.size() > 0){
     
        // Characteristic length
        double l = std::max(root.vel.gs()*10,params.wellClearDistH*1.5);
@@ -172,38 +174,41 @@ void DubinsPlanner::GetPotentialFixes(){
     
        // Generate points radially from the root position
        // At 30 degree intervals
-       for(int i=1; i<12; ++i){
-           double x1 = root.pos.x + l*cos(trk + i*M_PI/6);
-           double y1 = root.pos.y + l*sin(trk + i*M_PI/6);
-           double z1 = root.pos.z;
-           double x2 = goal.pos.x + l*cos(trk + i*M_PI/6);
-           double y2 = goal.pos.y + l*sin(trk + i*M_PI/6);
-           double z2 = goal.pos.z;
-           node_t fix1,fix2;
-           fix1.pos = larcfm::Vect3(larcfm::Vect2(x1,y1),z1);
-           fix2.pos = larcfm::Vect3(larcfm::Vect2(x2,y2),z2);
-           fix1.goal = false;
-           fix2.goal = false;
+       int N = 20;
+       for(int i=0; i<N; ++i){
+           for(int j=1;j<=5;++j){
+               double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
+               double y1 = root.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
+               double z1 = root.pos.z;
+               double x2 = goal.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
+               double y2 = goal.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
+               double z2 = goal.pos.z;
+               node_t fix1, fix2;
+               fix1.pos = larcfm::Vect3(larcfm::Vect2(x1, y1), z1);
+               fix2.pos = larcfm::Vect3(larcfm::Vect2(x2, y2), z2);
+               fix1.goal = false;
+               fix2.goal = false;
 
-           fix1.id = count;
-           potentialFixes.push_back(fix1);
-           count++;
+               fix1.id = count;
+               potentialFixes.push_back(fix1);
+               count++;
 
-           //fix2.id = count;
-           //potentialFixes.push_back(fix2);
-           //count++;
+               fix2.id = count;
+               potentialFixes.push_back(fix2);
+               count++;
+           }
        }
-    }
+    //}
 }
 
 void DubinsPlanner::BuildTree(node_t* rd){
    // Build a directed graph by connecting fixes
    // based on line of sight constraints
    for(auto &fix: potentialFixes){
-       // Ignore reflexive transition and bidrectional transitions
        if(rd->id == fix.id){
-            fix.parents.push_back(rd);
-            rd->children.push_back(&fix);
+            // Can ignore or include reflexive transition if needed
+            //fix.parents.push_back(rd);
+            //rd->children.push_back(&fix);
             continue;
        } 
 
@@ -266,7 +271,11 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
     double vs = startVel.vs();
     //bool valid = GetNextTrkVs(*end,trk,vs);
     if(!end->goal && start->id != end->id){
-        trk = (endPos - startPos).vect2().trk() * 180/M_PI;
+        if(CheckProjectedFenceConflict(end,&potentialFixes[1])){
+            trk = (endPos - startPos).vect2().trk() * 180/M_PI;
+        }else{
+            trk = (potentialFixes[1].pos - endPos).vect2().trk() * 180/M_PI;
+        }
         vs  = 0;
         endVel = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
         end->vel = endVel;
@@ -922,6 +931,20 @@ bool DubinsPlanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
             }
         }
     }
+
+    /*
+    int sizePoly = shrunkbbox.size();
+    for(int i=0;i<sizePoly;++i){
+            int j = (i+1)%sizePoly;
+            larcfm::Vect2 A = shrunkbbox[i];
+            larcfm::Vect2 B = shrunkbbox[j];
+            bool intCheck = LinePlanIntersection(A,B, boundingBox.getBottom(),boundingBox.getTop(),
+                                                 qnode->pos,goal->pos);
+            if(intCheck){
+                return true;
+            }
+    }*/
+
     return false;
 }
 
@@ -1041,7 +1064,7 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
                 double trk2 = newRoute.trkOut(count-1);
                 larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(trk1*180/M_PI,"degree",gs1,"m/s",vs1,"m/s"); 
                 double trk3 = std::fmod(larcfm::Util::turnDelta(trk1,trk2,dir),2*M_PI);
-                if(trk3 > M_PI){
+                if(trk3 > M_PI && trk3 < 2*M_PI*0.99){
                     trk3 = trk3/2;
                     larcfm::Vect3 posA = proj.project(newRoute.getPos(iBOT));
                     double turnTime = trk3 / (params.turnRate * M_PI / 180);

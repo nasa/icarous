@@ -179,6 +179,7 @@ int64_t TrajManager::FindDubinsPath(std::string planID){
     dbPlanner.GetPlan(proj,output);
     output.setID(std::string(planID));
     flightPlans.push_back(output);
+    //std::cout<<output.toString()<<std::endl;
     return output.size();
 }
 

@@ -52,6 +52,9 @@ private:
     /* boundingBox defines the extent of the search space */
     larcfm::Poly3D boundingBox;
 
+    /* Contracted vertices of bounding box */
+    std::vector<larcfm::Vect2> shrunkbbox;
+
     /* List of obstacles */
     std::list<larcfm::Poly3D> obstacleList;
 
