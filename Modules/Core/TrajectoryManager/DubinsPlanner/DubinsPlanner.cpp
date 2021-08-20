@@ -174,9 +174,9 @@ void DubinsPlanner::GetPotentialFixes(){
     
        // Generate points radially from the root position
        // At 30 degree intervals
-       int N = 20;
+       int N = 10;
        for(int i=0; i<N; ++i){
-           for(int j=1;j<=5;++j){
+           for(int j=2;j<=5;++j){
                double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
                double y1 = root.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
                double z1 = root.pos.z;
@@ -313,6 +313,12 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         return dt;
     };
 
+    auto GetSegmentLength = [&](larcfm::Vect2 c1,larcfm::Vect2 c2,larcfm::Vect2 z1,larcfm::Vect2 z2,int d1,int d2){
+        double lt1 = R*larcfm::Util::turnDelta((startPos.vect2()-c1).trk(),(z1-c1).trk(),d1);
+        double lt2 = R*larcfm::Util::turnDelta((z2-c2).trk(),(endPos.vect2()-c2).trk(),d2);
+        return lt1 + lt2 + (z2-z1).norm();
+    };
+
     // Lambda function to gather tcp data
     auto PackTCPdata = [&](std::string pathType,larcfm::Vect2 cs, larcfm::Vect2 ce, larcfm::Vect2 z1, larcfm::Vect2 z2, int r1, int r2, double length) {
         double turnTime1 = GetTurnTime(startPos.vect2() - cs, z1 - cs, r1);
@@ -368,11 +374,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         q1 = rsrSE.Hat();
         z1 = crs + rotateZ(q1, M_PI / 2).Scal(R);
         z2 = cre + rotateZ(q1, M_PI / 2).Scal(R);
-        double rsrL = sl + R * std::fmod(2 * M_PI + std::fmod(vnu + M_PI / 2, 2 * M_PI) + std::fmod(startVel.angle() + M_PI / 2, 2 * M_PI), 2 * M_PI) +
-                      R * std::fmod(2 * M_PI - std::fmod(endVel.angle() + M_PI / 2, 2 * M_PI) +
-                                        std::fmod(vnu + M_PI / 2, 2 * M_PI),
-                                    2 * M_PI);
-
+        double rsrL = GetSegmentLength(crs,cre,z1,z2,1,1); 
         PackTCPdata("RSR", crs, cre, z1, z2, 1, 1, rsrL);
     }else{
         if(fabs(alt2 - alt1) < 1e-3){
@@ -390,11 +392,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         q1 = rotateZ(e1,vnu + vnu2 - M_PI/2);
         z1 = crs + rotateZ(e1,vnu+vnu2).Scal(R);
         z2 = cle + rotateZ(e1,vnu+vnu2 - M_PI).Scal(R);
-        double rslL =  sqrt(sl*sl - 4*R*R) +R*std::fmod(2*M_PI + std::fmod(startVel.angle() + M_PI/2,2*M_PI) - 
-                       std::fmod(vnu + vnu2,2*M_PI),2*M_PI) +  
-                       R*std::fmod(2*M_PI + std::fmod(endVel.angle()*M_PI/180 - M_PI/2,2*M_PI) - 
-                       std::fmod(vnu + vnu2 - M_PI,2*M_PI),2*M_PI);
-
+        double rslL = GetSegmentLength(crs,cle,z1,z2,1,-1); 
         PackTCPdata("RSL",crs,cle,z1,z2,1,-1,rslL);
     } 
 
@@ -407,11 +405,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         q1 = rotateZ(e1,vnu2 + M_PI/2);
         z1 = cls + rotateZ(e1,vnu2).Scal(R);
         z2 = cre + rotateZ(e1,vnu2 + M_PI).Scal(R);
-        double lsrL = sqrt(sl*sl - 4*R*R) + R*std::fmod(2*M_PI + std::fmod(vnu2,2*M_PI) 
-                     - std::fmod(startVel.angle()- M_PI/2,2*M_PI),2*M_PI) \
-                 + R*std::fmod(2*M_PI + std::fmod(vnu2 + M_PI,2*M_PI) 
-                 - std::fmod(endVel.angle() + M_PI/2,2*M_PI),2*M_PI);
-
+        double lsrL = GetSegmentLength(cls,cre,z1,z2,-1,1); 
         PackTCPdata("LSR",cls,cre,z1,z2,-1,1,lsrL); 
     }
 
@@ -423,11 +417,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         q1 = lslSE.Hat();
         z1 = cls + rotateZ(q1, -M_PI / 2).Scal(R);
         z2 = cle + rotateZ(q1, -M_PI / 2).Scal(R);
-        double lslL = sl + R * std::fmod(2 * M_PI + std::fmod(vnu - M_PI / 2, 2 * M_PI) + std::fmod(startVel.angle() - M_PI / 2, 2 * M_PI), 2 * M_PI) +
-                      R * std::fmod(2 * M_PI + std::fmod(endVel.angle() - M_PI / 2, 2 * M_PI) -
-                                        std::fmod(vnu - M_PI / 2, 2 * M_PI),
-                                    2 * M_PI);
-
+        double lslL = GetSegmentLength(cls,cle,z1,z2,-1,-1); 
         PackTCPdata("LSL", cls, cle, z1, z2, -1, -1, lslL);
     }else{
         if (fabs(alt2 - alt1) < 1e-3){
@@ -482,8 +472,8 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
 
         // Distance accumulated
         end->g = (*elem.second)[0] + start->g;   
-        // straight line distance^2 to final destination
-        end->h = pow(end->pos.distanceH(goalFix),2) + pow(end->pos.distanceV(goalFix),2);
+        // straight line distance to final destination
+        end->h = sqrt(pow(end->pos.distanceH(goalFix),2) + pow(end->pos.distanceV(goalFix),2));
         return true;
     }
 
@@ -1064,7 +1054,8 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
                 double trk2 = newRoute.trkOut(count-1);
                 larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(trk1*180/M_PI,"degree",gs1,"m/s",vs1,"m/s"); 
                 double trk3 = std::fmod(larcfm::Util::turnDelta(trk1,trk2,dir),2*M_PI);
-                if(trk3 > M_PI && trk3 < 2*M_PI*0.99){
+                double distBOTEOT = node.TCPdata[i-1].first.distanceH(node.TCPdata[i].first);
+                if(trk3 > M_PI && distBOTEOT > 0.1){
                     trk3 = trk3/2;
                     larcfm::Vect3 posA = proj.project(newRoute.getPos(iBOT));
                     double turnTime = trk3 / (params.turnRate * M_PI / 180);

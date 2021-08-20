@@ -1,4 +1,5 @@
 #include <memory>
+#include <algorithm>
 #include "DubinsPlanner.hpp"
 
 bool DubinsPlanner::DijkstraSearch(node_t* root,node_t* goal){
@@ -95,6 +96,7 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
     *q = *root;
     visited.push_back(q);
     while(!q->goal){
+        bool visitedAlready = true;
         for(auto child: q->children){
             std::shared_ptr<node_t> next = std::make_shared<node_t>();
             *(next) = *child;
@@ -108,8 +110,13 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
             break;
         }
         frontier.sort(cmp);
-        q = frontier.front();
-        frontier.pop_front();
+        // This while loop checks for already visited node.
+        // Note: this shouldn't be used if you enable reflexive transitions
+        while(visitedAlready){
+            q = frontier.front();
+            frontier.pop_front();
+            visitedAlready = std::find(visited.begin(),visited.end(),q) != visited.end();
+        }
         visited.push_back(q);
     }
     std::list<node_t> astarPath;
