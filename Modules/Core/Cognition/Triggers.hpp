@@ -13,7 +13,7 @@ bool NominalDepartureTrigger(CognitionState_t* state){
 
 
 bool FenceConflictTrigger(CognitionState_t* state){
-    return state->planProjectedFenceConflict && state->timeToFenceViolation < 10 &&
+    return state->planProjectedFenceConflict && state->timeToFenceViolation < 20 &&
            !state->trafficConflict && state->parameters.active && state->icReady;
 }
 
