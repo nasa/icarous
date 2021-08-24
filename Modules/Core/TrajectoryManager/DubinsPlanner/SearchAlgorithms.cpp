@@ -92,6 +92,7 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
     root->h = 0;
     std::list<std::shared_ptr<node_t>> frontier;
     std::list<std::shared_ptr<node_t>> visited;
+    std::list<int> visitedId;
     std::shared_ptr<node_t> q = std::make_shared<node_t>();
     *q = *root;
     visited.push_back(q);
@@ -115,9 +116,12 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
         while(visitedAlready){
             q = frontier.front();
             frontier.pop_front();
-            visitedAlready = std::find(visited.begin(),visited.end(),q) != visited.end();
+            visitedAlready = std::find(visitedId.begin(),visitedId.end(),q->id) != visitedId.end();
+            if(!visitedAlready){
+                visited.push_back(q);
+                visitedId.push_back(q->id);
+            }
         }
-        visited.push_back(q);
     }
     std::list<node_t> astarPath;
     node_t* p = q.get();
