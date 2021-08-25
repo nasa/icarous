@@ -169,7 +169,7 @@ void DubinsPlanner::GetPotentialFixes(){
     //if(potentialFixes.size() == 2 || trafficPlans.size() > 0){
     
        // Characteristic length
-       double l = std::max(root.vel.gs()*10,params.wellClearDistH*1.5);
+       double l = root.vel.gs()*10;
        double trk = root.vel.angle();
     
        // Generate points radially from the root position
