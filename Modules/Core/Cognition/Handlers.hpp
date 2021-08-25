@@ -45,6 +45,7 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
 
 class Vector2Mission: public EventHandler<CognitionState_t>{
    larcfm::Position target;
+   double gs;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
        if(state->parameters.return2NextWP == 3){
@@ -54,6 +55,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
            }
            target = fp->getPos(state->nextWpId[state->missionPlan]);
            state->nextWpId[state->missionPlan] += 1;
+           gs = state->velocity.gs();
        }else{
            target = state->clstPoint;
            larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
@@ -67,8 +69,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    retVal_e Execute(CognitionState_t* state){
        
        double trkRef = state->position.track(target) * 180/M_PI;
-       double gs = state->velocity.gs();
-       double vs = 0;
+       double vs = 0.1*(target.alt() - state->position.alt());
        double dist = state->position.distanceH(target);
        double trkCurrent = state->velocity.track("degree");
        double trkCmd;
