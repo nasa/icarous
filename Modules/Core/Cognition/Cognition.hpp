@@ -106,7 +106,7 @@ typedef struct{
     double utcTime;                ///< Current time
     std::string timeString;        ///< Formatted time string
     std::string callSign;          ///< Vehicle's callsign string
-    std::string missionPlan;       ///< Mission plan
+    std::string missionPlan;       ///< Mission plan id (should be "Plan0")
     cognition_params_t parameters; ///< Configurable parameters used by Cognition
     bool icReady;
     // Flight plan book keeping
@@ -116,9 +116,9 @@ typedef struct{
 
     int nextFeasibleWpId;      ///< to next feasible waypoint id
     bool closestPointFeasible; ///< Feasibility of nearest point on primary flight plan
-    resolutionType_e resType;
+    resolutionType_e resType;  ///< Resolution type
 
-    bool primaryFPReceived;
+    bool primaryFPReceived;    
     bool recovery[4];
     bool validResolution[4];
     double scenarioTime;

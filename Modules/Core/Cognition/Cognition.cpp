@@ -143,6 +143,9 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
 
     cogState.log<<cogState.timeString + "| [WPREACHED] | Plan: " << plan_id<<", wp: "<<reached_wp_id<<"\n";
     if(plan_id == "P2P" && reached_wp_id == 1){
+        // Note P2P mode uses flightplan with 2 waypoints. 
+        // 0th point is the initial point and 1st point is the target point
+        // hence the check of reach_wp_id == 1 in the above if.
         cogState.p2pComplete = true;
     }else if(plan_id == "Takeoff"){
         cogState.takeoffComplete = 1;

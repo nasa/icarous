@@ -3,25 +3,20 @@
 
 #define MAKE_HANDLER(NAME) std::make_shared<NAME>()
 
+// Activate nominal mission path i.e. "Plan0"
 class EngageNominalPlan: public EventHandler<CognitionState_t>{
-    retVal_e Initialize(CognitionState_t* state){
-        if(state->missionStart > 0){
-            state->nextWpId[state->missionPlan] = state->missionStart;
-            state->missionStart = -1;
-            state->icReady = true;
-        }
-        return SUCCESS;
-    }
-
     retVal_e Execute(CognitionState_t* state){
        LogMessage(state,"[HANDLER] | Engage nominal plan");
        SetGuidanceFlightPlan(state,state->missionPlan,state->nextWpId[state->missionPlan]);
+       state->icReady = true;
        return SUCCESS;
     }
 };
 
+// Handler for takeoff trigger
 class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
+       // Send the takeoff command
        TakeoffCommand takeoff_command;
        Command cmd = {.commandType=CommandType_e::TAKEOFF_COMMAND};
        cmd.takeoffCommand = takeoff_command;
@@ -30,10 +25,9 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        return SUCCESS;
    }
 
-   retVal_e Terminate(CognitionState_t* state){
+   retVal_e Execute(CognitionState_t* state){
+       // Wait till we've obtained confirmation of takeoff
        if(state->takeoffComplete == 1){
-           state->missionStart = 1;
-           //SetGuidanceFlightPlan(state,(char*)state->missionPlan.c_str(),state->nextWpId[state->missionPlan]);
            return SUCCESS;
        }else if(state->takeoffComplete != 0){
            LogMessage(state,"[WARNING] | Takeoff failed");
@@ -41,22 +35,34 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        }
        return INPROGRESS;
    }
+
+   retVal_e Terminate(CognitionState_t* state){
+       if(state->takeoffComplete == 1){
+           state->nextWpId[state->missionPlan] = 1;
+           ExecuteHandler(MAKE_HANDLER(EngageNominalPlan),"Departure");
+       }
+       return SUCCESS;
+   }
 };
 
+
+// A return to mission handler using only vector commands
 class Vector2Mission: public EventHandler<CognitionState_t>{
    larcfm::Position target;
    double gs;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
        if(state->parameters.return2NextWP == 3){
+           // Vector to next waypoint
            larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
            if(state->missionPlan == "Plan0"){
                state->nextWpId[state->missionPlan] =state->nextFeasibleWpId;
            }
            target = fp->getPos(state->nextWpId[state->missionPlan]);
            state->nextWpId[state->missionPlan] += 1;
-           gs = state->velocity.gs();
+           gs = state->velocity.gs(); // Maintain speed at the start of the resolution
        }else{
+           // Vector to nearest point on the mission flightplan
            target = state->clstPoint;
            larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
            int nextWP = state->nextWpId[state->missionPlan];
@@ -68,14 +74,15 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
 
    retVal_e Execute(CognitionState_t* state){
        
-       double trkRef = state->position.track(target) * 180/M_PI;
-       double vs = 0.1*(target.alt() - state->position.alt());
-       double dist = state->position.distanceH(target);
+       double trkRef = state->position.track(target) * 180/M_PI; // heading to target
+       double vs = 0.1*(target.alt() - state->position.alt());   // Proportial control to reach target altitude
+       double dist = state->position.distanceH(target);         
        double trkCurrent = state->velocity.track("degree");
        double trkCmd;
        double turnRate = 0.1;
        int direction = 1;
        double diff = fmod(360 + fabs(trkCurrent - trkRef),360);
+       // Make sure we don't cross a conflict band if we can avoid it. 
        if(diff >= 45){
            if (state->rightTurnConflict) {
                trkCmd = trkCurrent -2;
@@ -93,6 +100,10 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
        if (dist < 200) {
           gs = fmin(gs, dist * 0.25);
        }
+
+       // Limit climb rate within [-2.5,2.5] m/s. TODO: Use parameters here
+       vs = std::max(-2.5,std::min(vs,-2.5));                    
+
        SetGuidanceVelCmd(state,trkCmd,gs,vs);
        if ( dist < fmax(10,2.5*gs)){
            return SUCCESS;
@@ -107,6 +118,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    }
 };
 
+// Return to mission using a flightplan
 class ReturnToMission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
         if(PrimaryPlanCompletionTrigger(state)){
@@ -122,6 +134,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         velocityA = state->velocity;
         positionA = state->position;
         if(state->parameters.return2NextWP == 0){
+            // Plan to the closest point
             int wpID = state->nextWpId[fp->getID()];
             double gs  = fp->gsIn(wpID);
             double trk = fp->trkIn(wpID)*180/M_PI;
@@ -129,6 +142,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
             positionB = state->clstPoint;
             velocityB = larcfm::Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
         }else{
+            // Plan to the next feasible waypoint
             if(state->missionPlan == "Plan0"){
                 state->nextWpId[state->missionPlan] = state->nextFeasibleWpId;
             }
@@ -139,6 +153,8 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
                 state->nextWpId[state->missionPlan] += 1;
             }
         }
+
+        // Send out path planning request
         FindNewPath(state,pathName,positionA, velocityA, positionB, velocityB);
         SendStatus(state,(char*)"IC:Computing secondary path",6);
         state->request = REQUEST_PROCESSING;
@@ -147,6 +163,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
 
    retVal_e Execute(CognitionState_t* state){
         if(state->request == REQUEST_RESPONDED){
+            // Activate new plan if the new plan was received
             state->request = REQUEST_NIL;
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
             SetGuidanceFlightPlan(state,pathName,1);
@@ -162,6 +179,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
    }
 }; 
 
+// Handler to plan a path to the next feasible waypoint
 class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
         if(PrimaryPlanCompletionTrigger(state)){
@@ -207,6 +225,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     }
 };
 
+// Landing handler
 class LandPhaseHandler: public EventHandler<CognitionState_t>{
    retVal_e Execute(CognitionState_t* state){
        SendStatus(state, (char *)"IC: Landing", 6);
@@ -221,6 +240,7 @@ class LandPhaseHandler: public EventHandler<CognitionState_t>{
    }
 };
 
+// Traffic conflict handler (for daidalus guidance)
 class TrafficConflictHandler: public EventHandler<CognitionState_t>{
  public:
     double startTime;
@@ -465,7 +485,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
 
 };
 
-
+// Merging handler
 class MergingHandler: public EventHandler<CognitionState_t>{
     bool mergingSpeedChange = false;
     retVal_e Execute(CognitionState_t* state){
@@ -489,6 +509,7 @@ class MergingHandler: public EventHandler<CognitionState_t>{
 
 };
 
+// Handler to initiate a ditch request (for Safe2Ditch)
 class RequestDitchSite: public EventHandler<CognitionState_t>{
     retVal_e Execute(CognitionState_t* state){
         SetDitchSiteRequestCmd(state);
@@ -497,6 +518,7 @@ class RequestDitchSite: public EventHandler<CognitionState_t>{
     }
 };
 
+// Ditching handler
 class ProceedToDitchSite: public EventHandler<CognitionState_t>{
    
     retVal_e Initialize(CognitionState_t* state){
@@ -532,6 +554,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
 
 };
 
+// Post Ditch TOD handler
 class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state,"[STATUS] | Reached TOD, proceeding to land");
