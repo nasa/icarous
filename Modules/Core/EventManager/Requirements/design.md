@@ -4,8 +4,9 @@
 The event manager is a header only template based library that provides a framework to define triggers that indiciate the onset of a specific event of interest. The framework also enables associating a trigger to a specific handler. In otherwords, the event manager triggers specific handler functions when an event is detected by the trigger. The event manager is an expressive framework to construct reactive (autonomous) systems by defining triggers and associating triggers with specific behaviors via handlers.
 
 ## How does it work?
-- A trigger is a function that takes a state of type T and returns a boolean. The boolean is true when the event of interest is detected and false otherwise. The state variable captures all the data required by the computations performed by the trigger. 
-- Each trigger has a priority value associated with it. This enables the framework to determine which handler to execute first when there are multiple triggers.
+- A trigger function detects an event of interest/concern. There can be many trigger functions.
+- Each trigger is associated with a unique handler function. 
+- Each trigger has a priority value associated with it. This enables the framework to determine which handler to execute first when there are multiple events to be addressed.
 - Priorities are chosen to have integer values. However, they are internally represented as a float. The reason for this is explained below.
 - The RunEventMonitor function checks for all trigger activiations. 
 - Handler functions associated with activated triggers are added to the activeEventHandlers queue if they are not on the queue already. 
@@ -18,5 +19,10 @@ The event manager is a header only template based library that provides a framew
 - Terminated handlers are dequeued.
 - Any handler may spawn other handlers (children). These children handlers are also added to the front of the queue of handlers and executed upon termination of the parent handler.
 
+## Usage
+
+- A trigger is a function that takes a state of type T and returns a boolean. The boolean is true when the event of interest is detected and false otherwise. The state variable captures all the data required by the computations performed by the trigger. 
+- A handler is defining a child class derived from the EventHandler base class. Provide implementations for the Initialize, Execute and Terminate methods. 
+- Add the trigger, the associated handler and priority level to the EventManager using the AddEventHandler method.
 
 
