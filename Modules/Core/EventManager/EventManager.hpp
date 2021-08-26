@@ -86,21 +86,28 @@ void EventManagement<T>::RunEventHandlers(T* state){
             // if trigger is false, remove handler
             if(events[handler->eventName](state)){
                handler->execState = EventHandler<T>::INITIALIZE;
+
+               // Elevate priority to ensure this handler continues to execute
+               // on the next cycle in case there is another equal priority handler
                handler->priority = handler->defaultPriority + 0.5;
                val = handler->RunEvent(state);
             }
         }else{
             val = handler->RunEvent(state);
         }
+
+        // Upon termination, restore priority
         if (val) {
             handler->priority = handler->defaultPriority;
             activeEventHandlers.pop_front();
         }
 
+        // Add any children spawned by the current handler to the queue
         while (handler->children.size() > 0){
             activeEventHandlers.push_front(handler->children.back());
             handler->children.pop_back();
         }
+        // Break here so that we only execute the handler at the head of the queue
         break;
     }
 }
