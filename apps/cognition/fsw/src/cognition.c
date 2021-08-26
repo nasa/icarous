@@ -88,9 +88,8 @@ void COGNITION_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_SPEED_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_ALT_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_VS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(TRAJECTORY_PARAMETERS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_PARAMUPDATE_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_GEOFENCE_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
@@ -122,7 +121,7 @@ void COGNITION_AppInitData(void){
     char buffer[25];
     memset(buffer,0,25);
     sprintf(buffer,"aircraft%d",CFE_PSP_GetSpacecraftId());
-    appdataCog.cog = CognitionInit(buffer);
+    appdataCog.cog = CognitionInit(buffer,"../ram/IcarousConfig.txt");
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
 }
 
@@ -222,28 +221,9 @@ void COGNITION_ProcessSBData(void) {
             InputTrajectoryMonitorData(appdataCog.cog,fpm);
             break;
         }
-
-        case TRAFFIC_PARAMETERS_MID:{
-            traffic_parameters_t* msg = (traffic_parameters_t*) appdataCog.CogMsgPtr;
-            appdataCog.parameters.DTHR = msg->det_1_WCV_DTHR/3;
-            appdataCog.parameters.ZTHR = msg->det_1_WCV_ZTHR/3;
-            appdataCog.parameters.resolutionType = msg->resType;
-            appdataCog.parameters.lookaheadTime = msg->lookahead_time;
-            appdataCog.parameters.persistenceTime = msg->persistence_time;
-            if(appdataCog.parameters.resolutionType < 0){
-                appdataCog.parameters.active = 0;
-            }else{
-                appdataCog.parameters.active = 1;
-            }
-            InputParameters(appdataCog.cog,&appdataCog.parameters);
-            break;
-        }
-
-        case TRAJECTORY_PARAMETERS_MID:{
-            trajectory_parameters_t* msg = (trajectory_parameters_t*) appdataCog.CogMsgPtr;
-            appdataCog.parameters.allowedXtrackDeviation = msg->crossTrackDeviation;
-            appdataCog.parameters.return2NextWP = msg->return2nextWP;
-            InputParameters(appdataCog.cog,&appdataCog.parameters);
+        
+        case ICAROUS_PARAMUPDATE_MID:{
+            ReadParamFromFile(appdataCog.cog,"../ram/IcarousConfig.txt");
             break;
         }
 

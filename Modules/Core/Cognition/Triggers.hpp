@@ -43,7 +43,7 @@ bool NominalDepartureTrigger(CognitionState_t* state){
  */
 bool FenceConflictTrigger(CognitionState_t* state){
     
-    return state->planProjectedFenceConflict && state->timeToFenceViolation < 20 &&
+    return state->planProjectedFenceConflict && state->timeToFenceViolation < state->parameters.planLookaheadTime &&
            !state->trafficConflict && state->parameters.active && state->icReady;
 }
 
@@ -112,7 +112,7 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
     // TODO: Introduce a parameter to enforce checks to make sure if the
     // projected conflict is on the current flightplan. Current, the usage
     // of reutrn2NextWP is a hack (replace with proper parameter)
-    if(state->parameters.return2NextWP < 2){
+    if(state->parameters.verifyPlanConflict){
         conflict = conflict && state->planProjectedTrafficConflict;
     }
 
@@ -133,13 +133,13 @@ bool TrafficConflictPathResTrigger(CognitionState_t* state){
     conflict = conflict || state->allTrafficConflicts[TRACK_RESOLUTION];
     conflict = conflict || state->allTrafficConflicts[ALTITUDE_RESOLUTION];
     conflict = conflict || state->allTrafficConflicts[VERTICALSPEED_RESOLUTION];
-    // TODO: It seems like this and may be redundant because of the if block below.
-    // Check if this can be removed safely.
     conflict = conflict && state->planProjectedTrafficConflict;
 
     state->trafficConflict = conflict;
+    // Check for conflicts that are imminent due to the current flightplan
+    // These are conflicts that DAIDALUS hasn't detected yet.
     if(!conflict && state->planProjectedTrafficConflict){
-       if(state->timeToTrafficViolation3 < state->parameters.lookaheadTime){ 
+       if(state->timeToTrafficViolation3 < state->parameters.planLookaheadTime){ 
           state->trafficConflict = true; 
        }
     }

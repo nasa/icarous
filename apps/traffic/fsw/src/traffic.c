@@ -59,7 +59,7 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FREQ_10_WAKEUP_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_PARAMUPDATE_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trafficAppData.bandReport,ICAROUS_BAND_REPORT_MID,sizeof(band_report_t),TRUE);
@@ -82,7 +82,7 @@ void TRAFFIC_AppInit(void) {
     trafficAppData.log = TblPtr->log;
     char callsign[30];
     sprintf(callsign,"aircraft%d",CFE_PSP_GetSpacecraftId());
-    trafficAppData.tfMonitor = newDaidalusTrafficMonitor(callsign,TblPtr->configFile,trafficAppData.log);
+    trafficAppData.tfMonitor = newDaidalusTrafficMonitor(callsign,TblPtr->configFile);
     trafficAppData.numTraffic = 0;
     trafficAppData.updateDaaParams = TblPtr->updateParams;
 
@@ -112,6 +112,7 @@ void TRAFFIC_ProcessPacket(void){
             object_t* msg;
             msg = (object_t*) trafficAppData.Traffic_MsgPtr;
 
+            // TODO: Move this into the C++ modules
             // If traffic source is set to 0 (ALL), this app can ingest the traffic data
             if (trafficAppData.trafficSrc != 0)
             {
@@ -248,15 +249,8 @@ void TRAFFIC_ProcessPacket(void){
             break;
         }
 
-        case TRAFFIC_PARAMETERS_MID:{
-            traffic_parameters_t* msg = (traffic_parameters_t*) trafficAppData.Traffic_MsgPtr;
-            memcpy(&trafficAppData.params,msg,sizeof(traffic_parameters_t));
-            //char params[2000];
-            //ConstructDAAParamString(msg, params);
-            if(trafficAppData.updateDaaParams){
-                //TrafficMonitor_UpdateParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
-            }
-            trafficAppData.trafficSrc = msg->trafficSource;
+        case ICAROUS_PARAMUPDATE_MID:{
+            TrafficMonitor_UpdateParameters(trafficAppData.tfMonitor,"../ram/IcarousConfig.txt"); 
             break;
         }
     }

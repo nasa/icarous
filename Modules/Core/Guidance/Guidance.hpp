@@ -72,7 +72,9 @@ private:
 
     void CheckWaypointArrival();
 public:
-    Guidance(const GuidanceParams_t* params);
+    Guidance(const std::string config);
+
+    void ReadParamFromFile(std::string config);
 
     void SetGuidanceParams(const GuidanceParams_t* params);
 

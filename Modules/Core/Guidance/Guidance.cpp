@@ -3,18 +3,42 @@
 #include "Projection.h"
 #include "UtilFunctions.h"
 #include "WP2Plan.hpp"
+#include "StateReader.h"
+#include "ParameterData.h"
 
 #define RAD2DEG 180/M_PI
 #define DEG2RAD M_PI/180
 
-Guidance::Guidance(const GuidanceParams_t* inputParams){
-    std::memcpy(&params,inputParams,sizeof(GuidanceParams_t)); 
+Guidance::Guidance(const std::string config){
+    ReadParamFromFile(config);
     mode = GUIDE_NOOP;
     wpReached = false;
     currTime = 0;
     prevTrackControllerTime = 0.0;
     prevTrackControllerTarget = 0.0;
     currentPlan = NULL;
+}
+
+void Guidance::ReadParamFromFile(std::string config){
+    larcfm::StateReader reader;
+    larcfm::ParameterData parameters;
+    reader.open(config);
+    reader.updateParameterData(parameters);
+    params.captureRadiusScaling = parameters.getValue("capture_radius_scaling");
+    params.climbAngleHRange = parameters.getValue("horizontal_climb_delta");
+    params.climbAngleVRange = parameters.getValue("vertical_climb_delta");
+    params.climbRateGain = parameters.getValue("climb_rate_gain");
+    params.maxCap = parameters.getValue("max_capture_radius");
+    params.minCap = parameters.getValue("min_capture_radius");
+    params.maxClimbRate = parameters.getValue("max_vs");
+    params.minClimbRate = parameters.getValue("min_vs");
+    params.defaultWpSpeed = parameters.getValue("default_wp_speed");
+    params.guidanceRadiusScaling = parameters.getValue("guidance_radius_scaling");
+    params.turnRateGain = parameters.getValue("turnrate_gain");
+    params.yawForward = parameters.getValue("yaw_forward");
+    params.climbFpAngle = parameters.getValue("climb_angle");
+    params.maxSpeed = parameters.getValue("max_hs");
+    params.minSpeed = parameters.getValue("min_hs");
 }
 
 void Guidance::SetGuidanceParams(const GuidanceParams_t* inputParams){
@@ -36,14 +60,20 @@ void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID
     etaControl = eta;
     inTurn = false;
     if(gmode == VECTOR || gmode == LAND){
+        // These modes don't use any plans. Guidance module doesn't use plans for these modes.
         return;
     }
+    // Check if we have the requested plan for the mode
     larcfm::Plan* fp = GetPlan(planID);
     if(fp != nullptr){
         if(nextWP == 0){
+            // If nextWP is 0, this means we are starting this plan
+            // Shift the times based on the current time.
+            // Time shifting is necessary if we are going to maintain ETA.
             double diff = currTime - fp->getFirstTime();
             fp->timeShiftPlan(0,diff);
         }else{
+            // Set initial conditions for nextwp
             currentPlan = fp;
             nextWpId[planID] = nextWP;
             activePlanId = planID;
@@ -68,13 +98,18 @@ int Guidance::GetWaypoint(std::string planID,int id, waypoint_t& wp){
 }
 
 void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const double val){
+   // Request a speed change on flightplan leg between wpid-1 and wpid.
+   // If wpid is -1, then use the next waypoint index (the waypoint we are currently flying towards) 
    prevPlan = planID;
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
-   std::string speedChange("PlanSpeedChange");
 
+   // Speed change is between leg wpidprev and newInd
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
+
+   // If the speed change is the same as the speed defined in the 
+   // original flightplan, no new flight plan is required.
    if(fabs(val - fp->gsIn(newInd)) < 1e-3){
        activePlanId = planID;
        currentPlan = fp;
@@ -82,11 +117,16 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
        return;
    }
 
+   // Create a new copy of nominal plan 
+   // so that we change change the speed
+   std::string speedChange("PlanSpeedChange");
    larcfm::Plan fp2 = fp->copy();
    fp2.setID(speedChange);
 
    double speed = val;
-   
+
+   // Shift the time based on the leg length and new speed   
+   // Note, we only shift from the wpid that is requested.
    int size = fp2.size();
    double prevTime = fp->time(newInd-1);
    for(int i=newInd;i<size;++i){
@@ -98,10 +138,13 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
        prevTime = new_time;
    }
 
+   // Check to see if there was a previous plan for speed change
    fp = GetPlan(speedChange);
    if(fp == nullptr){
+       // No previous plans.
        planList.push_back(fp2);
    }else{
+       // Clear previous speed change plan and use new speed change plan.
        fp->clear();
        *fp = fp2;
    }
@@ -205,6 +248,11 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
    output.guidanceMode = mode;
    output.nextWP = -1;
    if(currentPlan != nullptr){
+        // If we are doing a speed change or altitude change, we are still on the 
+        // the original flighttrack (over the ground). So use the previous plan id 
+        // This is required because the cognition module doesn't know about these internal
+        // speedchange or alt change plans and hence won't be able to keep track of 
+        // waypoint progress if you don't use the old id in the output. 
         if(activePlanId == "PlanAltChange" || activePlanId == "PlanSpeedChange"){
             strcpy(output.activePlan,prevPlan.c_str());
         }else{
@@ -260,8 +308,9 @@ void Guidance::InputFlightplanData(const std::string &plan_id, const std::list<w
 
 double Guidance::GetApproachPrecision(const larcfm::Position &position,const larcfm::Velocity &velocity, const larcfm::Position &waypoint){
     // Look at the dot product of current velocity
-    // with the position of the intersection in relative NED coordinates
-    // dot product >= 0 IMPLIES we are approaching the intersection
+    // with the position of the waypoint in relative NED coordinates
+    // dot product >= 0 IMPLIES we are approaching the waypoint,
+    // dot procuct < 0 IMPLIES we are moving away.
     const larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(position);
     const larcfm::Vect3 pos_wp = proj.project(waypoint) - larcfm::Vect3::makeXYZ(0,"m",0,"m",position.alt(),"m") ;
     const larcfm::Vect2 vhat  = velocity.vect2().Hat(); 
@@ -274,16 +323,19 @@ double Guidance::ComputeSpeed(){
    int nextWP = nextWpId[activePlanId];
    const larcfm::NavPoint nextPos = currentPlan->point(nextWP); 
    double refSpeed;
+   // Enable ETA controls for kinematic plans.
    if (!currentPlan->isLinear()){
       etaControl = true;
    }
 
+   // We don't perform ETA controls under these paths.
    if(activePlanId == "PlanSpeedChange" || activePlanId == "PlanAltChange" || activePlanId == "DitchPath"){
        etaControl = false;
    }
 
    double windSpeed = wind.gs();
    if (!etaControl) {
+       // Intended speed stored in the flightplan
        refSpeed = currentPlan->gsIn(nextWP);
        if (refSpeed <= params.minSpeed + windSpeed) {
            double distH = currentPos.distanceH(nextPos.position());
@@ -308,8 +360,8 @@ double Guidance::ComputeSpeed(){
        if (distH > 0.5 && timediff > 0.001){
            newSpeed = distH / timediff;
        }else{
-           // Speed if eta cannot be met
-           newSpeed = maxSpeed * 0.75;
+           // timediff is negative, we are late
+           newSpeed = maxSpeed;
        }
 
        if (newSpeed > maxSpeed) {
@@ -330,16 +382,18 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
     const double deltaH = nextWaypoint.alt() - position.alt();
     double climbrate = 0;
-    if(currentPlan->isLinear() || fabs(deltaH) < 5){
+    if(currentPlan->isLinear()){
         if (fabs(deltaH) > params.climbAngleVRange &&
             position.distanceH(nextWaypoint) > params.climbAngleHRange) {
-            // Over longer altitude changes and distances, control the ascent/descent angle
+            // Over large altitude changes outside the climbAngleRange params, control the ascent/descent angle
             double angle = params.climbFpAngle;
             if (deltaH < 0) {
                 angle = -angle;
             }
-            const double cfactor = tan(angle * M_PI / 180);
+            const double cfactor = tan(angle);
             if(speedRef > 1e-3){
+                // Climb rate determined by the trig relation
+                // speedRef is adjacent, climbrate is opposite
                 climbrate = cfactor * speedRef;
             }else{
                 climbrate = deltaH > 0? params.maxClimbRate : params.minClimbRate;
@@ -350,9 +404,11 @@ double Guidance::ComputeClimbRate(double speedRef){
             climbrate = deltaH * params.climbRateGain;
         }
     }else{
+        // If we have a kinematic plan, follow climbrate stored in flightplan
         if(fabs(deltaH) > 5){
             climbrate = currentPlan->vsIn(nextWP);
         }
+        // We need porportional control to maintain target altitude
         climbrate += deltaH * params.climbRateGain;
     }
     if (climbrate > params.maxClimbRate) {
@@ -774,8 +830,12 @@ int Guidance::RunGuidance(double time){
 }
 
 
-void* InitGuidance(GuidanceParams_t* params){
-    return (void*) new Guidance(params);
+void* InitGuidance(char config[]){
+    return (void*) new Guidance(std::string(config));
+}
+
+void guidReadParamFromFile(void* obj, char config[]){
+   ((Guidance*) obj)->ReadParamFromFile(std::string(config));
 }
 
 void guidSetParams(void* obj,GuidanceParams_t* params){

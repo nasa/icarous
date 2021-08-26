@@ -180,7 +180,7 @@ cdef extern from "Interfaces.h":
         double recoveryPosition[3]
 
 cdef extern from "TrafficMonitor.h":
-    void* newDaidalusTrafficMonitor(char* callsign,char* filename,bint reclog)
+    void* newDaidalusTrafficMonitor(char* callsign,char* filename)
     int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6])
     int TrafficMonitor_InputOwnshipData(void * obj, double * position, double * velocity, double time,double sumPos[6],double sumVel[6]) 
     void TrafficMonitor_MonitorTraffic(void * obj,double *wind)
@@ -192,7 +192,8 @@ cdef extern from "TrafficMonitor.h":
     int TrafficMonitor_GetTrafficAlerts(void* obj,int,char* id,int* alert)
 
 cdef extern from "Cognition.h":
-    void* CognitionInit(const char callsign[])
+    void* CognitionInit(const char callsign[],const char config[])
+    void ReadParamFromFile(void* obj,char config[]);
     void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading)
     void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,
                              double initHeading,bint kinematize,double repairTurnRate)
@@ -241,7 +242,8 @@ cdef extern from "Guidance.h":
         double target[3];
         bint wpReached;
 
-    void* InitGuidance(GuidanceParams_t* params)
+    void* InitGuidance(char config[])
+    void guidReadParamFromFile(void* obj,char config[]);
     void guidSetParams(void* obj,GuidanceParams_t* params)
     void guidSetAircraftState(void* obj, double position[],double velocity[])
     void guidSetWindData(void* obj,double windFrom,double windSpeed)
@@ -277,7 +279,8 @@ cdef extern from "DubinsParams.h":
 
 
 cdef extern from "TrajManager.h":
-    void* new_TrajManager(char callsign[]);
+    void* new_TrajManager(char callsign[],char config[]);
+    void TrajManager_ReadParamFromFile(void* obj,char config[]);
     void TrajManager_UpdateDubinsPlannerParameters(void * obj,DubinsParams_t* params);
     void TrafficMonitor_UpdateParameters(void * obj, char * carg2,bint log);
     int TrajManager_FindPath(void * obj,char planID[], double fromPosition[],double toPosition[],double fromVelocity[],double toVelocity[]);
@@ -293,19 +296,6 @@ cdef extern from "TrajManager.h":
     void TrajManager_StringToPlan(void* obj,char planID[],char inputString[]);
     void TrajManager_SetPlanOffset(void*obj, char planID[],int n,double offset);
     trajectoryMonitorData_t TrajManager_MonitorTrajectory(void* obj,double time,char planID[],double position[],double velocity[],int nextWP1,int nextWP2);
-
-cdef extern from "GeofenceMonitor.h":
-    void *new_GeofenceMonitor(double *params);
-    void GeofenceMonitor_SetGeofenceParameters(void *obj, double *params);
-    void GeofenceMonitor_InputGeofenceData(void *obj, int type, int index, int totalVertices, double floor, double ceiling, double (*vertices)[2]);
-    bint GeofenceMonitor_CheckViolation(void * obj, double *position, double track, double groundSpeed, double verticalSpeed);
-    bint GeofenceMonitor_CheckWPFeasibility(void * obj, double * fromPosition, double * toPosition);
-    int GeofenceMonitor_GetNumConflicts(void * obj);
-    void GeofenceMonitor_GetConflictStatus(void * obj, bint*conflictStatus);
-    void GeofenceMonitor_GetConflict(void * obj, int id, int * fenceId, uint8_t * conflict, uint8_t * violation, double * recoveryPos, uint8_t * type);
-    void GeofenceMonitor_GetClosestRecoveryPoint(void * obj, double * currentPos, double *recoveryPos);
-    void GeofenceMonitor_ClearFences(void * obj);
-    void delete_GeofenceMonitor(void * obj);
 
 cdef extern from "Merger.h": 
     ctypedef packed struct mergingData_t:
@@ -324,7 +314,8 @@ cdef extern from "Merger.h":
         mergingData_t log[10]
 
 
-    void* MergerInit(char callsign[],int vehicleID);
+    void* MergerInit(char callsign[],char config[],int vehicleID);
+    void MergerReadParamFromFile(void* obj,char config[]);
     void  MergerDeinit(void *obj);
     void  MergerSetAircraftState(void* obj, double pos[],double vel[]);
     void  MergerSetVehicleConstraints(void* obj, double minVel, double maxVel, double turnRadius);

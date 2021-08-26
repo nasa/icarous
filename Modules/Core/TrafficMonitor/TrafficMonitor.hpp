@@ -38,7 +38,7 @@ class TrafficMonitor{
     }
     virtual void MonitorTraffic(larcfm::Velocity windfrom)=0;
     virtual bool CheckPositionFeasibility(const larcfm::Position pos,const double speed) = 0;
-    virtual void UpdateParameters(std::string params, bool log) = 0;
+    virtual void UpdateParameters(std::string params) = 0;
     virtual int GetTrafficAlerts(int index,std::string& trafficID,int& alertLevel)=0;
     virtual bands_t GetTrackBands(void) = 0;
     virtual bands_t GetSpeedBands(void) = 0;

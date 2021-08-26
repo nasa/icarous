@@ -1,10 +1,14 @@
 #include "TrajManager.h"
 #include "TrajManager.hpp"
 
-void* new_TrajManager(char callsign[]){
-   std::string callstr(callsign);
-   TrajManager* pp = new TrajManager(callstr);
+void* new_TrajManager(char callsign[],char config[]){
+   TrajManager* pp = new TrajManager(std::string(callsign),std::string(config));
    return (void*)pp;
+}
+
+void TrajManager_ReadParamFromFile(void* obj,char config[]){
+   TrajManager* pp = (TrajManager*)obj;
+   pp->ReadParamFromFile(std::string(config));
 }
 
 void TrajManager_UpdateDubinsPlannerParameters(void * obj,DubinsParams_t *params){

@@ -1,13 +1,11 @@
 #include "Cognition.hpp"
+#include "StateReader.h"
+#include "ParameterData.h"
 #include "WP2Plan.hpp"
 
 
-Cognition::Cognition(const std::string callsign){
-    cogState.parameters.resolutionType = TRACK_RESOLUTION;
-    cogState.parameters.DTHR = 30;
-    cogState.parameters.ZTHR = 1000;
-    cogState.parameters.allowedXtrackDeviation = 1000;
-    cogState.parameters.active = true;
+Cognition::Cognition(const std::string callsign,const std::string config){
+    ReadParamsFromFile(config); 
     // Open a log file
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
@@ -18,6 +16,24 @@ Cognition::Cognition(const std::string callsign){
 
     InitializeState();
     InitializeEventHandlers();
+}
+
+
+void Cognition::ReadParamsFromFile(const std::string config){
+    
+    larcfm::StateReader reader;
+    larcfm::ParameterData parameters;
+    reader.open(config);
+    reader.updateParameterData(parameters);
+    cogState.parameters.resolutionType = parameters.getInt("daa_resolution_type");
+    cogState.parameters.allowedXtrackDeviation = parameters.getValue("allowed_xtrk_deviation");
+    cogState.parameters.active = !parameters.getBool("passive_mode");
+    cogState.parameters.persistenceTime = parameters.getValue("persistence_time");
+    cogState.parameters.return2NextWP =parameters.getBool("return_nextwp");
+    cogState.parameters.returnVector = parameters.getBool("return_vector");
+    cogState.parameters.verifyPlanConflict = parameters.getValue("verify_conflict_with_plan");
+    cogState.parameters.planLookaheadTime = parameters.getValue("plan_lookahead");
+
 }
 
 void Cognition::InitializeState(){
@@ -83,12 +99,11 @@ void Cognition::InputVehicleState(const larcfm::Position &pos,const larcfm::Velo
     cogState.speed = vel.gs();
 
     //Update nearest point with respect to active flightplan
-    if(cogState.parameters.return2NextWP == 0 || cogState.parameters.return2NextWP == 2){
+    if(!cogState.parameters.return2NextWP){
         larcfm::Plan *fp = cogState.activePlan;
         if (fp != nullptr && fp->getID() == "Plan0") {
             int nextWP = cogState.nextWpId[fp->getID()];
             cogState.clstPoint = GetNearestPositionOnPlan(fp, cogState.position, nextWP);
-            //cogState.nextWpId[fp->getID()] = nextWP;
         }
     }
 }

@@ -371,48 +371,6 @@ class IcarousInterface(abc.ABC):
         for fence, vertices in zip(geofences_local, self.localFences):
             fence["vertices"] = vertices
 
-        # Extract some daa parameters so they can be used for analysis
-        if self.daaConfig:
-            if self.daaType == 'DAIDALUS':
-                daaparams = ParseDaidalusConfiguration(self.daaConfig)
-                m2ft = 3.28084
-
-                correctiveRegion = daaparams['corrective_region'][1]
-                alerterFound = False
-                alerterList = daaparams['alerters'][1].split(',')
-                alerterCorrective = ''
-                detector = ''
-                for alerter in alerterList:
-                    count = 1
-                    while alerterCorrective == '':
-                        alerter = alerter.lower()
-                        if daaparams[alerter+'_alert_'+str(count)+'_region'][1] == correctiveRegion:
-                            alerterCorrective = alerter
-                            detector = daaparams[alerter+'_alert_'+str(count)+'_detector'][1]
-                            break
-                        else:
-                            count += 1
-                    if alerterCorrective != '':
-                        break
-
-                self.params["DET_1_WCV_DTHR"]=daaparams[alerterCorrective+'_'+detector+'_wcv_dthr'][0]*m2ft
-                self.params["DET_1_WCV_ZTHR"]=daaparams[alerterCorrective+'_'+detector+'_wcv_zthr'][0]*m2ft
-                self.params["DET_1_WCV_TCOA"] = daaparams[alerterCorrective+'_'+detector+'_wcv_tcoa'][0]*m2ft
-                self.params["DET_1_WCV_TTHR"] = daaparams[alerterCorrective+'_'+detector+'_wcv_tthr'][0]*m2ft
-                self.params["AL_1_ALERT_T"] = daaparams[alerterCorrective+'_alert_'+str(count)+'_alerting_time'][0]
-                self.params["HORIZONTAL_NMAC"] = daaparams['horizontal_nmac'][0]*m2ft
-                self.params["VERTICAL_NMAC"] = daaparams['vertical_nmac'][0]*m2ft
-
-            elif self.daaType == 'ACAS':
-                acasParams = ParseAcasConfiguration(self.daaConfig)
-                self.params["DET_1_WCV_DTHR"]=acasParams['DTHR']
-                self.params["DET_1_WCV_ZTHR"]=acasParams['ZTHR']
-                self.params["DET_1_WCV_TCOA"]=0
-                self.params["DET_1_WCV_TTHR"]=acasParams['TTHR']
-                self.params["AL_1_ALERT_T"] =acasParams['ALERT_TIME']
-                self.params["HORIZONTAL_NMAC"]=acasParams['HNMAC']
-                self.params["VERTICAL_NMAC"] =acasParams['VNMAC']
-
         log_data = {"state": self.ownshipLog,
                     "callsign": self.callsign,
                     "traffic": self.trafficLog,

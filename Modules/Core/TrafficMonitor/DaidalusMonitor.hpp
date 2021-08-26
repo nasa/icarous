@@ -61,10 +61,10 @@ private:
     double timeIntervalOfConflictHigh;
 public:
 
-    DaidalusMonitor(std::string callsign, std::string daaConfig,bool reclog);
+    DaidalusMonitor(std::string callsign, std::string daaConfig);
     void MonitorTraffic(larcfm::Velocity windfrom);
     bool CheckPositionFeasibility(const larcfm::Position pos,const double speed);
-    void UpdateParameters(std::string daaParameters,bool log);
+    void UpdateParameters(std::string daaParameters);
     int GetTrafficAlerts(int index,std::string& trafficID,int& alertLevel);
     bands_t GetTrackBands(void);
     bands_t GetSpeedBands(void);

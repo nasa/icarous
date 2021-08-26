@@ -305,6 +305,19 @@ def ConstructWaypointsFromList(fp,eta=False):
         waypoints.append(wp)
     return waypoints
 
+def ParseAccordParamFile(filename):
+    fp = open(filename,'r')
+    data = fp.read()
+    data =data.split('\n')
+    items = []
+    for entry in data:
+        if len(entry) > 0 and '#' not in entry:
+            entry = entry.split('=')
+            items.append((entry[0].strip(' '),entry[1].strip(' ')))
+    fp.close()
+    return dict(items)
+
+
 def ParseDaidalusConfiguration(filename):
     from ctypes import Structure, CDLL, c_char_p, c_int, c_char, c_double
     lib = CDLL(os.path.join(icmodules,'libUtils.so'),winmode=0)

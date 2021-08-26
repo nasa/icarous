@@ -1,14 +1,14 @@
 #include "TrafficMonitor.h"
 #include "DaidalusMonitor.hpp"
 
-void* newDaidalusTrafficMonitor(char *callsign,char *carg2,bool carg1){
-    TrafficMonitor* obj = new DaidalusMonitor(callsign,std::string(carg2),carg1);
+void* newDaidalusTrafficMonitor(char *callsign,char *carg2){
+    TrafficMonitor* obj = new DaidalusMonitor(callsign,std::string(carg2));
     return (void*)obj;
 }
 
-void TrafficMonitor_UpdateParameters(void * obj, char * carg2,bool log){
+void TrafficMonitor_UpdateParameters(void * obj, char * carg2){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
-    monitor->UpdateParameters(std::string(carg2),log);
+    monitor->UpdateParameters(std::string(carg2));
 }
 
 int TrafficMonitor_InputIntruderData(void * obj, int id, char* calls, double *pos,double * vel, double time,double sumPos[6],double sumVel[6]){

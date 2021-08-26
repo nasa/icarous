@@ -44,14 +44,13 @@ cdef class AutonomyStack:
         cdef double geoParams[5]
         self.callsign = opts['callsign'].encode('utf-8')
         daaConfig = opts['daaConfig']
-        daaLog = opts['daaLog']
+        icConfig = opts['icConfig']
         self.verbose = opts['verbose']
-        self.TrafficMonitor = newDaidalusTrafficMonitor(<char*>self.callsign.c_str(),daaConfig.encode('utf-8'),daaLog); 
-        self.Cognition = CognitionInit(<char*>self.callsign.c_str())
-        self.Guidance = InitGuidance(&guidParams) 
-        self.TrajManager = new_TrajManager(<char*>self.callsign.c_str())
-        self.Geofence = new_GeofenceMonitor(geoParams)
-        self.Merger = MergerInit(<char*>self.callsign.c_str(),opts['vehicleID'])
+        self.TrafficMonitor = newDaidalusTrafficMonitor(<char*>self.callsign.c_str(),daaConfig.encode('utf-8')); 
+        self.Cognition = CognitionInit(<char*>self.callsign.c_str(),icConfig.encode('utf-8'))
+        self.Guidance = InitGuidance(icConfig.encode('utf-8')) 
+        self.TrajManager = new_TrajManager(<char*>self.callsign.c_str(),icConfig.encode('utf-8'))
+        self.Merger = MergerInit(<char*>self.callsign.c_str(),icConfig.encode('utf-8'),opts['vehicleID'])
         self.activePlan = b''
         self.etaFP1 = False
         self.nextWP1 = 1
@@ -66,92 +65,11 @@ cdef class AutonomyStack:
         self.windFrom = 0
         self.windSpeed = 0
 
-    def SetGuidanceParams(self):
-        cdef GuidanceParams_t guidParams
-        guidParams.defaultWpSpeed = self.params[b'DEF_WP_SPEED'] 
-        guidParams.captureRadiusScaling = self.params[b'CAP_R_SCALING']
-        guidParams.guidanceRadiusScaling = self.params[b'GUID_R_SCALING']
-        guidParams.climbFpAngle = self.params[b'CLIMB_ANGLE']
-        guidParams.climbAngleVRange = self.params[b'CLIMB_ANGLE_VR']
-        guidParams.climbAngleHRange = self.params[b'CLIMB_ANGLE_HR']
-        guidParams.climbRateGain = self.params[b'CLIMB_RATE_GAIN']
-        guidParams.maxClimbRate = self.params[b'MAX_VS'] * 0.00508
-        guidParams.minClimbRate = self.params[b'MIN_VS'] * 0.00508
-        guidParams.maxCap = self.params[b'MAX_CAP']
-        guidParams.minCap = self.params[b'MIN_CAP']
-        guidParams.maxSpeed = self.params[b'MAX_GS'] * 0.5
-        guidParams.minSpeed = self.params[b'MIN_GS'] * 0.5
-        guidParams.yawForward = True if self.params[b'YAW_FORWARD'] == 1 else False
-        guidParams.turnRateGain = self.params[b'TURNRATE_GAIN']
-        guidSetParams(self.Guidance,&guidParams)
-
-    def SetTrajectoryParams(self):
-
-        cdef DubinsParams_t dubinsParams
-        dubinsParams.turnRate = self.params[b'TURN_RATE']
-        dubinsParams.zSections = self.params[b'ALT_DH'] 
-        dubinsParams.vertexBuffer = self.params[b'OBSBUFFER']
-        dubinsParams.maxGS = self.params[b'MAX_GS'] * 0.5
-        dubinsParams.minGS = self.params[b'MIN_GS'] * 0.5
-        dubinsParams.maxVS = self.params[b'MAX_VS'] * 0.00508
-        dubinsParams.minVS = self.params[b'MIN_VS'] * 0.00508
-        dubinsParams.hAccel = self.params[b'HORIZONTAL_ACCL'] 
-        dubinsParams.vAccel = self.params[b'VERTICAL_ACCL'] 
-        dubinsParams.hDaccel = self.params[b'HORIZONTAL_ACCL']*-0.8
-        dubinsParams.vDaccel = self.params[b'VERTICAL_ACCL']*-1
-        dubinsParams.climbgs = self.params[b'CLMB_SPEED']
-        dubinsParams.maxH = self.params[b'MAX_ALT']*0.3 
-        dubinsParams.wellClearDistH = self.params[b'DET_1_WCV_DTHR']/3
-        dubinsParams.wellClearDistV = self.params[b'DET_1_WCV_ZTHR']/3
-
-        TrajManager_UpdateDubinsPlannerParameters(self.TrajManager,&dubinsParams)
-
-    def SetCognitionParams(self):
-
-        cdef cognition_params_t cogParams
-        cogParams.resolutionType = int(self.params[b'RES_TYPE'])
-        cogParams.allowedXtrackDeviation = self.params[b'XTRKDEV']
-        cogParams.DTHR = self.params[b'DET_1_WCV_DTHR']/3
-        cogParams.ZTHR = self.params[b'DET_1_WCV_ZTHR']/3
-        cogParams.lookaheadTime = self.params[b'LOOKAHEAD_TIME']
-        cogParams.persistenceTime = self.params[b'PERSIST_TIME']
-        cogParams.return2NextWP = int(self.params[b'RETURN_WP'])
-        cogParams.active = True if cogParams.resolutionType >= 0 else False
-        InputParameters(self.Cognition,&cogParams)
-
-    def SetGeofenceParams(self):
-        cdef double params[5]
-
-        params[0] = self.params[b'LOOKAHEAD']
-        params[1] = self.params[b'HTHRESHOLD']
-        params[2] = self.params[b'VTHRESHOLD']
-        params[3] = self.params[b'HSTEPBACK']
-        params[4] = self.params[b'VSTEPBACK']
-
-        GeofenceMonitor_SetGeofenceParameters(self.Geofence, params);
-    
-    def SetMergerParams(self):
-        MergerSetVehicleConstraints(self.Merger,self.params[b'MIN_GS']*0.5,
-                                                self.params[b'MAX_GS']*0.5,
-                                                self.params[b'MAX_TURN_RADIUS'])
-        MergerSetFixParams(self.Merger,self.params[b'MIN_SEP_TIME'],
-                                       self.params[b'COORD_ZONE'],
-                                       self.params[b'SCHEDULE_ZONE'],
-                                       self.params[b'ENTRY_RADIUS'],
-                                       self.params[b'CORRIDOR_WIDTH'])
-
-    def SetParams(self,params):
-        cdef bint log 
-        for key in params.keys():
-            self.params[key.encode('utf-8')] = params[key]
-        log = True if self.params[b'LOGDAADATA'] > 0 else False
-
-        self.SetCognitionParams()
-        self.SetGuidanceParams()
-        self.SetGeofenceParams()
-        self.SetTrajectoryParams()
-        self.SetMergerParams()
-        TrafficMonitor_UpdateParameters(self.TrafficMonitor,''.encode('utf-8'),log)
+    def InputParams(self,inputFile):
+        ReadParamFromFile(self.Cognition,inputFile.encode('utf-8'))
+        guidReadParamFromFile(self.Guidance,inputFile.encode('utf-8'))
+        TrajManager_ReadParamFromFile(self.TrajManager,inputFile.encode('utf-8'))
+        MergerReadParamFromFile(self.Merger,inputFile.encode('utf-8'))
 
     def InputWind(self,windFrom,windSpeed):
         self.windFrom = windFrom
@@ -295,14 +213,6 @@ cdef class AutonomyStack:
                 Vert[i][0] = fence['vertices'][i][0]
                 Vert[i][1] = fence['vertices'][i][1]
 
-            GeofenceMonitor_InputGeofenceData(self.Geofence,
-                                              0 if fence['type'] == 'KEEPIN' else 1,
-                                              fence['id'],
-                                              numV,
-                                              fence['floor'],
-                                              fence['roof'],
-                                              Vert)
-                                              
             TrajManager_InputGeofenceData(self.TrajManager,
                                           0 if fence['type'] == 'KEEPIN' else 1,
                                           fence['id'],
@@ -470,25 +380,6 @@ cdef class AutonomyStack:
         else:
             pass
 
-    def _RunGeofenceMonitor_(self):
-        cdef geofenceConflict_t gfConflictData
-        cdef uint8_t conflict
-        cdef uint8_t violation
-        cdef int id,
-        cdef uint8_t type
-        
-        GeofenceMonitor_CheckViolation(self.Geofence,self.position,self.trkgsvs[0],self.trkgsvs[1],self.trkgsvs[2])
-
-        gfConflictData.numConflicts = GeofenceMonitor_GetNumConflicts(self.Geofence)
-        for i in range(gfConflictData.numConflicts):
-            GeofenceMonitor_GetConflict(self.Geofence,i,&id,&conflict,&violation,
-                                        gfConflictData.recoveryPosition,
-                                        &type)
-            gfConflictData.conflictFenceIDs[i] = id
-            gfConflictData.conflictTypes[i] = type
-
-        InputGeofenceConflictData(self.Cognition,&gfConflictData)
-
     def _RunTrajectoryMonitor_(self,time):
         cdef int nextWP
         cdef string planID
@@ -544,7 +435,6 @@ cdef class AutonomyStack:
         self._RunTrafficMonitor_(time)
         self._RunTrajectoryMonitor_(time)
         self._RunMerger_(time)
-        self._RunGeofenceMonitor_()
 
     def GetOutput(self):
         return self.controlInput

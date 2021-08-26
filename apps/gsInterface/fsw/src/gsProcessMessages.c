@@ -50,7 +50,7 @@ void gsSendHeartbeat(void){
     writeMavlinkData(&appdataIntGS.gs,&hbeat);
 
     if(!appdataIntGS.publishDefaultParams){
-        PublishParams(appdataIntGS.storedparams);
+        //PublishParams(appdataIntGS.storedparams);
         appdataIntGS.publishDefaultParams = true;
     }
 }
@@ -282,7 +282,10 @@ void ProcessGSMessage(mavlink_message_t message) {
 
                 //Publish local array of parameters to SB for other apps
                 //printf("Publishing Parameters\n");
-                PublishParams(appdataIntGS.storedparams);
+                //PublishParams(appdataIntGS.storedparams);
+                noArgsCmd_t paramUpdate;
+                CFE_SB_InitMsg(&paramUpdate,ICAROUS_PARAMUPDATE_MID,sizeof(noArgsCmd_t),TRUE);
+                SendSBMsg(paramUpdate);
                 //Send confirmation message to GS
                 mavlink_message_t paramStatusMsg;
                 mavlink_msg_statustext_pack(sysid_ic,compid_ic,&paramStatusMsg,MAV_SEVERITY_INFO,"Parameters Sent to Apps");
@@ -912,7 +915,7 @@ void gs_gfCallback(uint32_t timerId)
 
 void gs_pmCallback(uint32_t timerId){
     //gsInterface_PublishParams();
-    PublishParams(appdataIntGS.storedparams);
+    //PublishParams(appdataIntGS.storedparams);
 
     mavlink_message_t statusMsg;
     mavlink_msg_statustext_pack(sysid_ic,compid_ic,&statusMsg,MAV_SEVERITY_INFO,"IC:Publishing parameters");

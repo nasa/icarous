@@ -99,10 +99,12 @@ typedef struct{
     double DTHR;                    // Well clear radius threshold (ft)
     double ZTHR;                    // Well clear vertical distance threshold (ft)
     double allowedXtrackDeviation;  // Allowed deviation from flight plan (m)
-    double lookaheadTime;           // lookahead time for traffic conflicts;
+    double planLookaheadTime;       // lookahead time for traffic and fence conflicts
     double persistenceTime;         // traffic conflict persistence time
-    int return2NextWP;              // Return to path behavior. 0 return to nearest point. 1. next WP
+    bool return2NextWP;             // Return to path behavior. 0 return to nearest point. 1. next WP
     bool active;                    // Make cognition active                   
+    bool returnVector;              // Use vectors to command the vehicle to return to mission
+    bool verifyPlanConflict;        // Verify if imminent conflict is a real conflicty by comparing it with current plan
 }cognition_params_t;
 
 

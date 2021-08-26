@@ -61,9 +61,9 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
     for fix in icList[0].localMergeFixes:
-        anim.AddZone(fix[::-1][1:3],icList[0].params['COORD_ZONE'],'r')
-        anim.AddZone(fix[::-1][1:3],icList[0].params['SCHEDULE_ZONE'],'b')
-        anim.AddZone(fix[::-1][1:3],icList[0].params['ENTRY_RADIUS'],'g')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['coordination_zone'],'r')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['schedule_zone'],'b')
+        anim.AddZone(fix[::-1][1:3],icList[0].params['entry_zone'],'g')
 
     for plan in network:
         planWPs = np.array(plan)[:,1:]
@@ -123,7 +123,9 @@ if __name__ == "__main__":
             pb.localPlans = data['flightplans_local']
             pb.localFences = [fence["vertices"] for fence in data['geofences_local']]
             pb.params = data['parameters']
-            pb.daa_radius = pb.params['DET_1_WCV_DTHR']*0.3048
+            alerter = pb.params['alerters'].split(',')[0]
+            dthr = float(pb.params[alerter+'_det_1_WCV_DTHR'].split(' ')[0])
+            pb.daa_radius = dthr*0.3048
             pb.localMergeFixes = data['mergefixes_local']
             pbs.append(pb)
             _xmin = np.min(np.array(pb.ownshipLog['positionNED'])[:,1])

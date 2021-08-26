@@ -14,7 +14,9 @@
 
 class Merger{
    public:
-        Merger(char callsign[],int vehicleID);
+        Merger(std::string callsign,std::string config,int vehicleID);
+
+        void ReadParamFromFile(std::string config);
 
         void SetVehicleConstraints(double minVel, double maxVel, double turnRadius);
 

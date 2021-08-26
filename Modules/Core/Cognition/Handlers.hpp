@@ -15,6 +15,7 @@ class EngageNominalPlan: public EventHandler<CognitionState_t>{
 
 // Handler for takeoff trigger
 class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
+   double takeoffStartTime;
    retVal_e Initialize(CognitionState_t* state){
        // Send the takeoff command
        TakeoffCommand takeoff_command;
@@ -22,6 +23,8 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        cmd.takeoffCommand = takeoff_command;
        state->cognitionCommands.push_back(cmd);
        state->missionStart = -1;
+       state->takeoffComplete = 0;
+       takeoffStartTime = state->utcTime;
        return SUCCESS;
    }
 
@@ -29,9 +32,10 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
        // Wait till we've obtained confirmation of takeoff
        if(state->takeoffComplete == 1){
            return SUCCESS;
-       }else if(state->takeoffComplete != 0){
-           LogMessage(state,"[WARNING] | Takeoff failed");
-           return SUCCESS;
+       }else if(state->utcTime - takeoffStartTime > 5){
+           // If no confirmation was received, let's try restarting takeoff.
+           LogMessage(state,"[WARNING] | Takeoff failed. Restarting takeoff");
+           return RESET;
        }
        return INPROGRESS;
    }
@@ -52,7 +56,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    double gs;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
-       if(state->parameters.return2NextWP == 3){
+       if(state->parameters.return2NextWP){
            // Vector to next waypoint
            larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
            if(state->missionPlan == "Plan0"){
@@ -102,7 +106,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
        }
 
        // Limit climb rate within [-2.5,2.5] m/s. TODO: Use parameters here
-       vs = std::max(-2.5,std::min(vs,-2.5));                    
+       vs = std::max(-2.5,std::min(vs,2.5));                    
 
        SetGuidanceVelCmd(state,trkCmd,gs,vs);
        if ( dist < fmax(10,2.5*gs)){
@@ -133,7 +137,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
         larcfm::Velocity velocityA,velocityB;
         velocityA = state->velocity;
         positionA = state->position;
-        if(state->parameters.return2NextWP == 0){
+        if(!state->parameters.return2NextWP){
             // Plan to the closest point
             int wpID = state->nextWpId[fp->getID()];
             double gs  = fp->gsIn(wpID);
@@ -346,7 +350,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
             SetGuidanceVelCmd(state,state->preferredTrack, speed, climb_rate);
             state->prevResTrack = state->preferredTrack;
             state->returnSafe = ComputeTargetFeasibility(state,target);
-            if(state->parameters.return2NextWP == 0 || state->parameters.return2NextWP == 2){
+            if(!state->parameters.return2NextWP){
                 state->returnSafe &= ComputeTargetFeasibility(state,state->clstPoint);
                 state->closestPointFeasible = state->returnSafe;
             }
@@ -465,7 +469,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                 LogMessage(state,"[HANDLER] | Engage nominal plan");
             }
         }else{
-            if(state->parameters.return2NextWP < 2){
+            if(!state->parameters.returnVector){
                 ExecuteHandler(MAKE_HANDLER(ReturnToMission),"PostTrafficConflict");
             }else{
                 ExecuteHandler(MAKE_HANDLER(Vector2Mission),"PostTrafficConflict",priority-0.6);

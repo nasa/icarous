@@ -229,12 +229,13 @@ void ARDUCOPTER_AppInitializeData(){
     appdataInt.fenceSent = false;
     appdataInt.useVectors = false;
 
+    /*
     char paramFile[] = "../ram/icarous_default.parm";
     bool status = InitializeParams(paramFile,appdataInt.storedparams,PARAM_COUNT);
     if(!status){
         OS_printf("Error loading parameters\n");
         exit(0);
-    }
+    }*/
 }
     
 void ARDUCOPTER_AppCleanUp(){

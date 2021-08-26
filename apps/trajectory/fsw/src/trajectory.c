@@ -86,9 +86,8 @@ void TRAJECTORY_AppInit(void)
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(TRAJECTORY_PARAMETERS_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_PARAMUPDATE_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_REQUEST_MID, TrajectoryAppData.TrajRequest_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(EUTL1_TRAJECTORY_MID, TrajectoryAppData.TrajData_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
@@ -123,7 +122,7 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
     char callsign[30];
     memset(callsign,0,30);
     sprintf(callsign,"aircraft%d",CFE_PSP_GetSpacecraftId());
-    TrajectoryAppData.pplanner = new_TrajManager(callsign);
+    TrajectoryAppData.pplanner = new_TrajManager(callsign,"../ram/IcarousConfig.txt");
         
 
     TrajectoryAppData.flightplan2.num_waypoints = 0;
@@ -411,10 +410,9 @@ void TRAJECTORY_Monitor(void)
                 break;
             }
 
-            case TRAJECTORY_PARAMETERS_MID:
+            case ICAROUS_PARAMUPDATE_MID:
             {
-                trajectory_parameters_t *tjparams = (trajectory_parameters_t*)TrajectoryAppData.Traj_MsgPtr; 
-                TrajManager_UpdateDubinsPlannerParameters(TrajectoryAppData.pplanner,&tjparams->dbparams);
+                TrajManager_ReadParamFromFile(TrajectoryAppData.pplanner,"../ram/IcarousConfig.txt");
                 break;
             }
 

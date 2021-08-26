@@ -8,7 +8,7 @@
 #include "traffic_tbl.h"
 
 TrafficTable_t Traffic_TblStruct = {
-  "../ram/DaidalusQuadConfig.txt",  // configuration file
+  "../ram/IcarousConfig.txt",  // configuration file
   false,                            // log daa output
   true                              // update params via SB messages
 };

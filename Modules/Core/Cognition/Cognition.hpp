@@ -232,7 +232,9 @@ typedef struct{
 
 class Cognition{
     public:
-        Cognition(const std::string callSign);
+        Cognition(const std::string callSign,const std::string config);
+
+        void ReadParamsFromFile(const std::string config);
 
         void Reset();
 

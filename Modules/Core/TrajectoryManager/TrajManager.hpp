@@ -46,9 +46,17 @@ private:
     std::list<larcfm::Plan> trafficPlans;
     std::list<fenceObject> fenceList;
     std::map<std::string,pObject> trafficList;
+
+    // Function to compute dubins path
     int64_t FindDubinsPath(std::string planID);
+
+    // Function to compute projected time to violation to all fence edges
     double FindTimeToFenceViolation(larcfm::Poly3D polygon,larcfm::Vect3 so,larcfm::Velocity vel);
+
+    // Compute cross track (perpendicular deviation), along track (longitudinal deviations) and time delays 
+    // for a given plan, next waypoint index, current position, velocity and time
     std::vector<double> ComputePlanOffsets(const std::string planID,int nextWP,larcfm::Position currentPos,larcfm::Velocity currentVel,double timeAtPos);
+
     void LogInput();
 public:
     larcfm::Position startPos;
@@ -56,7 +64,8 @@ public:
     larcfm::Velocity startVel;
     larcfm::Velocity endVel;
 
-    TrajManager(std::string callsign);
+    TrajManager(std::string callsign,std::string config);
+    void ReadParamFromFile(std::string config);
     void UpdateDubinsPlannerParameters(DubinsParams_t &params);
     int FindPath(std::string planID, larcfm::Position fromPosition,larcfm::Position toPosition,larcfm::Velocity fromVelocity,larcfm::Velocity toVelocity);
     int GetTotalWaypoints(std::string planID);

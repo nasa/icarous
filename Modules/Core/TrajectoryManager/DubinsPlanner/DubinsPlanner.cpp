@@ -84,7 +84,7 @@ void DubinsPlanner::GetPotentialFixes(){
     larcfm::CDPolycarp geoPolycarp;
 
     // Get positons close to each obstacle vertex as a potential fix
-    double turnRadius = rootVel.gs()/(params.turnRate*M_PI/180);
+    double turnRadius = rootVel.gs()/(params.turnRate);
     for(auto &obs: obstacleList){
         // Expand each obstacle 
         double exp = std::max(params.vertexBuffer,3*turnRadius);
@@ -286,9 +286,9 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         endVel = end->vel;
     }
 
-    double R = gs/(params.turnRate*M_PI/180);
+    double R = gs/(params.turnRate);
 
-    double R2 = larcfm::Kinematics::turnRadiusByRate(gs,params.turnRate*M_PI/180);
+    double R2 = larcfm::Kinematics::turnRadiusByRate(gs,params.turnRate);
     double currTrk = startVel.trk();
     double bankAngle = larcfm::Kinematics::bankAngleRadius(gs,R);
     double turnRateC = larcfm::Kinematics::turnRate(gs,bankAngle);
@@ -309,7 +309,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
     // Lambda function to compute turn times
     auto GetTurnTime = [&] (larcfm::Vect2 posA,larcfm::Vect2 posB,int r){
         double angle = larcfm::Util::turnDelta(posA.trk(),posB.trk(),r);
-        double dt = angle/(params.turnRate*M_PI/180);
+        double dt = angle/(params.turnRate);
         return dt;
     };
 
@@ -1019,7 +1019,7 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
     double ETA;
     node_t* prevNode = nullptr;
     double initSpeed = rootVel.gs();
-    double radius = initSpeed/(params.turnRate*M_PI/180);
+    double radius = initSpeed/(params.turnRate);
     int count = 1;
     for (auto node : path) {
         for (int i = 0; i < node.TCPdata.size(); ++i) {
@@ -1058,7 +1058,7 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
                 if(trk3 > M_PI && distBOTEOT > 0.1){
                     trk3 = trk3/2;
                     larcfm::Vect3 posA = proj.project(newRoute.getPos(iBOT));
-                    double turnTime = trk3 / (params.turnRate * M_PI / 180);
+                    double turnTime = trk3 / (params.turnRate);
                     double motT = newRoute.time(iBOT) + turnTime;
                     std::pair<larcfm::Vect3, larcfm::Velocity> out = larcfm::Kinematics::turn(posA, vel, turnTime, std::fabs(newRoute.turnRadiusAtTime(motT)), dir>0?true:false);
                     larcfm::Position mot(proj.inverse(out.first));

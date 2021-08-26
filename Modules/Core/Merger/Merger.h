@@ -53,7 +53,8 @@ typedef struct __attribute__((__packed__)){
 }dataLog_t;
 
 
-void* MergerInit(char callsign[],int vehicleID);
+void* MergerInit(char callsign[],char config[],int vehicleID);
+void MergerReadParamFromFile(void* obj,char config[]);
 void  MergerDeinit(void *obj);
 void  MergerSetAircraftState(void* obj, double pos[],double vel[]);
 void  MergerSetVehicleConstraints(void* obj, double minVel, double maxVel, double turnRadius);

@@ -211,12 +211,13 @@ void gsInterface_InitializeAppData(void){
   appdataIntGS.fenceSent = false;
   appdataIntGS.publishDefaultParams = false;
 
+  /*
   char paramFile[] = "../ram/icarous_default.parm";
   bool status = InitializeParams(paramFile,appdataIntGS.storedparams,PARAM_COUNT);
   if(!status){
     OS_printf("Error loading parameters\n");
     exit(0);
-  }
+  }*/
 }
 
 void gsInterface_AppCleanUp(void){

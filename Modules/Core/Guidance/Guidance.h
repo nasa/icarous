@@ -57,7 +57,8 @@ typedef struct{
     bool wpReached;
 }GuidanceOutput_t;
 
-void* InitGuidance(GuidanceParams_t* params);
+void* InitGuidance(char config[]);
+void guidReadParamFromFile(void* obj,char config[]);
 void guidSetParams(void* obj,GuidanceParams_t* params);
 void guidSetAircraftState(void* obj, double position[],double velocity[]);
 void guidSetWindData(void* obj,double windFrom,double windSpeed);

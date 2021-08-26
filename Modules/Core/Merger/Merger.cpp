@@ -1,6 +1,8 @@
 #include "Merger.hpp"
+#include "StateReader.h"
+#include "ParameterData.h"
 
-Merger::Merger(char callsign[],int vID){
+Merger::Merger(std::string callsign,std::string config,int vID){
 
     vehicleID = vID;
     // Open log files
@@ -9,20 +11,35 @@ Merger::Merger(char callsign[],int vID){
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
 
     char filename1[50];
-    sprintf(filename1,"log/mergerLog-%s-%f.log",callsign,localT);
+    sprintf(filename1,"log/mergerLog-%s-%f.log",callsign.c_str(),localT);
     logFile1 = fopen(filename1,"w");
     fprintf(logFile1, "Vehicle ID: %d",vID);   
 
     char filename2[50];
-    sprintf(filename2,"log/merger_appdata-%s-%f.log",callsign,localT);
+    sprintf(filename2,"log/merger_appdata-%s-%f.log",callsign.c_str(),localT);
     logFile2 = fopen(filename2,"w");
     fprintf(logFile2,"# time (s), intID, dist2int, speed, f/c/l, (r,t,d), zone, numSch, merge speed, merge dev, merging status, lat, lon, alt\n");
 
     // Initialize total number of fixes
     totalFixes = 0;
-
+    ReadParamFromFile(config);
     // Iniitalize all internal variables
     ResetData();
+}
+
+void Merger::ReadParamFromFile(std::string config){
+    larcfm::StateReader reader;
+    larcfm::ParameterData parameters;
+    reader.open(config);
+    reader.updateParameterData(parameters);
+
+    separationTime = parameters.getValue("separation_time");
+    coordZone = parameters.getValue("coordination_zone");
+    schedZone = parameters.getValue("schedule_zone");
+    entryZone = parameters.getValue("entry_zone");
+    corridorWidth = parameters.getValue("corridor_width"); 
+    maxSpeed = parameters.getValue("max_hs"); 
+    minSpeed = parameters.getValue("min_hs");
 }
 
 void Merger::ResetData(){
@@ -586,7 +603,7 @@ bool Merger::ComputeMergingSpeed(uint32_t arrivalTime)
 
     double eta = arrivalTime - time2ZoneEntry;
 
-    double step = turnRadius;
+    double step = 0;
     int N;
     if (corridorWidth < 1e-3) {
         N = 1;
@@ -594,7 +611,7 @@ bool Merger::ComputeMergingSpeed(uint32_t arrivalTime)
         N = (int)(corridorWidth / step);
     }
     double d = entryZone; 
-    double xc1 = turnRadius;
+    double xc1 = 0; 
     double xc3 = corridorWidth;
     resSpeed = currentSpeed;
     fprintf(logFile1, "eta: %f\n", eta);
@@ -790,9 +807,14 @@ void Merger::AddLogEntry(){
 
 //functions to interface with C
 
-void* MergerInit(char callsign[],int vehicleID){
-    Merger* mg = new Merger(callsign,vehicleID);
+void* MergerInit(char callsign[],char config[],int vehicleID){
+    Merger* mg = new Merger(std::string(callsign),std::string(config),vehicleID);
     return (void*) mg;
+}
+
+void MergerReadParamFromFile(void* obj,char config[]){
+    Merger* mg = (Merger*)obj;
+    mg->ReadParamFromFile(std::string(config));
 }
 
 void  MergerDeinit(void *obj){

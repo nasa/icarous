@@ -62,6 +62,7 @@ void GUIDANCE_AppInit(void) {
     CFE_SB_SubscribeLocal(GUIDANCE_PARAMETERS_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STARTMISSION_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_EXTERNAL_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_PARAMUPDATE_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
     CFE_TBL_Handle_t tblHandle;
@@ -93,7 +94,7 @@ void GUIDANCE_AppInit(void) {
 
 void GUIDANCE_AppInitData(void){
 
-    guidanceAppData.Guidance = InitGuidance((GuidanceParams_t*)&guidanceAppData.guidance_params);
+    guidanceAppData.Guidance = InitGuidance("../ram/IcarousConfig.txt");
     guidanceAppData.takeoffComplete = false;
 }
 
@@ -148,6 +149,11 @@ void GUIDANCE_ProcessPacket(void){
             break;
         }
 
+        case ICAROUS_PARAMUPDATE_MID:{
+            guidReadParamFromFile(guidanceAppData.Guidance,"../ram/IcarousConfig.txt");
+            break;
+        }
+
         case FREQ_30_WAKEUP_MID:{
             GUIDANCE_Run();
             break;
@@ -196,7 +202,7 @@ void GUIDANCE_ProcessPacket(void){
             guidanceAppData.guidance_params.minSpeed = msg->minSpeed;
             guidanceAppData.guidance_params.yawForward = msg->yawForward;
             guidanceAppData.guidance_params.turnRateGain = msg->turnRateGain;
-            guidSetParams(guidanceAppData.Guidance,&guidanceAppData.guidance_params);
+            //guidSetParams(guidanceAppData.Guidance,&guidanceAppData.guidance_params);
             break;
         }
     }

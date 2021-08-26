@@ -16,6 +16,7 @@ from ichelper import (ConvertTrkGsVsToVned,
                       ReadFlightplanFile,
                       GetEUTLPlanFromFile,
                       GetPlanPositions,
+                      ParseAccordParamFile,
                       ConstructWaypointsFromList)
 import time
 from IcarousInterface import IcarousInterface
@@ -27,7 +28,7 @@ class Icarous(IcarousInterface):
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
                  logRateHz=5, fasttime=True, simtype="UAS_ROTOR",
-                 monitor="DAIDALUS", daaConfig="data/DaidalusQuadConfig.txt"):
+                 monitor="DAIDALUS", daaConfig="data/IcarousConfig.txt",icConfig="data/IcarousConfig.txt"):
         """
         Initialize pycarous
         :param fasttime: when fasttime is True, simulation will run in fasttime
@@ -83,6 +84,7 @@ class Icarous(IcarousInterface):
 
         # Other aircraft data
         self.daaConfig = daaConfig
+        self.icConfig = icConfig
         self.emergbreak = False
         self.daa_radius = 0
         self.turnRate = 0
@@ -101,9 +103,11 @@ class Icarous(IcarousInterface):
         opts = {}
         opts['callsign'] = self.callsign
         opts['daaConfig'] = self.daaConfig
-        opts['daaLog'] = True
+        opts['icConfig'] = self.icConfig
         opts['verbose'] = verbose
         opts['vehicleID'] = self.vehicleID
+
+        self.params = ParseAccordParamFile(self.daaConfig)
         self.core = AutonomyStack(opts)
 
     def SetPosUncertainty(self, xx, yy, zz, xy, xz, yz, coeff=0.8):
@@ -177,8 +181,18 @@ class Icarous(IcarousInterface):
         self.core.SetIntersectionData(list(zip(ind,wp)))
 
     def SetParameters(self,params):
-        self.params = params
-        self.core.SetParams(params)
+        import os
+        self.params.update(params)
+        paramstr=''
+        for item in self.params.items():
+            paramstr+= item[0]+'='+str(item[1])+'\n'
+        paramFile ='.tempICparam.txt' 
+        fp = open(paramFile,'w')
+        fp.write(paramstr)
+        fp.close()
+        self.core.InputParams(paramFile)
+        os.remove(paramFile)
+
 
     def RunOwnship(self):
         self.controlInput = self.core.GetOutput()

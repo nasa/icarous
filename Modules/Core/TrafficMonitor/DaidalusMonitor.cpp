@@ -3,12 +3,14 @@
 //
 
 #include "DaidalusMonitor.hpp"
+#include "StateReader.h"
+#include "ParameterData.h"
 #include <sys/time.h>
 #include <list>
 #include <cstring>
 #include <Units.h>
 
-DaidalusMonitor::DaidalusMonitor(std::string callsgn,std::string daaConfig,bool reclog) {
+DaidalusMonitor::DaidalusMonitor(std::string callsgn,std::string daaConfig) {
     conflictStartTime = 0;
     startTime = 0;
     conflictTrack = false;
@@ -16,22 +18,7 @@ DaidalusMonitor::DaidalusMonitor(std::string callsgn,std::string daaConfig,bool 
     conflictVerticalSpeed = false;
     callsign = callsgn;
     prevLogTime = 0;
-    char            fmt1[64],fmt2[64];
-    struct timespec  tv;
-    clock_gettime(CLOCK_REALTIME,&tv);
-    double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-    sprintf(fmt1,"log/Daidalus-%s-%f.log",callsign.c_str(),localT);
-
-    log = reclog;
-
-    if(log) {
-        logfileIn.open(fmt1);
-    }
-
-    std::string filename = daaConfig;
-    DAA1.loadFromFile(filename);
-    DAA2.loadFromFile(filename);
-
+    
     numTrackBands = 0;
     numSpeedBands = 0;
     numVerticalSpeedBands = 0;
@@ -41,39 +28,34 @@ DaidalusMonitor::DaidalusMonitor(std::string callsgn,std::string daaConfig,bool 
     speedIntTypes.push_back(larcfm::BandsRegion::NONE);
     vsIntTypes.push_back(larcfm::BandsRegion::NONE);
     altIntTypes.push_back(larcfm::BandsRegion::NONE);
-    alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
+
+    UpdateParameters(daaConfig); 
 
 }
 
-void DaidalusMonitor::UpdateParameters(std::string daaParameters,bool reclog) {
+void DaidalusMonitor::UpdateParameters(std::string daaParameters) {
 
-    if(daaParameters.length() > 0){
-        larcfm::ParameterData params;
-        params.parseParameterList(";", daaParameters);
-        DAA1.setParameterData(params);
-        alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
-        ZTHR = DAA1.getAlerterAt(1).getParameters().getValue("det_1_WCV_ZTHR");
-        maxVS = DAA1.getParameterData().getValue("max_vs");
-        minVS = DAA1.getParameterData().getValue("min_vs");
-        // Increase time threshold parameters for second DAA object
-        params.setInternal("default_alert_1_alerting_time", alertingTime * 2, "s");
-        params.setInternal("default_alert_1_early_alerting_time", alertingTime * 2 + 10, "s");
-        params.setInternal("lookahead_time", alertingTime * 2 + 10, "s");
-        DAA2.setParameterData(params);
-        if (reclog && !log)
-        {
-            log = reclog;
-            char fmt1[64], fmt2[64];
-            struct timespec tv;
-            struct tm *tm;
-            clock_gettime(CLOCK_REALTIME, &tv);
-            double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec) / 1E9;
-            sprintf(fmt1, "log/Daidalus-%s-%f.log", callsign.c_str(), localT);
-            logfileIn.open(fmt1);
+    larcfm::StateReader reader;
+    larcfm::ParameterData parameters;
+    reader.open(daaParameters);
+    reader.updateParameterData(parameters);
+
+    char fmt1[64];
+    struct timespec  tv;
+    clock_gettime(CLOCK_REALTIME,&tv);
+    double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+    sprintf(fmt1,"log/Daidalus-%s-%f.log",callsign.c_str(),localT);
+
+    if(parameters.getBool("record_daa_logs")) {
+        if(!logfileIn.is_open()){
+           logfileIn.open(fmt1);
         }
-    }else{
-        log = reclog;
     }
+
+    DAA1.setParameterData(parameters);
+    DAA2.setParameterData(parameters);
+
+    alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
 }
 
 void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
@@ -199,7 +181,7 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
     }
 
 
-    if(log && elapsedTime > prevLogTime+0.5){
+    if(logfileIn.is_open() && elapsedTime > prevLogTime+0.5){
         logfileIn << "**************** Current Time:"+std::to_string(elapsedTime)+" *******************\n";
         logfileIn << DAA1.toString()+"\n";
         prevLogTime = elapsedTime;

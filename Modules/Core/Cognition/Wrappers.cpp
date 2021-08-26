@@ -2,9 +2,14 @@
 #include "Cognition.h"
 #include "UtilFunctions.h"
 
-void* CognitionInit(const char callsign[]){
-    Cognition* cog = new Cognition(std::string(callsign));
+void* CognitionInit(const char callsign[],const char config[]){
+    Cognition* cog = new Cognition(std::string(callsign),std::string(config));
     return (void*)cog;
+}
+
+void ReadParamFromFile(void* obj,char config[]){
+    Cognition* cog = (Cognition*)obj;
+    cog->ReadParamsFromFile(std::string(config));
 }
 
 void Reset(void *obj){
@@ -19,6 +24,10 @@ void InputVehicleState(void *obj,const double pos[3],const double vel[3],const d
     cog->InputVehicleState(position,velocity,heading);
 }
 
+void InputParmetersFromFile(void* obj,const char config[]){
+    Cognition* cog = (Cognition*)obj;
+    cog->ReadParamsFromFile(std::string(config));
+}
 
 void InputFlightPlanData(void* obj,char planid[],waypoint_t wpts[],int totalwp,
                          double initHeading,bool kinematize,double repairTurnRate){

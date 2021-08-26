@@ -7,7 +7,8 @@
 extern "C" {
 #endif
 
-void* new_TrajManager(char callsign[]);
+void* new_TrajManager(char callsign[],char config[]);
+void TrajManager_ReadParamFromFile(void* obj,char config[]);
 void TrajManager_UpdateDubinsPlannerParameters(void * obj,DubinsParams_t* params);
 int TrajManager_FindPath(void * obj,char planID[], double fromPosition[],double toPosition[],double fromVelocity[],double toVelocity[]);
 int TrajManager_GetTotalWaypoints(void * obj, char * planid);

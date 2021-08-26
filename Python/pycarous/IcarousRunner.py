@@ -7,7 +7,7 @@ import subprocess
 import numpy as np
 from pymavlink import mavutil, mavwp
 
-from ichelper import (LoadIcarousParams,
+from ichelper import (ParseAccordParamFile,
                       ReadFlightplanFile,
                       GetFlightplan,
                       ConstructWaypointsFromList,
@@ -41,7 +41,7 @@ class IcarousRunner(IcarousInterface):
         self.sim_process = None
         self.SetApps(apps=apps)
         print("%s sim app: %s" % (self.callsign, sim_app))
-        self.daaConfig = os.path.join(icarous_home, "exe", "ram", "DaidalusQuadConfig.txt")
+        self.icConfig = os.path.join(icarous_home, "exe", "ram", "IcarousConfig.txt")
         self.out = out
         self.cpu_id = self.vehicleID + 1
         self.spacecraft_id = self.vehicleID
@@ -83,7 +83,7 @@ class IcarousRunner(IcarousInterface):
             print("%s : Waiting for heartbeat..." % self.callsign)
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, target_system=1, target_component=0)
-
+        self.params = ParseAccordParamFile(self.icConfig)
         # Launch SITL if necessary
         if sim_app == "arducopter":
             self.launch_arducopter()
@@ -169,9 +169,15 @@ class IcarousRunner(IcarousInterface):
         shutil.copy(filename, dest)
 
     def SetParameters(self, params):
-        for param_id, param_value in params.items():
-            self.gs.master.param_set_send(param_id, param_value)
-        self.params = params
+        
+        self.params.update(params)
+        paramstr=''
+        for item in self.params.items():
+            paramstr+= item[0]+'='+str(item[1])+'\n'
+        paramFile = self.icConfig
+        fp2 = open(paramFile,'w')
+        fp2.write(paramstr)
+        fp2.close()
 
     def InputMergeLogs(self, logs, delay):
         # When using cFS, merge data is exchanged over SBN

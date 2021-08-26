@@ -14,8 +14,10 @@
 #include "TrajManager.h"
 #include "TrajManager.hpp"
 #include "WP2Plan.hpp"
+#include "StateReader.h"
+#include "ParameterData.h"
 
-TrajManager::TrajManager(std::string callsign) {
+TrajManager::TrajManager(std::string callsign,std::string config) {
     char            fmt1[64];
     struct timespec  tv;
     numPlans = 0;
@@ -23,6 +25,34 @@ TrajManager::TrajManager(std::string callsign) {
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
     sprintf(fmt1,"log/Path-%s-%f.log",callsign.c_str(), localT);
     log.open(fmt1);
+    ReadParamFromFile(std::string(config));
+}
+
+void TrajManager::ReadParamFromFile(std::string config){
+    larcfm::StateReader reader;
+    larcfm::ParameterData parameters;
+    reader.open(config);
+    reader.updateParameterData(parameters);
+    DubinsParams_t params;
+    params.minGS = parameters.getValue("min_hs");
+    params.maxGS = parameters.getValue("max_hs");
+    params.turnRate = parameters.getValue("turn_rate");
+    params.vAccel = parameters.getValue("vertical_accel");
+    params.hAccel = parameters.getValue("horizontal_accel");
+    params.hDaccel = params.hAccel * 0.5;
+    params.vDaccel = params.vAccel * 0.5;
+    params.minVS = parameters.getValue("min_vs");
+    params.maxVS = parameters.getValue("max_vs");
+    params.vertexBuffer = parameters.getValue("obstacle_buffer");
+    params.wellClearDistH = parameters.getValue("dubins_wellclear_radius");
+    params.wellClearDistV = parameters.getValue("dubins_wellclear_height");
+    params.climbgs = params.maxVS;
+    params.maxH = parameters.getValue("max_alt");
+    params.zSections = parameters.getValue("alt_bins");
+    dbPlanner.SetParameters(params);
+    wellClearDistH = params.wellClearDistH;
+    wellClearDistV = params.wellClearDistV;
+
 }
 
 void TrajManager::InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]){
@@ -434,15 +464,18 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 if (conflict)
                     gfTimes.push_back(0.0);
                 // Check for projected fence conflict based on flightplan
-                double eps = 5; // a small additional delta to add to the output
+                double eps = 5; // a small additional delta to add to the output. TODO: make this a parameter
                 double t = FindTimeToFenceViolation(localPoly, larcfm::Vect3(0, 0, pos.alt()), vel) + eps;
                 int seg = fp->getSegment(correctedtime + t);
                 if (seg < 0)
                 {
                     continue;
                 }
+                // Get position on plan for detected time to violation
                 larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
                 larcfm::Vect3 qPos = projection.project(posOnPlan);
+
+                // If projected point on plan is outside fence, we have a real problem.
                 bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
                 projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 2, 2);
                 if (projConflict)

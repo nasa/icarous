@@ -1,14 +1,20 @@
 # V-2.0.g
-# Bands Parameters
-lookahead_time = 20.0 [s]
-left_hdir = 180.0 [deg]
-right_hdir = 180.0 [deg]
+# Vehicle peformance parameters
 min_hs = 0.2 [knot]
 max_hs = 30.0 [knot]
 min_vs = -500.0 [fpm]
 max_vs = 500.0 [fpm]
 min_alt = 15.0 [ft]
 max_alt = 500.0 [ft]
+horizontal_accel = 1.0 [m/s^2]
+vertical_accel = 1.0 [m/s^2]
+turn_rate = 10.0 [deg/s]
+bank_angle = 0.0 [deg]
+vertical_rate = 0.0 [fpm]
+# Band parameters
+lookahead_time = 20.0 [s]
+left_hdir = 180.0 [deg]
+right_hdir = 180.0 [deg]
 # Relative Bands Parameters
 below_relative_hs = 100.0 [knot]
 above_relative_hs = 100.0 [knot]
@@ -17,15 +23,10 @@ above_relative_vs = 5000.0 [fpm]
 below_relative_alt = 10000.0 [ft]
 above_relative_alt = 10000.0 [ft]
 # Kinematic Parameters
-step_hdir = 5.0 [deg]
-step_hs = 0.25 [knot]
-step_vs = 250.0 [fpm]
+step_hdir = 1.0 [deg]
+step_hs = 2.0 [knot]
+step_vs = 100.0 [fpm]
 step_alt = 50.0 [ft]
-horizontal_accel = 1.0 [m/s^2]
-vertical_accel = 1.0 [m/s^2]
-turn_rate = 10.0 [deg/s]
-bank_angle = 0.0 [deg]
-vertical_rate = 0.0 [fpm]
 # Recovery Bands Parameters
 min_horizontal_recovery = 30.0 [ft]
 min_vertical_recovery = 30.0 [ft]
@@ -85,14 +86,44 @@ default_det_1_WCV_ZTHR = 30.0 [ft]
 default_det_1_WCV_TTHR = 5.0 [s]
 default_det_1_WCV_TCOA = 5.0 [s]
 default_load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.WCV_TAUMOD
-default_alert_2_region = NEAR
-default_alert_2_alerting_time = 0.0 [s]
-default_alert_2_early_alerting_time = 0.0 [s]
-default_alert_2_spread_hdir = 0.0 [deg]
-default_alert_2_spread_hs = 0.0 [knot]
-default_alert_2_spread_vs = 0.0 [fpm]
-default_alert_2_spread_alt = 0.0 [ft]
-default_alert_2_detector = det_2
-default_det_2_D = 30.0 [ft]
-default_det_2_H = 30.0 [ft]
-default_load_core_detection_det_2 = gov.nasa.larcfm.ACCoRD.CDCylinder
+
+# Icarous specific parameters
+
+# Cognition parameters
+passive_mode = false
+daa_resolution_type = 2
+allowed_xtrk_deviation = 10 [m]
+return_nextwp = true
+return_vector = true
+verify_conflict_with_plan = false
+plan_lookahead = 20 [s]
+
+# Guidance parameters
+default_wp_speed = 1.0 [m/s]
+capture_radius_scaling = 2.0
+guidance_radius_scaling =  2.0
+climb_angle = 75 [deg]
+horizontal_climb_delta = 10 [m]
+vertical_climb_delta = 10 [m]
+climb_rate_gain = 0.5
+max_capture_radius = 15 [m]
+min_capture_radius = 1 [m]
+yaw_forward = 1
+turnrate_gain = 5
+
+# Traffic parameters
+record_daa_logs = true
+traffic_source = 0
+
+# Trajectory parameters
+obstacle_buffer = 5 [m]
+dubins_wellclear_radius = 30.0 [ft]
+dubins_wellclear_height = 30.0 [ft]
+alt_bins = 1
+
+# merger parameters
+separation_time = 20.0 [s]
+coordination_zone = 90.0 [m]
+schedule_zone = 70.0 [m]
+entry_zone = 60.0 [m]
+corridor_width = 0.0 [m]

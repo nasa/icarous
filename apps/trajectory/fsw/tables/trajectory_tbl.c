@@ -15,14 +15,14 @@ TrajectoryTable_t Trajectory_TblStruct = {
   1.0,                              // astar grid size (only for grid search)
   2.0,                              // speed used in astar search
   1.0,                              // astar look ahead time for next node
-  "../ram/DaidalusQuadConfig.txt",  // daa configuration file for Astar
+  "../ram/IcarousConfig.txt",  // daa configuration file for Astar
 
   1.0,                              // rrt resolution speed
   2000,                             // max rrt iterations
   1.0,                              // Time step used in Range Kutta integration.
   5,                                // Number of Runger Kutta iterations in each rrt iteration.
   5.0,                              // final goal capture radius
-  "../ram/DaidalusQuadConfig.txt",  // daa configuration file for RRT
+  "../ram/IcarousConfig.txt",  // daa configuration file for RRT
 
   6.0,                              // Xtrack deviation allowed
   0.6,                              // Xtrack error gain.
