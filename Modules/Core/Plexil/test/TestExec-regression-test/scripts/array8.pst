@@ -1,7 +1,0 @@
-
-// Array8
-
-script {
-  update-ack array8;
-}
-

@@ -1,7 +1,0 @@
-LibraryAction MungArray(In Integer ary[10]);
-
-LibraryCallWithArray:
-{
-  Integer foo[10] = #(1 2 3 4 5 6 7 8 9 10);
-  LibraryCall MungArray(ary = foo);
-}

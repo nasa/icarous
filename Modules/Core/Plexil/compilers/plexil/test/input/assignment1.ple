@@ -1,5 +1,0 @@
-IncrementCounter:
-{
-  Integer ExecutionCount = 0;
-  ExecutionCount = 1 + ExecutionCount;
-}

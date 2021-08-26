@@ -1,5 +1,0 @@
-{
-  Post NodeInvariantFailed (A) && NodeInvariantFailed(Child(B));
-  A: { Invariant false;}
-  B: {Invariant false;}
-}

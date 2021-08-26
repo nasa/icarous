@@ -1,5 +1,0 @@
-This directory contains the main executive for PLEXIL.  For more
-information, see the Universal Executive chapter in the PLEXIL manual
-at http://plexil.sourceforge.net.
-
-To build this application, type 'make'.

@@ -1,7 +1,0 @@
-(plexil-plan
- (comment "Should stop with success after node 'bar'")
- (try
-  (empty-node "foo"
-   (postcondition (= 1 2)))
-  (empty-node "bar")
-  (empty-node "joe")))

@@ -1,4 +1,0 @@
-(plexil-plan
- (assignment-node "lookup3"
-   (variables (integer "x"))
-   (assignment (intvar "x") (lookup-now "foo"))))

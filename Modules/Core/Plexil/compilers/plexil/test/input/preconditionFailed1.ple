@@ -1,5 +1,0 @@
-Concurrence
-{
-  A: { Pre false; }
-  B: { Start NodePreconditionFailed (A); }
-}

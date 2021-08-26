@@ -1,6 +1,0 @@
-Real Lookup time;
-
-time_lookup_test:
-{
-  EndCondition Lookup(time, 1.0) >= (time_lookup_test.EXECUTING.START + 5);
-}

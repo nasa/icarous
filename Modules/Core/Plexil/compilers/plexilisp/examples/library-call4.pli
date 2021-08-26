@@ -1,7 +1,0 @@
-(plexil-plan
-  (declarations
-    (library-node-declaration "library4"))
-  (library-call-node "root"
-    (variables (string "name"))
-    (call "library4")))
-

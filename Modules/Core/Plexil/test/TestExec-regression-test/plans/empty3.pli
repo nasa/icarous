@@ -1,8 +1,0 @@
-(plexil-plan
- (list-node "empty3"
-  (end-condition (finished "two"))
-  (post-condition (successful "two"))
-  (list            
-   (empty-node "one")
-   (empty-node "two"
-    (start-condition (finished "one"))))))

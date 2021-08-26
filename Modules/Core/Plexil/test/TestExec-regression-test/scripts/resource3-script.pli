@@ -1,3 +1,0 @@
-(plexil-script
-  (script
-    (command-ack "store" "string" "COMMAND_SUCCESS")))

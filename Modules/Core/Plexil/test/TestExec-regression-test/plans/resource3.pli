@@ -1,8 +1,0 @@
-(plexil-plan
-  (command-node "Root"
-    (variables (real "p" 23.0))
-    (command "store"
-      (resources
-        (resource "Memory" (realvar "p")
-                  (resource-lower-bound 10.0)
-                  (resource-upper-bound 20.0))))))

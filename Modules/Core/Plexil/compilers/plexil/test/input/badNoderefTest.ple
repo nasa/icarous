@@ -1,7 +1,0 @@
-Date Lookup time;
-
-badNodeNameTest:
-{
-  EndCondition Lookup (time) >= time_lookup_test.EXECUTING.START + Duration ("P5S");
-  PostCondition isKnown(Self.EXECUTING.END);
-}

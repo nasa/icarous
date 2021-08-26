@@ -1,5 +1,0 @@
-(plexil-plan
- (sequence
-  (empty-node "foo")
-  (empty-node "bar"
-    (start-condition (= 2 2)))))

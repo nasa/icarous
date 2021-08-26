@@ -1,5 +1,0 @@
-(plexil-plan
- (list-node
-  (variables
-   (integer "foo"))
-  (assignment (intvar "foo") 4)))

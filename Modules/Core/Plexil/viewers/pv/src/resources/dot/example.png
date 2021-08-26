@@ -1,7 +1,0 @@
-digraph simple_hierarchy {
-	node [label="\N"];
-	graph [bb="0,0,54,124"];
-	B [label="The boss", pos="27,106", width="0.75", height="0.50"];
-	E [label="The employee", pos="27,18", width="0.75", height="0.50"];
-	B -> E [label=commands, fontcolor=darkgreen, pos="e,27,36 27,88 27,76 27,60 27,46", lp="29,62"];
-}

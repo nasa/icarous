@@ -1,9 +1,0 @@
-Command print(...);
-
-{
-NestedBlocks2:
-  {
-  Print:
-    print("NestedBlocks2");
-  }
-}

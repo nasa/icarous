@@ -1,9 +1,0 @@
-(plexil-plan
- (list-node "repeat1"
-   (variables (integer "count" 0))
-   (end-condition (finished "Inc"))
-   (start-condition true)
-   (list
-    (assignment-node "Inc"
-      (repeat-condition (< (intvar "count") 4))
-      (assignment (intvar "count") (+ 1 (intvar "count")))))))

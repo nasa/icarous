@@ -1,5 +1,0 @@
-(plexil-plan
- (concurrence "Root"
-  (empty-node 
-   (start-condition (= 1 2)))
-  (empty-node)))

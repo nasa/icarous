@@ -1,3 +1,0 @@
-(plexil-plan
-  (empty-node "library1"
-    (interface (inout (integer "arg1")))))
