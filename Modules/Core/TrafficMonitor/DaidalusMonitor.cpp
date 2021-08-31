@@ -56,6 +56,7 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters) {
     DAA2.setParameterData(parameters);
 
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
+    dataSource = parameters.getInt("traffic_source");
 }
 
 std::string DaidalusMonitor::GetAlerter(object& intruder){
@@ -95,6 +96,9 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
     bool conflict = false;
     std::list<object> staleData;
     for (auto elem:trafficList){
+        if( !(dataSource == 0 || elem.second.source == dataSource) ){
+            continue;
+        }
         count++;
         // Use traffic only if its data has been updated within the last 10s.
         if(elapsedTime - elem.second.time < 120 && elem.second.position.alt() > 1){
