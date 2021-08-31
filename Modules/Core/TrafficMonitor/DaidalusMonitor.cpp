@@ -100,8 +100,10 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
         if(elapsedTime - elem.second.time < 120 && elem.second.position.alt() > 1){
             DAA1.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
             SetSUM(count,elem.second.posSigma,elem.second.velSigma);
-            std::string alerter = GetAlerter(elem.second);
-            DAA1.setAlerter(count,alerter);
+            if(!DAA1.isAlertingLogicOwnshipCentric()){
+                std::string alerter = GetAlerter(elem.second);
+                DAA1.setAlerter(count,alerter);
+            }
         }else{
             staleData.push_back(elem.second);
         }
