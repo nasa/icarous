@@ -311,6 +311,7 @@ void TrajManager::CombinePlan(std::string planA,std::string planB,int index){
 
 void TrajManager::ClearAllPlans() {
     flightPlans.clear();
+    ClearFences(); 
 }
 
 std::vector<double> TrajManager::ComputePlanOffsets(std::string planID,int nextWP,larcfm::Position currentPos,larcfm::Velocity currentVel, double timeAtPos){
