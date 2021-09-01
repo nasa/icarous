@@ -1,0 +1,129 @@
+# V-2.0.g
+# Vehicle peformance parameters
+min_hs = 0.2 [knot]
+max_hs = 30.0 [knot]
+min_vs = -500.0 [fpm]
+max_vs = 500.0 [fpm]
+min_alt = 15.0 [ft]
+max_alt = 500.0 [ft]
+horizontal_accel = 1.0 [m/s^2]
+vertical_accel = 1.0 [m/s^2]
+turn_rate = 10.0 [deg/s]
+bank_angle = 0.0 [deg]
+vertical_rate = 0.0 [fpm]
+# Band parameters
+lookahead_time = 20.0 [s]
+left_hdir = 180.0 [deg]
+right_hdir = 180.0 [deg]
+# Relative Bands Parameters
+below_relative_hs = 100.0 [knot]
+above_relative_hs = 100.0 [knot]
+below_relative_vs = 5000.0 [fpm]
+above_relative_vs = 5000.0 [fpm]
+below_relative_alt = 10000.0 [ft]
+above_relative_alt = 10000.0 [ft]
+# Kinematic Parameters
+step_hdir = 1.0 [deg]
+step_hs = 2.0 [knot]
+step_vs = 100.0 [fpm]
+step_alt = 50.0 [ft]
+# Recovery Bands Parameters
+min_horizontal_recovery = 30.0 [ft]
+min_vertical_recovery = 30.0 [ft]
+recovery_hdir = true
+recovery_hs = true
+recovery_vs = true
+recovery_alt = true
+# Collision Avoidance Bands Parameters
+ca_bands = true
+ca_factor = 0.1
+horizontal_nmac = 5.0 [ft]
+vertical_nmac = 5.5 [ft]
+# Hysteresis and persistence parameters
+recovery_stability_time = 3.0 [s]
+hysteresis_time = 3.0 [s]
+persistence_time = 3.0 [s]
+bands_persistence = true
+persistence_preferred_hdir = 5.0 [deg]
+persistence_preferred_hs = 2.0 [knot]
+persistence_preferred_vs = 50.0 [fpm]
+persistence_preferred_alt = 30.0 [ft]
+alerting_m = 2
+alerting_n = 4
+# Implicit Coordination Parameters
+conflict_crit = false
+recovery_crit = false
+# Sensor Uncertainty Mitigation Parameters
+h_pos_z_score = 0.0
+h_vel_z_score_min = 0.0
+h_vel_z_score_max = 0.0
+h_vel_z_distance = 0.0 [nmi]
+v_pos_z_score = 0.0
+v_vel_z_score = 0.0
+# Horizontal Contour Threshold
+contour_thr = 180.0 [deg]
+# DAA Terminal Area (DTA)
+dta_logic = 0
+dta_latitude = 0.0 [deg]
+dta_longitude = 0.0 [deg]
+dta_radius = 0.0 [nmi]
+dta_height = 0.0 [ft]
+dta_alerter = 0
+# Alerting Logic
+ownship_centric_alerting = true
+corrective_region = NEAR
+alerters = default
+default_alert_1_region = NEAR
+default_alert_1_alerting_time = 10.0 [s]
+default_alert_1_early_alerting_time = 15.0 [s]
+default_alert_1_spread_hdir = 0.0 [deg]
+default_alert_1_spread_hs = 0.0 [knot]
+default_alert_1_spread_vs = 0.0 [fpm]
+default_alert_1_spread_alt = 0.0 [ft]
+default_alert_1_detector = det_1
+default_det_1_WCV_DTHR = 30.0 [ft]
+default_det_1_WCV_ZTHR = 30.0 [ft]
+default_det_1_WCV_TTHR = 5.0 [s]
+default_det_1_WCV_TCOA = 5.0 [s]
+default_load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.WCV_TAUMOD
+
+# Icarous specific parameters
+
+# Cognition parameters
+passive_mode = false
+daa_resolution_type = 2
+allowed_xtrk_deviation = 10 [m]
+return_nextwp = true
+return_vector = true
+verify_conflict_with_plan = false
+plan_lookahead = 20 [s]
+
+# Guidance parameters
+default_wp_speed = 1.0 [m/s]
+capture_radius_scaling = 2.0
+guidance_radius_scaling =  2.0
+climb_angle = 75 [deg]
+horizontal_climb_delta = 10 [m]
+vertical_climb_delta = 10 [m]
+climb_rate_gain = 0.5
+max_capture_radius = 15 [m]
+min_capture_radius = 1 [m]
+yaw_forward = 1
+turnrate_gain = 5
+
+# Traffic parameters
+record_daa_logs = true
+traffic_source = 0
+
+# Trajectory parameters
+obstacle_buffer = 5 [m]
+dubins_wellclear_radius = 30.0 [ft]
+dubins_wellclear_height = 30.0 [ft]
+alt_bins = 1
+
+# merger parameters
+separation_time = 20.0 [s]
+coordination_zone = 90.0 [m]
+schedule_zone = 70.0 [m]
+entry_zone = 60.0 [m]
+corridor_width = 0.0 [m]
