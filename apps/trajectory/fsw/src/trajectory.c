@@ -238,7 +238,6 @@ void TRAJECTORY_Monitor(void)
 
                 flightplan_t *fp;
                 fp = (flightplan_t *)TrajectoryAppData.Traj_MsgPtr;
-                TrajManager_ClearAllPlans(TrajectoryAppData.pplanner);
                 memcpy(&TrajectoryAppData.flightplan1, fp, sizeof(flightplan_t));
                 waypoint_t wp[MAX_WAYPOINTS];
                 for (int i = 0; i < fp->num_waypoints; ++i)
