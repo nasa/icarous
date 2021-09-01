@@ -17,11 +17,11 @@
 #include "Constants.h"
 #include "format.h"
 #include "string_util.h"
-//#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__MINGW64__)
 #include <regex>
-//#else
-//#include <regex.h>
-//#endif
+#else
+#include <regex.h>
+#endif
 #include <cstdio>
 #include <sstream>
 #include <string.h>
@@ -652,7 +652,7 @@ double Units::parse(const std::string& defaultUnitsFrom, const std::string& str)
   }
 
 
-//#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__MINGW64__)
 
 double getd(string str, double def) {
 	std::istringstream stream;
@@ -727,7 +727,7 @@ std::string Units::parseUnits(const std::string& s) {
 	return unit;
 }
 
-/*
+
 #else
 
 double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
@@ -852,4 +852,3 @@ std::string Units::parseUnits(const std::string& s) {
 	return ret;
 }
 #endif
-*/
