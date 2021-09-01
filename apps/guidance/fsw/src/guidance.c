@@ -153,6 +153,7 @@ void GUIDANCE_ProcessPacket(void){
             break;
         }
 
+
         case ICAROUS_WPREACHED_EXTERNAL_MID:{
             missionItemReached_t *msg = (missionItemReached_t*)guidanceAppData.guidance_MsgPtr;
             SetGuidanceMode(guidanceAppData.Guidance,0,(char*)"Plan0",msg->reachedwaypoint+1,false);
@@ -162,6 +163,11 @@ void GUIDANCE_ProcessPacket(void){
             strcpy(output.planID, msg->planID);
             output.reachedwaypoint = msg->reachedwaypoint;
             SendSBMsg(output);
+            break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            SetGuidanceMode(guidanceAppData.Guidance,GUIDE_NOOP,"",0,false);
             break;
         }
 
