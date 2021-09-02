@@ -2,7 +2,7 @@ import abc
 import sys
 import numpy as np
 
-from ichelper import (LoadIcarousParams,
+from ichelper import (ParseAccordParamFile,
                       ReadFlightplanFile,
                       distance,
                       ConvertToLocalCoordinates,
@@ -218,7 +218,7 @@ class IcarousInterface(abc.ABC):
         Input ICAROUS parameters from a .parm text file
         :param filename: path to .parm parameter file
         """
-        params = LoadIcarousParams(filename)
+        params = ParseAccordParamFile(filename)
         self.SetParameters(params)
 
     @abc.abstractmethod

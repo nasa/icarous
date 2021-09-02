@@ -181,12 +181,14 @@ class Icarous(IcarousInterface):
         self.core.SetIntersectionData(list(zip(ind,wp)))
 
     def SetParameters(self,params):
+        if len(params.items()) == 0:
+            return
         import os
         self.params.update(params)
         paramstr=''
         for item in self.params.items():
             paramstr+= item[0]+'='+str(item[1])+'\n'
-        paramFile ='.tempICparam.txt' 
+        paramFile ='.tempICparam_'+self.callsign+'.txt' 
         fp = open(paramFile,'w')
         fp.write(paramstr)
         fp.close()
