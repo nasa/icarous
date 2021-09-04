@@ -61,9 +61,9 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
     for fix in icList[0].localMergeFixes:
-        anim.AddZone(fix[::-1][1:3],icList[0].params['coordination_zone'],'r')
-        anim.AddZone(fix[::-1][1:3],icList[0].params['schedule_zone'],'b')
-        anim.AddZone(fix[::-1][1:3],icList[0].params['entry_zone'],'g')
+        anim.AddZone(fix[::-1][1:3],float(icList[0].params['coordination_zone'].split(' ')[0]),'r')
+        anim.AddZone(fix[::-1][1:3],float(icList[0].params['schedule_zone'].split(' ')[0]),'b')
+        anim.AddZone(fix[::-1][1:3],float(icList[0].params['entry_zone'].split(' ')[0]),'g')
 
     for plan in network:
         planWPs = np.array(plan)[:,1:]
