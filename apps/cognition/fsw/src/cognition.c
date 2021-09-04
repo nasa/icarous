@@ -191,22 +191,6 @@ void COGNITION_ProcessSBData(void) {
             break;
 		}
 
-        case ICAROUS_COMMANDS_MID:{
-            argsCmd_t* cmd = (argsCmd_t*) appdataCog.CogMsgPtr;
-
-            switch(cmd->name){
-                case _TRAFFIC_RES_:{
-                    appdataCog.parameters.resolutionType = cmd->param1;
-                    InputParameters(appdataCog.cog,&appdataCog.parameters);
-                    break;
-                }
-
-                default:
-                    break;
-            }
-            break;
-        }
-
         case ICAROUS_STARTMISSION_MID:{
             argsCmd_t* msg = (argsCmd_t*) appdataCog.CogMsgPtr;
             int mission_start = msg->param1;
