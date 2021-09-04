@@ -37,6 +37,7 @@ void Cognition::ReadParamsFromFile(const std::string config){
 }
 
 void Cognition::InitializeState(){
+    cogState.nextWpId.clear();
     cogState.returnSafe = true;
     cogState.request = REQUEST_NIL;
     cogState.missionStart = -1;
