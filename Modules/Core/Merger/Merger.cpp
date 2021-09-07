@@ -296,7 +296,9 @@ unsigned char Merger::RunMergingOperation(double time)
             {
 
                 // Execute the required controls to resolve any conflict
-                ExecuteNewPath();
+                if(mergingSpeed > 0){
+                    ExecuteNewPath();
+                }
 
 
                 // Exchange arrival times
