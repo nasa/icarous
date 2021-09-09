@@ -175,6 +175,9 @@ record_daa_logs = true
 # source of traffic is encoded in traffic messages
 traffic_source = 0
 
+# time threshold for staleness of data
+stale_threshold = 10 [s]
+
 ## Trajectory parameters
 # expand obstacles by buffer
 obstacle_buffer = 5 [m]

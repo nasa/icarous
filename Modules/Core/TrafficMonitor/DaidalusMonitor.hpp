@@ -45,7 +45,7 @@ private:
     std::vector<int> altIntTypes;
 
     double prevLogTime;
-
+    double staleThreshold;
     std::map<std::string,int> trafficAlerts;
     bool CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading);
     bool CheckTurnConflict(double low, double high, double newHeading, double oldHeading);
