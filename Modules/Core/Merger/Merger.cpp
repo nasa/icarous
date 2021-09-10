@@ -40,6 +40,7 @@ void Merger::ReadParamFromFile(std::string config){
     corridorWidth = parameters.getValue("corridor_width"); 
     maxSpeed = parameters.getValue("max_hs"); 
     minSpeed = parameters.getValue("min_hs");
+    passive = parameters.getBool("passive_mode");
 }
 
 void Merger::ResetData(){
@@ -296,7 +297,7 @@ unsigned char Merger::RunMergingOperation(double time)
             {
 
                 // Execute the required controls to resolve any conflict
-                if(mergingSpeed > 0){
+                if(mergingSpeed > 0 && !passive){
                     ExecuteNewPath();
                 }
 

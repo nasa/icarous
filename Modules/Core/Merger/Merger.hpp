@@ -111,6 +111,7 @@ class Merger{
         unsigned char waypointIndex;
         unsigned char mergingStatus;
         unsigned char nodeRole;
+        bool passive;
 
         double dist2ZoneEntry;                                 ///< Distance to entry point
         double time2ZoneEntry;                                 ///< Time to entry

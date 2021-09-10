@@ -291,6 +291,9 @@ void FindNewPath(CognitionState_t* state,const std::string &PlanID,
                  const larcfm::Velocity &velocityA,
                  const larcfm::Position &positionB,
                  const larcfm::Velocity &velocityB){
+    if(!state->parameters.active){
+        return;
+    }
     FpRequest fp_request = {
         "",
         {positionA.latitude(), positionA.longitude(), positionA.alt()},
@@ -347,6 +350,9 @@ resolutionType_e GetResolutionType(CognitionState_t* state){
 }
 
 void SetGuidanceVelCmd(CognitionState_t* state,const double track,const double gs,const double vs){
+    if(!state->parameters.active){
+        return;
+    }
     VelocityCommand velocity_command = {
         .vn = gs*cos(track* M_PI/180),
         .ve = gs*sin(track* M_PI/180),
@@ -358,6 +364,9 @@ void SetGuidanceVelCmd(CognitionState_t* state,const double track,const double g
 }
 
 void SetGuidanceSpeedCmd(CognitionState_t* state,const std::string &planID,const double speed,const int hold){
+    if(!state->parameters.active){
+        return;
+    }
     SpeedChange speed_change = {"",speed, hold };
     strcpy(speed_change.name,planID.c_str());
     Command cmd = {.commandType = CommandType_e::SPEED_CHANGE_COMMAND};
@@ -366,6 +375,9 @@ void SetGuidanceSpeedCmd(CognitionState_t* state,const std::string &planID,const
 }
 
 void SetGuidanceAltCmd(CognitionState_t* state,const std::string &planID,const double alt,const int hold){
+    if(!state->parameters.active){
+        return;
+    }
     AltChange alt_change = {"",alt, hold };
     strcpy(alt_change.name,planID.c_str());
     Command cmd = {.commandType = CommandType_e::ALT_CHANGE_COMMAND};
@@ -374,6 +386,9 @@ void SetGuidanceAltCmd(CognitionState_t* state,const std::string &planID,const d
 }
 
 void SetGuidanceFlightPlan(CognitionState_t* state,const std::string &plan_id,const int wp_index){
+    if( !state->parameters.active && plan_id != state->missionPlan){
+        return;
+    }
     state->activePlan = GetPlan(&state->flightPlans,plan_id);
     state->nextWpId[plan_id] = wp_index;
 
@@ -392,6 +407,9 @@ void SetGuidanceFlightPlan(CognitionState_t* state,const std::string &plan_id,co
 }
 
 void SetGuidanceP2P(CognitionState_t* state,const larcfm::Position &point,const double speed){
+    if(!state->parameters.active){
+        return;
+    }
     P2PCommand p2p_command = {
         .point = {point.latitude(), point.longitude(), point.alt()},
         .speed = speed
@@ -402,6 +420,9 @@ void SetGuidanceP2P(CognitionState_t* state,const larcfm::Position &point,const 
 }
 
 void SetDitchSiteRequestCmd(CognitionState_t* state){
+    if(!state->parameters.active){
+        return;
+    }
     DitchCommand ditch_command;
     Command cmd = {.commandType=CommandType_e::DITCH_COMMAND};
     cmd.ditchCommand = ditch_command;
@@ -409,6 +430,9 @@ void SetDitchSiteRequestCmd(CognitionState_t* state){
 }
 
 void SetLandCmd(CognitionState_t* state){
+    if(!state->parameters.active){
+        return;
+    }
     LandCommand land_command;
     Command cmd = {.commandType=CommandType_e::LAND_COMMAND};
     cmd.landCommand = land_command;
