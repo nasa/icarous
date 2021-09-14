@@ -25,7 +25,7 @@ class TrafficReplay(VehicleSimInterface):
         self.position_updates.sort_index(inplace=True)
         self.position_updates.index -= self.position_updates.index[0]
 
-        self.current_time = None
+        self.lastBcastTime = 0
 
     def InputCommand(self, track=0, gs=0, climbrate=0):
         """ Replayed log can't react to input commands """
@@ -46,16 +46,13 @@ class TrafficReplay(VehicleSimInterface):
         if self.transmitter is None:
             return
 
-        if self.current_time is None:
-            self.position_updates.index += current_time
-            self.current_time = current_time
-
         # Transmit all traffic messages up to current time
-        traffic_messages = self.position_updates[self.current_time:current_time]
+        traffic_messages = self.position_updates[self.lastBcastTime:current_time]
         for i, traffic_msg in traffic_messages.iterrows():
             posLLA = [traffic_msg.lat, traffic_msg.lon, traffic_msg.alt]
             velNED = [traffic_msg.vn, traffic_msg.ve, traffic_msg.vd]
             msg_data = {
+                "source": self.transmitter.sensorType,
                 "callsign": "replay_" + traffic_msg.vehicleID,
                 "pos": posLLA,
                 "vel": velNED,
@@ -63,4 +60,4 @@ class TrafficReplay(VehicleSimInterface):
             msg = V2Vdata("INTRUDER", msg_data)
             self.transmitter.transmit(current_time, posLLA, msg)
 
-        self.current_time = current_time
+            self.lastBcastTime = current_time
