@@ -2,7 +2,7 @@ import numpy as np
 import time
 
 from vehiclesim import UamVtolSim, TrafficReplay
-from ichelper import distance, ConvertVnedToTrkGsVs
+from icutils.ichelper import distance, ConvertVnedToTrkGsVs
 from CustomTypes import V2Vdata
 from communicationmodels import channelmodels as cm
 from communicationmodels import get_propagation_model, get_reception_model

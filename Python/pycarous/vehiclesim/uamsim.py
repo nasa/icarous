@@ -1,6 +1,6 @@
 import numpy as np
 
-from ichelper import gps_offset, GetWindComponent, ConvertTrkGsVsToVned, ConvertVnedToTrkGsVs
+from icutils.ichelper import gps_offset, GetWindComponent, ConvertTrkGsVsToVned, ConvertVnedToTrkGsVs
 from vehiclesim import VehicleSimInterface
 
 class UamVtolSim(VehicleSimInterface):

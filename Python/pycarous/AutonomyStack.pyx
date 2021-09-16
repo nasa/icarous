@@ -2,7 +2,7 @@
 
 from AutonomyStackDef cimport *
 from libc.string cimport strcpy
-from ichelper import ConvertVnedToTrkGsVs
+from icutils.ichelper import ConvertVnedToTrkGsVs
 from libcpp.string cimport string
 from libcpp.map cimport map
 

@@ -1,7 +1,7 @@
 from ctypes import *
 from CustomTypes import TcpType
 import numpy as np
-from ichelper import GetPlanPositions
+from icutils.ichelper import GetPlanPositions
 import os
 
 icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')

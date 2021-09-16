@@ -2,13 +2,13 @@ import abc
 import sys
 import numpy as np
 
-from ichelper import (ParseAccordParamFile,
-                      ReadFlightplanFile,
-                      distance,
-                      ConvertToLocalCoordinates,
-                      ConvertTrkGsVsToVned,
-                      ParseDaidalusConfiguration,
-                      ParseAcasConfiguration)
+from icutils.ichelper import (ParseAccordParamFile,
+                              ReadFlightplanFile,
+                              distance,
+                              ConvertToLocalCoordinates,
+                              ConvertTrkGsVsToVned,
+                              ParseDaidalusConfiguration,
+                              ParseAcasConfiguration)
 from CustomTypes import V2Vdata
 
 class IcarousInterface(abc.ABC):

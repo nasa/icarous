@@ -1,7 +1,7 @@
 import abc
 import numpy as np
 
-from ichelper import gps_offset
+from icutils.ichelper import gps_offset
 from CustomTypes import V2Vdata
 
 class VehicleSimInterface(abc.ABC):

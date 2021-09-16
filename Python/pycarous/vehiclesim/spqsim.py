@@ -2,7 +2,7 @@ from ctypes import *
 import numpy as np
 import os
 
-from ichelper import GetWindComponent
+from icutils.ichelper import GetWindComponent
 from vehiclesim import VehicleSimInterface
 from vehiclesim.SpqInterface import SpqState, SpqGains, SpqCommand, rtString
 

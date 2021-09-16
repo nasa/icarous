@@ -7,12 +7,12 @@ import subprocess
 import numpy as np
 from pymavlink import mavutil, mavwp
 
-from ichelper import (ParseAccordParamFile,
-                      ReadFlightplanFile,
-                      GetFlightplan,
-                      ConstructWaypointsFromList,
-                      Getfence,
-                      distance)
+from icutils.ichelper import (ParseAccordParamFile,
+                              ReadFlightplanFile,
+                              GetFlightplan,
+                              ConstructWaypointsFromList,
+                              Getfence,
+                              distance)
 from IcarousInterface import IcarousInterface
 import BatchGSModule as GS
 

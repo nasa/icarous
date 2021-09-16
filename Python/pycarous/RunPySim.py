@@ -2,7 +2,7 @@
 
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
-from ichelper import GetHomePosition,ReadTrafficInput
+from icutils.ichelper import GetHomePosition,ReadTrafficInput
 import argparse
 import os
 

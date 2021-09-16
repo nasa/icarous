@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os
 
-from ichelper import ConvertTrkGsVsToVned
+from icutils.ichelper import ConvertTrkGsVsToVned
 from vehiclesim import VehicleSimInterface
 
 icmodules = os.path.join(os.environ['ICAROUS_HOME'],'Modules','lib')
