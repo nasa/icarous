@@ -1,4 +1,5 @@
 from icutils.AccordUtil import ConvertNED2LLA
+from icutils.units import From_string
 import pandas as pd
 
 from vehiclesim import VehicleSimInterface
@@ -8,7 +9,7 @@ from CustomTypes import V2Vdata
 
 class TrafficReplay(VehicleSimInterface):
     """ Vehicle sim to replay """
-    def __init__(self, logfile, channel, delay=0, homePos = None, units = [1,1,1,1,1,1],filter=[]):
+    def __init__(self, logfile, channel, delay=0, homePos = None,filter=[]):
         """
         Initialize traffic log replay
         :param logfile: filename for csv traffic log containing columns for:
@@ -22,11 +23,25 @@ class TrafficReplay(VehicleSimInterface):
         self.transmitter = get_transmitter("GroundTruth", "TrafficReplay", channel)
 
         # Read position updates from csv file
-        self.position_updates = pd.read_csv(logfile, index_col="time")
+        data =  pd.read_csv(logfile, index_col="time")
+        units = data.iloc[0]
+        self.position_updates = data.iloc[1:]
+
         self.position_updates.sort_index(inplace=True)
         self.position_updates.index -= self.position_updates.index[0]
         self.homePos = homePos
-        self.units = units
+
+        # Position units
+        posunits = [1,1,1] # Assume degrees is default
+        if 'lat' not in units.index:
+            posunits = [units.sy,units.sx,units.sz]
+        # velocity units
+        if 'vn' in units.index:
+            velunits = [units.vn,units.ve,units.vd]
+        else:
+            velunits = [units.vy,units.vx,units.vz] 
+        self.units = posunits+velunits 
+
         self.filter = filter
 
         self.lastBcastTime = 0
