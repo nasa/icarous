@@ -1,3 +1,4 @@
+from icutils.units import From
 import math
 import random
 import numpy as np
@@ -190,10 +191,13 @@ def GetWindComponent(windFrom,windSpeed,NED=True):
 
 def GetHomePosition(filename,id=0):
     import re
-    match = re.search('\.eutl',filename)
-    if match is not None:
+    eutlFile = re.search('\.eutl',filename)
+    daaFile  = re.search('\.daa',filename)
+    if eutlFile is not None:
         wps,totalwps = GetEUTLPlanFromFile(filename,id) 
         return [wps[0].latitude,wps[0].longitude,0]
+    elif daaFile:
+        return None
     else:
         wp,_,_,_,_ = ReadFlightplanFile(filename)
         return [wp[0][0],wp[0][1],0]
@@ -210,7 +214,7 @@ def ReadTrafficInput(filename):
 
 def ConvertToLocalCoordinates(home_pos,pos):
     try:
-        from AccordUtil import ConvertLLA2NED
+        from icutils.AccordUtil import ConvertLLA2NED
         return ConvertLLA2NED(home_pos,pos)
     except:
         dh = lambda x, y: abs(distance(home_pos[0],home_pos[1],x,y))
@@ -259,8 +263,15 @@ def Getfence(filename):
         fenceList = yaml.load(open(filename),yaml.Loader)
     return fenceList
 
-def ConstructWaypointsFromList(fp,eta=False):
+def ConstructWaypointsFromList(fp,eta=False,homePos=None):
+    '''
+     fp is a list of waypoints.
+     if waypoints are in a local coordinate frame (N,E,D), 
+     homePos should be provided to convert to gps coordinates
+    '''
     from CustomTypes import Waypoint,TcpType
+    from icutils.AccordUtil import ConvertNED2LLA
+    import numpy as np
     speeds = []
     times  = []
     waypoints = []
@@ -275,19 +286,27 @@ def ConstructWaypointsFromList(fp,eta=False):
             if i == 0:
                 times.append(0)
             else:
-                distH = distance(fp[i-1][0],fp[i-1][1],fp[i][0],fp[i][1])
+                if homePos is not None:
+                    distH = np.linalg.norm(np.array(fp[i-1][:2])-np.array(fp[i][:2]))
+                else:
+                    distH = distance(fp[i-1][0],fp[i-1][1],fp[i][0],fp[i][1])
                 distV = np.fabs(fp[i][2] - fp[i-1][2])
                 if distH > 1e-3:
                     times.append(times[-1] + distH/speeds[i]) 
                 else:
                     times.append(times[-1] + distV/2.0)
-        
+
+        if homePos is not None:
+            pos = ConvertNED2LLA(homePos,fp[i])
+        else:
+            pos = fp[i]
+
         wp = Waypoint()
         wp.index = i
         wp.time = times[i] 
-        wp.latitude = fp[i][0]
-        wp.longitude = fp[i][1]
-        wp.altitude = fp[i][2]
+        wp.latitude = pos[0]
+        wp.longitude = pos[1]
+        wp.altitude = pos[2]
         if len(fp[i]) > 4:
             tcp = True
         if tcp:
@@ -408,6 +427,23 @@ def ParseAcasConfiguration(daaConfig):
     return configs 
     
   
+def GetPlanFromDAAFile(filename,localPlan=False):
+    import pandas as pd
+    from icutils.units import From_string
+    from icutils.AccordUtil import ConvertNED2LLA
+    data = pd.read_csv(filename,index_col='time')
+    unit_strings = data.iloc[0]
+    data = data.iloc[1:]
+    fac = [From_string(unit_strings.sy,1),
+           From_string(unit_strings.sx,1),
+           From_string(unit_strings.sz,-1)]
+    if localPlan is False:
+        wp1 = list(map(float,[data.lat[0],data.lon[0],data.alt[0]])) + [float(data.lat.index[1])]
+        wp2 = list(map(float,[data.lat[-1],data.lon[-1],data.alt[-1]])) + [float(data.lat.time[-1])]
+    else:
+        pos1 = list(map(lambda x,y:float(x)*y,[data.sy[0],data.sx[0],data.sz[0]],fac))
+        wp1 =  [*pos1,float(data.sy.index[1])]
+        pos2 = list(map(lambda x,y:float(x)*y,[data.sy[-1],data.sx[-1],data.sz[-1]],fac))
+        wp2 =  [*pos2,float(data.sy.index[-1])]
 
-
-
+    return [wp1,wp2]

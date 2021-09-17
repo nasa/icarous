@@ -140,9 +140,9 @@ class SimEnvironment:
 
         return traffic
 
-    def AddReplayTraffic(self, logfile, delay=0):
+    def AddReplayTraffic(self, logfile, delay=0, homePos=None, filter=[]):
         """ Replay traffic updates from a csv log """
-        traffic = TrafficReplay(logfile, self.comm_channel, delay)
+        traffic = TrafficReplay(logfile, self.comm_channel, delay, homePos,filter)
         self.tfList.append(traffic)
 
     def SetDitchingCriteria(self,index,ditchCriteria,ditchSite,todAltitude):

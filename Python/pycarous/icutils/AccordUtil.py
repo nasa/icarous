@@ -25,10 +25,10 @@ def ConvertLLA2NED(posA,posB):
 
 def ConvertNED2LLA(posA,posB):
     home  = pos(*posA)
-    query = pos(*posB)
+    query = pos(posB[1],posB[0],posB[2])
     output = pos(0,0,0)
     libUtils.ConvertEND2LLA(home,query,output)
-    return [output[1],output[0],output[2]]
+    return [output[0],output[1],output[2]]
 
 
 def ComputeHeading(posA,posB):

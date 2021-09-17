@@ -17,6 +17,7 @@ from icutils.ichelper import (ConvertTrkGsVsToVned,
                               GetEUTLPlanFromFile,
                               GetPlanPositions,
                               ParseAccordParamFile,
+                              GetPlanFromDAAFile,
                               ConstructWaypointsFromList)
 import time
 from IcarousInterface import IcarousInterface
@@ -145,18 +146,29 @@ class Icarous(IcarousInterface):
         if setInitialConditions:
             self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
 
-    def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0):
+    def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0,localPlan=False):
         import re
-        match = re.search('\.eutl',filename)
+        eutlfile = re.search('\.eutl',filename)
+        daafile = re.search('\.daa',filename)
         waypoints = []
-        if match is None:
-            fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
-            waypoints = ConstructWaypointsFromList(fp,eta) 
-        else:
+        if eutlfile:
+            localPlan = False
             wps,totalwps = GetEUTLPlanFromFile(filename,0,timeshift=startTimeShift)
             for i in range(totalwps):
                 waypoints.append(wps[i])
             eta = True
+        elif daafile:
+            fp = GetPlanFromDAAFile(filename,localPlan)
+            if localPlan:
+                refPos = self.home_pos
+            else:
+                refPos = None
+            waypoints =  ConstructWaypointsFromList(fp,True,refPos) 
+        else:
+            fp = GetFlightplan(filename,self.defaultWPSpeed,eta) 
+            waypoints = ConstructWaypointsFromList(fp,eta) 
+        if localPlan:
+            self.home_pos  = [waypoints[0].latitude,waypoints[0].longitude,waypoints[0].altitude]
         self.InputFlightplan(waypoints,eta,repair)
 
     def InputGeofence(self,filename):
