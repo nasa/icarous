@@ -127,7 +127,12 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
    retVal_e Initialize(CognitionState_t* state){
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
+        } 
+
+        if(!state->parameters.active){
+             return SHUTDOWN;
         }
+  
         LogMessage(state, "[STATUS] | " + eventName + " | Return to mission");
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
@@ -188,6 +193,10 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
+        }
+
+        if(!state->parameters.active){
+             return SHUTDOWN;
         }
 
         if(state->missionPlan == "Plan0"){
@@ -279,7 +288,11 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
                  LogMessage(state, "[MODE] | Guidance Vector Request");
              }
          }else{
-             return RESET;
+             return SHUTDOWN;
+         }
+
+         if(!state->parameters.active){
+             return SHUTDOWN;
          }
 
          return SUCCESS;
