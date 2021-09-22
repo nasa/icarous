@@ -197,7 +197,8 @@ def GetHomePosition(filename,id=0):
         wps,totalwps = GetEUTLPlanFromFile(filename,id) 
         return [wps[0].latitude,wps[0].longitude,0]
     elif daaFile:
-        return None
+        fp = GetPlanFromDAAFile(filename) 
+        return [fp[0][0],fp[0][1],0]
     else:
         wp,_,_,_,_ = ReadFlightplanFile(filename)
         return [wp[0][0],wp[0][1],0]
@@ -434,16 +435,24 @@ def GetPlanFromDAAFile(filename,localPlan=False):
     data = pd.read_csv(filename,index_col='time')
     unit_strings = data.iloc[0]
     data = data.iloc[1:]
-    fac = [From_string(unit_strings.sy,1),
-           From_string(unit_strings.sx,1),
-           From_string(unit_strings.sz,-1)]
+    data = data[data.NAME=='Ownship']
     if localPlan is False:
-        wp1 = list(map(float,[data.lat[0],data.lon[0],data.alt[0]])) + [float(data.lat.index[1])]
-        wp2 = list(map(float,[data.lat[-1],data.lon[-1],data.alt[-1]])) + [float(data.lat.time[-1])]
+        fac = [1,1,From_string(unit_strings.alt,1)]
+        pos1 = [data.lat[0],data.lon[0],data.alt[0]]
+        pos2 = [data.lat[-1],data.lon[-1],data.alt[-1]]
+        time1 = float(data.lat.index[1])
+        time2 = float(data.lat.index[-1])
     else:
-        pos1 = list(map(lambda x,y:float(x)*y,[data.sy[0],data.sx[0],data.sz[0]],fac))
-        wp1 =  [*pos1,float(data.sy.index[1])]
-        pos2 = list(map(lambda x,y:float(x)*y,[data.sy[-1],data.sx[-1],data.sz[-1]],fac))
-        wp2 =  [*pos2,float(data.sy.index[-1])]
+        fac = [From_string(unit_strings.sy,1),
+               From_string(unit_strings.sx,1),
+               From_string(unit_strings.sz,-1)]
+        pos1 = [data.sy[0],data.sx[0],data.sz[0]]
+        pos2 = [data.sy[-1],data.sx[-1],data.sz[-1]]
+        time1 = float(data.sy.index[1])
+        time2 = float(data.sy.index[-1])
+    pos1 = list(map(lambda x,y:float(x)*y,pos1,fac))
+    wp1 =  [*pos1,time1]
+    pos2 = list(map(lambda x,y:float(x)*y,pos2,fac))
+    wp2 =  [*pos2,time2]
 
     return [wp1,wp2]

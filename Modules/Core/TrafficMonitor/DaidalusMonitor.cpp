@@ -58,6 +58,7 @@ void DaidalusMonitor::UpdateParameters(std::string daaParameters) {
     alertingTime = DAA1.getAlerterAt(1).getParameters().getValue("alert_1_alerting_time");
     dataSource = parameters.getInt("traffic_source");
     staleThreshold = parameters.getValue("stale_threshold");
+    sensorMapping = parameters.getBool("sensor_mapping");
 }
 
 std::string DaidalusMonitor::GetAlerter(object& intruder){
@@ -105,7 +106,7 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
         if(elapsedTime - elem.second.time < staleThreshold && elem.second.position.alt() > 1){
             DAA1.addTrafficState(elem.second.callsign, elem.second.position, elem.second.velocity, elem.second.time);
             SetSUM(count,elem.second.posSigma,elem.second.velSigma);
-            if(!DAA1.isAlertingLogicOwnshipCentric()){
+            if(!DAA1.isAlertingLogicOwnshipCentric() && sensorMapping){
                 std::string alerter = GetAlerter(elem.second);
                 DAA1.setAlerter(count,alerter);
             }

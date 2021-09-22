@@ -29,14 +29,18 @@ class TrafficReplay(VehicleSimInterface):
         self.position_updates.index = self.position_updates.index.astype('double') + self.delay
         self.position_updates.sort_index(inplace=True)
         self.homePos = homePos
+        self.VNED = False
 
         # Position units
-        posunits = [1,1,1] # Assume degrees is default
         if 'lat' not in units.index:
             posunits = list(map(lambda x:From_string(x,1),[units.sy,units.sx,units.sz]))
+        else:
+            posunits = [1,1,From_string(units.alt,1)] # Assume degrees is default
+
         # velocity units
         if 'vn' in units.index:
             velunits = list(map(lambda x:From_string(x,1),[units.vn,units.ve,units.vd]))
+            self.VNED = True
         else:
             velunits = list(map(lambda x:From_string(x,1),[units.vy,units.vx,units.vz]))
         self.units = posunits+velunits 
@@ -71,10 +75,14 @@ class TrafficReplay(VehicleSimInterface):
                 continue 
             if self.homePos is not None:
                 posLLA = ConvertNED2LLA(self.homePos,[traffic_msg.sy * self.units[0],traffic_msg.sx*self.units[1],-traffic_msg.sz*self.units[2]])
-                velNED = [traffic_msg.vy*self.units[3], traffic_msg.vx*self.units[4], -traffic_msg.vz*self.units[5]]
             else:
                 posLLA = [traffic_msg.lat*self.units[0], traffic_msg.lon*self.units[1], traffic_msg.alt*self.units[2]]
+
+            if self.VNED:
                 velNED = [traffic_msg.vn*self.units[3], traffic_msg.ve*self.units[4], traffic_msg.vd*self.units[5]]
+            else:
+                velNED = [traffic_msg.vy*self.units[3], traffic_msg.vx*self.units[4], -traffic_msg.vz*self.units[5]]
+
             msg_data = {
                 "source": self.transmitter.sensorType,
                 "callsign": "replay_" + traffic_msg.NAME,

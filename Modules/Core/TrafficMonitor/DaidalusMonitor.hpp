@@ -54,6 +54,7 @@ private:
     larcfm::Daidalus DAA2;   // DAA2 object used for stateless queries
 
     int dataSource;
+    bool sensorMapping;
 
     double maxVS;
     double minVS;
