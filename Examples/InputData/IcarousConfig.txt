@@ -118,6 +118,9 @@ passive_mode = false
 # daa resolution: 0:speed, 1:altitude, 2:track, 3: vertical speed, 4: search based resolution
 daa_resolution_type = 2
 
+# enable sensor based well clear volume mapping (ensure ownship centric alerting is false before enabling this)
+sensor_mapping = false
+
 # Permissible cross track deviation
 allowed_xtrk_deviation = 100 [m]
 
