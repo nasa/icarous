@@ -26,7 +26,7 @@ void DubinsPlanner::SetVehicleInitialConditions(larcfm::Vect3& pos, larcfm::Velo
 void DubinsPlanner::SetBoundary(larcfm::Poly3D& bBox){
     SetZBoundary(bBox.getBottom(),bBox.getTop());
     auto origVertices = bBox.getVerticesRef();
-    std::vector<larcfm::Vect2> shrunkbbox = larcfm::PolycarpResolution::contract_polygon_2D(0.1,params.vertexBuffer,origVertices);
+    shrunkbbox = larcfm::PolycarpResolution::contract_polygon_2D(0.1,0.5,origVertices);
     boundingBox = larcfm::Poly3D(larcfm::Poly2D(shrunkbbox),bBox.getBottom(),bBox.getTop());
 }
 
@@ -87,7 +87,7 @@ void DubinsPlanner::GetPotentialFixes(){
     double turnRadius = rootVel.gs()/(params.turnRate);
     for(auto &obs: obstacleList){
         // Expand each obstacle 
-        double exp = std::max(params.vertexBuffer,3*turnRadius);
+        double exp = std::max(params.vertexBuffer,2.1*turnRadius);
         auto origVertices = obs.getVerticesRef();
         std::vector<larcfm::Vect2> expVert = larcfm::PolycarpResolution::expand_polygon_2D(0.1,exp,origVertices);
         double floor = obs.getBottom();
@@ -153,7 +153,7 @@ void DubinsPlanner::GetPotentialFixes(){
     }
 
     // Shrink bounding box and it's vertices to potential fixes
-    double con = std::max(params.vertexBuffer,3*turnRadius);
+    double con = std::max(params.vertexBuffer,2.1*turnRadius);
     auto origVertices = boundingBox.getVerticesRef();
     std::vector<larcfm::Vect2> conVert = larcfm::PolycarpResolution::contract_polygon_2D(0.1,con,origVertices);
     for(auto &vert: conVert){
@@ -458,9 +458,10 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         } 
 
         // Check for fence conflicts
+        /*  
         bool gfConflict = CheckFenceConflict(finalTCPdata);
-
         if (gfConflict) continue;
+        */
 
         // Check traffic conflicts on the path
         bool tfConflict = CheckTrafficConflict(finalTCPdata);
@@ -922,7 +923,6 @@ bool DubinsPlanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
         }
     }
 
-    /*
     int sizePoly = shrunkbbox.size();
     for(int i=0;i<sizePoly;++i){
             int j = (i+1)%sizePoly;
@@ -933,7 +933,7 @@ bool DubinsPlanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
             if(intCheck){
                 return true;
             }
-    }*/
+    }
 
     return false;
 }

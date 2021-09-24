@@ -113,7 +113,7 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
         frontier.sort(cmp);
         // This while loop checks for already visited node.
         // Note: this shouldn't be used if you enable reflexive transitions
-        while(visitedAlready){
+        while(visitedAlready && frontier.size() > 0){
             q = frontier.front();
             frontier.pop_front();
             visitedAlready = std::find(visitedId.begin(),visitedId.end(),q->id) != visitedId.end();
@@ -122,12 +122,19 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
                 visitedId.push_back(q->id);
             }
         }
+
+        if(visitedAlready){
+            break;
+        }
     }
     std::list<node_t> astarPath;
     node_t* p = q.get();
-    while(p->source != nullptr){
-        astarPath.push_front(*p);
-        p = p->source;
+    if(q->goal){
+        while (p->source != nullptr)
+        {
+            astarPath.push_front(*p);
+            p = p->source;
+        }
     }
     astarPath.push_front(*root);
     path = std::vector<node_t>(astarPath.begin(),astarPath.end());
