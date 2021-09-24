@@ -376,8 +376,13 @@ void TRAJECTORY_Monitor(void)
             }
 
             case ICAROUS_STARTMISSION_MID:{
+                argsCmd_t* msg = (argsCmd_t*) TrajectoryAppData.Traj_MsgPtr;
+                int mission_start = msg->param1;
                 double diff = TrajectoryAppData.timeNow - TrajectoryAppData.flightplan1.waypoints[0].time;
-                TrajManager_SetPlanOffset(TrajectoryAppData.pplanner,(char*)"Plan0",0,diff);
+                if(mission_start > 0){
+                    TrajManager_SetPlanOffset(TrajectoryAppData.pplanner,(char*)"Plan0",mission_start-1,diff);
+                    TrajectoryAppData.nextWP1 = mission_start;
+                }
                 break;
             }
 
