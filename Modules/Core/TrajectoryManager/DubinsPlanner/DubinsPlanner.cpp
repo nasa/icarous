@@ -153,7 +153,8 @@ void DubinsPlanner::GetPotentialFixes(){
     }
 
     // Shrink bounding box and it's vertices to potential fixes
-    double con = std::max(params.vertexBuffer,2.1*turnRadius);
+    double con = std::max(params.vertexBuffer,0.5*turnRadius);
+    std::cout<<con<<std::endl;
     auto origVertices = boundingBox.getVerticesRef();
     std::vector<larcfm::Vect2> conVert = larcfm::PolycarpResolution::contract_polygon_2D(0.1,con,origVertices);
     for(auto &vert: conVert){
@@ -174,7 +175,7 @@ void DubinsPlanner::GetPotentialFixes(){
     
        // Generate points radially from the root position
        // At 30 degree intervals
-       int N = 10;
+       int N = 0;
        for(int i=0; i<N; ++i){
            for(int j=2;j<=5;++j){
                double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
