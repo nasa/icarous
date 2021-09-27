@@ -33,7 +33,18 @@ void Cognition::ReadParamsFromFile(const std::string config){
     cogState.parameters.returnVector = parameters.getBool("return_vector");
     cogState.parameters.verifyPlanConflict = parameters.getValue("verify_conflict_with_plan");
     cogState.parameters.planLookaheadTime = parameters.getValue("plan_lookahead");
-
+    cogState.parameters.PriorityTakeoff = parameters.getInt("Priority_Takeoff");;
+    cogState.parameters.PrioirtyNominalDeparture = parameters.getInt("Priority_NominalDeparture");
+    cogState.parameters.PriorityPrimaryPlanComplete = parameters.getInt("Priority_PrimaryPlanComplete");
+    cogState.parameters.PrioritySecondaryPlanComplete = parameters.getInt("Priority_SecondaryPlanComplete");
+    cogState.parameters.PriorityMerging = parameters.getInt("Priority_Merging");
+    cogState.parameters.PriorityFenceConflict = parameters.getInt("Priority_FenceConflict");
+    cogState.parameters.PriorityTrafficConflict1 = parameters.getInt("Priority_TrafficConflict1");
+    cogState.parameters.PriorityTrafficConflict2 = parameters.getInt("Priority_TrafficConflict2");
+    cogState.parameters.PriorityTrafficConflict3 = parameters.getInt("Priority_TrafficConflict3");
+    cogState.parameters.PriorityFlightPlanDeviation = parameters.getInt("Priority_FlightPlanDeviation");
+    cogState.parameters.PriorityDitching = parameters.getInt("Priority_Ditching");
+    cogState.parameters.PriorityTODReached = parameters.getInt("Priority_TODReached");
 }
 
 void Cognition::InitializeState(){
@@ -344,33 +355,20 @@ int Cognition::GetCognitionOutput(Command &command){
     return commands_remaining;
 }
 
-std::map<std::string,int> GetPriorityValues(){
-    std::ifstream priorityFile;
-    priorityFile.open("Priority.txt");
+std::map<std::string,int> GetPriorityValues(cognition_params_t* params){
     std::map<std::string,int> inputPriorities;
-    // Set default priority values 
-    inputPriorities["Takeoff"] = 1;
-    inputPriorities["NominalDeparture"] = 6;
-    inputPriorities["PrimaryPlanComplete"] = 1;
-    inputPriorities["SecondaryPlanComplete"] = 1;
-    inputPriorities["Merging"] = 3;
-    inputPriorities["FenceConflict"] = 1;
-    inputPriorities["TrafficConflict1"] = 2;
-    inputPriorities["TrafficConflict2"] = 2;
-    inputPriorities["FlightPlanDeviation"] = 1;
-    inputPriorities["TrafficConflict3"] = 4;
-    inputPriorities["Ditching"] = 5;
-    inputPriorities["TODReached"] = 1;
-
-    if (priorityFile.is_open()) {
-        std::string name;
-        int val;
-        while (priorityFile >> name) {
-            priorityFile >> val;
-            inputPriorities[name] = (int)val;
-        }
-    }
-
+    inputPriorities["Takeoff"] = params->PriorityTakeoff;
+    inputPriorities["NominalDeparture"] = params->PrioirtyNominalDeparture; 
+    inputPriorities["PrimaryPlanComplete"] = params->PriorityPrimaryPlanComplete;
+    inputPriorities["SecondaryPlanComplete"] = params->PrioritySecondaryPlanComplete;
+    inputPriorities["Merging"] = params->PriorityMerging;
+    inputPriorities["FenceConflict"] = params->PriorityFenceConflict;
+    inputPriorities["TrafficConflict1"] = params->PriorityTrafficConflict1;
+    inputPriorities["TrafficConflict2"] = params->PriorityTrafficConflict2;
+    inputPriorities["FlightPlanDeviation"] = params->PriorityFlightPlanDeviation;
+    inputPriorities["TrafficConflict3"] = params->PriorityTrafficConflict3;
+    inputPriorities["Ditching"] = params->PriorityDitching;
+    inputPriorities["TODReached"] = params->PriorityTODReached;
     return inputPriorities;
 }
 

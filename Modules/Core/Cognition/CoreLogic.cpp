@@ -19,7 +19,7 @@ void Cognition::InitializeEventHandlers(){
     * provide appropriate handlers to deal with the respective event.
     * The provided priority is used to determine which event is addressed first.
     **/
-   auto inputPriorities  = GetPriorityValues();
+   auto inputPriorities  = GetPriorityValues(&cogState.parameters);
 
    // Nominal mission related triggers
    eventMng.AddEventHandler("Takeoff",

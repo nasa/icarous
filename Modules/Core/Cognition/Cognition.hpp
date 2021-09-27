@@ -347,6 +347,6 @@ bool CheckTurnConflict(const double low,
                     const double new_heading,
                     const double old_heading,bool& rightTurnConflict,bool& leftTurnConflict);
 
-std::map<std::string,int> GetPriorityValues();
+std::map<std::string,int> GetPriorityValues(cognition_params_t* params);
 
 #endif

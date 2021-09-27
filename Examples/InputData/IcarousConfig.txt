@@ -202,3 +202,17 @@ coordination_zone = 90.0 [m]
 schedule_zone = 70.0 [m]
 entry_zone = 60.0 [m]
 corridor_width = 0.0 [m]
+
+# Priorities
+Priority_Takeoff = 1
+Priority_NominalDeparture = 6
+Priority_PrimaryPlanComplete = 1
+Priority_SecondaryPlanComplete = 1
+Priority_Merging = 3
+Priority_FenceConflict = 1
+Priority_TrafficConflict1 = 2
+Priority_TrafficConflict2 = 2
+Priority_TrafficConflict3 = 4
+Priority_FlightPlanDeviation = 1
+Priority_Ditching = 5
+Priority_TODReached = 1

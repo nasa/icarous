@@ -119,7 +119,18 @@ typedef struct{
     bool active;                    // Make cognition active                   
     bool returnVector;              // Use vectors to command the vehicle to return to mission
     bool verifyPlanConflict;        // Verify if imminent conflict is a real conflicty by comparing it with current plan
+    int PriorityTakeoff;
+    int PrioirtyNominalDeparture;
+    int PriorityPrimaryPlanComplete;
+    int PrioritySecondaryPlanComplete;
+    int PriorityMerging;
+    int PriorityFenceConflict;
+    int PriorityTrafficConflict1;
+    int PriorityTrafficConflict2;
+    int PriorityTrafficConflict3;
+    int PriorityFlightPlanDeviation;
+    int PriorityDitching;
+    int PriorityTODReached;
 }cognition_params_t;
-
 
 #endif

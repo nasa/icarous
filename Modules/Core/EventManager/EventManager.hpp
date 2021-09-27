@@ -18,6 +18,7 @@ class EventManagement{
      void RunEventMonitors(T*);
      void RunEventHandlers(T*);
      void Run(T*);
+     void Reset();
      
   private:
 
@@ -35,6 +36,13 @@ void EventManagement<T>::AddEventHandler(std::string eventName,int priority,std:
         eventHandler->defaultPriority = priority;
         handlers[eventName] = eventHandler;
     }
+}
+
+template<class T>
+void EventManagement<T>::Reset(){
+    events.clear();
+    handlers.clear();
+    activeEventHandlers.clear();
 }
 
 template <class T>
