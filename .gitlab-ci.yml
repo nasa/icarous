@@ -21,11 +21,13 @@ before_script:
   - cd /builds/larc-nia-fm/icarous
   - git submodule update --init --recursive
   - git clone git@gitlab.larc.nasa.gov:larc-nia-fm/sirius.git --recurse-submodules
+  - git clone git@gitlab.larc.nasa.gov:larc-nia-fm/polycarp.git 
   - mkdir -p /builds/larc-nia-fm/icarous/exe/cpu1/cf
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/Python/pycarous
+  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/polycarp/Python
   - export ICAROUS_HOME=/builds/larc-nia-fm/icarous
   - pip3 install -r Python/pycarous/requirements.txt --upgrade
   - cd sirius
