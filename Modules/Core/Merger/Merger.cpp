@@ -263,7 +263,9 @@ unsigned char Merger::RunMergingOperation(double time)
 
             case COORD_ZONE:
             {
-                mergingStatus = MERGING_ACTIVE;
+                if(!passive){
+                    mergingStatus = MERGING_ACTIVE;
+                }
                 // Compute the arrival times
                 ComputeArrivalData();
 
