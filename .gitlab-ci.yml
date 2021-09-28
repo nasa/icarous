@@ -27,7 +27,7 @@ before_script:
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/Python/pycarous
-  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/polycarp/Python
+  - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/polycarp/Python
   - export ICAROUS_HOME=/builds/larc-nia-fm/icarous
   - pip3 install -r Python/pycarous/requirements.txt --upgrade
   - cd sirius
