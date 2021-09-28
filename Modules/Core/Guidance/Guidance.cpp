@@ -790,8 +790,7 @@ int Guidance::RunGuidance(double time){
                 ComputePlanGuidance();
             
             if(nextWpId[activePlanId] > 1){
-                if (currentPlan->getTcpData(nextWpId[activePlanId] - 1).getInformation() == "<BOD>" || 
-                    nextWpId[activePlanId] >= currentPlan->size()) {
+                if (currentPlan->getTcpData(nextWpId[activePlanId] - 1).getInformation() == "<BOD>") {
                     mode = LAND;
                 }
             }
