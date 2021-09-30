@@ -229,7 +229,7 @@ class IcarousRunner(IcarousInterface):
             vx = msg.hor_velocity*1e-2*np.cos(np.radians(heading))
             velocityNED = [vx, vy, msg.ver_velocity*1e-2]
             callsign = msg.callsign
-            self.RecordTraffic(callsign, position, velocityNED, positionNED)
+            self.RecordTraffic(callsign, 'ADS-B',position, velocityNED, positionNED)
         elif msg.get_type() == "STATUSTEXT":
             print("%s : %s" % (self.callsign, msg.text))
             if "Landing" in msg.text:
