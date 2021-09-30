@@ -121,7 +121,7 @@ class IcarousRunner(IcarousInterface):
     def InputTraffic(self,source, callsign, position, velocity):
         self.gs.Send_traffic(callsign, position, velocity)
         positionNED = self.ConvertToLocalCoordinates(position)
-        self.RecordTraffic(callsign, position, velocity, positionNED)
+        self.RecordTraffic(callsign, source, position, velocity, positionNED)
 
     def InputMergeData(self, logs, delay):
         pass
