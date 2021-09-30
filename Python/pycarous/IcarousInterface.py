@@ -304,12 +304,13 @@ class IcarousInterface(abc.ABC):
         record_bands(self.ownshipLog["altbands"], self.altband)
         record_bands(self.ownshipLog["vsbands"], self.vsband)
 
-    def RecordTraffic(self, callsign, position, velocity, localPos):
+    def RecordTraffic(self, callsign, source, position, velocity, localPos):
         if callsign not in self.trafficLog.keys():
-            self.trafficLog[callsign] = {"time": [],
-                                          "position": [],
-                                          "velocityNED": [],
-                                          "positionNED": []}
+            self.trafficLog[callsign] = {"source": source,
+                                         "time": [],
+                                         "position": [],
+                                         "velocityNED": [],
+                                         "positionNED": []}
             last_time = -1
         else:
             last_time = self.trafficLog[callsign]["time"][-1]

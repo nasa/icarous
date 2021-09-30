@@ -122,7 +122,7 @@ class Icarous(IcarousInterface):
             trkgsvs = ConvertVnedToTrkGsVs(velocity[0],velocity[1],velocity[2])
             self.core.InputIntruderState(self.currTime,source,callsign,position,trkgsvs)
             localPos = self.ConvertToLocalCoordinates(position)
-            self.RecordTraffic(callsign, position, velocity, localPos)
+            self.RecordTraffic(callsign, source, position, velocity, localPos)
 
     def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialConditions=True):
         
