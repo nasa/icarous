@@ -56,6 +56,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    double gs;
    retVal_e Initialize(CognitionState_t* state){
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
+       gs = state->velocity.gs(); // Maintain speed at the start of the resolution
        if(state->parameters.return2NextWP){
            // Vector to next waypoint
            larcfm::Plan* fp = GetPlan(&state->flightPlans,state->missionPlan);
@@ -64,7 +65,6 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
            }
            target = fp->getPos(state->nextWpId[state->missionPlan]);
            state->nextWpId[state->missionPlan] += 1;
-           gs = state->velocity.gs(); // Maintain speed at the start of the resolution
        }else{
            // Vector to nearest point on the mission flightplan
            target = state->clstPoint;
