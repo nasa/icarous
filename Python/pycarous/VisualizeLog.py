@@ -5,6 +5,7 @@ import os
 import glob
 import numpy as np
 from icutils.ichelper import GetPlanPositions,GetEUTLPlanFromFile,ConvertToLocalCoordinates
+from icutils.units import From_string
 from CustomTypes import TcpType
 
 class playback():
@@ -60,10 +61,23 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
         for fence in ic.localFences:
             fence.append(fence[0])
             anim.AddFence(np.array(fence),'c-.')
+
+        if ic.params['dta_logic'] != '0':
+            radius_value_unit = ic.params['dta_radius'].split('[')
+            radius = float(radius_value_unit[0])
+            units = radius_value_unit[1]
+            radius = From_string(units,radius)
+            lat = float(ic.params['dta_latitude'].split('[')[0])
+            lon = float(ic.params['dta_longitude'].split('[')[0])
+            dtaxy = getLocPos([lat,lon,0])
+            anim.AddZone(dtaxy,radius,'k')
     for fix in icList[0].localMergeFixes:
         anim.AddZone(fix[::-1][1:3],float(icList[0].params['coordination_zone'].split(' ')[0]),'r')
         anim.AddZone(fix[::-1][1:3],float(icList[0].params['schedule_zone'].split(' ')[0]),'b')
         anim.AddZone(fix[::-1][1:3],float(icList[0].params['entry_zone'].split(' ')[0]),'g')
+    
+
+
 
     for plan in network:
         planWPs = np.array(plan)[:,1:]
