@@ -374,9 +374,9 @@ class IcarousInterface(abc.ABC):
         for fence, vertices in zip(geofences_local, self.localFences):
             fence["vertices"] = vertices
 
-        log_data = {"state": self.ownshipLog,
+        log_data = {"state": round_for_log(self.ownshipLog),
                     "callsign": self.callsign,
-                    "traffic": self.trafficLog,
+                    "traffic": round_for_log(self.trafficLog),
                     "origin": self.home_pos,
                     "flightplans": plans,
                     "flightplans_local": self.localPlans,
@@ -389,6 +389,19 @@ class IcarousInterface(abc.ABC):
         import json
         with open(logname, 'w') as f:
             json.dump(log_data, f)
+
+
+LOGPRECISION = 2
+def round_for_log(data):
+    skip = ["position", "trkbands", "altbands", "gsbands", "vsbands"]
+    if isinstance(data, dict):
+        return {k: round_for_log(v) if k not in skip else v for k, v in data.items()}
+    elif np.shape(data) and np.array(data).dtype == np.float64:
+        return np.round(data, LOGPRECISION).tolist()
+    elif isinstance(data, float):
+        return round(data, LOGPRECISION)
+    else:
+        return data
 
 
 def BandsLog():
@@ -407,12 +420,12 @@ def record_bands(log, bands):
     filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
     if bands is not None:
         log["conflict"].append(bands['currentConflictBand'])
-        log["resUp"].append(filterinfnan(bands['resUp']))
-        log["resDown"].append(filterinfnan(bands['resDown'])) 
+        log["resUp"].append(filterinfnan(round_for_log(bands['resUp'])))
+        log["resDown"].append(filterinfnan(round_for_log(bands['resDown'])))
         log["numBands"].append(bands['numBands'])
         log["bandTypes"].append([bands['type'][i] for i in range(bands['numBands'])])
-        log["low"].append([bands['min'][i] for i in range(bands['numBands'])])
-        log["high"].append([bands['max'][i] for i in range(bands['numBands'])])
+        log["low"].append([round_for_log(bands['min'][i]) for i in range(bands['numBands'])])
+        log["high"].append([round_for_log(bands['max'][i]) for i in range(bands['numBands'])])
     else:
         log["conflict"].append(0)
         log["resUp"].append("nan")
