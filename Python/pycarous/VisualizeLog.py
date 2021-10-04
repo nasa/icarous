@@ -69,8 +69,8 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
             radius = From_string(units,radius)
             lat = float(ic.params['dta_latitude'].split('[')[0])
             lon = float(ic.params['dta_longitude'].split('[')[0])
-            dtaxy = getLocPos([lat,lon,0])
-            anim.AddZone(dtaxy,radius,'k')
+            dtane = getLocPos([lat,lon,0])
+            anim.AddZone([dtane[1],dtane[0]],radius,'k')
     for fix in icList[0].localMergeFixes:
         anim.AddZone(fix[::-1][1:3],float(icList[0].params['coordination_zone'].split(' ')[0]),'r')
         anim.AddZone(fix[::-1][1:3],float(icList[0].params['schedule_zone'].split(' ')[0]),'b')
