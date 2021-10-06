@@ -104,6 +104,9 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
     if(state->parameters.resolutionType == SEARCH_RESOLUTION){
         return false;
     }
+
+    
+
     conflict = conflict || state->allTrafficConflicts[SPEED_RESOLUTION];
     conflict = conflict || state->allTrafficConflicts[TRACK_RESOLUTION];
     conflict = conflict || state->allTrafficConflicts[ALTITUDE_RESOLUTION];
@@ -117,6 +120,12 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
     }
 
     state->trafficConflict = conflict && state->icReady;
+
+    int ind = state->resType;
+    if (!state->validResolution[ind]){
+        return false;       
+    }
+
     return state->trafficConflict;
 }
 

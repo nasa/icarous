@@ -415,7 +415,6 @@ cdef class AutonomyStack:
 
         numAlerts = TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
         if numAlerts > 0:
-            InputTrafficAlert(self.Cognition,callsign,alert)
             for i in range(1,numAlerts):
                 strcpy(callsign,b'')
                 TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
@@ -436,11 +435,11 @@ cdef class AutonomyStack:
             ChangeWaypointSpeed(self.Guidance,<char*>b'Plan0',self.nextWP1,gs,False)
 
     def Run(self,time):
-        self._RunCognition_(time)
         self._RunGuidance_(time)
         self._RunTrafficMonitor_(time)
         self._RunTrajectoryMonitor_(time)
         self._RunMerger_(time)
+        self._RunCognition_(time)
 
     def GetOutput(self):
         return self.controlInput

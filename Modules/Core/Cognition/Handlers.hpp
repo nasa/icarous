@@ -272,19 +272,27 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
 
          int ind = state->resType;
          if (state->validResolution[ind]){
-             
+
+             std::string message = " against ";
+             for(auto id: state->conflictTraffics){
+                 if (id != ""){
+                     message += id + ", ";
+                 }
+             }
+
+
              if (state->resType == SPEED_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with speed resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with speed resolution" + message);
              }
              else if (state->resType == ALTITUDE_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with altitude resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with altitude resolution" + message);
              }
              else if (state->resType == TRACK_RESOLUTION) {
-                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with track resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with track resolution" + message);
                  LogMessage(state, "[MODE] | Guidance Vector Request");
              }
              else if(state->resType == VERTICALSPEED_RESOLUTION ){
-                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with vertical speed resolution");
+                 LogMessage(state, "[STATUS] | "+ eventName +" | Resolving traffic conflict with vertical speed resolution" + message);
                  LogMessage(state, "[MODE] | Guidance Vector Request");
              }
          }else{
