@@ -430,6 +430,7 @@ def record_bands(log, bands):
         log["high"].append([round_for_log(bands['max'][i]) for i in range(bands['numBands'])])
     else:
         log["conflict"].append(0)
+        log["traffic"].append(0)
         log["resUp"].append("nan")
         log["resDown"].append("nan")
         log["numBands"].append(0)
