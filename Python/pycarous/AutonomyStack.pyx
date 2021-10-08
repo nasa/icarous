@@ -54,7 +54,7 @@ cdef class AutonomyStack:
         self.Guidance = InitGuidance(icConfig.encode('utf-8')) 
         self.TrajManager = new_TrajManager(<char*>self.callsign.c_str(),icConfig.encode('utf-8'))
         self.Merger = MergerInit(<char*>self.callsign.c_str(),icConfig.encode('utf-8'),opts['vehicleID'])
-        self.Tracker = new_TargetTracker(<char*>self.callsign.c_str());
+        self.Tracker = new_TargetTracker(<char*>self.callsign.c_str(),icConfig.encode('utf-8'));
         self.activePlan = b''
         self.etaFP1 = False
         self.nextWP1 = 1
@@ -503,12 +503,8 @@ cdef class AutonomyStack:
         self._RunTrafficMonitor_(time)
         self._RunTrajectoryMonitor_(time)
         self._RunMerger_(time)
-<<<<<<< HEAD
         self._RunCognition_(time)
-=======
         self._RunTracker_(time)
-        self._RunGeofenceMonitor_()
->>>>>>> [pycarous/Modules] Debugging updates, refactoring
 
     def GetOutput(self):
         return self.controlInput
