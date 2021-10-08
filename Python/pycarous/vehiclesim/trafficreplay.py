@@ -76,7 +76,7 @@ class TrafficReplay(VehicleSimInterface):
 
     def Run(self, windFrom=0, windTo=0):
         """ Replaying log doesn't need to simulate vehicles """
-        return true
+        return True
 
     def GetOutputPositionNED(self):
         pass
