@@ -407,6 +407,7 @@ def round_for_log(data):
 def BandsLog():
     return {
         "conflict": [],
+        "traffic": [],
         "resUp": [],
         "resDown": [],
         "numBands": [],
@@ -420,6 +421,7 @@ def record_bands(log, bands):
     filterinfnan = lambda x: "nan" if np.isnan(x)  else "inf" if np.isinf(x) else x
     if bands is not None:
         log["conflict"].append(bands['currentConflictBand'])
+        log["traffic"].append(bands['traffic'])
         log["resUp"].append(filterinfnan(round_for_log(bands['resUp'])))
         log["resDown"].append(filterinfnan(round_for_log(bands['resDown'])))
         log["numBands"].append(bands['numBands'])

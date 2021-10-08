@@ -5,6 +5,7 @@ from libc.string cimport strcpy
 from icutils.ichelper import ConvertVnedToTrkGsVs
 from libcpp.string cimport string
 from libcpp.map cimport map
+from libcpp.vector cimport vector
 
 cdef class AutonomyStack:
     cdef void* TrafficMonitor
@@ -38,6 +39,7 @@ cdef class AutonomyStack:
     cdef bands_t altBand
     cdef bands_t vsBand
     cdef bands_t trkBand
+    cdef vector[string] conflictTrafficIds
 
     def __cinit__(self,opts):
         cdef GuidanceParams_t guidParams
@@ -64,6 +66,7 @@ cdef class AutonomyStack:
         self.secPlanSize = 0
         self.windFrom = 0
         self.windSpeed = 0
+        self.conflictTrafficIds = [];
 
     def InputParams(self,inputFile):
         ReadParamFromFile(self.Cognition,inputFile.encode('utf-8'))
@@ -414,11 +417,15 @@ cdef class AutonomyStack:
         TrafficMonitor_GetVerticalSpeedBands(self.TrafficMonitor,&self.vsBand) 
 
         numAlerts = TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
+        self.conflictTrafficIds = []
         if numAlerts > 0:
             for i in range(1,numAlerts):
                 strcpy(callsign,b'')
                 TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
                 InputTrafficAlert(self.Cognition,callsign,alert)
+                if alert > 0:
+                    self.conflictTrafficIds.push_back(callsign)
+                
 
         InputTrackBands(self.Cognition,&self.trkBand)
         InputSpeedBands(self.Cognition,&self.gsBand)
@@ -492,6 +499,7 @@ cdef class AutonomyStack:
 
         return {
             'currentConflictBand': band.currentConflictBand,
+            'traffic': [tf.decode('utf-8') for tf in self.conflictTrafficIds],
             'resUp': band.resUp,
             'resDown': band.resDown,
             'numBands': band.numBands,
