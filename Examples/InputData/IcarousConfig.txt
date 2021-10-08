@@ -219,3 +219,20 @@ Priority_TrafficConflict3 = 4
 Priority_FlightPlanDeviation = 1
 Priority_Ditching = 5
 Priority_TODReached = 1
+
+#tracker parameters
+track_timeout = 5 [s]
+pos_model_undertainty_xx = 1.0 [m^2]
+pos_model_undertainty_yy = 1.0 [m^2]
+pos_model_undertainty_zz = 1.0 [m^2]
+pos_model_undertainty_xy = 0.0 [m^2]
+pos_model_undertainty_yz = 0.0 [m^2]
+pos_model_undertainty_xz = 0.0 [m^2]
+vel_model_undertainty_xx = 1.0 [m^2]
+vel_model_undertainty_yy = 1.0 [m^2]
+vel_model_undertainty_zz = 1.0 [m^2]
+vel_model_undertainty_xy = 0.0 [m^2]
+vel_model_undertainty_yz = 0.0 [m^2]
+vel_model_undertainty_xz = 0.0 [m^2]
+pos_chi_threshold = 16.27
+vel_chi_threshold = 16.27

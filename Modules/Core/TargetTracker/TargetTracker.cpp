@@ -3,25 +3,36 @@
 #include <gsl/gsl_linalg.h>
 #include "TargetTracker.hpp"
 #include "TargetTracker.h"
+#include "StateReader.h"
+#include "ParameterData.h"
 
-TargetTracker::TargetTracker(std::string name){
+TargetTracker::TargetTracker(std::string name,std::string configFile){
     callsign = name;
     timeout = 5;
     totalTracks = 0;
-    modelUncertaintyP[0] = 1.0;
-    modelUncertaintyP[1] = 1.0;
-    modelUncertaintyP[2] = 1.0;
-    modelUncertaintyP[3] = 0.0;
-    modelUncertaintyP[4] = 0.0;
-    modelUncertaintyP[5] = 0.0;
-    modelUncertaintyV[0] = 1.0;
-    modelUncertaintyV[1] = 1.0;
-    modelUncertaintyV[2] = 1.0;
-    modelUncertaintyV[3] = 0.0;
-    modelUncertaintyV[4] = 0.0;
-    modelUncertaintyV[5] = 0.0;
-    pThreshold = 16.27;
-    vThreshold = 16.27;
+    ReadParamFromFile(configFile);
+}
+
+void TargetTracker::ReadParamFromFile(std::string configFile){
+   larcfm::StateReader reader;
+   larcfm::ParameterData parameters;
+   reader.open(configFile);
+   reader.updateParameterData(parameters);
+   timeout              = parameters.getValue("track_timeout");
+   modelUncertaintyP[0] = parameters.getValue("pos_model_undertainty_xx");
+   modelUncertaintyP[1] = parameters.getValue("pos_model_undertainty_yy");
+   modelUncertaintyP[2] = parameters.getValue("pos_model_undertainty_zz");
+   modelUncertaintyP[3] = parameters.getValue("pos_model_undertainty_xy");
+   modelUncertaintyP[4] = parameters.getValue("pos_model_undertainty_yz");
+   modelUncertaintyP[5] = parameters.getValue("pos_model_undertainty_xz");
+   modelUncertaintyV[0] = parameters.getValue("vel_model_undertainty_xx");
+   modelUncertaintyV[1] = parameters.getValue("vel_model_undertainty_yy");
+   modelUncertaintyV[2] = parameters.getValue("vel_model_undertainty_zz");
+   modelUncertaintyV[3] = parameters.getValue("vel_model_undertainty_xy");
+   modelUncertaintyV[4] = parameters.getValue("vel_model_undertainty_yz");
+   modelUncertaintyV[5] = parameters.getValue("vel_model_undertainty_xz");
+   pThreshold           = parameters.getValue("pos_chi_threshold");
+   vThreshold           = parameters.getValue("vel_chi_threshold");
 }
 
 void TargetTracker::SetGateThresholds(double p, double v){
@@ -439,7 +450,7 @@ void TargetTracker::UpdatePredictions(double time){
             continue;
         }else{
             // Save indices of tracks that haven't received 
-            // updates for past 5 seconds
+            // updates for past N seconds (N is defined by timeout)
             if( (time - tracks[i].lastUpdate) > timeout){
                 oldTracks.push_back(i);
             }
@@ -466,8 +477,8 @@ measurement TargetTracker::GetIntruderData(int i){
     return tracks[i+1];
 }
 
-void* new_TargetTracker(char* callsign){
-    return new TargetTracker(std::string(callsign));
+void* new_TargetTracker(char* callsign,char* configFile){
+    return new TargetTracker(std::string(callsign),std::string(configFile));
 }
 
 void TargetTracker_SetHomePosition(void* obj,double position[3]){

@@ -45,7 +45,8 @@ class TargetTracker{
        int totalTracks;
     public:
         
-       TargetTracker(std::string callsign);
+       TargetTracker(std::string callsign,std::string configFile);
+       void ReadParamFromFile(std::string configFile);
        void SetHomePosition(larcfm::Position& home);
        void SetGateThresholds(double p, double v);
        void UpdatePredictions(double time);
