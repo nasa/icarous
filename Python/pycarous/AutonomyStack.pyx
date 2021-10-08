@@ -419,9 +419,9 @@ cdef class AutonomyStack:
         numAlerts = TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
         self.conflictTrafficIds = []
         if numAlerts > 0:
-            for i in range(1,numAlerts):
+            for i in range(0,numAlerts):
                 strcpy(callsign,b'')
-                TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,0,callsign,&alert)
+                TrafficMonitor_GetTrafficAlerts(self.TrafficMonitor,i,callsign,&alert)
                 InputTrafficAlert(self.Cognition,callsign,alert)
                 if alert > 0:
                     self.conflictTrafficIds.push_back(callsign)
