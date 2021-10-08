@@ -114,7 +114,7 @@ void DaidalusMonitor::MonitorTraffic(larcfm::Velocity windfrom) {
             staleData.push_back(elem.second);
         }
 
-        int alert = DAA1.alerting(count);
+        int alert = DAA1.alertLevel(count);
         if(alert > 0) {
             conflict = true;
             conflictStartTime = elapsedTime;
