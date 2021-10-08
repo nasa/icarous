@@ -75,6 +75,7 @@ cdef class AutonomyStack:
         guidReadParamFromFile(self.Guidance,inputFile.encode('utf-8'))
         TrajManager_ReadParamFromFile(self.TrajManager,inputFile.encode('utf-8'))
         MergerReadParamFromFile(self.Merger,inputFile.encode('utf-8'))
+        TargetTracker_ReadParamsFromFile(self.Tracker,inputFile.encode('utf-8'))
 
     def InputWind(self,windFrom,windSpeed):
         self.windFrom = windFrom

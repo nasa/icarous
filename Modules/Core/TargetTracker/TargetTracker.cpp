@@ -481,6 +481,10 @@ void* new_TargetTracker(char* callsign,char* configFile){
     return new TargetTracker(std::string(callsign),std::string(configFile));
 }
 
+void TargetTracker_ReadParamsFromFile(void* obj,char* configFile){
+    ((TargetTracker*)obj)->ReadParamFromFile(std::string(configFile));
+}
+
 void TargetTracker_SetHomePosition(void* obj,double position[3]){
     larcfm::Position home = larcfm::Position::makeLatLonAlt(position[0],"deg",position[1],"deg",position[2],"m");
     ((TargetTracker*)obj)->SetHomePosition(home);

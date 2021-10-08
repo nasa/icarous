@@ -7,6 +7,7 @@ extern "C" {
 
 
 void* new_TargetTracker(char* callsign,char* configFile);
+void TargetTracker_ReadParamsFromFile(void* obj,char* configFile);
 void TargetTracker_SetHomePosition(void* obj,double position[3]);
 void TargetTracker_SetModelUncertainty(void* obj,double sigmaP[6],double sigmaV[6]);
 void TargetTracker_SetGateThresholds(void* obj,double p, double v);
