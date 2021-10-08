@@ -1,6 +1,7 @@
 from icutils.AccordUtil import ConvertNED2LLA
 from icutils.units import From, From_string
 import pandas as pd
+import numpy as np
 
 from vehiclesim import VehicleSimInterface
 from communicationmodels import get_transmitter
@@ -107,14 +108,25 @@ class TrafficReplay(VehicleSimInterface):
             sigmaP = [0.0,0.0,0.0,0.0,0.0,0.0]
             sigmaV = [0.0,0.0,0.0,0.0,0.0,0.0]
             if self.uncertainty:
-                sigmaP[0] = (traffic_msg.s_EW_std*self.units['s_EW_std'])**2
-                sigmaP[1] = (traffic_msg.s_NS_std*self.units['s_NS_std'])**2
-                sigmaP[2] = (traffic_msg.s_z_std*self.units['s_z_std'])**2,
-                sigmaP[3] = (traffic_msg.s_EN_std*self.units['s_EN_std'])**2
-                sigmaV[0] = (traffic_msg.v_EW_std*self.units['v_EW_std'])**2
-                sigmaV[1] = (traffic_msg.v_NS_std*self.units['v_NS_std'])**2
-                sigmaV[2] = (traffic_msg.v_z_std*self.units['v_z_std'])**2,
-                sigmaV[3] = (traffic_msg.v_EN_std*self.units['v_EN_std'])**2
+                minSigmaP = [1.0,1.0,1.0,0.0,0.0,0.0]
+                minSigmaV = [1.0,1.0,1.0,0.0,0.0,0.0]
+                sxx = (traffic_msg.s_EW_std*self.units['s_EW_std'])**2
+                syy = (traffic_msg.s_NS_std*self.units['s_NS_std'])**2
+                szz = (traffic_msg.s_z_std*self.units['s_z_std'])**2,
+                sxy = (traffic_msg.s_EN_std*self.units['s_EN_std'])**2
+                vxx = (traffic_msg.v_EW_std*self.units['v_EW_std'])**2
+                vyy = (traffic_msg.v_NS_std*self.units['v_NS_std'])**2
+                vzz = (traffic_msg.v_z_std*self.units['v_z_std'])**2,
+                vxy = (traffic_msg.v_EN_std*self.units['v_EN_std'])**2
+
+                sigmaP = [np.max([sxx,minSigmaP[0]]),
+                          np.max([syy,minSigmaP[1]]),
+                          np.max([szz,minSigmaP[2]]),
+                          np.min([sxy,np.sqrt(sxx*syy * 0.95)]),0,0]
+                sigmaV = [np.max([vxx,minSigmaV[0]]),
+                          np.max([vyy,minSigmaV[1]]),
+                          np.max([vzz,minSigmaV[2]]),
+                          np.min([vxy,np.sqrt(vxx*vyy * 0.1)]),0,0]
 
             msg_data = {
                 "source": self.transmitter.sensorType,
