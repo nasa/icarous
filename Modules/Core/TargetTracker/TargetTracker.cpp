@@ -470,10 +470,13 @@ void TargetTracker::UpdatePredictions(double time){
 }
 
 int TargetTracker::GetTotalTraffic(){
+    // tracks.size()-1 because the first track is for the ownship
     return tracks.size()-1;
 }
 
 measurement TargetTracker::GetIntruderData(int i){
+    // i is 0 index. 0th intruder is the 1st track.
+    // i+1 because the 0th track is for the ownship
     return tracks[i+1];
 }
 
