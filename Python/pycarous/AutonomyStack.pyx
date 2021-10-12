@@ -115,6 +115,11 @@ cdef class AutonomyStack:
         TrajManager_InputFlightPlan(self.TrajManager,b'Plan0',inputWPs,self.missionPlanSize,0,_repair,self.params[b'TURN_RATE'])
         TargetTracker_SetHomePosition(self.Tracker,homePos);
 
+    def SetTrackerHome(self,home):
+        cdef double homePos[3]
+        for i in range(3):
+            homePos[i] = home[i]
+        TargetTracker_SetHomePosition(self.Tracker,homePos);
 
     def SetIntersectionData(self,fp):
         cdef int n,fid
