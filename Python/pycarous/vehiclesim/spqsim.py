@@ -118,7 +118,7 @@ class SixPassengerQuadSim(VehicleSimInterface):
         pos_n = self.state.N_pos*1852       # nm to m
         pos_e = self.state.E_pos*1852       # nm to m
         alt   = self.state.Altitude*0.3048  # ft to m
-        return (pos_n, pos_e, alt)
+        return (pos_n, pos_e, -alt)
 
     def GetOutputVelocityNED(self):
         airspeed = self.state.VTAS*0.5144   # kts to m/s

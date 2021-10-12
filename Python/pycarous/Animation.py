@@ -166,8 +166,8 @@ class AgentAnimation():
         y3 = tempY - 1*tfsize * sin((t + pi/2))
 
         poly.set_xy([[x1, y1], [x2, y2], [x3, y3]])
-        poly.labelText.set_position((x + 2*tfsize,y+2*tfsize))
-        speed = np.sqrt(vel[0]**2 + vel[1]**2)
+        #poly.labelText.set_position((x + 2*tfsize,y+2*tfsize))
+        #speed = np.sqrt(vel[0]**2 + vel[1]**2)
         #poly.labelText.set_text('%s Z:%.2f[m]\nS:%.2f[mps]' % (id,z,speed))
 
     def AddPath(self,path,color1,points = [],labels = [],color2='',time=0):
@@ -232,7 +232,7 @@ class AgentAnimation():
         if i < len(time):
             self.slider.eventson = False
             self.slider.set_val(i)
-            self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
+            #self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
             self.slider.eventson = True
             for j, vehicle in enumerate(self.agents):
                 k = time[i]

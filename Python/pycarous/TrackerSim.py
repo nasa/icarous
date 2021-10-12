@@ -3,9 +3,9 @@
 from SimEnvironment import SimEnvironment
 from Icarous import Icarous
 from IcarousRunner import IcarousRunner
-from ichelper import GetHomePosition,ReadTrafficInput
+from icutils.ichelper import GetHomePosition,ReadTrafficInput
 from GroundSystem import AdsbRebroadcast
-from vehiclesim import AccordReplay
+from vehiclesim import TrafficReplay
 import argparse
 import os
 
@@ -29,11 +29,11 @@ parser.add_argument("-t", "--traffic", type=str, default='',
                    help='File containing traffic initial condition. See data/traffic.txt for example')
 parser.add_argument("-l", "--tlimit", type=float, default=300,
                    help='set max sim time limit (in seconds). default 300 s')
-parser.add_argument("-p", "--params", type=str, default='data/icarous_default.parm',
-                   help='icarous parameter file. default: data/icarous_default.parm')
+parser.add_argument("-p", "--params", type=str, default='data/IcarousConfig.txt',
+                   help='icarous parameter file. default: data/IcarousConfig.txt')
 parser.add_argument("-g", "--geofence", type=str, default='',
                    help='geofence xml input. example: data/geofence2.xml')
-parser.add_argument("-c", "--daaConfig", type=str, default='data/DaidalusQuadConfig.txt',
+parser.add_argument("-c", "--daaConfig", type=str, default='data/IcarousConfig.txt',
                    help='specify configuration file if one is required by the DAA module specified by -d/--daaType')
 parser.add_argument("-v", "--verbosity", type=int, choices=[0,1,2], default=1,
                    help='Set print verbosity level')
@@ -89,17 +89,13 @@ else:
                  daaConfig=args.daaConfig, fasttime=args.fasttime,callsign="Ownship")
 
 ic.core.SetTrackerHome(HomePos)
-ic.ownship = AccordReplay(ic.callsign,HomePos,'Truth/'+args.scenario+'.csv',sim.comm_channel,id='Ownship')
+ic.ownship = TrafficReplay('Truth/'+args.scenario+'.csv',sim.comm_channel,filter=['Intruder1'])
 ic.missionStarted = True
 
-sim.AddAccordTraffic('TruthIntruder1',HomePos,'Truth/'+args.scenario+'.csv','Intruder1')
-sim.AddAccordTraffic('ADSBOwnship',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Ownship',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
-sim.AddAccordTraffic('ADSBIntruder1',HomePos,'ADSB/'+args.scenario+'_ADSB.csv','Intruder1',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
-sim.AddAccordTraffic('RADARIntruder1',HomePos,'RADAR/'+args.scenario+'_RADAR.csv','Intruder1',sigmaP=[1000.0,1000.0,1000.0,0.0,0.0,0.0],sigmaV=[100.0,100.0,100.0,0.0,0.0,0.0])
-
-if args.daalog:
-    # Dirty hack to silently update the daa logging parameter from commandline
-    os.system("sed -Ein -e \'s/(LOGDAADATA)(\\ *)([0-1])(\\.0*)/\\1\\21\\4/\' "+args.params)
+#sim.AddReplayTraffic('Truth/'+args.scenario+'.csv',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
+sim.AddReplayTraffic('ADSB/'+args.scenario+'_ADSB.csv',filter=['Intruder1'],sigmaP=[1000.0,1000.0,1000.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
+#sim.AddReplayTraffic('ADSB/'+args.scenario+'_ADSB.csv',sigmaP=[100.0,100.0,100.0,0.0,0.0,0.0],sigmaV=[50.0,50.0,50.0,0.0,0.0,0.0])
+#sim.AddReplayTraffic('RADAR/'+args.scenario+'_RADAR.csv',sigmaP=[1000.0,1000.0,1000.0,0.0,0.0,0.0],sigmaV=[100.0,100.0,100.0,0.0,0.0,0.0])
 
 # Read params from file and input params
 ic.SetParametersFromFile(args.params)

@@ -1,7 +1,7 @@
 import abc
 
 from communicationmodels import get_transmitter, get_receiver
-from ichelper import ConvertToLocalCoordinates,ConvertToGPS
+from icutils.ichelper import ConvertToLocalCoordinates,ConvertToGPS
 import numpy as np
 
 class GroundSystem(abc.ABC):

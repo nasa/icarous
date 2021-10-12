@@ -100,7 +100,7 @@ class UamVtolSim(VehicleSimInterface):
         return True
 
     def GetOutputPositionNED(self):
-        return (self.pos[1], self.pos[0], self.pos[2])
+        return (self.pos[1], self.pos[0], -self.pos[2])
 
     def GetOutputVelocityNED(self):
         return (self.vel0[1] + self.vw[1], self.vel0[0] + self.vw[0], -self.vel0[2] + self.vw[2])

@@ -140,9 +140,9 @@ class SimEnvironment:
 
         return traffic
 
-    def AddReplayTraffic(self, logfile, delay=0, homePos=None, filter=[]):
+    def AddReplayTraffic(self, logfile, delay=0, homePos=None, filter=[], sigmaP=[1,1,1,0,0,0],sigmaV=[1,1,1,0,0,0]):
         """ Replay traffic updates from a csv log """
-        traffic = TrafficReplay(logfile, self.comm_channel, delay, homePos,filter)
+        traffic = TrafficReplay(logfile, self.comm_channel, delay, homePos,filter,sigmaP,sigmaV)
         self.tfList.append(traffic)
 
     def SetDitchingCriteria(self,index,ditchCriteria,ditchSite,todAltitude):
@@ -150,10 +150,6 @@ class SimEnvironment:
         ic.DitchCriteria = ditchCriteria
         ic.ditchSite = ditchSite
         ic.ditchTOD = todAltitude
-
-    def AddAccordTraffic(self,callsign,homepos,logfile,vehicleid,sigmaP=[1,1,1,0,0,0],sigmaV=[1,1,1,0,0,0]):
-        traffic = AccordReplay(callsign,homepos,logfile,self.comm_channel,id=vehicleid,SigmaP=sigmaP,SigmaV=sigmaV)
-        self.tfList.append(traffic)
 
     def RunSimulatedTraffic(self, dT=None):
         """ Update all simulated traffic vehicles """

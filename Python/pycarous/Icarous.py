@@ -132,7 +132,7 @@ class Icarous(IcarousInterface):
             trkgsvs = ConvertVnedToTrkGsVs(*velocityNED)
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign.decode('utf-8'), position, velocityNED, localPos,[sigmaP[0],sigmaP[1],sigmaP[3]])
-            self.core.InputIntruderState(time,callsign,position,trkgsvs,sigmaP,sigmaV)
+            self.core.InputIntruderState(time,"ADSB",callsign.decode('utf-8'),position,trkgsvs,sigmaP,sigmaV)
     
     def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialPosition=True,setInitialVelocity=False):
         
@@ -234,7 +234,7 @@ class Icarous(IcarousInterface):
             self.localPos = opos
             (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
        
-            self.position = [ogx, ogy, opos[2]]
+            self.position = [ogx, ogy, -opos[2]]
             self.velocity = ovel
             self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
             self.RecordOwnship()

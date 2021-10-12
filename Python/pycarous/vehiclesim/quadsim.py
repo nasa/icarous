@@ -70,7 +70,7 @@ class QuadSim(VehicleSimInterface):
         self.old_x = outx
         self.old_y = outy
         self.old_z = outz
-        return (outy, outx, outz, y, x, z)
+        return (outy, outx, outz, y, x, -z)
 
     def GetOutputVelocityNED(self):
         vel = c_double*3
