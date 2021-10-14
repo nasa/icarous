@@ -122,7 +122,7 @@ daa_resolution_type = 2
 sensor_mapping = false
 
 # Permissible cross track deviation
-allowed_xtrk_deviation = 100 [m]
+allowed_xtrk_deviation = 10000 [m]
 
 # Return to mission behavior after conflict resolution.
 # return to next feasible waypoint, 
@@ -145,11 +145,14 @@ plan_lookahead = 20 [s]
 # default waypoint speed if nothing is specified in the flightplan
 default_wp_speed = 1.0 [m/s]
 
+# Enable 4D following
+maintain_eta = True
+
 # capture radius around a waypoint is given by speed [m/s] * capture_radius_scaling 
 capture_radius_scaling = 2.0
 
 # Min/Max limits on the capture radius around a waypoint
-max_capture_radius = 15 [m]
+max_capture_radius = 50 [m]
 min_capture_radius = 1 [m]
 
 # Guidance radius scaling. guidance radius scaling <= capture_radius_scaling
