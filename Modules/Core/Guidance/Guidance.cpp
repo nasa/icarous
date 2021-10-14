@@ -39,6 +39,7 @@ void Guidance::ReadParamFromFile(std::string config){
     params.climbFpAngle = parameters.getValue("climb_angle");
     params.maxSpeed = parameters.getValue("max_hs");
     params.minSpeed = parameters.getValue("min_hs");
+    params.maintainEta = parameters.getBool("maintain_eta");
 }
 
 void Guidance::SetGuidanceParams(const GuidanceParams_t* inputParams){
@@ -323,10 +324,7 @@ double Guidance::ComputeSpeed(){
    int nextWP = nextWpId[activePlanId];
    const larcfm::NavPoint nextPos = currentPlan->point(nextWP); 
    double refSpeed;
-   // Enable ETA controls for kinematic plans.
-   if (!currentPlan->isLinear()){
-      etaControl = true;
-   }
+   etaControl = params.maintainEta;
 
    // We don't perform ETA controls under these paths.
    if(activePlanId == "PlanSpeedChange" || activePlanId == "PlanAltChange" || activePlanId == "DitchPath"){

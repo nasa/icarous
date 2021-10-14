@@ -43,6 +43,7 @@ typedef struct{
     double maxSpeed;
     double minSpeed;
     bool yawForward;
+    bool maintainEta;
 }GuidanceParams_t;
 
 typedef struct{
