@@ -146,7 +146,7 @@ plan_lookahead = 20 [s]
 default_wp_speed = 1.0 [m/s]
 
 # Enable 4D following
-maintain_eta = True
+maintain_eta = False
 
 # capture radius around a waypoint is given by speed [m/s] * capture_radius_scaling 
 capture_radius_scaling = 2.0
