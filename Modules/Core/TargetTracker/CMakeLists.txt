@@ -9,10 +9,11 @@ set(SOURCE_FILES TargetTracker.cpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../)
-include_directories($ENV{USERINC}/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/eigen)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-link_directories(${LIBRARY_OUTPUT_PATH} $ENV{USERLIB})
+link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(TargetTracker SHARED ${SOURCE_FILES})
 
-target_link_libraries(TargetTracker ACCoRD gsl)
+target_link_libraries(TargetTracker ACCoRD)
