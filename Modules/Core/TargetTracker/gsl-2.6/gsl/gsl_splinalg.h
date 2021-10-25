@@ -1,1 +1,0 @@
-../splinalg/gsl_splinalg.h
