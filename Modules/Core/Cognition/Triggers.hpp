@@ -121,7 +121,7 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
 
     state->trafficConflict = conflict && state->icReady;
 
-    int ind = state->resType;
+    int ind = state->parameters.resolutionType;
     if (!state->validResolution[ind]){
         return false;       
     }
