@@ -26,6 +26,10 @@ public:
     std::list<std::shared_ptr<EventHandler<T>>> children;
     float priority;
     float defaultPriority;
+
+    bool operator<(const EventHandler<T> &op) const{
+        return priority < op.priority;
+    }
 };
 
 template <class T>

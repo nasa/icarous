@@ -3,11 +3,62 @@
 
 #include <list>
 #include <functional>
+#include <queue>
 #include <map>
+#include <set>
 #include <string>
 #include <climits>
 #include <memory>
 #include <EventHandler.hpp>
+
+// A heap+set data structure to maintain
+// priority queue while also enabling
+// fast set membership tests
+template <class T>
+class heapset{
+
+  private:
+    std::priority_queue<T> priq;
+    std::set<T> priset;
+
+  public:
+
+    heapset(){};
+
+    void push(T& value){
+        priq.push(value);
+        priset.insert(value);
+    }
+
+    void pop(){
+        const T& val = priq.top();
+        priq.pop();
+        priset.erase(val);
+    }
+
+    int empty(){
+        return priq.empty();
+    }
+
+    const T& top(){
+        return priq.top();
+    }
+
+    bool contains(T& val){
+        if(priset.find(val) == priset.end()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    void clear(){
+        while(!priq.empty()){
+            priq.pop();
+        }
+        priset.clear();
+    }
+};
 
 template <class T>
 class EventManagement{
@@ -25,7 +76,7 @@ class EventManagement{
      // List of monitor functions
      std::map<std::string,std::function<bool(T*)>> events;
      std::map<std::string,std::shared_ptr<EventHandler<T>>> handlers;
-     std::list<std::shared_ptr<EventHandler<T>>>activeEventHandlers;
+     heapset<std::shared_ptr<EventHandler<T>>>activeEventHandlers;
 };
 
 template <class T>
@@ -42,6 +93,7 @@ template<class T>
 void EventManagement<T>::Reset(){
     events.clear();
     handlers.clear();
+    // clear all handlers from priority queue
     activeEventHandlers.clear();
 }
 
@@ -55,29 +107,27 @@ void EventManagement<T>::RunEventMonitors(T* state){
         if(val){
             bool avail = false;
             // Check if the event handler for this event is currently being executed
-            for(auto &activehdl: activeEventHandlers){
-                EventHandler<T>* hdl = handlers[elem.first].get();
-                if (hdl != nullptr){
-                    if (activehdl.get() == hdl) {
-                        avail = true;
-                        break;
-                    }
-                }
+            if(activeEventHandlers.contains(handlers[elem.first])){
+                avail = true;
             }
+            
             // If the event handler is not part of active handlers, add to active handlers
             if(!avail){
                 if(handlers[elem.first] != nullptr){
                     handlers[elem.first]->eventName = elem.first;
                     handlers[elem.first]->execState = EventHandler<T>::NOOP;
-                    activeEventHandlers.push_back(handlers[elem.first]);
-                    auto cmp = [] (std::shared_ptr<EventHandler<T>> h1,std::shared_ptr<EventHandler<T>> h2) {
-                        return h1->priority >= h2->priority;
-                    };
-                    auto currHandler = activeEventHandlers.front();
-                    activeEventHandlers.sort(cmp);
-                    if(currHandler != activeEventHandlers.front()){
-                        currHandler->execState = EventHandler<T>::DONE;
+                    if(!activeEventHandlers.empty()){
+                        // currently executing handler
+                        auto currHandler = activeEventHandlers.top();
+                        activeEventHandlers.push(handlers[elem.first]);
+                        // If the newly added handler takes more priority, stop the previous handler
+                        if(currHandler != activeEventHandlers.top()){
+                            currHandler->execState = EventHandler<T>::DONE;
+                        }
+                    }else{
+                        activeEventHandlers.push(handlers[elem.first]);
                     }
+                    
                 }
             }
         }
@@ -86,37 +136,37 @@ void EventManagement<T>::RunEventMonitors(T* state){
 
 template<class T>
 void EventManagement<T>::RunEventHandlers(T* state){
-    for (auto handler : activeEventHandlers) {
-        bool val = true;
-        // If this handler is just starting, 
-        if(handler->execState == EventHandler<T>::NOOP && handler->eventName != ""){
-            // make sure the trigger is still true
-            // if trigger is false, remove handler
-            if(events[handler->eventName](state)){
-               handler->execState = EventHandler<T>::INITIALIZE;
+    if(activeEventHandlers.empty()){
+        return;
+    }
+    auto handler = activeEventHandlers.top();
+    bool val = false;
+    // If this handler is just starting, 
+    if(handler->execState == EventHandler<T>::NOOP && handler->eventName != ""){
+        // make sure the trigger is still true
+        // if trigger is false, remove handler
+        if(events[handler->eventName](state)){
+           handler->execState = EventHandler<T>::INITIALIZE;
 
-               // Elevate priority to ensure this handler continues to execute
-               // on the next cycle in case there is another equal priority handler
-               handler->priority = handler->defaultPriority + 0.5;
-               val = handler->RunEvent(state);
-            }
-        }else{
-            val = handler->RunEvent(state);
+           // Elevate priority to ensure this handler continues to execute
+           // on the next cycle in case there is another equal priority handler
+           handler->priority = handler->defaultPriority + 0.5;
+           val = handler->RunEvent(state);
         }
+    }else{
+        val = handler->RunEvent(state);
+    }
 
-        // Upon termination, restore priority
-        if (val) {
-            handler->priority = handler->defaultPriority;
-            activeEventHandlers.pop_front();
-        }
+    // Upon termination, restore priority
+    if (val) {
+        handler->priority = handler->defaultPriority;
+        activeEventHandlers.pop();
+    }
 
-        // Add any children spawned by the current handler to the queue
-        while (handler->children.size() > 0){
-            activeEventHandlers.push_front(handler->children.back());
-            handler->children.pop_back();
-        }
-        // Break here so that we only execute the handler at the head of the queue
-        break;
+    // Add any children spawned by the current handler to the queue
+    while (handler->children.size() > 0){
+        activeEventHandlers.push(handler->children.back());
+        handler->children.pop_back();
     }
 }
 
