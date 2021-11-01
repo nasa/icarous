@@ -158,9 +158,10 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
             int index = state->nextWpId[state->missionPlan];
             positionB = GetNextWP(fp,index);
             velocityB = GetNextWPVelocity(fp,index);
+            /*
             if(state->activePlan->getID() == state->missionPlan){
                 state->nextWpId[state->missionPlan] += 1;
-            }
+            }*/
         }
 
         // Send out path planning request
