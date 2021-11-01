@@ -400,9 +400,6 @@ void SetGuidanceFlightPlan(CognitionState_t* state,const std::string &plan_id,co
     Command cmd = {.commandType = CommandType_e::FP_CHANGE};
     cmd.fpChange = fp_change;
     state->cognitionCommands.push_back(cmd);
-    if(plan_id == "Plan0"){
-        state->log << state->timeString + "| [WPREACHED] | Plan: " << plan_id<<", wp: "<<wp_index-1<<"\n";
-    }
     state->log << state->timeString + "| [MODE] | Guidance Flightplan change, Plan: "<<plan_id<<", wp:"<<wp_index<<"\n";
 }
 

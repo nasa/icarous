@@ -64,7 +64,6 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
                state->nextWpId[state->missionPlan] =state->nextFeasibleWpId;
            }
            target = fp->getPos(state->nextWpId[state->missionPlan]);
-           state->nextWpId[state->missionPlan] += 1;
        }else{
            // Vector to nearest point on the mission flightplan
            target = state->clstPoint;
@@ -217,7 +216,6 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
         larcfm::Velocity velocityB = GetNextWPVelocity(fp,index);
         FindNewPath(state,pathName,positionA, velocityA, positionB, velocityB);
         SendStatus(state,(char*)"IC:Computing secondary path",6);
-        state->nextWpId[state->missionPlan] += 1;
         state->request = REQUEST_PROCESSING;
         return SUCCESS;
     }
