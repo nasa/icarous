@@ -552,24 +552,28 @@ void* GetPlanPosition(void* planIn,waypoint_t wpts[],int planlen,double t,double
        switch(wpts[i].tcp[0]){
             case TCP_BOT:
             case TCP_EOTBOT:{
-                if(wpts[i].tcp[0] == TCP_BOT)
+                if(wpts[i].tcp[0] == TCP_BOT){
                     trackTCP = "BOT";
-                else
-                    trackTCP = "EOTBOT";
-                double sign;
-                if (wpts[i].tcpValue[0] > 0)
-                    sign = 1;
-                else
-                    sign = -1;
-                double hdg;
-                hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
-                /*
-                if (plan->size() > 1){
-                    hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
-                }else{
+                    double sign;
+                    if (wpts[i].tcpValue[0] > 0)
+                        sign = 1;
+                    else
+                        sign = -1;
+                    double hdg;
                     hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
-                }*/
-                center = wp.linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
+                    /*
+                    if (plan->size() > 1){
+                        hdg = plan->trkFinal(i - 2, false) + sign * M_PI_2;
+                    }else{
+                        hdg = plan->getLastPoint().position().track(wp) + sign * M_PI_2;
+                    }*/
+                    center = wp.linearDist2D(hdg, fabs(wpts[i].tcpValue[0]));
+                }
+                else{
+                    trackTCP = "EOTBOT";
+                    center = plan->getTcpData(i-1).turnCenter();
+                }
+                
                 break;
             }
             case TCP_MOT:

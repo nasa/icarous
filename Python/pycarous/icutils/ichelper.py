@@ -406,13 +406,12 @@ def GetPlanPositions(waypoints,timeDelta):
         wps[i].tcpValue[2] = wp[9]
     
     positions = []
-    
     t = timeStart
     plan = c_void_p()
     while t < timeEnd:
        plan = lib.GetPlanPosition(plan,wps,c_int(lenWPs),c_double(t),pos)
        positions.append([pos[0],pos[1],pos[2]])
-       t = t + 0.25
+       t = t + timeDelta 
 
     return positions
 
