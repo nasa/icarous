@@ -10,9 +10,7 @@ from scipy import interpolate
 class AgentAnimation():
     def __init__(self,xmin,ymin,xmax,ymax,traces=True,playbkspeed=1,interval=5,record=False,filename=""):
         self.fig = plt.figure(frameon=True)
-        plt.xlabel("x [m]")
-        plt.ylabel("y [m]")
-
+        
         self.ax = plt.axes(xlim=(xmin, xmax), ylim=(ymin, ymax))
         self.paths = {}
         self.plans = {}
@@ -144,7 +142,7 @@ class AgentAnimation():
         poly.set_xy([[x1, y1], [x2, y2], [x3, y3]])
         poly.labelText.set_position((x + 2*tfsize,y+2*tfsize))
         speed = np.sqrt(vel[0]**2 + vel[1]**2)
-        poly.labelText.set_text('%s Z:%.2f[m]\nS:%.2f[mps]' % (id,z,speed))
+        #poly.labelText.set_text('%s Z:%.2f[m]\nS:%.2f[mps]' % (id,z,speed))
 
     def AddPath(self,path,color1,points = [],labels = [],color2='',time=0):
         def PlotPath():
@@ -158,6 +156,7 @@ class AgentAnimation():
                 plt.scatter(path[:,1],path[:,0])
             else:
                 plt.scatter(path[:,1],path[:,0],c=color2)
+            
             #for i,label in enumerate(labels):
             #    plt.text(path[i,1],path[i,0],','.join(label))
         id = len(self.plans.keys())
@@ -246,6 +245,7 @@ class AgentAnimation():
         time = np.arange(self.tmin,self.tmax+self.dt,self.dt)
         animate = lambda x: self.animate(time,x)
         init = lambda:self.init()
+
         self.anim = animation.FuncAnimation(self.fig, animate,
                                        init_func=init,
                                        frames=len(time),
@@ -257,5 +257,7 @@ class AgentAnimation():
         if self.record:
             self.anim.save(self.filename, writer= "ffmpeg", fps=60)
         else:
+            plt.xlabel("x [m]")
+            plt.ylabel("y [m]")
             #plt.axis('off')
             plt.show()

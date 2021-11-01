@@ -37,8 +37,11 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
     vehicleSize  = np.max([vehicleSize1,vehicleSize2])
     homePos = icList[0].home_pos
     getLocPos = lambda pos: np.array(ConvertToLocalCoordinates(homePos,pos))
+    show_wcCircle = True
+    if len(icList) == 1:
+        show_wcCircle = False
     for j,ic in enumerate(icList):
-        anim.AddAgent(ic.callsign,vehicleSize,'r',ic.ownshipLog,show_circle=True,circle_rad=ic.daa_radius)
+        anim.AddAgent(ic.callsign,vehicleSize,'r',ic.ownshipLog,show_circle=show_wcCircle,circle_rad=ic.daa_radius)
         for i,pln in enumerate(ic.plans):
             planTime = pln[0][0]
             planPositions = np.array(GetPlanPositions(ic.plans[i],0.1))
