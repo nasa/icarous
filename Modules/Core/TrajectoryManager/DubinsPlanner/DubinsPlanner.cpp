@@ -154,7 +154,6 @@ void DubinsPlanner::GetPotentialFixes(){
 
     // Shrink bounding box and it's vertices to potential fixes
     double con = std::max(params.vertexBuffer,0.5*turnRadius);
-    std::cout<<con<<std::endl;
     auto origVertices = boundingBox.getVerticesRef();
     std::vector<larcfm::Vect2> conVert = larcfm::PolycarpResolution::contract_polygon_2D(0.1,con,origVertices);
     for(auto &vert: conVert){

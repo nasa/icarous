@@ -34,11 +34,11 @@ struct node{
     double g,h;
     double dist2goal;
     tcpData_t TCPdata;
-    struct node* source;
-    std::list<struct node*> parents;
-    std::list<struct node*> children;
+    node* source;
+    std::list<node*> parents;
+    std::list<node*> children;
 };
-typedef struct node node_t;
+typedef node node_t;
 
 class DubinsPlanner {
 
