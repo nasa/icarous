@@ -26,9 +26,13 @@ public:
     std::list<std::shared_ptr<EventHandler<T>>> children;
     float priority;
     float defaultPriority;
+    unsigned int id;
+};
 
-    bool operator<(const EventHandler<T> &op) const{
-        return priority < op.priority;
+template<class T>
+struct HandlerComp{
+    bool operator()(const std::shared_ptr<EventHandler<T>>& A,const std::shared_ptr<EventHandler<T>>& B){
+        return A->priority < B->priority;
     }
 };
 

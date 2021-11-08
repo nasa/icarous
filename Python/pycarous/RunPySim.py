@@ -83,14 +83,7 @@ if args.cfs:
     ic = IcarousRunner(HomePos, verbose=args.verbosity)
 else:
     ic = Icarous(HomePos,simtype=args.simtype,monitor=args.daaType,verbose=args.verbosity,
-                 daaConfig=args.daaConfig, fasttime=args.fasttime)
-
-if args.daalog:
-    # Dirty hack to silently update the daa logging parameter from commandline
-    os.system("sed -Ein -e \'s/(LOGDAADATA)(\\ *)([0-1])(\\.0*)/\\1\\21\\4/\' "+args.params)
-
-# Read params from file and input params
-ic.SetParametersFromFile(args.params)
+                 daaConfig=args.daaConfig, fasttime=args.fasttime,icConfig=args.params)
 
 # Input flightplan
 ic.InputFlightplanFromFile(args.flightplan,eta=args.eta,repair=args.repair)

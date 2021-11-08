@@ -14,16 +14,16 @@
 // A heap+set data structure to maintain
 // priority queue while also enabling
 // fast set membership tests
-template <class T>
+template <class T,class Compare>
 class heapset{
 
   private:
-    std::priority_queue<T> priq;
+    std::priority_queue<T,std::vector<T>,Compare> priq;
     std::set<T> priset;
 
   public:
 
-    heapset(){};
+    heapset(Compare comp):priq(comp){};
 
     void push(T& value){
         priq.push(value);
@@ -64,7 +64,7 @@ template <class T>
 class EventManagement{
 
   public:
-     EventManagement(){};
+     EventManagement():activeEventHandlers(handlerComp){};
      void AddEventHandler(std::string eventName,int priority,std::function<bool(T*)> monitorFunc, std::shared_ptr<EventHandler<T>> eventHandler=nullptr);
      void RunEventMonitors(T*);
      void RunEventHandlers(T*);
@@ -74,9 +74,10 @@ class EventManagement{
   private:
 
      // List of monitor functions
+     HandlerComp<T> handlerComp;
      std::map<std::string,std::function<bool(T*)>> events;
      std::map<std::string,std::shared_ptr<EventHandler<T>>> handlers;
-     heapset<std::shared_ptr<EventHandler<T>>>activeEventHandlers;
+     heapset<std::shared_ptr<EventHandler<T>>,HandlerComp<T>> activeEventHandlers;
 };
 
 template <class T>
