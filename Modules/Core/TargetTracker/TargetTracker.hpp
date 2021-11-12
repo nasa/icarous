@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <array>
+#include <fstream>
 #include <Projection.h>
 #include <EuclideanProjection.h>
 #include <Position.h>
@@ -31,6 +32,8 @@ class TargetTracker{
 
     private:
        std::string callsign;
+       std::ofstream logFile;
+       bool log;
        double timeout;
        double modelUncertaintyP[6];
        double modelUncertaintyV[6];
@@ -43,6 +46,7 @@ class TargetTracker{
        int CheckValidationGate(measurement& data);
        void UpdateEstimate(measurement& prediction,measurement& value,double time=0);
        int totalTracks;
+       double prevLogTime;
     public:
         
        TargetTracker(std::string callsign,std::string configFile);
@@ -55,6 +59,7 @@ class TargetTracker{
        void InputMeasurement(measurement& traffic);
        int GetTotalTraffic();
        measurement GetIntruderData(int i);
+       measurement GetData(int i);
 
 };
 

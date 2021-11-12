@@ -8,6 +8,7 @@ TargetTracker::TargetTracker(std::string name,std::string configFile){
     callsign = name;
     timeout = 5;
     totalTracks = 0;
+    prevLogTime = -1;
     ReadParamFromFile(configFile);
 }
 
@@ -17,20 +18,26 @@ void TargetTracker::ReadParamFromFile(std::string configFile){
    reader.open(configFile);
    reader.updateParameterData(parameters);
    timeout              = parameters.getValue("track_timeout");
-   modelUncertaintyP[0] = parameters.getValue("pos_model_undertainty_xx");
-   modelUncertaintyP[1] = parameters.getValue("pos_model_undertainty_yy");
-   modelUncertaintyP[2] = parameters.getValue("pos_model_undertainty_zz");
-   modelUncertaintyP[3] = parameters.getValue("pos_model_undertainty_xy");
-   modelUncertaintyP[4] = parameters.getValue("pos_model_undertainty_yz");
-   modelUncertaintyP[5] = parameters.getValue("pos_model_undertainty_xz");
-   modelUncertaintyV[0] = parameters.getValue("vel_model_undertainty_xx");
-   modelUncertaintyV[1] = parameters.getValue("vel_model_undertainty_yy");
-   modelUncertaintyV[2] = parameters.getValue("vel_model_undertainty_zz");
-   modelUncertaintyV[3] = parameters.getValue("vel_model_undertainty_xy");
-   modelUncertaintyV[4] = parameters.getValue("vel_model_undertainty_yz");
-   modelUncertaintyV[5] = parameters.getValue("vel_model_undertainty_xz");
+   modelUncertaintyP[0] = parameters.getValue("pos_model_uncertainty_xx");
+   modelUncertaintyP[1] = parameters.getValue("pos_model_uncertainty_yy");
+   modelUncertaintyP[2] = parameters.getValue("pos_model_uncertainty_zz");
+   modelUncertaintyP[3] = parameters.getValue("pos_model_uncertainty_xy");
+   modelUncertaintyP[4] = parameters.getValue("pos_model_uncertainty_yz");
+   modelUncertaintyP[5] = parameters.getValue("pos_model_uncertainty_xz");
+   modelUncertaintyV[0] = parameters.getValue("vel_model_uncertainty_xx");
+   modelUncertaintyV[1] = parameters.getValue("vel_model_uncertainty_yy");
+   modelUncertaintyV[2] = parameters.getValue("vel_model_uncertainty_zz");
+   modelUncertaintyV[3] = parameters.getValue("vel_model_uncertainty_xy");
+   modelUncertaintyV[4] = parameters.getValue("vel_model_uncertainty_yz");
+   modelUncertaintyV[5] = parameters.getValue("vel_model_uncertainty_xz");
    pThreshold           = parameters.getValue("pos_chi_threshold");
    vThreshold           = parameters.getValue("vel_chi_threshold");
+   log                  = parameters.getBool("tracker_log");
+   if(log && !logFile.is_open()){
+       logFile.open("Tracker.log");
+
+       logFile<<"time,callsign,x,y,z,lat,lon,alt,trk,gs,vs,sxx,syy,szz,sxy,syz,sxz,vxx,vyy,vzz,vxy,vyz,vxz"<<std::endl;
+   }
 }
 
 void TargetTracker::SetGateThresholds(double p, double v){
@@ -52,6 +59,7 @@ void TargetTracker::InputCurrentState(double time,larcfm::Position& pos,larcfm::
     currentState.time = time;
     currentState.position = pos;
     currentState.velocity = vel;
+    currentState.callsign = callsign;
     currentState.locPos = proj.project(pos);
     currentState.sigmaP[0] = sigmaP[0];
     currentState.sigmaP[1] = sigmaP[1];
@@ -130,93 +138,21 @@ int TargetTracker::CheckValidationGate(measurement& value){
         velSigma(0,1) =value.sigmaV[3] + candidate.sigma[1*6+3];
         velSigma(1,0) =value.sigmaV[3] + candidate.sigma[3*6+1];
 
-        //gsl_matrix *posSigma = gsl_matrix_alloc(3,3);
-        //gsl_matrix *velSigma = gsl_matrix_alloc(2,2);
-        //gsl_matrix *errorP = gsl_matrix_alloc(3,1);
-        //gsl_matrix *errorV = gsl_matrix_alloc(2,1);
-
-        //gsl_matrix_set(errorP,0,0,value.locPos.x - candidate.locPos.x);
-        //gsl_matrix_set(errorP,1,0,value.locPos.y - candidate.locPos.y);
-        //gsl_matrix_set(errorP,2,0,value.locPos.z - candidate.locPos.z);
-
-        //gsl_matrix_set(errorV,0,0,value.velocity.x - candidate.velocity.x);
-        //gsl_matrix_set(errorV,1,0,value.velocity.y - candidate.velocity.y);
-        //gsl_matrix_set(errorV,2,0,value.velocity.z - candidate.velocity.z);
-
-        //gsl_matrix_set_zero(posSigma);
-        //gsl_matrix_set_zero(velSigma);
-        //gsl_matrix_set(posSigma,0,0,value.sigmaP[0] + candidate.sigma[0*6+0]);
-        //gsl_matrix_set(posSigma,1,1,value.sigmaP[1] + candidate.sigma[2*6+2]);
-        //gsl_matrix_set(posSigma,2,2,value.sigmaP[2] + candidate.sigma[4*6+4]);
-        //gsl_matrix_set(posSigma,0,1,value.sigmaP[3] + candidate.sigma[0*6+2]);
-        //gsl_matrix_set(posSigma,1,0,value.sigmaP[3] + candidate.sigma[2*6+0]);
-        //gsl_matrix_set(posSigma,0,2,value.sigmaP[4] + candidate.sigma[0*6+4]);
-        //gsl_matrix_set(posSigma,2,0,value.sigmaP[4] + candidate.sigma[4*6+0]);
-        //gsl_matrix_set(posSigma,1,2,value.sigmaP[5] + candidate.sigma[2*6+4]);
-        //gsl_matrix_set(posSigma,2,1,value.sigmaP[5] + candidate.sigma[4*6+2]);
-
-        //gsl_matrix_set(velSigma,0,0,value.sigmaV[0] + candidate.sigma[1*6+1]);
-        //gsl_matrix_set(velSigma,1,1,value.sigmaV[1] + candidate.sigma[3*6+3]);
-        //gsl_matrix_set(velSigma,2,2,value.sigmaV[2] + candidate.sigma[5*6+5]);
-        //gsl_matrix_set(velSigma,0,1,value.sigmaV[3] + candidate.sigma[1*6+3]);
-        //gsl_matrix_set(velSigma,1,0,value.sigmaV[3] + candidate.sigma[3*6+1]);
-        //gsl_matrix_set(velSigma,0,2,value.sigmaV[4] + candidate.sigma[1*6+5]);
-        //gsl_matrix_set(velSigma,2,0,value.sigmaV[4] + candidate.sigma[5*6+1]);
-        //gsl_matrix_set(velSigma,1,2,value.sigmaV[5] + candidate.sigma[3*6+5]);
-        //gsl_matrix_set(velSigma,2,1,value.sigmaV[5] + candidate.sigma[5*6+3]);
-
         double mahalanobisDistanceP = errorP.transpose()*posSigma.inverse()*errorP;
-
-        //gsl_linalg_cholesky_decomp1(posSigma);
-        //gsl_linalg_cholesky_decomp1(velSigma);
-        //gsl_linalg_cholesky_invert(posSigma);
-        //gsl_linalg_cholesky_invert(velSigma);
-
-        //gsl_matrix *tempP = gsl_matrix_alloc(1,3);
-        //gsl_matrix *tempV = gsl_matrix_alloc(1,2);
-
-        //gsl_matrix *valP = gsl_matrix_alloc(1,1);
-        //gsl_matrix *valV = gsl_matrix_alloc(1,1);
-
-        //// Check validation gate around position estimate
-        //gsl_blas_dgemm(CblasTrans,CblasNoTrans,1,(const gsl_matrix *)errorP,(const gsl_matrix *)posSigma,0,tempP);
-        //gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)tempP,(const gsl_matrix *)errorP,0,valP);
 
         // gate 
         // chi2 distribution probablity  of 0.95
         // p(x<=X) = 0.90
         // using inverse chi2 cdf (quantile function), X = 6.2513886311 for degree of freedom 3
         // X = 7.81472 for p = 0.95
-        //if(gsl_matrix_get(valP,0,0) <= pThreshold){
         if(mahalanobisDistanceP <= pThreshold){
             // Check validation gate around velocity estimate
             double mahalanobisDistanceV = errorV.transpose()*velSigma.inverse()*errorV;
-            //gsl_blas_dgemm(CblasTrans,CblasNoTrans,1,(const gsl_matrix *)errorV,(const gsl_matrix *)velSigma,0,tempV);
-            //gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)tempV,(const gsl_matrix *)errorV,0,valV);
 
-            //if(gsl_matrix_get(valV,0,0) <= vThreshold){
             if(mahalanobisDistanceV <= vThreshold){
-                  //gsl_matrix_free(posSigma);
-                  //gsl_matrix_free(velSigma);
-                  //gsl_matrix_free(errorP);
-                  //gsl_matrix_free(errorV);
-                  //gsl_matrix_free(tempP);
-                  //gsl_matrix_free(tempV);
-                  //gsl_matrix_free(valP);
-                  //gsl_matrix_free(valV);
                   return i;
             }
         }
-
-        //gsl_matrix_free(posSigma);
-        //gsl_matrix_free(velSigma);
-        //gsl_matrix_free(errorP);
-        //gsl_matrix_free(errorV);
-        //gsl_matrix_free(tempP);
-        //gsl_matrix_free(tempV);
-        //gsl_matrix_free(valP);
-        //gsl_matrix_free(valV);
-
     }
 
     return -1;
@@ -230,6 +166,7 @@ void TargetTracker::InputMeasurement(measurement& value){
     int n =CheckValidationGate(value); 
     if(n >= 0){
        // Update estimate with sensor measurement
+       // Skip ownship
        if(n > 0){
            measurement &prediction = tracks[n]; 
            UpdateEstimate(prediction,value);
@@ -269,9 +206,21 @@ void TargetTracker::InputMeasurement(measurement& value){
         value.sigma[3*6+5] = value.sigmaV[5];
         value.sigma[5*6+3] = value.sigmaV[5];
 
-        //CheckValidationGate(value); 
         tracks.push_back(value);
-        //std::cout<<",Total:"<<tracks.size()-1<<std::endl;
+    }
+
+    if(value.time > prevLogTime && log){
+         prevLogTime = value.time;
+         for(auto trk: tracks){
+             logFile<<trk.time<<","<<trk.callsign<<","<<trk.locPos.x<<","<<trk.locPos.y<<","<<trk.locPos.z<<","
+                    <<trk.position.latitude()<<","<<trk.position.longitude()<<","<<trk.position.alt()<<","
+                    <<trk.velocity.track("degree")<<","<<trk.velocity.gs()<<","<<trk.velocity.vs()<<","
+                    <<trk.sigmaP[0]<<","<<trk.sigmaP[1]<<","<<trk.sigmaP[2]<<","
+                    <<trk.sigmaP[3]<<","<<trk.sigmaP[4]<<","<<trk.sigmaP[5]<<","
+                    <<trk.sigmaV[0]<<","<<trk.sigmaV[1]<<","<<trk.sigmaV[2]<<","
+                    <<trk.sigmaV[3]<<","<<trk.sigmaV[4]<<","<<trk.sigmaV[5]<<std::endl;
+
+         }
     }
 
 }
@@ -394,7 +343,9 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
           covPred(i,j) = prev.sigma[i*6+j];
        }
    }
-   covPred = motionModel*covPred*motionModel.transpose() + modelP;
+   if(dt > 1e-3){
+       covPred = motionModel*covPred*motionModel.transpose() + modelP;
+   }
 
    innovation(0,0) = update.locPos.x - xpred(0);
    innovation(1,0) = update.velocity.x - xpred(1);
@@ -403,18 +354,22 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
    innovation(4,0) = update.locPos.z - xpred(4);
    innovation(5,0) = update.velocity.z - xpred(5);
 
-   covInnov = modelP + measurementP;
-   kalmanGain = covPred*covInnov.inverse();
+   covInnov = covPred + measurementP;
+   if(innovation.norm() > 1e-5){
+       kalmanGain = covPred*covInnov.inverse();
+   }else{
+       kalmanGain.setZero();
+   }
    xcorr = xpred + kalmanGain*innovation;
    covCorr = (I6 - kalmanGain)*covPred;
 
-   larcfm::Vect3 locPos(xpred(0),
-                        xpred(2),
-                        xpred(4));
+   larcfm::Vect3 locPos(xcorr(0),
+                        xcorr(2),
+                        xcorr(4));
 
-   larcfm::Vect3 locVel(xpred(1),
-                        xpred(3),
-                        xpred(5));
+   larcfm::Vect3 locVel(xcorr(1),
+                        xcorr(3),
+                        xcorr(5));
 
    for(int i=0;i<6;++i){
        for(int j=0;j<6;++j){
@@ -439,169 +394,9 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
    prev.sigmaV[4] = prev.sigma[1*6 + 5];
    prev.sigmaV[5] = prev.sigma[3*6 + 5];
 
-   /*
-   gsl_matrix *id = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_identity(id);
-   gsl_matrix * motionModel = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_zero(motionModel);
-   gsl_matrix_set(motionModel,0,0,1.0);
-   gsl_matrix_set(motionModel,0,1,dt);
-   gsl_matrix_set(motionModel,1,1,1.0);
-   gsl_matrix_set(motionModel,2,2,1.0);
-   gsl_matrix_set(motionModel,2,3,dt);
-   gsl_matrix_set(motionModel,3,3,1.0);
-   gsl_matrix_set(motionModel,4,4,1.0);
-   gsl_matrix_set(motionModel,4,5,dt);
-   gsl_matrix_set(motionModel,5,5,1.0);
-
-
-   // Define state vector
-   gsl_matrix * xprev = gsl_matrix_alloc(6,1);
-   gsl_matrix_set(xprev,0,0,prev.locPos.x);
-   gsl_matrix_set(xprev,1,0,prev.velocity.x);
-   gsl_matrix_set(xprev,2,0,prev.locPos.y);
-   gsl_matrix_set(xprev,3,0,prev.velocity.y);
-   gsl_matrix_set(xprev,4,0,prev.locPos.z);
-   gsl_matrix_set(xprev,5,0,prev.velocity.z);
-
-   // Motion model uncertainty
-   gsl_matrix * modelP = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_zero(modelP);
-   gsl_matrix_set(modelP,0,0,modelUncertaintyP[0]);
-   gsl_matrix_set(modelP,1,1,modelUncertaintyV[0]);
-   gsl_matrix_set(modelP,2,2,modelUncertaintyP[1]);
-   gsl_matrix_set(modelP,3,3,modelUncertaintyV[1]);
-   gsl_matrix_set(modelP,4,4,modelUncertaintyP[2]);
-   gsl_matrix_set(modelP,5,5,modelUncertaintyV[2]);
-
-   gsl_matrix_set(modelP,0,2,modelUncertaintyP[3]);
-   gsl_matrix_set(modelP,2,0,modelUncertaintyP[3]);
-   gsl_matrix_set(modelP,1,3,modelUncertaintyV[3]);
-   gsl_matrix_set(modelP,3,1,modelUncertaintyV[3]);
-
-   gsl_matrix_set(modelP,0,4,modelUncertaintyP[4]);
-   gsl_matrix_set(modelP,4,0,modelUncertaintyP[4]);
-   gsl_matrix_set(modelP,1,5,modelUncertaintyV[4]);
-   gsl_matrix_set(modelP,5,1,modelUncertaintyV[4]);
-
-   gsl_matrix_set(modelP,2,4,modelUncertaintyP[5]);
-   gsl_matrix_set(modelP,4,2,modelUncertaintyP[5]);
-   gsl_matrix_set(modelP,3,5,modelUncertaintyV[5]);
-   gsl_matrix_set(modelP,5,3,modelUncertaintyV[5]);
-
-   // Prediction step
-   // Xpred = A*xprev
-   gsl_matrix *xpred = gsl_matrix_alloc(6,1);
-   gsl_matrix_set_zero(xpred);
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)motionModel,(const gsl_matrix *)xprev,0,xpred);
-
-   // Prediction covariance
-   gsl_matrix *covPred = gsl_matrix_alloc(6,6);
-   gsl_matrix* AcovPred = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_zero(covPred);
-   for(int i=0;i<6;++i){
-       for(int j=0;j<6;++j){
-          gsl_matrix_set(covPred,i,j,prev.sigma[i*6+j]);
-       }
-   }
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)motionModel,(const gsl_matrix *)covPred,0,AcovPred);
-   gsl_blas_dgemm(CblasNoTrans,CblasTrans,1,(const gsl_matrix *)AcovPred,(const gsl_matrix *)motionModel,0,covPred);
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)modelP,(const gsl_matrix *)id,1,covPred);
-
-   // Innovation
-   gsl_matrix *innovation = gsl_matrix_alloc(6,1);
-   gsl_matrix_set(innovation,0,0,update.locPos.x - prev.locPos.x);
-   gsl_matrix_set(innovation,1,0,update.velocity.x - prev.velocity.x);
-   gsl_matrix_set(innovation,2,0,update.locPos.y - prev.locPos.y);
-   gsl_matrix_set(innovation,3,0,update.velocity.y - prev.velocity.y);
-   gsl_matrix_set(innovation,4,0,update.locPos.z - prev.locPos.z);
-   gsl_matrix_set(innovation,5,0,update.velocity.z - prev.velocity.z);
-
-   // Measurement noise
-   gsl_matrix *innovCov = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_zero(innovCov);
-   gsl_matrix_set(innovCov,0,0,update.sigmaP[0]);
-   gsl_matrix_set(innovCov,1,1,update.sigmaV[0]);
-   gsl_matrix_set(innovCov,2,2,update.sigmaP[1]);
-   gsl_matrix_set(innovCov,3,3,update.sigmaV[1]);
-   gsl_matrix_set(innovCov,4,4,update.sigmaP[2]);
-   gsl_matrix_set(innovCov,5,5,update.sigmaV[2]);
-   gsl_matrix_set(innovCov,0,2,update.sigmaP[3]);
-   gsl_matrix_set(innovCov,2,0,update.sigmaP[3]);
-   gsl_matrix_set(innovCov,0,4,update.sigmaP[4]);
-   gsl_matrix_set(innovCov,4,0,update.sigmaP[4]);
-   gsl_matrix_set(innovCov,2,4,update.sigmaP[5]);
-   gsl_matrix_set(innovCov,4,2,update.sigmaP[5]);
-   gsl_matrix_set(innovCov,1,3,update.sigmaV[3]);
-   gsl_matrix_set(innovCov,3,1,update.sigmaV[3]);
-   gsl_matrix_set(innovCov,1,5,update.sigmaV[4]);
-   gsl_matrix_set(innovCov,5,1,update.sigmaV[4]);
-   gsl_matrix_set(innovCov,3,5,update.sigmaV[5]);
-   gsl_matrix_set(innovCov,5,3,update.sigmaV[5]);
-
-   
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)covPred,(const gsl_matrix *)id,1,innovCov);
-
-   // Kalman gain
-   gsl_matrix *gain = gsl_matrix_alloc(6,6);
-   gsl_matrix_set_zero(gain);
-   if(time < 1e-3){
-       gsl_linalg_cholesky_decomp1(innovCov);
-       gsl_linalg_cholesky_invert(innovCov);
-       gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)covPred,(const gsl_matrix *)innovCov,0,gain);
-   }
-
-   // Updated state
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,1,(const gsl_matrix *)gain,(const gsl_matrix *)innovation,1,xpred);
-
-   // Updated covariance
-   gsl_matrix* covUpdate = gsl_matrix_alloc(6,6);
-   gsl_matrix_memcpy(covUpdate,covPred);
-   gsl_blas_dgemm(CblasNoTrans,CblasNoTrans,-1,(const gsl_matrix *)gain,(const gsl_matrix *)covPred,1,covUpdate);
-
-   larcfm::Vect3 locPos(gsl_matrix_get(xpred,0,0),
-                        gsl_matrix_get(xpred,2,0),
-                        gsl_matrix_get(xpred,4,0));
-
-   larcfm::Vect3 locVel(gsl_matrix_get(xpred,1,0),
-                        gsl_matrix_get(xpred,3,0),
-                        gsl_matrix_get(xpred,5,0));
-
-
-   prev.time = update.time;
-   prev.locPos = locPos;
-   prev.position = larcfm::Position(proj.inverse(locPos));
-   prev.velocity = larcfm::Velocity(locVel);
-   std::memcpy(prev.sigma,covUpdate->data,sizeof(double)*36);
-   prev.sigmaP[0] = prev.sigma[0*6 + 0];
-   prev.sigmaP[1] = prev.sigma[2*6 + 2];
-   prev.sigmaP[2] = prev.sigma[4*6 + 4];
-   prev.sigmaP[3] = prev.sigma[0*6 + 2];
-   prev.sigmaP[4] = prev.sigma[0*6 + 4];
-   prev.sigmaP[5] = prev.sigma[2*6 + 4];
-   prev.sigmaV[0] = prev.sigma[1*6 + 1];
-   prev.sigmaV[1] = prev.sigma[3*6 + 3];
-   prev.sigmaV[2] = prev.sigma[5*6 + 5];
-   prev.sigmaV[3] = prev.sigma[1*6 + 3];
-   prev.sigmaV[4] = prev.sigma[1*6 + 5];
-   prev.sigmaV[5] = prev.sigma[3*6 + 5];
-
-   gsl_matrix_free(covUpdate);
-   gsl_matrix_free(xpred);
-   gsl_matrix_free(gain);
-   gsl_matrix_free(innovCov);
-   gsl_matrix_free(covPred);
-   gsl_matrix_free(AcovPred);
-   gsl_matrix_free(motionModel);
-   gsl_matrix_free(xprev);
-   gsl_matrix_free(innovation);
-   gsl_matrix_free(id);
-   */
-  
 }
 
 void TargetTracker::UpdatePredictions(double time){
-    //std::cout<<"Updating prediction"<<std::endl;
     std::vector<int> oldTracks;
     for(int i=0;i<tracks.size();++i){
         if(i==0){
@@ -636,6 +431,10 @@ measurement TargetTracker::GetIntruderData(int i){
     // i is 0 index. 0th intruder is the 1st track.
     // i+1 because the 0th track is for the ownship
     return tracks[i+1];
+}
+
+measurement TargetTracker::GetData(int i){
+    return tracks[i];
 }
 
 void* new_TargetTracker(char* callsign,char* configFile){

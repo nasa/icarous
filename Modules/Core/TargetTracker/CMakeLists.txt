@@ -17,3 +17,6 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 add_library(TargetTracker SHARED ${SOURCE_FILES})
 
 target_link_libraries(TargetTracker ACCoRD)
+
+add_executable(trackerTest test/main.cpp)
+target_link_libraries(trackerTest TargetTracker)
