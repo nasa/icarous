@@ -141,7 +141,7 @@ void ARDUCOPTER_AppInit(void){
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_EXTERNAL_MID,sizeof(missionItemReached_t),TRUE);
-    CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
+    CFE_SB_InitMsg(&traffic,ICAROUS_RAWTRAFFIC_MID,sizeof(object_t),TRUE);
     CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
     CFE_SB_InitMsg(&attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);
     CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(cmdAck_t),TRUE);

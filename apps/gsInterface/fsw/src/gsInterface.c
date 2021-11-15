@@ -149,7 +149,7 @@ void gsInterface_AppInit(void){
 
   CFE_SB_InitMsg(&appdataIntGS.startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
   CFE_SB_InitMsg(&appdataIntGS.gfData,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),TRUE);
-  CFE_SB_InitMsg(&appdataIntGS.traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
+  CFE_SB_InitMsg(&appdataIntGS.traffic,ICAROUS_RAWTRAFFIC_MID,sizeof(object_t),TRUE);
   CFE_SB_InitMsg(&appdataIntGS.fpData,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
 
 

@@ -28,7 +28,11 @@
 #define ICAROUS_RESETFP_MID 0x081D        ///< Clear flight plan
 #define ICAROUS_STATUS_MID 0x081E         ///< Icarous status message. message type:status_t
 #define ICAROUS_DITCH_MID 0x081F          ///< Ditching signal: noArgsCmd_t
-#define ICAROUS_TRACK_STATUS_MID 0x0820   ///< Command to start/stop tracking. message type: argsCmd_t
+#ifdef APPDEF_TRACKER
+    #define ICAROUS_RAWTRAFFIC_MID 0x0820   ///< Raw traffic message message type: object_t
+#else
+    #define ICAROUS_RAWTRAFFIC_MID ICAROUS_TRAFFIC_MID ///< If tracker is not running, assume raw traffic is used as final traffic data
+#endif
 #define UPLINK_FLIGHTPLAN_MID 0x0821      ///< Uplink flight plan
 #define DOWNLINK_FLIGHTPLAN_MID 0x0822    ///< Downlink flight plan
 #define ICAROUS_VFRHUD_MID 0x0823         ///< VFR hud data

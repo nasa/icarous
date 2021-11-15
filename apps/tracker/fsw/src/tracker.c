@@ -71,7 +71,7 @@ void TRACKER_AppInit(void) {
     trackerTable_t *TblPtr;
     CFE_TBL_GetAddress((void**)&TblPtr, trackerAppData.tracker_tblHandle);
 
-    trackerAppData.TargetTracker = (void*) new_TargetTracker(NULL);
+    trackerAppData.TargetTracker = (void*) new_TargetTracker("Ownship","../ram/IcarousConfig.txt");
 
     double sigmaP[6], sigmaV[6];
     memcpy(sigmaP,TblPtr->modelUncertaintyP,sizeof(double)*6);
