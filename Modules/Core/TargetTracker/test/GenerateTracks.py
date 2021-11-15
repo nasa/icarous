@@ -19,10 +19,11 @@ time = np.zeros(span)
 covariances = np.zeros(6)
 
 # Define random covariance in the range [5,25]
-sxx = 5 + 20*random.random()
+rho = -1 + 2*np.random.random() # correlation coefficient: [-1,1]
+sxx = 5 + 20*random.random()    # covariance terms
 syy = 5 + 20*random.random()
 szz = 5 
-sxy = 0.8*np.sqrt(sxx*syy)
+sxy = rho*np.sqrt(sxx*syy)
 syz = 0
 sxz = 0
 covariances[:] = [sxx,syy,szz,sxy,syz,sxz]
