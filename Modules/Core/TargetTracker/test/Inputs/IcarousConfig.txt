@@ -1,0 +1,239 @@
+# Vehicle peformance parameters
+# Min/Max ground speeds of the vehicle
+min_hs = 0.2 [knot]
+max_hs = 30.0 [knot]
+
+# Min/Max vertical speeds of the vehicle
+min_vs = -500.0 [fpm]
+max_vs = 500.0 [fpm]
+
+# Min/Max altitude limits for the vehicle
+min_alt = 15.0 [ft]
+max_alt = 500.0 [ft]
+
+# Horizontal/Vertical acceleration limits
+horizontal_accel = 1.0 [m/s^2]
+vertical_accel = 1.0 [m/s^2]
+
+# Turn rate constraint
+turn_rate = 10.0 [deg/s]
+
+# Vertial speed used by daidalus for Altitude resolutions
+vertical_rate = 500.0 [fpm]
+
+# Band parameters
+left_hdir = 180.0 [deg]
+right_hdir = 180.0 [deg]
+
+# Relative Bands Parameters
+below_relative_hs = 100.0 [knot]
+above_relative_hs = 100.0 [knot]
+below_relative_vs = 5000.0 [fpm]
+above_relative_vs = 5000.0 [fpm]
+below_relative_alt = 10000.0 [ft]
+above_relative_alt = 10000.0 [ft]
+
+# Discretizations used for bands
+step_hdir = 1.0 [deg]
+step_hs = 2.0 [knot]
+step_vs = 100.0 [fpm]
+step_alt = 50.0 [ft]
+
+# Recovery Bands Parameters
+# Ensure min_horizontal_recovery <= DTHR
+# Ensure min_vertical_recovery <= ZTHR
+min_horizontal_recovery = 30.0 [ft]
+min_vertical_recovery = 30.0 [ft]
+recovery_hdir = true
+recovery_hs = true
+recovery_vs = true
+recovery_alt = true
+
+# Collision Avoidance Bands Parameters
+ca_bands = true
+ca_factor = 0.1
+horizontal_nmac = 5.0 [ft]
+vertical_nmac = 5.5 [ft]
+
+# Hysteresis and persistence parameters
+recovery_stability_time = 3.0 [s]
+hysteresis_time = 3.0 [s]
+persistence_time = 3.0 [s]
+bands_persistence = true
+persistence_preferred_hdir = 5.0 [deg]
+persistence_preferred_hs = 2.0 [knot]
+persistence_preferred_vs = 50.0 [fpm]
+persistence_preferred_alt = 30.0 [ft]
+alerting_m = 2
+alerting_n = 4
+
+# Implicit Coordination Parameters
+conflict_crit = false
+recovery_crit = false
+
+# Sensor Uncertainty Mitigation Parameters
+h_pos_z_score = 0.0
+h_vel_z_score_min = 0.0
+h_vel_z_score_max = 0.0
+h_vel_z_distance = 0.0 [nmi]
+v_pos_z_score = 0.0
+v_vel_z_score = 0.0
+
+# Horizontal Contour Threshold
+contour_thr = 180.0 [deg]
+
+# DAA Terminal Area (DTA)
+dta_logic = 0
+dta_latitude = 0.0 [deg]
+dta_longitude = 0.0 [deg]
+dta_radius = 0.0 [nmi]
+dta_height = 0.0 [ft]
+dta_alerter = 0
+
+# Alerting Logic
+# Ensure lookahead_time >= early_alerting_time > alerting_time
+lookahead_time = 20.0 [s]
+ownship_centric_alerting = true
+corrective_region = NEAR
+alerters = default
+default_alert_1_region = NEAR
+default_alert_1_alerting_time = 10.0 [s]
+default_alert_1_early_alerting_time = 15.0 [s]
+default_alert_1_spread_hdir = 0.0 [deg]
+default_alert_1_spread_hs = 0.0 [knot]
+default_alert_1_spread_vs = 0.0 [fpm]
+default_alert_1_spread_alt = 0.0 [ft]
+default_alert_1_detector = det_1
+default_det_1_WCV_DTHR = 30.0 [ft]
+default_det_1_WCV_ZTHR = 30.0 [ft]
+default_det_1_WCV_TTHR = 5.0 [s]
+default_det_1_WCV_TCOA = 5.0 [s]
+default_load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.WCV_TAUMOD
+
+### Icarous specific parameters
+## Cognition parameters
+# passive mode put Icarous into a monitoring mode
+passive_mode = false
+
+# daa resolution: 0:speed, 1:altitude, 2:track, 3: vertical speed, 4: search based resolution
+daa_resolution_type = 2
+
+# enable sensor based well clear volume mapping (ensure ownship centric alerting is false before enabling this)
+sensor_mapping = false
+
+# Permissible cross track deviation
+allowed_xtrk_deviation = 10000 [m]
+
+# Return to mission behavior after conflict resolution.
+# return to next feasible waypoint, 
+# or return to the closest point on the flightplan 
+return_nextwp = true
+
+# Return to mission behaviour after conflict resolution.
+# return using command vectors (i.e. send track, speed and climbrate commands to the autopilot)
+# or return using an explicit flightplan
+return_vector = true
+
+# Cross check if traffic conflicts encounters are 
+# also conflicting with the current flightplan
+verify_conflict_with_plan = false
+
+# Lookahead applied on the current plan for conflict
+plan_lookahead = 20 [s]
+
+## Guidance parameters
+# default waypoint speed if nothing is specified in the flightplan
+default_wp_speed = 1.0 [m/s]
+
+# Enable 4D following
+maintain_eta = False
+
+# capture radius around a waypoint is given by speed [m/s] * capture_radius_scaling 
+capture_radius_scaling = 2.0
+
+# Min/Max limits on the capture radius around a waypoint
+max_capture_radius = 50 [m]
+min_capture_radius = 1 [m]
+
+# Guidance radius scaling. guidance radius scaling <= capture_radius_scaling
+guidance_radius_scaling =  2.0
+
+# Climb angle used during climb segments
+climb_angle = 75 [deg]
+
+# Above climb angle is only used if the horizontal distance to goal is beyond horizontal delta 
+# Above climb angle is only used if the vertical distance to goal is beyond vertical delta 
+horizontal_climb_delta = 10 [m]
+vertical_climb_delta = 10 [m]
+
+# gain of proportial guidance control (used when capturing the final altitude)
+climb_rate_gain = 0.5
+
+# set yaw in the direction of motion
+yaw_forward = 1
+
+# gain on proportional heading control law
+turnrate_gain = 5
+
+## Traffic parameters
+record_daa_logs = true
+# set source of traffic to which Icarous should response. 0 for all sources
+# source of traffic is encoded in traffic messages
+traffic_source = 0
+
+# time threshold for staleness of data
+stale_threshold = 10 [s]
+
+## Trajectory parameters
+# expand obstacles by buffer
+obstacle_buffer = 5 [m]
+
+# well clear radius used during the search algorithm. 
+# To be compatible with DAIDALUS, set radius and height values to DTHR and ZTHR
+dubins_wellclear_radius = 30.0 [ft]
+dubins_wellclear_height = 30.0 [ft]
+
+# Number of altitude discretizations.
+alt_bins = 1
+
+## Merger parameters
+# time of separation at the intersection
+separation_time = 20.0 [s]
+
+# size of zones
+coordination_zone = 90.0 [m]
+schedule_zone = 70.0 [m]
+entry_zone = 60.0 [m]
+corridor_width = 0.0 [m]
+
+# Priorities
+Priority_Takeoff = 1
+Priority_NominalDeparture = 6
+Priority_PrimaryPlanComplete = 1
+Priority_SecondaryPlanComplete = 1
+Priority_Merging = 3
+Priority_FenceConflict = 1
+Priority_TrafficConflict1 = 2
+Priority_TrafficConflict2 = 2
+Priority_TrafficConflict3 = 4
+Priority_FlightPlanDeviation = 1
+Priority_Ditching = 5
+Priority_TODReached = 1
+
+#tracker parameters
+track_timeout = 5 [s]
+pos_model_uncertainty_xx = 30.0 [m^2]
+pos_model_uncertainty_yy = 30.0 [m^2]
+pos_model_uncertainty_zz = 30.0 [m^2]
+pos_model_uncertainty_xy = 0.0 [m^2]
+pos_model_uncertainty_yz = 0.0 [m^2]
+pos_model_uncertainty_xz = 0.0 [m^2]
+vel_model_uncertainty_xx = 1.0 [m^2]
+vel_model_uncertainty_yy = 1.0 [m^2]
+vel_model_uncertainty_zz = 1.0 [m^2]
+vel_model_uncertainty_xy = 0.0 [m^2]
+vel_model_uncertainty_yz = 0.0 [m^2]
+vel_model_uncertainty_xz = 0.0 [m^2]
+pos_chi_threshold = 16.27
+vel_chi_threshold = 16.27
+tracker_log = true
