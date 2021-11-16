@@ -406,14 +406,17 @@ double TrajManager::FindTimeToFenceViolation(larcfm::Poly3D polygon, larcfm::Vec
     {
         larcfm::Vect2 A = vertices[i%n];
         larcfm::Vect2 B = vertices[(i+1)%n];
-        double z1 = floor;
-        double z2 = roof;
 
-        larcfm::Vect3 l0 = so;
-        larcfm::Vect3 p0 = larcfm::Vect3(A, z1);
+        larcfm::Vect2 l0 = so.vect2();
+        larcfm::Vect2 p0 = A;
 
-        larcfm::Vect3 n = larcfm::Vect3((B - A).PerpL(), 0);
-        larcfm::Vect3 l = vel;
+        double proj = (so.vect2()-A).dot((B-A).Hat())/(B-A).norm();
+        if(proj < 0 || proj > 1){
+            continue;
+        }
+
+        larcfm::Vect2 n = (B - A).PerpL().Hat();
+        larcfm::Vect2 l = vel.vect2();
 
         double num = (p0 - l0).dot(n);
         double den = l.dot(n);
@@ -424,12 +427,15 @@ double TrajManager::FindTimeToFenceViolation(larcfm::Poly3D polygon, larcfm::Vec
                 timeX.push_back(d);
             }
         }else{
-            std::vector<double> val(0);
-            return 0; 
+            timeX.push_back(MAXDOUBLE);
         }
     }
     std::sort(timeX.begin(),timeX.end());
-    return timeX.front();
+    if(timeX.size() > 0){
+        return timeX.front();
+    }else{
+        return MAXDOUBLE;
+    }
 }
 
 trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
@@ -441,7 +447,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     if(fp == nullptr){
         return data;
     }
-    larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(pos);
+    larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(fp->getPos(0));
     bool fenceConflict = false;
     bool trafficConflict = false;
     std::list<double> gfTimes, tfTimes;
@@ -453,7 +459,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     if(offsets1[0] < 50){
         for (auto &gf : fenceList)
         {
-            larcfm::Vect3 locpos(0, 0, 0);
+            larcfm::Vect3 locpos = projection.project(pos);
             larcfm::CDPolycarp geoPolycarp(0.01, 0.001, false);
 
             // Check fence conflict with current position
@@ -464,8 +470,8 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 if (conflict)
                     gfTimes.push_back(0.0);
                 // Check for projected fence conflict based on flightplan
-                double eps = 5; // a small additional delta to add to the output. TODO: make this a parameter
-                double t = FindTimeToFenceViolation(localPoly, larcfm::Vect3(0, 0, pos.alt()), vel) + eps;
+                double eps = 0.5; // a small additional delta to add to the output. 
+                double t = FindTimeToFenceViolation(localPoly, locpos, vel) + eps;
                 int seg = fp->getSegment(correctedtime + t);
                 if (seg < 0)
                 {
@@ -474,10 +480,9 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 // Get position on plan for detected time to violation
                 larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
                 larcfm::Vect3 qPos = projection.project(posOnPlan);
-
                 // If projected point on plan is outside fence, we have a real problem.
                 bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
-                projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 2, 2);
+                projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 10, 10);
                 if (projConflict)
                 {
                     conflict |= true;
