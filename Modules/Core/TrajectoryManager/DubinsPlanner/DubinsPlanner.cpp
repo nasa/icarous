@@ -165,40 +165,36 @@ void DubinsPlanner::GetPotentialFixes(){
         potentialFixes.push_back(fix);
     }
 
-    // If potential fixes are not available, generate potential fixes
-    //if(potentialFixes.size() == 2 || trafficPlans.size() > 0){
+    // Characteristic length
+    double l = root.vel.gs()*10;
+    double trk = root.vel.angle();
     
-       // Characteristic length
-       double l = root.vel.gs()*10;
-       double trk = root.vel.angle();
-    
-       // Generate points radially from the root position
-       // At 30 degree intervals
-       int N = 0;
-       for(int i=0; i<N; ++i){
-           for(int j=2;j<=5;++j){
-               double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
-               double y1 = root.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
-               double z1 = root.pos.z;
-               double x2 = goal.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
-               double y2 = goal.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
-               double z2 = goal.pos.z;
-               node_t fix1, fix2;
-               fix1.pos = larcfm::Vect3(larcfm::Vect2(x1, y1), z1);
-               fix2.pos = larcfm::Vect3(larcfm::Vect2(x2, y2), z2);
-               fix1.goal = false;
-               fix2.goal = false;
+    // Generate points radially from the root position
+    // At 30 degree intervals
+    int N = 0;
+    for(int i=0; i<N; ++i){
+        for(int j=2;j<=5;++j){
+            double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
+            double y1 = root.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
+            double z1 = root.pos.z;
+            double x2 = goal.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
+            double y2 = goal.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
+            double z2 = goal.pos.z;
+            node_t fix1, fix2;
+            fix1.pos = larcfm::Vect3(larcfm::Vect2(x1, y1), z1);
+            fix2.pos = larcfm::Vect3(larcfm::Vect2(x2, y2), z2);
+            fix1.goal = false;
+            fix2.goal = false;
 
-               fix1.id = count;
-               potentialFixes.push_back(fix1);
-               count++;
+            fix1.id = count;
+            potentialFixes.push_back(fix1);
+            count++;
 
-               fix2.id = count;
-               potentialFixes.push_back(fix2);
-               count++;
-           }
-       }
-    //}
+            fix2.id = count;
+            potentialFixes.push_back(fix2);
+            count++;
+        }
+    }
 }
 
 void DubinsPlanner::BuildTree(node_t* rd){
@@ -453,10 +449,10 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         // Compute tcps for altitude changes
         tcpData_t finalTCPdata = ComputeAltTcp(tcp[pathType],startVel.gs(),endVel.gs());
 
-        /*
+        
         if(finalTCPdata.size() == 4 && (startVel.gs()-endVel.gs()) > 0.1){
              finalTCPdata = ComputeSpeedTcp(tcp[pathType],startVel.gs(),endVel.gs());
-        } */
+        }
 
         // Check for fence conflicts
         /*  
@@ -533,9 +529,13 @@ tcpData_t DubinsPlanner::ComputeSpeedTcp(tcpData_t &TCPdata,double startgs,doubl
     }else{
         a = ax;
     }
-    t = (v1-v0)/a;
+    // Time to reach new speed based on acceleration profile
+    t = fabs((v1-v0)/a);
+    // Distance to complete acceleration to new new speed
     s = fabs(v0*t + 0.5*a*t*t);
+    // Segment distance before staring acceleration
     double dist = len - s;
+    // Intermediate point for BGS (assume EGS is colocated with BOT)
     double tintermediate = TCPdata[1].first.time() + dist/v0;
     double tdiff = (TCPdata[2].first.time() - (tintermediate + t));
     TCPdata[2].first = TCPdata[2].first.makeTime(TCPdata[2].first.time() - tdiff);
