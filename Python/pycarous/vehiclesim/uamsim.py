@@ -36,10 +36,9 @@ class UamVtolSim(VehicleSimInterface):
         self.U[1] = gs
         self.U[2] = climbrate
 
-    def SetInitialConditions(self,x=0,y=0,z=0,vx=0,vy=0,vz=0):
+    def SetInitialConditions(self,x=0,y=0,z=0,heading=0,speed=0,vs=0):
         self.pos0 = np.array([x,y,z])
-        self.vel0 = np.array([vx,vy,vz])
-        self.trk,self.gs,self.vs = ConvertVnedToTrkGsVs(vy,vx,vz)
+        self.trk,self.gs,self.vs = heading,speed,vs
         
 
     def Run(self, windFrom=0, windSpeed=0):

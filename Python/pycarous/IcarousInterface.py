@@ -168,7 +168,7 @@ class IcarousInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def InputFlightplan(self, fp, eta=False, repair=False,setInitialConditions=True):
+    def InputFlightplan(self, fp, eta=False, repair=False,setInitialPosition=True,setInitialVelocity=False):
         """
         Input a flight plan as a list of waypoints
         :param fp: a list of waypoints [lat, lon, alt, wp_metric]

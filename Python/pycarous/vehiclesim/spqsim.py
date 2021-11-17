@@ -69,6 +69,20 @@ class SixPassengerQuadSim(VehicleSimInterface):
 
         self.wind_mps = [0, 0]  # wind speed [vn, ve] (m/s)
 
+    def SetInitialConditions(self,x=0,y=0,z=0,heading=0,speed=0,vs=0):
+        self.pos0 = np.array([x,y,z])
+        self.trk,self.gs,self.vs = heading,speed,vs
+        self.state = SpqState(
+            distance = 0,   # horizontal distance from starting point (nm)
+            VTAS = speed * 1.94,       # airspeed (kts)
+            Altitude = z*3.28084,   # altitude (ft)
+            ROCD = vs*196.95,       # climb rate (fpm)
+            Psi = heading,        # heading (deg CW from North)
+            Phi = 0,        # bank angle (deg)
+            N_pos = y*0.000539957,      # distance North from starting point (nm)
+            E_pos = x*0.000539957,      # distance East from starting point (nm)
+        )
+
     def InputCommand(self, track, gs, climbrate):
         self.command.VelocityControlMode = rtString(b"GS", (c_int*2)(1,2))
         self.command.VTAS = 0

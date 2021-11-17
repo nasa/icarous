@@ -25,8 +25,8 @@ class VehicleSimInterface(abc.ABC):
 
         # Uncertainty settings
         self.noise = False
-        self.pcoeff = 0.8
-        self.vcoeff = 0.8
+        self.pcoeff = 0
+        self.vcoeff = 0
         self.sigma_pos = np.zeros((3,3)) 
         self.sigma_vel = np.zeros((3,3)) 
         self.delay = 0
@@ -34,15 +34,15 @@ class VehicleSimInterface(abc.ABC):
         # Current wind speed
         self.vw = np.array([0, 0, 0])
 
-    def SetInitialConditions(self,x=0,y=0,z=0,vx=0,vy=0,vz=0):
+    def SetInitialConditions(self,x=0,y=0,z=0,heading=0,speed=0,vs=0):
         """
         Set initial conditions
         :param x: x position [m] East
         :param y: y position [m] North
         :param z: z position [m] Up
-        :param vx: velocity [m/s] east component
-        :param vy: velocity [m/s] north component
-        :param vz: velocity [m/s] down component
+        :param heading: heading [degree]
+        :param speed: ground speed [m/s] 
+        :param vs: vertical speed [m/s]
         """
         pass
 

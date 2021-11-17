@@ -124,7 +124,7 @@ class Icarous(IcarousInterface):
             localPos = self.ConvertToLocalCoordinates(position)
             self.RecordTraffic(callsign, source, position, velocity, localPos)
 
-    def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialConditions=True):
+    def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialPosition=True,setInitialVelocity=False):
         
         self.etaFP1 = eta
         self.repair = repair
@@ -139,13 +139,17 @@ class Icarous(IcarousInterface):
         self.flightplan2 = []
 
         # Set initial conditions of model based on flightplan waypoints
-        dist  = distance(waypoints[1].latitude,waypoints[1].longitude,waypoints[0].latitude,waypoints[0].longitude)
-        speed = dist/(waypoints[1].time-waypoints[0].time)
-        hdg   = ComputeHeading([waypoints[0].latitude,waypoints[0].longitude,0],[waypoints[1].latitude,waypoints[1].longitude,0])
-        vn,ve,vd = ConvertTrkGsVsToVned(hdg,speed,0)
-        if setInitialConditions:
-            self.ownship.SetInitialConditions(z=waypoints[0].altitude,vx=ve,vy=vn)
-
+        count = -1 
+        dist = 0
+        while dist < 1e-3:
+            count += 1
+            dist  = distance(waypoints[count+1].latitude,waypoints[count+1].longitude,waypoints[count].latitude,waypoints[count].longitude)
+        gs = dist/(waypoints[1].time-waypoints[0].time)
+        hdg   = ComputeHeading([waypoints[count].latitude,waypoints[count].longitude,0],[waypoints[count+1].latitude,waypoints[count+1].longitude,0])
+        if setInitialPosition and setInitialVelocity:
+            self.ownship.SetInitialConditions(z=waypoints[0].altitude,heading=hdg,speed=gs)
+        elif setInitialPosition:
+            self.ownship.SetInitialConditions(z=waypoints[0].altitude,heading=hdg,speed=0)
     def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0,localPlan=False):
         import re
         eutlfile = re.search('\.eutl',filename)
