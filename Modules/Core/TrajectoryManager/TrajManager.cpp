@@ -482,7 +482,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 larcfm::Vect3 qPos = projection.project(posOnPlan);
                 // If projected point on plan is outside fence, we have a real problem.
                 bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
-                projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 10, 10);
+                projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 2, 2);
                 if (projConflict)
                 {
                     conflict |= true;

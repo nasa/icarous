@@ -453,9 +453,10 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         // Compute tcps for altitude changes
         tcpData_t finalTCPdata = ComputeAltTcp(tcp[pathType],startVel.gs(),endVel.gs());
 
+        /*
         if(finalTCPdata.size() == 4 && (startVel.gs()-endVel.gs()) > 0.1){
              finalTCPdata = ComputeSpeedTcp(tcp[pathType],startVel.gs(),endVel.gs());
-        } 
+        } */
 
         // Check for fence conflicts
         /*  
