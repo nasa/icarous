@@ -123,5 +123,5 @@ class SixPassengerQuadSim(VehicleSimInterface):
         airspeed = self.state.VTAS*0.5144   # kts to m/s
         vn = airspeed*np.cos(np.radians(self.groundtrack)) + self.wind_mps[0]
         ve = airspeed*np.sin(np.radians(self.groundtrack)) + self.wind_mps[1]
-        vd = self.state.ROCD*0.00508  # fpm to m/s
+        vd = -self.state.ROCD*0.00508  # fpm to m/s
         return (vn, ve, vd)

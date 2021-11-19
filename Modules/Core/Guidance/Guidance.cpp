@@ -377,45 +377,59 @@ double Guidance::ComputeSpeed(){
 double Guidance::ComputeClimbRate(double speedRef){
     const int nextWP = nextWpId[activePlanId];
     const larcfm::Position position = currentPos;
+    const larcfm::Position prevWaypoint = currentPlan->getPos(nextWP-1);
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
+    const double deltaAltref = prevWaypoint.distanceV(nextWaypoint);
+    const double deltaDistRef = prevWaypoint.distanceH(nextWaypoint);
+    const double fpAngle = atan2(deltaAltref,deltaDistRef); 
     const double deltaH = nextWaypoint.alt() - position.alt();
     double climbrate = 0;
-    if(currentPlan->isLinear()){
-        if (fabs(deltaH) > params.climbAngleVRange &&
-            position.distanceH(nextWaypoint) > params.climbAngleHRange) {
-            // Over large altitude changes outside the climbAngleRange params, control the ascent/descent angle
-            double angle = params.climbFpAngle;
-            if (deltaH < 0) {
-                angle = -angle;
-            }
-            const double cfactor = tan(angle);
-            if(speedRef > 1e-3){
-                // Climb rate determined by the trig relation
-                // speedRef is adjacent, climbrate is opposite
-                climbrate = cfactor * speedRef;
-            }else{
-                climbrate = deltaH > 0? params.maxClimbRate : params.minClimbRate;
-            }
-        }
-        else {
-            // Over shorter altitude changes and distances, use proportional control
-            climbrate = deltaH * params.climbRateGain;
-        }
-    }else{
-        // If we have a kinematic plan, follow climbrate stored in flightplan
-        if(fabs(deltaH) > 5){
-            climbrate = currentPlan->vsIn(nextWP);
-        }
-        // We need porportional control to maintain target altitude
-        climbrate += deltaH * params.climbRateGain;
+    bool climbSegment = false;
+    bool bangbang = false;
+    // Check if this is a climb segment
+    if(fabs(fpAngle) < 1e-5){
+       climbSegment = true;
     }
-    if (climbrate > params.maxClimbRate) {
-        climbrate = params.maxClimbRate;
-    }
-    else if (climbrate < params.minClimbRate) {
-        climbrate = params.minClimbRate;
-    }
-    return climbrate;
+
+   // Over large altitude changes outside the climbAngleRange params, use bangbang control
+   if (fabs(deltaH) > params.climbAngleVRange) {
+       bangbang = true;
+   } 
+
+   if(bangbang){
+       climbrate = deltaH > 0? params.maxClimbRate : params.minClimbRate;
+       // For eta, use the required climb rate based on arrival constraint
+       if(params.maintainEta){
+           larcfm::Position planPos = currentPlan->position(currTime);
+           double deltaH = planPos.alt() - currentPos.alt();
+           climbrate = deltaH * params.climbRateGain;
+       }else{
+           // Not eta, pull climb rate from flightplan
+           if(currentPlan->isLinear()){
+               // In linear case, calculate climb rate based on flightpath angle
+               if ((fpAngle < M_PI / 2 || fpAngle > -M_PI / 2) && speedRef > 1e-3 && climbSegment) {
+                   const double cfactor = tan(fpAngle);
+                   if (speedRef > 1e-3) {
+                       // Climb rate determined by the trig relation
+                       // speedRef is adjacent, climbrate is opposite
+                       climbrate = cfactor * speedRef;
+                   }
+               }
+           }else{
+               // In kinematic case, use prescribed climb rate
+               climbrate = currentPlan->vsIn(nextWP);
+           }
+       }
+   }else{
+       climbrate = deltaH * params.climbRateGain;
+   }
+   if (climbrate > params.maxClimbRate) {
+       climbrate = params.maxClimbRate;
+   }
+   else if (climbrate < params.minClimbRate) {
+       climbrate = params.minClimbRate;
+   }
+   return climbrate;
 }
 
 double Guidance::ConstrainTurnRate(double targetHeading,double reqTurnRate){
