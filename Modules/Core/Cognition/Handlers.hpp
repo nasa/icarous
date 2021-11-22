@@ -204,7 +204,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
         }
         int index = state->nextWpId[state->missionPlan];
 
-        LogMessage(state, "[STATUS] | " + eventName + " | Return to next feasible waypoint");
+        LogMessage(state, "[STATUS] | " + eventName + " | Return to next feasible waypoint " + std::to_string(index));
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
         larcfm::Position positionB;
@@ -225,6 +225,7 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
             state->request = REQUEST_NIL;
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);
             SetGuidanceFlightPlan(state,pathName,1);
+            state->lineOfSight2GoalPrev = true;
            return SUCCESS;
         }else{
             std::string pathName = "Plan" + std::to_string(state->numSecPaths);

@@ -94,6 +94,21 @@ bool FlightPlanDeviationTrigger(CognitionState_t* state){
 }
 
 /**
+ * Trigger to check if replanning is necessary.
+ */
+bool FlightReplanTrigger(CognitionState_t* state){
+    if(state->activePlan == nullptr){
+        return false;
+    }
+    if(state->activePlan->getID() != "Plan0"){
+        if(!state->lineOfSight2GoalPrev && state->lineOfSight2Goal){
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * - Detect a well clear violation (detected by daidalus)
  * - Note that this trigger is ignored if the search resolution is requested (by a user).
  * - A search resolution is an alternative way to deal with imminent well clear violations.

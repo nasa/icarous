@@ -99,6 +99,7 @@ public:
     void SetGoal(larcfm::Vect3& goal,larcfm::Velocity finalVel);
     bool ComputePath(double startTime);
     void GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& plan);
+    static bool LinePlanIntersection(larcfm::Vect2& A,larcfm::Vect2& B,double floor,double ceiling,larcfm::Vect3& currentPos,larcfm::Vect3& nextPos);
 
 private:
     node_t* FindNearest(node_t& query);
@@ -118,7 +119,6 @@ private:
     bool GreedyDepthFirst(node_t q,node_t* g);
     double NodeDistance(node_t& A,node_t& B);
     bool CheckGoal();
-    bool LinePlanIntersection(larcfm::Vect2& A,larcfm::Vect2& B,double floor,double ceiling,larcfm::Vect3& currentPos,larcfm::Vect3& nextPos);
     bool CheckProjectedFenceConflict(node_t* qnode,node_t* goal);
     bool GetDubinsParams(node_t* start,node_t* end);
     bool CheckAltFeasibility(double startz,double endz,double dist,double gs1,double gs2);

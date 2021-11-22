@@ -96,6 +96,7 @@ typedef struct __attribute__((__packed__)){
 typedef struct __attribute__((__packed__)){
     bool fenceConflict;                      /**< fence conflicts */
     bool trafficConflict;                    /**< traffic conflict */ 
+    bool lineOfSight2goal;                   /**< line of sight to goal is avaialble */
     uint8_t conflictFenceID;                 /**< conflicting fence ids */
     char conflictCallSign[20];               /**< callsign of conflicting traffic */
     double timeToTrafficViolation;           /**< time to violating constraint at current speed */
@@ -123,6 +124,7 @@ typedef struct{
     int PrioirtyNominalDeparture;
     int PriorityPrimaryPlanComplete;
     int PrioritySecondaryPlanComplete;
+    int PriorityReplanning;
     int PriorityMerging;
     int PriorityFenceConflict;
     int PriorityTrafficConflict1;

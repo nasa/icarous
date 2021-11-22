@@ -410,6 +410,7 @@ void TRAJECTORY_Monitor(void)
                 trajectoryMonitorData_t monData;
                 monData = TrajManager_MonitorTrajectory(TrajectoryAppData.pplanner,TrajectoryAppData.timeNow,TrajectoryAppData.planID,position,velocity,TrajectoryAppData.nextWP1,nextWP);
                 memcpy(tjMonData.databuffer,(char*)&monData,sizeof(trajectoryMonitorData_t));
+                OS_printf("monitor traj: %d, %d",TrajectoryAppData.nextWP1,monData.nextFeasibleWP);
                 SendSBMsg(tjMonData);
 
                 break;

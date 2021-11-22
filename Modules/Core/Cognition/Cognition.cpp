@@ -37,6 +37,7 @@ void Cognition::ReadParamsFromFile(const std::string config){
     cogState.parameters.PrioirtyNominalDeparture = parameters.getInt("Priority_NominalDeparture");
     cogState.parameters.PriorityPrimaryPlanComplete = parameters.getInt("Priority_PrimaryPlanComplete");
     cogState.parameters.PrioritySecondaryPlanComplete = parameters.getInt("Priority_SecondaryPlanComplete");
+    cogState.parameters.PriorityReplanning = parameters.getInt("Priority_Replanning");
     cogState.parameters.PriorityMerging = parameters.getInt("Priority_Merging");
     cogState.parameters.PriorityFenceConflict = parameters.getInt("Priority_FenceConflict");
     cogState.parameters.PriorityTrafficConflict1 = parameters.getInt("Priority_TrafficConflict1");
@@ -54,6 +55,8 @@ void Cognition::InitializeState(){
     cogState.missionStart = -1;
     cogState.keepInConflict = false;
     cogState.keepOutConflict = false;
+    cogState.lineOfSight2Goal = true;
+    cogState.lineOfSight2GoalPrev = true;
     cogState.p2pComplete = false;
     cogState.takeoffComplete = -1;
     cogState.trafficConflictState = NOOPC;
@@ -152,6 +155,10 @@ void Cognition::InputFlightPlanData(const std::string &plan_id,const std::list<w
 }
 
 void Cognition::InputTrajectoryMonitorData(const trajectoryMonitorData_t & tjMonData){
+    cogState.lineOfSight2Goal = tjMonData.lineOfSight2goal;
+    if(!cogState.lineOfSight2Goal){
+        cogState.lineOfSight2GoalPrev = cogState.lineOfSight2Goal;
+    }
     cogState.timeToFenceViolation = tjMonData.timeToFenceViolation;
     cogState.timeToTrafficViolation3 = tjMonData.timeToTrafficViolation;
     cogState.planProjectedFenceConflict = tjMonData.fenceConflict;
@@ -361,6 +368,7 @@ std::map<std::string,int> GetPriorityValues(cognition_params_t* params){
     inputPriorities["NominalDeparture"] = params->PrioirtyNominalDeparture; 
     inputPriorities["PrimaryPlanComplete"] = params->PriorityPrimaryPlanComplete;
     inputPriorities["SecondaryPlanComplete"] = params->PrioritySecondaryPlanComplete;
+    inputPriorities["Replanning"] = params->PriorityReplanning;
     inputPriorities["Merging"] = params->PriorityMerging;
     inputPriorities["FenceConflict"] = params->PriorityFenceConflict;
     inputPriorities["TrafficConflict1"] = params->PriorityTrafficConflict1;

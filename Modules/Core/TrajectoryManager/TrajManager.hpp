@@ -57,6 +57,7 @@ private:
     // for a given plan, next waypoint index, current position, velocity and time
     std::vector<double> ComputePlanOffsets(const std::string planID,int nextWP,larcfm::Position currentPos,larcfm::Velocity currentVel,double timeAtPos);
 
+    bool CheckLineOfSightconflict(larcfm::Position start, larcfm::Position end);
     void LogInput();
 public:
     larcfm::Position startPos;

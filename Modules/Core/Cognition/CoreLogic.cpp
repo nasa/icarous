@@ -38,6 +38,11 @@ void Cognition::InitializeEventHandlers(){
                              PrimaryPlanCompletionTrigger,
                              MAKE_HANDLER(LandPhaseHandler));
 
+   eventMng.AddEventHandler("FlightReplan",
+                             inputPriorities["Replanning"],
+                             FlightReplanTrigger,
+                             MAKE_HANDLER(ReturnToNextFeasibleWP));
+
    eventMng.AddEventHandler("Merging",
                              inputPriorities["Merging"],
                              MergingActivityTrigger,

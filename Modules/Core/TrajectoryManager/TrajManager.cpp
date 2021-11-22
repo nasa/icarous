@@ -146,6 +146,7 @@ int TrajManager::FindPath(std::string planID, larcfm::Position fromPosition, lar
         char buffer[100];
         sprintf(buffer,"%f",(double)tv.tv_sec + (double)(tv.tv_usec)/1E6);
         log<<"Time after computation:"<<std::string(buffer)<<std::endl;
+        log<<flightPlans.back().toString()<<std::endl;
     }
     return retval;
 
@@ -209,7 +210,6 @@ int64_t TrajManager::FindDubinsPath(std::string planID){
     dbPlanner.GetPlan(proj,output);
     output.setID(std::string(planID));
     flightPlans.push_back(output);
-    std::cout<<output.toString()<<std::endl;
     return output.size();
 }
 
@@ -438,6 +438,27 @@ double TrajManager::FindTimeToFenceViolation(larcfm::Poly3D polygon, larcfm::Vec
     }
 }
 
+bool TrajManager::CheckLineOfSightconflict(larcfm::Position start, larcfm::Position end){
+   
+    larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(start);
+    larcfm::Vect3 posA = projection.project(start);
+    larcfm::Vect3 posB = projection.project(end);
+    bool conflict;
+    for(auto fp: fenceList){
+        double floor = fp.polygon.getBottom();
+        double ceiling = fp.polygon.getTop();
+        int n = fp.polygon.size();
+        for(int i=0;i<n;++i){
+            auto vertexA = projection.project(fp.polygon.getVertex(i)).vect2();
+            auto vertexB = projection.project(fp.polygon.getVertex((i+1)%n)).vect2();
+            if(DubinsPlanner::LinePlanIntersection(vertexA,vertexB,floor,ceiling,posA,posB)){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
 {
 
@@ -580,8 +601,10 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     for (; findex < maxwp; ++findex)
     {
         // Check if next wp is before the conflict time
-        if(fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50){
-            continue;
+        if(tfTimes.size() > 0){
+            if (fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50) {
+                continue;
+            }
         }
 
         
@@ -618,10 +641,17 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     if(findex >= maxwp){
         findex = maxwp-1;
     }
+
+    bool lineOfSight2goal = true; 
+    if(flightPlans.size() > 0){
+        lineOfSight2goal = CheckLineOfSightconflict(pos,flightPlans.front().getPos(findex)); 
+    }
+
     data.fenceConflict = fenceConflict;
     data.trafficConflict = trafficConflict;
     data.timeToFenceViolation = gfTimes.front();
     data.timeToTrafficViolation = tfTimes.front();
+    data.lineOfSight2goal = lineOfSight2goal;
     data.offsets1[0] = offsets1[0];
     data.offsets1[1] = offsets1[1];
     data.offsets1[2] = offsets1[2];
@@ -667,9 +697,12 @@ void TrajManager::LogInput(){
 }
 
 larcfm::Position TrajManager::GetPlanPosition(std::string planid,double t){
+    larcfm::Position post;
     for(auto &fp: flightPlans){
         if(fp.getID() == planid){
-            return fp.position(t); 
+            post = fp.position(t); 
+            break;
         }
     }
+    return post;
 }

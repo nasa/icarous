@@ -142,6 +142,8 @@ typedef struct{
     bool keepOutConflict;
     larcfm::Position recoveryPosition;
     larcfm::Position clstPoint;
+    bool lineOfSight2Goal;
+    bool lineOfSight2GoalPrev;
 
     // Traffic conflict related variables
     bool trafficConflict;

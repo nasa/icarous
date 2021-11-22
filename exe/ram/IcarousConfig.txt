@@ -211,6 +211,7 @@ Priority_Takeoff = 1
 Priority_NominalDeparture = 6
 Priority_PrimaryPlanComplete = 1
 Priority_SecondaryPlanComplete = 1
+Priority_Replanning = 3
 Priority_Merging = 3
 Priority_FenceConflict = 1
 Priority_TrafficConflict1 = 2
