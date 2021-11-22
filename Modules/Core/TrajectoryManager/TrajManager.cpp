@@ -39,14 +39,14 @@ void TrajManager::ReadParamFromFile(std::string config){
     params.turnRate = parameters.getValue("turn_rate");
     params.vAccel = parameters.getValue("vertical_accel");
     params.hAccel = parameters.getValue("horizontal_accel");
-    params.hDaccel = params.hAccel * 0.5;
-    params.vDaccel = params.vAccel * 0.5;
+    params.hDaccel = -params.hAccel * 0.5;
+    params.vDaccel = -params.vAccel * 0.5;
     params.minVS = parameters.getValue("min_vs");
     params.maxVS = parameters.getValue("max_vs");
     params.vertexBuffer = parameters.getValue("obstacle_buffer");
     params.wellClearDistH = parameters.getValue("dubins_wellclear_radius");
     params.wellClearDistV = parameters.getValue("dubins_wellclear_height");
-    params.climbgs = params.maxVS;
+    params.climbgs = parameters.getValue("climb_speed");
     params.maxH = parameters.getValue("max_alt");
     params.zSections = parameters.getValue("alt_bins");
     dbPlanner.SetParameters(params);
@@ -664,4 +664,12 @@ void TrajManager::LogInput(){
     log<<"Time before computation:"<<std::string(buffer)<<std::endl;
 
     return;
+}
+
+larcfm::Position TrajManager::GetPlanPosition(std::string planid,double t){
+    for(auto &fp: flightPlans){
+        if(fp.getID() == planid){
+            return fp.position(t); 
+        }
+    }
 }

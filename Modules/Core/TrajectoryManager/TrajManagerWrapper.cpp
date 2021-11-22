@@ -90,3 +90,12 @@ trajectoryMonitorData_t TrajManager_MonitorTrajectory(void* obj,double time,char
    larcfm::Velocity vel = larcfm::Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
    return pp->MonitorTrajectory(time,std::string(planID),pos,vel,nextWP1,nextWP2);
 }
+
+void TrajManager_GetPlanPosition(void* obj,char planID[],double t,double pos[]){
+    TrajManager* pp = (TrajManager*)obj;
+    larcfm::Position planpos = pp->GetPlanPosition(std::string(planID),t);
+    pos[0] = planpos.latitude();
+    pos[1] = planpos.longitude();
+    pos[2] = planpos.alt();
+    return;
+}

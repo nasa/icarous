@@ -22,6 +22,7 @@ void TrajManager_CombinePlan(void* obj,char planID_A[],char planID_B[],int index
 void TrajManager_PlanToString(void* obj,char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift);
 void TrajManager_StringToPlan(void* obj,char planID[],char inputString[]);
 void TrajManager_SetPlanOffset(void*obj, char planID[],int n,double offset);
+void TrajManager_GetPlanPosition(void* obj,char planID[],double t,double pos[]);
 trajectoryMonitorData_t TrajManager_MonitorTrajectory(void* obj,double time,char planID[],double position[],double velocity[],int nextWP1,int nextWP2);
 
 #ifdef __cplusplus

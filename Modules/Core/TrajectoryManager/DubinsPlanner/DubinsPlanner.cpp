@@ -712,8 +712,7 @@ bool DubinsPlanner::ComputePath(double startTime){
    // Build graph
    BuildTree(root);
 
-   // search path using Dijkstra's algorithm
-   //bool status = DijkstraSearch(root,goal);
+   // search path using Astar algorithm
    bool status = AstarSearch(root,goal);
 
    return status;
