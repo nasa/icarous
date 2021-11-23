@@ -649,8 +649,17 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
 
     data.fenceConflict = fenceConflict;
     data.trafficConflict = trafficConflict;
-    data.timeToFenceViolation = gfTimes.front();
-    data.timeToTrafficViolation = tfTimes.front();
+    if(gfTimes.size() > 0){
+        data.timeToFenceViolation = gfTimes.front();
+    }else{
+        data.timeToFenceViolation = MAXDOUBLE;
+    }
+
+    if(tfTimes.size() > 0){
+        data.timeToTrafficViolation = tfTimes.front();
+    }else{
+        data.timeToTrafficViolation = MAXDOUBLE;
+    }
     data.lineOfSight2goal = lineOfSight2goal;
     data.offsets1[0] = offsets1[0];
     data.offsets1[1] = offsets1[1];
