@@ -359,11 +359,6 @@ void ProcessGSMessage(mavlink_message_t message) {
                 if(msg.param1 == 1){
                     appdataIntGS.numWaypoints = 0;
                 }
-            }else if(msg.command == MAV_CMD_USER_2){
-                argsCmd_t trackCmd;
-                CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
-                trackCmd.param1 = (float) msg.param1;
-                SendSBMsg(trackCmd);
             }else if (msg.command == MAV_CMD_USER_3) {
                 argsCmd_t radarCmd;
                 CFE_SB_InitMsg(&radarCmd,RADAR_TRIGGER_MID, sizeof(argsCmd_t),TRUE);
