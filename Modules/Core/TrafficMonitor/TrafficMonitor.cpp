@@ -1,12 +1,12 @@
 #include "TrafficMonitor.h"
 #include "DaidalusMonitor.hpp"
 
-void* newDaidalusTrafficMonitor(char *callsign,char *carg2){
+void* newDaidalusTrafficMonitor(const char *callsign,const char *carg2){
     TrafficMonitor* obj = new DaidalusMonitor(callsign,std::string(carg2));
     return (void*)obj;
 }
 
-void TrafficMonitor_UpdateParameters(void * obj, char * carg2){
+void TrafficMonitor_UpdateParameters(void * obj, const char * carg2){
     TrafficMonitor* monitor = (TrafficMonitor*)obj;
     monitor->UpdateParameters(std::string(carg2));
 }

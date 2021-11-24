@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 void* CognitionInit(const char callsign[],const char config[]);
-void ReadParamFromFile(void* obj,char config[]);
+void ReadParamFromFile(void* obj,const char config[]);
 void Reset(void *obj);
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading);
 void InputFlightPlanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,

@@ -184,8 +184,8 @@ void GEOFENCE_ProcessPacket(void){
                if(numConflicts > 4){
                    break;
                }
-               int id,type;
-               uint8_t conflict,violation;
+               int id;
+               uint8_t conflict,violation,type;
                double recoveryPosition[3];
                GeofenceMonitor_GetConflict(geofenceAppData.gfMonitor,i,&id,&conflict,&violation,recoveryPosition,&type);
                geofenceAppData.gfConflictData.conflictFenceIDs[i] = (uint8_t)id;

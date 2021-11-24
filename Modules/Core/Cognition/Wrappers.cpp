@@ -7,7 +7,7 @@ void* CognitionInit(const char callsign[],const char config[]){
     return (void*)cog;
 }
 
-void ReadParamFromFile(void* obj,char config[]){
+void ReadParamFromFile(void* obj,const char config[]){
     Cognition* cog = (Cognition*)obj;
     cog->ReadParamsFromFile(std::string(config));
 }

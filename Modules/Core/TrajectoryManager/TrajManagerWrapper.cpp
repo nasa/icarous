@@ -1,12 +1,12 @@
 #include "TrajManager.h"
 #include "TrajManager.hpp"
 
-void* new_TrajManager(char callsign[],char config[]){
+void* new_TrajManager(const char callsign[],const char config[]){
    TrajManager* pp = new TrajManager(std::string(callsign),std::string(config));
    return (void*)pp;
 }
 
-void TrajManager_ReadParamFromFile(void* obj,char config[]){
+void TrajManager_ReadParamFromFile(void* obj,const char config[]){
    TrajManager* pp = (TrajManager*)obj;
    pp->ReadParamFromFile(std::string(config));
 }

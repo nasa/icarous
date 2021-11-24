@@ -58,15 +58,15 @@ typedef struct{
     bool wpReached;
 }GuidanceOutput_t;
 
-void* InitGuidance(char config[]);
-void guidReadParamFromFile(void* obj,char config[]);
+void* InitGuidance(const char config[]);
+void guidReadParamFromFile(void* obj,const char config[]);
 void guidSetParams(void* obj,GuidanceParams_t* params);
 void guidSetAircraftState(void* obj, double position[],double velocity[]);
 void guidSetWindData(void* obj,double windFrom,double windSpeed);
 void guidInputFlightplanData(void* obj,char planID[],waypoint_t wpts[],int totalWP,double initHeading,bool kinematize,double repairTurnRate);
 void RunGuidance(void* obj,double time);
 void guidInputVelocityCmd(void* obj,double velcmd[]);
-void SetGuidanceMode(void* obj,GuidanceMode mode,char* planID,int nextWP,bool eta);
+void SetGuidanceMode(void* obj,GuidanceMode mode,const char* planID,int nextWP,bool eta);
 void ChangeWaypointSpeed(void* obj,char planID[],int wpID,double val,bool updateAll);
 void ChangeWaypointAlt(void* obj,char planID[],int wpID,double val,bool updateAll);
 void ChangeWaypointETA(void* obj,char planID[],int wpID,double val,bool updateAll);

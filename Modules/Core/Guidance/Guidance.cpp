@@ -842,11 +842,11 @@ int Guidance::RunGuidance(double time){
 }
 
 
-void* InitGuidance(char config[]){
+void* InitGuidance(const char config[]){
     return (void*) new Guidance(std::string(config));
 }
 
-void guidReadParamFromFile(void* obj, char config[]){
+void guidReadParamFromFile(void* obj,const char config[]){
    ((Guidance*) obj)->ReadParamFromFile(std::string(config));
 }
 
@@ -881,7 +881,7 @@ void guidInputVelocityCmd(void* obj,double velcmd[]){
     ((Guidance*)obj)->SetVelocityCommands(vel);
 }
 
-void SetGuidanceMode(void*obj, GuidanceMode mode,char planID[], int nextWP,bool eta){
+void SetGuidanceMode(void*obj, GuidanceMode mode,const char planID[], int nextWP,bool eta){
     std::string planid(planID);
     ((Guidance*)obj)->SetGuidanceMode(mode,planid,nextWP,eta);
 }
