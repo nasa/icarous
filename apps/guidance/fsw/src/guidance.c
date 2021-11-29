@@ -380,7 +380,7 @@ void GUIDANCE_Run(void){
         cmd.param1 = vn;
         cmd.param2 = ve;
         cmd.param3 = vd;
-        cmd.param4 = guidanceAppData.guidance_params.yawForward;
+        cmd.param4 = guidOutput.yawForward;
         SendSBMsg(cmd);
         
         if(guidanceAppData.sentPos == false && 

@@ -103,6 +103,7 @@ cdef extern from "Guidance.h":
         double velCmd[3]
         double target[3]
         bint wpReached
+        bint yawForward
 
 cdef extern from "Interfaces.h":
     ctypedef packed struct bands_t:

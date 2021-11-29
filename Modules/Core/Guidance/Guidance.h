@@ -56,6 +56,7 @@ typedef struct{
     double velCmd[3];
     double target[3];
     bool wpReached;
+    bool yawForward;
 }GuidanceOutput_t;
 
 void* InitGuidance(const char config[]);

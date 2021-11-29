@@ -248,6 +248,7 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
 
    output.guidanceMode = mode;
    output.nextWP = -1;
+   output.yawForward = params.yawForward;
    if(currentPlan != nullptr){
         // If we are doing a speed change or altitude change, we are still on the 
         // the original flighttrack (over the ground). So use the previous plan id 
