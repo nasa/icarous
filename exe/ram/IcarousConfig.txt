@@ -158,12 +158,7 @@ min_capture_radius = 1 [m]
 # Guidance radius scaling. guidance radius scaling <= capture_radius_scaling
 guidance_radius_scaling =  2.0
 
-# Climb angle used during climb segments
-climb_angle = 75 [deg]
-
-# Above climb angle is only used if the horizontal distance to goal is beyond horizontal delta 
 # Above climb angle is only used if the vertical distance to goal is beyond vertical delta 
-horizontal_climb_delta = 10 [m]
 vertical_climb_delta = 10 [m]
 
 # gain of proportial guidance control (used when capturing the final altitude)
@@ -196,6 +191,9 @@ dubins_wellclear_height = 30.0 [ft]
 # Number of altitude discretizations.
 alt_bins = 1
 
+# forward speed during climb
+climb_speed = 2 [m/s]
+
 ## Merger parameters
 # time of separation at the intersection
 separation_time = 20.0 [s]
@@ -223,6 +221,7 @@ Priority_TODReached = 1
 
 #tracker parameters
 track_timeout = 5 [s]
+tracker_log = true
 pos_model_uncertainty_xx = 1.0 [m^2]
 pos_model_uncertainty_yy = 1.0 [m^2]
 pos_model_uncertainty_zz = 1.0 [m^2]
