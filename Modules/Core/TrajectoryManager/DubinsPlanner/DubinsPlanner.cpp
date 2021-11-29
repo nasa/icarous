@@ -170,8 +170,8 @@ void DubinsPlanner::GetPotentialFixes(){
     double trk = root.vel.angle();
     
     // Generate points radially from the root position
-    // At 30 degree intervals
-    int N = 0;
+    // N defines the number of paritions of [0,360]
+    int N = 10;
     for(int i=0; i<N; ++i){
         for(int j=2;j<=5;++j){
             double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
