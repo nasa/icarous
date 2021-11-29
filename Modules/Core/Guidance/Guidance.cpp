@@ -25,14 +25,12 @@ void Guidance::ReadParamFromFile(std::string config){
     reader.open(config);
     reader.updateParameterData(parameters);
     params.captureRadiusScaling = parameters.getValue("capture_radius_scaling");
-    params.climbAngleHRange = parameters.getValue("horizontal_climb_delta");
     params.climbAngleVRange = parameters.getValue("vertical_climb_delta");
     params.climbRateGain = parameters.getValue("climb_rate_gain");
     params.maxCap = parameters.getValue("max_capture_radius");
     params.minCap = parameters.getValue("min_capture_radius");
     params.maxClimbRate = parameters.getValue("max_vs");
     params.minClimbRate = parameters.getValue("min_vs");
-    params.defaultWpSpeed = parameters.getValue("default_wp_speed");
     params.guidanceRadiusScaling = parameters.getValue("guidance_radius_scaling");
     params.turnRateGain = parameters.getValue("turnrate_gain");
     params.yawForward = parameters.getValue("yaw_forward");
@@ -392,7 +390,7 @@ double Guidance::ComputeClimbRate(double speedRef){
        climbSegment = true;
     }
 
-   // Over large altitude changes outside the climbAngleRange params, use bangbang control
+   // Over large altitude changes outside the climbAngleVRange params, use bangbang control
    if (fabs(deltaH) > params.climbAngleVRange) {
        bangbang = true;
    } 
@@ -763,7 +761,7 @@ void Guidance::ComputePlanGuidance(){
     int nextWP = nextWpId[activePlanId];
 
     if(nextWP >= currentPlan->size()){
-        // Return with 0 velocity if the flightplan was computed
+        // Return with 0 velocity if the flightplan was completed
         wpReached = true;
         outputCmd = larcfm::Velocity::makeTrkGsVs(0.0,"degree",0.0,"m/s",0.0,"m/s");
         return;
