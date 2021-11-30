@@ -23,10 +23,6 @@ Suite of libraries implementing autonomous decision making, path planning, traff
  - Utils: Helper functions.
  - Interfaces: Datastructures shared among all the core modules
 
-## Prerequisites
-
-- GNU Scientific Library (Only needed when using the TargetTracker module). Refer to [GSL](https://www.gnu.org/software/gsl/) for installation instructions.
-
 ## Compilation
 Compile modules as follows:
 
