@@ -9,13 +9,6 @@
 #include "trajectory_msg.h"
 
 /**
- * @defgroup TRAJECTORY_TABLE
- * @brief Trajectory table
- * @ingroup TABLES
- * @{
- */
-
-/**
  * @struct TrajectoryTable_t
  * @brief Trajectory table defintion
  */

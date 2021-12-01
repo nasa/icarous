@@ -8,19 +8,10 @@
 #include <stdint.h>
 #include "port_lib.h"
 
-/**
- * @defgroup APINTERFACE_TABLES
- * @brief input tables used by the autopilot interface application
- * @details Use this table to define port settings. This table currently provides values
- * that are required for serial/socket connections. Add entries as needed. Values are defined in tables/apIntf_tbl.c
- * You can create as many tables as you want (one for each port you are planning to use).
- * @ingroup TABLES
- */
 
 /**
- * @struct ApInterfaceTable_t
+ * @struct FlarmTable_t
  * @brief table data containing port settings
- * @ingroup APINTERFACE_TABLES
  */
 
 typedef struct

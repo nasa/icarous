@@ -30,8 +30,6 @@
 #include <geofence_msgids.h>
 #include <trajectory_msg.h>
 #include <trajectory_msgids.h>
-#include <tracking_msg.h>
-#include <tracking_msgids.h>
 #include <sch_msgids.h>
 #include <mavlink/ardupilotmega/mavlink.h>
 #include <port_lib.h>
@@ -42,9 +40,7 @@
 #define SCH_ARDUCOPTER_PIPE1_NAME "SCH_ARDUCOPTER"
 
 /**
- * @defgroup ARDUCOPTER
- * @brief An application to interface cFS with an arducopter autopilot system
- * @ingroup APPLICATIONS
+ * @defgroup ARDUCOPTER_cFS_APP
  *
  * @details This application opens two ports, one port connects to the autopilot and the other connects to the ground station.
  * The properties of these ports are defined in the input table. Mavlink packets received from the autopilot are
@@ -56,7 +52,6 @@
  * sent to the ground station. Reading data from the autopilot and groundstation are each on separate threads. The rate
  * at which each thread executes is controlled by the cFS scheduler.
  *
- * @see ARDUCOPTER_MESSAGES, ARDUCOPTER_MESSAGE_TOPICS, ARDUCOPTER_TABLES
  */
 
 /**

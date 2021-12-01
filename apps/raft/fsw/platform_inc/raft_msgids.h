@@ -1,0 +1,17 @@
+/**
+ * @file raft_msgids.h
+ * @brief Message ID definition of raft app messages
+ */
+
+#ifndef ICAROUS_CFS_RAFT_MSGIDS_H
+#define ICAROUS_CFS_RAFT_MSGIDS_H
+
+#define ICAROUS_RAFT_HBEAT 0x0601
+#define ICAROUS_RAFT_ACKHBEAT 0x0602
+#define ICAROUS_RAFT_VOTEREQUEST 0x0603
+#define ICAROUS_RAFT_VOTERESPONSE 0x0604
+#define ICAROUS_RAFT_DATALOG 0x0605
+#define ICAROUS_RAFT_NEUTRAL_FOLLOWER 0x0606
+
+
+#endif //ICAROUS_CFS_RAFT_MSGIDS_H

@@ -50,11 +50,10 @@
 #define SCH_COGNITION_PIPE_NAME "SCH_COGNITION"
 
 /**
- * @defgroup COGNITION
- * @brief Application for decision making
- * @ingroup APPLICATIONS
+ * @defgroup COGNITION_cFS_APP
  *
- * @details  *
+ * @details  Wrapper around the core Cognition C++ module. Passes data from the software bus into the Cognition module.
+ * Extracts outputs from the Cognition module and puts in on the software bus for other apps to consume. 
  */
 
 

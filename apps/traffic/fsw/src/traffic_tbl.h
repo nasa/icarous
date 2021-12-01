@@ -9,15 +9,8 @@
 #include <stdbool.h>
 
 /**
- * @defgroup TRAFFIC_TABLES
- * @brief traffic tables
- * @ingroup TABLES
- */
-
-/**
  * @struct TrafficTable_t
  * @brief input table parameters for traffic application
- * @ingroup TRAFFIC_TABLES
  */
 typedef struct
 {

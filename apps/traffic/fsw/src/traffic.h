@@ -35,8 +35,7 @@
 #define TRAFFIC_MINOR_VERSION 0
 
 /**
- * @defgroup TRAFFIC
- * @brief Application to monitor traffic conflicts
+ * @defgroup TRAFFIC_cFS_APP
  * @ingroup APPLICATIONS
  *
  * @details This application subscribes to the ownship information (position/velocity) and intruder information and computes
@@ -48,7 +47,6 @@
  * to the DAIDALUS repository for more information on each parameter specified in the input configuration file. The
  * information published by this application is controlled by the scheduler.
  *
- * @see TRAFFIC_MESSAGES, TRAFFIC_MESSAGE_TOPICS, TRAFFIC_TABLES
  */
 
 

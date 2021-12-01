@@ -1,3 +1,8 @@
+/**
+ * @file EventHandler.hpp
+ * @brief Definition of event handler base class 
+ */
+
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
@@ -7,26 +12,69 @@ template <class T>
 class EventHandler{
 
 public:
+    /**
+     * @enum execState_e  
+     * @brief enumerations for the execution state
+     */
     typedef enum{
        NOOP,INITIALIZE,EXECUTE,TERMINATE,DONE
     }execState_e;
 
+    /**
+     * @brief enumerations for the return state
+     */
     typedef enum{
       SUCCESS, RESET, INPROGRESS, SHUTDOWN
     }retVal_e;
 
     EventHandler(){execState = NOOP;};
+    /**
+     * @brief perform all initialization activities for a specific task 
+     * 
+     * @param state 
+     * @return retVal_e  
+     */
     virtual retVal_e Initialize(T* state){return SUCCESS;};
+
+    /**
+     * @brief perform the core activity
+     * 
+     * @param state 
+     * @return retVal_e 
+     */
     virtual retVal_e Execute(T* state){return SUCCESS;};
+
+    /**
+     * @brief perform termination activities 
+     * 
+     * @param state 
+     * @return retVal_e 
+     */
     virtual retVal_e Terminate(T* state){return SUCCESS;};
+
+    /**
+     * @brief Run this event. 
+     * 
+     * @param state 
+     * @return true 
+     * @return false 
+     */
     bool RunEvent(T* state);
+
+    /**
+     * @brief Spawn another handler 
+     * 
+     * @param hdl pointer to the other handler
+     * @param eventName 
+     * @param priorityNew 
+     */
     void ExecuteHandler(std::shared_ptr<EventHandler<T>> hdl,std::string eventName,float priorityNew=0);
-    std::string eventName;
-    execState_e execState;
-    std::list<std::shared_ptr<EventHandler<T>>> children;
-    float priority;
-    float defaultPriority;
-    unsigned int id;
+
+    std::string eventName; ///< event name
+    execState_e execState; ///< current execution state for this handler
+    std::list<std::shared_ptr<EventHandler<T>>> children; ///< list of child handlers
+    float priority; ///< current execution priority
+    float defaultPriority; ///< user defined priority for this handler
 };
 
 template<class T>

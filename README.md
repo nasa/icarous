@@ -1,7 +1,6 @@
 ![](ICAROUS-logo.jpeg "")
 
-Independent Configurable Architecture for Reliable Operations of
-Unmanned Systems (ICAROUS)
+Independent Configurable Architecture for Reliable Operations of Unmanned Systems (ICAROUS)
 ========
 
 ICAROUS (Independent Configurable Architecture for Reliable Operations of

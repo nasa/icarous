@@ -72,9 +72,7 @@
 
 
 /**
- * @defgroup GSINTERFACE
- * @brief An application to interface cFS with an ground station system
- * @ingroup APPLICATIONS
+ * @defgroup GSINTERFACE_cFS_APP
  *
  * @details This application opens two ports, one port connects to the autopilot and the other connects to the ground station.
  * The properties of these ports are defined in the input table. Mavlink packets received from the autopilot are
@@ -86,7 +84,6 @@
  * sent to the ground station. Reading data from the autopilot and groundstation are each on separate threads. The rate
  * at which each thread executes is controlled by the cFS scheduler.
  *
- * @see ARDUPILOT_MESSAGES, ARDUPILOT_MESSAGE_TOPICS, ARDUPILOT_TABLES
  */
 
 

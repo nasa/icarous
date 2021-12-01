@@ -7,15 +7,8 @@
 #define ICAROUS_CFS_TRACKER_TBL_H
 
 /**
- * @defgroup TRACKER_TABLES
- * @brief trackertables
- * @ingroup TABLES
- */
-
-/**
  * @struct trackerTable_t
  * @brief input table parameters for tracker application
- * @ingroup TRACKER_TABLES
  */
 typedef struct
 {

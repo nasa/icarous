@@ -8,12 +8,6 @@
 #include "port_lib.h"
 
 /**
- * @defgroup GSINTERFACE_TABLES
- * Input parameters for ardupilot applications.
- * @ingroup TABLES
- */
-
-/**
  * @struct gsInterfaceTable_t
  * @brief Input parameters for ardupilot application
  * @ingroup ARDUPILOT_TABLES

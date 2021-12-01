@@ -36,5 +36,17 @@ Below is a list of requirements that drive the definition of various triggers an
 - Vector based resolutions for traffic resolutions are computed based on DAIDALUS guidance.
 - Trajectory resolutions: Full path from origin to destination avoiding all obstacles.
 
+## NOTES
+- A nominal path has id "Plan0"
+- A resolution path has id "Plani" where i > 0. e.g. Plan1,Plan2,... 
+- A ditch path has id "DitchPath"
+- Although a ditching path is also a resolution, it is treated differently due to integration with safe2ditch.
+- After executing a resolution plan, transition back to nominal path (to the next feasible waypoint)
+- A feasible waypoint is a waypoint that is reachable.
+- There can be multiple resolution paths during the course of a mission.
+- The Event Manager framework that is being used only enables attaching a unique handler to a given trigger.
+- However, we can define multiple triggers for the same conflict if we want to attach different handlers to the same conflict.
+  you may want to do this if you want different behaviors (that can be configured by the user) for a given conflict. 
+ 
 
 

@@ -38,9 +38,8 @@
 #define GEOFENCE_MINOR_VERSION 0
 
 /**
- * @defgroup GEOFENCE_MONITOR
- * @brief Provides keep-in/keep-out geofence monitoring services
- * @ingroup APPLICATIONS
+ * @defgroup GEOFENCE_MONITOR_cFS_APP
+ * @ingroup CFSAPPS
  *
  * @details This application provides geofence monitoring servies. Both keep-in and keep-out constraint violations are monitored.
  * This application listens to the ICAROUS_GEOFENCE_MID topic for geofence_t messages encoding geofence information.
@@ -48,7 +47,6 @@
  * satisfies all geofence constraints. It also checks if the direct path from a given position to the next waypoint is
  * free from geofence conflicts.
  *
- * @see GEOFENCE_MESSAGES, GEOFENCE_MESSAGE_TOPICS, GEOFENCE_TABLES
  */
 
 /**

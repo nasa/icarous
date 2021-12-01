@@ -1,23 +1,14 @@
-#include "Cognition.hpp"
-
 /**
- * - A nominal path has id "Plan0"
- * - A resolution path has id "Plani" where i > 0. e.g. Plan1,Plan2,... 
- * - A ditch path has id "DitchPath"
- * - Although a ditching path is also a resolution, it is treated differently due to integration with safe2ditch.
- * - After executing a resolution plan, transition back to nominal path (to the next feasible waypoint)
- * - A feasible waypoint is a waypoint that is reachable.
- * - There can be multiple resolution paths during the course of a mission.
- * - The Event Manager framework that is being used only enables attaching a unique handler to a given trigger.
- * - However, we can define multiple triggers for the same conflict if we want to attach different handlers to the same conflict.
- *   you may want to do this if you want different behaviors (that can be configured by the user) for a given conflict. 
+ * @file Triggers.hpp
+ * @brief Definition of all trigger functions used by Cognition
+ * 
  */
+#include "Cognition.hpp"
 
 
 /** 
  * - Trigger takeoff based on mission start
- * - Ignore takeoff command if in a fence violation
- * - Trigger takeoff only after departure time
+ * - Only trigger takeoff if no fence conflicts
  */
 bool TakeoffTrigger(CognitionState_t* state){
      
@@ -29,7 +20,6 @@ bool TakeoffTrigger(CognitionState_t* state){
 
 /**
  * - Trigger to transition out of a successful takeoff
- * - Can be used to activate the nominal mission plan.
  */
 bool NominalDepartureTrigger(CognitionState_t* state){
     
@@ -76,7 +66,7 @@ bool PrimaryPlanCompletionTrigger(CognitionState_t* state){
 }
 
 /**
- * Check for flight plan deviations greater than the defined threshold
+ * - Check for flight plan deviations greater than the defined threshold
  */
 bool FlightPlanDeviationTrigger(CognitionState_t* state){
     if(state->activePlan == nullptr){
@@ -94,7 +84,7 @@ bool FlightPlanDeviationTrigger(CognitionState_t* state){
 }
 
 /**
- * Trigger to check if replanning is necessary.
+ * - Trigger to check if replanning is necessary.
  */
 bool FlightReplanTrigger(CognitionState_t* state){
     if(state->activePlan == nullptr){
@@ -145,8 +135,8 @@ bool TrafficConflictVectorResTrigger(CognitionState_t* state){
 }
 
 /**
- * Detect a well clear violation (detected by daidalus)
- * This trigger is ignore if a search resolution is not requested (by a user)
+ * - Detect a well clear violation (detected by daidalus)
+ * - This trigger is ignore if a search resolution is not requested (by a user)
  */
 bool TrafficConflictPathResTrigger(CognitionState_t* state){
     bool conflict = false;
@@ -172,32 +162,32 @@ bool TrafficConflictPathResTrigger(CognitionState_t* state){
 }
 
 /**
- * Trigger a ditching action because of a traffic conflict. 
- * This was introduced to support Safe2ditch. 
- * Since the other traffic triggers will also be activated, it is important to assign
- * the right priority for this event.
+ * - Trigger a ditching action because of a traffic conflict. 
+ * - This was introduced to support Safe2ditch. 
+ * - Since the other traffic triggers will also be activated, it is important to assign
+ * - the right priority for this event.
  */
 bool TrafficConflictDitchTrigger(CognitionState_t* state){
     return state->trafficConflict && state->parameters.resolutionType == DITCH_RESOLUTION;
 }
 
 /**
- * Detect a merging in process.
- * This is to ensure we don't perform traffic resolutions while doing a merge
+ * - Detect a merging in process.
+ * - This is to ensure we don't perform traffic resolutions while doing a merge
  */
 bool MergingActivityTrigger(CognitionState_t* state){
     return state->mergingActive == 1 && state->icReady;
 }
 
 /**
- * Start the ditching process (due to an external ditch request)
+ * - Start the ditching process (due to an external ditch request)
  */
 bool DitchingTrigger(CognitionState_t* state){
     return state->ditch && state->icReady;
 }
 
 /**
- * Monitor the arrival of the TOD point of the ditch path. To start post TOD actions.
+ * - Monitor the arrival of the TOD point of the ditch path. To start post TOD actions.
  */
 bool DitchSiteTODTrigger(CognitionState_t* state){
     if(state->activePlan != nullptr){
@@ -208,3 +198,5 @@ bool DitchSiteTODTrigger(CognitionState_t* state){
         return false;
     }
 }
+
+/**@}*/

@@ -10,12 +10,6 @@
 #define ICAROUS_CFS_GEOFENCE_TABLE_H
 
 /**
- * @defgroup GEOFENCE_TABLES
- * @brief input tables used by the geofence monitoring application
- * @ingroup TABLES
- */
-
-/**
  * @struct GeofenceTable_t
  * @brief Geofence table data
  * @ingroup GEOFENCE_TABLES

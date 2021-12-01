@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Source code
+title: Documentation 
 nav_order: 8
 ---
 
-# Source code information
+# Source Code Documentation
 
 Further details about ICAROUS modules and cFS applications can be obtained from [here](/assets/Doxygen/html/index.html).

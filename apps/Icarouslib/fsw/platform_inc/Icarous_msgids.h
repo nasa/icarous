@@ -6,14 +6,6 @@
 #ifndef CFETOP_MSGIDS_H
 #define CFETOP_MSGIDS_H
 
-/**
- * @defgroup ICAROUS_COMMON_MESSAGE_TOPICS
- * @brief Message topics definitions for ardupilot messages
- * @ingroup ICAROUS_COMMON
- * @ingroup TOPICS
- * @{
- */
-
 #define ICAROUS_FLIGHTPLAN_MID    0x0811  ///< Flight plan message. message type: flightplan_t
 #define ICAROUS_WPREACHED_MID 0x0812      ///< Waypoint reached. message type: missionItemReached_t
 #define ICAROUS_GEOFENCE_MID 0x0813       ///< Geofence information. message type: geofence_t

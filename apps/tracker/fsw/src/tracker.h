@@ -26,8 +26,7 @@
 #define TRACKER_MINOR_VERSION 0
 
 /**
- * @defgroup TRACKER
- * @brief Application to monitor traffic conflicts
+ * @defgroup TRACKER_cFS_APP
  * @ingroup APPLICATIONS
  *
  * @details Description of this application

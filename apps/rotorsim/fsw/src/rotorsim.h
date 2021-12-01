@@ -33,8 +33,7 @@
 #define ROTORSIM_MINOR_VERSION 0
 
 /**
- * @defgroup ROTORSIM
- * @brief application to simulate rotorcraft
+ * @defgroup ROTORSIM_cFS_APP
  * @ingroup APPLICATIONS
  *
  * @details This application simulated a rotorocraft using the NASA Langley high fidelity model

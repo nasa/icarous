@@ -1,7 +1,7 @@
 ---
 layout: default 
 title: Compilation
-nav_order: 2
+nav_order: 3
 ---
 
 ## Downloading 
@@ -101,7 +101,7 @@ pacman -S package_name
 
 ## Compiling cFS
 
-List the apps to be compiled and run in [Icarous_defs/apps.cmake]().
+First, specify the apps to be used in [Icarous_defs/apps.cmake]({{ site.nasablob }}/Icarous_defs/apps.cmake). Then compile cFS as follows:
 
 ```
 # Run make to compile

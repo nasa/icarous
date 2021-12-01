@@ -10,12 +10,6 @@
 #define ICAROUS_CFS_ROTORSIM_TABLE_H
 
 /**
- * @defgroup ROTORSIM_TABLES
- * @brief input tables used by the rotorsim application
- * @ingroup TABLES
- */
-
-/**
  * @struct RotorsimTable_t
  * @brief Rotorsim table data
  * @ingroup ROTORSIM_TABLES

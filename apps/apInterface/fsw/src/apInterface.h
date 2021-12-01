@@ -29,16 +29,14 @@
 #define SCH_APINTERFACE_PIPE1_NAME "SCH_AUTOPILOT"
 
 /**
- * @defgroup APINTERFACE
- * @brief A sample application to interface icarous with a autopilot system
- * @ingroup APPLICATIONS
+ * @defgroup APINTERFACE_cFS_APP
  *
  * @details This is a sample application that interfaces with an autopilot.
  * This application should open a connection to the autopilot device. This can be any type of connection (serial/socket).
  * You could make use of the port_lib library provided as part of this code base to establish serial or socket (UDP) communication.
  * This app currently illustrates how one would open a port using the API provided in port_lib.
- * Make use of the messages provided by the scheduler to establish the rate at which you want functions to run. See
- * the @see ARDUPILOT for a concrete example of an interface.
+ * Make use of the messages provided by the scheduler to establish the rate at which you want functions to run.
+ * @see arducopter provides a concrete autopilot interface implementation
  *
  */
 

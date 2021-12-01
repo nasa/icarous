@@ -8,12 +8,6 @@
 #include <stdint.h>
 
 /**
- * @defgroup COGNITION_TABLES
- * @brief  
- * @ingroup TABLES
- */
-
-/**
  * @struct cognitionTable_t
  * @brief 
  * @ingroup COGNITION_TABLES

@@ -37,11 +37,9 @@
 #define GUIDANCE_MINOR_VERSION 0
 
 /**
- * @defgroup GUIDANCE
- * @brief Application to monitor traffic conflicts
- * @ingroup APPLICATIONS
+ * @defgroup GUIDANCE_cFS_APP
  *
- * @details Description of this application
+ * @details Wrapper for the Guidance C++ module.
  * 
  */
 

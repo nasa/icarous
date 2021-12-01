@@ -1,9 +1,5 @@
 #include "Cognition.hpp"
 
-double ComputeHeading(const larcfm::Position &positionA,const larcfm::Position &positionB){
-    return larcfm::Units::to(larcfm::Units::deg,positionA.track(positionB));
-}
-
 double ComputeXtrackDistance(const larcfm::Position &prev_wp,
                              const larcfm::Position &next_wp,
                              const larcfm::Position &pos,
@@ -50,53 +46,6 @@ bool CheckProjectedTrafficConflict(larcfm::Position position, larcfm::Velocity v
         }
     }
     return conflictH && conflictV;
-}
-
-void ManeuverToIntercept(const larcfm::Position &prev_wp,
-                         const larcfm::Position &next_wp,
-                         const larcfm::Position &curr_position,
-                         double x_trk_dev_gain,
-                         double resolution_speed,
-                         const double allowed_dev,
-                         larcfm::Velocity &output_velocity){
-    double Vs,Vf,V,sgn;
-    double Trk;
-
-    double offsets[2];
-    ComputeXtrackDistance(prev_wp,next_wp,curr_position,offsets);
-    double cross_track_deviation = offsets[0];
-
-    if(x_trk_dev_gain < 0){
-        x_trk_dev_gain = -x_trk_dev_gain;
-    }
-
-    Vs = x_trk_dev_gain*cross_track_deviation;
-    V  = resolution_speed;
-
-    if(Vs >= 0){
-        sgn = 1;
-    }
-    else{
-        sgn = -1;
-    }
-
-    if(pow(std::abs(Vs),2) >= pow(V,2)){
-        Vs = V*sgn;
-    }
-
-    Vf = sqrt(pow(V,2) - pow(Vs,2));
-
-    Trk = prev_wp.track(next_wp);
-    double Vn = Vf*cos(Trk) - Vs*sin(Trk);
-    double Ve = Vf*sin(Trk) + Vs*cos(Trk);
-    double Vu = 0;
-
-    double track = atan2(Ve,Vn)*180/M_PI;
-    if(track < 0){
-        track = 360 + track;
-    }
-
-    output_velocity = larcfm::Velocity::makeTrkGsVs(track,"degree", resolution_speed,"m/s", 0,"m/s");
 }
 
 larcfm::Position GetNearestPositionOnPlan(const larcfm::Plan *fp,

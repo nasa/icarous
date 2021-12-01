@@ -8,15 +8,8 @@
 #include "port_lib.h"
 
 /**
- * @defgroup ARDUCOPTER_TABLES
- * Input parameters for gs interface applications.
- * @ingroup TABLES
- */
-
-/**
  * @struct ArducopterTable_t
  * @brief Input parameters for ardupilot application
- * @ingroup ARDUCOPTER_TABLES
  */
 typedef struct
 {

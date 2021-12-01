@@ -51,16 +51,14 @@ void Cognition::ReadParamsFromFile(const std::string config){
 void Cognition::InitializeState(){
     cogState.nextWpId.clear();
     cogState.returnSafe = true;
-    cogState.request = REQUEST_NIL;
+    cogState.pathRequest = REQUEST_NIL;
     cogState.missionStart = -1;
     cogState.keepInConflict = false;
     cogState.keepOutConflict = false;
     cogState.lineOfSight2Goal = true;
     cogState.lineOfSight2GoalPrev = true;
     cogState.p2pComplete = false;
-    cogState.takeoffComplete = -1;
-    cogState.trafficConflictState = NOOPC;
-    cogState.geofenceConflictState = NOOPC;
+    cogState.takeoffState = TAKEOFF_INACTIVE;
     cogState.allTrafficConflicts[0] = false;
     cogState.allTrafficConflicts[1] = false;
     cogState.allTrafficConflicts[2] = false;
@@ -71,8 +69,6 @@ void Cognition::InitializeState(){
     cogState.validResolution[3] = false;
     cogState.planProjectedFenceConflict = false;
     cogState.planProjectedTrafficConflict = false;
-    cogState.XtrackConflictState = NOOPC;
-    cogState.return2NextWPState = NOOPC;
     cogState.requestGuidance2NextWP = -1;
     cogState.topOfDescent = false;
     cogState.todAltitude = -1;
@@ -81,8 +77,6 @@ void Cognition::InitializeState(){
     cogState.resetDitch = false;
     cogState.primaryFPReceived = false;
     cogState.mergingActive = 0;
-    cogState.wpMetricTime = false;
-    cogState.emergencyDescentState = SUCCESS;
     cogState.ditchSite = larcfm::Position::makeLatLonAlt(0,"deg",0,"deg",0,"m");
     cogState.activePlan = nullptr;
     cogState.numSecPaths = 0;
@@ -182,7 +176,7 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
         // hence the check of reach_wp_id == 1 in the above if.
         cogState.p2pComplete = true;
     }else if(plan_id == "Takeoff"){
-        cogState.takeoffComplete = 1;
+        cogState.takeoffState = TAKEOFF_COMPLETE;
     }else if(plan_id == "PlanM"){
         cogState.nextWpId["PlanM"] = reached_wp_id + 1;
         if(cogState.nextWpId["PlanM"] >= GetTotalWaypoints(&cogState.flightPlans,"PlanM")){
@@ -200,9 +194,6 @@ void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp
             int total_waypoints = GetTotalWaypoints(&cogState.flightPlans,plan_id);
             cogState.nextWpId[plan_id] = next_wp_id;
             cogState.resolutionStartSpeed = cogState.activePlan->gsIn(next_wp_id);
-            if (next_wp_id < total_waypoints) {
-                cogState.refWpTime = cogState.activePlan->time(next_wp_id);
-            }
         }
     }
 
@@ -340,6 +331,7 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
 
 void Cognition::StartMission(const int mission_start_value,const double delay){
     cogState.missionStart = mission_start_value;
+    cogState.nextWpId["Plan0"] = cogState.missionStart;
     cogState.scenarioTime += delay;
     cogState.activePlan = GetPlan(&cogState.flightPlans,"Plan0");
     if (cogState.activePlan != nullptr)

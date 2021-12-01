@@ -1,27 +1,35 @@
+/**
+ * @file CoreLogic.cpp
+ * @brief Mapping between triggers and handlers
+ * 
+ * @details 
+ * This is a simple framework to associate events (or triggers)
+ * with a suitable action (or handler).
+ * inputs:
+ *   - event name: string
+ *   - priority: integer
+ *   - event function: [state->bool] 
+ *   - handler object: EventHandler<state> 
+ * Here 'state' is any data type. 
+ * 
+ * Describe all the events that should be detected and 
+ * provide appropriate handlers to deal with the respective event.
+ * The provided priority is used to determine which event is addressed first. 
+ */
+
 #include "Triggers.hpp" // Trigger function definitions
 #include "Handlers.hpp" // Handler object definitions
 
-// Event handler mappings
+/**
+ * @brief Initialize event handlers
+ */
 void Cognition::InitializeEventHandlers(){
 
-   /**
-    * AddEventHandler 
-    * This is a simple framework to associate events (or triggers)
-    * with a suitable action (or handler).
-    * inputs:
-    *   - event name: string
-    *   - priority: integer
-    *   - event function: [state->bool] 
-    *   - handler object: EventHandler<state> 
-    * Here 'state' is any data type. 
-    * 
-    * Describe all the events that should be detected and 
-    * provide appropriate handlers to deal with the respective event.
-    * The provided priority is used to determine which event is addressed first.
-    **/
+
+   /// Get input priorities  
    auto inputPriorities  = GetPriorityValues(&cogState.parameters);
 
-   // Nominal mission related triggers
+   /// Nominal mission related triggers
    eventMng.AddEventHandler("Takeoff",
                             inputPriorities["Takeoff"],
                             TakeoffTrigger,
@@ -53,7 +61,7 @@ void Cognition::InitializeEventHandlers(){
                              SecondaryPlanCompletionTrigger,
                              MAKE_HANDLER(EngageNominalPlan));
 
-   // Conflict related triggers
+   /// Conflict related triggers
    eventMng.AddEventHandler("FenceConflict",
                              inputPriorities["FenceConflict"],
                              FenceConflictTrigger,
@@ -74,7 +82,7 @@ void Cognition::InitializeEventHandlers(){
                              FlightPlanDeviationTrigger,
                              MAKE_HANDLER(ReturnToMission));
 
-   // Ditching related triggers
+   /// Ditching related triggers
    eventMng.AddEventHandler("TrafficConflict3",
                              inputPriorities["TrafficConflict3"],
                              TrafficConflictDitchTrigger,

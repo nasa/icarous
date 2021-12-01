@@ -47,9 +47,7 @@ uint32 traj_monitor_stack[TRAJ_MONITOR_TASK_STACK_SIZE];
 uint32 traj_monitor_task_id;
 
 /**
- * @defgroup TRAJECTORY_MONITOR
- * @brief Trajectory monitoring application
- * @ingroup APPLICATIONS
+ * @defgroup TRAJECTORY_cFS_APP
  *
  * @details This application provides trajectory monitoring and management services. Trajectory monitoring is done on the
  * uploaded mission flight plan from a ground control station. The misison flight plan is primarily monitored for

@@ -8,13 +8,6 @@
 
 #include "cfe.h"
 
-/**
- * @defgroup GEOFENCE_MESSAGES
- * @brief Geofence message definitions
- * @ingroup GEOFENCE_MONITOR
- * @ingroup MESSAGES
- * @{
- */
 
 /**
  * @struct pathFeasibilityCheck_t
@@ -45,5 +38,4 @@ typedef struct{
    double vstepback;
 }geofence_parameters_t;
 
-/**@}*/
 #endif //ICAROUS_CFS_GEOFENCE_MSG_H
