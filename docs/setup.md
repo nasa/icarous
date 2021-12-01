@@ -23,7 +23,7 @@ in turn be configured to connect to this SITL over the socket.
 
 The [gsInterface]() app can be configured to connect to a GCS usin a telemtry
 radio via a serial or socket connection. Data packets sent to the GCS use the
-mavlink protocol. [MAVProxy]() can be used as a GCS to interface with ICAROUS.
+mavlink protocol. [WebGS]() can be used as a GCS to interface with ICAROUS.
 The ICAROUS repository provides [custom modules]() for MAVProxy to upload
 geofences, flight plans. Also simulate traffic intruders and visualize traffic
 avoidance data  (kinematic track bands).
