@@ -1,0 +1,65 @@
+\hypertarget{structtrajectory__request__t}{}\doxysection{trajectory\+\_\+request\+\_\+t Struct Reference}
+\label{structtrajectory__request__t}\index{trajectory\_request\_t@{trajectory\_request\_t}}
+
+
+Request computation of a trajectory.  
+
+
+
+
+{\ttfamily \#include $<$trajectory\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtrajectory__request__t_a5d549416f6dc0c79267e0f56285a5016}\label{structtrajectory__request__t_a5d549416f6dc0c79267e0f56285a5016}} 
+CCSDS\+\_\+\+Pri\+Hdr\+\_\+t {\bfseries hdr}
+\item 
+char \mbox{\hyperlink{structtrajectory__request__t_abe03a7cca597d33c93234e10ab565beb}{plan\+ID}} \mbox{[}25\mbox{]}
+\item 
+double \mbox{\hyperlink{structtrajectory__request__t_a9eca36bf2e53e90943c04a5a752d3506}{initial\+Position}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{structtrajectory__request__t_a76fb03b6a68a577ec3c57079c55a4915}{initial\+Velocity}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{structtrajectory__request__t_abd2081ddd75eb021b856f59c5945ea94}{final\+Position}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{structtrajectory__request__t_a8b43859008ccf321b2ec4930620f95e7}{final\+Velocity}} \mbox{[}3\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structtrajectory__request__t_abd2081ddd75eb021b856f59c5945ea94}\label{structtrajectory__request__t_abd2081ddd75eb021b856f59c5945ea94}} 
+\index{trajectory\_request\_t@{trajectory\_request\_t}!finalPosition@{finalPosition}}
+\index{finalPosition@{finalPosition}!trajectory\_request\_t@{trajectory\_request\_t}}
+\doxysubsubsection{\texorpdfstring{finalPosition}{finalPosition}}
+{\footnotesize\ttfamily double trajectory\+\_\+request\+\_\+t\+::final\+Position\mbox{[}3\mbox{]}}
+
+final position (lat, lon, alt ) \mbox{\Hypertarget{structtrajectory__request__t_a8b43859008ccf321b2ec4930620f95e7}\label{structtrajectory__request__t_a8b43859008ccf321b2ec4930620f95e7}} 
+\index{trajectory\_request\_t@{trajectory\_request\_t}!finalVelocity@{finalVelocity}}
+\index{finalVelocity@{finalVelocity}!trajectory\_request\_t@{trajectory\_request\_t}}
+\doxysubsubsection{\texorpdfstring{finalVelocity}{finalVelocity}}
+{\footnotesize\ttfamily double trajectory\+\_\+request\+\_\+t\+::final\+Velocity\mbox{[}3\mbox{]}}
+
+final velocity \mbox{\Hypertarget{structtrajectory__request__t_a9eca36bf2e53e90943c04a5a752d3506}\label{structtrajectory__request__t_a9eca36bf2e53e90943c04a5a752d3506}} 
+\index{trajectory\_request\_t@{trajectory\_request\_t}!initialPosition@{initialPosition}}
+\index{initialPosition@{initialPosition}!trajectory\_request\_t@{trajectory\_request\_t}}
+\doxysubsubsection{\texorpdfstring{initialPosition}{initialPosition}}
+{\footnotesize\ttfamily double trajectory\+\_\+request\+\_\+t\+::initial\+Position\mbox{[}3\mbox{]}}
+
+initial position, lat (degree), lon (degree), alt (m) \mbox{\Hypertarget{structtrajectory__request__t_a76fb03b6a68a577ec3c57079c55a4915}\label{structtrajectory__request__t_a76fb03b6a68a577ec3c57079c55a4915}} 
+\index{trajectory\_request\_t@{trajectory\_request\_t}!initialVelocity@{initialVelocity}}
+\index{initialVelocity@{initialVelocity}!trajectory\_request\_t@{trajectory\_request\_t}}
+\doxysubsubsection{\texorpdfstring{initialVelocity}{initialVelocity}}
+{\footnotesize\ttfamily double trajectory\+\_\+request\+\_\+t\+::initial\+Velocity\mbox{[}3\mbox{]}}
+
+initial velocity track (degree), ground speed (m/s), vertical speed (m/s) \mbox{\Hypertarget{structtrajectory__request__t_abe03a7cca597d33c93234e10ab565beb}\label{structtrajectory__request__t_abe03a7cca597d33c93234e10ab565beb}} 
+\index{trajectory\_request\_t@{trajectory\_request\_t}!planID@{planID}}
+\index{planID@{planID}!trajectory\_request\_t@{trajectory\_request\_t}}
+\doxysubsubsection{\texorpdfstring{planID}{planID}}
+{\footnotesize\ttfamily char trajectory\+\_\+request\+\_\+t\+::plan\+ID\mbox{[}25\mbox{]}}
+
+Plan name 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/trajectory/fsw/platform\+\_\+inc/\mbox{\hyperlink{trajectory__msg_8h}{trajectory\+\_\+msg.\+h}}\end{DoxyCompactItemize}

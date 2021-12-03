@@ -1,0 +1,65 @@
+\hypertarget{rt__nonfinite_8h_source}{}\doxysection{rt\+\_\+nonfinite.\+h}
+\label{rt__nonfinite_8h_source}\index{apps/rotorsim/QuadCopterSim/rt\_nonfinite.h@{apps/rotorsim/QuadCopterSim/rt\_nonfinite.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: rt\_nonfinite.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Code generated for Simulink model 'PC\_Quadcopter\_Simulation'.}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Model version                  : 1.66}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Simulink Coder version         : 8.14 (R2018a) 06-\/Feb-\/2018}}
+\DoxyCodeLine{8 \textcolor{comment}{ * C/C++ source code generated on : Fri Aug 17 11:28:00 2018}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Target selection: ert.tlc}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Embedded hardware selection: Intel-\/>x86-\/64 (Windows64)}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Code generation objectives: Unspecified}}
+\DoxyCodeLine{13 \textcolor{comment}{ * Validation result: Not run}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef RTW\_HEADER\_rt\_nonfinite\_h\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define RTW\_HEADER\_rt\_nonfinite\_h\_}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <stddef.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}rtwtypes.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{extern} real\_T rtInf;}
+\DoxyCodeLine{22 \textcolor{keyword}{extern} real\_T rtMinusInf;}
+\DoxyCodeLine{23 \textcolor{keyword}{extern} real\_T rtNaN;}
+\DoxyCodeLine{24 \textcolor{keyword}{extern} real32\_T rtInfF;}
+\DoxyCodeLine{25 \textcolor{keyword}{extern} real32\_T rtMinusInfF;}
+\DoxyCodeLine{26 \textcolor{keyword}{extern} real32\_T rtNaNF;}
+\DoxyCodeLine{27 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} rt\_InitInfAndNaN(\textcolor{keywordtype}{size\_t} realSize);}
+\DoxyCodeLine{28 \textcolor{keyword}{extern} boolean\_T rtIsInf(real\_T value);}
+\DoxyCodeLine{29 \textcolor{keyword}{extern} boolean\_T rtIsInfF(real32\_T value);}
+\DoxyCodeLine{30 \textcolor{keyword}{extern} boolean\_T rtIsNaN(real\_T value);}
+\DoxyCodeLine{31 \textcolor{keyword}{extern} boolean\_T rtIsNaNF(real32\_T value);}
+\DoxyCodeLine{32 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{33   \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{34     uint32\_T wordH;}
+\DoxyCodeLine{35     uint32\_T wordL;}
+\DoxyCodeLine{36   \} words;}
+\DoxyCodeLine{37 \} \mbox{\hyperlink{struct_big_endian_i_e_e_e_double}{BigEndianIEEEDouble}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{40   \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{41     uint32\_T wordL;}
+\DoxyCodeLine{42     uint32\_T wordH;}
+\DoxyCodeLine{43   \} words;}
+\DoxyCodeLine{44 \} \mbox{\hyperlink{struct_little_endian_i_e_e_e_double}{LittleEndianIEEEDouble}};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{47   \textcolor{keyword}{union }\{}
+\DoxyCodeLine{48     real32\_T wordLreal;}
+\DoxyCodeLine{49     uint32\_T wordLuint;}
+\DoxyCodeLine{50   \} wordL;}
+\DoxyCodeLine{51 \} \mbox{\hyperlink{struct_i_e_e_e_single}{IEEESingle}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif                                 }\textcolor{comment}{/* RTW\_HEADER\_rt\_nonfinite\_h\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{comment}{/*}}
+\DoxyCodeLine{56 \textcolor{comment}{ * File trailer for generated code.}}
+\DoxyCodeLine{57 \textcolor{comment}{ *}}
+\DoxyCodeLine{58 \textcolor{comment}{ * [EOF]}}
+\DoxyCodeLine{59 \textcolor{comment}{ */}}
+
+\end{DoxyCode}

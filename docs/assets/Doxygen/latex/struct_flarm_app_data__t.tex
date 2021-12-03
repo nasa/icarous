@@ -1,0 +1,61 @@
+\hypertarget{struct_flarm_app_data__t}{}\doxysection{Flarm\+App\+Data\+\_\+t Struct Reference}
+\label{struct_flarm_app_data__t}\index{FlarmAppData\_t@{FlarmAppData\_t}}
+
+
+Structure to hold app data.  
+
+
+
+
+{\ttfamily \#include $<$flarm.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a0a339845a91e4b787cd655d2df4a0fd3}\label{struct_flarm_app_data__t_a0a339845a91e4b787cd655d2df4a0fd3}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries INTERFACE\+\_\+\+Pipe}
+\begin{DoxyCompactList}\small\item\em pipe variable \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_aaa54ac3d8627445b66677705245c6dc6}\label{struct_flarm_app_data__t_aaa54ac3d8627445b66677705245c6dc6}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Sch\+Interface\+\_\+\+Pipe}
+\begin{DoxyCompactList}\small\item\em pipe variable \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a072b10db0494e40297560ddd3935e9a1}\label{struct_flarm_app_data__t_a072b10db0494e40297560ddd3935e9a1}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries INTERFACEMsg\+Ptr}
+\begin{DoxyCompactList}\small\item\em msg pointer to SB message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a1bc0c78900e28a982d4bc48598d47078}\label{struct_flarm_app_data__t_a1bc0c78900e28a982d4bc48598d47078}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Sch\+\_\+\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em msg pointer to SB message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a8994c9fff4bfcdeda853cc1a50501a73}\label{struct_flarm_app_data__t_a8994c9fff4bfcdeda853cc1a50501a73}} 
+CFE\+\_\+\+TBL\+\_\+\+Handle\+\_\+t {\bfseries INTERFACE\+\_\+tbl\+Handle}
+\begin{DoxyCompactList}\small\item\em table handle \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_aefc2f7a706aded063315900b4f7394cc}\label{struct_flarm_app_data__t_aefc2f7a706aded063315900b4f7394cc}} 
+\mbox{\hyperlink{structport__t}{port\+\_\+t}} {\bfseries fp}
+\begin{DoxyCompactList}\small\item\em flarm port \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_ad1a903632ed51d73773249ee8d536b5d}\label{struct_flarm_app_data__t_ad1a903632ed51d73773249ee8d536b5d}} 
+\mbox{\hyperlink{structposition__t}{position\+\_\+t}} {\bfseries position}
+\begin{DoxyCompactList}\small\item\em position message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_aa6ce38e2ab6938c44386d76fdd886da8}\label{struct_flarm_app_data__t_aa6ce38e2ab6938c44386d76fdd886da8}} 
+double {\bfseries gps\+Origin} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em gps Origin position \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a21cb6f47013be21bc04cd0ab69a4a047}\label{struct_flarm_app_data__t_a21cb6f47013be21bc04cd0ab69a4a047}} 
+double {\bfseries gps\+END} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em END position. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a57bf2c983107a3a2583337480ecd9036}\label{struct_flarm_app_data__t_a57bf2c983107a3a2583337480ecd9036}} 
+\mbox{\hyperlink{structattitude__t}{attitude\+\_\+t}} {\bfseries attitude}
+\begin{DoxyCompactList}\small\item\em attitude message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a3ee773c9e009f831c33331d894228ab1}\label{struct_flarm_app_data__t_a3ee773c9e009f831c33331d894228ab1}} 
+\mbox{\hyperlink{structobject__t}{object\+\_\+t}} {\bfseries traffic}
+\begin{DoxyCompactList}\small\item\em traffic message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a34850360b57d9757edfcfa0c9d1c08cd}\label{struct_flarm_app_data__t_a34850360b57d9757edfcfa0c9d1c08cd}} 
+\mbox{\hyperlink{structmission_item_reached__t}{mission\+Item\+Reached\+\_\+t}} {\bfseries wp\+Reached}
+\begin{DoxyCompactList}\small\item\em waypoint reached feedback message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a297737df7dfa92ac0e415ecd1f535719}\label{struct_flarm_app_data__t_a297737df7dfa92ac0e415ecd1f535719}} 
+int {\bfseries current\+WP}
+\begin{DoxyCompactList}\small\item\em autopilot\textquotesingle{}s current waypoint \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_flarm_app_data__t_a6ea2171a4093c31b4930934f8d4e612f}\label{struct_flarm_app_data__t_a6ea2171a4093c31b4930934f8d4e612f}} 
+\mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} {\bfseries flightplan}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/flarm/fsw/src/\mbox{\hyperlink{flarm_8h}{flarm.\+h}}\end{DoxyCompactItemize}

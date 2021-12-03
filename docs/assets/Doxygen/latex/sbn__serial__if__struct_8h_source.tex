@@ -1,0 +1,30 @@
+\hypertarget{sbn__serial__if__struct_8h_source}{}\doxysection{sbn\+\_\+serial\+\_\+if\+\_\+struct.\+h}
+\label{sbn__serial__if__struct_8h_source}\index{apps/SBN/modules/protocol/serial/fsw/src/sbn\_serial\_if\_struct.h@{apps/SBN/modules/protocol/serial/fsw/src/sbn\_serial\_if\_struct.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_serial\_if\_struct\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_serial\_if\_struct\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_constants.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{sbn__serial__platform__cfg_8h}{sbn\_serial\_platform\_cfg.h}}"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     \textcolor{keywordtype}{char} Filename[\mbox{\hyperlink{sbn__serial__platform__cfg_8h_a42221f7af26ae3faa5694800231b82f6}{SBN\_SERIAL\_MAX\_CHAR\_NAME}}];}
+\DoxyCodeLine{13     \textcolor{keywordtype}{int} FD;}
+\DoxyCodeLine{14     \textcolor{comment}{/* 0 = this peer connects to me, 1 = I connect to this peer */}}
+\DoxyCodeLine{15     uint8 }
+\DoxyCodeLine{17             \mbox{\hyperlink{struct_s_b_n___s_e_r_i_a_l___peer__t_a1c29946d3ad44285368fdbae0eae620c}{ReceivingBody}},}
+\DoxyCodeLine{19             \mbox{\hyperlink{struct_s_b_n___s_e_r_i_a_l___peer__t_adc965bc46e40abdd8fca7db40f3d9be9}{SerialConn}},}
+\DoxyCodeLine{20             BufNum;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{int} RecvSz;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{24     OS\_time\_t \mbox{\hyperlink{struct_s_b_n___s_e_r_i_a_l___peer__t_a0d4c42bc8bd7f8a0eb80c29e277cf7c4}{LastConnTry}};}
+\DoxyCodeLine{25 \} \mbox{\hyperlink{struct_s_b_n___s_e_r_i_a_l___peer__t}{SBN\_SERIAL\_Peer\_t}};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_serial\_if\_struct\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,149 @@
+\hypertarget{_merger_8hpp_source}{}\doxysection{Merger.\+hpp}
+\label{_merger_8hpp_source}\index{Modules/Core/Merger/Merger.hpp@{Modules/Core/Merger/Merger.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef MERGER\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define MERGER\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <float.h>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}UtilFunctions.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}scheduler.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_merger_8h}{Merger.h}}"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{class_merger}{Merger}}\{}
+\DoxyCodeLine{16    \textcolor{keyword}{public}:}
+\DoxyCodeLine{17         \mbox{\hyperlink{class_merger}{Merger}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string config,\textcolor{keywordtype}{int} vehicleID);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19         \textcolor{keywordtype}{void} ReadParamFromFile(std::string config);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21         \textcolor{keywordtype}{void} SetVehicleConstraints(\textcolor{keywordtype}{double} minVel, \textcolor{keywordtype}{double} maxVel, \textcolor{keywordtype}{double} turnRadius);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23         \textcolor{keywordtype}{void} SetMergefixParams(\textcolor{keywordtype}{double} separationTime,\textcolor{keywordtype}{double} coordzone,\textcolor{keywordtype}{double} schzone,\textcolor{keywordtype}{double} entryzone,\textcolor{keywordtype}{double} corridorWidth);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25         \textcolor{keywordtype}{void} SetVehicleState(\textcolor{keywordtype}{double} position[],\textcolor{keywordtype}{double} velocity[]);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27         \textcolor{keywordtype}{void} SetIntersectionData(\textcolor{keywordtype}{int} i,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[]);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} RunMergingOperation(\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31         \textcolor{keywordtype}{void} SetNodeLog(\mbox{\hyperlink{structdata_log__t}{dataLog\_t}}* mgData);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33         \textcolor{keywordtype}{int} GetOutputTrajectory(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} wp[4]);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35         \textcolor{keywordtype}{void} GetOutputVelocity(\textcolor{keywordtype}{double}* trk,\textcolor{keywordtype}{double}* gs,\textcolor{keywordtype}{double}* vs);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37         \textcolor{keywordtype}{bool} GetArrivalTimes(\mbox{\hyperlink{structmerging_data__t}{mergingData\_t}}* arrData);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39    \textcolor{keyword}{private}:}
+\DoxyCodeLine{40         \textcolor{keywordtype}{double} GetApproachPrecision(\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[], \textcolor{keywordtype}{double} intersection[]);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42         \textcolor{keywordtype}{void} ComputeArrivalData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44         \textcolor{keywordtype}{double} ComputePathLength(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46         \textcolor{keywordtype}{bool} CheckIntersectionConflict(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48         \textcolor{keywordtype}{void} CheckIntersectionExit(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50         \textcolor{keywordtype}{void} ComputeSchedule();}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52         \textcolor{keywordtype}{bool} ComputeMergingSpeed(uint32\_t arrivalTime);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54         \textcolor{keywordtype}{void} ComputeTrajectory(\textcolor{keywordtype}{double} xc1,\textcolor{keywordtype}{double} xc2);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56         \textcolor{keywordtype}{void} ExecuteNewPath(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58         \textcolor{keywordtype}{void} ExchangeArrivalTimes(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60         int32\_t FindCurrentIntersection(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62         uint32\_t ReviseEarlyArrTimeInEntryZone(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64         zoneType\_e IdentifyCurrentZone();}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66         \textcolor{keywordtype}{void} AddLogEntry();}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68         \textcolor{keywordtype}{void} ResetData();}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71    \textcolor{keyword}{private}:}
+\DoxyCodeLine{72         FILE* logFile1;                                       }
+\DoxyCodeLine{73         FILE* logFile2;                                       }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75         std::string callSign;                                 }
+\DoxyCodeLine{76         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} vehicleID;                               }
+\DoxyCodeLine{77         \textcolor{keywordtype}{double} mergeFixes[INTERSECTION\_MAX][3];               }
+\DoxyCodeLine{78         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} mergeFixId[INTERSECTION\_MAX];            }
+\DoxyCodeLine{79         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} currentFixIndex;                         }
+\DoxyCodeLine{80         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} totalFixes;                              }
+\DoxyCodeLine{81         \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3];                                   }
+\DoxyCodeLine{82         \textcolor{keywordtype}{double} velocity[3];                                   }
+\DoxyCodeLine{83         \textcolor{keywordtype}{double} currentSpeed;                                  }
+\DoxyCodeLine{84         \textcolor{keywordtype}{double} currentIntersection[3];                        }
+\DoxyCodeLine{85         \textcolor{keywordtype}{double} dist2Int;                                      }
+\DoxyCodeLine{86         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} raftRole;                                }
+\DoxyCodeLine{87         \textcolor{keywordtype}{double} currentLocalTime;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89         \textcolor{keywordtype}{double} coordZone;                                     }
+\DoxyCodeLine{90         \textcolor{keywordtype}{double} schedZone;                                     }
+\DoxyCodeLine{91         \textcolor{keywordtype}{double} entryZone;                                     }
+\DoxyCodeLine{92         \textcolor{keywordtype}{double} corridorWidth;                                 }
+\DoxyCodeLine{93         \textcolor{keywordtype}{double} separationTime;                                }
+\DoxyCodeLine{94         zoneType\_e currentZone;                               }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \textcolor{keywordtype}{double} turnRadius;}
+\DoxyCodeLine{97         \textcolor{keywordtype}{double} maxSpeed;}
+\DoxyCodeLine{98         \textcolor{keywordtype}{double} minSpeed;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101         \textcolor{keywordtype}{bool} publishMergingStatus;                            }
+\DoxyCodeLine{102         \textcolor{keywordtype}{bool} arrivalDataUpdated;                              }
+\DoxyCodeLine{103         \textcolor{keywordtype}{bool} defaultEntryPlan;}
+\DoxyCodeLine{104         \textcolor{keywordtype}{bool} entryPointComputed;}
+\DoxyCodeLine{105         \textcolor{keywordtype}{bool} executePath;}
+\DoxyCodeLine{106         \textcolor{keywordtype}{bool} inComputeZone;}
+\DoxyCodeLine{107         \textcolor{keywordtype}{bool} approaching;}
+\DoxyCodeLine{108         \textcolor{keywordtype}{bool} mergeConflict;}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110         \textcolor{keywordtype}{int} numSchedulesComputed;                              }
+\DoxyCodeLine{111         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} waypointIndex;}
+\DoxyCodeLine{112         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} mergingStatus;}
+\DoxyCodeLine{113         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} nodeRole;}
+\DoxyCodeLine{114         \textcolor{keywordtype}{bool} passive;}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116         \textcolor{keywordtype}{double} dist2ZoneEntry;                                 }
+\DoxyCodeLine{117         \textcolor{keywordtype}{double} time2ZoneEntry;                                 }
+\DoxyCodeLine{118         \textcolor{keywordtype}{double} entryPoint[3];                                  }
+\DoxyCodeLine{119         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} ownshipArrivalData;                      }
+\DoxyCodeLine{120         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} globalArrivalData[MERGER\_MAXAIRCRAFT];   }
+\DoxyCodeLine{121         std::queue<mergingData\_t> outputArrData;}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123         \textcolor{keywordtype}{double} Release[MERGER\_MAXAIRCRAFT];}
+\DoxyCodeLine{124         \textcolor{keywordtype}{double} Deadline[MERGER\_MAXAIRCRAFT];}
+\DoxyCodeLine{125         \textcolor{keywordtype}{double} arrivalTime[MERGER\_MAXAIRCRAFT];}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127         \textcolor{keywordtype}{int} numNodesInt;}
+\DoxyCodeLine{128         \textcolor{keywordtype}{double} newWaypoint[3];                                  }
+\DoxyCodeLine{129         \textcolor{keywordtype}{double} mergingSpeed;}
+\DoxyCodeLine{130         \textcolor{keywordtype}{double} detourDist;}
+\DoxyCodeLine{131         \textcolor{keywordtype}{double} XtrkDev;}
+\DoxyCodeLine{132         \textcolor{keywordtype}{double} nextNavWaypoint[3];}
+\DoxyCodeLine{133         \textcolor{keywordtype}{double} dist2NextWaypoint;}
+\DoxyCodeLine{134         \textcolor{keywordtype}{double} speed2NextWaypoint;}
+\DoxyCodeLine{135         \textcolor{keywordtype}{double} refSpeed;}
+\DoxyCodeLine{136         \textcolor{keywordtype}{double} flightplan[3][4];}
+\DoxyCodeLine{137         \textcolor{keywordtype}{double} cmdOutput[3];}
+\DoxyCodeLine{138         localMergerNavStates\_e navState;}
+\DoxyCodeLine{139 \};}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

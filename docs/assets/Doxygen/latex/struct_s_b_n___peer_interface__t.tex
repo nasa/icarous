@@ -1,0 +1,67 @@
+\hypertarget{struct_s_b_n___peer_interface__t}{}\doxysection{SBN\+\_\+\+Peer\+Interface\+\_\+t Struct Reference}
+\label{struct_s_b_n___peer_interface__t}\index{SBN\_PeerInterface\_t@{SBN\_PeerInterface\_t}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_acab98deb9a281cd3efbaaff1bf65ea9a}\label{struct_s_b_n___peer_interface__t_acab98deb9a281cd3efbaaff1bf65ea9a}} 
+CFE\+\_\+\+Processor\+ID\+\_\+t {\bfseries Processor\+ID}
+\begin{DoxyCompactList}\small\item\em The processor ID of this peer (MUST match the Processor\+ID.) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a7e430f27ea8c650775ef6fe5f0aff81f}\label{struct_s_b_n___peer_interface__t_a7e430f27ea8c650775ef6fe5f0aff81f}} 
+CFE\+\_\+\+Spacecraft\+ID\+\_\+t {\bfseries Spacecraft\+ID}
+\begin{DoxyCompactList}\small\item\em The Spacecraft ID of this peer (MUST match the Spacecraft\+ID.) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_af6f8ae7e1240137ca46e5c6a792639c2}\label{struct_s_b_n___peer_interface__t_af6f8ae7e1240137ca46e5c6a792639c2}} 
+\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$ {\bfseries Net}
+\begin{DoxyCompactList}\small\item\em A convenience pointer to the net that this peer belongs to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a88654de12e89cbba6c5b9793e7f04c0c}\label{struct_s_b_n___peer_interface__t_a88654de12e89cbba6c5b9793e7f04c0c}} 
+SBN\+\_\+\+Task\+\_\+\+Flag\+\_\+t {\bfseries Task\+Flags}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a710826064284141805d556c98ba9fede}\label{struct_s_b_n___peer_interface__t_a710826064284141805d556c98ba9fede}} 
+OS\+\_\+\+Task\+ID\+\_\+t {\bfseries Send\+Task\+ID}
+\begin{DoxyCompactList}\small\item\em The ID of the task created to pend on the pipe and send messages to the net as soon as they are read. 0 if there is no send task. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a25fdae67824af2d9274cc1946bf363d7}\label{struct_s_b_n___peer_interface__t_a25fdae67824af2d9274cc1946bf363d7}} 
+OS\+\_\+\+Task\+ID\+\_\+t {\bfseries Recv\+Task\+ID}
+\begin{DoxyCompactList}\small\item\em The ID of the task created to pend on the net and send messages to the software bus as soon as they are read. 0 if there is no recv task. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a4bdc506f968e6e75e0b41091729b61ff}\label{struct_s_b_n___peer_interface__t_a4bdc506f968e6e75e0b41091729b61ff}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Pipe}
+\begin{DoxyCompactList}\small\item\em The pipe ID used to read messages destined for the peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_af2d8b6b2cea6fff431ea7623a5dbfe16}\label{struct_s_b_n___peer_interface__t_af2d8b6b2cea6fff431ea7623a5dbfe16}} 
+\mbox{\hyperlink{struct_s_b_n___subs__t}{SBN\+\_\+\+Subs\+\_\+t}} {\bfseries Subs} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+SUBS\+\_\+\+PER\+\_\+\+PEER+1\mbox{]}
+\begin{DoxyCompactList}\small\item\em A local table of subscriptions the peer has requested. Includes one extra entry for a null termination. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a94a33174d1267971cfe2e3a9a74b8bad}\label{struct_s_b_n___peer_interface__t_a94a33174d1267971cfe2e3a9a74b8bad}} 
+\mbox{\hyperlink{struct_s_b_n___filter_interface__t}{SBN\+\_\+\+Filter\+Interface\+\_\+t}} $\ast$ {\bfseries Filters} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+FILTERS\mbox{]}
+\begin{DoxyCompactList}\small\item\em Filters alter message headers/bodies before sending to a peer or after receiving from the peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a8c2e1a95fa88b63b9c50d88ccef2de60}\label{struct_s_b_n___peer_interface__t_a8c2e1a95fa88b63b9c50d88ccef2de60}} 
+SBN\+\_\+\+Module\+Idx\+\_\+t {\bfseries Filter\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_ab1637fdbe5982ec8ee98817e78824fd7}\label{struct_s_b_n___peer_interface__t_ab1637fdbe5982ec8ee98817e78824fd7}} 
+OS\+\_\+time\+\_\+t {\bfseries Last\+Send}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a4b4fe9ea5228b968fd23bea8e29fae0d}\label{struct_s_b_n___peer_interface__t_a4b4fe9ea5228b968fd23bea8e29fae0d}} 
+OS\+\_\+time\+\_\+t {\bfseries Last\+Recv}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_ab782554ff101e6c0a471ee0688f707b5}\label{struct_s_b_n___peer_interface__t_ab782554ff101e6c0a471ee0688f707b5}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Send\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a4a88ea673f7158e5553d1228e0f6b1b8}\label{struct_s_b_n___peer_interface__t_a4a88ea673f7158e5553d1228e0f6b1b8}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Recv\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_ac2295933f449dd126feb08fb1bd97d3e}\label{struct_s_b_n___peer_interface__t_ac2295933f449dd126feb08fb1bd97d3e}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Send\+Err\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_af641ea3b7331b8bc853a7ef52d79c219}\label{struct_s_b_n___peer_interface__t_af641ea3b7331b8bc853a7ef52d79c219}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Recv\+Err\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_ab7fdf812e577bbbc58e85575d84c176c}\label{struct_s_b_n___peer_interface__t_ab7fdf812e577bbbc58e85575d84c176c}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Sub\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a7922ab8b4be190119d2eb9e294cf3c9b}\label{struct_s_b_n___peer_interface__t_a7922ab8b4be190119d2eb9e294cf3c9b}} 
+bool {\bfseries Connected}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer_interface__t_a8e198674d5dd1176e09758135c412a12}\label{struct_s_b_n___peer_interface__t_a8e198674d5dd1176e09758135c412a12}} 
+uint8 {\bfseries Module\+Pvt} \mbox{[}128\mbox{]}
+\begin{DoxyCompactList}\small\item\em generic blob of bytes for the module-\/specific data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+interfaces.\+h\end{DoxyCompactItemize}

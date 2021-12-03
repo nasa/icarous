@@ -1,0 +1,26 @@
+\hypertarget{spw__sbn__if__struct_8h_source}{}\doxysection{spw\+\_\+sbn\+\_\+if\+\_\+struct.\+h}
+\label{spw__sbn__if__struct_8h_source}\index{apps/SBN/modules/protocol/spacewire/fsw/src/spw\_sbn\_if\_struct.h@{apps/SBN/modules/protocol/spacewire/fsw/src/spw\_sbn\_if\_struct.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_spw\_sbn\_if\_struct\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_spw\_sbn\_if\_struct\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{comment}{/* Since the target implementation of the SpaceWire driver only operates point-\/to-\/point, this struct is a bit sparse}}
+\DoxyCodeLine{5 \textcolor{comment}{** The only necessary data is the SpaceWire device class and device name}}
+\DoxyCodeLine{6 \textcolor{comment}{*/}}
+\DoxyCodeLine{7 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{8     \textcolor{keywordtype}{char} DevClass[SBN\_SPW\_MAX\_CHAR\_NAME]    \textcolor{comment}{/* e.g. 'spw' from /sys/class */}}
+\DoxyCodeLine{9     \textcolor{keywordtype}{char} DevInstance[SBN\_SPW\_MAX\_CHAR\_NAME]     \textcolor{comment}{/* e.g. 'spw0' from /dev */}}
+\DoxyCodeLine{10 \} \mbox{\hyperlink{struct_s_p_w___s_b_n_entry__t}{SPW\_SBNEntry\_t}};}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{13     \mbox{\hyperlink{struct_s_p_w___s_b_n_entry__t}{SPW\_SBNEntry\_t}} *spwEntry;}
+\DoxyCodeLine{14 \} \mbox{\hyperlink{struct_s_p_w___s_b_n_host_data__t}{SPW\_SBNHostData\_t}};}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{17     \mbox{\hyperlink{struct_s_p_w___s_b_n_entry__t}{SPW\_SBNEntry\_t}} *spwEntry;}
+\DoxyCodeLine{18 \} \mbox{\hyperlink{struct_s_p_w___s_b_n_peer_data__t}{SPW\_SBNPeerData\_t}};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_spw\_sbn\_if\_struct\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

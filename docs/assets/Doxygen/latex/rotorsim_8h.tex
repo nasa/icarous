@@ -1,0 +1,139 @@
+\hypertarget{rotorsim_8h}{}\doxysection{apps/rotorsim/fsw/src/rotorsim.h File Reference}
+\label{rotorsim_8h}\index{apps/rotorsim/fsw/src/rotorsim.h@{apps/rotorsim/fsw/src/rotorsim.h}}
+
+
+Definition of defines, structs and functions for rotorsim monitoring app.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rotorsim\+\_\+table.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrotorsim_app_data__t}{rotorsim\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Struct to hold rotor sim app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rotorsim_8h_aa6605857ac76069db314a622f93db80e}\label{rotorsim_8h_aa6605857ac76069db314a622f93db80e}} 
+\#define {\bfseries ROTORSIM\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a74b222e76318854e632e9bc172f768af}\label{rotorsim_8h_a74b222e76318854e632e9bc172f768af}} 
+\#define {\bfseries ROTORSIM\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a263e38b16e9e43a923b57e2e266e6444}\label{rotorsim_8h_a263e38b16e9e43a923b57e2e266e6444}} 
+\#define {\bfseries ROTORSIM\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a0111c0a7face2cf2fa338e389e832a9f}\label{rotorsim_8h_a0111c0a7face2cf2fa338e389e832a9f}} 
+\#define {\bfseries ROTORSIM\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}ROTORSIM\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{rotorsim_8h_af01143ec926c470805b47196ab3053f0}\label{rotorsim_8h_af01143ec926c470805b47196ab3053f0}} 
+\#define {\bfseries ROTORSIM\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{rotorsim_8h_aa54aef8e42d00b2678634778861a043c}\label{rotorsim_8h_aa54aef8e42d00b2678634778861a043c}} 
+\#define {\bfseries ROTORSIM\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rotorsim_8h_acd8cdecf548f2fa10a3397dfb91da02f}{Rotorsim\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{rotorsim_8h_aaa88026897ab7bf16c15359e7caec64c}{Rotorsim\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{rotorsim_8h_a2e14de5ac0fb527eb20b1288a4789f4c}{Rotorsim\+\_\+\+App\+Init\+Data}} (\mbox{\hyperlink{struct_rotorsim_table__t}{Rotorsim\+Table\+\_\+t}} $\ast$Tbl\+Ptr)
+\item 
+void \mbox{\hyperlink{rotorsim_8h_ae1ba2476245860fb30d83867d9fc4bd3}{Rotorsim\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{rotorsim_8h_a3d4756dfb45e3b9bf89019a7658bbbb1}{Rotorsim\+\_\+\+Process\+Packet}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{rotorsim_8h_aa7d4b723a4acc190cc30663a91193f99}{Rotorsim\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\item 
+\mbox{\Hypertarget{rotorsim_8h_ae44a20c6520e5b5ea49044a2046532e1}\label{rotorsim_8h_ae44a20c6520e5b5ea49044a2046532e1}} 
+void {\bfseries Rotorsim\+\_\+\+Init\+Modules} (\mbox{\hyperlink{struct_rotorsim_table__t}{Rotorsim\+Table\+\_\+t}} $\ast$params)
+\item 
+\mbox{\Hypertarget{rotorsim_8h_abbb5ee05fbf2268eed167459c23357af}\label{rotorsim_8h_abbb5ee05fbf2268eed167459c23357af}} 
+void {\bfseries Rotorsim\+\_\+\+Get\+Inputs} (void)
+\item 
+\mbox{\Hypertarget{rotorsim_8h_af321de3d21a5f97bf9ec5dde1a95be03}\label{rotorsim_8h_af321de3d21a5f97bf9ec5dde1a95be03}} 
+void {\bfseries Rotorsim\+\_\+\+Get\+Outputs} (void)
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a550bde02be410a0362556516b4903700}\label{rotorsim_8h_a550bde02be410a0362556516b4903700}} 
+void {\bfseries timer\+\_\+callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a834daf3179717f7d347f97d5fcaff64c}\label{rotorsim_8h_a834daf3179717f7d347f97d5fcaff64c}} 
+bool {\bfseries Compute\+Off\+Set\+Position\+On\+Plan} (double \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}\mbox{[}$\,$\mbox{]}, int current\+Leg, double output\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a090f4679e8857ddd1e6fec3176f52c1d}\label{rotorsim_8h_a090f4679e8857ddd1e6fec3176f52c1d}} 
+void {\bfseries Get\+Correct\+Intersection\+Point} (double \+\_\+wpA\mbox{[}$\,$\mbox{]}, double \+\_\+wpB\mbox{[}$\,$\mbox{]}, double heading, double r, double output\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a7d653a23bc3022afd9b32e419abbbc2d}\label{rotorsim_8h_a7d653a23bc3022afd9b32e419abbbc2d}} 
+double {\bfseries distance} (double x1, double y1, double x2, double y2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rotorsim_8h_a295ab08430a6f123a2f383ee5ab54aa5}\label{rotorsim_8h_a295ab08430a6f123a2f383ee5ab54aa5}} 
+\mbox{\hyperlink{structrotorsim_app_data__t}{rotorsim\+App\+Data\+\_\+t}} {\bfseries rotorsim\+App\+Data}
+\begin{DoxyCompactList}\small\item\em global variable to hold app data \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Swee Balachandran 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rotorsim_8h_ae1ba2476245860fb30d83867d9fc4bd3}\label{rotorsim_8h_ae1ba2476245860fb30d83867d9fc4bd3}} 
+\index{rotorsim.h@{rotorsim.h}!Rotorsim\_AppCleanUp@{Rotorsim\_AppCleanUp}}
+\index{Rotorsim\_AppCleanUp@{Rotorsim\_AppCleanUp}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{Rotorsim\_AppCleanUp()}{Rotorsim\_AppCleanUp()}}
+{\footnotesize\ttfamily void Rotorsim\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App clean up \mbox{\Hypertarget{rotorsim_8h_aaa88026897ab7bf16c15359e7caec64c}\label{rotorsim_8h_aaa88026897ab7bf16c15359e7caec64c}} 
+\index{rotorsim.h@{rotorsim.h}!Rotorsim\_AppInit@{Rotorsim\_AppInit}}
+\index{Rotorsim\_AppInit@{Rotorsim\_AppInit}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{Rotorsim\_AppInit()}{Rotorsim\_AppInit()}}
+{\footnotesize\ttfamily void Rotorsim\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App initialization \mbox{\Hypertarget{rotorsim_8h_a2e14de5ac0fb527eb20b1288a4789f4c}\label{rotorsim_8h_a2e14de5ac0fb527eb20b1288a4789f4c}} 
+\index{rotorsim.h@{rotorsim.h}!Rotorsim\_AppInitData@{Rotorsim\_AppInitData}}
+\index{Rotorsim\_AppInitData@{Rotorsim\_AppInitData}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{Rotorsim\_AppInitData()}{Rotorsim\_AppInitData()}}
+{\footnotesize\ttfamily void Rotorsim\+\_\+\+App\+Init\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_rotorsim_table__t}{Rotorsim\+Table\+\_\+t}} $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Initialize app data \mbox{\Hypertarget{rotorsim_8h_acd8cdecf548f2fa10a3397dfb91da02f}\label{rotorsim_8h_acd8cdecf548f2fa10a3397dfb91da02f}} 
+\index{rotorsim.h@{rotorsim.h}!Rotorsim\_AppMain@{Rotorsim\_AppMain}}
+\index{Rotorsim\_AppMain@{Rotorsim\_AppMain}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{Rotorsim\_AppMain()}{Rotorsim\_AppMain()}}
+{\footnotesize\ttfamily void Rotorsim\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App\textquotesingle{}s main entry point \mbox{\Hypertarget{rotorsim_8h_a3d4756dfb45e3b9bf89019a7658bbbb1}\label{rotorsim_8h_a3d4756dfb45e3b9bf89019a7658bbbb1}} 
+\index{rotorsim.h@{rotorsim.h}!Rotorsim\_ProcessPacket@{Rotorsim\_ProcessPacket}}
+\index{Rotorsim\_ProcessPacket@{Rotorsim\_ProcessPacket}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{Rotorsim\_ProcessPacket()}{Rotorsim\_ProcessPacket()}}
+{\footnotesize\ttfamily void Rotorsim\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Function to process received packets \mbox{\Hypertarget{rotorsim_8h_aa7d4b723a4acc190cc30663a91193f99}\label{rotorsim_8h_aa7d4b723a4acc190cc30663a91193f99}} 
+\index{rotorsim.h@{rotorsim.h}!RotorsimTableValidationFunc@{RotorsimTableValidationFunc}}
+\index{RotorsimTableValidationFunc@{RotorsimTableValidationFunc}!rotorsim.h@{rotorsim.h}}
+\doxysubsubsection{\texorpdfstring{RotorsimTableValidationFunc()}{RotorsimTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Rotorsim\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Function to validate table parameters 
+\begin{DoxyParams}{Parameters}
+{\em Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success 
+\end{DoxyReturn}

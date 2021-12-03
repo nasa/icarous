@@ -1,0 +1,263 @@
+\hypertarget{_icarous__msg_8h_source}{}\doxysection{Icarous\+\_\+msg.\+h}
+\label{_icarous__msg_8h_source}\index{apps/Icarouslib/fsw/platform\_inc/Icarous\_msg.h@{apps/Icarouslib/fsw/platform\_inc/Icarous\_msg.h}}
+\mbox{\hyperlink{_icarous__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef COMMON\_DEFS\_H\_}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define COMMON\_DEFS\_H\_}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define MAX\_WAYPOINTS 25 }}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define MAX\_VERTICES 100}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define ACID\_SIZE 25}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define MAX\_FIX\_NAME\_SIZE 20}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define MAX\_GEOFENCES 50}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define MAX\_CALLSIGN\_LEN 17}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define MAX\_DATABUFFER\_SIZE 10000}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define MAX\_DATABUFFER\_SIZE 10000}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define DEF\_MSG(NAME,SIZE) typedef struct \_\_attribute\_\_((\_\_packed\_\_))\{ CCSDS\_PriHdr\_t hdr; char databuffer[SIZE]; \}NAME;}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{35 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{36    \textcolor{keywordtype}{char} value[MAX\_CALLSIGN\_LEN];}
+\DoxyCodeLine{37 \}\mbox{\hyperlink{structcallsign__t}{callsign\_t}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{45     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a4e126595509faceca85c09b46a7103e9}{\_PASSIVE\_}},     }
+\DoxyCodeLine{46     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a7ea461a85fe09624bd6738aaa004fa05}{\_ACTIVE\_}},      }
+\DoxyCodeLine{47     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025ab20400764f2d91a122e90ac080776eae}{\_INACTIVE\_}}     }
+\DoxyCodeLine{48 \} \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}{icarousControlMode\_e}};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{54 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{55    SEVERITY\_EMERGENCY=0, \textcolor{comment}{/* System is unusable. This is a "{}panic"{} condition. | */}}
+\DoxyCodeLine{56    SEVERITY\_ALERT=1, \textcolor{comment}{/* Action should be taken immediately. Indicates error in non-\/critical systems. | */}}
+\DoxyCodeLine{57    SEVERITY\_CRITICAL=2, \textcolor{comment}{/* Action must be taken immediately. Indicates failure in a primary system. | */}}
+\DoxyCodeLine{58    SEVERITY\_ERROR=3, \textcolor{comment}{/* Indicates an error in secondary/redundant systems. | */}}
+\DoxyCodeLine{59    SEVERITY\_WARNING=4, \textcolor{comment}{/* Indicates about a possible future error if this is not resolved within a given timeframe. Example would be a low battery warning. | */}}
+\DoxyCodeLine{60    SEVERITY\_NOTICE=5, \textcolor{comment}{/* An unusual event has occured, though not an error condition. This should be investigated for the root cause. | */}}
+\DoxyCodeLine{61    SEVERITY\_INFO=6, \textcolor{comment}{/* Normal operational messages. Useful for logging. No action is required for these messages. | */}}
+\DoxyCodeLine{62    SEVERITY\_DEBUG=7, \textcolor{comment}{/* Useful non-\/operational messages that can assist in debugging. These should not occur during normal operation. | */}}
+\DoxyCodeLine{63 \}severity\_e;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{70 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{71     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988}{\_ARM\_}},           }
+\DoxyCodeLine{72     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb}{\_TAKEOFF\_}},       }
+\DoxyCodeLine{73     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35}{\_LAND\_}},          }
+\DoxyCodeLine{74     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba}{\_GOTOWP\_}},        }
+\DoxyCodeLine{75     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672}{\_SETPOS\_}},        }
+\DoxyCodeLine{76     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d}{\_SETVEL\_}},        }
+\DoxyCodeLine{77     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7}{\_SETYAW\_}},        }
+\DoxyCodeLine{78     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c}{\_SETSPEED\_}},      }
+\DoxyCodeLine{79     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c}{\_SETMODE\_}},       }
+\DoxyCodeLine{80     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48}{\_STATUS\_}},        }
+\DoxyCodeLine{81     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da2d6e955220e206d73e074760e5f83914}{\_DITCH\_}},         }
+\DoxyCodeLine{82     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da106bb3dda6fc6cfa02712179f3f62278}{\_RADAR\_}},         }
+\DoxyCodeLine{83     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da304b2c8b1709b591b29162a69429910b}{\_GUIDANCE\_}},      }
+\DoxyCodeLine{84     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da6e060882c0f5bc6833104f3b25729e60}{\_TRAFFIC\_RES\_}}    }
+\DoxyCodeLine{85 \} \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}{commandName\_e}};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{92 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{93     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca889c7df740da84ac1e2d5de06d0135cc}{\_KEEPIN\_}},  }
+\DoxyCodeLine{94     \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca88f5c150b346e5f948ebffac5eb31c57}{\_KEEPOUT\_}}  }
+\DoxyCodeLine{95 \}\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}{geofenceType\_e}};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{103 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))}
+\DoxyCodeLine{104 \{}
+\DoxyCodeLine{105     uint8    TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{106     \textcolor{keywordtype}{char}     \textcolor{keywordtype}{id}[ACID\_SIZE];                  }
+\DoxyCodeLine{107     \textcolor{keywordtype}{int}      num\_waypoints;                  }
+\DoxyCodeLine{108     uint64\_t   scenario\_time;                }
+\DoxyCodeLine{109     \mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} waypoints[MAX\_WAYPOINTS];     }
+\DoxyCodeLine{110 \}\mbox{\hyperlink{structflightplan__t}{flightplan\_t}};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{116 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))}
+\DoxyCodeLine{117 \{}
+\DoxyCodeLine{118     uint8    TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{119     \textcolor{keywordtype}{char}     buffer[MAX\_DATABUFFER\_SIZE];}
+\DoxyCodeLine{120 \}stringdata\_t;}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{127 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{128     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{129     \textcolor{keywordtype}{char} planID[ACID\_SIZE];                 }
+\DoxyCodeLine{130     uint8\_t \mbox{\hyperlink{structmission_item_reached__t_a2ccf951f97cf03f6a89ccac0a02deb0f}{reachedwaypoint}};                }
+\DoxyCodeLine{131     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structmission_item_reached__t_a4d770e6cb4624fb74f360094e1ee2bcf}{feedback}};                          }
+\DoxyCodeLine{132 \}\mbox{\hyperlink{structmission_item_reached__t}{missionItemReached\_t}};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{139 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{140     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{141     uint8\_t \mbox{\hyperlink{structgeofence__t_a499a3a4f301c982733bc8b259f02bb4c}{type}};                           }
+\DoxyCodeLine{142     uint16\_t \mbox{\hyperlink{structgeofence__t_a541408bac446d05761761e630f72d35f}{index}};                         }
+\DoxyCodeLine{143     uint16\_t \mbox{\hyperlink{structgeofence__t_ac5d191c4c7903f8887a8b86af36299d5}{totalvertices}};                 }
+\DoxyCodeLine{144     \textcolor{keywordtype}{double} vertices[MAX\_VERTICES][2];       }
+\DoxyCodeLine{145     \textcolor{keywordtype}{double} \mbox{\hyperlink{structgeofence__t_a706a2af12b0a974656dc0f55740d2cde}{floor}};                           }
+\DoxyCodeLine{146     \textcolor{keywordtype}{double} \mbox{\hyperlink{structgeofence__t_a3079511908f9754a184d65822e148a17}{ceiling}};                         }
+\DoxyCodeLine{147 \}\mbox{\hyperlink{structgeofence__t}{geofence\_t}};}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{154 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{155     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{156     uint8\_t \mbox{\hyperlink{structobject__t_ae18be856532d750511e82b8c387fac94}{type}};                             }
+\DoxyCodeLine{157     uint32\_t \mbox{\hyperlink{structobject__t_a347eae2ef9e9537e8a252c3733f360e4}{index}};                           }
+\DoxyCodeLine{158     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structobject__t_a74a384f1aff5a9c8446c26f0f3ea88dc}{callsign}};                      }
+\DoxyCodeLine{159     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_a1eb360f00deb7114adbd39ba6b261cae}{latitude}};                          }
+\DoxyCodeLine{160     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_a698b9c7b6cd852e8da12c43f9d9544f8}{longitude}};                         }
+\DoxyCodeLine{161     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_ad9f19a72a39eb794b776691341a14ccd}{altitude}};                          }
+\DoxyCodeLine{162     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_a90acc4a9c618224e38614154b9ac9253}{ve}};                                }
+\DoxyCodeLine{163     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_abafeb3deaadb2f72b1aed1d75bce5fb2}{vn}};                                }
+\DoxyCodeLine{164     \textcolor{keywordtype}{double} \mbox{\hyperlink{structobject__t_ab46cfe114c3078abf53ee8a241a985e3}{vd}};                                }
+\DoxyCodeLine{165     \textcolor{keywordtype}{double} sigmaP[6];                         }
+\DoxyCodeLine{166     \textcolor{keywordtype}{double} sigmaV[6];                         }
+\DoxyCodeLine{167 \}\mbox{\hyperlink{structobject__t}{object\_t}};}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{174 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{175     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{176     uint32\_t \mbox{\hyperlink{structposition__t_a67ee1985e1b7f991b27a3d282215e370}{aircraft\_id}};                     }
+\DoxyCodeLine{177     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structposition__t_aa4b22767dd91b0b2d85d1fbbf02a336c}{callsign}};                      }
+\DoxyCodeLine{178     int64\_t \mbox{\hyperlink{structposition__t_ad13a3dd1c7907598b65eb6acf017698a}{time\_gps}};                         }
+\DoxyCodeLine{179     int64\_t \mbox{\hyperlink{structposition__t_a07f9502d9062cba1a48404a75f3699f9}{time\_boot}};                        }
+\DoxyCodeLine{180     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_a0b4c8a3559bd68b435b8b0a4fad32301}{latitude}};                          }
+\DoxyCodeLine{181     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_aaaca1450b1335112bb591de7fe0c4b8c}{longitude}};                         }
+\DoxyCodeLine{182     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_abdd763dee8e303432e3cc2d7227b7499}{altitude\_abs}};                      }
+\DoxyCodeLine{183     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_afa614e7d8149f9e2af09b7cc3eed0125}{altitude\_rel}};                      }
+\DoxyCodeLine{184     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_a4272d7338c950700001ca9e828578c2c}{vn}};                                }
+\DoxyCodeLine{185     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_a5fc309060dfe5debf5f146d0799fc347}{ve}};                                }
+\DoxyCodeLine{186     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_ad0c56b07b0f104cd9a8d6b2badea4780}{vd}};                                }
+\DoxyCodeLine{187     \textcolor{keywordtype}{double} \mbox{\hyperlink{structposition__t_a44e54a05b52afda34b175576e26c1485}{hdg}};                               }
+\DoxyCodeLine{188     uint16\_t \mbox{\hyperlink{structposition__t_a697054865b77c23f3cb908b81a2005ed}{hdop}};                            }
+\DoxyCodeLine{189     uint16\_t \mbox{\hyperlink{structposition__t_a8a61debd99c57e57fe14894b190dd83a}{vdop}};                            }
+\DoxyCodeLine{190     \textcolor{keywordtype}{int} \mbox{\hyperlink{structposition__t_a35ef98927f8fa5786364fa64db39d459}{numSats}};                              }
+\DoxyCodeLine{191 \}\mbox{\hyperlink{structposition__t}{position\_t}};}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{199 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{200     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{201     uint32\_t \mbox{\hyperlink{structlocal__position__t_a1bbfc294e17fe4329227185724fb19ce}{aircraft\_id}};                     }
+\DoxyCodeLine{202     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structlocal__position__t_af31b863e4f35e4d39ed898e7eecba765}{callsign}};                      }
+\DoxyCodeLine{203     int64\_t \mbox{\hyperlink{structlocal__position__t_a726bfb87415ccf8ea3dfcb9546f38613}{time\_gps}};                         }
+\DoxyCodeLine{204     int64\_t \mbox{\hyperlink{structlocal__position__t_a61e943b5864cb07de39993f4c11021a6}{time\_boot}};                        }
+\DoxyCodeLine{205     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_a44e17bc9f8b1e72c4918339a8f3a6e91}{x}};                                 }
+\DoxyCodeLine{206     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_a958370677b308ec7db3377e2ce446bc1}{y}};                                 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_ac8dd72b3c6a0fba958f2a78ee39c788e}{z}};                                 }
+\DoxyCodeLine{208     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_af320c75089d9af8a5f5df110a94c37ef}{vx}};                                }
+\DoxyCodeLine{209     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_aacfc80a4d7fc9ef77c980812209e94b3}{vy}};                                }
+\DoxyCodeLine{210     \textcolor{keywordtype}{double} \mbox{\hyperlink{structlocal__position__t_af44af0ebdb4b5d950098443766903fb2}{vz}};                                }
+\DoxyCodeLine{211 \}\mbox{\hyperlink{structlocal__position__t}{local\_position\_t}};}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{219 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{220     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];     }
+\DoxyCodeLine{221     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_aed1e9c1280d62c25b809e97a57c302e6}{time\_boot}};                          }
+\DoxyCodeLine{222     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_a37f03eb650cb75e2de293e47641806bb}{roll}};                                }
+\DoxyCodeLine{223     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_a5ebde1bfe2f839c12fe302ea19384fb2}{pitch}};                               }
+\DoxyCodeLine{224     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_ad5d4958450c7f0e52264ee88534984fd}{yaw}};                                 }
+\DoxyCodeLine{225     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_a7aba6d6b238c4a1fc4abbc69dcd740a9}{rollspeed}};                          }
+\DoxyCodeLine{226     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_a6cc478402b60359a7870bddeae41ebdd}{pitchspeed}};                            }
+\DoxyCodeLine{227     \textcolor{keywordtype}{double} \mbox{\hyperlink{structattitude__t_af38197dadee630c0d5123b5b113d9d12}{yawspeed}};                            }
+\DoxyCodeLine{228 \}\mbox{\hyperlink{structattitude__t}{attitude\_t}};}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{235 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{236     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{237     uint64\_t \mbox{\hyperlink{structno_args_cmd__t_abb88a520ba05bfae335eb552458013ed}{name}};                           }
+\DoxyCodeLine{238 \}\mbox{\hyperlink{structno_args_cmd__t}{noArgsCmd\_t}};}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{244 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{245     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{246     uint64\_t \mbox{\hyperlink{structargs_cmd__t_a96b872fa8b21c676e733a52ef4630000}{name}};                           }
+\DoxyCodeLine{247     \textcolor{keywordtype}{double} param1,\mbox{\hyperlink{structargs_cmd__t_a5fef6149e2672a3a8c15095b506126b0}{param2}};                    }
+\DoxyCodeLine{248     \textcolor{keywordtype}{double} param3,\mbox{\hyperlink{structargs_cmd__t_ac46926742b0b49b0939985cc3566bd46}{param4}};                    }
+\DoxyCodeLine{249     \textcolor{keywordtype}{double} param5,\mbox{\hyperlink{structargs_cmd__t_a75dfca98f37492027b0aa10825523477}{param6}};                    }
+\DoxyCodeLine{250     \textcolor{keywordtype}{double} param7,\mbox{\hyperlink{structargs_cmd__t_a5f4a3f52ef27d673f73a0fc6a07e9a89}{param8}};                    }
+\DoxyCodeLine{251     \textcolor{keywordtype}{char} buffer[50];                         }
+\DoxyCodeLine{252 \}\mbox{\hyperlink{structargs_cmd__t}{argsCmd\_t}};}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{258 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{259     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{260     uint64\_t \mbox{\hyperlink{structcmd_ack__t_a931f2d1a65fd16a6ab42857f924da1aa}{name}};                           }
+\DoxyCodeLine{261     \textcolor{keywordtype}{int} \mbox{\hyperlink{structcmd_ack__t_a7419987248df9f8bfd510258b6effc4d}{result}};                              }
+\DoxyCodeLine{262 \}\mbox{\hyperlink{structcmd_ack__t}{cmdAck\_t}};}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 }
+\DoxyCodeLine{269 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{270     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{271     \textcolor{keywordtype}{char} buffer[250];                         }
+\DoxyCodeLine{272     int8\_t \mbox{\hyperlink{structstatus__t_ade5a1b8b646defb92650203ff49d62c2}{severity}};                          }
+\DoxyCodeLine{273 \}\mbox{\hyperlink{structstatus__t}{status\_t}};}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{279 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{280     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{281     \textcolor{keywordtype}{double} \mbox{\hyperlink{structvfrhud__t_a6e67c0046a62456334e1aca09f316162}{airspeed}};                          }
+\DoxyCodeLine{282     \textcolor{keywordtype}{double} \mbox{\hyperlink{structvfrhud__t_af2c62050e399121cd4907bd9adfb9750}{groundspeed}};                       }
+\DoxyCodeLine{283     int16\_t \mbox{\hyperlink{structvfrhud__t_a25562ddf8587f1f7a69742ef0380be92}{heading}};                          }
+\DoxyCodeLine{284     uint16\_t \mbox{\hyperlink{structvfrhud__t_aab78bf905f72ef0bb38645303a7629ce}{throttle}};                        }
+\DoxyCodeLine{285     \textcolor{keywordtype}{double} \mbox{\hyperlink{structvfrhud__t_a93c501ff4728a298813938b79cf63893}{alt}};                               }
+\DoxyCodeLine{286     \textcolor{keywordtype}{double} \mbox{\hyperlink{structvfrhud__t_aac46376811d3bcc9733a9b122dc8fc2a}{climb}};                             }
+\DoxyCodeLine{287     uint8\_t \mbox{\hyperlink{structvfrhud__t_a03e6a179abc3608f578cad592ecf3181}{modeAP}};                           }
+\DoxyCodeLine{288     uint8\_t \mbox{\hyperlink{structvfrhud__t_a6eb1a59a6fce12c8e81c0ea6dbf24685}{modeIcarous}};                      }
+\DoxyCodeLine{289     uint8\_t \mbox{\hyperlink{structvfrhud__t_a65c234974c295a85bf28951714dd2607}{modeFlagAP}};                       }
+\DoxyCodeLine{290     uint16\_t \mbox{\hyperlink{structvfrhud__t_aaca597bb9d18f8955cc9bededa406166}{waypointCurrent}};                 }
+\DoxyCodeLine{291 \}\mbox{\hyperlink{structvfrhud__t}{vfrhud\_t}};}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{297 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{298     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{299     uint8\_t \mbox{\hyperlink{structbattery__status__t_a5e6bbf2dbe3df596083d7816aec3c7fb}{id}};                                 }
+\DoxyCodeLine{300     uint8\_t \mbox{\hyperlink{structbattery__status__t_a7478afa3c1f06d74ce7b66da0822d452}{battery\_function}};                 }
+\DoxyCodeLine{301     uint8\_t \mbox{\hyperlink{structbattery__status__t_a44120f3b658f74c2b74d7b12f36715b1}{type}};                             }
+\DoxyCodeLine{302     int16\_t \mbox{\hyperlink{structbattery__status__t_aee8d0a49c89678c3572fbcedf9b6377d}{temperature}};                      }
+\DoxyCodeLine{303     uint16\_t voltages[10];                    }
+\DoxyCodeLine{304     int16\_t \mbox{\hyperlink{structbattery__status__t_aa0d64ad67969d247cfdc948d889f2e11}{current\_battery}};                  }
+\DoxyCodeLine{305     int32\_t \mbox{\hyperlink{structbattery__status__t_a22b9ff97460844b94104a47b925ca933}{current\_consumed}};                 }
+\DoxyCodeLine{306     int32\_t \mbox{\hyperlink{structbattery__status__t_aae303188e983f15b65b05a8af2cac6d9}{energy\_consumed}};                  }
+\DoxyCodeLine{307     int8\_t \mbox{\hyperlink{structbattery__status__t_aca0e791da5afbaf7248077d36120b2ff}{battery\_remaining}};                 }
+\DoxyCodeLine{308 \}\mbox{\hyperlink{structbattery__status__t}{battery\_status\_t}};}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{314 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{315     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{316     uint32\_t \mbox{\hyperlink{structrc__channels__t_a90e77ed5ed8e26146c56a648e6fd4d6b}{time\_boot\_ms}};                                        }
+\DoxyCodeLine{317     uint8\_t \mbox{\hyperlink{structrc__channels__t_a1609e3d08f55963f33033ed7536e5813}{chancount}};                                            }
+\DoxyCodeLine{318     uint16\_t chan[20];                                            }
+\DoxyCodeLine{319     uint8\_t \mbox{\hyperlink{structrc__channels__t_a3ffa9bf88c0f0b99ae046a5668549fbe}{rssi}};                                                 }
+\DoxyCodeLine{320 \}\mbox{\hyperlink{structrc__channels__t}{rc\_channels\_t}};}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{323     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{324     uint32\_t \mbox{\hyperlink{structhome__position__t_a0c6c0fa133544975fe5ac858608f5a02}{aircraft\_id}};                     }
+\DoxyCodeLine{325     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structcallsign}{callsign}}[MAX\_CALLSIGN\_LEN];    }
+\DoxyCodeLine{326     int64\_t \mbox{\hyperlink{structhome__position__t_a00b7f82ef68b0521e8ade3ea125efc0c}{time\_gps}};                         }
+\DoxyCodeLine{327     int64\_t \mbox{\hyperlink{structhome__position__t_a4b5484ef3c846885e7cd3ece57fd69fd}{time\_boot}};                        }
+\DoxyCodeLine{328     \textcolor{keywordtype}{double} \mbox{\hyperlink{structhome__position__t_a759172aabc33718e338dec973bfac114}{latitude}};                          }
+\DoxyCodeLine{329     \textcolor{keywordtype}{double} \mbox{\hyperlink{structhome__position__t_a682f37c8bed425799eb14d6c3adfe678}{longitude}};                         }
+\DoxyCodeLine{330     \textcolor{keywordtype}{double} \mbox{\hyperlink{structhome__position__t_ae042a2c56e0db4a3e97b7f48a6730736}{altitude}};                          }
+\DoxyCodeLine{331     \textcolor{keywordtype}{double} x;                                 \textcolor{comment}{// Remaining fields for compability with mavlink}}
+\DoxyCodeLine{332     \textcolor{keywordtype}{double} y;}
+\DoxyCodeLine{333     \textcolor{keywordtype}{double} z;}
+\DoxyCodeLine{334     \textcolor{keywordtype}{double} approach\_x;}
+\DoxyCodeLine{335     \textcolor{keywordtype}{double} approach\_y;}
+\DoxyCodeLine{336     \textcolor{keywordtype}{double} approach\_z;}
+\DoxyCodeLine{337     \textcolor{keywordtype}{double} q[4];}
+\DoxyCodeLine{338 \}\mbox{\hyperlink{structhome__position__t}{home\_position\_t}};}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340 }
+\DoxyCodeLine{347 DEF\_MSG(\mbox{\hyperlink{structcfs_bands__t}{cfsBands\_t}},\textcolor{keyword}{sizeof}(bands\_t))}
+\DoxyCodeLine{348 }
+\DoxyCodeLine{349 }
+\DoxyCodeLine{355 DEF\_MSG(\mbox{\hyperlink{structcfs_geofence_conflict__t}{cfsGeofenceConflict\_t}},\textcolor{keyword}{sizeof}(geofenceConflict\_t))}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 }
+\DoxyCodeLine{363 DEF\_MSG(\mbox{\hyperlink{structcfs_trajectory_monitor_data__t}{cfsTrajectoryMonitorData\_t}},\textcolor{keyword}{sizeof}(trajectoryMonitorData\_t))}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365 }
+\DoxyCodeLine{367 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//COMMON\_DEFS\_H\_}}
+\DoxyCodeLine{368 }
+
+\end{DoxyCode}

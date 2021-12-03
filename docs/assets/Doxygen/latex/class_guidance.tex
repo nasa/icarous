@@ -1,0 +1,53 @@
+\hypertarget{class_guidance}{}\doxysection{Guidance Class Reference}
+\label{class_guidance}\index{Guidance@{Guidance}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_guidance_a15c663113709dbf7c63c6fccf82c6e5b}\label{class_guidance_a15c663113709dbf7c63c6fccf82c6e5b}} 
+{\bfseries Guidance} (const std\+::string config)
+\item 
+\mbox{\Hypertarget{class_guidance_afdc131e75d3d551c1c60db0245329f07}\label{class_guidance_afdc131e75d3d551c1c60db0245329f07}} 
+void {\bfseries Read\+Param\+From\+File} (std\+::string config)
+\item 
+\mbox{\Hypertarget{class_guidance_a59574093df3c470814eab4130a3f05a0}\label{class_guidance_a59574093df3c470814eab4130a3f05a0}} 
+void {\bfseries Set\+Guidance\+Params} (const \mbox{\hyperlink{struct_guidance_params__t}{Guidance\+Params\+\_\+t}} $\ast$params)
+\item 
+\mbox{\Hypertarget{class_guidance_a80e367c673156c2b0dcbf74306e01d38}\label{class_guidance_a80e367c673156c2b0dcbf74306e01d38}} 
+void {\bfseries Set\+Aircraft\+State} (const larcfm\+::\+Position \&pos, const larcfm\+::\+Velocity \&ground\+Speed)
+\item 
+\mbox{\Hypertarget{class_guidance_a2fc86c190cb04814294e5c461291d8bd}\label{class_guidance_a2fc86c190cb04814294e5c461291d8bd}} 
+void {\bfseries Set\+Wind\+Data} (const double wind\+From, const double wind\+Speed)
+\item 
+\mbox{\Hypertarget{class_guidance_a29eaeed053de650677f7a42ee393f36f}\label{class_guidance_a29eaeed053de650677f7a42ee393f36f}} 
+void {\bfseries Input\+Flightplan\+Data} (const std\+::string \&plan\+\_\+id, const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&waypoints, const double init\+Heading, bool repair, double repair\+Turn\+Rate)
+\item 
+\mbox{\Hypertarget{class_guidance_aa8ec5b739ece761c793f86210dbd6376}\label{class_guidance_aa8ec5b739ece761c793f86210dbd6376}} 
+int {\bfseries Run\+Guidance} (double time)
+\item 
+\mbox{\Hypertarget{class_guidance_a95bce920021a29d2b3c9dbe94e32fa95}\label{class_guidance_a95bce920021a29d2b3c9dbe94e32fa95}} 
+void {\bfseries Set\+Guidance\+Mode} (const Guidance\+Mode mode, const std\+::string plan\+ID, const int next\+WP, const bool eta)
+\item 
+\mbox{\Hypertarget{class_guidance_ac8c08a2721f8a210697b500db46b5646}\label{class_guidance_ac8c08a2721f8a210697b500db46b5646}} 
+void {\bfseries Change\+Waypoint\+Alt} (const std\+::string plan\+ID, int wp\+ID, const double value, const bool update\+All)
+\item 
+\mbox{\Hypertarget{class_guidance_a90cc0d4c68148a6aa6b902843be6fb70}\label{class_guidance_a90cc0d4c68148a6aa6b902843be6fb70}} 
+void {\bfseries Change\+Waypoint\+Speed} (const std\+::string plan\+ID, int wp\+ID, const double value)
+\item 
+\mbox{\Hypertarget{class_guidance_a425dd495bb750034b8f823affe3735c5}\label{class_guidance_a425dd495bb750034b8f823affe3735c5}} 
+void {\bfseries Change\+Waypoint\+ETA} (const std\+::string plan\+ID, const int wp\+ID, const double value, const bool update\+All)
+\item 
+\mbox{\Hypertarget{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}\label{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}} 
+void {\bfseries Set\+Velocity\+Commands} (const larcfm\+::\+Velocity \&inputs)
+\item 
+\mbox{\Hypertarget{class_guidance_ac5d309f7a536bc055e2f3bd349059c44}\label{class_guidance_ac5d309f7a536bc055e2f3bd349059c44}} 
+void {\bfseries Get\+Output} (\mbox{\hyperlink{struct_guidance_output__t}{Guidance\+Output\+\_\+t}} \&output)
+\item 
+\mbox{\Hypertarget{class_guidance_a625e0e9f260b4a4548fefc9f1cbcd6e4}\label{class_guidance_a625e0e9f260b4a4548fefc9f1cbcd6e4}} 
+int {\bfseries Get\+Waypoint} (const std\+::string plan\+ID, int id, \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} \&wp)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Guidance/Guidance.\+hpp\item 
+Modules/\+Core/\+Guidance/Guidance.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,46 @@
+\hypertarget{struct_s_b_n___net_interface__s}{}\doxysection{SBN\+\_\+\+Net\+Interface\+\_\+s Struct Reference}
+\label{struct_s_b_n___net_interface__s}\index{SBN\_NetInterface\_s@{SBN\_NetInterface\_s}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a66716b2a5bb94ee13046eecdf818856b}\label{struct_s_b_n___net_interface__s_a66716b2a5bb94ee13046eecdf818856b}} 
+bool {\bfseries Configured}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a3bc32b13b5ccf0522fc34b41021909f7}\label{struct_s_b_n___net_interface__s_a3bc32b13b5ccf0522fc34b41021909f7}} 
+SBN\+\_\+\+Module\+Idx\+\_\+t {\bfseries Protocol\+Idx}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a7754488fde950f0a1f2c533deadcbabe}\label{struct_s_b_n___net_interface__s_a7754488fde950f0a1f2c533deadcbabe}} 
+SBN\+\_\+\+Task\+\_\+\+Flag\+\_\+t {\bfseries Task\+Flags}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_acf1ba8502d76079711330ac29d12c677}\label{struct_s_b_n___net_interface__s_acf1ba8502d76079711330ac29d12c677}} 
+OS\+\_\+\+Task\+ID\+\_\+t {\bfseries Send\+Task\+ID}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_aea1bcd0611e1da6982f7c6f311a877ca}\label{struct_s_b_n___net_interface__s_aea1bcd0611e1da6982f7c6f311a877ca}} 
+OS\+\_\+\+Mutex\+ID\+\_\+t {\bfseries Send\+Mutex}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a04d0f585e15eff5392b4154476a11d94}\label{struct_s_b_n___net_interface__s_a04d0f585e15eff5392b4154476a11d94}} 
+OS\+\_\+\+Task\+ID\+\_\+t {\bfseries Recv\+Task\+ID}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a3de692ab199bf0c67017e139c23fa19a}\label{struct_s_b_n___net_interface__s_a3de692ab199bf0c67017e139c23fa19a}} 
+\mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\+\_\+\+If\+Ops\+\_\+t}} $\ast$ {\bfseries If\+Ops}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a9b1bc455d9b43e54875a78aaaef2f914}\label{struct_s_b_n___net_interface__s_a9b1bc455d9b43e54875a78aaaef2f914}} 
+SBN\+\_\+\+Peer\+Idx\+\_\+t {\bfseries Peer\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_aee5202a40ea6cfce73727992a1f53122}\label{struct_s_b_n___net_interface__s_aee5202a40ea6cfce73727992a1f53122}} 
+\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} {\bfseries Peers} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+PEER\+\_\+\+CNT\mbox{]}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a6d9059bd15ff49604ae5fe11be1bef69}\label{struct_s_b_n___net_interface__s_a6d9059bd15ff49604ae5fe11be1bef69}} 
+\mbox{\hyperlink{struct_s_b_n___filter_interface__t}{SBN\+\_\+\+Filter\+Interface\+\_\+t}} $\ast$ {\bfseries Filters} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+FILTERS\mbox{]}
+\begin{DoxyCompactList}\small\item\em Filters alter message headers/bodies before sending to a peer or after receiving from the peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a7bde21ba6c7d39870782e3ae5418ffce}\label{struct_s_b_n___net_interface__s_a7bde21ba6c7d39870782e3ae5418ffce}} 
+SBN\+\_\+\+Module\+Idx\+\_\+t {\bfseries Filter\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___net_interface__s_a3f4a2dad2d6c2911589afea2aa3af8ed}\label{struct_s_b_n___net_interface__s_a3f4a2dad2d6c2911589afea2aa3af8ed}} 
+uint8 {\bfseries Module\+Pvt} \mbox{[}128\mbox{]}
+\begin{DoxyCompactList}\small\item\em generic blob of bytes, module-\/specific \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+interfaces.\+h\end{DoxyCompactItemize}

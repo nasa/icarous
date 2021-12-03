@@ -1,0 +1,50 @@
+\hypertarget{sbn__serial__platform__cfg_8h}{}\doxysection{apps/\+SBN/modules/protocol/serial/fsw/platform\+\_\+inc/sbn\+\_\+serial\+\_\+platform\+\_\+cfg.h File Reference}
+\label{sbn__serial__platform__cfg_8h}\index{apps/SBN/modules/protocol/serial/fsw/platform\_inc/sbn\_serial\_platform\_cfg.h@{apps/SBN/modules/protocol/serial/fsw/platform\_inc/sbn\_serial\_platform\_cfg.h}}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sbn__serial__platform__cfg_8h_a42221f7af26ae3faa5694800231b82f6}{SBN\+\_\+\+SERIAL\+\_\+\+MAX\+\_\+\+CHAR\+\_\+\+NAME}}~32
+\item 
+\#define \mbox{\hyperlink{sbn__serial__platform__cfg_8h_a7193acafc8e31e2418f59b4b5b5d4910}{SBN\+\_\+\+SERIAL\+\_\+\+CHILD\+\_\+\+STACK\+\_\+\+SIZE}}~2048
+\item 
+\#define \mbox{\hyperlink{sbn__serial__platform__cfg_8h_a20bcdc918a40b327510bb4cb8335a96a}{SBN\+\_\+\+SERIAL\+\_\+\+CHILD\+\_\+\+TASK\+\_\+\+PRIORITY}}~70
+\item 
+\mbox{\Hypertarget{sbn__serial__platform__cfg_8h_a9f89a6a32f000232bc8f00c3b47e35be}\label{sbn__serial__platform__cfg_8h_a9f89a6a32f000232bc8f00c3b47e35be}} 
+\#define {\bfseries SBN\+\_\+\+SERIAL\+\_\+\+PEER\+\_\+\+HEARTBEAT}~5
+\item 
+\mbox{\Hypertarget{sbn__serial__platform__cfg_8h_ab9a42abe0435ca42742e9937429bc681}\label{sbn__serial__platform__cfg_8h_ab9a42abe0435ca42742e9937429bc681}} 
+\#define {\bfseries SBN\+\_\+\+SERIAL\+\_\+\+PEER\+\_\+\+TIMEOUT}~10
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains several user-\/configurable parameters
+
+\begin{DoxyAuthor}{Author}
+Jaclyn Beck 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2015/06/24 15\+:30\+:00 
+\end{DoxyDate}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{sbn__serial__platform__cfg_8h_a7193acafc8e31e2418f59b4b5b5d4910}\label{sbn__serial__platform__cfg_8h_a7193acafc8e31e2418f59b4b5b5d4910}} 
+\index{sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}!SBN\_SERIAL\_CHILD\_STACK\_SIZE@{SBN\_SERIAL\_CHILD\_STACK\_SIZE}}
+\index{SBN\_SERIAL\_CHILD\_STACK\_SIZE@{SBN\_SERIAL\_CHILD\_STACK\_SIZE}!sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}}
+\doxysubsubsection{\texorpdfstring{SBN\_SERIAL\_CHILD\_STACK\_SIZE}{SBN\_SERIAL\_CHILD\_STACK\_SIZE}}
+{\footnotesize\ttfamily \#define SBN\+\_\+\+SERIAL\+\_\+\+CHILD\+\_\+\+STACK\+\_\+\+SIZE~2048}
+
+Stack size that each child task gets \mbox{\Hypertarget{sbn__serial__platform__cfg_8h_a20bcdc918a40b327510bb4cb8335a96a}\label{sbn__serial__platform__cfg_8h_a20bcdc918a40b327510bb4cb8335a96a}} 
+\index{sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}!SBN\_SERIAL\_CHILD\_TASK\_PRIORITY@{SBN\_SERIAL\_CHILD\_TASK\_PRIORITY}}
+\index{SBN\_SERIAL\_CHILD\_TASK\_PRIORITY@{SBN\_SERIAL\_CHILD\_TASK\_PRIORITY}!sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}}
+\doxysubsubsection{\texorpdfstring{SBN\_SERIAL\_CHILD\_TASK\_PRIORITY}{SBN\_SERIAL\_CHILD\_TASK\_PRIORITY}}
+{\footnotesize\ttfamily \#define SBN\+\_\+\+SERIAL\+\_\+\+CHILD\+\_\+\+TASK\+\_\+\+PRIORITY~70}
+
+Priority of the child tasks \mbox{\Hypertarget{sbn__serial__platform__cfg_8h_a42221f7af26ae3faa5694800231b82f6}\label{sbn__serial__platform__cfg_8h_a42221f7af26ae3faa5694800231b82f6}} 
+\index{sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}!SBN\_SERIAL\_MAX\_CHAR\_NAME@{SBN\_SERIAL\_MAX\_CHAR\_NAME}}
+\index{SBN\_SERIAL\_MAX\_CHAR\_NAME@{SBN\_SERIAL\_MAX\_CHAR\_NAME}!sbn\_serial\_platform\_cfg.h@{sbn\_serial\_platform\_cfg.h}}
+\doxysubsubsection{\texorpdfstring{SBN\_SERIAL\_MAX\_CHAR\_NAME}{SBN\_SERIAL\_MAX\_CHAR\_NAME}}
+{\footnotesize\ttfamily \#define SBN\+\_\+\+SERIAL\+\_\+\+MAX\+\_\+\+CHAR\+\_\+\+NAME~32}
+
+How long the device name can be in the Sbn\+Peer\+Data file 

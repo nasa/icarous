@@ -1,0 +1,63 @@
+\hypertarget{structraft_vote_response__t}{}\doxysection{raft\+Vote\+Response\+\_\+t Struct Reference}
+\label{structraft_vote_response__t}\index{raftVoteResponse\_t@{raftVoteResponse\_t}}
+
+
+followers respond to vote reqeuests with this message  
+
+
+
+
+{\ttfamily \#include $<$raft\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structraft_vote_response__t_a91a72275f0de7509003423937a6d4d47}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structraft_vote_response__t_a258963eeb83de03f72f33e4fa7d7d387}{intersection\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_vote_response__t_af2c15cbd1afe081a2454602f99b6c9a2}{candidate\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_vote_response__t_a6d8f38e0fa20d48a5fc38901203ad96f}{node\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_vote_response__t_aeb4b57c66914cbe8ba6d19cceaf310bd}{term}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structraft_vote_response__t_af2c15cbd1afe081a2454602f99b6c9a2}\label{structraft_vote_response__t_af2c15cbd1afe081a2454602f99b6c9a2}} 
+\index{raftVoteResponse\_t@{raftVoteResponse\_t}!candidateID@{candidateID}}
+\index{candidateID@{candidateID}!raftVoteResponse\_t@{raftVoteResponse\_t}}
+\doxysubsubsection{\texorpdfstring{candidateID}{candidateID}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Vote\+Response\+\_\+t\+::candidate\+ID}
+
+Leader node\textquotesingle{}s aircraft ID \mbox{\Hypertarget{structraft_vote_response__t_a258963eeb83de03f72f33e4fa7d7d387}\label{structraft_vote_response__t_a258963eeb83de03f72f33e4fa7d7d387}} 
+\index{raftVoteResponse\_t@{raftVoteResponse\_t}!intersectionID@{intersectionID}}
+\index{intersectionID@{intersectionID}!raftVoteResponse\_t@{raftVoteResponse\_t}}
+\doxysubsubsection{\texorpdfstring{intersectionID}{intersectionID}}
+{\footnotesize\ttfamily int32\+\_\+t raft\+Vote\+Response\+\_\+t\+::intersection\+ID}
+
+Intersection for which election is taking place \mbox{\Hypertarget{structraft_vote_response__t_a6d8f38e0fa20d48a5fc38901203ad96f}\label{structraft_vote_response__t_a6d8f38e0fa20d48a5fc38901203ad96f}} 
+\index{raftVoteResponse\_t@{raftVoteResponse\_t}!nodeID@{nodeID}}
+\index{nodeID@{nodeID}!raftVoteResponse\_t@{raftVoteResponse\_t}}
+\doxysubsubsection{\texorpdfstring{nodeID}{nodeID}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Vote\+Response\+\_\+t\+::node\+ID}
+
+Follower node\textquotesingle{}s aircraft ID \mbox{\Hypertarget{structraft_vote_response__t_aeb4b57c66914cbe8ba6d19cceaf310bd}\label{structraft_vote_response__t_aeb4b57c66914cbe8ba6d19cceaf310bd}} 
+\index{raftVoteResponse\_t@{raftVoteResponse\_t}!term@{term}}
+\index{term@{term}!raftVoteResponse\_t@{raftVoteResponse\_t}}
+\doxysubsubsection{\texorpdfstring{term}{term}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Vote\+Response\+\_\+t\+::term}
+
+Election term for current request \mbox{\Hypertarget{structraft_vote_response__t_a91a72275f0de7509003423937a6d4d47}\label{structraft_vote_response__t_a91a72275f0de7509003423937a6d4d47}} 
+\index{raftVoteResponse\_t@{raftVoteResponse\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!raftVoteResponse\_t@{raftVoteResponse\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t raft\+Vote\+Response\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+apps/raft/fsw/platform\+\_\+inc/\mbox{\hyperlink{raft__msg_8h}{raft\+\_\+msg.\+h}}\item 
+Modules/\+Core/\+Raft/Raft\+Core.\+hpp\end{DoxyCompactItemize}

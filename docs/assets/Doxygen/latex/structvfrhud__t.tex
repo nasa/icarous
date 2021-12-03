@@ -1,0 +1,101 @@
+\hypertarget{structvfrhud__t}{}\doxysection{vfrhud\+\_\+t Struct Reference}
+\label{structvfrhud__t}\index{vfrhud\_t@{vfrhud\_t}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structvfrhud__t_a15039e2fee64c29a2dd373b1f516b072}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{structvfrhud__t_a6e67c0046a62456334e1aca09f316162}{airspeed}}
+\item 
+double \mbox{\hyperlink{structvfrhud__t_af2c62050e399121cd4907bd9adfb9750}{groundspeed}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{structvfrhud__t_a25562ddf8587f1f7a69742ef0380be92}{heading}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structvfrhud__t_aab78bf905f72ef0bb38645303a7629ce}{throttle}}
+\item 
+double \mbox{\hyperlink{structvfrhud__t_a93c501ff4728a298813938b79cf63893}{alt}}
+\item 
+double \mbox{\hyperlink{structvfrhud__t_aac46376811d3bcc9733a9b122dc8fc2a}{climb}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structvfrhud__t_a03e6a179abc3608f578cad592ecf3181}{mode\+AP}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structvfrhud__t_a6eb1a59a6fce12c8e81c0ea6dbf24685}{mode\+Icarous}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structvfrhud__t_a65c234974c295a85bf28951714dd2607}{mode\+Flag\+AP}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structvfrhud__t_aaca597bb9d18f8955cc9bededa406166}{waypoint\+Current}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structvfrhud__t_a6e67c0046a62456334e1aca09f316162}\label{structvfrhud__t_a6e67c0046a62456334e1aca09f316162}} 
+\index{vfrhud\_t@{vfrhud\_t}!airspeed@{airspeed}}
+\index{airspeed@{airspeed}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{airspeed}{airspeed}}
+{\footnotesize\ttfamily double vfrhud\+\_\+t\+::airspeed}
+
+airspeed in m/s \mbox{\Hypertarget{structvfrhud__t_a93c501ff4728a298813938b79cf63893}\label{structvfrhud__t_a93c501ff4728a298813938b79cf63893}} 
+\index{vfrhud\_t@{vfrhud\_t}!alt@{alt}}
+\index{alt@{alt}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{alt}{alt}}
+{\footnotesize\ttfamily double vfrhud\+\_\+t\+::alt}
+
+altitude in m \mbox{\Hypertarget{structvfrhud__t_aac46376811d3bcc9733a9b122dc8fc2a}\label{structvfrhud__t_aac46376811d3bcc9733a9b122dc8fc2a}} 
+\index{vfrhud\_t@{vfrhud\_t}!climb@{climb}}
+\index{climb@{climb}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{climb}{climb}}
+{\footnotesize\ttfamily double vfrhud\+\_\+t\+::climb}
+
+climb rate in m/s \mbox{\Hypertarget{structvfrhud__t_af2c62050e399121cd4907bd9adfb9750}\label{structvfrhud__t_af2c62050e399121cd4907bd9adfb9750}} 
+\index{vfrhud\_t@{vfrhud\_t}!groundspeed@{groundspeed}}
+\index{groundspeed@{groundspeed}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{groundspeed}{groundspeed}}
+{\footnotesize\ttfamily double vfrhud\+\_\+t\+::groundspeed}
+
+groundspeed in m/s \mbox{\Hypertarget{structvfrhud__t_a25562ddf8587f1f7a69742ef0380be92}\label{structvfrhud__t_a25562ddf8587f1f7a69742ef0380be92}} 
+\index{vfrhud\_t@{vfrhud\_t}!heading@{heading}}
+\index{heading@{heading}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{heading}{heading}}
+{\footnotesize\ttfamily int16\+\_\+t vfrhud\+\_\+t\+::heading}
+
+heading \mbox{[}0,360\mbox{]} 0 = north \mbox{\Hypertarget{structvfrhud__t_a03e6a179abc3608f578cad592ecf3181}\label{structvfrhud__t_a03e6a179abc3608f578cad592ecf3181}} 
+\index{vfrhud\_t@{vfrhud\_t}!modeAP@{modeAP}}
+\index{modeAP@{modeAP}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{modeAP}{modeAP}}
+{\footnotesize\ttfamily uint8\+\_\+t vfrhud\+\_\+t\+::mode\+AP}
+
+pixhawk mode \mbox{\Hypertarget{structvfrhud__t_a65c234974c295a85bf28951714dd2607}\label{structvfrhud__t_a65c234974c295a85bf28951714dd2607}} 
+\index{vfrhud\_t@{vfrhud\_t}!modeFlagAP@{modeFlagAP}}
+\index{modeFlagAP@{modeFlagAP}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{modeFlagAP}{modeFlagAP}}
+{\footnotesize\ttfamily uint8\+\_\+t vfrhud\+\_\+t\+::mode\+Flag\+AP}
+
+pixhawk mode flag \mbox{\Hypertarget{structvfrhud__t_a6eb1a59a6fce12c8e81c0ea6dbf24685}\label{structvfrhud__t_a6eb1a59a6fce12c8e81c0ea6dbf24685}} 
+\index{vfrhud\_t@{vfrhud\_t}!modeIcarous@{modeIcarous}}
+\index{modeIcarous@{modeIcarous}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{modeIcarous}{modeIcarous}}
+{\footnotesize\ttfamily uint8\+\_\+t vfrhud\+\_\+t\+::mode\+Icarous}
+
+icarous mode \mbox{\Hypertarget{structvfrhud__t_aab78bf905f72ef0bb38645303a7629ce}\label{structvfrhud__t_aab78bf905f72ef0bb38645303a7629ce}} 
+\index{vfrhud\_t@{vfrhud\_t}!throttle@{throttle}}
+\index{throttle@{throttle}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{throttle}{throttle}}
+{\footnotesize\ttfamily uint16\+\_\+t vfrhud\+\_\+t\+::throttle}
+
+throttle \% \mbox{\Hypertarget{structvfrhud__t_a15039e2fee64c29a2dd373b1f516b072}\label{structvfrhud__t_a15039e2fee64c29a2dd373b1f516b072}} 
+\index{vfrhud\_t@{vfrhud\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t vfrhud\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structvfrhud__t_aaca597bb9d18f8955cc9bededa406166}\label{structvfrhud__t_aaca597bb9d18f8955cc9bededa406166}} 
+\index{vfrhud\_t@{vfrhud\_t}!waypointCurrent@{waypointCurrent}}
+\index{waypointCurrent@{waypointCurrent}!vfrhud\_t@{vfrhud\_t}}
+\doxysubsubsection{\texorpdfstring{waypointCurrent}{waypointCurrent}}
+{\footnotesize\ttfamily uint16\+\_\+t vfrhud\+\_\+t\+::waypoint\+Current}
+
+current waypoint 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

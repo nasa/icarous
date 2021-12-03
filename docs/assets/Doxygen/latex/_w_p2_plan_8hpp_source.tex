@@ -1,0 +1,21 @@
+\hypertarget{_w_p2_plan_8hpp_source}{}\doxysection{WP2\+Plan.\+hpp}
+\label{_w_p2_plan_8hpp_source}\index{Modules/Core/Utils/WP2Plan.hpp@{Modules/Core/Utils/WP2Plan.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef WP2PLAN\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define WP2PLAN\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{9 \textcolor{keyword}{typedef} std::vector<std::vector<std::function<double(\textcolor{keywordtype}{double})>>> trajTimeFunction;}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keywordtype}{void} ConvertWPList2Plan(larcfm::Plan* fp,\textcolor{keyword}{const} std::string \&plan\_id, \textcolor{keyword}{const} std::list<waypoint\_t> \&waypoints, }
+\DoxyCodeLine{12                         \textcolor{keyword}{const} \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} repair,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{13 \textcolor{keywordtype}{void} GetWaypointFromPlan(\textcolor{keyword}{const} larcfm::Plan* fp,\textcolor{keyword}{const} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id},\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} \&wp);}
+\DoxyCodeLine{14 trajTimeFunction ConvertEUTL2TimeFunction(\textcolor{keyword}{const} larcfm::Plan* fp);}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,44 @@
+\hypertarget{class_merger}{}\doxysection{Merger Class Reference}
+\label{class_merger}\index{Merger@{Merger}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_merger_ae4523afe44d0c0df1dfc9e244358922d}\label{class_merger_ae4523afe44d0c0df1dfc9e244358922d}} 
+{\bfseries Merger} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config, int vehicle\+ID)
+\item 
+\mbox{\Hypertarget{class_merger_a3d1b3705bb886220fb8707f1ab56eb76}\label{class_merger_a3d1b3705bb886220fb8707f1ab56eb76}} 
+void {\bfseries Read\+Param\+From\+File} (std\+::string config)
+\item 
+\mbox{\Hypertarget{class_merger_a6e94b336543cb78c3aaf48935ad7cc29}\label{class_merger_a6e94b336543cb78c3aaf48935ad7cc29}} 
+void {\bfseries Set\+Vehicle\+Constraints} (double min\+Vel, double max\+Vel, double turn\+Radius)
+\item 
+\mbox{\Hypertarget{class_merger_adca035243e311683a6963591dc136314}\label{class_merger_adca035243e311683a6963591dc136314}} 
+void {\bfseries Set\+Mergefix\+Params} (double separation\+Time, double coordzone, double schzone, double entryzone, double corridor\+Width)
+\item 
+\mbox{\Hypertarget{class_merger_a982c16de9fa672d084096dfa7dfb5639}\label{class_merger_a982c16de9fa672d084096dfa7dfb5639}} 
+void {\bfseries Set\+Vehicle\+State} (double position\mbox{[}$\,$\mbox{]}, double velocity\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_merger_a8653bd2e78090e5a6add10e52f89aa8d}\label{class_merger_a8653bd2e78090e5a6add10e52f89aa8d}} 
+void {\bfseries Set\+Intersection\+Data} (int i, int id, double position\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_merger_a66bc6e67d8c0d9f7d3f41669cc0da1c8}\label{class_merger_a66bc6e67d8c0d9f7d3f41669cc0da1c8}} 
+unsigned char {\bfseries Run\+Merging\+Operation} (double time)
+\item 
+\mbox{\Hypertarget{class_merger_a1b8da4a61e584db96320f9b2b573b86b}\label{class_merger_a1b8da4a61e584db96320f9b2b573b86b}} 
+void {\bfseries Set\+Node\+Log} (\mbox{\hyperlink{structdata_log__t}{data\+Log\+\_\+t}} $\ast$mg\+Data)
+\item 
+\mbox{\Hypertarget{class_merger_aa5722bb5d6aa45564d604a9570793e08}\label{class_merger_aa5722bb5d6aa45564d604a9570793e08}} 
+int {\bfseries Get\+Output\+Trajectory} (int i, double wp\mbox{[}4\mbox{]})
+\item 
+\mbox{\Hypertarget{class_merger_aedd98ef2c60e06fa0a9d28e998392a53}\label{class_merger_aedd98ef2c60e06fa0a9d28e998392a53}} 
+void {\bfseries Get\+Output\+Velocity} (double $\ast$trk, double $\ast$gs, double $\ast$vs)
+\item 
+\mbox{\Hypertarget{class_merger_a24e43cec953760a0cf65e7d4d0496bc6}\label{class_merger_a24e43cec953760a0cf65e7d4d0496bc6}} 
+bool {\bfseries Get\+Arrival\+Times} (\mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} $\ast$arr\+Data)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Merger/Merger.\+hpp\item 
+Modules/\+Core/\+Merger/Merger.\+cpp\end{DoxyCompactItemize}

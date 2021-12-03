@@ -1,0 +1,141 @@
+\hypertarget{port__lib_8h}{}\doxysection{apps/port\+\_\+lib/fsw/public\+\_\+inc/port\+\_\+lib.h File Reference}
+\label{port__lib_8h}\index{apps/port\_lib/fsw/public\_inc/port\_lib.h@{apps/port\_lib/fsw/public\_inc/port\_lib.h}}
+
+
+serial/socket port library  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$termios.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}network\+\_\+includes.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mavlink/ardupilotmega/mavlink.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structport__t}{port\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold port attributes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{port__lib_8h_af7b7dc9a200cb1404c280bd500fd1551}\label{port__lib_8h_af7b7dc9a200cb1404c280bd500fd1551}} 
+\#define {\bfseries BUFFER\+\_\+\+LENGTH}~1000
+\begin{DoxyCompactList}\small\item\em Mavlink message receive buffer size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}{port\+Type\+\_\+e}} \{ \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5ba0917971ba80f3b48c7d0cf1b2da024c7}{SOCKET}}
+, \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5bab110642f01505447ed49cf2d49fbf0a2}{SERIAL}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int32 \mbox{\hyperlink{port__lib_8h_ae0abbd394f152240173d8886a8028c89}{Port\+\_\+\+Lib\+Init}} (void)
+\item 
+void \mbox{\hyperlink{port__lib_8h_ae7c17d1fe2b349e540cd5da2d2d9b099}{Initialize\+Socket\+Port}} (\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$prt)
+\item 
+int \mbox{\hyperlink{port__lib_8h_a2f8c16fefbc1455d663261965f212f9e}{Initialize\+Serial\+Port}} (\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$prt, bool should\+\_\+block)
+\item 
+void \mbox{\hyperlink{port__lib_8h_afb6fc10453a780fd7a17b91468316ddc}{write\+Mavlink\+Data}} (\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$prt, mavlink\+\_\+message\+\_\+t $\ast$message)
+\item 
+int \mbox{\hyperlink{port__lib_8h_a03f2dc5b2f5b2d574266abb4d5bc0f00}{read\+Port}} (\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$prt)
+\item 
+void \mbox{\hyperlink{port__lib_8h_a5422fa17fc6bf125dc315c24ee0fbaab}{write\+Data}} (\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$prt, char $\ast$sendbuffer, int datalength)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}\label{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}} 
+\index{port\_lib.h@{port\_lib.h}!portType\_e@{portType\_e}}
+\index{portType\_e@{portType\_e}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{portType\_e}{portType\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}{port\+Type\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SOCKET@{SOCKET}!port\_lib.h@{port\_lib.h}}\index{port\_lib.h@{port\_lib.h}!SOCKET@{SOCKET}}}\mbox{\Hypertarget{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5ba0917971ba80f3b48c7d0cf1b2da024c7}\label{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5ba0917971ba80f3b48c7d0cf1b2da024c7}} 
+SOCKET&enum value SOCKET \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SERIAL@{SERIAL}!port\_lib.h@{port\_lib.h}}\index{port\_lib.h@{port\_lib.h}!SERIAL@{SERIAL}}}\mbox{\Hypertarget{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5bab110642f01505447ed49cf2d49fbf0a2}\label{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5bab110642f01505447ed49cf2d49fbf0a2}} 
+SERIAL&enum value SERIAL \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{port__lib_8h_a2f8c16fefbc1455d663261965f212f9e}\label{port__lib_8h_a2f8c16fefbc1455d663261965f212f9e}} 
+\index{port\_lib.h@{port\_lib.h}!InitializeSerialPort@{InitializeSerialPort}}
+\index{InitializeSerialPort@{InitializeSerialPort}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{InitializeSerialPort()}{InitializeSerialPort()}}
+{\footnotesize\ttfamily int Initialize\+Serial\+Port (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$}]{prt,  }\item[{bool}]{should\+\_\+block }\end{DoxyParamCaption})}
+
+Initialize a serial port 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$prt} & pointer to port \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{port__lib_8h_ae7c17d1fe2b349e540cd5da2d2d9b099}\label{port__lib_8h_ae7c17d1fe2b349e540cd5da2d2d9b099}} 
+\index{port\_lib.h@{port\_lib.h}!InitializeSocketPort@{InitializeSocketPort}}
+\index{InitializeSocketPort@{InitializeSocketPort}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{InitializeSocketPort()}{InitializeSocketPort()}}
+{\footnotesize\ttfamily void Initialize\+Socket\+Port (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$}]{prt }\end{DoxyParamCaption})}
+
+Initialize a socket port 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$prt} & pointer to port \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{port__lib_8h_ae0abbd394f152240173d8886a8028c89}\label{port__lib_8h_ae0abbd394f152240173d8886a8028c89}} 
+\index{port\_lib.h@{port\_lib.h}!Port\_LibInit@{Port\_LibInit}}
+\index{Port\_LibInit@{Port\_LibInit}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{Port\_LibInit()}{Port\_LibInit()}}
+{\footnotesize\ttfamily int32 Port\+\_\+\+Lib\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize port library \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{port__lib_8h_a03f2dc5b2f5b2d574266abb4d5bc0f00}\label{port__lib_8h_a03f2dc5b2f5b2d574266abb4d5bc0f00}} 
+\index{port\_lib.h@{port\_lib.h}!readPort@{readPort}}
+\index{readPort@{readPort}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{readPort()}{readPort()}}
+{\footnotesize\ttfamily int read\+Port (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$}]{prt }\end{DoxyParamCaption})}
+
+Read raw data from port 
+\begin{DoxyParams}{Parameters}
+{\em prt} & pointer to port to read from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{port__lib_8h_a5422fa17fc6bf125dc315c24ee0fbaab}\label{port__lib_8h_a5422fa17fc6bf125dc315c24ee0fbaab}} 
+\index{port\_lib.h@{port\_lib.h}!writeData@{writeData}}
+\index{writeData@{writeData}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{writeData()}{writeData()}}
+{\footnotesize\ttfamily void write\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$}]{prt,  }\item[{char $\ast$}]{sendbuffer,  }\item[{int}]{datalength }\end{DoxyParamCaption})}
+
+Write raw data to port 
+\begin{DoxyParams}{Parameters}
+{\em prt} & pointer to port to read data from \\
+\hline
+{\em sendbuffer} & pointer to char array contiaining data \\
+\hline
+{\em datalength} & length of data to be used \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{port__lib_8h_afb6fc10453a780fd7a17b91468316ddc}\label{port__lib_8h_afb6fc10453a780fd7a17b91468316ddc}} 
+\index{port\_lib.h@{port\_lib.h}!writeMavlinkData@{writeMavlinkData}}
+\index{writeMavlinkData@{writeMavlinkData}!port\_lib.h@{port\_lib.h}}
+\doxysubsubsection{\texorpdfstring{writeMavlinkData()}{writeMavlinkData()}}
+{\footnotesize\ttfamily void write\+Mavlink\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structport__t}{port\+\_\+t}} $\ast$}]{prt,  }\item[{mavlink\+\_\+message\+\_\+t $\ast$}]{message }\end{DoxyParamCaption})}
+
+Write mavlink message to a given port 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$prt} & pointer to output port \\
+\hline
+{\em $\ast$message} & pointer to mavlink message \\
+\hline
+\end{DoxyParams}

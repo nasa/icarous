@@ -1,0 +1,109 @@
+\hypertarget{_event_handler_8hpp_source}{}\doxysection{Event\+Handler.\+hpp}
+\label{_event_handler_8hpp_source}\index{Modules/Core/EventManager/EventHandler.hpp@{Modules/Core/EventManager/EventHandler.hpp}}
+\mbox{\hyperlink{_event_handler_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef EVENT\_HANDLER\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define EVENT\_HANDLER\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{12 \textcolor{keyword}{class }\mbox{\hyperlink{class_event_handler}{EventHandler}}\{}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{public}:}
+\DoxyCodeLine{19     \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{20        NOOP,INITIALIZE,EXECUTE,TERMINATE,DONE}
+\DoxyCodeLine{21     \}\mbox{\hyperlink{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}{execState\_e}};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{26     \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{27       SUCCESS, RESET, INPROGRESS, SHUTDOWN}
+\DoxyCodeLine{28     \}\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \mbox{\hyperlink{class_event_handler}{EventHandler}}()\{\mbox{\hyperlink{class_event_handler_a23e5c40362639a9a6df8a2c885993ce5}{execState}} = NOOP;\};}
+\DoxyCodeLine{37     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Initialize}}(T* state)\{\textcolor{keywordflow}{return} SUCCESS;\};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{45     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Execute}}(T* state)\{\textcolor{keywordflow}{return} SUCCESS;\};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{53     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}{Terminate}}(T* state)\{\textcolor{keywordflow}{return} SUCCESS;\};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_event_handler_af57750005d585f47d91c5131e4236d49}{RunEvent}}(T* state);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_handler_a3e4a0aa40348403f7326bdd44eeef106}{ExecuteHandler}}(std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}> hdl,std::string \mbox{\hyperlink{class_event_handler_a8397ca99260012417d01bb18dc3756b8}{eventName}},\textcolor{keywordtype}{float} priorityNew=0);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     std::string \mbox{\hyperlink{class_event_handler_a8397ca99260012417d01bb18dc3756b8}{eventName}}; }
+\DoxyCodeLine{74     \mbox{\hyperlink{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}{execState\_e}} \mbox{\hyperlink{class_event_handler_a23e5c40362639a9a6df8a2c885993ce5}{execState}}; }
+\DoxyCodeLine{75     std::list<std::shared\_ptr<EventHandler<T>>> \mbox{\hyperlink{class_event_handler_ae7ada3b91d9a2c29f8e9441733aa425d}{children}}; }
+\DoxyCodeLine{76     \textcolor{keywordtype}{float} \mbox{\hyperlink{class_event_handler_af09e6c69c2b80c0060352d9bb15b0516}{priority}}; }
+\DoxyCodeLine{77     \textcolor{keywordtype}{float} \mbox{\hyperlink{class_event_handler_adbc397f22614560ee3996344e145fae8}{defaultPriority}}; }
+\DoxyCodeLine{78 \};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{81 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_handler_comp}{HandlerComp}}\{}
+\DoxyCodeLine{82     \textcolor{keywordtype}{bool} operator()(\textcolor{keyword}{const} std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}>\& A,\textcolor{keyword}{const} std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}>\& B)\{}
+\DoxyCodeLine{83         \textcolor{keywordflow}{return} A-\/>priority < B-\/>priority;}
+\DoxyCodeLine{84     \}}
+\DoxyCodeLine{85 \};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{88 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_handler_a3e4a0aa40348403f7326bdd44eeef106}{EventHandler<T>::ExecuteHandler}}(std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}> hdl,std::string eventName,\textcolor{keywordtype}{float} priorityNew)\{}
+\DoxyCodeLine{89     \textcolor{keywordflow}{if} (priorityNew > 0)\{}
+\DoxyCodeLine{90         hdl-\/>priority = priorityNew;}
+\DoxyCodeLine{91     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{92         hdl-\/>priority = priority;}
+\DoxyCodeLine{93     \}}
+\DoxyCodeLine{94     hdl-\/>execState = INITIALIZE;}
+\DoxyCodeLine{95     hdl-\/>eventName = eventName;}
+\DoxyCodeLine{96     children.push\_back(hdl);}
+\DoxyCodeLine{97 \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{100 \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_event_handler_af57750005d585f47d91c5131e4236d49}{EventHandler<T>::RunEvent}}(T* state)\{}
+\DoxyCodeLine{101     \textcolor{keywordflow}{switch} (execState) \{}
+\DoxyCodeLine{102         \textcolor{keywordflow}{case} INITIALIZE: \{}
+\DoxyCodeLine{103             \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} val = Initialize(state);}
+\DoxyCodeLine{104             \textcolor{keywordflow}{if} ( val == SUCCESS) \{}
+\DoxyCodeLine{105                 execState = EXECUTE;}
+\DoxyCodeLine{106             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(val == SHUTDOWN)\{}
+\DoxyCodeLine{107                 execState = DONE;}
+\DoxyCodeLine{108             \}}
+\DoxyCodeLine{109             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{110         \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112         \textcolor{keywordflow}{case} EXECUTE: \{}
+\DoxyCodeLine{113             \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} val = Execute(state);}
+\DoxyCodeLine{114             \textcolor{keywordflow}{if} (val == SUCCESS) \{}
+\DoxyCodeLine{115                 execState = TERMINATE;}
+\DoxyCodeLine{116             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(val == RESET)\{}
+\DoxyCodeLine{117                 execState = INITIALIZE;}
+\DoxyCodeLine{118             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(val == SHUTDOWN)\{}
+\DoxyCodeLine{119                 execState = DONE;}
+\DoxyCodeLine{120             \}}
+\DoxyCodeLine{121             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{122         \}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124         \textcolor{keywordflow}{case} TERMINATE: \{}
+\DoxyCodeLine{125             \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} val = Terminate(state);}
+\DoxyCodeLine{126             \textcolor{keywordflow}{if}(val == SUCCESS)\{}
+\DoxyCodeLine{127                 execState = DONE;}
+\DoxyCodeLine{128             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(val == RESET)\{}
+\DoxyCodeLine{129                 execState = INITIALIZE;}
+\DoxyCodeLine{130             \}}
+\DoxyCodeLine{131             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{132         \}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134         \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{135            \textcolor{keywordflow}{break};}
+\DoxyCodeLine{136     \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138     \textcolor{keywordflow}{if}(execState == DONE)\{}
+\DoxyCodeLine{139        execState = INITIALIZE;}
+\DoxyCodeLine{140        \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{141     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{142        \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

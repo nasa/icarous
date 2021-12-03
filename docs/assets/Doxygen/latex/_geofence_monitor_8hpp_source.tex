@@ -1,0 +1,63 @@
+\hypertarget{_geofence_monitor_8hpp_source}{}\doxysection{Geofence\+Monitor.\+hpp}
+\label{_geofence_monitor_8hpp_source}\index{Modules/Core/GeofenceMonitor/GeofenceMonitor.hpp@{Modules/Core/GeofenceMonitor/GeofenceMonitor.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{//}}
+\DoxyCodeLine{2 \textcolor{comment}{// Created by Swee Balachandran on 12/7/17.}}
+\DoxyCodeLine{3 \textcolor{comment}{//}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef GEOFENCEMONITOR\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define GEOFENCEMONITOR\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}AircraftState.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}fence.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{15     \textcolor{keywordtype}{int} fenceId;}
+\DoxyCodeLine{16     \textcolor{keywordtype}{bool} violationStatus;}
+\DoxyCodeLine{17     \textcolor{keywordtype}{bool} conflictstatus;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{double} recoveryPoint[3];}
+\DoxyCodeLine{19     fence* \_gf;}
+\DoxyCodeLine{20 \}\mbox{\hyperlink{struct_geofence_conflict}{GeofenceConflict}};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{class_geofence_monitor}{GeofenceMonitor}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25     \textcolor{keywordtype}{double} BUFF = 0.1;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} lookahead;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double} hthreshold;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} vthreshold;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double} hstepback;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double} vstepback;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     std::list<fence> fenceList;}
+\DoxyCodeLine{34     std::list<fence>::iterator fenceListIt;}
+\DoxyCodeLine{35     larcfm::CDPolycarp geoPolyCarp;}
+\DoxyCodeLine{36     larcfm::PolycarpResolution geoPolyResolution;}
+\DoxyCodeLine{37     larcfm::PolycarpDetection geoPolyDetect;}
+\DoxyCodeLine{38     larcfm::PolyPath geoPolyPath;}
+\DoxyCodeLine{39     larcfm::CDIIPolygon geoCDIIPolygon;}
+\DoxyCodeLine{40     std::list<GeofenceConflict> conflictList;}
+\DoxyCodeLine{41     \textcolor{keywordtype}{bool} CollisionDetection(fence* gf,larcfm::Position* pos, larcfm::Vect2* v,\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{42     fence* GetGeofence(\textcolor{keywordtype}{int} \textcolor{keywordtype}{id});}
+\DoxyCodeLine{43 \textcolor{keyword}{public}:}
+\DoxyCodeLine{44     \mbox{\hyperlink{class_geofence_monitor}{GeofenceMonitor}}(\textcolor{keywordtype}{double}[]);}
+\DoxyCodeLine{45     \textcolor{keywordtype}{void} SetGeofenceParameters(\textcolor{keywordtype}{double} []);}
+\DoxyCodeLine{46     \textcolor{keywordtype}{void} InputGeofenceData(\textcolor{keywordtype}{int} type,\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{int} totalVertices, \textcolor{keywordtype}{double} floor, \textcolor{keywordtype}{double} ceiling, \textcolor{keywordtype}{double} pos[][2]);}
+\DoxyCodeLine{47     \textcolor{keywordtype}{bool} CheckViolation(\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} track,\textcolor{keywordtype}{double} groundSpeed,\textcolor{keywordtype}{double} verticalSpeed);}
+\DoxyCodeLine{48     \textcolor{keywordtype}{bool} CheckWPFeasibility(\textcolor{keywordtype}{double} fromPosition[],\textcolor{keywordtype}{double} toPosition[]);}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} GetNumConflicts();}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} GetConflictStatus(\textcolor{keywordtype}{bool} conflicts[]);}
+\DoxyCodeLine{51     \textcolor{keywordtype}{void} GetConflict(\textcolor{keywordtype}{int} \textcolor{keywordtype}{id},\textcolor{keywordtype}{int}\& fenceId,uint8\_t\& conflict,uint8\_t\& violation,\textcolor{keywordtype}{double} recoveryPoint[],uint8\_t\& type);}
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} GetClosestRecoveryPoint(\textcolor{keywordtype}{double} currentPosition[],\textcolor{keywordtype}{double} recoveryPosition[]);}
+\DoxyCodeLine{53     \textcolor{keywordtype}{void} ClearFences();}
+\DoxyCodeLine{54 \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//GEOFENCEMONITOR\_H}}
+
+\end{DoxyCode}

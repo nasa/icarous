@@ -1,0 +1,109 @@
+\hypertarget{ap_interface_8c}{}\doxysection{apps/ap\+Interface/fsw/src/ap\+Interface.c File Reference}
+\label{ap_interface_8c}\index{apps/apInterface/fsw/src/apInterface.c@{apps/apInterface/fsw/src/apInterface.c}}
+
+
+function definitions for ap\+Interface app  
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}ap\+Interface.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ap\+Interface\+\_\+version.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ap\+Intf\+\_\+tbl.\+c\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{ap_interface_8c_a00a750f06000bcc53a5aa3082de40481}{APINTERFACE\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em This is the main entry point for your application that will be used by c\+FS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_a9236e1ef806d65661c542bf0abd92524}{APINTERFACE\+\_\+\+App\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize app data\+: set up pipes, subscribe to messages, read table, initialize data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_a085ed68bcee25fae012d6481b6515666}{APINTERFACE\+\_\+\+Initialize\+APPorts}} ()
+\begin{DoxyCompactList}\small\item\em Open ports to autopilot and intialize ports here. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_a667e998823014f393463cfbb595a12aa}{APINTERFACE\+\_\+\+Process\+APData}} ()
+\begin{DoxyCompactList}\small\item\em Read data from the autopilot and construct software bus messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_aafafd8cad7feb95f8f5bc64470b9190b}{APINTERFACE\+\_\+\+Get\+ADSBData}} ()
+\begin{DoxyCompactList}\small\item\em Read ADSB data from ADSB transponder and publish traffic data on software bus. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_a73fad45a01862f58139ae3af8df1443f}{APINTERFACE\+\_\+\+Process\+SBData}} ()
+\begin{DoxyCompactList}\small\item\em Read data from software bus and send data to autopilot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8c_a7bf7abb38d0f858e471ac8dac713abfe}{APINTERFACE\+\_\+\+App\+Clean\+Up}} ()
+\item 
+int32\+\_\+t \mbox{\hyperlink{ap_interface_8c_ac1eeab798259137088a788a94d20df83}{Ap\+Interface\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t \mbox{\hyperlink{ap_interface_8c_afdede3c3d4678bdb287cf3b61dbed15e}{APInterface\+\_\+\+Event\+Filters}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Event filter definition for ardupilot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{ap_interface_8c_a7bf7abb38d0f858e471ac8dac713abfe}\label{ap_interface_8c_a7bf7abb38d0f858e471ac8dac713abfe}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_AppCleanUp@{APINTERFACE\_AppCleanUp}}
+\index{APINTERFACE\_AppCleanUp@{APINTERFACE\_AppCleanUp}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppCleanUp()}{APINTERFACE\_AppCleanUp()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{ap_interface_8c_a9236e1ef806d65661c542bf0abd92524}\label{ap_interface_8c_a9236e1ef806d65661c542bf0abd92524}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_AppInit@{APINTERFACE\_AppInit}}
+\index{APINTERFACE\_AppInit@{APINTERFACE\_AppInit}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppInit()}{APINTERFACE\_AppInit()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{ap_interface_8c_a00a750f06000bcc53a5aa3082de40481}\label{ap_interface_8c_a00a750f06000bcc53a5aa3082de40481}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_AppMain@{APINTERFACE\_AppMain}}
+\index{APINTERFACE\_AppMain@{APINTERFACE\_AppMain}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppMain()}{APINTERFACE\_AppMain()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{ap_interface_8c_aafafd8cad7feb95f8f5bc64470b9190b}\label{ap_interface_8c_aafafd8cad7feb95f8f5bc64470b9190b}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_GetADSBData@{APINTERFACE\_GetADSBData}}
+\index{APINTERFACE\_GetADSBData@{APINTERFACE\_GetADSBData}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_GetADSBData()}{APINTERFACE\_GetADSBData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Get\+ADSBData (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Process ADSB data \mbox{\Hypertarget{ap_interface_8c_a085ed68bcee25fae012d6481b6515666}\label{ap_interface_8c_a085ed68bcee25fae012d6481b6515666}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_InitializeAPPorts@{APINTERFACE\_InitializeAPPorts}}
+\index{APINTERFACE\_InitializeAPPorts@{APINTERFACE\_InitializeAPPorts}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_InitializeAPPorts()}{APINTERFACE\_InitializeAPPorts()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Initialize\+APPorts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Initialize ports to the autopilot \mbox{\Hypertarget{ap_interface_8c_a667e998823014f393463cfbb595a12aa}\label{ap_interface_8c_a667e998823014f393463cfbb595a12aa}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_ProcessAPData@{APINTERFACE\_ProcessAPData}}
+\index{APINTERFACE\_ProcessAPData@{APINTERFACE\_ProcessAPData}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_ProcessAPData()}{APINTERFACE\_ProcessAPData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Process\+APData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the autopilot \mbox{\Hypertarget{ap_interface_8c_a73fad45a01862f58139ae3af8df1443f}\label{ap_interface_8c_a73fad45a01862f58139ae3af8df1443f}} 
+\index{apInterface.c@{apInterface.c}!APINTERFACE\_ProcessSBData@{APINTERFACE\_ProcessSBData}}
+\index{APINTERFACE\_ProcessSBData@{APINTERFACE\_ProcessSBData}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_ProcessSBData()}{APINTERFACE\_ProcessSBData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Process\+SBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the SB message \mbox{\Hypertarget{ap_interface_8c_ac1eeab798259137088a788a94d20df83}\label{ap_interface_8c_ac1eeab798259137088a788a94d20df83}} 
+\index{apInterface.c@{apInterface.c}!ApInterfaceTableValidationFunc@{ApInterfaceTableValidationFunc}}
+\index{ApInterfaceTableValidationFunc@{ApInterfaceTableValidationFunc}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{ApInterfaceTableValidationFunc()}{ApInterfaceTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Ap\+Interface\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{ap_interface_8c_afdede3c3d4678bdb287cf3b61dbed15e}\label{ap_interface_8c_afdede3c3d4678bdb287cf3b61dbed15e}} 
+\index{apInterface.c@{apInterface.c}!APInterface\_EventFilters@{APInterface\_EventFilters}}
+\index{APInterface\_EventFilters@{APInterface\_EventFilters}!apInterface.c@{apInterface.c}}
+\doxysubsubsection{\texorpdfstring{APInterface\_EventFilters}{APInterface\_EventFilters}}
+{\footnotesize\ttfamily CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t APInterface\+\_\+\+Event\+Filters\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\{  }
+\DoxyCodeLine{        \{APINTERFACE\_STARTUP\_INF\_EID,       0x0000\},}
+\DoxyCodeLine{        \{APINTERFACE\_COMMAND\_ERR\_EID,       0x0000\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

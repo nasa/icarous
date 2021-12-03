@@ -1,0 +1,53 @@
+\hypertarget{to__lab__sub__table_8h_source}{}\doxysection{to\+\_\+lab\+\_\+sub\+\_\+table.\+h}
+\label{to__lab__sub__table_8h_source}\index{apps/SBN/test/sbnhk/to\_lab\_sub\_table.h@{apps/SBN/test/sbnhk/to\_lab\_sub\_table.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: to\_sub\_table.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{** Purpose: }}
+\DoxyCodeLine{5 \textcolor{comment}{**  Define TO Lab CPU specific subscription table }}
+\DoxyCodeLine{6 \textcolor{comment}{**}}
+\DoxyCodeLine{7 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{** \$Log: to\_lab\_sub\_table.h  \$}}
+\DoxyCodeLine{10 \textcolor{comment}{** Revision 1.3 2014/07/16 14:44:45GMT-\/05:00 acudmore }}
+\DoxyCodeLine{11 \textcolor{comment}{** Member renamed from to\_sub\_table.h to to\_lab\_sub\_table.h in project c:/MKSDATA/MKS-\/REPOSITORY/CFS-\/REPOSITORY/to\_lab/fsw/platform\_inc/project.pj.}}
+\DoxyCodeLine{12 \textcolor{comment}{** Revision 1.2 2014/07/16 14:44:45ACT acudmore }}
+\DoxyCodeLine{13 \textcolor{comment}{** Updated TO\_LAB subscription table header file ( comments, clean up )}}
+\DoxyCodeLine{14 \textcolor{comment}{**}}
+\DoxyCodeLine{15 \textcolor{comment}{*************************************************************************/}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{comment}{/* }}
+\DoxyCodeLine{18 \textcolor{comment}{** Add the proper include file for the message IDs below}}
+\DoxyCodeLine{19 \textcolor{comment}{*/}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}cfe\_msgids.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{/*}}
+\DoxyCodeLine{23 \textcolor{comment}{** Common CFS app includes below are commented out}}
+\DoxyCodeLine{24 \textcolor{comment}{*/}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}ci\_lab\_msgids.h"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}hs\_msgids.h"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}fm\_msgids.h"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}sc\_msgids.h"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}ds\_msgids.h"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}lc\_msgids.h"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{static} TO\_subscription\_t  TO\_SubTable[] =}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{37             \textcolor{comment}{/* CFS App Subscriptions */}}
+\DoxyCodeLine{38             \{0x0843,                \{0,0\},  4\},}
+\DoxyCodeLine{39             \{0x08FA,                \{0,0\},  4\},}
+\DoxyCodeLine{40             \textcolor{comment}{/* telemetry test sub */}}
+\DoxyCodeLine{41             \{0x0888,                \{0,0\},  4\},}
+\DoxyCodeLine{42             \{TO\_UNUSED,              \{0,0\},  0\}}
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{/************************}}
+\DoxyCodeLine{46 \textcolor{comment}{** End of File Comment ** }}
+\DoxyCodeLine{47 \textcolor{comment}{************************/}}
+
+\end{DoxyCode}

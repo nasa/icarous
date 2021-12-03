@@ -1,0 +1,73 @@
+\hypertarget{class_dubins_planner}{}\doxysection{Dubins\+Planner Class Reference}
+\label{class_dubins_planner}\index{DubinsPlanner@{DubinsPlanner}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_afea2491670f6a0eccbe5b0ff68884b66}\label{class_dubins_planner_afea2491670f6a0eccbe5b0ff68884b66}} 
+void {\bfseries Reset} ()
+\item 
+\mbox{\Hypertarget{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}\label{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}} 
+void {\bfseries Shrink\+Traffic\+Volume} (double factor)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}\label{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}} 
+void {\bfseries Set\+Parameters} (\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&prms)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}\label{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}} 
+void {\bfseries Set\+Vehicle\+Initial\+Conditions} (larcfm\+::\+Vect3 \&pos, larcfm\+::\+Velocity \&vel)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}\label{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}} 
+void {\bfseries Set\+Traffic} (std\+::vector$<$ larcfm\+::\+Vect3 $>$ \&tfpos, std\+::vector$<$ larcfm\+::\+Velocity $>$ \&tfvel)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}\label{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}} 
+void {\bfseries Set\+Traffic} (larcfm\+::\+Plan \&tf)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}\label{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}} 
+void {\bfseries Set\+Boundary} (larcfm\+::\+Poly3D \&bounding\+Box)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}\label{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}} 
+void {\bfseries Set\+ZBoundary} (double zmin, double zmax)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}\label{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}} 
+void {\bfseries Set\+Obstacles} (std\+::list$<$ larcfm\+::\+Poly3D $>$ \&obstacle\+List)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}\label{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}} 
+void {\bfseries Set\+Goal} (larcfm\+::\+Vect3 \&goal, larcfm\+::\+Velocity final\+Vel)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}\label{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}} 
+bool {\bfseries Compute\+Path} (double start\+Time)
+\item 
+void \mbox{\hyperlink{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}{Get\+Plan}} (larcfm\+::\+Euclidean\+Projection \&proj, larcfm\+::\+Plan \&plan)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}{Line\+Plan\+Intersection}} (larcfm\+::\+Vect2 \&A, larcfm\+::\+Vect2 \&B, double floor, double ceiling, larcfm\+::\+Vect3 \&current\+Pos, larcfm\+::\+Vect3 \&next\+Pos)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}\label{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}} 
+std\+::vector$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ {\bfseries path}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}\label{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetPlan@{GetPlan}}
+\index{GetPlan@{GetPlan}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{larcfm\+::\+Euclidean\+Projection \&}]{proj,  }\item[{larcfm\+::\+Plan \&}]{plan }\end{DoxyParamCaption})}
+
+Since the first TCP in this node is the same as the last TCP from the previous node, merge TCP data\mbox{\Hypertarget{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}\label{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}} 
+\index{DubinsPlanner@{DubinsPlanner}!LinePlanIntersection@{LinePlanIntersection}}
+\index{LinePlanIntersection@{LinePlanIntersection}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{LinePlanIntersection()}{LinePlanIntersection()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Line\+Plan\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect2 \&}]{A,  }\item[{larcfm\+::\+Vect2 \&}]{B,  }\item[{double}]{floor,  }\item[{double}]{ceiling,  }\item[{larcfm\+::\+Vect3 \&}]{current\+Pos,  }\item[{larcfm\+::\+Vect3 \&}]{next\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Equation of plan is given by\+: (p-\/p0).n = 0 ( \textquotesingle{}.\textquotesingle{} here is the dot product between vectors) where p0 is a point on the plane, n is the unit normal vector of the plane. Equation of line\+: p = l0 + d$\ast$l where l0 is a point on the line, d is a scalar, l is a vector in the line\textquotesingle{}s direction. Subsitute line equation into plan to find intersection. Solve for d\+: d = (p0 -\/ l0).n/(l.\+n) Use d in equation of line to get the point of intersection with the plane.
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Dubins\+Planner.\+hpp\item 
+Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Dubins\+Planner.\+cpp\item 
+Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Search\+Algorithms.\+cpp\end{DoxyCompactItemize}

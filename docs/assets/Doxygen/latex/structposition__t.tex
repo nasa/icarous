@@ -1,0 +1,151 @@
+\hypertarget{structposition__t}{}\doxysection{position\+\_\+t Struct Reference}
+\label{structposition__t}\index{position\_t@{position\_t}}
+
+
+position information of aircraft.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structposition__t_a82f002a7df5bbeb8c4078cd2ee19264c}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structposition__t_a67ee1985e1b7f991b27a3d282215e370}{aircraft\+\_\+id}}
+\item 
+\mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}} \mbox{\hyperlink{structposition__t_aa4b22767dd91b0b2d85d1fbbf02a336c}{callsign}}
+\item 
+int64\+\_\+t \mbox{\hyperlink{structposition__t_ad13a3dd1c7907598b65eb6acf017698a}{time\+\_\+gps}}
+\item 
+int64\+\_\+t \mbox{\hyperlink{structposition__t_a07f9502d9062cba1a48404a75f3699f9}{time\+\_\+boot}}
+\item 
+double \mbox{\hyperlink{structposition__t_a0b4c8a3559bd68b435b8b0a4fad32301}{latitude}}
+\item 
+double \mbox{\hyperlink{structposition__t_aaaca1450b1335112bb591de7fe0c4b8c}{longitude}}
+\item 
+double \mbox{\hyperlink{structposition__t_abdd763dee8e303432e3cc2d7227b7499}{altitude\+\_\+abs}}
+\item 
+double \mbox{\hyperlink{structposition__t_afa614e7d8149f9e2af09b7cc3eed0125}{altitude\+\_\+rel}}
+\item 
+double \mbox{\hyperlink{structposition__t_a4272d7338c950700001ca9e828578c2c}{vn}}
+\item 
+double \mbox{\hyperlink{structposition__t_a5fc309060dfe5debf5f146d0799fc347}{ve}}
+\item 
+double \mbox{\hyperlink{structposition__t_ad0c56b07b0f104cd9a8d6b2badea4780}{vd}}
+\item 
+double \mbox{\hyperlink{structposition__t_a44e54a05b52afda34b175576e26c1485}{hdg}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structposition__t_a697054865b77c23f3cb908b81a2005ed}{hdop}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structposition__t_a8a61debd99c57e57fe14894b190dd83a}{vdop}}
+\item 
+int \mbox{\hyperlink{structposition__t_a35ef98927f8fa5786364fa64db39d459}{num\+Sats}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structposition__t_a67ee1985e1b7f991b27a3d282215e370}\label{structposition__t_a67ee1985e1b7f991b27a3d282215e370}} 
+\index{position\_t@{position\_t}!aircraft\_id@{aircraft\_id}}
+\index{aircraft\_id@{aircraft\_id}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{aircraft\_id}{aircraft\_id}}
+{\footnotesize\ttfamily uint32\+\_\+t position\+\_\+t\+::aircraft\+\_\+id}
+
+aircraft id \mbox{\Hypertarget{structposition__t_abdd763dee8e303432e3cc2d7227b7499}\label{structposition__t_abdd763dee8e303432e3cc2d7227b7499}} 
+\index{position\_t@{position\_t}!altitude\_abs@{altitude\_abs}}
+\index{altitude\_abs@{altitude\_abs}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{altitude\_abs}{altitude\_abs}}
+{\footnotesize\ttfamily double position\+\_\+t\+::altitude\+\_\+abs}
+
+absolution altitude, ASL (m) ~\newline
+ \mbox{\Hypertarget{structposition__t_afa614e7d8149f9e2af09b7cc3eed0125}\label{structposition__t_afa614e7d8149f9e2af09b7cc3eed0125}} 
+\index{position\_t@{position\_t}!altitude\_rel@{altitude\_rel}}
+\index{altitude\_rel@{altitude\_rel}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{altitude\_rel}{altitude\_rel}}
+{\footnotesize\ttfamily double position\+\_\+t\+::altitude\+\_\+rel}
+
+relative altitude, AGL (m) \mbox{\Hypertarget{structposition__t_aa4b22767dd91b0b2d85d1fbbf02a336c}\label{structposition__t_aa4b22767dd91b0b2d85d1fbbf02a336c}} 
+\index{position\_t@{position\_t}!callsign@{callsign}}
+\index{callsign@{callsign}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{callsign}{callsign}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}} position\+\_\+t\+::callsign}
+
+aircraft call sign \mbox{\Hypertarget{structposition__t_a44e54a05b52afda34b175576e26c1485}\label{structposition__t_a44e54a05b52afda34b175576e26c1485}} 
+\index{position\_t@{position\_t}!hdg@{hdg}}
+\index{hdg@{hdg}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{hdg}{hdg}}
+{\footnotesize\ttfamily double position\+\_\+t\+::hdg}
+
+heading in degrees \mbox{\Hypertarget{structposition__t_a697054865b77c23f3cb908b81a2005ed}\label{structposition__t_a697054865b77c23f3cb908b81a2005ed}} 
+\index{position\_t@{position\_t}!hdop@{hdop}}
+\index{hdop@{hdop}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{hdop}{hdop}}
+{\footnotesize\ttfamily uint16\+\_\+t position\+\_\+t\+::hdop}
+
+GPS Horizontal Dilution of Precision \mbox{\Hypertarget{structposition__t_a0b4c8a3559bd68b435b8b0a4fad32301}\label{structposition__t_a0b4c8a3559bd68b435b8b0a4fad32301}} 
+\index{position\_t@{position\_t}!latitude@{latitude}}
+\index{latitude@{latitude}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{latitude}{latitude}}
+{\footnotesize\ttfamily double position\+\_\+t\+::latitude}
+
+latitude (degrees) \mbox{\Hypertarget{structposition__t_aaaca1450b1335112bb591de7fe0c4b8c}\label{structposition__t_aaaca1450b1335112bb591de7fe0c4b8c}} 
+\index{position\_t@{position\_t}!longitude@{longitude}}
+\index{longitude@{longitude}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{longitude}{longitude}}
+{\footnotesize\ttfamily double position\+\_\+t\+::longitude}
+
+longitude (degrees) \mbox{\Hypertarget{structposition__t_a35ef98927f8fa5786364fa64db39d459}\label{structposition__t_a35ef98927f8fa5786364fa64db39d459}} 
+\index{position\_t@{position\_t}!numSats@{numSats}}
+\index{numSats@{numSats}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{numSats}{numSats}}
+{\footnotesize\ttfamily int position\+\_\+t\+::num\+Sats}
+
+Total number of satellites being used for localization \mbox{\Hypertarget{structposition__t_a07f9502d9062cba1a48404a75f3699f9}\label{structposition__t_a07f9502d9062cba1a48404a75f3699f9}} 
+\index{position\_t@{position\_t}!time\_boot@{time\_boot}}
+\index{time\_boot@{time\_boot}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{time\_boot}{time\_boot}}
+{\footnotesize\ttfamily int64\+\_\+t position\+\_\+t\+::time\+\_\+boot}
+
+boot time of onboard autopilot \mbox{\Hypertarget{structposition__t_ad13a3dd1c7907598b65eb6acf017698a}\label{structposition__t_ad13a3dd1c7907598b65eb6acf017698a}} 
+\index{position\_t@{position\_t}!time\_gps@{time\_gps}}
+\index{time\_gps@{time\_gps}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{time\_gps}{time\_gps}}
+{\footnotesize\ttfamily int64\+\_\+t position\+\_\+t\+::time\+\_\+gps}
+
+gps time \mbox{\Hypertarget{structposition__t_a82f002a7df5bbeb8c4078cd2ee19264c}\label{structposition__t_a82f002a7df5bbeb8c4078cd2ee19264c}} 
+\index{position\_t@{position\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t position\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structposition__t_ad0c56b07b0f104cd9a8d6b2badea4780}\label{structposition__t_ad0c56b07b0f104cd9a8d6b2badea4780}} 
+\index{position\_t@{position\_t}!vd@{vd}}
+\index{vd@{vd}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{vd}{vd}}
+{\footnotesize\ttfamily double position\+\_\+t\+::vd}
+
+velocity Down component (m/s) \mbox{\Hypertarget{structposition__t_a8a61debd99c57e57fe14894b190dd83a}\label{structposition__t_a8a61debd99c57e57fe14894b190dd83a}} 
+\index{position\_t@{position\_t}!vdop@{vdop}}
+\index{vdop@{vdop}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{vdop}{vdop}}
+{\footnotesize\ttfamily uint16\+\_\+t position\+\_\+t\+::vdop}
+
+GPS Vertical Dilution of Precision \mbox{\Hypertarget{structposition__t_a5fc309060dfe5debf5f146d0799fc347}\label{structposition__t_a5fc309060dfe5debf5f146d0799fc347}} 
+\index{position\_t@{position\_t}!ve@{ve}}
+\index{ve@{ve}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{ve}{ve}}
+{\footnotesize\ttfamily double position\+\_\+t\+::ve}
+
+velocity East component (m/s) \mbox{\Hypertarget{structposition__t_a4272d7338c950700001ca9e828578c2c}\label{structposition__t_a4272d7338c950700001ca9e828578c2c}} 
+\index{position\_t@{position\_t}!vn@{vn}}
+\index{vn@{vn}!position\_t@{position\_t}}
+\doxysubsubsection{\texorpdfstring{vn}{vn}}
+{\footnotesize\ttfamily double position\+\_\+t\+::vn}
+
+velocity North component (m/s) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

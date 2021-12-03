@@ -1,0 +1,263 @@
+\hypertarget{struct_s_c_h___hk_packet__t}{}\doxysection{SCH\+\_\+\+Hk\+Packet\+\_\+t Struct Reference}
+\label{struct_s_c_h___hk_packet__t}\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+
+
+{\ttfamily \#include $<$sch\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_c_h___hk_packet__t_ad95ba5317fccfe3fe1e084e8187faa01}\label{struct_s_c_h___hk_packet__t_ad95ba5317fccfe3fe1e084e8187faa01}} 
+uint8 {\bfseries Tlm\+Header} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\begin{DoxyCompactList}\small\item\em c\+FE Software Bus Telemetry Message Header \end{DoxyCompactList}\item 
+uint8 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_af8901da757eaf6f3e35b641f553c4c13}{Cmd\+Counter}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} Counter. \end{DoxyCompactList}\item 
+uint8 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_abf0292ba71a3c8c7bb3e13d4de936103}{Err\+Counter}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} Error Counter. \end{DoxyCompactList}\item 
+uint8 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ac8936e4ac0482d7f26806bb4cf40b178}{Sync\+To\+MET}}
+\begin{DoxyCompactList}\small\item\em Status indicating whether slots are synched to MET. \end{DoxyCompactList}\item 
+uint8 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a4ced3d9fa1ab9f5266f697ae96d0f120}{Major\+Frame\+Source}}
+\begin{DoxyCompactList}\small\item\em Major Frame Signal source identifier. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_aab70a9dbdda2f80b31d12fbfd0da2289}{Schedule\+Activity\+Success\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of successfully performed activities. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ad60184fa8adc5e7d813e21a5821163ad}{Schedule\+Activity\+Failure\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of unsuccessful activities attempted. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a44390eb7a92bbd1a9250db505ee55ee1}{Slots\+Processed\+Count}}
+\begin{DoxyCompactList}\small\item\em Total \# of Schedule Slots (Minor Frames) Processed. \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a459d3cd3c53c6a67acdcbf0ba0f1a012}{Skipped\+Slots\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of times that slots were skipped. \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a695c7b6a3104ab7a6785d893d4160791}{Multiple\+Slots\+Count}}
+\begin{DoxyCompactList}\small\item\em Number of times that multiple slots processed. \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a1561fff6ce46cfd10199ac0fc75bcd8a}{Same\+Slot\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of times SCH woke up in the same slot as last time \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a5624d597e340833d8b9722a8574b3d82}{Bad\+Table\+Data\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of times corrupted table entries were processed \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a126130a80d7a65fb71f6230e97dd135a}{Table\+Verify\+Success\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of times table loads successfully verified \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a901e3dc103b43255e939381c0a0c5bf1}{Table\+Verify\+Failure\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of times table loads unsuccessfully verified \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a2594e01e5967e7990f894f3d55ce5c5b}{Table\+Pass\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of times Schedule Table has been processed \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a5abac9e231383a6b638fc023e9f6b97a}{Valid\+Major\+Frame\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of valid Major Frame tones received \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a43370c7f9351b5988f71062e91123dca}{Missed\+Major\+Frame\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of missing Major Frame tones \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a54b85845fcacca5e84abd815d25c17f6}{Unexpected\+Major\+Frame\+Count}}
+\begin{DoxyCompactList}\small\item\em \# of unexpected Major Frame tones \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a06ae5537a6a8e5977ba9fcb900e6eacd}{Minor\+Frames\+Since\+Tone}}
+\begin{DoxyCompactList}\small\item\em \# of Minor Frames since last Major Frame tone \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_aba5afc7b546e7d0015ceed38f75d9443}{Next\+Slot\+Number}}
+\begin{DoxyCompactList}\small\item\em Next Minor Frame to be processed. \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ae4154048d2aadc9ac87fb057d580d996}{Last\+Sync\+METSlot}}
+\begin{DoxyCompactList}\small\item\em Slot number where Time Sync last occurred. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a812b8cebfc9f6e0df40429b830d8a46b}{Ignore\+Major\+Frame}}
+\begin{DoxyCompactList}\small\item\em Major Frame too noisy to trust. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a215410bd2db5050ec6ce13f40d51d789}{Unexpected\+Major\+Frame}}
+\begin{DoxyCompactList}\small\item\em Most Recent Major Frame signal was unexpected. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\textbackslash{}schtlm Scheduler HK Telemetry format 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a5624d597e340833d8b9722a8574b3d82}\label{struct_s_c_h___hk_packet__t_a5624d597e340833d8b9722a8574b3d82}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!BadTableDataCount@{BadTableDataCount}}
+\index{BadTableDataCount@{BadTableDataCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{BadTableDataCount}{BadTableDataCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Bad\+Table\+Data\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+BADTBLDATACTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_af8901da757eaf6f3e35b641f553c4c13}\label{struct_s_c_h___hk_packet__t_af8901da757eaf6f3e35b641f553c4c13}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!CmdCounter@{CmdCounter}}
+\index{CmdCounter@{CmdCounter}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{CmdCounter}{CmdCounter}}
+{\footnotesize\ttfamily uint8 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Cmd\+Counter}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+CMDPC
+
+Click for more \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_abf0292ba71a3c8c7bb3e13d4de936103}\label{struct_s_c_h___hk_packet__t_abf0292ba71a3c8c7bb3e13d4de936103}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!ErrCounter@{ErrCounter}}
+\index{ErrCounter@{ErrCounter}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{ErrCounter}{ErrCounter}}
+{\footnotesize\ttfamily uint8 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Err\+Counter}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+CMDEC
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a812b8cebfc9f6e0df40429b830d8a46b}\label{struct_s_c_h___hk_packet__t_a812b8cebfc9f6e0df40429b830d8a46b}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!IgnoreMajorFrame@{IgnoreMajorFrame}}
+\index{IgnoreMajorFrame@{IgnoreMajorFrame}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{IgnoreMajorFrame}{IgnoreMajorFrame}}
+{\footnotesize\ttfamily boolean SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Ignore\+Major\+Frame}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+IGNOREMF
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_ae4154048d2aadc9ac87fb057d580d996}\label{struct_s_c_h___hk_packet__t_ae4154048d2aadc9ac87fb057d580d996}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!LastSyncMETSlot@{LastSyncMETSlot}}
+\index{LastSyncMETSlot@{LastSyncMETSlot}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{LastSyncMETSlot}{LastSyncMETSlot}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Last\+Sync\+METSlot}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+LASTSYNCMETSLOT
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a4ced3d9fa1ab9f5266f697ae96d0f120}\label{struct_s_c_h___hk_packet__t_a4ced3d9fa1ab9f5266f697ae96d0f120}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!MajorFrameSource@{MajorFrameSource}}
+\index{MajorFrameSource@{MajorFrameSource}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{MajorFrameSource}{MajorFrameSource}}
+{\footnotesize\ttfamily uint8 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Major\+Frame\+Source}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+MAJORFRAMESOURCE
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a06ae5537a6a8e5977ba9fcb900e6eacd}\label{struct_s_c_h___hk_packet__t_a06ae5537a6a8e5977ba9fcb900e6eacd}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!MinorFramesSinceTone@{MinorFramesSinceTone}}
+\index{MinorFramesSinceTone@{MinorFramesSinceTone}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{MinorFramesSinceTone}{MinorFramesSinceTone}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Minor\+Frames\+Since\+Tone}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+MINORSINCETONE
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a43370c7f9351b5988f71062e91123dca}\label{struct_s_c_h___hk_packet__t_a43370c7f9351b5988f71062e91123dca}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!MissedMajorFrameCount@{MissedMajorFrameCount}}
+\index{MissedMajorFrameCount@{MissedMajorFrameCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{MissedMajorFrameCount}{MissedMajorFrameCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Missed\+Major\+Frame\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+MISSMFCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a695c7b6a3104ab7a6785d893d4160791}\label{struct_s_c_h___hk_packet__t_a695c7b6a3104ab7a6785d893d4160791}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!MultipleSlotsCount@{MultipleSlotsCount}}
+\index{MultipleSlotsCount@{MultipleSlotsCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{MultipleSlotsCount}{MultipleSlotsCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Multiple\+Slots\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+MULTSLOTCTR
+
+The number of times that multiple slots (minor frames) were processed in the same minor frame. ~\newline
+ Click for more {\bfseries{Note\+:}} This is NOT the number of slots that were processed \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_aba5afc7b546e7d0015ceed38f75d9443}\label{struct_s_c_h___hk_packet__t_aba5afc7b546e7d0015ceed38f75d9443}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!NextSlotNumber@{NextSlotNumber}}
+\index{NextSlotNumber@{NextSlotNumber}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{NextSlotNumber}{NextSlotNumber}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Next\+Slot\+Number}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+NEXTSLOT
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a1561fff6ce46cfd10199ac0fc75bcd8a}\label{struct_s_c_h___hk_packet__t_a1561fff6ce46cfd10199ac0fc75bcd8a}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!SameSlotCount@{SameSlotCount}}
+\index{SameSlotCount@{SameSlotCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{SameSlotCount}{SameSlotCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Same\+Slot\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+SAMESLOTCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_ad60184fa8adc5e7d813e21a5821163ad}\label{struct_s_c_h___hk_packet__t_ad60184fa8adc5e7d813e21a5821163ad}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!ScheduleActivityFailureCount@{ScheduleActivityFailureCount}}
+\index{ScheduleActivityFailureCount@{ScheduleActivityFailureCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{ScheduleActivityFailureCount}{ScheduleActivityFailureCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Schedule\+Activity\+Failure\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+ACTFAILURECTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_aab70a9dbdda2f80b31d12fbfd0da2289}\label{struct_s_c_h___hk_packet__t_aab70a9dbdda2f80b31d12fbfd0da2289}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!ScheduleActivitySuccessCount@{ScheduleActivitySuccessCount}}
+\index{ScheduleActivitySuccessCount@{ScheduleActivitySuccessCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{ScheduleActivitySuccessCount}{ScheduleActivitySuccessCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Schedule\+Activity\+Success\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+ACTSUCCESSCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a459d3cd3c53c6a67acdcbf0ba0f1a012}\label{struct_s_c_h___hk_packet__t_a459d3cd3c53c6a67acdcbf0ba0f1a012}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!SkippedSlotsCount@{SkippedSlotsCount}}
+\index{SkippedSlotsCount@{SkippedSlotsCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{SkippedSlotsCount}{SkippedSlotsCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Skipped\+Slots\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+SKIPSLOTCTR
+
+The number of times that a slot (minor frame) was skipped. Click for more {\bfseries{Note\+:}} This is NOT the number of slots that were skipped \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a44390eb7a92bbd1a9250db505ee55ee1}\label{struct_s_c_h___hk_packet__t_a44390eb7a92bbd1a9250db505ee55ee1}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!SlotsProcessedCount@{SlotsProcessedCount}}
+\index{SlotsProcessedCount@{SlotsProcessedCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{SlotsProcessedCount}{SlotsProcessedCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Slots\+Processed\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+SLOTPROCCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_ac8936e4ac0482d7f26806bb4cf40b178}\label{struct_s_c_h___hk_packet__t_ac8936e4ac0482d7f26806bb4cf40b178}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!SyncToMET@{SyncToMET}}
+\index{SyncToMET@{SyncToMET}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{SyncToMET}{SyncToMET}}
+{\footnotesize\ttfamily uint8 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Sync\+To\+MET}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+SYNCTOMET
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a2594e01e5967e7990f894f3d55ce5c5b}\label{struct_s_c_h___hk_packet__t_a2594e01e5967e7990f894f3d55ce5c5b}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!TablePassCount@{TablePassCount}}
+\index{TablePassCount@{TablePassCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{TablePassCount}{TablePassCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Table\+Pass\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+TBLPROCCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a901e3dc103b43255e939381c0a0c5bf1}\label{struct_s_c_h___hk_packet__t_a901e3dc103b43255e939381c0a0c5bf1}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!TableVerifyFailureCount@{TableVerifyFailureCount}}
+\index{TableVerifyFailureCount@{TableVerifyFailureCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{TableVerifyFailureCount}{TableVerifyFailureCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Table\+Verify\+Failure\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+TBLFAILVERIFYCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a126130a80d7a65fb71f6230e97dd135a}\label{struct_s_c_h___hk_packet__t_a126130a80d7a65fb71f6230e97dd135a}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!TableVerifySuccessCount@{TableVerifySuccessCount}}
+\index{TableVerifySuccessCount@{TableVerifySuccessCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{TableVerifySuccessCount}{TableVerifySuccessCount}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Table\+Verify\+Success\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+TBLPASSVERIFYCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a215410bd2db5050ec6ce13f40d51d789}\label{struct_s_c_h___hk_packet__t_a215410bd2db5050ec6ce13f40d51d789}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!UnexpectedMajorFrame@{UnexpectedMajorFrame}}
+\index{UnexpectedMajorFrame@{UnexpectedMajorFrame}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{UnexpectedMajorFrame}{UnexpectedMajorFrame}}
+{\footnotesize\ttfamily boolean SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Unexpected\+Major\+Frame}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+UNEXPCTDMAJORFRAME
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a54b85845fcacca5e84abd815d25c17f6}\label{struct_s_c_h___hk_packet__t_a54b85845fcacca5e84abd815d25c17f6}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!UnexpectedMajorFrameCount@{UnexpectedMajorFrameCount}}
+\index{UnexpectedMajorFrameCount@{UnexpectedMajorFrameCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{UnexpectedMajorFrameCount}{UnexpectedMajorFrameCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Unexpected\+Major\+Frame\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+UNEXPCTDMFCTR
+
+Click for more ~\newline
+ \mbox{\Hypertarget{struct_s_c_h___hk_packet__t_a5abac9e231383a6b638fc023e9f6b97a}\label{struct_s_c_h___hk_packet__t_a5abac9e231383a6b638fc023e9f6b97a}} 
+\index{SCH\_HkPacket\_t@{SCH\_HkPacket\_t}!ValidMajorFrameCount@{ValidMajorFrameCount}}
+\index{ValidMajorFrameCount@{ValidMajorFrameCount}!SCH\_HkPacket\_t@{SCH\_HkPacket\_t}}
+\doxysubsubsection{\texorpdfstring{ValidMajorFrameCount}{ValidMajorFrameCount}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Hk\+Packet\+\_\+t\+::\+Valid\+Major\+Frame\+Count}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+VALIDMFCTR
+
+Click for more ~\newline
+ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/scheduler/fsw/src/sch\+\_\+msg.\+h\end{DoxyCompactItemize}

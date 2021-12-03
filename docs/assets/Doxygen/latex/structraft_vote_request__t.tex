@@ -1,0 +1,55 @@
+\hypertarget{structraft_vote_request__t}{}\doxysection{raft\+Vote\+Request\+\_\+t Struct Reference}
+\label{structraft_vote_request__t}\index{raftVoteRequest\_t@{raftVoteRequest\_t}}
+
+
+message leader uses to request votes from followers  
+
+
+
+
+{\ttfamily \#include $<$raft\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structraft_vote_request__t_aba468a4e09f6e449e2c7eb3f153bfdcf}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structraft_vote_request__t_a84729c9e679834ac7dc4ab277ca9b42d}{intersection\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_vote_request__t_a5a8d645673f55d9228471c9d16fdca8d}{candidate\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_vote_request__t_a11e84bf95b9f85850f00b672490571ce}{term}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structraft_vote_request__t_a5a8d645673f55d9228471c9d16fdca8d}\label{structraft_vote_request__t_a5a8d645673f55d9228471c9d16fdca8d}} 
+\index{raftVoteRequest\_t@{raftVoteRequest\_t}!candidateID@{candidateID}}
+\index{candidateID@{candidateID}!raftVoteRequest\_t@{raftVoteRequest\_t}}
+\doxysubsubsection{\texorpdfstring{candidateID}{candidateID}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Vote\+Request\+\_\+t\+::candidate\+ID}
+
+Candidate node\textquotesingle{}s aircraft ID \mbox{\Hypertarget{structraft_vote_request__t_a84729c9e679834ac7dc4ab277ca9b42d}\label{structraft_vote_request__t_a84729c9e679834ac7dc4ab277ca9b42d}} 
+\index{raftVoteRequest\_t@{raftVoteRequest\_t}!intersectionID@{intersectionID}}
+\index{intersectionID@{intersectionID}!raftVoteRequest\_t@{raftVoteRequest\_t}}
+\doxysubsubsection{\texorpdfstring{intersectionID}{intersectionID}}
+{\footnotesize\ttfamily int32\+\_\+t raft\+Vote\+Request\+\_\+t\+::intersection\+ID}
+
+Intersection for which election is taking place \mbox{\Hypertarget{structraft_vote_request__t_a11e84bf95b9f85850f00b672490571ce}\label{structraft_vote_request__t_a11e84bf95b9f85850f00b672490571ce}} 
+\index{raftVoteRequest\_t@{raftVoteRequest\_t}!term@{term}}
+\index{term@{term}!raftVoteRequest\_t@{raftVoteRequest\_t}}
+\doxysubsubsection{\texorpdfstring{term}{term}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Vote\+Request\+\_\+t\+::term}
+
+Election term for current request \mbox{\Hypertarget{structraft_vote_request__t_aba468a4e09f6e449e2c7eb3f153bfdcf}\label{structraft_vote_request__t_aba468a4e09f6e449e2c7eb3f153bfdcf}} 
+\index{raftVoteRequest\_t@{raftVoteRequest\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!raftVoteRequest\_t@{raftVoteRequest\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t raft\+Vote\+Request\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+apps/raft/fsw/platform\+\_\+inc/\mbox{\hyperlink{raft__msg_8h}{raft\+\_\+msg.\+h}}\item 
+Modules/\+Core/\+Raft/Raft\+Core.\+hpp\end{DoxyCompactItemize}

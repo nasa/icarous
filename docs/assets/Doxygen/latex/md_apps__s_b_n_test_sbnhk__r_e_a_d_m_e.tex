@@ -1,0 +1,35 @@
+So you\textquotesingle{}d like to test SBN? Here\textquotesingle{}s some suggestions\+:\hypertarget{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md51}{}\doxysubsubsection{Configuration}\label{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md51}
+
+\begin{DoxyEnumerate}
+\item Set up at least two targets in the c\+FS build system (targets.\+cmake).
+
+a. Target 1 -\/ \char`\"{}cpu1\char`\"{} with the applist of \char`\"{}ci\+\_\+lab sbn\+\_\+app sbn\+\_\+udp sbn\+\_\+tcp\char`\"{}
+
+b. Target 2 -\/ \char`\"{}cpu2\char`\"{} with the applist of \char`\"{}to\+\_\+lab sbn\+\_\+app sbn\+\_\+udp sbn\+\_\+tcp\char`\"{}
+\item Configure ES startup scripts\+:
+
+a. cpu1\+:
+\end{DoxyEnumerate}
+
+\texorpdfstring{$>$}{>}CFE\+\_\+\+APP, /cf/sbn.so, SBN\+\_\+\+App\+Main, SBN, 80, 16384, 0x0, 0; \texorpdfstring{$>$}{>}CFE\+\_\+\+APP, /cf/ci\+\_\+lab.so, CI\+\_\+\+Lab\+\_\+\+App\+Main, CI\+\_\+\+LAB, 80, 16384, 0x0, 0; \texorpdfstring{$>$}{>}! \begin{DoxyVerb}b. cpu2:
+\end{DoxyVerb}
+ \texorpdfstring{$>$}{>}CFE\+\_\+\+APP, /cf/sbn.so, SBN\+\_\+\+App\+Main, SBN, 80, 16384, 0x0, 0; \texorpdfstring{$>$}{>}CFE\+\_\+\+APP, /cf/to\+\_\+lab.so, TO\+\_\+\+Lab\+\_\+\+App\+Main, TO\+\_\+\+LAB, 80, 16384, 0x0, 0; \texorpdfstring{$>$}{>}!
+
+
+\begin{DoxyEnumerate}
+\item Make sure CPU\+\_\+\+PLATFORM\+\_\+\+CPU\+\_\+\+ID and CPU\+\_\+\+PLATFORM\+\_\+\+CPU\+\_\+\+NAME are correct in cpu$\ast$\+\_\+platform\+\_\+cfg.h (e.\+g. \char`\"{}1\char`\"{} and \char`\"{}\+CPU1\char`\"{} for cpu1\+\_\+platform\+\_\+cfg.\+h) Otherwise their contents should be identical between files.
+\item cpu$\ast$\+\_\+msgids.h can be all identical. Same with toolchain-\/cpu$\ast$.cmake.
+\item Copy {\ttfamily \mbox{\hyperlink{to__lab__sub__table_8h_source}{to\+\_\+lab\+\_\+sub\+\_\+table.\+h}}} to {\ttfamily apps/to\+\_\+lab/fsw/platform\+\_\+inc}.
+\end{DoxyEnumerate}\hypertarget{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md52}{}\doxysubsubsection{Building}\label{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md52}
+
+\begin{DoxyEnumerate}
+\item Follow the standard build, but with a {\ttfamily make mission-\/install} as the final step to create (by default) {\ttfamily /usr/local/cpu$\ast$}.
+\end{DoxyEnumerate}\hypertarget{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md53}{}\doxysubsubsection{Running}\label{md_apps__s_b_n_test_sbnhk__r_e_a_d_m_e_autotoc_md53}
+
+\begin{DoxyEnumerate}
+\item In one window, cd to {\ttfamily /usr/local/cpu1} and start the instance with {\ttfamily ./core-\/cpu1 -\/R PO}.
+\item In a second window, cd to {\ttfamily /usr/local/cpu2} and start the instance with {\ttfamily ./core-\/cpu2 -\/R PO}. -- Confirm you see \char`\"{}\+CPU N connected\char`\"{} on each.
+\item In a third window, start {\ttfamily to\+\_\+recv}.
+\item In a fourth window, run the {\ttfamily to\+\_\+start} command to start telemetry output.
+\item In that fourth window, run the command {\ttfamily testsend} to send a test telemetry packet to CPU1, which should be relayed to CPU2 and down to to\+\_\+recv to be displayed in the third window. 
+\end{DoxyEnumerate}

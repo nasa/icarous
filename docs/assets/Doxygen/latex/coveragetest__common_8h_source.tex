@@ -1,0 +1,55 @@
+\hypertarget{coveragetest__common_8h_source}{}\doxysection{coveragetest\+\_\+common.\+h}
+\label{coveragetest__common_8h_source}\index{apps/zmq\_iface/unit-\/test/coveragetest/coveragetest\_common.h@{apps/zmq\_iface/unit-\/test/coveragetest/coveragetest\_common.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: coveragetest\_common.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{5 \textcolor{comment}{** Common definitions for all coverage tests}}
+\DoxyCodeLine{6 \textcolor{comment}{*/}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifndef \_ZMQ\_IFACE\_COVERAGETEST\_COMMON\_H\_}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define \_ZMQ\_IFACE\_COVERAGETEST\_COMMON\_H\_}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{comment}{/*}}
+\DoxyCodeLine{13 \textcolor{comment}{ * Includes}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <utassert.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <uttest.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <utstubs.h>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <cfe.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{zmq__iface_8h}{zmq\_iface.h}}>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{/*}}
+\DoxyCodeLine{24 \textcolor{comment}{ * Macro to call a function and check its int32 return code}}
+\DoxyCodeLine{25 \textcolor{comment}{ */}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define UT\_TEST\_FUNCTION\_RC(func,exp)           \(\backslash\)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\{                                               \(\backslash\)}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{    int32 rcexp = exp;                          \(\backslash\)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{    int32 rcact = func;                         \(\backslash\)}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{    UtAssert\_True(rcact == rcexp, "{}\%s (\%ld) == \%s (\%ld)"{}},   \(\backslash\)}
+\DoxyCodeLine{31         \#func, (long)rcact, \#exp, (long)rcexp);             \(\backslash\)}
+\DoxyCodeLine{32 \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{/*}}
+\DoxyCodeLine{35 \textcolor{comment}{ * Macro to add a test case to the list of tests to execute}}
+\DoxyCodeLine{36 \textcolor{comment}{ */}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define ADD\_TEST(test) UtTest\_Add((Test\_ \#\# test),ZMQ\_IFACE\_UT\_Setup,ZMQ\_IFACE\_UT\_TearDown, \#test)}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{comment}{/*}}
+\DoxyCodeLine{40 \textcolor{comment}{ * Setup function prior to every test}}
+\DoxyCodeLine{41 \textcolor{comment}{ */}}
+\DoxyCodeLine{42 \textcolor{keywordtype}{void} ZMQ\_IFACE\_UT\_Setup(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{/*}}
+\DoxyCodeLine{45 \textcolor{comment}{ * Teardown function after every test}}
+\DoxyCodeLine{46 \textcolor{comment}{ */}}
+\DoxyCodeLine{47 \textcolor{keywordtype}{void} ZMQ\_IFACE\_UT\_TearDown(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

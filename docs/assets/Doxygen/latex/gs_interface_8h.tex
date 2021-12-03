@@ -1,0 +1,185 @@
+\hypertarget{gs_interface_8h}{}\doxysection{apps/gs\+Interface/fsw/src/gs\+Interface.h File Reference}
+\label{gs_interface_8h}\index{apps/gsInterface/fsw/src/gsInterface.h@{apps/gsInterface/fsw/src/gsInterface.h}}
+
+
+function declarations, definitions of macros, datastructures and global variables for the ground station interface application  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$network\+\_\+includes.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Icarous.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}gs\+Interface\+\_\+table.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mavlink/ardupilotmega/mavlink.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}port\+\_\+lib.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structappdata_int_g_s__t}{appdata\+Int\+GS\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{gs_interface_8h_af7b7dc9a200cb1404c280bd500fd1551}\label{gs_interface_8h_af7b7dc9a200cb1404c280bd500fd1551}} 
+\#define {\bfseries BUFFER\+\_\+\+LENGTH}~1000
+\begin{DoxyCompactList}\small\item\em Mavlink message receive buffer size. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{gs_interface_8h_ad9dc8d6488165f6f4911d43a4e45542c}\label{gs_interface_8h_ad9dc8d6488165f6f4911d43a4e45542c}} 
+\#define {\bfseries GSINTERFACE\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}GSINTF\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a19d56c141e9bf37dcadd20d760ba803d}\label{gs_interface_8h_a19d56c141e9bf37dcadd20d760ba803d}} 
+\#define {\bfseries GSINTERFACE\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{gs_interface_8h_adc9f90f4850527b964d24b362212dbc9}\label{gs_interface_8h_adc9f90f4850527b964d24b362212dbc9}} 
+\#define {\bfseries GSINT\+\_\+\+TRAJ\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}GSTRAJ\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a181748114f9d9eb99dfcba1977c42310}\label{gs_interface_8h_a181748114f9d9eb99dfcba1977c42310}} 
+\#define {\bfseries SCH\+\_\+\+GSINTERFACE\+\_\+\+PIPE1\+\_\+\+NAME}~\char`\"{}SCH\+\_\+\+GSINTERFACE\char`\"{}
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a1c892616d69b40a008d09421cd9a3055}\label{gs_interface_8h_a1c892616d69b40a008d09421cd9a3055}} 
+\#define {\bfseries Send\+GSMsg}(arg)~\mbox{\hyperlink{port__lib_8h_afb6fc10453a780fd7a17b91468316ddc}{write\+Mavlink\+Data}}(\&appdata\+Int\+GS.\+gs,\&arg)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{gs_interface_8h_ad495247c47717c7f85a0ff08866bb417}{gs\+Interface\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_ac6bcc28207b0fbb44c5661fa144018d9}{gs\+Interface\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_aec965e88879532ff1a4ea4d59db7b982}{gs\+Interface\+\_\+\+Initialize\+App\+Data}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_a4f9121d9e5eb614a26e9b979205551ab}{gs\+Interface\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+int \mbox{\hyperlink{gs_interface_8h_a57d79e3762527fd3fe3b19f23969e525}{Get\+MAVLink\+Msg\+From\+GS}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_af52d9ce6e6df928b76c0217f9e8f3156}{Process\+GSMessage}} (mavlink\+\_\+message\+\_\+t message)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_a68c1c68c420875acc713a04894a9e8fc}{gs\+Interface\+\_\+\+Process\+Packet}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_a9193aa57473697502b2f72b31c07bea7}{gs\+Send\+Heartbeat}} (void)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_a44ceacdcde727ef6a99686ee94ca9018}{gs\+Send\+Callsign}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{gs_interface_8h_a92a3a9e464122400dddd3a14184330f3}{gs\+Interface\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\item 
+void \mbox{\hyperlink{gs_interface_8h_ac03cf33f22cc11ff42f58b61e302ae46}{gs\+Interface\+\_\+\+Publish\+Params}} (void)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a11b25be9414669a3da79d5fb692870db}\label{gs_interface_8h_a11b25be9414669a3da79d5fb692870db}} 
+void {\bfseries gs\+Convert\+Mission\+Items\+To\+Plan} (uint16\+\_\+t size, mavlink\+\_\+mission\+\_\+item\+\_\+t items\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} $\ast$fp)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a26ee5fad9c1dcba90c62f93f5fff4d1c}\label{gs_interface_8h_a26ee5fad9c1dcba90c62f93f5fff4d1c}} 
+void {\bfseries gs\+Convert\+Mission\+Items\+Int\+To\+Plan} (uint16\+\_\+t size, mavlink\+\_\+mission\+\_\+item\+\_\+int\+\_\+t items\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} $\ast$fp)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_ac7544a914c45c6270481405ed0843e04}\label{gs_interface_8h_ac7544a914c45c6270481405ed0843e04}} 
+uint16\+\_\+t {\bfseries gs\+Convert\+Plan\+To\+Mission\+Items} (\mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} $\ast$fp)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a5ecdc0b0f77c8c258840477377975085}\label{gs_interface_8h_a5ecdc0b0f77c8c258840477377975085}} 
+void {\bfseries gs\+\_\+wp\+Callback} (uint32\+\_\+t timer)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_ad0046d72961c93a774f20d32b436704b}\label{gs_interface_8h_ad0046d72961c93a774f20d32b436704b}} 
+void {\bfseries gs\+\_\+gf\+Callback} (uint32\+\_\+t timer)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_aaf9855a377b3e61f9eb77c85b04c5a86}\label{gs_interface_8h_aaf9855a377b3e61f9eb77c85b04c5a86}} 
+void {\bfseries gs\+\_\+pm\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_ab666b612ad68d90f63151958624f66f5}\label{gs_interface_8h_ab666b612ad68d90f63151958624f66f5}} 
+void {\bfseries gs\+\_\+tj\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a99f5defa09db1afa2f0c28651784e5f6}\label{gs_interface_8h_a99f5defa09db1afa2f0c28651784e5f6}} 
+void {\bfseries gs\+\_\+start\+Timer} (uint32\+\_\+t $\ast$timer\+ID, void($\ast$f)(uint32\+\_\+t), char $\ast$name, uint32\+\_\+t start\+Time, uint32\+\_\+t intvl)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a8900243a05e9969a117c5eb92f1fa6bd}\label{gs_interface_8h_a8900243a05e9969a117c5eb92f1fa6bd}} 
+void {\bfseries gs\+\_\+stop\+Timer} (uint32\+\_\+t $\ast$timer\+ID)
+\item 
+\mbox{\Hypertarget{gs_interface_8h_a8035709db4b4b87545b8e873a2d8637e}\label{gs_interface_8h_a8035709db4b4b87545b8e873a2d8637e}} 
+void {\bfseries gs\+Fragment\+Bands} (bands\+\_\+t $\ast$bands, uint8\+\_\+t bandtype)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{gs_interface_8h_a57d79e3762527fd3fe3b19f23969e525}\label{gs_interface_8h_a57d79e3762527fd3fe3b19f23969e525}} 
+\index{gsInterface.h@{gsInterface.h}!GetMAVLinkMsgFromGS@{GetMAVLinkMsgFromGS}}
+\index{GetMAVLinkMsgFromGS@{GetMAVLinkMsgFromGS}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{GetMAVLinkMsgFromGS()}{GetMAVLinkMsgFromGS()}}
+{\footnotesize\ttfamily int Get\+MAVLink\+Msg\+From\+GS (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Get mavlink message from ground station \mbox{\Hypertarget{gs_interface_8h_a4f9121d9e5eb614a26e9b979205551ab}\label{gs_interface_8h_a4f9121d9e5eb614a26e9b979205551ab}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_AppCleanUp@{gsInterface\_AppCleanUp}}
+\index{gsInterface\_AppCleanUp@{gsInterface\_AppCleanUp}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_AppCleanUp()}{gsInterface\_AppCleanUp()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{gs_interface_8h_ac6bcc28207b0fbb44c5661fa144018d9}\label{gs_interface_8h_ac6bcc28207b0fbb44c5661fa144018d9}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_AppInit@{gsInterface\_AppInit}}
+\index{gsInterface\_AppInit@{gsInterface\_AppInit}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_AppInit()}{gsInterface\_AppInit()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{gs_interface_8h_ad495247c47717c7f85a0ff08866bb417}\label{gs_interface_8h_ad495247c47717c7f85a0ff08866bb417}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_AppMain@{gsInterface\_AppMain}}
+\index{gsInterface\_AppMain@{gsInterface\_AppMain}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_AppMain()}{gsInterface\_AppMain()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{gs_interface_8h_aec965e88879532ff1a4ea4d59db7b982}\label{gs_interface_8h_aec965e88879532ff1a4ea4d59db7b982}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_InitializeAppData@{gsInterface\_InitializeAppData}}
+\index{gsInterface\_InitializeAppData@{gsInterface\_InitializeAppData}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_InitializeAppData()}{gsInterface\_InitializeAppData()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+Initialize\+App\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app data \mbox{\Hypertarget{gs_interface_8h_a68c1c68c420875acc713a04894a9e8fc}\label{gs_interface_8h_a68c1c68c420875acc713a04894a9e8fc}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_ProcessPacket@{gsInterface\_ProcessPacket}}
+\index{gsInterface\_ProcessPacket@{gsInterface\_ProcessPacket}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_ProcessPacket()}{gsInterface\_ProcessPacket()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process SB messages from pipes and take action \mbox{\Hypertarget{gs_interface_8h_ac03cf33f22cc11ff42f58b61e302ae46}\label{gs_interface_8h_ac03cf33f22cc11ff42f58b61e302ae46}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterface\_PublishParams@{gsInterface\_PublishParams}}
+\index{gsInterface\_PublishParams@{gsInterface\_PublishParams}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterface\_PublishParams()}{gsInterface\_PublishParams()}}
+{\footnotesize\ttfamily void gs\+Interface\+\_\+\+Publish\+Params (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Send all locally stored params over the SB \mbox{\Hypertarget{gs_interface_8h_a92a3a9e464122400dddd3a14184330f3}\label{gs_interface_8h_a92a3a9e464122400dddd3a14184330f3}} 
+\index{gsInterface.h@{gsInterface.h}!gsInterfaceTableValidationFunc@{gsInterfaceTableValidationFunc}}
+\index{gsInterfaceTableValidationFunc@{gsInterfaceTableValidationFunc}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsInterfaceTableValidationFunc()}{gsInterfaceTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t gs\+Interface\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{gs_interface_8h_a44ceacdcde727ef6a99686ee94ca9018}\label{gs_interface_8h_a44ceacdcde727ef6a99686ee94ca9018}} 
+\index{gsInterface.h@{gsInterface.h}!gsSendCallsign@{gsSendCallsign}}
+\index{gsSendCallsign@{gsSendCallsign}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsSendCallsign()}{gsSendCallsign()}}
+{\footnotesize\ttfamily void gs\+Send\+Callsign (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Send callsign \mbox{\Hypertarget{gs_interface_8h_a9193aa57473697502b2f72b31c07bea7}\label{gs_interface_8h_a9193aa57473697502b2f72b31c07bea7}} 
+\index{gsInterface.h@{gsInterface.h}!gsSendHeartbeat@{gsSendHeartbeat}}
+\index{gsSendHeartbeat@{gsSendHeartbeat}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{gsSendHeartbeat()}{gsSendHeartbeat()}}
+{\footnotesize\ttfamily void gs\+Send\+Heartbeat (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Send heartbeat message \mbox{\Hypertarget{gs_interface_8h_af52d9ce6e6df928b76c0217f9e8f3156}\label{gs_interface_8h_af52d9ce6e6df928b76c0217f9e8f3156}} 
+\index{gsInterface.h@{gsInterface.h}!ProcessGSMessage@{ProcessGSMessage}}
+\index{ProcessGSMessage@{ProcessGSMessage}!gsInterface.h@{gsInterface.h}}
+\doxysubsubsection{\texorpdfstring{ProcessGSMessage()}{ProcessGSMessage()}}
+{\footnotesize\ttfamily void Process\+GSMessage (\begin{DoxyParamCaption}\item[{mavlink\+\_\+message\+\_\+t}]{message }\end{DoxyParamCaption})}
+
+Process mavlink message from groundstation and take action 
+\begin{DoxyParams}{Parameters}
+{\em message} & mavlink message \\
+\hline
+\end{DoxyParams}

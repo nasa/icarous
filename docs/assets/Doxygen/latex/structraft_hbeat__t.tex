@@ -1,0 +1,79 @@
+\hypertarget{structraft_hbeat__t}{}\doxysection{raft\+Hbeat\+\_\+t Struct Reference}
+\label{structraft_hbeat__t}\index{raftHbeat\_t@{raftHbeat\_t}}
+
+
+raft heartbeat sent to followers from the leader node  
+
+
+
+
+{\ttfamily \#include $<$raft\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_a738ffe2281435773abecb8afe81903a8}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_a13ecb2b125d70a3af30c98e1f6f859c3}{intersection\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_aacdf098ad740293dd4d220f163eaba55}{leader\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_ae302bd50410cdeec5aa0bb13189b32cd}{total\+Nodes}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_aa6436c895f5c9c8163921b438bc795a0}{log\+Index}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat__t_a7bacdcac82432e5da08c10f9b9ca51c4}{term}}
+\item 
+\mbox{\Hypertarget{structraft_hbeat__t_a4cb0b800f3fc1ae3f8b6db12f650ed1c}\label{structraft_hbeat__t_a4cb0b800f3fc1ae3f8b6db12f650ed1c}} 
+report\+\_\+t {\bfseries log} \mbox{[}MAX\+\_\+\+NODES\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Published under the ICAROUS\+\_\+\+RAFT\+\_\+\+HBEAT\+\_\+\+MID topic 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structraft_hbeat__t_a13ecb2b125d70a3af30c98e1f6f859c3}\label{structraft_hbeat__t_a13ecb2b125d70a3af30c98e1f6f859c3}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!intersectionID@{intersectionID}}
+\index{intersectionID@{intersectionID}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{intersectionID}{intersectionID}}
+{\footnotesize\ttfamily int32\+\_\+t raft\+Hbeat\+\_\+t\+::intersection\+ID}
+
+Intersection ID for the current raft network
+
+Intersection ID of the participating node \mbox{\Hypertarget{structraft_hbeat__t_aacdf098ad740293dd4d220f163eaba55}\label{structraft_hbeat__t_aacdf098ad740293dd4d220f163eaba55}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!leaderID@{leaderID}}
+\index{leaderID@{leaderID}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{leaderID}{leaderID}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+\_\+t\+::leader\+ID}
+
+Leader node\textquotesingle{}s aircraft ID \mbox{\Hypertarget{structraft_hbeat__t_aa6436c895f5c9c8163921b438bc795a0}\label{structraft_hbeat__t_aa6436c895f5c9c8163921b438bc795a0}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!logIndex@{logIndex}}
+\index{logIndex@{logIndex}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{logIndex}{logIndex}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+\_\+t\+::log\+Index}
+
+Index (count) of the current log data \mbox{\Hypertarget{structraft_hbeat__t_a7bacdcac82432e5da08c10f9b9ca51c4}\label{structraft_hbeat__t_a7bacdcac82432e5da08c10f9b9ca51c4}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!term@{term}}
+\index{term@{term}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{term}{term}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+\_\+t\+::term}
+
+Term of current leader \mbox{\Hypertarget{structraft_hbeat__t_a738ffe2281435773abecb8afe81903a8}\label{structraft_hbeat__t_a738ffe2281435773abecb8afe81903a8}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t raft\+Hbeat\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structraft_hbeat__t_ae302bd50410cdeec5aa0bb13189b32cd}\label{structraft_hbeat__t_ae302bd50410cdeec5aa0bb13189b32cd}} 
+\index{raftHbeat\_t@{raftHbeat\_t}!totalNodes@{totalNodes}}
+\index{totalNodes@{totalNodes}!raftHbeat\_t@{raftHbeat\_t}}
+\doxysubsubsection{\texorpdfstring{totalNodes}{totalNodes}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+\_\+t\+::total\+Nodes}
+
+Total number of nodes in the network 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+apps/raft/fsw/platform\+\_\+inc/\mbox{\hyperlink{raft__msg_8h}{raft\+\_\+msg.\+h}}\item 
+Modules/\+Core/\+Raft/Raft\+Core.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,32 @@
+\hypertarget{connection_8h_source}{}\doxysection{connection.\+h}
+\label{connection_8h_source}\index{apps/zmq\_iface/fsw/src/connection.h@{apps/zmq\_iface/fsw/src/connection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#include <zmq.h>}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Icarous.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define MAX\_ZMQ\_MESSAGE\_SIZE  600000}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define TELEMETRY\_SERVER\_ADDR "{}tcp://*:5556"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define COMMAND\_SERVER\_ADDR   "{}tcp://*:5557"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{16     \textcolor{keywordtype}{void} *context;}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} *telemetrySocket;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{void} *commandSocket;}
+\DoxyCodeLine{19     \textcolor{keywordtype}{bool} started;}
+\DoxyCodeLine{20     \textcolor{keywordtype}{char} msgBuffer[MAX\_ZMQ\_MESSAGE\_SIZE];}
+\DoxyCodeLine{21     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} callSign;}
+\DoxyCodeLine{22 \} \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keywordtype}{void} ZMQ\_IFACE\_InitZMQServices(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn);}
+\DoxyCodeLine{26 \textcolor{keywordtype}{void} ZMQ\_IFACE\_SendTelemetry(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn, \textcolor{keywordtype}{char} \textcolor{keyword}{const} * \textcolor{keyword}{const} msg);}
+\DoxyCodeLine{27 \textcolor{keywordtype}{void} ZMQ\_IFACE\_SendAlertReport(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn, \mbox{\hyperlink{structtraffic__alerts__t}{traffic\_alerts\_t}} \textcolor{keyword}{const} * \textcolor{keyword}{const} cfsAlerts);}
+\DoxyCodeLine{28 \textcolor{keywordtype}{void} ZMQ\_IFACE\_SendBandReport(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn, \mbox{\hyperlink{structband__report__t}{band\_report\_t}} \textcolor{keyword}{const} * \textcolor{keyword}{const} cfsBands);}
+\DoxyCodeLine{29 \textcolor{keywordtype}{bool} ZMQ\_IFACE\_ReceiveCommand(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn, \textcolor{keywordtype}{char} * \textcolor{keyword}{const} buffer, \textcolor{keywordtype}{size\_t} size);}
+\DoxyCodeLine{30 \textcolor{keywordtype}{void} ZMQ\_IFACE\_SendEUTL(\mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} * \textcolor{keyword}{const} conn, stringdata\_t * msg);}
+
+\end{DoxyCode}

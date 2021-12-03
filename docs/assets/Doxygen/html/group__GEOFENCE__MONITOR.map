@@ -1,5 +1,0 @@
-<map id="GEOFENCE_MONITOR" name="GEOFENCE_MONITOR">
-<area shape="rect" id="node1" href="$group__GEOFENCE__MESSAGE__TOPICS.html" title="Geofence message topics. " alt="" coords="388,5,615,32"/>
-<area shape="rect" id="node2" href="$group__GEOFENCE__MESSAGES.html" title="Geofence message definitions. " alt="" coords="412,56,591,83"/>
-<area shape="rect" id="node4" href="$group__APPLICATIONS.html" title="APPLICATIONS" alt="" coords="5,31,125,57"/>
-</map>

@@ -1,0 +1,57 @@
+\hypertarget{structcheck_turn_safety__t}{}\doxysection{check\+Turn\+Safety\+\_\+t Struct Reference}
+\label{structcheck_turn_safety__t}\index{checkTurnSafety\_t@{checkTurnSafety\_t}}
+
+
+Message used to request/respond to check if a turn from heading A to heading B is safe.  
+
+
+
+
+{\ttfamily \#include $<$traffic\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structcheck_turn_safety__t_aaaeeae456933cb538905c67bcfcd6a64}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{structcheck_turn_safety__t_a7b599b1f8f1001df772fd7a0de2a01a7}{from\+Heading}}
+\item 
+double \mbox{\hyperlink{structcheck_turn_safety__t_acc73d2bb3994f979b299242ce55f9ba3}{to\+Heading}}
+\item 
+bool \mbox{\hyperlink{structcheck_turn_safety__t_a2b6a6b827202d2531992d1b983e229be}{safe}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A request is published under TRAFFIC\+\_\+\+TURN\+\_\+\+CHECK\+\_\+\+MID. A response to the above query is also sent in this message published in the TRAFFIC\+\_\+\+TURN\+\_\+\+CHECK\+\_\+\+RESPONSE\+\_\+\+MID. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structcheck_turn_safety__t_a7b599b1f8f1001df772fd7a0de2a01a7}\label{structcheck_turn_safety__t_a7b599b1f8f1001df772fd7a0de2a01a7}} 
+\index{checkTurnSafety\_t@{checkTurnSafety\_t}!fromHeading@{fromHeading}}
+\index{fromHeading@{fromHeading}!checkTurnSafety\_t@{checkTurnSafety\_t}}
+\doxysubsubsection{\texorpdfstring{fromHeading}{fromHeading}}
+{\footnotesize\ttfamily double check\+Turn\+Safety\+\_\+t\+::from\+Heading}
+
+from heading (degree) \mbox{\Hypertarget{structcheck_turn_safety__t_a2b6a6b827202d2531992d1b983e229be}\label{structcheck_turn_safety__t_a2b6a6b827202d2531992d1b983e229be}} 
+\index{checkTurnSafety\_t@{checkTurnSafety\_t}!safe@{safe}}
+\index{safe@{safe}!checkTurnSafety\_t@{checkTurnSafety\_t}}
+\doxysubsubsection{\texorpdfstring{safe}{safe}}
+{\footnotesize\ttfamily bool check\+Turn\+Safety\+\_\+t\+::safe}
+
+true if safe to turn (only used in the response) \mbox{\Hypertarget{structcheck_turn_safety__t_aaaeeae456933cb538905c67bcfcd6a64}\label{structcheck_turn_safety__t_aaaeeae456933cb538905c67bcfcd6a64}} 
+\index{checkTurnSafety\_t@{checkTurnSafety\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!checkTurnSafety\_t@{checkTurnSafety\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t check\+Turn\+Safety\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structcheck_turn_safety__t_acc73d2bb3994f979b299242ce55f9ba3}\label{structcheck_turn_safety__t_acc73d2bb3994f979b299242ce55f9ba3}} 
+\index{checkTurnSafety\_t@{checkTurnSafety\_t}!toHeading@{toHeading}}
+\index{toHeading@{toHeading}!checkTurnSafety\_t@{checkTurnSafety\_t}}
+\doxysubsubsection{\texorpdfstring{toHeading}{toHeading}}
+{\footnotesize\ttfamily double check\+Turn\+Safety\+\_\+t\+::to\+Heading}
+
+to heading (degree) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/traffic/fsw/platform\+\_\+inc/\mbox{\hyperlink{traffic__msg_8h}{traffic\+\_\+msg.\+h}}\end{DoxyCompactItemize}

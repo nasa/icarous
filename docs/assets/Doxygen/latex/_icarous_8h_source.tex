@@ -1,0 +1,71 @@
+\hypertarget{_icarous_8h_source}{}\doxysection{Icarous.\+h}
+\label{_icarous_8h_source}\index{apps/Icarouslib/fsw/platform\_inc/Icarous.h@{apps/Icarouslib/fsw/platform\_inc/Icarous.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PARAMDEF}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define PARAMDEF}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define PARAM\_COUNT 48    }}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define MAX\_PARAMETER\_NAME\_SIZE 17}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{14     \textcolor{keywordtype}{char} param\_id[MAX\_PARAMETER\_NAME\_SIZE];}
+\DoxyCodeLine{15     \textcolor{keywordtype}{float} value;}
+\DoxyCodeLine{16     uint8\_t type;}
+\DoxyCodeLine{17 \}\mbox{\hyperlink{structparam__t}{param\_t}};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define MAX\_ADSB\_CALLSIGN\_SIZE 9}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{22    \textcolor{keywordtype}{char} value[MAX\_ADSB\_CALLSIGN\_SIZE];}
+\DoxyCodeLine{23 \} \mbox{\hyperlink{structadsb__callsign}{adsb\_callsign}};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#ifdef INIT\_PARAM}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 uint8\_t sysid\_ap = 1;}
+\DoxyCodeLine{28 uint8\_t compid\_ap = 1;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 uint8\_t sysid\_ic = 1;}
+\DoxyCodeLine{31 uint8\_t compid\_ic = 5;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 uint8\_t sysid\_gs = 255;}
+\DoxyCodeLine{34 uint8\_t compid\_gs = 0;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{37 \textcolor{keyword}{extern} uint8\_t sysid\_ap;}
+\DoxyCodeLine{38 \textcolor{keyword}{extern} uint8\_t compid\_ap;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{extern} uint8\_t sysid\_ic;}
+\DoxyCodeLine{41 \textcolor{keyword}{extern} uint8\_t compid\_ic;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{extern} uint8\_t sysid\_gs;}
+\DoxyCodeLine{44 \textcolor{keyword}{extern} uint8\_t compid\_gs;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keywordtype}{void} PublishParams(\mbox{\hyperlink{structparam__t}{param\_t}} *params);}
+\DoxyCodeLine{49 \textcolor{keywordtype}{int} ReadFlightplanFromFile(\textcolor{keywordtype}{char}* filename,\mbox{\hyperlink{structflightplan__t}{flightplan\_t}} *fplan);}
+\DoxyCodeLine{50 \textcolor{keywordtype}{int} GetParams(\textcolor{keywordtype}{char} *filename, \textcolor{keywordtype}{size\_t} numOfPairs, \textcolor{keywordtype}{char} (*params)[MAX\_PARAMETER\_NAME\_SIZE],\textcolor{keywordtype}{char} (*val)[MAX\_PARAMETER\_NAME\_SIZE]);}
+\DoxyCodeLine{51 \textcolor{keywordtype}{bool} InitializeParams(\textcolor{keywordtype}{char} *filename,\mbox{\hyperlink{structparam__t}{param\_t}}* params,uint16\_t paramCount);}
+\DoxyCodeLine{52 \textcolor{keywordtype}{char} \textcolor{keyword}{const} * GetAircraftCallSign(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{53 \textcolor{keywordtype}{void} adsb\_callsign\_from\_callsign\_t(\mbox{\hyperlink{structadsb__callsign}{adsb\_callsign}} * dest, \mbox{\hyperlink{structcallsign__t}{callsign\_t}} * orig);}
+\DoxyCodeLine{54 \textcolor{keywordtype}{void} callsign\_t\_zero(\mbox{\hyperlink{structcallsign__t}{callsign\_t}} * dest);}
+\DoxyCodeLine{55 \textcolor{keywordtype}{char} \textcolor{keyword}{const} * callsign\_t\_get(\mbox{\hyperlink{structcallsign__t}{callsign\_t}} * dest);}
+\DoxyCodeLine{56 \textcolor{keywordtype}{void} callsign\_t\_set(\mbox{\hyperlink{structcallsign__t}{callsign\_t}} * dest, \textcolor{keywordtype}{char} \textcolor{keyword}{const} * \textcolor{keyword}{const} source);}
+\DoxyCodeLine{57 \textcolor{keywordtype}{bool} InitializeAircraftCallSign(\mbox{\hyperlink{structcallsign__t}{callsign\_t}} * \mbox{\hyperlink{structcallsign}{callsign}});}
+\DoxyCodeLine{58 \textcolor{keywordtype}{bool} InitializePortConfig(\textcolor{keywordtype}{char}* filename,\textcolor{keywordtype}{void}* prt);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#ifdef APPDEF\_TRAFFIC}}
+\DoxyCodeLine{61 \textcolor{keywordtype}{void} ConstructDAAParamString(\textcolor{keywordtype}{void}* tfparam,\textcolor{keywordtype}{char} *params);}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

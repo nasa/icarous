@@ -1,0 +1,110 @@
+\hypertarget{traffic_8h}{}\doxysection{apps/traffic/fsw/src/traffic.h File Reference}
+\label{traffic_8h}\index{apps/traffic/fsw/src/traffic.h@{apps/traffic/fsw/src/traffic.h}}
+
+
+Function declaration, MACRO and data structure definitions for the traffic application.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Traffic\+Monitor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+tbl.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_traffic_app_data__t}{Traffic\+App\+Data\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{traffic_8h_a1b43ef29bda11128e2b7e42add694f38}\label{traffic_8h_a1b43ef29bda11128e2b7e42add694f38}} 
+\#define {\bfseries TRAFFIC\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{traffic_8h_a98b27318704119961a61698a5146e51b}\label{traffic_8h_a98b27318704119961a61698a5146e51b}} 
+\#define {\bfseries TRAFFIC\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{traffic_8h_a46bc1d3d8b7e5cfbbe26a155626f0214}\label{traffic_8h_a46bc1d3d8b7e5cfbbe26a155626f0214}} 
+\#define {\bfseries TRAFFIC\+\_\+\+RECEIVED\+\_\+\+INTRUDER\+\_\+\+EID}~2
+\item 
+\mbox{\Hypertarget{traffic_8h_aca35fe79791281c03f8a861c1d2456fb}\label{traffic_8h_aca35fe79791281c03f8a861c1d2456fb}} 
+\#define {\bfseries TRAFFIC\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{traffic_8h_a4096ada700705b0b2f937d0ea2b0f9c1}\label{traffic_8h_a4096ada700705b0b2f937d0ea2b0f9c1}} 
+\#define {\bfseries TRAFFIC\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}TRAFFIC\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{traffic_8h_a848e0c3dcc6482ed49784e716ef98769}\label{traffic_8h_a848e0c3dcc6482ed49784e716ef98769}} 
+\#define {\bfseries TRAFFIC\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{traffic_8h_aa3870b9775b5e62c0be7cacd274c32f0}\label{traffic_8h_aa3870b9775b5e62c0be7cacd274c32f0}} 
+\#define {\bfseries TRAFFIC\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{traffic_8h_a0ba93009b8def22907ba0a8ac49851ab}{TRAFFIC\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em Event ID definitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{traffic_8h_a21d35f1721b07c5715a090e32d17d0fe}{TRAFFIC\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{traffic_8h_a5e8fc620e4b71f5c178028b7185f757d}{TRAFFIC\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{traffic_8h_a2e8450bbb8649d426c787e6bb4d065fb}{TRAFFIC\+\_\+\+Process\+Packet}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{traffic_8h_a0363cf678ca35e2ddc94dc4122dc8c80}{Traffic\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{traffic_8h_a4c3e125d6c61901606842ab461b96720}\label{traffic_8h_a4c3e125d6c61901606842ab461b96720}} 
+\mbox{\hyperlink{struct_traffic_app_data__t}{Traffic\+App\+Data\+\_\+t}} {\bfseries traffic\+App\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{traffic_8h_a5e8fc620e4b71f5c178028b7185f757d}\label{traffic_8h_a5e8fc620e4b71f5c178028b7185f757d}} 
+\index{traffic.h@{traffic.h}!TRAFFIC\_AppCleanUp@{TRAFFIC\_AppCleanUp}}
+\index{TRAFFIC\_AppCleanUp@{TRAFFIC\_AppCleanUp}!traffic.h@{traffic.h}}
+\doxysubsubsection{\texorpdfstring{TRAFFIC\_AppCleanUp()}{TRAFFIC\_AppCleanUp()}}
+{\footnotesize\ttfamily void TRAFFIC\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Deallocates memory \mbox{\Hypertarget{traffic_8h_a21d35f1721b07c5715a090e32d17d0fe}\label{traffic_8h_a21d35f1721b07c5715a090e32d17d0fe}} 
+\index{traffic.h@{traffic.h}!TRAFFIC\_AppInit@{TRAFFIC\_AppInit}}
+\index{TRAFFIC\_AppInit@{TRAFFIC\_AppInit}!traffic.h@{traffic.h}}
+\doxysubsubsection{\texorpdfstring{TRAFFIC\_AppInit()}{TRAFFIC\_AppInit()}}
+{\footnotesize\ttfamily void TRAFFIC\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initializes data structures and cfs related entities. \mbox{\Hypertarget{traffic_8h_a0ba93009b8def22907ba0a8ac49851ab}\label{traffic_8h_a0ba93009b8def22907ba0a8ac49851ab}} 
+\index{traffic.h@{traffic.h}!TRAFFIC\_AppMain@{TRAFFIC\_AppMain}}
+\index{TRAFFIC\_AppMain@{TRAFFIC\_AppMain}!traffic.h@{traffic.h}}
+\doxysubsubsection{\texorpdfstring{TRAFFIC\_AppMain()}{TRAFFIC\_AppMain()}}
+{\footnotesize\ttfamily void TRAFFIC\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App entry point \mbox{\Hypertarget{traffic_8h_a2e8450bbb8649d426c787e6bb4d065fb}\label{traffic_8h_a2e8450bbb8649d426c787e6bb4d065fb}} 
+\index{traffic.h@{traffic.h}!TRAFFIC\_ProcessPacket@{TRAFFIC\_ProcessPacket}}
+\index{TRAFFIC\_ProcessPacket@{TRAFFIC\_ProcessPacket}!traffic.h@{traffic.h}}
+\doxysubsubsection{\texorpdfstring{TRAFFIC\_ProcessPacket()}{TRAFFIC\_ProcessPacket()}}
+{\footnotesize\ttfamily void TRAFFIC\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Processes incoming software bus messages \mbox{\Hypertarget{traffic_8h_a0363cf678ca35e2ddc94dc4122dc8c80}\label{traffic_8h_a0363cf678ca35e2ddc94dc4122dc8c80}} 
+\index{traffic.h@{traffic.h}!TrafficTableValidationFunc@{TrafficTableValidationFunc}}
+\index{TrafficTableValidationFunc@{TrafficTableValidationFunc}!traffic.h@{traffic.h}}
+\doxysubsubsection{\texorpdfstring{TrafficTableValidationFunc()}{TrafficTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Traffic\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validates table parameters 
+\begin{DoxyParams}{Parameters}
+{\em Tbl\+Ptr} & Pointer to table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success 
+\end{DoxyReturn}

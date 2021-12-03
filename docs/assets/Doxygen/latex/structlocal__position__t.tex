@@ -1,0 +1,110 @@
+\hypertarget{structlocal__position__t}{}\doxysection{local\+\_\+position\+\_\+t Struct Reference}
+\label{structlocal__position__t}\index{local\_position\_t@{local\_position\_t}}
+
+
+aircraft local position information.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structlocal__position__t_a0db511651ec5e90bb71c1d3e33692e14}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structlocal__position__t_a1bbfc294e17fe4329227185724fb19ce}{aircraft\+\_\+id}}
+\item 
+\mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}} \mbox{\hyperlink{structlocal__position__t_af31b863e4f35e4d39ed898e7eecba765}{callsign}}
+\item 
+int64\+\_\+t \mbox{\hyperlink{structlocal__position__t_a726bfb87415ccf8ea3dfcb9546f38613}{time\+\_\+gps}}
+\item 
+int64\+\_\+t \mbox{\hyperlink{structlocal__position__t_a61e943b5864cb07de39993f4c11021a6}{time\+\_\+boot}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_a44e17bc9f8b1e72c4918339a8f3a6e91}{x}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_a958370677b308ec7db3377e2ce446bc1}{y}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_ac8dd72b3c6a0fba958f2a78ee39c788e}{z}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_af320c75089d9af8a5f5df110a94c37ef}{vx}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_aacfc80a4d7fc9ef77c980812209e94b3}{vy}}
+\item 
+double \mbox{\hyperlink{structlocal__position__t_af44af0ebdb4b5d950098443766903fb2}{vz}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structlocal__position__t_a1bbfc294e17fe4329227185724fb19ce}\label{structlocal__position__t_a1bbfc294e17fe4329227185724fb19ce}} 
+\index{local\_position\_t@{local\_position\_t}!aircraft\_id@{aircraft\_id}}
+\index{aircraft\_id@{aircraft\_id}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{aircraft\_id}{aircraft\_id}}
+{\footnotesize\ttfamily uint32\+\_\+t local\+\_\+position\+\_\+t\+::aircraft\+\_\+id}
+
+aircraft id \mbox{\Hypertarget{structlocal__position__t_af31b863e4f35e4d39ed898e7eecba765}\label{structlocal__position__t_af31b863e4f35e4d39ed898e7eecba765}} 
+\index{local\_position\_t@{local\_position\_t}!callsign@{callsign}}
+\index{callsign@{callsign}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{callsign}{callsign}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}} local\+\_\+position\+\_\+t\+::callsign}
+
+aircraft call sign \mbox{\Hypertarget{structlocal__position__t_a61e943b5864cb07de39993f4c11021a6}\label{structlocal__position__t_a61e943b5864cb07de39993f4c11021a6}} 
+\index{local\_position\_t@{local\_position\_t}!time\_boot@{time\_boot}}
+\index{time\_boot@{time\_boot}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{time\_boot}{time\_boot}}
+{\footnotesize\ttfamily int64\+\_\+t local\+\_\+position\+\_\+t\+::time\+\_\+boot}
+
+boot time of onboard autopilot \mbox{\Hypertarget{structlocal__position__t_a726bfb87415ccf8ea3dfcb9546f38613}\label{structlocal__position__t_a726bfb87415ccf8ea3dfcb9546f38613}} 
+\index{local\_position\_t@{local\_position\_t}!time\_gps@{time\_gps}}
+\index{time\_gps@{time\_gps}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{time\_gps}{time\_gps}}
+{\footnotesize\ttfamily int64\+\_\+t local\+\_\+position\+\_\+t\+::time\+\_\+gps}
+
+gps time \mbox{\Hypertarget{structlocal__position__t_a0db511651ec5e90bb71c1d3e33692e14}\label{structlocal__position__t_a0db511651ec5e90bb71c1d3e33692e14}} 
+\index{local\_position\_t@{local\_position\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t local\+\_\+position\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structlocal__position__t_af320c75089d9af8a5f5df110a94c37ef}\label{structlocal__position__t_af320c75089d9af8a5f5df110a94c37ef}} 
+\index{local\_position\_t@{local\_position\_t}!vx@{vx}}
+\index{vx@{vx}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{vx}{vx}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::vx}
+
+x speed (m/s) \mbox{\Hypertarget{structlocal__position__t_aacfc80a4d7fc9ef77c980812209e94b3}\label{structlocal__position__t_aacfc80a4d7fc9ef77c980812209e94b3}} 
+\index{local\_position\_t@{local\_position\_t}!vy@{vy}}
+\index{vy@{vy}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{vy}{vy}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::vy}
+
+y speed (m/s) \mbox{\Hypertarget{structlocal__position__t_af44af0ebdb4b5d950098443766903fb2}\label{structlocal__position__t_af44af0ebdb4b5d950098443766903fb2}} 
+\index{local\_position\_t@{local\_position\_t}!vz@{vz}}
+\index{vz@{vz}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{vz}{vz}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::vz}
+
+z speed (m/s) \mbox{\Hypertarget{structlocal__position__t_a44e17bc9f8b1e72c4918339a8f3a6e91}\label{structlocal__position__t_a44e17bc9f8b1e72c4918339a8f3a6e91}} 
+\index{local\_position\_t@{local\_position\_t}!x@{x}}
+\index{x@{x}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::x}
+
+x position (m) \mbox{\Hypertarget{structlocal__position__t_a958370677b308ec7db3377e2ce446bc1}\label{structlocal__position__t_a958370677b308ec7db3377e2ce446bc1}} 
+\index{local\_position\_t@{local\_position\_t}!y@{y}}
+\index{y@{y}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::y}
+
+y position (m) \mbox{\Hypertarget{structlocal__position__t_ac8dd72b3c6a0fba958f2a78ee39c788e}\label{structlocal__position__t_ac8dd72b3c6a0fba958f2a78ee39c788e}} 
+\index{local\_position\_t@{local\_position\_t}!z@{z}}
+\index{z@{z}!local\_position\_t@{local\_position\_t}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double local\+\_\+position\+\_\+t\+::z}
+
+z position (m) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

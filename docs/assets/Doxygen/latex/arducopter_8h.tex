@@ -1,0 +1,328 @@
+\hypertarget{arducopter_8h}{}\doxysection{apps/arducopter/fsw/src/arducopter.h File Reference}
+\label{arducopter_8h}\index{apps/arducopter/fsw/src/arducopter.h@{apps/arducopter/fsw/src/arducopter.h}}
+
+
+function declarations, definitions of macros, datastructures and global variables for the arudpilot application  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$network\+\_\+includes.\+h$>$}\newline
+{\ttfamily \#include $<$arducopter\+\_\+table.\+h$>$}\newline
+{\ttfamily \#include $<$arducopter\+\_\+events.\+h$>$}\newline
+{\ttfamily \#include $<$arducopter\+\_\+version.\+h$>$}\newline
+{\ttfamily \#include $<$Icarous.\+h$>$}\newline
+{\ttfamily \#include $<$traffic\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include $<$traffic\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$guidance\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include $<$guidance\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$Guidance.\+h$>$}\newline
+{\ttfamily \#include $<$geofence\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include $<$geofence\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$trajectory\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include $<$trajectory\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$tracking\+\_\+msg.\+h$>$}\newline
+{\ttfamily \#include $<$tracking\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$sch\+\_\+msgids.\+h$>$}\newline
+{\ttfamily \#include $<$mavlink/ardupilotmega/mavlink.\+h$>$}\newline
+{\ttfamily \#include $<$port\+\_\+lib.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structappdata_int__t}{appdata\+Int\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{arducopter_8h_af6c5613ae4047326f3644bf9d111a9cd}\label{arducopter_8h_af6c5613ae4047326f3644bf9d111a9cd}} 
+\#define {\bfseries ARDUCOPTER\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}FLIGHTPLAN\char`\"{}
+\item 
+\mbox{\Hypertarget{arducopter_8h_af0156fb20d78a6c118b9749de4277228}\label{arducopter_8h_af0156fb20d78a6c118b9749de4277228}} 
+\#define {\bfseries ARDUCOPTER\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{arducopter_8h_a57dafcd2118057959be1cf9482b132fb}\label{arducopter_8h_a57dafcd2118057959be1cf9482b132fb}} 
+\#define {\bfseries SCH\+\_\+\+ARDUCOPTER\+\_\+\+PIPE1\+\_\+\+NAME}~\char`\"{}SCH\+\_\+\+ARDUCOPTER\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{control\+Mode\+\_\+e}} \{ \newline
+\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9}{STABILIZE}} = 0
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549ae0a0490702d97acb639917fd526e2333}{ACRO}} = 1
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef}{ALT\+\_\+\+HOLD}} = 2
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aeef9468d1b98bca652a04bf5063fd9d6}{AUTO}} = 3
+, \newline
+\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2781c142ec876dad824cf164eb9c8c23}{GUIDED}} = 4
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1}{LOITER}} = 5
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a19cd99444b6f1588876b490ab1198d73}{RTL}} = 6
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aa79c827759ea48f0735386c4b1188911}{CIRCLE}} = 7
+, \newline
+\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d}{DRIFT}} = 11
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a956b9eef94661d496f43e5e155353408}{SPORT}} = 13
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a97744c5570e743b377f5fb63b9aa3587}{FLIP}} = 14
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8345a967452584c722cca8ee80d5c4a5}{AUTOTUNE}} = 15
+, \newline
+\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9}{POSHOLD}} = 16
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8b23c50cc938e0b366df8d8eeeb1bf9f}{BRAKE}} = 17
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549abc5a79c786d2b239440dd3b92c402ef4}{THROW}} = 18
+, \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2f6891f13a38daa173fe0dc2d66aa561}{AVOID\+\_\+\+ADSB}} = 19
+, \newline
+\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a4957a999adfbd682a93d13bf054c4ee3}{GUIDED\+\_\+\+NOGPS}} = 20
+ \}
+\begin{DoxyCompactList}\small\item\em enumeration for Arducopter control modes \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{arducopter_8h_a62f0d473eaf67561e9271712dfb178ab}{ARDUCOPTER\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8h_af4d85ff1bfe8049adf765b3a2637159f}{ARDUCOPTER\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8h_ae0b80fdc7d9dccb9ef77049831430f54}{ARDUCOPTER\+\_\+\+App\+Initialize\+Data}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8h_a6c45eef12d5ba0b385f293ef397fb690}{ARDUCOPTER\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8h_a19f1aafabbad250c13d64ea4e563e683}{Task1}} (void)
+\item 
+int \mbox{\hyperlink{arducopter_8h_ab1c228faf9d583ac61284a7b20d3b058}{Get\+MAVLink\+Msg\+From\+AP}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8h_a8b56d89d18a7b18c8cbeaf32feea0f18}{Process\+APMessage}} (mavlink\+\_\+message\+\_\+t message)
+\item 
+void \mbox{\hyperlink{arducopter_8h_ade5227c437a85b05b5f943024b3cd11e}{ARDUCOPTER\+\_\+\+Process\+Packet}} (void)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a662b340129cc2659a4a49c4ef0345766}\label{arducopter_8h_a662b340129cc2659a4a49c4ef0345766}} 
+void {\bfseries ap\+Send\+Heartbeat} (void)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a5c5891ced022bf8960237db26de80a7b}\label{arducopter_8h_a5c5891ced022bf8960237db26de80a7b}} 
+void {\bfseries ap\+Send\+Callsign} (void)
+\item 
+\mbox{\Hypertarget{arducopter_8h_abec0b307d8935caa5fcec6a044c77698}\label{arducopter_8h_abec0b307d8935caa5fcec6a044c77698}} 
+void {\bfseries ap\+\_\+gf\+Callback} (uint32\+\_\+t timer)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a5fe89ff86bd6d8399d5612c17615f044}\label{arducopter_8h_a5fe89ff86bd6d8399d5612c17615f044}} 
+void {\bfseries ap\+\_\+pm\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{arducopter_8h_acafe62ae07b83aad6acac109b2a08daa}\label{arducopter_8h_acafe62ae07b83aad6acac109b2a08daa}} 
+void {\bfseries ap\+\_\+tj\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a89e14f39eb7d786f7fd0e4ed04b69341}\label{arducopter_8h_a89e14f39eb7d786f7fd0e4ed04b69341}} 
+void {\bfseries ap\+\_\+start\+Timer} (uint32\+\_\+t $\ast$timer\+ID, void($\ast$f)(uint32\+\_\+t), char $\ast$name, uint32\+\_\+t start\+Time, uint32\+\_\+t intvl)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a0733b810ee45ecf399f5b54a8023c1e5}\label{arducopter_8h_a0733b810ee45ecf399f5b54a8023c1e5}} 
+void {\bfseries ap\+\_\+stop\+Timer} (uint32\+\_\+t $\ast$timer\+ID)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a7acdc5c3e0b1367705a3f45745d10d06}\label{arducopter_8h_a7acdc5c3e0b1367705a3f45745d10d06}} 
+void {\bfseries ap\+Interface\+\_\+\+Publish\+Params} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{arducopter_8h_a73843075a22329bae03451ae0fad6de8}{Arducopter\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a94510a81e6d84d6d4acf004efae5da5a}\label{arducopter_8h_a94510a81e6d84d6d4acf004efae5da5a}} 
+uint16\+\_\+t {\bfseries ap\+Convert\+Plan\+To\+Mission\+Items} (\mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} $\ast$fp)
+\item 
+\mbox{\Hypertarget{arducopter_8h_ac82341e5a08771932e75df92c0c720cc}\label{arducopter_8h_ac82341e5a08771932e75df92c0c720cc}} 
+void {\bfseries ap\+Convert\+Mission\+Items\+To\+Plan} (uint16\+\_\+t size, mavlink\+\_\+mission\+\_\+item\+\_\+t items\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} $\ast$fp)
+\item 
+\mbox{\Hypertarget{arducopter_8h_a180f4e45c08aa72b4f4aadbad2d0a3e2}\label{arducopter_8h_a180f4e45c08aa72b4f4aadbad2d0a3e2}} 
+bool {\bfseries Intf\+Service\+Handler} (mavlink\+\_\+message\+\_\+t $\ast$message)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{arducopter_8h_a9a518bea551679e20e268267d1576422}\label{arducopter_8h_a9a518bea551679e20e268267d1576422}} 
+EXTERN \mbox{\hyperlink{structappdata_int__t}{appdata\+Int\+\_\+t}} {\bfseries appdata\+Int}
+\begin{DoxyCompactList}\small\item\em global variable containing app state \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a21f737488b4924a267edc0a2fa97fff6}\label{arducopter_8h_a21f737488b4924a267edc0a2fa97fff6}} 
+EXTERN \mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} {\bfseries fpdata}
+\begin{DoxyCompactList}\small\item\em waypoint message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_acbfc4fce6a74a1110667bee17869ec31}\label{arducopter_8h_acbfc4fce6a74a1110667bee17869ec31}} 
+EXTERN \mbox{\hyperlink{structmission_item_reached__t}{mission\+Item\+Reached\+\_\+t}} {\bfseries wpreached}
+\begin{DoxyCompactList}\small\item\em mission item reached \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_aaccd061993dfdeef88a2dbce71c6f68e}\label{arducopter_8h_aaccd061993dfdeef88a2dbce71c6f68e}} 
+EXTERN \mbox{\hyperlink{structgeofence__t}{geofence\+\_\+t}} {\bfseries gfdata}
+\begin{DoxyCompactList}\small\item\em geofence data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}\label{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}} 
+EXTERN \mbox{\hyperlink{structargs_cmd__t}{args\+Cmd\+\_\+t}} {\bfseries start\+Mission}
+\begin{DoxyCompactList}\small\item\em start mission command \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_af7be49f01a35ee0616919e72e71942cb}\label{arducopter_8h_af7be49f01a35ee0616919e72e71942cb}} 
+EXTERN \mbox{\hyperlink{structno_args_cmd__t}{no\+Args\+Cmd\+\_\+t}} {\bfseries reset\+Icarous}
+\begin{DoxyCompactList}\small\item\em reset icarous command \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}\label{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}} 
+EXTERN \mbox{\hyperlink{structobject__t}{object\+\_\+t}} {\bfseries traffic}
+\begin{DoxyCompactList}\small\item\em traffic message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}\label{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}} 
+EXTERN \mbox{\hyperlink{structposition__t}{position\+\_\+t}} {\bfseries position}
+\begin{DoxyCompactList}\small\item\em position message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_aaecb13171b86a9ed3a749885fb37e546}\label{arducopter_8h_aaecb13171b86a9ed3a749885fb37e546}} 
+EXTERN \mbox{\hyperlink{structlocal__position__t}{local\+\_\+position\+\_\+t}} {\bfseries local\+\_\+position}
+\begin{DoxyCompactList}\small\item\em local position message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_aaa1b88357ed34d226cf21356516d8e99}\label{arducopter_8h_aaa1b88357ed34d226cf21356516d8e99}} 
+EXTERN \mbox{\hyperlink{structattitude__t}{attitude\+\_\+t}} {\bfseries attitude}
+\begin{DoxyCompactList}\small\item\em attitude message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_ac0db5fe4b83e9c1224ff1e1b356d33bf}\label{arducopter_8h_ac0db5fe4b83e9c1224ff1e1b356d33bf}} 
+EXTERN \mbox{\hyperlink{structbattery__status__t}{battery\+\_\+status\+\_\+t}} {\bfseries battery\+\_\+status}
+\begin{DoxyCompactList}\small\item\em battery status message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a55ca571edd787c2e969fb5bd28ddb078}\label{arducopter_8h_a55ca571edd787c2e969fb5bd28ddb078}} 
+EXTERN \mbox{\hyperlink{structcmd_ack__t}{cmd\+Ack\+\_\+t}} {\bfseries ack}
+\begin{DoxyCompactList}\small\item\em command acknowledge message \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a78c5f559492e1e13434fe9765a18ee04}\label{arducopter_8h_a78c5f559492e1e13434fe9765a18ee04}} 
+EXTERN \mbox{\hyperlink{structvfrhud__t}{vfrhud\+\_\+t}} {\bfseries vfrhud}
+\begin{DoxyCompactList}\small\item\em vfr hud data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a8268e81a9f5c2f008b312dc9070fa158}\label{arducopter_8h_a8268e81a9f5c2f008b312dc9070fa158}} 
+EXTERN \mbox{\hyperlink{structrc__channels__t}{rc\+\_\+channels\+\_\+t}} {\bfseries rc\+\_\+channels}
+\begin{DoxyCompactList}\small\item\em rc channels \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{arducopter_8h_a3c0439ee6bd688f62b610185cec16ba6}\label{arducopter_8h_a3c0439ee6bd688f62b610185cec16ba6}} 
+EXTERN \mbox{\hyperlink{structhome__position__t}{home\+\_\+position\+\_\+t}} {\bfseries home\+\_\+position}
+\begin{DoxyCompactList}\small\item\em home position \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}} 
+\index{arducopter.h@{arducopter.h}!controlMode\_e@{controlMode\_e}}
+\index{controlMode\_e@{controlMode\_e}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{controlMode\_e}{controlMode\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{control\+Mode\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STABILIZE@{STABILIZE}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!STABILIZE@{STABILIZE}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9}} 
+STABILIZE&manual airframe angle with manual throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ACRO@{ACRO}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!ACRO@{ACRO}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549ae0a0490702d97acb639917fd526e2333}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549ae0a0490702d97acb639917fd526e2333}} 
+ACRO&manual body-\/frame angular rate with manual throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALT\_HOLD@{ALT\_HOLD}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!ALT\_HOLD@{ALT\_HOLD}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef}} 
+ALT\+\_\+\+HOLD&manual airframe angle with automatic throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AUTO@{AUTO}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!AUTO@{AUTO}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aeef9468d1b98bca652a04bf5063fd9d6}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aeef9468d1b98bca652a04bf5063fd9d6}} 
+AUTO&fully automatic waypoint control using mission commands \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GUIDED@{GUIDED}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!GUIDED@{GUIDED}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2781c142ec876dad824cf164eb9c8c23}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2781c142ec876dad824cf164eb9c8c23}} 
+GUIDED&fully automatic fly to coordinate or fly at velocity/direction using GCS immediate commands \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LOITER@{LOITER}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!LOITER@{LOITER}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1}} 
+LOITER&automatic horizontal acceleration with automatic throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RTL@{RTL}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!RTL@{RTL}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a19cd99444b6f1588876b490ab1198d73}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a19cd99444b6f1588876b490ab1198d73}} 
+RTL&automatic return to launching point \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CIRCLE@{CIRCLE}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!CIRCLE@{CIRCLE}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aa79c827759ea48f0735386c4b1188911}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aa79c827759ea48f0735386c4b1188911}} 
+CIRCLE&automatic circular flight with automatic throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DRIFT@{DRIFT}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!DRIFT@{DRIFT}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d}} 
+DRIFT&semi-\/automous position, yaw and throttle control \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPORT@{SPORT}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!SPORT@{SPORT}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a956b9eef94661d496f43e5e155353408}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a956b9eef94661d496f43e5e155353408}} 
+SPORT&manual earth-\/frame angular rate control with manual throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLIP@{FLIP}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!FLIP@{FLIP}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a97744c5570e743b377f5fb63b9aa3587}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a97744c5570e743b377f5fb63b9aa3587}} 
+FLIP&automatically flip the vehicle on the roll axis \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AUTOTUNE@{AUTOTUNE}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!AUTOTUNE@{AUTOTUNE}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8345a967452584c722cca8ee80d5c4a5}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8345a967452584c722cca8ee80d5c4a5}} 
+AUTOTUNE&automatically tune the vehicle\textquotesingle{}s roll and pitch gains \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{POSHOLD@{POSHOLD}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!POSHOLD@{POSHOLD}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9}} 
+POSHOLD&automatic position hold with manual override, with automatic throttle \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BRAKE@{BRAKE}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!BRAKE@{BRAKE}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8b23c50cc938e0b366df8d8eeeb1bf9f}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8b23c50cc938e0b366df8d8eeeb1bf9f}} 
+BRAKE&full-\/brake using inertial/\+GPS system, no pilot input \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{THROW@{THROW}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!THROW@{THROW}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549abc5a79c786d2b239440dd3b92c402ef4}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549abc5a79c786d2b239440dd3b92c402ef4}} 
+THROW&throw to launch mode using inertial/\+GPS system, no pilot input \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{AVOID\_ADSB@{AVOID\_ADSB}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!AVOID\_ADSB@{AVOID\_ADSB}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2f6891f13a38daa173fe0dc2d66aa561}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2f6891f13a38daa173fe0dc2d66aa561}} 
+AVOID\+\_\+\+ADSB&automatic avoidance of obstacles in the macro scale -\/ e.\+g. full-\/sized aircraft \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GUIDED\_NOGPS@{GUIDED\_NOGPS}!arducopter.h@{arducopter.h}}\index{arducopter.h@{arducopter.h}!GUIDED\_NOGPS@{GUIDED\_NOGPS}}}\mbox{\Hypertarget{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a4957a999adfbd682a93d13bf054c4ee3}\label{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a4957a999adfbd682a93d13bf054c4ee3}} 
+GUIDED\+\_\+\+NOGPS&guided mode but only accepts attitude and altitude \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{arducopter_8h_a6c45eef12d5ba0b385f293ef397fb690}\label{arducopter_8h_a6c45eef12d5ba0b385f293ef397fb690}} 
+\index{arducopter.h@{arducopter.h}!ARDUCOPTER\_AppCleanUp@{ARDUCOPTER\_AppCleanUp}}
+\index{ARDUCOPTER\_AppCleanUp@{ARDUCOPTER\_AppCleanUp}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppCleanUp()}{ARDUCOPTER\_AppCleanUp()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{arducopter_8h_af4d85ff1bfe8049adf765b3a2637159f}\label{arducopter_8h_af4d85ff1bfe8049adf765b3a2637159f}} 
+\index{arducopter.h@{arducopter.h}!ARDUCOPTER\_AppInit@{ARDUCOPTER\_AppInit}}
+\index{ARDUCOPTER\_AppInit@{ARDUCOPTER\_AppInit}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppInit()}{ARDUCOPTER\_AppInit()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{arducopter_8h_ae0b80fdc7d9dccb9ef77049831430f54}\label{arducopter_8h_ae0b80fdc7d9dccb9ef77049831430f54}} 
+\index{arducopter.h@{arducopter.h}!ARDUCOPTER\_AppInitializeData@{ARDUCOPTER\_AppInitializeData}}
+\index{ARDUCOPTER\_AppInitializeData@{ARDUCOPTER\_AppInitializeData}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppInitializeData()}{ARDUCOPTER\_AppInitializeData()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Initialize\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app data \mbox{\Hypertarget{arducopter_8h_a62f0d473eaf67561e9271712dfb178ab}\label{arducopter_8h_a62f0d473eaf67561e9271712dfb178ab}} 
+\index{arducopter.h@{arducopter.h}!ARDUCOPTER\_AppMain@{ARDUCOPTER\_AppMain}}
+\index{ARDUCOPTER\_AppMain@{ARDUCOPTER\_AppMain}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppMain()}{ARDUCOPTER\_AppMain()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{arducopter_8h_ade5227c437a85b05b5f943024b3cd11e}\label{arducopter_8h_ade5227c437a85b05b5f943024b3cd11e}} 
+\index{arducopter.h@{arducopter.h}!ARDUCOPTER\_ProcessPacket@{ARDUCOPTER\_ProcessPacket}}
+\index{ARDUCOPTER\_ProcessPacket@{ARDUCOPTER\_ProcessPacket}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_ProcessPacket()}{ARDUCOPTER\_ProcessPacket()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process SB messages from pipes and take action \mbox{\Hypertarget{arducopter_8h_a73843075a22329bae03451ae0fad6de8}\label{arducopter_8h_a73843075a22329bae03451ae0fad6de8}} 
+\index{arducopter.h@{arducopter.h}!ArducopterTableValidationFunc@{ArducopterTableValidationFunc}}
+\index{ArducopterTableValidationFunc@{ArducopterTableValidationFunc}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ArducopterTableValidationFunc()}{ArducopterTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Arducopter\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{arducopter_8h_ab1c228faf9d583ac61284a7b20d3b058}\label{arducopter_8h_ab1c228faf9d583ac61284a7b20d3b058}} 
+\index{arducopter.h@{arducopter.h}!GetMAVLinkMsgFromAP@{GetMAVLinkMsgFromAP}}
+\index{GetMAVLinkMsgFromAP@{GetMAVLinkMsgFromAP}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{GetMAVLinkMsgFromAP()}{GetMAVLinkMsgFromAP()}}
+{\footnotesize\ttfamily int Get\+MAVLink\+Msg\+From\+AP (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Get mavlink message from Arducopter \mbox{\Hypertarget{arducopter_8h_a8b56d89d18a7b18c8cbeaf32feea0f18}\label{arducopter_8h_a8b56d89d18a7b18c8cbeaf32feea0f18}} 
+\index{arducopter.h@{arducopter.h}!ProcessAPMessage@{ProcessAPMessage}}
+\index{ProcessAPMessage@{ProcessAPMessage}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{ProcessAPMessage()}{ProcessAPMessage()}}
+{\footnotesize\ttfamily void Process\+APMessage (\begin{DoxyParamCaption}\item[{mavlink\+\_\+message\+\_\+t}]{message }\end{DoxyParamCaption})}
+
+Process mavlink message from arducopter and take action 
+\begin{DoxyParams}{Parameters}
+{\em message} & mavlink message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{arducopter_8h_a19f1aafabbad250c13d64ea4e563e683}\label{arducopter_8h_a19f1aafabbad250c13d64ea4e563e683}} 
+\index{arducopter.h@{arducopter.h}!Task1@{Task1}}
+\index{Task1@{Task1}!arducopter.h@{arducopter.h}}
+\doxysubsubsection{\texorpdfstring{Task1()}{Task1()}}
+{\footnotesize\ttfamily void Task1 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Read from Arducopter data stream and pass data to groundstation and ICAROUS app 

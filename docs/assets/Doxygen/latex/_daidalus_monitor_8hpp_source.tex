@@ -1,0 +1,86 @@
+\hypertarget{_daidalus_monitor_8hpp_source}{}\doxysection{Daidalus\+Monitor.\+hpp}
+\label{_daidalus_monitor_8hpp_source}\index{Modules/Core/TrafficMonitor/DaidalusMonitor.hpp@{Modules/Core/TrafficMonitor/DaidalusMonitor.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DAIDALUS\_MONITOR\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DAIDALUS\_MONITOR\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}TrafficMonitor.hpp"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}Daidalus.h"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{class_daidalus_monitor}{DaidalusMonitor}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_traffic_monitor}{TrafficMonitor}} \{}
+\DoxyCodeLine{12 \textcolor{keyword}{private}:}
+\DoxyCodeLine{13     \textcolor{keywordtype}{bool} log;}
+\DoxyCodeLine{14     std::string \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{15     \textcolor{keywordtype}{double} conflictTimeElapsed;}
+\DoxyCodeLine{16     \textcolor{keywordtype}{double} alertingTime;}
+\DoxyCodeLine{17     \textcolor{keywordtype}{bool} conflictTrack;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{bool} conflictSpeed;}
+\DoxyCodeLine{19     \textcolor{keywordtype}{bool} conflictVerticalSpeed;}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keywordtype}{bool} daaViolationTrack;}
+\DoxyCodeLine{22     \textcolor{keywordtype}{bool} daaViolationSpeed;}
+\DoxyCodeLine{23     \textcolor{keywordtype}{bool} daaViolationVS;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{bool} daaViolationAlt;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{keywordtype}{double} conflictStartTime;}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} startTime;}
+\DoxyCodeLine{28     }
+\DoxyCodeLine{29     std::ofstream logfileIn;}
+\DoxyCodeLine{30     std::ofstream logfileOut;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \textcolor{keywordtype}{int} numTrackBands;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{int} numSpeedBands;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{int} numVerticalSpeedBands;}
+\DoxyCodeLine{35     \textcolor{keywordtype}{int} numAltitudeBands;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     std::vector<std::vector<double>> trackInterval;}
+\DoxyCodeLine{38     std::vector<std::vector<double>> speedInterval;}
+\DoxyCodeLine{39     std::vector<std::vector<double>> vsInterval;}
+\DoxyCodeLine{40     std::vector<std::vector<double>> altInterval;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     std::vector<int> trackIntTypes;}
+\DoxyCodeLine{43     std::vector<int> speedIntTypes;}
+\DoxyCodeLine{44     std::vector<int> vsIntTypes;}
+\DoxyCodeLine{45     std::vector<int> altIntTypes;}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     \textcolor{keywordtype}{double} prevLogTime;}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double} staleThreshold;}
+\DoxyCodeLine{49     std::map<std::string,int> trafficAlerts;}
+\DoxyCodeLine{50     \textcolor{keywordtype}{bool} CheckSafeToTurn(\textcolor{keywordtype}{double} position[],\textcolor{keywordtype}{double} velocity[],\textcolor{keywordtype}{double} fromHeading,\textcolor{keywordtype}{double} toHeading);}
+\DoxyCodeLine{51     \textcolor{keywordtype}{bool} CheckTurnConflict(\textcolor{keywordtype}{double} low, \textcolor{keywordtype}{double} high, \textcolor{keywordtype}{double} newHeading, \textcolor{keywordtype}{double} oldHeading);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     larcfm::Daidalus DAA1;   \textcolor{comment}{// DAA1 object used for regular traffic monitor}}
+\DoxyCodeLine{54     larcfm::Daidalus DAA2;   \textcolor{comment}{// DAA2 object used for stateless queries}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{int} dataSource;}
+\DoxyCodeLine{57     \textcolor{keywordtype}{bool} sensorMapping;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keywordtype}{double} maxVS;}
+\DoxyCodeLine{60     \textcolor{keywordtype}{double} minVS;}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double} ZTHR;}
+\DoxyCodeLine{62     \textcolor{keywordtype}{double} DTHR;}
+\DoxyCodeLine{63     \textcolor{keywordtype}{double} timeIntervalOfConflictLow;}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double} timeIntervalOfConflictHigh;}
+\DoxyCodeLine{65 \textcolor{keyword}{public}:}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \mbox{\hyperlink{class_daidalus_monitor}{DaidalusMonitor}}(std::string \mbox{\hyperlink{structcallsign}{callsign}}, std::string daaConfig);}
+\DoxyCodeLine{68     \textcolor{keywordtype}{void} MonitorTraffic(larcfm::Velocity windfrom);}
+\DoxyCodeLine{69     std::string GetAlerter(\textcolor{keywordtype}{object}\& intruder);}
+\DoxyCodeLine{70     \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{71     \textcolor{keywordtype}{void} UpdateParameters(std::string daaParameters);}
+\DoxyCodeLine{72     \textcolor{keywordtype}{int} GetTrafficAlerts(\textcolor{keywordtype}{int} index,std::string\& trafficID,\textcolor{keywordtype}{int}\& alertLevel);}
+\DoxyCodeLine{73     bands\_t GetTrackBands(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{74     bands\_t GetSpeedBands(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{75     bands\_t GetAltBands(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{76     bands\_t GetVerticalSpeedBands(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

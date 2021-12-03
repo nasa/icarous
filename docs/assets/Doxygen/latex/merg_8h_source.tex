@@ -1,0 +1,74 @@
+\hypertarget{merg_8h_source}{}\doxysection{merg.\+h}
+\label{merg_8h_source}\index{apps/merger/fsw/src/merg.h@{apps/merger/fsw/src/merg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_MERGER\_H}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_MERGER\_H}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <float.h>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}Icarous.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_merger_8h}{Merger.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msg_8h}{merger\_msg.h}}"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msgids_8h}{merger\_msgids.h}}"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__table_8h}{merger\_table.h}}"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{raft__msgids_8h}{raft\_msgids.h}}"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{raft__msg_8h}{raft\_msg.h}}"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}Guidance.h"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msg_8h}{guidance\_msg.h}}"{}}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msgids_8h}{guidance\_msgids.h}}"{}}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define MERGER\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define MERGER\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define MERGER\_RECEIVED\_FENCE\_EID 3}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define MERGER\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define MERGER\_PIPE\_NAME "{}MERGER\_PIPE"{}}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define MERGER\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define MERGER\_MINOR\_VERSION 0}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{56 \textcolor{keyword}{typedef} \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{structflightplan__t}{mergePoints\_t}};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{62 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{63     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structmerger_app_data__t_a3477b43390f5e118ba8f96996cfa2dd4}{Merger\_Pipe}};       }
+\DoxyCodeLine{64     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structmerger_app_data__t_a538cea506363857e6fc27ceaa5e5a74f}{Merger\_MsgPtr}};     }
+\DoxyCodeLine{65     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{structmerger_app_data__t_a13bda85a9b8354313e351add0f05fa29}{Merger\_tblHandle}};  }
+\DoxyCodeLine{66     \mbox{\hyperlink{structflightplan__t}{mergePoints\_t}} \mbox{\hyperlink{structmerger_app_data__t_ae342f9dc737765f541f8c2cb35f83348}{mgData}};                 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{void}* merger;}
+\DoxyCodeLine{68     \mbox{\hyperlink{struct_merger_table__t}{MergerTable\_t}} \mbox{\hyperlink{structmerger_app_data__t_ac12c88e93daa78fa63bd0cf953d3584c}{mergerTable}};            }
+\DoxyCodeLine{69     mergeStatus\_e mgStatus;}
+\DoxyCodeLine{70 \}\mbox{\hyperlink{structmerger_app_data__t}{mergerAppData\_t}};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{75 \textcolor{keywordtype}{void} MERGER\_AppMain(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80 \textcolor{keywordtype}{void} MERGER\_AppInit(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{85 \textcolor{keywordtype}{void} MERGER\_AppInitializeData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90 \textcolor{keywordtype}{void} MERGER\_AppCleanUp(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95 \textcolor{keywordtype}{void} MERGER\_ProcessPacket(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{103 int32\_t MergerTableValidationFunc(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keywordtype}{void} MERGER\_WriteLogEntry(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_MERGER\_H}}
+
+\end{DoxyCode}

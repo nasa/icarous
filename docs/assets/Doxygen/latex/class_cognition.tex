@@ -1,0 +1,286 @@
+\hypertarget{class_cognition}{}\doxysection{Cognition Class Reference}
+\label{class_cognition}\index{Cognition@{Cognition}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_cognition_a8756aff28345d203c731a4787011f72c}{Cognition}} (const std\+::string call\+Sign, const std\+::string config)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{class_cognition}{Cognition}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_ac270521c2ea11590f04b18c80a39e44f}{Read\+Params\+From\+File}} (const std\+::string config)
+\begin{DoxyCompactList}\small\item\em Read parameters from provided config file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_cognition_aa3347c50fb9e895f7439ebd9db358a36}\label{class_cognition_aa3347c50fb9e895f7439ebd9db358a36}} 
+void {\bfseries Reset} ()
+\begin{DoxyCompactList}\small\item\em Reset event management framework. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_aa6cea9736284d76ad3f166095eba6027}{Input\+Vehicle\+State}} (const larcfm\+::\+Position \&pos, const larcfm\+::\+Velocity \&vel, const double heading)
+\begin{DoxyCompactList}\small\item\em Input current aircraft state data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_affcbfdca38a2306aba13d726186a9092}{Input\+Flight\+Plan\+Data}} (const std\+::string \&plan\+\_\+id, const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&waypoints, const double init\+Heading, bool repair, double repair\+Turn\+Rate)
+\begin{DoxyCompactList}\small\item\em Input flightplan data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_acc15030adf673c22573b6c7698a75659}{Input\+Trajectory\+Monitor\+Data}} (const trajectory\+Monitor\+Data\+\_\+t \&tj\+Mon\+Data)
+\begin{DoxyCompactList}\small\item\em Input trajectory monitoring data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_ae9e506b76993a176a98b376fd7e29050}{Input\+Parameters}} (const \mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} \&new\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Input paramaters directly. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a736e8977902097a1bb45b499a8c156bf}{Input\+Ditch\+Status}} (const larcfm\+::\+Position \&ditch\+\_\+site, const double tod\+Altitude, const bool ditch\+\_\+requested)
+\begin{DoxyCompactList}\small\item\em Input ditch status. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a17115253c12fa1f8aa163c1148e93635}{Input\+Merge\+Status}} (const int merge\+\_\+status)
+\begin{DoxyCompactList}\small\item\em Input merging status. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a7a80b5dfcfeaf80606ce0682d7f5c30d}{Input\+Track\+Bands}} (const bands\+\_\+t \&track\+\_\+bands)
+\begin{DoxyCompactList}\small\item\em Input track bands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_abd18dc9b462b54bce2238ccba5ede8ee}{Input\+Speed\+Bands}} (const bands\+\_\+t \&speed\+\_\+bands)
+\begin{DoxyCompactList}\small\item\em Input speed bands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a33120ca09d581c337b966b0116f41be7}{Input\+Alt\+Bands}} (const bands\+\_\+t \&alt\+\_\+bands)
+\begin{DoxyCompactList}\small\item\em Input altitude bands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_af80f974f700f3422716a0f30693b0c5a}{Input\+VSBands}} (const bands\+\_\+t \&vs\+\_\+bands)
+\begin{DoxyCompactList}\small\item\em Input vertical speed bands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a7355e6b91b9eae7a80279894f6daaa88}{Input\+Geofence\+Conflict\+Data}} (const geofence\+Conflict\+\_\+t \&gf\+\_\+conflict)
+\begin{DoxyCompactList}\small\item\em Input geofence conflict data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a25db5be625b9f50d6e2cbfb7a14e16ec}{Reached\+Waypoint}} (const std\+::string \&plan\+\_\+id, const int wp\+\_\+reached\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Input waypoint reached data. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_cognition_a70e5766e8ff3b14a122ecd677c106075}{Get\+Cognition\+Output}} (\mbox{\hyperlink{struct_command}{Command}} \&command)
+\begin{DoxyCompactList}\small\item\em Get the \mbox{\hyperlink{class_cognition}{Cognition}} Output object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a4ad689adf77df50a47887626f6ca4e2a}{Start\+Mission}} (const int mission\+\_\+start\+\_\+value, const double scenario\+\_\+time)
+\begin{DoxyCompactList}\small\item\em start mission \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a60a6bcd7d63f4b44529af57a5489308d}{Run}} (double time)
+\begin{DoxyCompactList}\small\item\em Run decision making process for the current time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}{Input\+Traffic\+Alert}} (std\+::string, int alert)
+\begin{DoxyCompactList}\small\item\em Input traffic alert data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_cognition_a61b6eb88dadf805e8b35fd6d0cc42f95}\label{class_cognition_a61b6eb88dadf805e8b35fd6d0cc42f95}} 
+\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} {\bfseries cog\+State}
+\begin{DoxyCompactList}\small\item\em internal state \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_cognition_a8756aff28345d203c731a4787011f72c}\label{class_cognition_a8756aff28345d203c731a4787011f72c}} 
+\index{Cognition@{Cognition}!Cognition@{Cognition}}
+\index{Cognition@{Cognition}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{Cognition()}{Cognition()}}
+{\footnotesize\ttfamily Cognition\+::\+Cognition (\begin{DoxyParamCaption}\item[{const std\+::string}]{call\+Sign,  }\item[{const std\+::string}]{config }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em call\+Sign} & name for vehicle \\
+\hline
+{\em config} & name of configuration file \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_cognition_a70e5766e8ff3b14a122ecd677c106075}\label{class_cognition_a70e5766e8ff3b14a122ecd677c106075}} 
+\index{Cognition@{Cognition}!GetCognitionOutput@{GetCognitionOutput}}
+\index{GetCognitionOutput@{GetCognitionOutput}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{GetCognitionOutput()}{GetCognitionOutput()}}
+{\footnotesize\ttfamily int Cognition\+::\+Get\+Cognition\+Output (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_command}{Command}} \&}]{command }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & output command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int remaining commands 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_cognition_a33120ca09d581c337b966b0116f41be7}\label{class_cognition_a33120ca09d581c337b966b0116f41be7}} 
+\index{Cognition@{Cognition}!InputAltBands@{InputAltBands}}
+\index{InputAltBands@{InputAltBands}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputAltBands()}{InputAltBands()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Alt\+Bands (\begin{DoxyParamCaption}\item[{const bands\+\_\+t \&}]{alt\+\_\+bands }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em alt\+\_\+bands} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a736e8977902097a1bb45b499a8c156bf}\label{class_cognition_a736e8977902097a1bb45b499a8c156bf}} 
+\index{Cognition@{Cognition}!InputDitchStatus@{InputDitchStatus}}
+\index{InputDitchStatus@{InputDitchStatus}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputDitchStatus()}{InputDitchStatus()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Ditch\+Status (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{ditch\+\_\+site,  }\item[{const double}]{tod\+Altitude,  }\item[{const bool}]{ditch\+\_\+requested }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ditch\+\_\+site} & position of ditch site \\
+\hline
+{\em tod\+Altitude} & top of descent altitude \\
+\hline
+{\em ditch\+\_\+requested} & initiate ditching \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_affcbfdca38a2306aba13d726186a9092}\label{class_cognition_affcbfdca38a2306aba13d726186a9092}} 
+\index{Cognition@{Cognition}!InputFlightPlanData@{InputFlightPlanData}}
+\index{InputFlightPlanData@{InputFlightPlanData}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputFlightPlanData()}{InputFlightPlanData()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Flight\+Plan\+Data (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{plan\+\_\+id,  }\item[{const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&}]{waypoints,  }\item[{const double}]{init\+Heading,  }\item[{bool}]{repair,  }\item[{double}]{repair\+Turn\+Rate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan\+\_\+id} & name for plan \\
+\hline
+{\em waypoints} & list of waypoints \\
+\hline
+{\em init\+Heading} & initial Heading \\
+\hline
+{\em repair} & true if plan should be converted into kinematic plan \\
+\hline
+{\em repair\+Turn\+Rate} & turn rate used to convert to kinematic plan \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a7355e6b91b9eae7a80279894f6daaa88}\label{class_cognition_a7355e6b91b9eae7a80279894f6daaa88}} 
+\index{Cognition@{Cognition}!InputGeofenceConflictData@{InputGeofenceConflictData}}
+\index{InputGeofenceConflictData@{InputGeofenceConflictData}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputGeofenceConflictData()}{InputGeofenceConflictData()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Geofence\+Conflict\+Data (\begin{DoxyParamCaption}\item[{const geofence\+Conflict\+\_\+t \&}]{gf\+\_\+conflict }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em gf\+\_\+conflict} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a17115253c12fa1f8aa163c1148e93635}\label{class_cognition_a17115253c12fa1f8aa163c1148e93635}} 
+\index{Cognition@{Cognition}!InputMergeStatus@{InputMergeStatus}}
+\index{InputMergeStatus@{InputMergeStatus}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputMergeStatus()}{InputMergeStatus()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Merge\+Status (\begin{DoxyParamCaption}\item[{const int}]{merge\+\_\+status }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em merge\+\_\+status} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_ae9e506b76993a176a98b376fd7e29050}\label{class_cognition_ae9e506b76993a176a98b376fd7e29050}} 
+\index{Cognition@{Cognition}!InputParameters@{InputParameters}}
+\index{InputParameters@{InputParameters}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputParameters()}{InputParameters()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} \&}]{new\+\_\+params }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+params} & parameters \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_abd18dc9b462b54bce2238ccba5ede8ee}\label{class_cognition_abd18dc9b462b54bce2238ccba5ede8ee}} 
+\index{Cognition@{Cognition}!InputSpeedBands@{InputSpeedBands}}
+\index{InputSpeedBands@{InputSpeedBands}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputSpeedBands()}{InputSpeedBands()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Speed\+Bands (\begin{DoxyParamCaption}\item[{const bands\+\_\+t \&}]{speed\+\_\+bands }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed\+\_\+bands} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a7a80b5dfcfeaf80606ce0682d7f5c30d}\label{class_cognition_a7a80b5dfcfeaf80606ce0682d7f5c30d}} 
+\index{Cognition@{Cognition}!InputTrackBands@{InputTrackBands}}
+\index{InputTrackBands@{InputTrackBands}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputTrackBands()}{InputTrackBands()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Track\+Bands (\begin{DoxyParamCaption}\item[{const bands\+\_\+t \&}]{track\+\_\+bands }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em track\+\_\+bands} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}\label{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}} 
+\index{Cognition@{Cognition}!InputTrafficAlert@{InputTrafficAlert}}
+\index{InputTrafficAlert@{InputTrafficAlert}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputTrafficAlert()}{InputTrafficAlert()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Traffic\+Alert (\begin{DoxyParamCaption}\item[{std\+::string}]{callsign,  }\item[{int}]{alert }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em alert} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_acc15030adf673c22573b6c7698a75659}\label{class_cognition_acc15030adf673c22573b6c7698a75659}} 
+\index{Cognition@{Cognition}!InputTrajectoryMonitorData@{InputTrajectoryMonitorData}}
+\index{InputTrajectoryMonitorData@{InputTrajectoryMonitorData}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputTrajectoryMonitorData()}{InputTrajectoryMonitorData()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Trajectory\+Monitor\+Data (\begin{DoxyParamCaption}\item[{const trajectory\+Monitor\+Data\+\_\+t \&}]{tj\+Mon\+Data }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em tj\+Mon\+Data} & trajectory monitoring info \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_aa6cea9736284d76ad3f166095eba6027}\label{class_cognition_aa6cea9736284d76ad3f166095eba6027}} 
+\index{Cognition@{Cognition}!InputVehicleState@{InputVehicleState}}
+\index{InputVehicleState@{InputVehicleState}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputVehicleState()}{InputVehicleState()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Vehicle\+State (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{pos,  }\item[{const larcfm\+::\+Velocity \&}]{vel,  }\item[{const double}]{heading }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & position information \\
+\hline
+{\em vel} & velocity information \\
+\hline
+{\em heading} & heading information \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_af80f974f700f3422716a0f30693b0c5a}\label{class_cognition_af80f974f700f3422716a0f30693b0c5a}} 
+\index{Cognition@{Cognition}!InputVSBands@{InputVSBands}}
+\index{InputVSBands@{InputVSBands}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InputVSBands()}{InputVSBands()}}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+VSBands (\begin{DoxyParamCaption}\item[{const bands\+\_\+t \&}]{vs\+\_\+bands }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em vs\+\_\+bands} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a25db5be625b9f50d6e2cbfb7a14e16ec}\label{class_cognition_a25db5be625b9f50d6e2cbfb7a14e16ec}} 
+\index{Cognition@{Cognition}!ReachedWaypoint@{ReachedWaypoint}}
+\index{ReachedWaypoint@{ReachedWaypoint}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{ReachedWaypoint()}{ReachedWaypoint()}}
+{\footnotesize\ttfamily void Cognition\+::\+Reached\+Waypoint (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{plan\+\_\+id,  }\item[{const int}]{wp\+\_\+reached\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan\+\_\+id} & name of flightplan \\
+\hline
+{\em wp\+\_\+reached\+\_\+id} & index of waypoint reached \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_ac270521c2ea11590f04b18c80a39e44f}\label{class_cognition_ac270521c2ea11590f04b18c80a39e44f}} 
+\index{Cognition@{Cognition}!ReadParamsFromFile@{ReadParamsFromFile}}
+\index{ReadParamsFromFile@{ReadParamsFromFile}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{ReadParamsFromFile()}{ReadParamsFromFile()}}
+{\footnotesize\ttfamily void Cognition\+::\+Read\+Params\+From\+File (\begin{DoxyParamCaption}\item[{const std\+::string}]{config }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & name of configuration file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a60a6bcd7d63f4b44529af57a5489308d}\label{class_cognition_a60a6bcd7d63f4b44529af57a5489308d}} 
+\index{Cognition@{Cognition}!Run@{Run}}
+\index{Run@{Run}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily void Cognition\+::\+Run (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & current time \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_cognition_a4ad689adf77df50a47887626f6ca4e2a}\label{class_cognition_a4ad689adf77df50a47887626f6ca4e2a}} 
+\index{Cognition@{Cognition}!StartMission@{StartMission}}
+\index{StartMission@{StartMission}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{StartMission()}{StartMission()}}
+{\footnotesize\ttfamily void Cognition\+::\+Start\+Mission (\begin{DoxyParamCaption}\item[{const int}]{mission\+\_\+start\+\_\+value,  }\item[{const double}]{scenario\+\_\+time }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em mission\+\_\+start\+\_\+value} & index of waypoint to which vehicle should start flight. \\
+\hline
+{\em scenario\+\_\+time} & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_cognition_8hpp}{Cognition.\+hpp}}\item 
+Modules/\+Core/\+Cognition/Cognition.\+cpp\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_core_logic_8cpp}{Core\+Logic.\+cpp}}\end{DoxyCompactItemize}

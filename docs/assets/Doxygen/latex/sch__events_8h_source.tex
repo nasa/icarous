@@ -1,0 +1,136 @@
+\hypertarget{sch__events_8h_source}{}\doxysection{sch\+\_\+events.\+h}
+\label{sch__events_8h_source}\index{apps/scheduler/fsw/src/sch\_events.h@{apps/scheduler/fsw/src/sch\_events.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{** \$Id: sch\_events.h 1.3 2017/06/21 15:29:22EDT mdeschu Exp  \$}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{5 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{6 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{10 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{11 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Subsystem: Scheduler (SCH) event message ID's}}
+\DoxyCodeLine{14 \textcolor{comment}{**}}
+\DoxyCodeLine{15 \textcolor{comment}{** Author:}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{18 \textcolor{comment}{**}}
+\DoxyCodeLine{19 \textcolor{comment}{*/}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifndef \_sch\_events\_}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define \_sch\_events\_}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{25 \textcolor{comment}{**}}
+\DoxyCodeLine{26 \textcolor{comment}{** Include section}}
+\DoxyCodeLine{27 \textcolor{comment}{**}}
+\DoxyCodeLine{28 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{comment}{/*}}
+\DoxyCodeLine{31 \textcolor{comment}{** (none)}}
+\DoxyCodeLine{32 \textcolor{comment}{*/}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{35 \textcolor{comment}{**}}
+\DoxyCodeLine{36 \textcolor{comment}{** Macro definitions}}
+\DoxyCodeLine{37 \textcolor{comment}{**}}
+\DoxyCodeLine{38 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#define SCH\_INITSTATS\_INF\_EID                      1}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define SCH\_APP\_EXIT\_EID                     2}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define SCH\_CR\_PIPE\_ERR\_EID                   3}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define SCH\_SUB\_HK\_REQ\_ERR\_EID                4}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#define SCH\_SUB\_GND\_CMD\_ERR\_EID               5}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{128 \textcolor{preprocessor}{\#define SCH\_SDT\_REG\_ERR\_EID                   7}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#define SCH\_MDT\_REG\_ERR\_EID                   8}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{157 \textcolor{preprocessor}{\#define SCH\_SDT\_LOAD\_ERR\_EID                  9}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{172 \textcolor{preprocessor}{\#define SCH\_MDT\_LOAD\_ERR\_EID                 10}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{187 \textcolor{preprocessor}{\#define SCH\_ACQ\_PTR\_ERR\_EID                  11}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{201 \textcolor{preprocessor}{\#define SCH\_MINOR\_FRAME\_TIMER\_CREATE\_ERR\_EID 12}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{221 \textcolor{preprocessor}{\#define SCH\_MINOR\_FRAME\_TIMER\_ACC\_WARN\_EID   13}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{236 \textcolor{preprocessor}{\#define SCH\_MAJOR\_FRAME\_SUB\_ERR\_EID          14}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{250 \textcolor{preprocessor}{\#define SCH\_SEM\_CREATE\_ERR\_EID               15}}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{266 \textcolor{preprocessor}{\#define SCH\_SAME\_SLOT\_EID                    16}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{282 \textcolor{preprocessor}{\#define SCH\_SKIPPED\_SLOTS\_EID                17}}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{297 \textcolor{preprocessor}{\#define SCH\_MULTI\_SLOTS\_EID                  18}}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{319 \textcolor{preprocessor}{\#define SCH\_CORRUPTION\_EID                   19}}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{336 \textcolor{preprocessor}{\#define SCH\_PACKET\_SEND\_EID                  20}}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{351 \textcolor{preprocessor}{\#define SCH\_NOISY\_MAJOR\_FRAME\_ERR\_EID        21}}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{372 \textcolor{preprocessor}{\#define SCH\_SCHEDULE\_TBL\_ERR\_EID             30}}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{388 \textcolor{preprocessor}{\#define SCH\_SCHEDULE\_TABLE\_EID               31}}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{406 \textcolor{preprocessor}{\#define SCH\_MESSAGE\_TBL\_ERR\_EID              32}}
+\DoxyCodeLine{407 }
+\DoxyCodeLine{422 \textcolor{preprocessor}{\#define SCH\_MESSAGE\_TABLE\_EID                33}}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{439 \textcolor{preprocessor}{\#define SCH\_NOOP\_CMD\_EID                     40}}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{451 \textcolor{preprocessor}{\#define SCH\_RESET\_CMD\_EID                    41}}
+\DoxyCodeLine{452 }
+\DoxyCodeLine{466 \textcolor{preprocessor}{\#define SCH\_ENABLE\_CMD\_EID                   42}}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{481 \textcolor{preprocessor}{\#define SCH\_DISABLE\_CMD\_EID                  43}}
+\DoxyCodeLine{482 }
+\DoxyCodeLine{496 \textcolor{preprocessor}{\#define SCH\_ENA\_GRP\_CMD\_EID                  44}}
+\DoxyCodeLine{497 }
+\DoxyCodeLine{511 \textcolor{preprocessor}{\#define SCH\_DIS\_GRP\_CMD\_EID                  45}}
+\DoxyCodeLine{512 }
+\DoxyCodeLine{523 \textcolor{preprocessor}{\#define SCH\_ENA\_SYNC\_CMD\_EID                 46}}
+\DoxyCodeLine{524 }
+\DoxyCodeLine{535 \textcolor{preprocessor}{\#define SCH\_SEND\_DIAG\_CMD\_EID                47}}
+\DoxyCodeLine{536 }
+\DoxyCodeLine{551 \textcolor{preprocessor}{\#define SCH\_ENABLE\_CMD\_ARG\_ERR\_EID           50}}
+\DoxyCodeLine{552 }
+\DoxyCodeLine{569 \textcolor{preprocessor}{\#define SCH\_ENABLE\_CMD\_ENTRY\_ERR\_EID         51}}
+\DoxyCodeLine{570 }
+\DoxyCodeLine{585 \textcolor{preprocessor}{\#define SCH\_DISABLE\_CMD\_ARG\_ERR\_EID          52}}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{603 \textcolor{preprocessor}{\#define SCH\_DISABLE\_CMD\_ENTRY\_ERR\_EID        53}}
+\DoxyCodeLine{604 }
+\DoxyCodeLine{615 \textcolor{preprocessor}{\#define SCH\_ENA\_GRP\_CMD\_ERR\_EID              54}}
+\DoxyCodeLine{616 }
+\DoxyCodeLine{631 \textcolor{preprocessor}{\#define SCH\_ENA\_GRP\_NOT\_FOUND\_ERR\_EID        55}}
+\DoxyCodeLine{632 }
+\DoxyCodeLine{643 \textcolor{preprocessor}{\#define SCH\_DIS\_GRP\_CMD\_ERR\_EID              56}}
+\DoxyCodeLine{644 }
+\DoxyCodeLine{659 \textcolor{preprocessor}{\#define SCH\_DIS\_GRP\_NOT\_FOUND\_ERR\_EID        57}}
+\DoxyCodeLine{660 }
+\DoxyCodeLine{676 \textcolor{preprocessor}{\#define SCH\_CC\_ERR\_EID                       58}}
+\DoxyCodeLine{677 }
+\DoxyCodeLine{690 \textcolor{preprocessor}{\#define SCH\_MD\_ERR\_EID                       59}}
+\DoxyCodeLine{691 }
+\DoxyCodeLine{707 \textcolor{preprocessor}{\#define SCH\_CMD\_LEN\_ERR\_EID                  60}}
+\DoxyCodeLine{708 }
+\DoxyCodeLine{709 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_events\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{710 }
+\DoxyCodeLine{711 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{712 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{713 \textcolor{comment}{/************************/}}
+
+\end{DoxyCode}

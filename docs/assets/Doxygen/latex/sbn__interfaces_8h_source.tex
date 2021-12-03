@@ -1,0 +1,139 @@
+\hypertarget{sbn__interfaces_8h_source}{}\doxysection{sbn\+\_\+interfaces.\+h}
+\label{sbn__interfaces_8h_source}\index{apps/SBN/fsw/platform\_inc/sbn\_interfaces.h@{apps/SBN/fsw/platform\_inc/sbn\_interfaces.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_interfaces\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_interfaces\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_types.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}sbn\_msg.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define SBN\_PACKED\_HDR\_SZ (sizeof(SBN\_MsgSz\_t) + sizeof(SBN\_MsgType\_t) + sizeof(CFE\_ProcessorID\_t))}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define SBN\_PACKED\_SUB\_SZ (SBN\_PACKED\_HDR\_SZ + sizeof(SBN\_SubCnt\_t) + sizeof(CFE\_SB\_MsgId\_t) * SBN\_MAX\_SUBS\_PER\_PEER)}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define SBN\_MAX\_PACKED\_MSG\_SZ (SBN\_PACKED\_HDR\_SZ + CFE\_SB\_MAX\_SB\_MSG\_SIZE)}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{31 \textcolor{keywordtype}{void} SBN\_PackMsg(\textcolor{keywordtype}{void} *SBNMsgBuf, SBN\_MsgSz\_t MsgSz, SBN\_MsgType\_t MsgType, CFE\_ProcessorID\_t ProcessorID, \textcolor{keywordtype}{void} *Msg);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{45 \textcolor{keywordtype}{bool} SBN\_UnpackMsg(\textcolor{keywordtype}{void} *SBNBuf, SBN\_MsgSz\_t *MsgSzPtr, SBN\_MsgType\_t *MsgTypePtr,}
+\DoxyCodeLine{46     CFE\_ProcessorID\_t *ProcessorIDPtr, \textcolor{keywordtype}{void} *Msg);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{54 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{55 \{}
+\DoxyCodeLine{56     CFE\_ProcessorID\_t MyProcessorID;}
+\DoxyCodeLine{57     CFE\_SpacecraftID\_t MySpacecraftID;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     CFE\_ProcessorID\_t PeerProcessorID;}
+\DoxyCodeLine{60     CFE\_SpacecraftID\_t PeerSpacecraftID;}
+\DoxyCodeLine{61 \} \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\_Filter\_Ctx\_t}};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{64 \{}
+\DoxyCodeLine{73     CFE\_Status\_t (*InitModule)(\textcolor{keywordtype}{int} FilterVersion, CFE\_EVS\_EventID\_t BaseEID);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{87     SBN\_Status\_t (*FilterRecv)(\textcolor{keywordtype}{void} *MsgBuf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\_Filter\_Ctx\_t}} *Context);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{101     SBN\_Status\_t (*FilterSend)(\textcolor{keywordtype}{void} *MsgBuf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\_Filter\_Ctx\_t}} *Context);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{116     SBN\_Status\_t (*RemapMID)(CFE\_SB\_MsgId\_t *FromToMidPtr, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\_Filter\_Ctx\_t}} *Context);}
+\DoxyCodeLine{117 \} \mbox{\hyperlink{struct_s_b_n___filter_interface__t}{SBN\_FilterInterface\_t}};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_s}} \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_t}};}
+\DoxyCodeLine{120 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_s}} \mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{124     CFE\_ProcessorID\_t \mbox{\hyperlink{struct_s_b_n___peer_interface__t_acab98deb9a281cd3efbaaff1bf65ea9a}{ProcessorID}};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{127     CFE\_SpacecraftID\_t \mbox{\hyperlink{struct_s_b_n___peer_interface__t_a7e430f27ea8c650775ef6fe5f0aff81f}{SpacecraftID}};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{130     \mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *\mbox{\hyperlink{struct_s_b_n___peer_interface__t_af6f8ae7e1240137ca46e5c6a792639c2}{Net}};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     SBN\_Task\_Flag\_t TaskFlags;}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{138     OS\_TaskID\_t \mbox{\hyperlink{struct_s_b_n___peer_interface__t_a710826064284141805d556c98ba9fede}{SendTaskID}};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{144     OS\_TaskID\_t \mbox{\hyperlink{struct_s_b_n___peer_interface__t_a25fdae67824af2d9274cc1946bf363d7}{RecvTaskID}}; \textcolor{comment}{/* for mesh nets */}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{147     CFE\_SB\_PipeId\_t \mbox{\hyperlink{struct_s_b_n___peer_interface__t_a4bdc506f968e6e75e0b41091729b61ff}{Pipe}};}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{153     \mbox{\hyperlink{struct_s_b_n___subs__t}{SBN\_Subs\_t}} Subs[SBN\_MAX\_SUBS\_PER\_PEER + 1];}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{159     \mbox{\hyperlink{struct_s_b_n___filter_interface__t}{SBN\_FilterInterface\_t}} *\mbox{\hyperlink{struct_s_b_n___net_interface__s_a6d9059bd15ff49604ae5fe11be1bef69}{Filters}}[SBN\_MAX\_FILTERS];}
+\DoxyCodeLine{160     SBN\_ModuleIdx\_t FilterCnt;}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162     OS\_time\_t LastSend, LastRecv;}
+\DoxyCodeLine{163     SBN\_HKTlm\_t SendCnt, RecvCnt, SendErrCnt, RecvErrCnt, SubCnt;}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \textcolor{keywordtype}{bool} Connected;}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{168     uint8 \mbox{\hyperlink{struct_s_b_n___net_interface__s_a3f4a2dad2d6c2911589afea2aa3af8ed}{ModulePvt}}[128];}
+\DoxyCodeLine{169 \} \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{177 \textcolor{keywordtype}{void} SBN\_SendLocalSubsToPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{187 \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *SBN\_GetPeer(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, CFE\_ProcessorID\_t ProcessorID);}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_s}} \{}
+\DoxyCodeLine{190     \textcolor{keywordtype}{bool} Configured;}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     SBN\_ModuleIdx\_t ProtocolIdx;}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194     SBN\_Task\_Flag\_t TaskFlags;}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196     \textcolor{comment}{/* For some network topologies, this application only needs one connection}}
+\DoxyCodeLine{197 \textcolor{comment}{     * to communicate to peers. These tasks are used for those networks. ID's}}
+\DoxyCodeLine{198 \textcolor{comment}{     * are 0 if there is no task.}}
+\DoxyCodeLine{199 \textcolor{comment}{     */}}
+\DoxyCodeLine{200     OS\_TaskID\_t SendTaskID;}
+\DoxyCodeLine{201     OS\_MutexID\_t SendMutex;}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203     OS\_TaskID\_t RecvTaskID;}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205     \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_t}} *IfOps; \textcolor{comment}{/* convenience */}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     SBN\_PeerIdx\_t PeerCnt;}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209     \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} Peers[SBN\_MAX\_PEER\_CNT];}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{215     \mbox{\hyperlink{struct_s_b_n___filter_interface__t}{SBN\_FilterInterface\_t}} *\mbox{\hyperlink{struct_s_b_n___net_interface__s_a6d9059bd15ff49604ae5fe11be1bef69}{Filters}}[SBN\_MAX\_FILTERS];}
+\DoxyCodeLine{216     SBN\_ModuleIdx\_t FilterCnt;}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{219     uint8  \mbox{\hyperlink{struct_s_b_n___net_interface__s_a3f4a2dad2d6c2911589afea2aa3af8ed}{ModulePvt}}[128];}
+\DoxyCodeLine{220 \};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{227 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_s}} \{}
+\DoxyCodeLine{236     CFE\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a584b7a0d8d069fed5546e36009c4dbfa}{InitModule}})(\textcolor{keywordtype}{int} ProtocolVersion, CFE\_EVS\_EventID\_t BaseEID);}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{239     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}{LoadNet}})(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{241     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}{LoadPeer}})(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{250     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a25bfaf7ba27625dce7c2d73f3809415e}{InitNet}})(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Host);}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{259     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_ad04a5b4cc2934f55ca56f7967888abfa}{InitPeer}})(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{270     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a1714ecb40c8734bb1140faba02f07470}{PollPeer}})(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{287     SBN\_MsgSz\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a4d014d7681bbdabc7860899b98a94bbf}{Send}})(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, SBN\_MsgType\_t MsgType,}
+\DoxyCodeLine{288         SBN\_MsgSz\_t MsgSz, \textcolor{keywordtype}{void} *Payload);}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{304     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a0a1bfcc04be35096d4f577d45b1d1c53}{RecvFromPeer}})(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, SBN\_MsgType\_t *MsgTypePtr,}
+\DoxyCodeLine{305         SBN\_MsgSz\_t *MsgSzPtr, CFE\_ProcessorID\_t *ProcessorIDPtr, \textcolor{keywordtype}{void} *PayloadBuffer);}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{319     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a5aacf2ca1d52350a6d60cb91f622ae28}{RecvFromNet}})(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, SBN\_MsgType\_t *MsgTypePtr,}
+\DoxyCodeLine{320         SBN\_MsgSz\_t *MsgSzPtr, CFE\_ProcessorID\_t *ProcessorIDPtr,}
+\DoxyCodeLine{321         \textcolor{keywordtype}{void} *PayloadBuffer);}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{335     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a6cab0d13ea4e4a34e2f94b237812743d}{UnloadNet}})(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net);}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{349     SBN\_Status\_t (*\mbox{\hyperlink{struct_s_b_n___if_ops__s_a214f480f04c57971f8552472e80dacd6}{UnloadPeer}})(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{350 \};}
+\DoxyCodeLine{351 }
+\DoxyCodeLine{356 SBN\_Status\_t SBN\_Connected(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{362 SBN\_Status\_t SBN\_Disconnected(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{363 }
+\DoxyCodeLine{368 SBN\_MsgSz\_t SBN\_SendNetMsg(SBN\_MsgType\_t MsgType, SBN\_MsgSz\_t MsgSz, \textcolor{keywordtype}{void} *Msg, \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_interfaces\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

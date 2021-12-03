@@ -1,0 +1,41 @@
+\hypertarget{sbn__msg_8h_source}{}\doxysection{sbn\+\_\+msg.\+h}
+\label{sbn__msg_8h_source}\index{apps/SBN/fsw/platform\_inc/sbn\_msg.h@{apps/SBN/fsw/platform\_inc/sbn\_msg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_msg\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_msg\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_msgdefs.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}sbn\_types.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define SBN\_CMD\_NET\_LEN CFE\_SB\_CMD\_HDR\_SIZE + sizeof(SBN\_NetIdx\_t)}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define SBN\_CMD\_PEER\_LEN CFE\_SB\_CMD\_HDR\_SIZE + sizeof(SBN\_PeerIdx\_t)}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define SBN\_CMD\_REMAPCFG\_LEN CFE\_SB\_CMD\_HDR\_SIZE + 2}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define SBN\_CMD\_REMAPADD\_LEN CFE\_SB\_CMD\_HDR\_SIZE + sizeof(CFE\_ProcessorID\_t) + sizeof(CFE\_SB\_MsgId\_t) * 2}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define SBN\_CMD\_REMAPDEL\_LEN CFE\_SB\_CMD\_HDR\_SIZE + sizeof(CFE\_ProcessorID\_t) + sizeof(CFE\_SB\_MsgId\_t)}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define SBN\_HK\_LEN (CFE\_SB\_TLM\_HDR\_SIZE + sizeof(uint8) + (sizeof(SBN\_HKTlm\_t) * 4))}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define SBN\_HKMYSUBS\_LEN (CFE\_SB\_TLM\_HDR\_SIZE + sizeof(uint8) + sizeof(SBN\_SubCnt\_t) + SBN\_MAX\_SUBS\_PER\_PEER * sizeof(CFE\_SB\_MsgId\_t))}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define SBN\_HKPEERSUBS\_LEN (CFE\_SB\_TLM\_HDR\_SIZE + sizeof(uint8) + sizeof(SBN\_NetIdx\_t) + sizeof(SBN\_PeerIdx\_t) + sizeof(SBN\_SubCnt\_t) + SBN\_MAX\_SUBS\_PER\_PEER * sizeof(CFE\_SB\_MsgId\_t))}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define SBN\_HKPEER\_LEN (CFE\_SB\_TLM\_HDR\_SIZE + sizeof(uint8) + sizeof(SBN\_SubCnt\_t) + sizeof(CFE\_ProcessorID\_t) + sizeof(OS\_time\_t) * 2 + sizeof(SBN\_HKTlm\_t) * 4)}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define SBN\_HKNET\_LEN (CFE\_SB\_TLM\_HDR\_SIZE + sizeof(uint8) + sizeof(SBN\_ModuleIdx\_t) + sizeof(SBN\_PeerIdx\_t))}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{40 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{44     uint8   TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];}
+\DoxyCodeLine{46     SBN\_ModuleIdx\_t  \mbox{\hyperlink{struct_s_b_n___module_status_packet__t_ae06cbb291610ede5e942a54c58aff495}{ProtocolIdx}};}
+\DoxyCodeLine{48     uint8   ModuleStatus[SBN\_MOD\_STATUS\_MSG\_SZ];}
+\DoxyCodeLine{49 \} \mbox{\hyperlink{struct_s_b_n___module_status_packet__t}{SBN\_ModuleStatusPacket\_t}};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_msg\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

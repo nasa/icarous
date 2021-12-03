@@ -1,0 +1,54 @@
+\hypertarget{structmission_item_reached__t}{}\doxysection{mission\+Item\+Reached\+\_\+t Struct Reference}
+\label{structmission_item_reached__t}\index{missionItemReached\_t@{missionItemReached\_t}}
+
+
+message indicating a specific waypoint has been reached.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structmission_item_reached__t_a7a1b07752ddede95cfe3aaeee71f47e9}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+char \mbox{\hyperlink{structmission_item_reached__t_ad0a24a49ccc127cd0cc90f34eb26a3b5}{plan\+ID}} \mbox{[}ACID\+\_\+\+SIZE\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structmission_item_reached__t_a2ccf951f97cf03f6a89ccac0a02deb0f}{reachedwaypoint}}
+\item 
+bool \mbox{\hyperlink{structmission_item_reached__t_a4d770e6cb4624fb74f360094e1ee2bcf}{feedback}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structmission_item_reached__t_a4d770e6cb4624fb74f360094e1ee2bcf}\label{structmission_item_reached__t_a4d770e6cb4624fb74f360094e1ee2bcf}} 
+\index{missionItemReached\_t@{missionItemReached\_t}!feedback@{feedback}}
+\index{feedback@{feedback}!missionItemReached\_t@{missionItemReached\_t}}
+\doxysubsubsection{\texorpdfstring{feedback}{feedback}}
+{\footnotesize\ttfamily bool mission\+Item\+Reached\+\_\+t\+::feedback}
+
+this should be set to true if this is data from the autopilot \mbox{\Hypertarget{structmission_item_reached__t_ad0a24a49ccc127cd0cc90f34eb26a3b5}\label{structmission_item_reached__t_ad0a24a49ccc127cd0cc90f34eb26a3b5}} 
+\index{missionItemReached\_t@{missionItemReached\_t}!planID@{planID}}
+\index{planID@{planID}!missionItemReached\_t@{missionItemReached\_t}}
+\doxysubsubsection{\texorpdfstring{planID}{planID}}
+{\footnotesize\ttfamily char mission\+Item\+Reached\+\_\+t\+::plan\+ID\mbox{[}ACID\+\_\+\+SIZE\mbox{]}}
+
+index of flight plan \mbox{\Hypertarget{structmission_item_reached__t_a2ccf951f97cf03f6a89ccac0a02deb0f}\label{structmission_item_reached__t_a2ccf951f97cf03f6a89ccac0a02deb0f}} 
+\index{missionItemReached\_t@{missionItemReached\_t}!reachedwaypoint@{reachedwaypoint}}
+\index{reachedwaypoint@{reachedwaypoint}!missionItemReached\_t@{missionItemReached\_t}}
+\doxysubsubsection{\texorpdfstring{reachedwaypoint}{reachedwaypoint}}
+{\footnotesize\ttfamily uint8\+\_\+t mission\+Item\+Reached\+\_\+t\+::reachedwaypoint}
+
+waypoint index that was reached \mbox{\Hypertarget{structmission_item_reached__t_a7a1b07752ddede95cfe3aaeee71f47e9}\label{structmission_item_reached__t_a7a1b07752ddede95cfe3aaeee71f47e9}} 
+\index{missionItemReached\_t@{missionItemReached\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!missionItemReached\_t@{missionItemReached\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t mission\+Item\+Reached\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

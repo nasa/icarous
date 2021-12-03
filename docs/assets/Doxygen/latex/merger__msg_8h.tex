@@ -1,0 +1,53 @@
+\hypertarget{merger__msg_8h}{}\doxysection{apps/merger/fsw/platform\+\_\+inc/merger\+\_\+msg.h File Reference}
+\label{merger__msg_8h}\index{apps/merger/fsw/platform\_inc/merger\_msg.h@{apps/merger/fsw/platform\_inc/merger\_msg.h}}
+
+
+Defintion of messages used by \mbox{\hyperlink{merger__msg_8h}{merger\+\_\+msg.\+h}}.  
+
+
+{\ttfamily \#include $<$cfe.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmerger__parameters__t}{merger\+\_\+parameters\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{merger__msg_8h_ad5949e8e1165a766c5c3645e57ccfdef}\label{merger__msg_8h_ad5949e8e1165a766c5c3645e57ccfdef}} 
+\#define {\bfseries INTERSECTION\+\_\+\+MAXC}~10
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{merger__msg_8h_ad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{merger__msg_8h_aec6d429e05e3222e7c49185d06550501}\label{merger__msg_8h_aec6d429e05e3222e7c49185d06550501}} 
+{\bfseries c\+Merging\+Data\+\_\+t}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{merger__msg_8h_ad09246453a4dabd919c7541484046a87}\label{merger__msg_8h_ad09246453a4dabd919c7541484046a87}} 
+\index{merger\_msg.h@{merger\_msg.h}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!merger\_msg.h@{merger\_msg.h}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily struct \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+packed\+\_\+\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} Aircraft ID
+
+\texorpdfstring{$<$}{<} Current intersection for which scheduling is required
+
+\texorpdfstring{$<$}{<} Earliest a/c can reach the intersection (using max speed)
+
+\texorpdfstring{$<$}{<} Current arrival time (using current speed)
+
+\texorpdfstring{$<$}{<} Late arrival time (using slowest speed + allowed deviations)
+
+\texorpdfstring{$<$}{<} Number of times scheduler has been run
+
+\texorpdfstring{$<$}{<} zone status

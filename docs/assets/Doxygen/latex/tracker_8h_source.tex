@@ -1,0 +1,50 @@
+\hypertarget{tracker_8h_source}{}\doxysection{tracker.\+h}
+\label{tracker_8h_source}\index{apps/tracker/fsw/src/tracker.h@{apps/tracker/fsw/src/tracker.h}}
+\mbox{\hyperlink{tracker_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_TRACKER\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_TRACKER\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{tracker__tbl_8h}{tracker\_tbl.h}}"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define TRACKER\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define TRACKER\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define TRACKER\_PIPE\_DEPTH 30 }}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define TRACKER\_PIPE\_NAME "{}TRACKER\_PIPE"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define TRACKER\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define TRACKER\_MINOR\_VERSION 0}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{41 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{42     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structtracker_app_data__t_a4ec2630e05d510ebaa0d59a1b8f9379c}{tracker\_Pipe}};       }
+\DoxyCodeLine{43     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structtracker_app_data__t_a81c88769a65b20f08182703f3ae558df}{tracker\_MsgPtr}};     }
+\DoxyCodeLine{44     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{structtracker_app_data__t_adadaa03b0648894d4d2b54c7771dbbd7}{tracker\_tblHandle}};    }
+\DoxyCodeLine{45     \textcolor{keywordtype}{bool} initialized;}
+\DoxyCodeLine{46     \textcolor{keywordtype}{void}* \mbox{\hyperlink{class_target_tracker}{TargetTracker}};}
+\DoxyCodeLine{47 \}\mbox{\hyperlink{structtracker_app_data__t}{trackerAppData\_t}};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52 \textcolor{keywordtype}{void} \mbox{\hyperlink{tracker_8h_ad6246bf56ee69e02bb60c945f54d3163}{TRACKER\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{57 \textcolor{keywordtype}{void} \mbox{\hyperlink{tracker_8h_a11b0d78ccb5298978e71a05173bdf8c2}{TRACKER\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{void} \mbox{\hyperlink{tracker_8h_ac75134cbfc6056878b11c008819a2888}{TRACKER\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{67 \textcolor{keywordtype}{void} \mbox{\hyperlink{tracker_8h_a4e4850630115433fea054e6a735527ee}{TRACKER\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{74 int32\_t \mbox{\hyperlink{tracker_8h_ade6defc343b0962ec06149fe5eb8c677}{trackerTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{79 \mbox{\hyperlink{structtracker_app_data__t}{trackerAppData\_t}} trackerAppData;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_TRACKER\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,38 @@
+\hypertarget{_traj_manager_8h_source}{}\doxysection{Traj\+Manager.\+h}
+\label{_traj_manager_8h_source}\index{Modules/Core/TrajectoryManager/TrajManager.h@{Modules/Core/TrajectoryManager/TrajManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TRAJMANAGERC\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TRAJMANAGERC\_H}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}DubinsParams.h"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{7 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keywordtype}{void}* new\_TrajManager(\textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{structcallsign}{callsign}}[],\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{11 \textcolor{keywordtype}{void} TrajManager\_ReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{12 \textcolor{keywordtype}{void} TrajManager\_UpdateDubinsPlannerParameters(\textcolor{keywordtype}{void} * obj,\mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}}* params);}
+\DoxyCodeLine{13 \textcolor{keywordtype}{int} TrajManager\_FindPath(\textcolor{keywordtype}{void} * obj,\textcolor{keywordtype}{char} planID[], \textcolor{keywordtype}{double} fromPosition[],\textcolor{keywordtype}{double} toPosition[],\textcolor{keywordtype}{double} fromVelocity[],\textcolor{keywordtype}{double} toVelocity[]);}
+\DoxyCodeLine{14 \textcolor{keywordtype}{int} TrajManager\_GetTotalWaypoints(\textcolor{keywordtype}{void} * obj, \textcolor{keywordtype}{char} * planid);}
+\DoxyCodeLine{15 \textcolor{keywordtype}{int} TrajManager\_GetWaypoint(\textcolor{keywordtype}{void} * obj, \textcolor{keywordtype}{char} * planid, \textcolor{keywordtype}{int} \textcolor{keywordtype}{id},  \mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} * wp);}
+\DoxyCodeLine{16 \textcolor{keywordtype}{void} TrajManager\_ClearAllPlans(\textcolor{keywordtype}{void} * obj);}
+\DoxyCodeLine{17 \textcolor{keywordtype}{void} TrajManager\_InputGeofenceData(\textcolor{keywordtype}{void} * obj,\textcolor{keywordtype}{int} type,\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{int} totalVertices, \textcolor{keywordtype}{double} floor, \textcolor{keywordtype}{double} ceiling, \textcolor{keywordtype}{double} pos[][2]);}
+\DoxyCodeLine{18 \textcolor{keywordtype}{int} TrajManager\_InputTraffic(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char}* \mbox{\hyperlink{structcallsign}{callsign}}, \textcolor{keywordtype}{double} *\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, \textcolor{keywordtype}{double} *velocity,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{19 \textcolor{keywordtype}{void} TrajManager\_InputFlightPlan(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{char} planID[],\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} wpts[],\textcolor{keywordtype}{int} totalwp,}
+\DoxyCodeLine{20                                  \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} kinematize,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{21 \textcolor{keywordtype}{void} TrajManager\_CombinePlan(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID\_A[],\textcolor{keywordtype}{char} planID\_B[],\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{22 \textcolor{keywordtype}{void} TrajManager\_PlanToString(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{char} outputString[],\textcolor{keywordtype}{bool} tcpColumnsLocal,\textcolor{keywordtype}{long} \textcolor{keywordtype}{int} timeshift);}
+\DoxyCodeLine{23 \textcolor{keywordtype}{void} TrajManager\_StringToPlan(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{char} inputString[]);}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void} TrajManager\_SetPlanOffset(\textcolor{keywordtype}{void}*obj, \textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} n,\textcolor{keywordtype}{double} offset);}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void} TrajManager\_GetPlanPosition(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{double} t,\textcolor{keywordtype}{double} pos[]);}
+\DoxyCodeLine{26 trajectoryMonitorData\_t TrajManager\_MonitorTrajectory(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[],\textcolor{keywordtype}{int} nextWP1,\textcolor{keywordtype}{int} nextWP2);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{29 \}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

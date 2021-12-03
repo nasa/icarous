@@ -1,0 +1,162 @@
+\hypertarget{rtwtypes_8h_source}{}\doxysection{rtwtypes.\+h}
+\label{rtwtypes_8h_source}\index{apps/rotorsim/QuadCopterSim/rtwtypes.h@{apps/rotorsim/QuadCopterSim/rtwtypes.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: rtwtypes.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Code generated for Simulink model 'PC\_Quadcopter\_Simulation'.}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Model version                  : 1.66}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Simulink Coder version         : 8.14 (R2018a) 06-\/Feb-\/2018}}
+\DoxyCodeLine{8 \textcolor{comment}{ * C/C++ source code generated on : Fri Aug 17 11:28:00 2018}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Target selection: ert.tlc}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Embedded hardware selection: Intel-\/>x86-\/64 (Windows64)}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Code generation objectives: Unspecified}}
+\DoxyCodeLine{13 \textcolor{comment}{ * Validation result: Not run}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef RTWTYPES\_H}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define RTWTYPES\_H}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{comment}{/* Logical type definitions */}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#if (!defined(\_\_cplusplus))}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#  ifndef false}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#   define false                       (0U)}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#  endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#  ifndef true}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#   define true                        (1U)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#  endif}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{comment}{/*=======================================================================*}}
+\DoxyCodeLine{31 \textcolor{comment}{ * Target hardware information}}
+\DoxyCodeLine{32 \textcolor{comment}{ *   Device type: Intel-\/>x86-\/64 (Windows64)}}
+\DoxyCodeLine{33 \textcolor{comment}{ *   Number of bits:     char:   8    short:   16    int:  32}}
+\DoxyCodeLine{34 \textcolor{comment}{ *                       long:  32}}
+\DoxyCodeLine{35 \textcolor{comment}{ *                       native word size:  64}}
+\DoxyCodeLine{36 \textcolor{comment}{ *   Byte ordering: LittleEndian}}
+\DoxyCodeLine{37 \textcolor{comment}{ *   Signed integer division rounds to: Zero}}
+\DoxyCodeLine{38 \textcolor{comment}{ *   Shift right on a signed integer as arithmetic shift: on}}
+\DoxyCodeLine{39 \textcolor{comment}{ *=======================================================================*/}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{/*=======================================================================*}}
+\DoxyCodeLine{42 \textcolor{comment}{ * Fixed width word size data types:                                     *}}
+\DoxyCodeLine{43 \textcolor{comment}{ *   int8\_T, int16\_T, int32\_T     -\/ signed 8, 16, or 32 bit integers     *}}
+\DoxyCodeLine{44 \textcolor{comment}{ *   uint8\_T, uint16\_T, uint32\_T  -\/ unsigned 8, 16, or 32 bit integers   *}}
+\DoxyCodeLine{45 \textcolor{comment}{ *   real32\_T, real64\_T           -\/ 32 and 64 bit floating point numbers *}}
+\DoxyCodeLine{46 \textcolor{comment}{ *=======================================================================*/}}
+\DoxyCodeLine{47 \textcolor{keyword}{typedef} \textcolor{keywordtype}{signed} \textcolor{keywordtype}{char} int8\_T;}
+\DoxyCodeLine{48 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} uint8\_T;}
+\DoxyCodeLine{49 \textcolor{keyword}{typedef} \textcolor{keywordtype}{short} int16\_T;}
+\DoxyCodeLine{50 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} uint16\_T;}
+\DoxyCodeLine{51 \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} int32\_T;}
+\DoxyCodeLine{52 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} uint32\_T;}
+\DoxyCodeLine{53 \textcolor{keyword}{typedef} \textcolor{keywordtype}{float} real32\_T;}
+\DoxyCodeLine{54 \textcolor{keyword}{typedef} \textcolor{keywordtype}{double} real64\_T;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{comment}{/*===========================================================================*}}
+\DoxyCodeLine{57 \textcolor{comment}{ * Generic type definitions: boolean\_T, char\_T, byte\_T, int\_T, uint\_T,       *}}
+\DoxyCodeLine{58 \textcolor{comment}{ *                           real\_T, time\_T, ulong\_T.                        *}}
+\DoxyCodeLine{59 \textcolor{comment}{ *===========================================================================*/}}
+\DoxyCodeLine{60 \textcolor{keyword}{typedef} \textcolor{keywordtype}{double} real\_T;}
+\DoxyCodeLine{61 \textcolor{keyword}{typedef} \textcolor{keywordtype}{double} time\_T;}
+\DoxyCodeLine{62 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} boolean\_T;}
+\DoxyCodeLine{63 \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} int\_T;}
+\DoxyCodeLine{64 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} uint\_T;}
+\DoxyCodeLine{65 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} ulong\_T;}
+\DoxyCodeLine{66 \textcolor{keyword}{typedef} \textcolor{keywordtype}{char} char\_T;}
+\DoxyCodeLine{67 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} uchar\_T;}
+\DoxyCodeLine{68 \textcolor{keyword}{typedef} char\_T byte\_T;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{comment}{/*===========================================================================*}}
+\DoxyCodeLine{71 \textcolor{comment}{ * Complex number type definitions                                           *}}
+\DoxyCodeLine{72 \textcolor{comment}{ *===========================================================================*/}}
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#define CREAL\_T}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{76   real32\_T re;}
+\DoxyCodeLine{77   real32\_T im;}
+\DoxyCodeLine{78 \} \mbox{\hyperlink{structcreal32___t}{creal32\_T}};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{81   real64\_T re;}
+\DoxyCodeLine{82   real64\_T im;}
+\DoxyCodeLine{83 \} \mbox{\hyperlink{structcreal64___t}{creal64\_T}};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{86   real\_T re;}
+\DoxyCodeLine{87   real\_T im;}
+\DoxyCodeLine{88 \} \mbox{\hyperlink{structcreal___t}{creal\_T}};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define CINT8\_T}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{93   int8\_T re;}
+\DoxyCodeLine{94   int8\_T im;}
+\DoxyCodeLine{95 \} \mbox{\hyperlink{structcint8___t}{cint8\_T}};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#define CUINT8\_T}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{100   uint8\_T re;}
+\DoxyCodeLine{101   uint8\_T im;}
+\DoxyCodeLine{102 \} \mbox{\hyperlink{structcuint8___t}{cuint8\_T}};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#define CINT16\_T}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{107   int16\_T re;}
+\DoxyCodeLine{108   int16\_T im;}
+\DoxyCodeLine{109 \} \mbox{\hyperlink{structcint16___t}{cint16\_T}};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{preprocessor}{\#define CUINT16\_T}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{114   uint16\_T re;}
+\DoxyCodeLine{115   uint16\_T im;}
+\DoxyCodeLine{116 \} \mbox{\hyperlink{structcuint16___t}{cuint16\_T}};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#define CINT32\_T}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{121   int32\_T re;}
+\DoxyCodeLine{122   int32\_T im;}
+\DoxyCodeLine{123 \} \mbox{\hyperlink{structcint32___t}{cint32\_T}};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{preprocessor}{\#define CUINT32\_T}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{128   uint32\_T re;}
+\DoxyCodeLine{129   uint32\_T im;}
+\DoxyCodeLine{130 \} \mbox{\hyperlink{structcuint32___t}{cuint32\_T}};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{comment}{/*=======================================================================*}}
+\DoxyCodeLine{133 \textcolor{comment}{ * Min and Max:                                                          *}}
+\DoxyCodeLine{134 \textcolor{comment}{ *   int8\_T, int16\_T, int32\_T     -\/ signed 8, 16, or 32 bit integers     *}}
+\DoxyCodeLine{135 \textcolor{comment}{ *   uint8\_T, uint16\_T, uint32\_T  -\/ unsigned 8, 16, or 32 bit integers   *}}
+\DoxyCodeLine{136 \textcolor{comment}{ *=======================================================================*/}}
+\DoxyCodeLine{137 \textcolor{preprocessor}{\#define MAX\_int8\_T                     ((int8\_T)(127))}}
+\DoxyCodeLine{138 \textcolor{preprocessor}{\#define MIN\_int8\_T                     ((int8\_T)(-\/128))}}
+\DoxyCodeLine{139 \textcolor{preprocessor}{\#define MAX\_uint8\_T                    ((uint8\_T)(255U))}}
+\DoxyCodeLine{140 \textcolor{preprocessor}{\#define MAX\_int16\_T                    ((int16\_T)(32767))}}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#define MIN\_int16\_T                    ((int16\_T)(-\/32768))}}
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#define MAX\_uint16\_T                   ((uint16\_T)(65535U))}}
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#define MAX\_int32\_T                    ((int32\_T)(2147483647))}}
+\DoxyCodeLine{144 \textcolor{preprocessor}{\#define MIN\_int32\_T                    ((int32\_T)(-\/2147483647-\/1))}}
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#define MAX\_uint32\_T                   ((uint32\_T)(0xFFFFFFFFU))}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{/* Block D-\/Work pointer type */}}
+\DoxyCodeLine{148 \textcolor{keyword}{typedef} \textcolor{keywordtype}{void} * pointer\_T;}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#endif                                 }\textcolor{comment}{/* RTWTYPES\_H */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{comment}{/*}}
+\DoxyCodeLine{153 \textcolor{comment}{ * File trailer for generated code.}}
+\DoxyCodeLine{154 \textcolor{comment}{ *}}
+\DoxyCodeLine{155 \textcolor{comment}{ * [EOF]}}
+\DoxyCodeLine{156 \textcolor{comment}{ */}}
+
+\end{DoxyCode}

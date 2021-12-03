@@ -1,0 +1,83 @@
+\hypertarget{class_traj_manager}{}\doxysection{Traj\+Manager Class Reference}
+\label{class_traj_manager}\index{TrajManager@{TrajManager}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_traj_manager_ac4cc8d2fcd4b6085545e5b602054280a}\label{class_traj_manager_ac4cc8d2fcd4b6085545e5b602054280a}} 
+{\bfseries Traj\+Manager} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a45e6c05ae8fdc9178c78fed132912764}\label{class_traj_manager_a45e6c05ae8fdc9178c78fed132912764}} 
+void {\bfseries Read\+Param\+From\+File} (std\+::string config)
+\item 
+\mbox{\Hypertarget{class_traj_manager_acfefed23cbe0ae49f2b1a046c41a2347}\label{class_traj_manager_acfefed23cbe0ae49f2b1a046c41a2347}} 
+void {\bfseries Update\+Dubins\+Planner\+Parameters} (\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&params)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}\label{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}} 
+int {\bfseries Find\+Path} (std\+::string plan\+ID, larcfm\+::\+Position from\+Position, larcfm\+::\+Position to\+Position, larcfm\+::\+Velocity from\+Velocity, larcfm\+::\+Velocity to\+Velocity)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}\label{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}} 
+int {\bfseries Get\+Total\+Waypoints} (std\+::string plan\+ID)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a7bce4c6c916027d7149fa3757158a893}\label{class_traj_manager_a7bce4c6c916027d7149fa3757158a893}} 
+int {\bfseries Get\+Waypoint} (std\+::string plan\+ID, int wpid, \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} \&wp)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a2873a4044713f90051474b43ec324383}\label{class_traj_manager_a2873a4044713f90051474b43ec324383}} 
+larcfm\+::\+Plan $\ast$ {\bfseries Get\+Plan} (std\+::string plan\+ID)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a98320dba7d693e779f4e2a9f0cdcbb92}\label{class_traj_manager_a98320dba7d693e779f4e2a9f0cdcbb92}} 
+void {\bfseries Clear\+All\+Plans} ()
+\item 
+\mbox{\Hypertarget{class_traj_manager_a6188205a6074aa795fa7cdd92f57f2e1}\label{class_traj_manager_a6188205a6074aa795fa7cdd92f57f2e1}} 
+void {\bfseries Clear\+Fences} ()
+\item 
+\mbox{\Hypertarget{class_traj_manager_ab09a1d7f560de06fbf93e3730af6fb76}\label{class_traj_manager_ab09a1d7f560de06fbf93e3730af6fb76}} 
+void {\bfseries Input\+Geofence\+Data} (int type, int index, int total\+Vertices, double floor, double ceiling, double pos\mbox{[}$\,$\mbox{]}\mbox{[}2\mbox{]})
+\item 
+\mbox{\Hypertarget{class_traj_manager_a4878a4a9cf29f8cec2015b56c6891153}\label{class_traj_manager_a4878a4a9cf29f8cec2015b56c6891153}} 
+void {\bfseries Input\+Geofence\+Data} (int type, int index, int total\+Vertices, double floor, double ceiling, std\+::vector$<$ larcfm\+::\+Position $>$ \&vertices)
+\item 
+\mbox{\Hypertarget{class_traj_manager_ad029102a4fb513146d4b4bf396f464ae}\label{class_traj_manager_ad029102a4fb513146d4b4bf396f464ae}} 
+void {\bfseries Input\+Flight\+Plan} (const std\+::string \&plan\+\_\+id, const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&waypoints, const double init\+Heading, bool repair, double repair\+Turn\+Rate)
+\item 
+\mbox{\Hypertarget{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}\label{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}} 
+int {\bfseries Input\+Traffic} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, larcfm\+::\+Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm\+::\+Velocity \&velocity, double time)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a023ebd8ba7069b48add51d9a0c6910d2}\label{class_traj_manager_a023ebd8ba7069b48add51d9a0c6910d2}} 
+std\+::string {\bfseries Plan\+To\+String} (std\+::string plan\+ID)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a5dc900acd178b0235221876d4df34306}\label{class_traj_manager_a5dc900acd178b0235221876d4df34306}} 
+void {\bfseries String\+To\+Plan} (std\+::string plan\+ID, std\+::string input\+String)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a146a0c73232ee8b9bc156834b13ae1ef}\label{class_traj_manager_a146a0c73232ee8b9bc156834b13ae1ef}} 
+void {\bfseries Combine\+Plan} (std\+::string planA, std\+::string planB, int index)
+\item 
+\mbox{\Hypertarget{class_traj_manager_ae0afdb2cba65f1e7bfea706753f82c73}\label{class_traj_manager_ae0afdb2cba65f1e7bfea706753f82c73}} 
+void {\bfseries Set\+Plan\+Offset} (std\+::string plan\+ID, int n, double offset)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}\label{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}} 
+larcfm\+::\+Position {\bfseries Get\+Plan\+Position} (std\+::string plan\+ID, double t)
+\item 
+\mbox{\Hypertarget{class_traj_manager_a110b698f40430e8cba4507d73e141155}\label{class_traj_manager_a110b698f40430e8cba4507d73e141155}} 
+trajectory\+Monitor\+Data\+\_\+t {\bfseries Monitor\+Trajectory} (double time, std\+::string plan\+ID, larcfm\+::\+Position pos, larcfm\+::\+Velocity vel, int next\+WP1, int next\+WP2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_traj_manager_aed928f616c72752436415104756cd49d}\label{class_traj_manager_aed928f616c72752436415104756cd49d}} 
+larcfm\+::\+Position {\bfseries start\+Pos}
+\item 
+\mbox{\Hypertarget{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}\label{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}} 
+larcfm\+::\+Position {\bfseries end\+Pos}
+\item 
+\mbox{\Hypertarget{class_traj_manager_a59cc793d864e494b58fe835b09e52036}\label{class_traj_manager_a59cc793d864e494b58fe835b09e52036}} 
+larcfm\+::\+Velocity {\bfseries start\+Vel}
+\item 
+\mbox{\Hypertarget{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}\label{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}} 
+larcfm\+::\+Velocity {\bfseries end\+Vel}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Trajectory\+Manager/Traj\+Manager.\+hpp\item 
+Modules/\+Core/\+Trajectory\+Manager/Traj\+Manager.\+cpp\end{DoxyCompactItemize}

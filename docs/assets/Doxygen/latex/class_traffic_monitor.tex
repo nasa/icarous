@@ -1,0 +1,67 @@
+\hypertarget{class_traffic_monitor}{}\doxysection{Traffic\+Monitor Class Reference}
+\label{class_traffic_monitor}\index{TrafficMonitor@{TrafficMonitor}}
+Inheritance diagram for Traffic\+Monitor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_traffic_monitor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a53831ee5d71d8c58652c949e80b97c9e}\label{class_traffic_monitor_a53831ee5d71d8c58652c949e80b97c9e}} 
+virtual int {\bfseries Input\+Intruder\+Data} (const \mbox{\hyperlink{structobject}{object}} obj)
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a5c2fbed6e4be858f8acc498d75a27dae}\label{class_traffic_monitor_a5c2fbed6e4be858f8acc498d75a27dae}} 
+virtual void {\bfseries Input\+Ownship\+Data} (const larcfm\+::\+Position pos, const larcfm\+::\+Velocity vel, double time, double sig\+Pos\mbox{[}6\mbox{]}, double sig\+Vel\mbox{[}6\mbox{]})
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a085bc09041250af142b02d4d346e4a46}\label{class_traffic_monitor_a085bc09041250af142b02d4d346e4a46}} 
+virtual void {\bfseries Monitor\+Traffic} (larcfm\+::\+Velocity windfrom)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a42be21fc28c0dcf865ae1876b6a0959a}\label{class_traffic_monitor_a42be21fc28c0dcf865ae1876b6a0959a}} 
+virtual bool {\bfseries Check\+Position\+Feasibility} (const larcfm\+::\+Position pos, const double speed)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a4d858ececfda6089c9aca65c5a5785ac}\label{class_traffic_monitor_a4d858ececfda6089c9aca65c5a5785ac}} 
+virtual void {\bfseries Update\+Parameters} (std\+::string params)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a5bdc21ef0fec2bab20c2db9fac3f4604}\label{class_traffic_monitor_a5bdc21ef0fec2bab20c2db9fac3f4604}} 
+virtual int {\bfseries Get\+Traffic\+Alerts} (int index, std\+::string \&traffic\+ID, int \&alert\+Level)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a2c5bebdafa6721144bf2753bfcf7ff69}\label{class_traffic_monitor_a2c5bebdafa6721144bf2753bfcf7ff69}} 
+virtual bands\+\_\+t {\bfseries Get\+Track\+Bands} (void)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a9d6b3da3596e943aa8b3c15cd9d68994}\label{class_traffic_monitor_a9d6b3da3596e943aa8b3c15cd9d68994}} 
+virtual bands\+\_\+t {\bfseries Get\+Speed\+Bands} (void)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_ada21a5b9e72c5af75a891f007c2f4d12}\label{class_traffic_monitor_ada21a5b9e72c5af75a891f007c2f4d12}} 
+virtual bands\+\_\+t {\bfseries Get\+Alt\+Bands} (void)=0
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a4df53b36275e8e1f39c31c6996c00b64}\label{class_traffic_monitor_a4df53b36275e8e1f39c31c6996c00b64}} 
+virtual bands\+\_\+t {\bfseries Get\+Vertical\+Speed\+Bands} (void)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_ac44010824a9d1ee32be0b393de3716aa}\label{class_traffic_monitor_ac44010824a9d1ee32be0b393de3716aa}} 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{structobject}{object}} $>$ {\bfseries traffic\+List}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_aad810fa3877be8784f238b6115bcdd11}\label{class_traffic_monitor_aad810fa3877be8784f238b6115bcdd11}} 
+larcfm\+::\+Position {\bfseries position}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_acc18d8629d255edc26968e5f24469806}\label{class_traffic_monitor_acc18d8629d255edc26968e5f24469806}} 
+larcfm\+::\+Velocity {\bfseries velocity}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a99c35567713cae90e23f779a61aaf46c}\label{class_traffic_monitor_a99c35567713cae90e23f779a61aaf46c}} 
+double {\bfseries elapsed\+Time}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_a5456cb910b3aca19971fe3d4404e8d44}\label{class_traffic_monitor_a5456cb910b3aca19971fe3d4404e8d44}} 
+double {\bfseries pos\+Sigma} \mbox{[}6\mbox{]}
+\item 
+\mbox{\Hypertarget{class_traffic_monitor_aeaaaac1ff4ec21eb13f0be4dadd92b48}\label{class_traffic_monitor_aeaaaac1ff4ec21eb13f0be4dadd92b48}} 
+double {\bfseries vel\+Sigma} \mbox{[}6\mbox{]}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Traffic\+Monitor/Traffic\+Monitor.\+hpp\end{DoxyCompactItemize}

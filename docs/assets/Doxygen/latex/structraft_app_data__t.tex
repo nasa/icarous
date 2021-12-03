@@ -1,0 +1,173 @@
+\hypertarget{structraft_app_data__t}{}\doxysection{raft\+App\+Data\+\_\+t Struct Reference}
+\label{structraft_app_data__t}\index{raftAppData\_t@{raftAppData\_t}}
+
+
+Struct to hold raft app data.  
+
+
+
+
+{\ttfamily \#include $<$raft.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_aa2b09848c3e96ed9d2d83aaec1f4a882}\label{structraft_app_data__t_aa2b09848c3e96ed9d2d83aaec1f4a882}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Raft\+\_\+\+Hbeat\+Pipe}
+\begin{DoxyCompactList}\small\item\em Pipe variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a39c71fd4510e703a45ceb124f795bf29}\label{structraft_app_data__t_a39c71fd4510e703a45ceb124f795bf29}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Raft\+\_\+\+Sch\+Pipe}
+\begin{DoxyCompactList}\small\item\em Pipe for scheduler. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a69324700122b310794695f616d544793}\label{structraft_app_data__t_a69324700122b310794695f616d544793}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Raft\+\_\+\+Vote\+Pipe}
+\begin{DoxyCompactList}\small\item\em Pipe for client data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a7b5acee8a971909e5ef1d5bec697bb9e}\label{structraft_app_data__t_a7b5acee8a971909e5ef1d5bec697bb9e}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Raft\+\_\+\+Client\+Pipe}
+\begin{DoxyCompactList}\small\item\em Pipe for client data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a8f238769fffce0e9155669046b5d386a}\label{structraft_app_data__t_a8f238769fffce0e9155669046b5d386a}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Raft\+\_\+\+Hbeat\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em Pointer to SB message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a11dd2c7f7cbe8c628914793613b57f63}\label{structraft_app_data__t_a11dd2c7f7cbe8c628914793613b57f63}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Raft\+\_\+\+Sch\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em Pointer to SB message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_adb3f2de159126cc701ef8f69f8f8fa27}\label{structraft_app_data__t_adb3f2de159126cc701ef8f69f8f8fa27}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Raft\+\_\+\+Vote\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em Pointer to SB message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a0c1c570441f8e95bf0d6c1e08815549e}\label{structraft_app_data__t_a0c1c570441f8e95bf0d6c1e08815549e}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Raft\+\_\+\+Client\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em Pipe for client data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a844623b266304a61a2ea88d7cfd1b900}\label{structraft_app_data__t_a844623b266304a61a2ea88d7cfd1b900}} 
+Role\+\_\+e {\bfseries node\+Role}
+\begin{DoxyCompactList}\small\item\em Raft role of this node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_ab1376fd44972be3d8974463cec5412a5}\label{structraft_app_data__t_ab1376fd44972be3d8974463cec5412a5}} 
+uint32\+\_\+t {\bfseries node\+ID}
+\begin{DoxyCompactList}\small\item\em Aircraft id of current node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_ad6dbf77d8afd16e5dd04f325f8413396}\label{structraft_app_data__t_ad6dbf77d8afd16e5dd04f325f8413396}} 
+uint32\+\_\+t {\bfseries leader\+ID}
+\begin{DoxyCompactList}\small\item\em Leader for the current network. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_aa7e92a92f20df6aadca51a6ca1cd516a}\label{structraft_app_data__t_aa7e92a92f20df6aadca51a6ca1cd516a}} 
+int32\+\_\+t {\bfseries node\+Term}
+\begin{DoxyCompactList}\small\item\em Raft node\textquotesingle{}s term. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a52fe286ffea15c1b0994fbc3373ae2fc}\label{structraft_app_data__t_a52fe286ffea15c1b0994fbc3373ae2fc}} 
+int32\+\_\+t {\bfseries voted\+Term}
+\begin{DoxyCompactList}\small\item\em Voted term. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a740060d3ae3dccf56c0faf1f1a5a98de}\label{structraft_app_data__t_a740060d3ae3dccf56c0faf1f1a5a98de}} 
+uint32\+\_\+t {\bfseries voted\+For\+Node\+Id}
+\begin{DoxyCompactList}\small\item\em Node id of candidate voted for. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a211d94f9643d0fb8b71cfc50118ab191}\label{structraft_app_data__t_a211d94f9643d0fb8b71cfc50118ab191}} 
+int32\+\_\+t {\bfseries node\+Intersection}
+\begin{DoxyCompactList}\small\item\em Current intersection of this node. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a222a0a723a12c99205928f617742be30}\label{structraft_app_data__t_a222a0a723a12c99205928f617742be30}} 
+uint32\+\_\+t {\bfseries total\+Votes\+Received}
+\begin{DoxyCompactList}\small\item\em Total votes received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_ac9a1070f6f0144d27248df0375c095c8}\label{structraft_app_data__t_ac9a1070f6f0144d27248df0375c095c8}} 
+uint32\+\_\+t {\bfseries total\+Nodes}
+\begin{DoxyCompactList}\small\item\em Total nodes in the network. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a0ee34fbd5c42f8dac764e17f99655292}\label{structraft_app_data__t_a0ee34fbd5c42f8dac764e17f99655292}} 
+int32\+\_\+t {\bfseries member\+Node\+ID} \mbox{[}MAX\+\_\+\+NODES\mbox{]}
+\begin{DoxyCompactList}\small\item\em Member node identifications. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_aece86134a6fd61b158d59a7438bb4128}\label{structraft_app_data__t_aece86134a6fd61b158d59a7438bb4128}} 
+uint32\+\_\+t {\bfseries follower\+Timer\+Id}
+\begin{DoxyCompactList}\small\item\em Follower heartbeat timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a1f252510677ac6e512b13642ebbcc512}\label{structraft_app_data__t_a1f252510677ac6e512b13642ebbcc512}} 
+uint32\+\_\+t {\bfseries candidate\+Timer\+Id}
+\begin{DoxyCompactList}\small\item\em Candidate election timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_af6679e4c4da324c0657d270c5c8d8b19}\label{structraft_app_data__t_af6679e4c4da324c0657d270c5c8d8b19}} 
+uint32\+\_\+t {\bfseries leader\+Timer\+Id}
+\begin{DoxyCompactList}\small\item\em Leader timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a3c086cb3d7670ee8571dc37812bcfeda}\label{structraft_app_data__t_a3c086cb3d7670ee8571dc37812bcfeda}} 
+uint32\+\_\+t {\bfseries hbeat\+Timeout\+Counter}
+\begin{DoxyCompactList}\small\item\em Heartbeat timeout counter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a7fda85e57e3b3580a1fefdd45057a4ca}\label{structraft_app_data__t_a7fda85e57e3b3580a1fefdd45057a4ca}} 
+uint32\+\_\+t {\bfseries election\+Timeout\+Counter}
+\begin{DoxyCompactList}\small\item\em Election timeout counter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a04b0415920bafa388f0dd33bc82d37a0}\label{structraft_app_data__t_a04b0415920bafa388f0dd33bc82d37a0}} 
+uint32\+\_\+t {\bfseries leader\+Timeout\+Counter}
+\begin{DoxyCompactList}\small\item\em Leader timeout counter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_ab35d1a983fd362027437ae56e1c9c185}\label{structraft_app_data__t_ab35d1a983fd362027437ae56e1c9c185}} 
+report\+\_\+t {\bfseries merging\+Data} \mbox{[}MAX\+\_\+\+NODES\mbox{]}
+\begin{DoxyCompactList}\small\item\em Merging data from all nodes in the network. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_aabff6a4b5bf9311117ed936c61f08f65}\label{structraft_app_data__t_aabff6a4b5bf9311117ed936c61f08f65}} 
+uint32\+\_\+t {\bfseries log\+Data\+Index}
+\begin{DoxyCompactList}\small\item\em Log data index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_acf4396ab5b474a3c0b46dfce2662431c}\label{structraft_app_data__t_acf4396ab5b474a3c0b46dfce2662431c}} 
+report\+\_\+t {\bfseries ownship\+Merging\+Data}
+\begin{DoxyCompactList}\small\item\em Latest merging data from ownship. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a971101cca8b6d7c20722125bc79b4693}\label{structraft_app_data__t_a971101cca8b6d7c20722125bc79b4693}} 
+bool {\bfseries election\+Initiated}
+\begin{DoxyCompactList}\small\item\em Flag indicating if election was initiated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a8c31b03bd45baf17965282b2af204219}\label{structraft_app_data__t_a8c31b03bd45baf17965282b2af204219}} 
+bool {\bfseries neutral\+Pipe\+Initialized}
+\begin{DoxyCompactList}\small\item\em Pipe configuration for neutral role initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a91e5e25a366363f13122d90cd39c02be}\label{structraft_app_data__t_a91e5e25a366363f13122d90cd39c02be}} 
+bool {\bfseries follower\+Pipe\+Initialized}
+\begin{DoxyCompactList}\small\item\em Pipe configuration for follower role initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_ae818af1fcfedefca448832894323501a}\label{structraft_app_data__t_ae818af1fcfedefca448832894323501a}} 
+bool {\bfseries candidate\+Pipe\+Initialized}
+\begin{DoxyCompactList}\small\item\em Pipe configuration for candidate role initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a9f4986f7ca0913e0d7666271289784fd}\label{structraft_app_data__t_a9f4986f7ca0913e0d7666271289784fd}} 
+bool {\bfseries leader\+Pipe\+Initialized}
+\begin{DoxyCompactList}\small\item\em Pipe configuration for leader role initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a284d65119a556dc3c8bdcff26d73b961}\label{structraft_app_data__t_a284d65119a556dc3c8bdcff26d73b961}} 
+bool {\bfseries neutral\+Follower}
+\begin{DoxyCompactList}\small\item\em True if no leader is available. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a641f9b754fc5e6bd252e15384e656d2a}\label{structraft_app_data__t_a641f9b754fc5e6bd252e15384e656d2a}} 
+FILE $\ast$ {\bfseries log\+File}
+\begin{DoxyCompactList}\small\item\em Log file for debugging purposes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_a28cb328641554391004503bd7f6a8c3e}\label{structraft_app_data__t_a28cb328641554391004503bd7f6a8c3e}} 
+uint32\+\_\+t {\bfseries follower\+Time}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a7cb44aa6bfc02500b60bf755390e438a}\label{structraft_app_data__t_a7cb44aa6bfc02500b60bf755390e438a}} 
+uint32\+\_\+t {\bfseries candidate\+Time}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_af4bd743982b63a5878255f88338af5e6}\label{structraft_app_data__t_af4bd743982b63a5878255f88338af5e6}} 
+uint32\+\_\+t {\bfseries leader\+Time}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a46a5279d554f286016527490de80eadf}\label{structraft_app_data__t_a46a5279d554f286016527490de80eadf}} 
+uint32\+\_\+t {\bfseries follower\+Timeout}
+\begin{DoxyCompactList}\small\item\em Follower heartbeat timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_aa70afb0dc820cb6d88a3cbd91bf32c6a}\label{structraft_app_data__t_aa70afb0dc820cb6d88a3cbd91bf32c6a}} 
+uint32\+\_\+t {\bfseries candidate\+Timeout}
+\begin{DoxyCompactList}\small\item\em Candidate election timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_aca9e9c10594e5d56bb9ced835628de20}\label{structraft_app_data__t_aca9e9c10594e5d56bb9ced835628de20}} 
+uint32\+\_\+t {\bfseries leader\+Timeout}
+\begin{DoxyCompactList}\small\item\em Leader timer id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structraft_app_data__t_af38552362677620847fa50b6a4b13012}\label{structraft_app_data__t_af38552362677620847fa50b6a4b13012}} 
+struct timespec {\bfseries ts}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a8e6fbeab1af4a38b6ac85379d243692c}\label{structraft_app_data__t_a8e6fbeab1af4a38b6ac85379d243692c}} 
+double {\bfseries time\+Now}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_aabd364308bc75961169e501bbb933cdd}\label{structraft_app_data__t_aabd364308bc75961169e501bbb933cdd}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_hbeat__t}{raft\+Hbeat\+\_\+t}} $>$ {\bfseries heart\+Beat\+Pipe\+In}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_ab99bf6af2ac64b5e59b10d967fbc741b}\label{structraft_app_data__t_ab99bf6af2ac64b5e59b10d967fbc741b}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_hbeat__t}{raft\+Hbeat\+\_\+t}} $>$ {\bfseries heart\+Beat\+Pipe\+Out}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a14d806aabcfa2adde202a75622fc1b1c}\label{structraft_app_data__t_a14d806aabcfa2adde202a75622fc1b1c}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_hbeat_ack__t}{raft\+Hbeat\+Ack\+\_\+t}} $>$ {\bfseries heart\+Beat\+Ack\+Pipe\+In}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a705655511ccfce3e168dd65141c672bd}\label{structraft_app_data__t_a705655511ccfce3e168dd65141c672bd}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_hbeat_ack__t}{raft\+Hbeat\+Ack\+\_\+t}} $>$ {\bfseries heart\+Beat\+Ack\+Pipe\+Out}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_aee1864e109518cfe472c97543b957ed2}\label{structraft_app_data__t_aee1864e109518cfe472c97543b957ed2}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_vote_request__t}{raft\+Vote\+Request\+\_\+t}} $>$ {\bfseries vote\+Request\+Pipe\+In}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a9d9ff627c85c0b87f36ef7c0bf3b26de}\label{structraft_app_data__t_a9d9ff627c85c0b87f36ef7c0bf3b26de}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_vote_request__t}{raft\+Vote\+Request\+\_\+t}} $>$ {\bfseries vote\+Request\+Pipe\+Out}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_a33948a1373da11e8d788c23e0860cc77}\label{structraft_app_data__t_a33948a1373da11e8d788c23e0860cc77}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_vote_response__t}{raft\+Vote\+Response\+\_\+t}} $>$ {\bfseries vote\+Response\+Pipe\+In}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_ac70ab538f868cc96bdda0dd44cc437e1}\label{structraft_app_data__t_ac70ab538f868cc96bdda0dd44cc437e1}} 
+std\+::list$<$ \mbox{\hyperlink{structraft_vote_response__t}{raft\+Vote\+Response\+\_\+t}} $>$ {\bfseries vote\+Response\+Pipe\+Out}
+\item 
+\mbox{\Hypertarget{structraft_app_data__t_ab0077143c7963d8e0ac03c399fbcb1c6}\label{structraft_app_data__t_ab0077143c7963d8e0ac03c399fbcb1c6}} 
+c\+Data\+Log\+\_\+t {\bfseries data\+Log}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+apps/raft/fsw/src/\mbox{\hyperlink{raft_8h}{raft.\+h}}\item 
+Modules/\+Core/\+Raft/Raft\+Core.\+hpp\end{DoxyCompactItemize}

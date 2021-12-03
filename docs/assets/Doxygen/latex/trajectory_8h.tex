@@ -1,0 +1,156 @@
+\hypertarget{trajectory_8h}{}\doxysection{apps/trajectory/fsw/src/trajectory.h File Reference}
+\label{trajectory_8h}\index{apps/trajectory/fsw/src/trajectory.h@{apps/trajectory/fsw/src/trajectory.h}}
+
+
+Function declarations, data structure and macro declarations for the trajectory management application.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Icarous.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Traj\+Manager.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}guidance\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+tbl.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_trajectory_app_data__t}{Trajectory\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{trajectory_8h_ab14b2400db512fd80805e426217053c7}\label{trajectory_8h_ab14b2400db512fd80805e426217053c7}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{trajectory_8h_a081d5f95061b908cb85f442e6c3c7efc}\label{trajectory_8h_a081d5f95061b908cb85f442e6c3c7efc}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{trajectory_8h_abae71bbbd6f7e5fa68c04e160929a97f}\label{trajectory_8h_abae71bbbd6f7e5fa68c04e160929a97f}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+RECEIVED\+\_\+\+INTRUDER\+\_\+\+EID}~2
+\item 
+\mbox{\Hypertarget{trajectory_8h_a3abb1da71638e3f001ec4b7c56285495}\label{trajectory_8h_a3abb1da71638e3f001ec4b7c56285495}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+RECEIVED\+\_\+\+FLIGHTPLAN\+\_\+\+EID}~3
+\item 
+\mbox{\Hypertarget{trajectory_8h_afb826d80ed332a4a7570a0218006112d}\label{trajectory_8h_afb826d80ed332a4a7570a0218006112d}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+RECEIVED\+\_\+\+GEOFENCE\+\_\+\+EID}~4
+\item 
+\mbox{\Hypertarget{trajectory_8h_acab59aadc375b2cfcb8902e995d18223}\label{trajectory_8h_acab59aadc375b2cfcb8902e995d18223}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{trajectory_8h_a6104f7326d6544a7e21be6ccaa32a419}\label{trajectory_8h_a6104f7326d6544a7e21be6ccaa32a419}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}TRAJECTORY\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{trajectory_8h_a97255f05c4067be37f9c94a65e28240c}\label{trajectory_8h_a97255f05c4067be37f9c94a65e28240c}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+SCH\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}TRAJ\+\_\+\+SCH\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{trajectory_8h_a8e06982da6aa1cd879d2985c1279d63d}\label{trajectory_8h_a8e06982da6aa1cd879d2985c1279d63d}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+SCH\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{trajectory_8h_a1a8ffda1bf6f21a228370a16b67657e7}\label{trajectory_8h_a1a8ffda1bf6f21a228370a16b67657e7}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{trajectory_8h_a4985b93b9e4e5b3051f8b98de586e995}\label{trajectory_8h_a4985b93b9e4e5b3051f8b98de586e995}} 
+\#define {\bfseries TRAJECTORY\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\item 
+\mbox{\Hypertarget{trajectory_8h_a83ee1aa59a6d9d67c7f3090ee765e6a7}\label{trajectory_8h_a83ee1aa59a6d9d67c7f3090ee765e6a7}} 
+\#define {\bfseries TRAJ\+\_\+\+MONITOR\+\_\+\+TASK\+\_\+\+ID}~23
+\item 
+\mbox{\Hypertarget{trajectory_8h_a015660ec5d5a46f4d8883fd8f6fe1516}\label{trajectory_8h_a015660ec5d5a46f4d8883fd8f6fe1516}} 
+\#define {\bfseries TRAJ\+\_\+\+MONITOR\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE}~1024
+\item 
+\mbox{\Hypertarget{trajectory_8h_ab653e84c41b6c37b35a703a7f33600a2}\label{trajectory_8h_ab653e84c41b6c37b35a703a7f33600a2}} 
+\#define {\bfseries TRAJ\+\_\+\+MONITOR\+\_\+\+PRIORITY}~65
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{trajectory_8h_adaba662c1aaa621741ecb4fd035c628f}{TRAJECTORY\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em Event ID definitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{trajectory_8h_a75a446a475c965536040fbc79d0d76ad}{TRAJECTORY\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{trajectory_8h_a8fd2f9ce7da336a99eea7a4468baaf52}{TRAJECTORY\+\_\+\+App\+Init\+Data}} (\mbox{\hyperlink{struct_trajectory_table__t}{Trajectory\+Table\+\_\+t}} $\ast$Tbl\+Ptr)
+\item 
+void \mbox{\hyperlink{trajectory_8h_ad4f994a74a9fb33929ff17ea3a6a182c}{TRAJECTORY\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{trajectory_8h_a9df58c5853502dffbe46d6eee44f8d12}{TRAJECTORY\+\_\+\+Process\+Packet}} (void)
+\item 
+void \mbox{\hyperlink{trajectory_8h_a1640130e551a840c86a07d2ea2dcea75}{TRAJECTORY\+\_\+\+Monitor}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{trajectory_8h_a29d6d3a5a8db1f0b53b33039d060aeb6}{Trajectory\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{trajectory_8h_ac10c79056d5a15a079221bfa150032b7}\label{trajectory_8h_ac10c79056d5a15a079221bfa150032b7}} 
+uint32 {\bfseries traj\+\_\+monitor\+\_\+stack} \mbox{[}TRAJ\+\_\+\+MONITOR\+\_\+\+TASK\+\_\+\+STACK\+\_\+\+SIZE\mbox{]}
+\item 
+\mbox{\Hypertarget{trajectory_8h_a8c5dd7d580cd9c17ccd9bb9d02f541e7}\label{trajectory_8h_a8c5dd7d580cd9c17ccd9bb9d02f541e7}} 
+uint32 {\bfseries traj\+\_\+monitor\+\_\+task\+\_\+id}
+\item 
+\mbox{\Hypertarget{trajectory_8h_a68429dc00366724862aa5f5b94fb9ce2}\label{trajectory_8h_a68429dc00366724862aa5f5b94fb9ce2}} 
+\mbox{\hyperlink{struct_trajectory_app_data__t}{Trajectory\+App\+Data\+\_\+t}} {\bfseries Trajectory\+App\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{trajectory_8h_ad4f994a74a9fb33929ff17ea3a6a182c}\label{trajectory_8h_ad4f994a74a9fb33929ff17ea3a6a182c}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_AppCleanUp@{TRAJECTORY\_AppCleanUp}}
+\index{TRAJECTORY\_AppCleanUp@{TRAJECTORY\_AppCleanUp}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_AppCleanUp()}{TRAJECTORY\_AppCleanUp()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up any memory allocated. \mbox{\Hypertarget{trajectory_8h_a75a446a475c965536040fbc79d0d76ad}\label{trajectory_8h_a75a446a475c965536040fbc79d0d76ad}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_AppInit@{TRAJECTORY\_AppInit}}
+\index{TRAJECTORY\_AppInit@{TRAJECTORY\_AppInit}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_AppInit()}{TRAJECTORY\_AppInit()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Trajectory app initialization \mbox{\Hypertarget{trajectory_8h_a8fd2f9ce7da336a99eea7a4468baaf52}\label{trajectory_8h_a8fd2f9ce7da336a99eea7a4468baaf52}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_AppInitData@{TRAJECTORY\_AppInitData}}
+\index{TRAJECTORY\_AppInitData@{TRAJECTORY\_AppInitData}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_AppInitData()}{TRAJECTORY\_AppInitData()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+App\+Init\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_trajectory_table__t}{Trajectory\+Table\+\_\+t}} $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Trajectory app data initialization \mbox{\Hypertarget{trajectory_8h_adaba662c1aaa621741ecb4fd035c628f}\label{trajectory_8h_adaba662c1aaa621741ecb4fd035c628f}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_AppMain@{TRAJECTORY\_AppMain}}
+\index{TRAJECTORY\_AppMain@{TRAJECTORY\_AppMain}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_AppMain()}{TRAJECTORY\_AppMain()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Trajectory app entry point \mbox{\Hypertarget{trajectory_8h_a1640130e551a840c86a07d2ea2dcea75}\label{trajectory_8h_a1640130e551a840c86a07d2ea2dcea75}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_Monitor@{TRAJECTORY\_Monitor}}
+\index{TRAJECTORY\_Monitor@{TRAJECTORY\_Monitor}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_Monitor()}{TRAJECTORY\_Monitor()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+Monitor (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Peform the trajectory monitoring functions \mbox{\Hypertarget{trajectory_8h_a9df58c5853502dffbe46d6eee44f8d12}\label{trajectory_8h_a9df58c5853502dffbe46d6eee44f8d12}} 
+\index{trajectory.h@{trajectory.h}!TRAJECTORY\_ProcessPacket@{TRAJECTORY\_ProcessPacket}}
+\index{TRAJECTORY\_ProcessPacket@{TRAJECTORY\_ProcessPacket}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TRAJECTORY\_ProcessPacket()}{TRAJECTORY\_ProcessPacket()}}
+{\footnotesize\ttfamily void TRAJECTORY\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process software bus messages \mbox{\Hypertarget{trajectory_8h_a29d6d3a5a8db1f0b53b33039d060aeb6}\label{trajectory_8h_a29d6d3a5a8db1f0b53b33039d060aeb6}} 
+\index{trajectory.h@{trajectory.h}!TrajectoryTableValidationFunc@{TrajectoryTableValidationFunc}}
+\index{TrajectoryTableValidationFunc@{TrajectoryTableValidationFunc}!trajectory.h@{trajectory.h}}
+\doxysubsubsection{\texorpdfstring{TrajectoryTableValidationFunc()}{TrajectoryTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Trajectory\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validation app table parameters 
+\begin{DoxyParams}{Parameters}
+{\em Tbl\+Ptr} & point to app table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success 
+\end{DoxyReturn}

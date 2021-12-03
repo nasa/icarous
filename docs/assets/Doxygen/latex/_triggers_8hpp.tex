@@ -1,0 +1,168 @@
+\hypertarget{_triggers_8hpp}{}\doxysection{Modules/\+Core/\+Cognition/\+Triggers.hpp File Reference}
+\label{_triggers_8hpp}\index{Modules/Core/Cognition/Triggers.hpp@{Modules/Core/Cognition/Triggers.hpp}}
+
+
+Definition of all trigger functions used by \mbox{\hyperlink{class_cognition}{Cognition}}.  
+
+
+{\ttfamily \#include \char`\"{}Cognition.\+hpp\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_af967818154ea932a2c1f4389ad577538}{Takeoff\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_ae7910b4a30d9014a57c0f9a6b1abdd12}{Nominal\+Departure\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a7e285cc7d2a08011ea51d0f109a081de}{Fence\+Conflict\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_aab45952cb3c4d835834ead515955a569}{Secondary\+Plan\+Completion\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a5a693b233a0e1e8ccf22f118f783765c}{Primary\+Plan\+Completion\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a976f11c0ba8aa68c519126289ff60280}{Flight\+Plan\+Deviation\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a2ea59a838337ed32291052beba680b8d}{Flight\+Replan\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a7b31f62874b69e572dab6a96f424350c}{Traffic\+Conflict\+Vector\+Res\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a724e74691846f16f0855d8751a4cc5ce}{Traffic\+Conflict\+Path\+Res\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a2ca7636519e81eb88bf06ca3c3983751}{Traffic\+Conflict\+Ditch\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a3d317dfbaa6add4704a1fec25ded83f7}{Merging\+Activity\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a3885f4753ecaea0d33f6b7546a998eff}{Ditching\+Trigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\item 
+bool \mbox{\hyperlink{_triggers_8hpp_a83dee42f127e6b28a81cadb498d73b72}{Ditch\+Site\+TODTrigger}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_triggers_8hpp_a3885f4753ecaea0d33f6b7546a998eff}\label{_triggers_8hpp_a3885f4753ecaea0d33f6b7546a998eff}} 
+\index{Triggers.hpp@{Triggers.hpp}!DitchingTrigger@{DitchingTrigger}}
+\index{DitchingTrigger@{DitchingTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{DitchingTrigger()}{DitchingTrigger()}}
+{\footnotesize\ttfamily bool Ditching\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Start the ditching process (due to an external ditch request) 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a83dee42f127e6b28a81cadb498d73b72}\label{_triggers_8hpp_a83dee42f127e6b28a81cadb498d73b72}} 
+\index{Triggers.hpp@{Triggers.hpp}!DitchSiteTODTrigger@{DitchSiteTODTrigger}}
+\index{DitchSiteTODTrigger@{DitchSiteTODTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{DitchSiteTODTrigger()}{DitchSiteTODTrigger()}}
+{\footnotesize\ttfamily bool Ditch\+Site\+TODTrigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Monitor the arrival of the TOD point of the ditch path. To start post TOD actions. 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a7e285cc7d2a08011ea51d0f109a081de}\label{_triggers_8hpp_a7e285cc7d2a08011ea51d0f109a081de}} 
+\index{Triggers.hpp@{Triggers.hpp}!FenceConflictTrigger@{FenceConflictTrigger}}
+\index{FenceConflictTrigger@{FenceConflictTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{FenceConflictTrigger()}{FenceConflictTrigger()}}
+{\footnotesize\ttfamily bool Fence\+Conflict\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Check for fence violations
+\item Ignore violations if projected point of violation is not on flightplan.
+\item Only trigger if violation is imminent within the threshold. 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a976f11c0ba8aa68c519126289ff60280}\label{_triggers_8hpp_a976f11c0ba8aa68c519126289ff60280}} 
+\index{Triggers.hpp@{Triggers.hpp}!FlightPlanDeviationTrigger@{FlightPlanDeviationTrigger}}
+\index{FlightPlanDeviationTrigger@{FlightPlanDeviationTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{FlightPlanDeviationTrigger()}{FlightPlanDeviationTrigger()}}
+{\footnotesize\ttfamily bool Flight\+Plan\+Deviation\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Check for flight plan deviations greater than the defined threshold 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a2ea59a838337ed32291052beba680b8d}\label{_triggers_8hpp_a2ea59a838337ed32291052beba680b8d}} 
+\index{Triggers.hpp@{Triggers.hpp}!FlightReplanTrigger@{FlightReplanTrigger}}
+\index{FlightReplanTrigger@{FlightReplanTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{FlightReplanTrigger()}{FlightReplanTrigger()}}
+{\footnotesize\ttfamily bool Flight\+Replan\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Trigger to check if replanning is necessary. 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a3d317dfbaa6add4704a1fec25ded83f7}\label{_triggers_8hpp_a3d317dfbaa6add4704a1fec25ded83f7}} 
+\index{Triggers.hpp@{Triggers.hpp}!MergingActivityTrigger@{MergingActivityTrigger}}
+\index{MergingActivityTrigger@{MergingActivityTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{MergingActivityTrigger()}{MergingActivityTrigger()}}
+{\footnotesize\ttfamily bool Merging\+Activity\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Detect a merging in process.
+\item This is to ensure we don\textquotesingle{}t perform traffic resolutions while doing a merge 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_ae7910b4a30d9014a57c0f9a6b1abdd12}\label{_triggers_8hpp_ae7910b4a30d9014a57c0f9a6b1abdd12}} 
+\index{Triggers.hpp@{Triggers.hpp}!NominalDepartureTrigger@{NominalDepartureTrigger}}
+\index{NominalDepartureTrigger@{NominalDepartureTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{NominalDepartureTrigger()}{NominalDepartureTrigger()}}
+{\footnotesize\ttfamily bool Nominal\+Departure\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Trigger to transition out of a successful takeoff 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a5a693b233a0e1e8ccf22f118f783765c}\label{_triggers_8hpp_a5a693b233a0e1e8ccf22f118f783765c}} 
+\index{Triggers.hpp@{Triggers.hpp}!PrimaryPlanCompletionTrigger@{PrimaryPlanCompletionTrigger}}
+\index{PrimaryPlanCompletionTrigger@{PrimaryPlanCompletionTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{PrimaryPlanCompletionTrigger()}{PrimaryPlanCompletionTrigger()}}
+{\footnotesize\ttfamily bool Primary\+Plan\+Completion\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Check for completion of nominal path 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_aab45952cb3c4d835834ead515955a569}\label{_triggers_8hpp_aab45952cb3c4d835834ead515955a569}} 
+\index{Triggers.hpp@{Triggers.hpp}!SecondaryPlanCompletionTrigger@{SecondaryPlanCompletionTrigger}}
+\index{SecondaryPlanCompletionTrigger@{SecondaryPlanCompletionTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{SecondaryPlanCompletionTrigger()}{SecondaryPlanCompletionTrigger()}}
+{\footnotesize\ttfamily bool Secondary\+Plan\+Completion\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Check for completion of resolution plan. 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_af967818154ea932a2c1f4389ad577538}\label{_triggers_8hpp_af967818154ea932a2c1f4389ad577538}} 
+\index{Triggers.hpp@{Triggers.hpp}!TakeoffTrigger@{TakeoffTrigger}}
+\index{TakeoffTrigger@{TakeoffTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{TakeoffTrigger()}{TakeoffTrigger()}}
+{\footnotesize\ttfamily bool Takeoff\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Trigger takeoff based on mission start
+\item Only trigger takeoff if no fence conflicts 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a2ca7636519e81eb88bf06ca3c3983751}\label{_triggers_8hpp_a2ca7636519e81eb88bf06ca3c3983751}} 
+\index{Triggers.hpp@{Triggers.hpp}!TrafficConflictDitchTrigger@{TrafficConflictDitchTrigger}}
+\index{TrafficConflictDitchTrigger@{TrafficConflictDitchTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{TrafficConflictDitchTrigger()}{TrafficConflictDitchTrigger()}}
+{\footnotesize\ttfamily bool Traffic\+Conflict\+Ditch\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Trigger a ditching action because of a traffic conflict.
+\item This was introduced to support Safe2ditch.
+\item Since the other traffic triggers will also be activated, it is important to assign
+\item the right priority for this event. 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a724e74691846f16f0855d8751a4cc5ce}\label{_triggers_8hpp_a724e74691846f16f0855d8751a4cc5ce}} 
+\index{Triggers.hpp@{Triggers.hpp}!TrafficConflictPathResTrigger@{TrafficConflictPathResTrigger}}
+\index{TrafficConflictPathResTrigger@{TrafficConflictPathResTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{TrafficConflictPathResTrigger()}{TrafficConflictPathResTrigger()}}
+{\footnotesize\ttfamily bool Traffic\+Conflict\+Path\+Res\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Detect a well clear violation (detected by daidalus)
+\item This trigger is ignore if a search resolution is not requested (by a user) 
+\end{DoxyItemize}\mbox{\Hypertarget{_triggers_8hpp_a7b31f62874b69e572dab6a96f424350c}\label{_triggers_8hpp_a7b31f62874b69e572dab6a96f424350c}} 
+\index{Triggers.hpp@{Triggers.hpp}!TrafficConflictVectorResTrigger@{TrafficConflictVectorResTrigger}}
+\index{TrafficConflictVectorResTrigger@{TrafficConflictVectorResTrigger}!Triggers.hpp@{Triggers.hpp}}
+\doxysubsubsection{\texorpdfstring{TrafficConflictVectorResTrigger()}{TrafficConflictVectorResTrigger()}}
+{\footnotesize\ttfamily bool Traffic\+Conflict\+Vector\+Res\+Trigger (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyItemize}
+\item Detect a well clear violation (detected by daidalus)
+\item Note that this trigger is ignored if the search resolution is requested (by a user).
+\item A search resolution is an alternative way to deal with imminent well clear violations. 
+\end{DoxyItemize}

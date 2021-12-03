@@ -1,0 +1,62 @@
+\hypertarget{structrc__channels__t}{}\doxysection{rc\+\_\+channels\+\_\+t Struct Reference}
+\label{structrc__channels__t}\index{rc\_channels\_t@{rc\_channels\_t}}
+
+
+Message containing rc channel information.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structrc__channels__t_a1283841aed9c81eb57cee606e35b2151}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structrc__channels__t_a90e77ed5ed8e26146c56a648e6fd4d6b}{time\+\_\+boot\+\_\+ms}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structrc__channels__t_a1609e3d08f55963f33033ed7536e5813}{chancount}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structrc__channels__t_a139489b8967ab5192863b716fb6fc1f9}{chan}} \mbox{[}20\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structrc__channels__t_a3ffa9bf88c0f0b99ae046a5668549fbe}{rssi}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structrc__channels__t_a139489b8967ab5192863b716fb6fc1f9}\label{structrc__channels__t_a139489b8967ab5192863b716fb6fc1f9}} 
+\index{rc\_channels\_t@{rc\_channels\_t}!chan@{chan}}
+\index{chan@{chan}!rc\_channels\_t@{rc\_channels\_t}}
+\doxysubsubsection{\texorpdfstring{chan}{chan}}
+{\footnotesize\ttfamily uint16\+\_\+t rc\+\_\+channels\+\_\+t\+::chan\mbox{[}20\mbox{]}}
+
+RC channel values \mbox{\Hypertarget{structrc__channels__t_a1609e3d08f55963f33033ed7536e5813}\label{structrc__channels__t_a1609e3d08f55963f33033ed7536e5813}} 
+\index{rc\_channels\_t@{rc\_channels\_t}!chancount@{chancount}}
+\index{chancount@{chancount}!rc\_channels\_t@{rc\_channels\_t}}
+\doxysubsubsection{\texorpdfstring{chancount}{chancount}}
+{\footnotesize\ttfamily uint8\+\_\+t rc\+\_\+channels\+\_\+t\+::chancount}
+
+number of rc channels being received \mbox{\Hypertarget{structrc__channels__t_a3ffa9bf88c0f0b99ae046a5668549fbe}\label{structrc__channels__t_a3ffa9bf88c0f0b99ae046a5668549fbe}} 
+\index{rc\_channels\_t@{rc\_channels\_t}!rssi@{rssi}}
+\index{rssi@{rssi}!rc\_channels\_t@{rc\_channels\_t}}
+\doxysubsubsection{\texorpdfstring{rssi}{rssi}}
+{\footnotesize\ttfamily uint8\+\_\+t rc\+\_\+channels\+\_\+t\+::rssi}
+
+receive signal strength \mbox{\Hypertarget{structrc__channels__t_a90e77ed5ed8e26146c56a648e6fd4d6b}\label{structrc__channels__t_a90e77ed5ed8e26146c56a648e6fd4d6b}} 
+\index{rc\_channels\_t@{rc\_channels\_t}!time\_boot\_ms@{time\_boot\_ms}}
+\index{time\_boot\_ms@{time\_boot\_ms}!rc\_channels\_t@{rc\_channels\_t}}
+\doxysubsubsection{\texorpdfstring{time\_boot\_ms}{time\_boot\_ms}}
+{\footnotesize\ttfamily uint32\+\_\+t rc\+\_\+channels\+\_\+t\+::time\+\_\+boot\+\_\+ms}
+
+timestamp \mbox{\Hypertarget{structrc__channels__t_a1283841aed9c81eb57cee606e35b2151}\label{structrc__channels__t_a1283841aed9c81eb57cee606e35b2151}} 
+\index{rc\_channels\_t@{rc\_channels\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!rc\_channels\_t@{rc\_channels\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t rc\+\_\+channels\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

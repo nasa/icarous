@@ -1,0 +1,53 @@
+\hypertarget{pflaa_8h_source}{}\doxysection{pflaa.\+h}
+\label{pflaa_8h_source}\index{apps/flarm/fsw/src/pflaa.h@{apps/flarm/fsw/src/pflaa.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef INC\_NMEA\_GPRMC\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define INC\_NMEA\_GPRMC\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/*}}
+\DoxyCodeLine{9 \textcolor{comment}{Example:}}
+\DoxyCodeLine{10 \textcolor{comment}{}}
+\DoxyCodeLine{11 \textcolor{comment}{\$PFLAA,0,-\/1234,1234,220,2,DD8F12,180,,30,-\/1.4,1*}}
+\DoxyCodeLine{12 \textcolor{comment}{}}
+\DoxyCodeLine{13 \textcolor{comment}{There is a glider in the south-\/east direction, 1.7km away (1.2km south, 1.2km}}
+\DoxyCodeLine{14 \textcolor{comment}{east), 220m higher flying on south track with a ground speed of 30m/s in a slight}}
+\DoxyCodeLine{15 \textcolor{comment}{left turn with 4.5°/s turning rate, sinking with 1.4m/s. Its ID is a static FLARM-\/ID}}
+\DoxyCodeLine{16 \textcolor{comment}{“DD8F12”. There is no danger.}}
+\DoxyCodeLine{17 \textcolor{comment}{}}
+\DoxyCodeLine{18 \textcolor{comment}{*/}}
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{20     \textcolor{keywordtype}{int} alarmLevel;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{int} relNorth;}
+\DoxyCodeLine{22     \textcolor{keywordtype}{int} relEast;}
+\DoxyCodeLine{23     \textcolor{keywordtype}{int} relVertical;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{int} idType;}
+\DoxyCodeLine{25     \textcolor{keywordtype}{char} ID[6];}
+\DoxyCodeLine{26     \textcolor{keywordtype}{int} track;}
+\DoxyCodeLine{27     \textcolor{keywordtype}{int} groundSpeed;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{float} climbRate;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{char} acftType[1];}
+\DoxyCodeLine{30     \textcolor{keywordtype}{int} noTrack;}
+\DoxyCodeLine{31 \} \mbox{\hyperlink{structnmea__pflaa__s}{nmea\_pflaa\_s}};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{comment}{/* Value indexes */}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_ALARMLEVEL       0}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_RELATIVE\_NORTH       1}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_RELATIVE\_EAST        2}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_RELATIVE\_VERTICAL        3}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_IDTYPE       4}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_ID       5}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_TRACK        6}}
+\DoxyCodeLine{41 \textcolor{comment}{//\#define NMEA\_PFLAA\_TURN\_RATE      7}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_GROUND\_SPEED     7}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_CLIMB\_RATE       8}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_ACFTTYPE     9}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define NMEA\_PFLAA\_NO\_TRACK     10}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{/* INC\_NMEA\_PFLAA\_H */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

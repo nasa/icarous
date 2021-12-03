@@ -1,0 +1,278 @@
+\hypertarget{_p_c___quadcopter___simulation_8h_source}{}\doxysection{PC\+\_\+\+Quadcopter\+\_\+\+Simulation.\+h}
+\label{_p_c___quadcopter___simulation_8h_source}\index{apps/rotorsim/QuadCopterSim/PC\_Quadcopter\_Simulation.h@{apps/rotorsim/QuadCopterSim/PC\_Quadcopter\_Simulation.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * File: PC\_Quadcopter\_Simulation.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Code generated for Simulink model 'PC\_Quadcopter\_Simulation'.}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Model version                  : 1.66}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Simulink Coder version         : 8.14 (R2018a) 06-\/Feb-\/2018}}
+\DoxyCodeLine{8 \textcolor{comment}{ * C/C++ source code generated on : Fri Aug 17 11:28:00 2018}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Target selection: ert.tlc}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Embedded hardware selection: Intel-\/>x86-\/64 (Windows64)}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Code generation objectives: Unspecified}}
+\DoxyCodeLine{13 \textcolor{comment}{ * Validation result: Not run}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef RTW\_HEADER\_PC\_Quadcopter\_Simulation\_h\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define RTW\_HEADER\_PC\_Quadcopter\_Simulation\_h\_}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <float.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifndef PC\_Quadcopter\_Simulation\_COMMON\_INCLUDES\_}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\# define PC\_Quadcopter\_Simulation\_COMMON\_INCLUDES\_}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}rtwtypes.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif                                 }\textcolor{comment}{/* PC\_Quadcopter\_Simulation\_COMMON\_INCLUDES\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}PC\_Quadcopter\_Simulation\_types.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}rtGetNaN.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}rt\_nonfinite.h"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}rt\_defines.h"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}rtGetInf.h"{}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{/* Macros for accessing real-\/time model data structure */}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#ifndef rtmGetErrorStatus}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\# define rtmGetErrorStatus(rtm)        ((rtm)-\/>errorStatus)}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#ifndef rtmSetErrorStatus}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\# define rtmSetErrorStatus(rtm, val)   ((rtm)-\/>errorStatus = (val))}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{/* Block states (default storage) for system '<Root>' */}}
+\DoxyCodeLine{42 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{43   real\_T DiscreteTimeIntegrator\_DSTATE[12];\textcolor{comment}{/* '<S5>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{44   real\_T UD\_DSTATE[3];                 \textcolor{comment}{/* '<S26>/UD' */}}
+\DoxyCodeLine{45   real\_T DiscreteTimeIntegrator\_DSTATE\_i;\textcolor{comment}{/* '<S6>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{46   real\_T UD\_DSTATE\_m;                  \textcolor{comment}{/* '<S10>/UD' */}}
+\DoxyCodeLine{47   real\_T DiscreteTimeIntegrator\_DSTATE\_c;\textcolor{comment}{/* '<S9>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{48   real\_T UD\_DSTATE\_e;                  \textcolor{comment}{/* '<S15>/UD' */}}
+\DoxyCodeLine{49   real\_T UD\_DSTATE\_c;                  \textcolor{comment}{/* '<S17>/UD' */}}
+\DoxyCodeLine{50   real\_T DiscreteTimeIntegrator\_DSTATE\_m;\textcolor{comment}{/* '<S16>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{51   real\_T UD\_DSTATE\_j;                  \textcolor{comment}{/* '<S21>/UD' */}}
+\DoxyCodeLine{52   real\_T DiscreteTimeIntegrator\_DSTATE\_d;\textcolor{comment}{/* '<S20>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{53   real\_T DiscreteTimeIntegrator\_DSTATE\_a;\textcolor{comment}{/* '<S19>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{54   real\_T DiscreteTimeIntegrator\_DSTATE\_e;\textcolor{comment}{/* '<S18>/Discrete-\/Time Integrator' */}}
+\DoxyCodeLine{55   real\_T UnitDelay\_DSTATE;             \textcolor{comment}{/* '<S33>/Unit Delay' */}}
+\DoxyCodeLine{56   real\_T UnitDelay\_DSTATE\_f;           \textcolor{comment}{/* '<S34>/Unit Delay' */}}
+\DoxyCodeLine{57   real\_T UnitDelay\_DSTATE\_h;           \textcolor{comment}{/* '<S35>/Unit Delay' */}}
+\DoxyCodeLine{58   real\_T UnitDelay\_DSTATE\_a;           \textcolor{comment}{/* '<S36>/Unit Delay' */}}
+\DoxyCodeLine{59   real\_T PrevY;                        \textcolor{comment}{/* '<S20>/Rate Limiter' */}}
+\DoxyCodeLine{60 \} \mbox{\hyperlink{struct_d_w___p_c___quadcopter___simulation___t}{DW\_PC\_Quadcopter\_Simulation\_T}};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{comment}{/* Invariant block signals (default storage) */}}
+\DoxyCodeLine{63 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{64   \textcolor{keyword}{const} real\_T P;                      \textcolor{comment}{/* '<S29>/P' */}}
+\DoxyCodeLine{65   \textcolor{keyword}{const} real\_T Q;                      \textcolor{comment}{/* '<S29>/Q' */}}
+\DoxyCodeLine{66   \textcolor{keyword}{const} real\_T R;                      \textcolor{comment}{/* '<S29>/R' */}}
+\DoxyCodeLine{67   \textcolor{keyword}{const} real\_T Phi;                    \textcolor{comment}{/* '<S29>/Phi ' */}}
+\DoxyCodeLine{68   \textcolor{keyword}{const} real\_T The;                    \textcolor{comment}{/* '<S29>/The' */}}
+\DoxyCodeLine{69   \textcolor{keyword}{const} real\_T Psi;                    \textcolor{comment}{/* '<S29>/Psi' */}}
+\DoxyCodeLine{70   \textcolor{keyword}{const} real\_T U;                      \textcolor{comment}{/* '<S29>/U' */}}
+\DoxyCodeLine{71   \textcolor{keyword}{const} real\_T V;                      \textcolor{comment}{/* '<S29>/V' */}}
+\DoxyCodeLine{72   \textcolor{keyword}{const} real\_T W;                      \textcolor{comment}{/* '<S29>/W' */}}
+\DoxyCodeLine{73   \textcolor{keyword}{const} real\_T X;                      \textcolor{comment}{/* '<S29>/X' */}}
+\DoxyCodeLine{74   \textcolor{keyword}{const} real\_T Y;                      \textcolor{comment}{/* '<S29>/Y' */}}
+\DoxyCodeLine{75   \textcolor{keyword}{const} real\_T Z;                      \textcolor{comment}{/* '<S29>/Z' */}}
+\DoxyCodeLine{76   \textcolor{keyword}{const} real\_T Add;                    \textcolor{comment}{/* '<S23>/Add' */}}
+\DoxyCodeLine{77   \textcolor{keyword}{const} real\_T MathFunction;           \textcolor{comment}{/* '<S23>/Math Function' */}}
+\DoxyCodeLine{78   \textcolor{keyword}{const} real\_T Add1;                   \textcolor{comment}{/* '<S23>/Add1' */}}
+\DoxyCodeLine{79 \} \mbox{\hyperlink{struct_const_b___p_c___quadcopter___simulati___t}{ConstB\_PC\_Quadcopter\_Simulati\_T}};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{comment}{/* Constant parameters (default storage) */}}
+\DoxyCodeLine{82 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{83   \textcolor{comment}{/* Expression: quadModel.dctcq}}
+\DoxyCodeLine{84 \textcolor{comment}{   * Referenced by: '<S32>/dctdq'}}
+\DoxyCodeLine{85 \textcolor{comment}{   */}}
+\DoxyCodeLine{86   real\_T dctdq\_Value[12];}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{comment}{/* Expression: eye(3)}}
+\DoxyCodeLine{89 \textcolor{comment}{   * Referenced by: '<S11>/Constant'}}
+\DoxyCodeLine{90 \textcolor{comment}{   */}}
+\DoxyCodeLine{91   real\_T Constant\_Value[9];}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \textcolor{comment}{/* Expression: quadModel.Jbinv}}
+\DoxyCodeLine{94 \textcolor{comment}{   * Referenced by: '<S32>/Jbinv'}}
+\DoxyCodeLine{95 \textcolor{comment}{   */}}
+\DoxyCodeLine{96   real\_T Jbinv\_Value[9];}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98   \textcolor{comment}{/* Expression: quadModel.Jb}}
+\DoxyCodeLine{99 \textcolor{comment}{   * Referenced by: '<S32>/Jb'}}
+\DoxyCodeLine{100 \textcolor{comment}{   */}}
+\DoxyCodeLine{101   real\_T Jb\_Value[9];}
+\DoxyCodeLine{102 \} \mbox{\hyperlink{struct_const_p___p_c___quadcopter___simulati___t}{ConstP\_PC\_Quadcopter\_Simulati\_T}};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{comment}{/* External inputs (root inport signals with default storage) */}}
+\DoxyCodeLine{105 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{106   real\_T Xd\_I;                         \textcolor{comment}{/* '<Root>/Xd\_I' */}}
+\DoxyCodeLine{107   real\_T Yd\_I;                         \textcolor{comment}{/* '<Root>/Yd\_I' */}}
+\DoxyCodeLine{108   real\_T Zd\_I;                         \textcolor{comment}{/* '<Root>/Zd\_I' */}}
+\DoxyCodeLine{109 \} \mbox{\hyperlink{struct_ext_u___p_c___quadcopter___simulation___t}{ExtU\_PC\_Quadcopter\_Simulation\_T}};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{/* External outputs (root outports fed by signals with default storage) */}}
+\DoxyCodeLine{112 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{113   real\_T yout[30];                     \textcolor{comment}{/* '<Root>/yout ' */} \textcolor{comment}{//15, next 4 motor rpms, 20,21,22,23, throttle, 24,25,26,27, roll,pitch,vdot commands, xdot, ydot, zdot }}
+\DoxyCodeLine{114 \}\mbox{\hyperlink{struct_ext_y___p_c___quadcopter___simulation___t}{ExtY\_PC\_Quadcopter\_Simulation\_T}};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{comment}{/* Real-\/time Model Data Structure */}}
+\DoxyCodeLine{117 \textcolor{keyword}{struct }\mbox{\hyperlink{structtag___r_t_m___p_c___quadcopter___simulat___t}{tag\_RTM\_PC\_Quadcopter\_Simulat\_T}} \{}
+\DoxyCodeLine{118   \textcolor{keyword}{const} char\_T * \textcolor{keyword}{volatile} errorStatus;}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{comment}{/*}}
+\DoxyCodeLine{121 \textcolor{comment}{   * Timing:}}
+\DoxyCodeLine{122 \textcolor{comment}{   * The following substructure contains information regarding}}
+\DoxyCodeLine{123 \textcolor{comment}{   * the timing information for the model.}}
+\DoxyCodeLine{124 \textcolor{comment}{   */}}
+\DoxyCodeLine{125   \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{126     uint32\_T clockTick0;}
+\DoxyCodeLine{127   \} Timing;}
+\DoxyCodeLine{128 \};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{comment}{/* Block states (default storage) */}}
+\DoxyCodeLine{131 \textcolor{keyword}{extern} \mbox{\hyperlink{struct_d_w___p_c___quadcopter___simulation___t}{DW\_PC\_Quadcopter\_Simulation\_T}} PC\_Quadcopter\_Simulation\_DW;}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{comment}{/* External inputs (root inport signals with default storage) */}}
+\DoxyCodeLine{134 \textcolor{keyword}{extern} \mbox{\hyperlink{struct_ext_u___p_c___quadcopter___simulation___t}{ExtU\_PC\_Quadcopter\_Simulation\_T}} PC\_Quadcopter\_Simulation\_U;}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{/* External outputs (root outports fed by signals with default storage) */}}
+\DoxyCodeLine{137 \textcolor{keyword}{extern} \mbox{\hyperlink{struct_ext_y___p_c___quadcopter___simulation___t}{ExtY\_PC\_Quadcopter\_Simulation\_T}} PC\_Quadcopter\_Simulation\_Y;}
+\DoxyCodeLine{138 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{struct_const_b___p_c___quadcopter___simulati___t}{ConstB\_PC\_Quadcopter\_Simulati\_T}} PC\_Quadcopter\_Simulation\_ConstB;\textcolor{comment}{/* constant block i/o */}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{comment}{/* Constant parameters (default storage) */}}
+\DoxyCodeLine{141 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{struct_const_p___p_c___quadcopter___simulati___t}{ConstP\_PC\_Quadcopter\_Simulati\_T}} PC\_Quadcopter\_Simulation\_ConstP;}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{/* Model entry point functions */}}
+\DoxyCodeLine{144 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_Quadcopter\_Simulation\_initialize(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{145 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_Quadcopter\_Simulation\_step(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{146 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_Quadcopter\_Simulation\_terminate(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{comment}{/* Real-\/time Model object */}}
+\DoxyCodeLine{149 \textcolor{keyword}{extern} \mbox{\hyperlink{structtag___r_t_m___p_c___quadcopter___simulat___t}{RT\_MODEL\_PC\_Quadcopter\_Simula\_T}} *\textcolor{keyword}{const} PC\_Quadcopter\_Simulation\_M;}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_QuadCopter\_Simulation\_SetInput(\textcolor{keywordtype}{double} u1,\textcolor{keywordtype}{double} u2,\textcolor{keywordtype}{double} u3);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_Quadcopter\_Simulation\_GetPosition(\textcolor{keywordtype}{double} pos[3]);}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{keyword}{extern} \textcolor{keywordtype}{void} PC\_Quadcopter\_Simulation\_GetVelocity(\textcolor{keywordtype}{double} vel[3]);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 \textcolor{comment}{/*-\/}}
+\DoxyCodeLine{160 \textcolor{comment}{ * These blocks were eliminated from the model due to optimizations:}}
+\DoxyCodeLine{161 \textcolor{comment}{ *}}
+\DoxyCodeLine{162 \textcolor{comment}{ * Block '<S10>/Data Type Duplicate' : Unused code path elimination}}
+\DoxyCodeLine{163 \textcolor{comment}{ * Block '<S6>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{164 \textcolor{comment}{ * Block '<S6>/Scope3' : Unused code path elimination}}
+\DoxyCodeLine{165 \textcolor{comment}{ * Block '<S15>/Data Type Duplicate' : Unused code path elimination}}
+\DoxyCodeLine{166 \textcolor{comment}{ * Block '<S9>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{167 \textcolor{comment}{ * Block '<S9>/Scope3' : Unused code path elimination}}
+\DoxyCodeLine{168 \textcolor{comment}{ * Block '<S21>/Data Type Duplicate' : Unused code path elimination}}
+\DoxyCodeLine{169 \textcolor{comment}{ * Block '<S16>/Scope' : Unused code path elimination}}
+\DoxyCodeLine{170 \textcolor{comment}{ * Block '<S16>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{171 \textcolor{comment}{ * Block '<S16>/Scope2' : Unused code path elimination}}
+\DoxyCodeLine{172 \textcolor{comment}{ * Block '<S17>/Data Type Duplicate' : Unused code path elimination}}
+\DoxyCodeLine{173 \textcolor{comment}{ * Block '<S18>/Scope' : Unused code path elimination}}
+\DoxyCodeLine{174 \textcolor{comment}{ * Block '<S19>/Scope' : Unused code path elimination}}
+\DoxyCodeLine{175 \textcolor{comment}{ * Block '<S19>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{176 \textcolor{comment}{ * Block '<S3>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{177 \textcolor{comment}{ * Block '<S3>/Scope2' : Unused code path elimination}}
+\DoxyCodeLine{178 \textcolor{comment}{ * Block '<S4>/Constant' : Unused code path elimination}}
+\DoxyCodeLine{179 \textcolor{comment}{ * Block '<S4>/Product' : Unused code path elimination}}
+\DoxyCodeLine{180 \textcolor{comment}{ * Block '<S4>/Scope' : Unused code path elimination}}
+\DoxyCodeLine{181 \textcolor{comment}{ * Block '<S4>/Scope1' : Unused code path elimination}}
+\DoxyCodeLine{182 \textcolor{comment}{ * Block '<S4>/Scope2' : Unused code path elimination}}
+\DoxyCodeLine{183 \textcolor{comment}{ * Block '<S25>/Sum' : Unused code path elimination}}
+\DoxyCodeLine{184 \textcolor{comment}{ * Block '<S25>/Sum1' : Unused code path elimination}}
+\DoxyCodeLine{185 \textcolor{comment}{ * Block '<S25>/Sum11' : Unused code path elimination}}
+\DoxyCodeLine{186 \textcolor{comment}{ * Block '<S25>/Sum2' : Unused code path elimination}}
+\DoxyCodeLine{187 \textcolor{comment}{ * Block '<S25>/Sum3' : Unused code path elimination}}
+\DoxyCodeLine{188 \textcolor{comment}{ * Block '<S25>/Sum4' : Unused code path elimination}}
+\DoxyCodeLine{189 \textcolor{comment}{ * Block '<S25>/Sum5' : Unused code path elimination}}
+\DoxyCodeLine{190 \textcolor{comment}{ * Block '<S25>/Sum6' : Unused code path elimination}}
+\DoxyCodeLine{191 \textcolor{comment}{ * Block '<S25>/Sum7' : Unused code path elimination}}
+\DoxyCodeLine{192 \textcolor{comment}{ * Block '<S25>/Sum8' : Unused code path elimination}}
+\DoxyCodeLine{193 \textcolor{comment}{ * Block '<S26>/Data Type Duplicate' : Unused code path elimination}}
+\DoxyCodeLine{194 \textcolor{comment}{ * Block '<S5>/Math Function' : Unused code path elimination}}
+\DoxyCodeLine{195 \textcolor{comment}{ * Block '<S30>/Scope' : Unused code path elimination}}
+\DoxyCodeLine{196 \textcolor{comment}{ * Block '<S5>/Sqrt' : Unused code path elimination}}
+\DoxyCodeLine{197 \textcolor{comment}{ * Block '<S5>/Sum of Elements' : Unused code path elimination}}
+\DoxyCodeLine{198 \textcolor{comment}{ * Block '<S5>/To Workspace' : Unused code path elimination}}
+\DoxyCodeLine{199 \textcolor{comment}{ * Block '<Root>/Sum' : Unused code path elimination}}
+\DoxyCodeLine{200 \textcolor{comment}{ * Block '<Root>/To Workspace1' : Unused code path elimination}}
+\DoxyCodeLine{201 \textcolor{comment}{ * Block '<Root>/To Workspace2' : Unused code path elimination}}
+\DoxyCodeLine{202 \textcolor{comment}{ * Block '<Root>/To Workspace3' : Unused code path elimination}}
+\DoxyCodeLine{203 \textcolor{comment}{ * Block '<S20>/Kps' : Eliminated nontunable gain of 1}}
+\DoxyCodeLine{204 \textcolor{comment}{ */}}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 \textcolor{comment}{/*-\/}}
+\DoxyCodeLine{207 \textcolor{comment}{ * The generated code includes comments that allow you to trace directly}}
+\DoxyCodeLine{208 \textcolor{comment}{ * back to the appropriate location in the model.  The basic format}}
+\DoxyCodeLine{209 \textcolor{comment}{ * is <system>/block\_name, where system is the system number (uniquely}}
+\DoxyCodeLine{210 \textcolor{comment}{ * assigned by Simulink) and block\_name is the name of the block.}}
+\DoxyCodeLine{211 \textcolor{comment}{ *}}
+\DoxyCodeLine{212 \textcolor{comment}{ * Use the MATLAB hilite\_system command to trace the generated code back}}
+\DoxyCodeLine{213 \textcolor{comment}{ * to the model.  For example,}}
+\DoxyCodeLine{214 \textcolor{comment}{ *}}
+\DoxyCodeLine{215 \textcolor{comment}{ * hilite\_system('<S3>')    -\/ opens system 3}}
+\DoxyCodeLine{216 \textcolor{comment}{ * hilite\_system('<S3>/Kp') -\/ opens and selects block Kp which resides in S3}}
+\DoxyCodeLine{217 \textcolor{comment}{ *}}
+\DoxyCodeLine{218 \textcolor{comment}{ * Here is the system hierarchy for this model}}
+\DoxyCodeLine{219 \textcolor{comment}{ *}}
+\DoxyCodeLine{220 \textcolor{comment}{ * '<Root>' : 'PC\_Quadcopter\_Simulation'}}
+\DoxyCodeLine{221 \textcolor{comment}{ * '<S1>'   : 'PC\_Quadcopter\_Simulation/Simulation'}}
+\DoxyCodeLine{222 \textcolor{comment}{ * '<S2>'   : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control'}}
+\DoxyCodeLine{223 \textcolor{comment}{ * '<S3>'   : 'PC\_Quadcopter\_Simulation/Simulation/Controller'}}
+\DoxyCodeLine{224 \textcolor{comment}{ * '<S4>'   : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Control Mixing'}}
+\DoxyCodeLine{225 \textcolor{comment}{ * '<S5>'   : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics'}}
+\DoxyCodeLine{226 \textcolor{comment}{ * '<S6>'   : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Phi Command Control'}}
+\DoxyCodeLine{227 \textcolor{comment}{ * '<S7>'   : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Psi Command Control1'}}
+\DoxyCodeLine{228 \textcolor{comment}{ * '<S8>'   : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Rotation to DCM'}}
+\DoxyCodeLine{229 \textcolor{comment}{ * '<S9>'   : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Theta Command Control'}}
+\DoxyCodeLine{230 \textcolor{comment}{ * '<S10>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Phi Command Control/Discrete Derivative1'}}
+\DoxyCodeLine{231 \textcolor{comment}{ * '<S11>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Rotation to DCM/Quaternion to Direction Cosine Matrix (DCM rotates a vector in the "{}inertial"{} frame into the body frame)'}}
+\DoxyCodeLine{232 \textcolor{comment}{ * '<S12>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Rotation to DCM/Rotation Angles to Quaternions'}}
+\DoxyCodeLine{233 \textcolor{comment}{ * '<S13>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Rotation to DCM/Quaternion to Direction Cosine Matrix (DCM rotates a vector in the "{}inertial"{} frame into the body frame)/3 Element Vector  Euclidian Norm1'}}
+\DoxyCodeLine{234 \textcolor{comment}{ * '<S14>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Rotation to DCM/Quaternion to Direction Cosine Matrix (DCM rotates a vector in the "{}inertial"{} frame into the body frame)/Build Skew Symetric  Cross Product Matrix'}}
+\DoxyCodeLine{235 \textcolor{comment}{ * '<S15>'  : 'PC\_Quadcopter\_Simulation/Simulation/Attitude Command Control/Theta Command Control/Discrete Derivative1'}}
+\DoxyCodeLine{236 \textcolor{comment}{ * '<S16>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Altitude (Z) Control'}}
+\DoxyCodeLine{237 \textcolor{comment}{ * '<S17>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Discrete Derivative'}}
+\DoxyCodeLine{238 \textcolor{comment}{ * '<S18>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Pitch (Theta) Control'}}
+\DoxyCodeLine{239 \textcolor{comment}{ * '<S19>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Roll (Phi) Control '}}
+\DoxyCodeLine{240 \textcolor{comment}{ * '<S20>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Yaw (Psi) Control'}}
+\DoxyCodeLine{241 \textcolor{comment}{ * '<S21>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Altitude (Z) Control/Discrete Derivative'}}
+\DoxyCodeLine{242 \textcolor{comment}{ * '<S22>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Yaw (Psi) Control/Embedded MATLAB Function'}}
+\DoxyCodeLine{243 \textcolor{comment}{ * '<S23>'  : 'PC\_Quadcopter\_Simulation/Simulation/Controller/Yaw (Psi) Control/Wrap 0 to 2pi'}}
+\DoxyCodeLine{244 \textcolor{comment}{ * '<S24>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Control Mixing/X Config Control Mixing'}}
+\DoxyCodeLine{245 \textcolor{comment}{ * '<S25>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Control Mixing/X Config Control Mixing1'}}
+\DoxyCodeLine{246 \textcolor{comment}{ * '<S26>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Discrete Derivative'}}
+\DoxyCodeLine{247 \textcolor{comment}{ * '<S27>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/EOM'}}
+\DoxyCodeLine{248 \textcolor{comment}{ * '<S28>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/External Disturbances'}}
+\DoxyCodeLine{249 \textcolor{comment}{ * '<S29>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/IC'}}
+\DoxyCodeLine{250 \textcolor{comment}{ * '<S30>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics'}}
+\DoxyCodeLine{251 \textcolor{comment}{ * '<S31>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Wrap 0 to 2pi'}}
+\DoxyCodeLine{252 \textcolor{comment}{ * '<S32>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/quad'}}
+\DoxyCodeLine{253 \textcolor{comment}{ * '<S33>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Discrete Varying State Space'}}
+\DoxyCodeLine{254 \textcolor{comment}{ * '<S34>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Discrete Varying State Space1'}}
+\DoxyCodeLine{255 \textcolor{comment}{ * '<S35>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Discrete Varying State Space2'}}
+\DoxyCodeLine{256 \textcolor{comment}{ * '<S36>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Discrete Varying State Space3'}}
+\DoxyCodeLine{257 \textcolor{comment}{ * '<S37>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_1'}}
+\DoxyCodeLine{258 \textcolor{comment}{ * '<S38>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_2'}}
+\DoxyCodeLine{259 \textcolor{comment}{ * '<S39>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_3'}}
+\DoxyCodeLine{260 \textcolor{comment}{ * '<S40>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_4'}}
+\DoxyCodeLine{261 \textcolor{comment}{ * '<S41>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_1/Minimum Throttle  Cutoff'}}
+\DoxyCodeLine{262 \textcolor{comment}{ * '<S42>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_2/Minimum Throttle  Cutoff'}}
+\DoxyCodeLine{263 \textcolor{comment}{ * '<S43>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_3/Minimum Throttle  Cutoff'}}
+\DoxyCodeLine{264 \textcolor{comment}{ * '<S44>'  : 'PC\_Quadcopter\_Simulation/Simulation/Quadcopter Dynamics/Motor Dynamics/Throttle To RPM Gain and Cutoff\_4/Minimum Throttle  Cutoff'}}
+\DoxyCodeLine{265 \textcolor{comment}{ */}}
+\DoxyCodeLine{266 \textcolor{preprocessor}{\#endif                                 }\textcolor{comment}{/* RTW\_HEADER\_PC\_Quadcopter\_Simulation\_h\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \textcolor{comment}{/*}}
+\DoxyCodeLine{269 \textcolor{comment}{ * File trailer for generated code.}}
+\DoxyCodeLine{270 \textcolor{comment}{ *}}
+\DoxyCodeLine{271 \textcolor{comment}{ * [EOF]}}
+\DoxyCodeLine{272 \textcolor{comment}{ */}}
+
+\end{DoxyCode}

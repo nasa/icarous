@@ -1,0 +1,87 @@
+ICAROUS modules encapsulate the core functionalities required to enable autonomous operations of unmanned systems.\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md14}{}\doxysection{ACCo\+RD}\label{md__modules__r_e_a_d_m_e_autotoc_md14}
+A library developed at NASA Langley for airspace applications. ACCo\+RD contains several useful utilities\+:
+\begin{DoxyItemize}
+\item Data structures for representing aircraft state data (position, velocity, attitude, etc) in various coordinate frames and units.
+\item Data structures to encode EUTL flightplans and manipulations on flightplans.
+\item Functions to perform common transformations on aircraft data.
+\item Geofence functionality (Poly\+CARP)
+\item Sense and avoid functionality (DAIDALUS)
+\end{DoxyItemize}\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md15}{}\doxysection{Core}\label{md__modules__r_e_a_d_m_e_autotoc_md15}
+Suite of libraries implementing autonomous decision making, path planning, traffic avoidance and guidance\+:
+\begin{DoxyItemize}
+\item Event\+Manager\+: A template library implementing an event handling framework.
+\item \mbox{\hyperlink{class_cognition}{Cognition}}\+: Decision making functionality impelemented using the Event\+Manager.
+\item \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}\+: Traffic avoidance capability (default implementation uses DAIDALUS). Extensible to other sense and avoid tools (e.\+g. ACAS-\/X).
+\item Trajectory\+Mananger\+: Path planning capability and trajectory monitoring capability with respect to other intruders and geofences.
+\item \mbox{\hyperlink{class_guidance}{Guidance}}\+: Trajectory following functionality.
+\item \mbox{\hyperlink{class_merger}{Merger}}\+: Distributed merging functionality.
+\item \mbox{\hyperlink{class_geofence_monitor}{Geofence\+Monitor}}\+: Geofence monitoring functionality.
+\item \mbox{\hyperlink{class_target_tracker}{Target\+Tracker}}\+: Target tracking and fusion capability (requires GNU Scientific Library -\/ GSL).
+\item Utils\+: Helper functions.
+\item Interfaces\+: Datastructures shared among all the core modules
+\end{DoxyItemize}\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md16}{}\doxysection{Compilation}\label{md__modules__r_e_a_d_m_e_autotoc_md16}
+Compile modules as follows\+:\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md17}{}\doxysubsection{Linux/\+OSX}\label{md__modules__r_e_a_d_m_e_autotoc_md17}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir build}
+\DoxyCodeLine{cd build}
+\DoxyCodeLine{cmake ..}
+\DoxyCodeLine{make -\/j8}
+
+\end{DoxyCode}
+
+
+The compiled libraries are located under {\ttfamily lib}\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md18}{}\doxysubsection{Setup library paths}\label{md__modules__r_e_a_d_m_e_autotoc_md18}
+
+\begin{DoxyItemize}
+\item Define a new environment variable called {\ttfamily ICAROUS\+\_\+\+HOME} to contain the path to the Icarous folder. We recommend using the export command in your $\sim$/.bash\+\_\+profile (OSX) or $\sim$/.bashrc (Linux) for persistence. For example, 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export ICAROUS\_HOME=/path/to/icarous}
+
+\end{DoxyCode}
+
+\item Append the {\ttfamily lib} folder to your {\ttfamily DYLD\+\_\+\+LIBRARY\+\_\+\+PATH} (OSX) or {\ttfamily LD\+\_\+\+LIBRARY\+\_\+\+PATH} (Linux) variable. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{export DYLD\_LIBRARY\_PATH=\$DYLD\_LIBRARY\_PATH:\$ICAROUS\_HOME/Modules/lib}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}\hypertarget{md__modules__r_e_a_d_m_e_autotoc_md19}{}\doxysubsection{Windows}\label{md__modules__r_e_a_d_m_e_autotoc_md19}
+
+\begin{DoxyItemize}
+\item We recommend using \href{https://code.visualstudio.com/}{\texttt{ vscode}} for compiling on windows.
+\item We recommnd using \href{https://www.msys2.org/}{\texttt{ msys2}} to install required packaged.
+\item Install Min\+GW-\/w64 compiler. See \href{https://www.msys2.org/}{\texttt{ msys2}} for installation instructions.
+\item Install cmake.
+\item Define environment variable called {\ttfamily ICAROUS\+\_\+\+HOME} that contains the path of the Icarous root directory.
+\item Include the following in your vscode {\ttfamily settings.\+json} file (change path values as needed)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{"{}cmake.cmakePath"{}: "{}C:\(\backslash\)\(\backslash\)msys64\(\backslash\)\(\backslash\)mingw64\(\backslash\)\(\backslash\)bin\(\backslash\)\(\backslash\)cmake.exe"{},}
+\DoxyCodeLine{    "{}cmake.mingwSearchDirs"{}: [}
+\DoxyCodeLine{      "{}C:\(\backslash\)\(\backslash\)msys64\(\backslash\)\(\backslash\)mingw64\(\backslash\)\(\backslash\)bin"{}}
+\DoxyCodeLine{   ],}
+\DoxyCodeLine{"{}cmake.generator"{}: "{}MinGW Makefiles"{}}
+
+\end{DoxyCode}
+
+\item Include the following in your vscode {\ttfamily cmake-\/tools-\/kits.\+json} file (change path values as needed)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  "{}name"{}: "{}Mingw64 GCC 9.3.0"{},}
+\DoxyCodeLine{  "{}compilers"{}: \{}
+\DoxyCodeLine{    "{}C"{}: "{}C:\(\backslash\)\(\backslash\)msys64\(\backslash\)\(\backslash\)mingw64\(\backslash\)\(\backslash\)bin\(\backslash\)\(\backslash\)gcc.exe"{},}
+\DoxyCodeLine{    "{}CXX"{}: "{}C:\(\backslash\)\(\backslash\)msys64\(\backslash\)\(\backslash\)mingw64\(\backslash\)\(\backslash\)bin\(\backslash\)\(\backslash\)g++.exe"{}}
+\DoxyCodeLine{  \},}
+\DoxyCodeLine{  "{}preferredGenerator"{}: \{}
+\DoxyCodeLine{    "{}name"{}: "{}MinGW Makefiles"{},}
+\DoxyCodeLine{    "{}platform"{}: "{}x64"{}}
+\DoxyCodeLine{  \},}
+\DoxyCodeLine{  "{}environmentVariables"{}: \{}
+\DoxyCodeLine{    "{}CMT\_MINGW\_PATH"{}: "{}C:/msys64/mingw64/bin/"{}}
+\DoxyCodeLine{  \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+\item Add {\ttfamily ICAROUS\+\_\+\+HOME\%\textbackslash{}Modules\textbackslash{}lib} to the windows path. 
+\end{DoxyItemize}

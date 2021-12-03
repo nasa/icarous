@@ -1,0 +1,82 @@
+\hypertarget{safe2ditch_8h_source}{}\doxysection{safe2ditch.\+h}
+\label{safe2ditch_8h_source}\index{apps/safe2ditch/fsw/src/safe2ditch.h@{apps/safe2ditch/fsw/src/safe2ditch.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: interface.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{5 \textcolor{comment}{**   This file is main hdr file for the SAMPLE application.}}
+\DoxyCodeLine{6 \textcolor{comment}{**}}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{*******************************************************************************/}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef \_safe2ditch\_h\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define \_safe2ditch\_h\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}network\_includes.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}safe2ditch\_events.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{safe2ditch__msgids_8h}{safe2ditch\_msgids.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{safe2ditch__msg_8h}{safe2ditch\_msg.h}}"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{port__lib_8h}{port\_lib.h}}"{}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}mavlink/ardupilotmega/mavlink.h"{}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define S2D\_BUFFER\_LENGTH 1000}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define SAFE2DITCH\_PIPE\_NAME "{}SAFE2DITCH\_PIPE"{}}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define SAFE2DITCH\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{47 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{48     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_s2_d__t_a7acfa9aa5c84794165628a2029936ac3}{SAFE2DITCH\_Pipe}};     }
+\DoxyCodeLine{49     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_s2_d__t_aa66d91f6649be175db7b98f321fba5f1}{SAFE2DITCHMsgPtr}};    }
+\DoxyCodeLine{50     \mbox{\hyperlink{structport__t}{port\_t}} s2dport;}
+\DoxyCodeLine{51     \mbox{\hyperlink{structport__t}{port\_t}} mavrosport;}
+\DoxyCodeLine{52     \textcolor{keywordtype}{boolean} ditchRequested;}
+\DoxyCodeLine{53     \textcolor{keywordtype}{boolean} ditchGuidanceRequired;}
+\DoxyCodeLine{54     \textcolor{keywordtype}{boolean} resetDitch;}
+\DoxyCodeLine{55     \textcolor{keywordtype}{boolean} endDitch;}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double} ditchLocation[3];}
+\DoxyCodeLine{57     \mbox{\hyperlink{structsafe2ditch_status__t}{safe2ditchStatus\_t}} s2dStatus;}
+\DoxyCodeLine{58     \mbox{\hyperlink{structsafe2ditch_intruders__t}{safe2ditchIntruders\_t}} \mbox{\hyperlink{structappdata_s2_d__t_af056c8bdb2e7258caa3d32b042ffd2d2}{s2dIntruders}};     }
+\DoxyCodeLine{59 \}\mbox{\hyperlink{structappdata_s2_d__t}{appdataS2D\_t}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{62     \_INITIALIZE\_=0,}
+\DoxyCodeLine{63     \_STARTDITCH\_,}
+\DoxyCodeLine{64     \_RESETDITCH\_,}
+\DoxyCodeLine{65     \_ENDDITCH\_,}
+\DoxyCodeLine{66     \_INTRUDER\_}
+\DoxyCodeLine{67 \}DitchStatus\_t;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{72 \textcolor{keywordtype}{void} SAFE2DITCH\_AppMain(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} SAFE2DITCH\_AppInit(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{82 \textcolor{keywordtype}{void} SAFE2DITCH\_InitializeAppData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{87 \textcolor{keywordtype}{void} SAFE2DITCH\_AppCleanUp(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{92 \textcolor{keywordtype}{int} GetMAVLinkMsg(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{98 \textcolor{keywordtype}{void} ProcessMavlinkMessage(mavlink\_message\_t message);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{103 \textcolor{keywordtype}{void} ProcessSBMessage(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_safe2ditch\_app\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

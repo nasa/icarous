@@ -1,0 +1,25 @@
+\hypertarget{md__modules__core__event_manager__requirements_design_autotoc_md10}{}\doxysection{What is it?}\label{md__modules__core__event_manager__requirements_design_autotoc_md10}
+The event manager is a header only template based library that provides a framework to define triggers that indiciate the onset of a specific event of interest. The framework also enables associating a trigger to a specific handler. In otherwords, the event manager triggers specific handler functions when an event is detected by the trigger. The event manager is an expressive framework to construct reactive (autonomous) systems by defining triggers and associating triggers with specific behaviors via handlers.\hypertarget{md__modules__core__event_manager__requirements_design_autotoc_md11}{}\doxysection{How does it work?}\label{md__modules__core__event_manager__requirements_design_autotoc_md11}
+
+\begin{DoxyItemize}
+\item A trigger function detects an event of interest/concern. There can be many trigger functions.
+\item Each trigger is associated with a unique handler function.
+\item Each trigger has a priority value associated with it. This enables the framework to determine which handler to execute first when there are multiple events to be addressed.
+\item Priorities are chosen to have integer values. However, they are internally represented as a float. The reason for this is explained below.
+\item The Run\+Event\+Monitor function checks for all trigger activiations.
+\item Handler functions associated with activated triggers are added to the active\+Event\+Handlers queue if they are not on the queue already.
+\item When a new handler is added to the queue, the handlers in the active queue are sorted according to their priority order.
+\item The first handler in front of the queue after the sorting is chosen to be executed. This framework only executes one handler at a time.
+\item If adding a new handler to the queue causing an already executing handler to lose priority, then that old handler is terminated.
+\item The Run\+Event\+Handlers function executes the handler with the highest priority.
+\item Before starting a queued handler, it\textquotesingle{}s trigger function is evaluated to ensure the triggering event is still active. If the triggering event is not active anymore (because it was resolved by a previous handler or someother reason), the queued handler can be discarded and the next handler in line can be executed.
+\item Once a handler starts executing, it\textquotesingle{}s priority is raised by 0.\+5. This is to ensure that the framework will continue executing the current handler in case another equal priority handler is added to the queue of activehandlers. Priority of the handlers are decreased by 0.\+5 after termination (restoring it back to the user defined priority value).
+\item Terminated handlers are dequeued.
+\item Any handler may spawn other handlers (children). These children handlers are also added to the front of the queue of handlers and executed upon termination of the parent handler.
+\end{DoxyItemize}\hypertarget{md__modules__core__event_manager__requirements_design_autotoc_md12}{}\doxysection{Usage}\label{md__modules__core__event_manager__requirements_design_autotoc_md12}
+
+\begin{DoxyItemize}
+\item A trigger is a function that takes a state of type T and returns a boolean. The boolean is true when the event of interest is detected and false otherwise. The state variable captures all the data required by the computations performed by the trigger.
+\item A handler is defining a child class derived from the \mbox{\hyperlink{class_event_handler}{Event\+Handler}} base class. Provide implementations for the Initialize, Execute and Terminate methods.
+\item Add the trigger, the associated handler and priority level to the Event\+Manager using the Add\+Event\+Handler method. 
+\end{DoxyItemize}

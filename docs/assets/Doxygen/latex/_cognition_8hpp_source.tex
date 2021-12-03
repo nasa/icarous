@@ -1,0 +1,294 @@
+\hypertarget{_cognition_8hpp_source}{}\doxysection{Cognition.\+hpp}
+\label{_cognition_8hpp_source}\index{Modules/Core/Cognition/Cognition.hpp@{Modules/Core/Cognition/Cognition.hpp}}
+\mbox{\hyperlink{_cognition_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef COGNITION\_CORE\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define COGNITION\_CORE\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{comment}{//\#define \_GNU\_SOURCE}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <cstdio>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}Commands.hpp"{}}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_event_manager_8hpp}{EventManager.hpp}}"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_event_handler_8hpp}{EventHandler.hpp}}"{}}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{40 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{41     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada0d3873d80b55a81e78260f9c69679715}{cPRIMARY\_FLIGHTPLAN}},     }
+\DoxyCodeLine{42     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada871d55bf0e72fd0dfcdcb7c1798e826d}{cSECONDARY\_FLIGHTPLAN}},   }
+\DoxyCodeLine{43     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adab28528c17259bb243084aff6ad57bca6}{cVECTOR}},                 }
+\DoxyCodeLine{44     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adaf1e1071e3ee567b52a353195d06f44ac}{cPOINT2POINT}},            }
+\DoxyCodeLine{45     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada79b5a3167a0f3ec042305940300b51e4}{cORBIT}},                  }
+\DoxyCodeLine{46     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada6e64ba1f26d1afb5b180ccd8a7218432}{cHELIX}},                  }
+\DoxyCodeLine{47     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4bab122df300a8b3940f925084aafdf5}{cTAKEOFF}},                }
+\DoxyCodeLine{48     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adac15b6063c7ca2bd24a0d58bd6c332e90}{cLAND}},                   }
+\DoxyCodeLine{49     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada9e59fd5975d2d6e1cfd386c3b71f8812}{cSPEED\_CHANGE}},           }
+\DoxyCodeLine{50     \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4cdb2f60b210d0b225331f9a7aaf6dbc}{cNOOP}}                    }
+\DoxyCodeLine{51 \}\mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ad}{command\_mode\_e}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{57 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{58     SPEED\_RESOLUTION,}
+\DoxyCodeLine{59     ALTITUDE\_RESOLUTION,}
+\DoxyCodeLine{60     TRACK\_RESOLUTION,}
+\DoxyCodeLine{61     VERTICALSPEED\_RESOLUTION,}
+\DoxyCodeLine{62     SEARCH\_RESOLUTION,}
+\DoxyCodeLine{63     DITCH\_RESOLUTION,}
+\DoxyCodeLine{64     TRACK\_SPEED\_VS\_RESOLUTION}
+\DoxyCodeLine{65 \}\mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolutionType\_e}};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{71 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{72     REQUEST\_NIL,}
+\DoxyCodeLine{73     REQUEST\_PROCESSING,}
+\DoxyCodeLine{74     REQUEST\_RESPONDED}
+\DoxyCodeLine{75 \}\mbox{\hyperlink{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}{request\_e}};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{81 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{82     TAKEOFF\_COMPLETE,}
+\DoxyCodeLine{83     TAKEOFF\_INPROGESS,}
+\DoxyCodeLine{84     TAKEOFF\_INACTIVE}
+\DoxyCodeLine{85 \}\mbox{\hyperlink{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}{takeoff\_status\_e}};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{91 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{92     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a7f4e8c1d9f90b66ca9bdd55fc33d3321}{utcTime}};                      }
+\DoxyCodeLine{93     std::string \mbox{\hyperlink{struct_cognition_state__t_ad3ad5beadd2784a2dbdb52e42561b442}{timeString}};              }
+\DoxyCodeLine{94     std::string \mbox{\hyperlink{struct_cognition_state__t_a493006fa7a1d466d52cb4d1c0a4d8948}{callSign}};                }
+\DoxyCodeLine{95     std::string \mbox{\hyperlink{struct_cognition_state__t_ad3029ab521cfd2c41766dea7937223cf}{missionPlan}};             }
+\DoxyCodeLine{96     \mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}} \mbox{\hyperlink{struct_cognition_state__t_af6c583b3c5071419e1e5cdad08018e59}{parameters}};       }
+\DoxyCodeLine{97     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a54fd7f200339114b10a7865604630070}{icReady}};                        }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{comment}{// Flight plan book keeping}}
+\DoxyCodeLine{100     std::list<larcfm::Plan> \mbox{\hyperlink{struct_cognition_state__t_a35ce39617b78b33c4f66dd28b06de13a}{flightPlans}}; }
+\DoxyCodeLine{101     larcfm::Plan *\mbox{\hyperlink{struct_cognition_state__t_a0669529e970de1a93162c07e4aae1cf1}{activePlan}};            }
+\DoxyCodeLine{102     std::map<std::string, int> \mbox{\hyperlink{struct_cognition_state__t_a12e10cd60bb81a3afbd1e87f8f90d4d7}{nextWpId}}; }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_afe9716c3ee63d632c5aa1a08e524f571}{nextFeasibleWpId}};                }
+\DoxyCodeLine{105     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_aea2bd3656d0f2cdaffa69d2c6995a85b}{closestPointFeasible}};           }
+\DoxyCodeLine{106     \mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolutionType\_e}} \mbox{\hyperlink{struct_cognition_state__t_a219e55e882751d5a8e524d924a021d4c}{resType}};            }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a53c198d46d0622622d996ad1b33589b5}{primaryFPReceived}};              }
+\DoxyCodeLine{109     \textcolor{keywordtype}{bool} recovery[4];                    }
+\DoxyCodeLine{110     \textcolor{keywordtype}{bool} validResolution[4];             }
+\DoxyCodeLine{111     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_abc984ff4b973240be8bbef03446d6878}{scenarioTime}};                 }
+\DoxyCodeLine{112     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a5bf532ecaf302d0e1c1e92bf31fb5b9a}{timeToTrafficViolation1}};      }
+\DoxyCodeLine{113     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_aa079861c3b351a7f3f7256bf72ffdec9}{timeToTrafficViolation2}};      }
+\DoxyCodeLine{114     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a0a4aa1e282135befb1c655f344243e96}{timeToTrafficViolation3}};      }
+\DoxyCodeLine{115     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a46258eb8b91d09d4941662f76a90dbf8}{timeToFenceViolation}};         }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_ac9c0e608c7733a770f5cc4db2125cc4c}{xtrackDeviation}};              }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     larcfm::Position \mbox{\hyperlink{struct_cognition_state__t_a696510b9d13eb05c504ea81a234d748f}{position}};           }
+\DoxyCodeLine{120     larcfm::Velocity \mbox{\hyperlink{struct_cognition_state__t_a694f323f24ecc1a6e487786159d5e55d}{velocity}};           }
+\DoxyCodeLine{121     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a97e8d727df757c0b1bae6c7daa036c72}{hdg}};                          }
+\DoxyCodeLine{122     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_acbff40d9c157386e3267e736371b4e29}{speed}};                        }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a1378abfdec924d3080a8d1b564f08539}{keepInConflict}};                 }
+\DoxyCodeLine{125     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a4ca684bc2771781625d1d1d0658a39ba}{keepOutConflict}};                }
+\DoxyCodeLine{126     larcfm::Position \mbox{\hyperlink{struct_cognition_state__t_a55c0ef4413b57f283445af75175f8c02}{recoveryPosition}};   }
+\DoxyCodeLine{127     larcfm::Position \mbox{\hyperlink{struct_cognition_state__t_ab5bc17ef1985c6976497962ba8dc955d}{clstPoint}};          }
+\DoxyCodeLine{128     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_aeace19241991feca3b15592cb9c8c542}{lineOfSight2Goal}};               }
+\DoxyCodeLine{129     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a999a702044a528e4c0e63e4d46c268fc}{lineOfSight2GoalPrev}};           }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_aea377f9e7f55f7a8d00a69ea58c92060}{trafficConflict}};                }
+\DoxyCodeLine{132     \textcolor{keywordtype}{bool} allTrafficConflicts[4];         }
+\DoxyCodeLine{133     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a0d9d3e8c4a75d8a1ecb5d5eb9fe21f54}{newAltConflict}};                 }
+\DoxyCodeLine{134     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_abd7477d67de0a5250252532b90cedb68}{trafficConflictStartTime}};     }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a5aece0d762d90ca5317890c6ae8fe29e}{planProjectedTrafficConflict}};   }
+\DoxyCodeLine{137     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a78ee9e12276b90a5b306503b41b416c5}{planProjectedFenceConflict}};     }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_afe6dbd7abfb4ee828d79919821be251b}{returnSafe}};                     }
+\DoxyCodeLine{140     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_ae9834339bfc0674eb72fe0137622c178}{resolutionStartSpeed}};         }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a8a33b237bbe84a2b4dfd387954792e30}{preferredTrack}};               }
+\DoxyCodeLine{143     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a2b83400f98441412db3eaa531b0d1ed9}{preferredSpeed}};               }
+\DoxyCodeLine{144     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a506684130a5e6fb51288ff3c3346b74c}{preferredAlt}};                 }
+\DoxyCodeLine{145     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a3263d9466d4b2c9971c72af218fdae99}{preferredVSpeed}};              }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_a8774f06d9c8acecdc9aab2026e33ed5b}{vsBandsNum}};                      }
+\DoxyCodeLine{148     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a3f453d2807a10e9b7b41701f3e617e0d}{resVUp}};                       }
+\DoxyCodeLine{149     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a1ce273e99246009874a85b2b5dccbe83}{resVDown}};                     }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151     std::set<std::string> \mbox{\hyperlink{struct_cognition_state__t_a5e86bba7404eee2f16ad923795280084}{conflictTraffics}}; }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a07c0a79500ded6d283b9a0a93f5fc69e}{prevResSpeed}};                 }
+\DoxyCodeLine{154     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a85252f491f9a0fb499e70bdf4bf48559}{prevResAlt}};                   }
+\DoxyCodeLine{155     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_aaec65ac53367d1aa5588a0fbd5d0a2c2}{prevResTrack}};                 }
+\DoxyCodeLine{156     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_add2818ba18eadd24188fa650f78680dd}{prevResVspeed}};                }
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_aac8afd320f1da6673c8cc763289e88ce}{trkBandNum}};                      }
+\DoxyCodeLine{159     \textcolor{keywordtype}{int} trkBandType[20];                 }
+\DoxyCodeLine{160     \textcolor{keywordtype}{double} trkBandMin[20];               }
+\DoxyCodeLine{161     \textcolor{keywordtype}{double} trkBandMax[20];               }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_aa0194e723a1a5782ad69bb6b31535a4c}{gsBandNum}};                       }
+\DoxyCodeLine{164     \textcolor{keywordtype}{int} gsBandType[20];                  }
+\DoxyCodeLine{165     \textcolor{keywordtype}{double} gsBandMin[20];                }
+\DoxyCodeLine{166     \textcolor{keywordtype}{double} gsBandMax[20];                }
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_a45efe06d774dcd967739e3eb5e335b0b}{altBandNum}};                      }
+\DoxyCodeLine{169     \textcolor{keywordtype}{int} altBandType[20];                 }
+\DoxyCodeLine{170     \textcolor{keywordtype}{double} altBandMin[20];               }
+\DoxyCodeLine{171     \textcolor{keywordtype}{double} altBandMax[20];               }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_aa68b8788815825c475cec9e92af819da}{XtrackConflict}};                 }
+\DoxyCodeLine{174     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a3892588ee0dd51494523335a1ccdfcc5}{directPathToFeasibleWP1}};        }
+\DoxyCodeLine{175     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_adf8cb98173de7d1d2b04efa9af54367c}{directPathToFeasibleWP2}};        }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177     \textcolor{comment}{// Ditching variables}}
+\DoxyCodeLine{178     larcfm::Position \mbox{\hyperlink{struct_cognition_state__t_a38b32950b832a5c6572ec6773d4168d7}{ditchSite}};          }
+\DoxyCodeLine{179     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_cognition_state__t_a3245822666de31f6bdc53cc7d7b14439}{todAltitude}};                  }
+\DoxyCodeLine{180     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a698312171622d5976db818594e89de53}{ditch}};                          }
+\DoxyCodeLine{181     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a407d803eeca94a416192e094f555b880}{resetDitch}};                     }
+\DoxyCodeLine{182     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a1dccb45777f4c475175172549d7e576f}{endDitch}};                       }
+\DoxyCodeLine{183     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_ab59308690ff4d2638321565c3a204114}{ditchRouteFeasible}};             }
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a1dec3f94dc45ad4c3acd5efd70881ab9}{leftTurnConflict}};               }
+\DoxyCodeLine{186     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a53ac442b3806061613eb420cb1fc942d}{rightTurnConflict}};              }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \mbox{\hyperlink{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}{takeoff\_status\_e}} \mbox{\hyperlink{struct_cognition_state__t_a7c4fe1f7de25c29354ae5a8c33a03512}{takeoffState}};       }
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190     \mbox{\hyperlink{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}{request\_e}} \mbox{\hyperlink{struct_cognition_state__t_a80493c05d09cfbe3b3e54e3d1a3ef2fa}{pathRequest}};               }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_a7406391daa0166dd27f38052c27de69e}{missionStart}};                    }
+\DoxyCodeLine{193     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_cognition_state__t_a0eb91f5cc20470559b6df144801ff320}{requestGuidance2NextWP}};          }
+\DoxyCodeLine{194     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a35e91b049f4313021788dc7e24521823}{p2pComplete}};                    }
+\DoxyCodeLine{195     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_cognition_state__t_a0789cf422956239e5bcb63314540cb03}{topOfDescent}};                   }
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197     uint8\_t \mbox{\hyperlink{struct_cognition_state__t_ade10e7bdffd44089ea755de5bcda9ada}{mergingActive}};               }
+\DoxyCodeLine{198     uint16\_t \mbox{\hyperlink{struct_cognition_state__t_a844919bb4e454a78fdd8cf3f8fbcf5f7}{numSecPaths}};                }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200     std::list<Command> \mbox{\hyperlink{struct_cognition_state__t_a302bcf3ab633b8ba927cdf97ef13f942}{cognitionCommands}};}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202     std::ofstream \mbox{\hyperlink{struct_cognition_state__t_a6b2653f62c7df11855d3829e575f9637}{log}};                   }
+\DoxyCodeLine{203 \}\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}};}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{keyword}{class }\mbox{\hyperlink{class_cognition}{Cognition}}\{}
+\DoxyCodeLine{206     \textcolor{keyword}{public}:}
+\DoxyCodeLine{213         \mbox{\hyperlink{class_cognition_a8756aff28345d203c731a4787011f72c}{Cognition}}(\textcolor{keyword}{const} std::string callSign,\textcolor{keyword}{const} std::string config);}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{220         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_ac270521c2ea11590f04b18c80a39e44f}{ReadParamsFromFile}}(\textcolor{keyword}{const} std::string config);}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{225         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_aa3347c50fb9e895f7439ebd9db358a36}{Reset}}();}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{234         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_aa6cea9736284d76ad3f166095eba6027}{InputVehicleState}}(\textcolor{keyword}{const} larcfm::Position \&pos,\textcolor{keyword}{const} larcfm::Velocity \&vel,\textcolor{keyword}{const} \textcolor{keywordtype}{double} heading);}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{245         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_affcbfdca38a2306aba13d726186a9092}{InputFlightPlanData}}(\textcolor{keyword}{const} std::string \&plan\_id,\textcolor{keyword}{const} std::list<waypoint\_t> \&waypoints,}
+\DoxyCodeLine{246                                  \textcolor{keyword}{const} \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} repair,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{253         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_acc15030adf673c22573b6c7698a75659}{InputTrajectoryMonitorData}}(\textcolor{keyword}{const} trajectoryMonitorData\_t\& tjMonData);}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{260         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_ae9e506b76993a176a98b376fd7e29050}{InputParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}} \&new\_params);}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{269         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a736e8977902097a1bb45b499a8c156bf}{InputDitchStatus}}(\textcolor{keyword}{const} larcfm::Position \&ditch\_site,\textcolor{keyword}{const} \textcolor{keywordtype}{double} todAltitude,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} ditch\_requested);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{276         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a17115253c12fa1f8aa163c1148e93635}{InputMergeStatus}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int} merge\_status);}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{283         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a7a80b5dfcfeaf80606ce0682d7f5c30d}{InputTrackBands}}(\textcolor{keyword}{const} bands\_t \&track\_bands);}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{290         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_abd18dc9b462b54bce2238ccba5ede8ee}{InputSpeedBands}}(\textcolor{keyword}{const} bands\_t \&speed\_bands);}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{297         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a33120ca09d581c337b966b0116f41be7}{InputAltBands}}(\textcolor{keyword}{const} bands\_t \&alt\_bands);}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{304         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_af80f974f700f3422716a0f30693b0c5a}{InputVSBands}}(\textcolor{keyword}{const} bands\_t \&vs\_bands);}
+\DoxyCodeLine{305 }
+\DoxyCodeLine{311         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a7355e6b91b9eae7a80279894f6daaa88}{InputGeofenceConflictData}}(\textcolor{keyword}{const} geofenceConflict\_t \&gf\_conflict);}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{319         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a25db5be625b9f50d6e2cbfb7a14e16ec}{ReachedWaypoint}}(\textcolor{keyword}{const} std::string \&plan\_id, \textcolor{keyword}{const} \textcolor{keywordtype}{int} wp\_reached\_id);}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{327         \textcolor{keywordtype}{int} \mbox{\hyperlink{class_cognition_a70e5766e8ff3b14a122ecd677c106075}{GetCognitionOutput}}(\mbox{\hyperlink{struct_command}{Command}} \&command);}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{335         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a4ad689adf77df50a47887626f6ca4e2a}{StartMission}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int} mission\_start\_value,\textcolor{keyword}{const} \textcolor{keywordtype}{double} scenario\_time);}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{342         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a60a6bcd7d63f4b44529af57a5489308d}{Run}}(\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{343 }
+\DoxyCodeLine{349         \textcolor{keywordtype}{void} \mbox{\hyperlink{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}{InputTrafficAlert}}(std::string, \textcolor{keywordtype}{int} alert);}
+\DoxyCodeLine{350 }
+\DoxyCodeLine{355         \mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} \mbox{\hyperlink{class_cognition_a61b6eb88dadf805e8b35fd6d0cc42f95}{cogState}};}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357     \textcolor{keyword}{private}:}
+\DoxyCodeLine{358         \mbox{\hyperlink{class_event_management}{EventManagement<CognitionState\_t>}} eventMng;}
+\DoxyCodeLine{359         \textcolor{keywordtype}{void} InitializeState();}
+\DoxyCodeLine{360         \textcolor{keywordtype}{void} InitializeEvents();}
+\DoxyCodeLine{361         \textcolor{keywordtype}{void} InitializeEventHandlers();}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363 \};}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{372 larcfm::Plan* \mbox{\hyperlink{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}{GetPlan}}(std::list<larcfm::Plan>* planList,\textcolor{keyword}{const} std::string \&plan\_id);}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{381 \textcolor{keywordtype}{int} \mbox{\hyperlink{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}{GetTotalWaypoints}}(std::list<larcfm::Plan>* planList,\textcolor{keyword}{const} std::string \&plan\_id);}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{390 larcfm::Position \mbox{\hyperlink{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}{GetNextWP}}(larcfm::Plan*fp, \textcolor{keywordtype}{int} nextWP);}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{399 larcfm::Position \mbox{\hyperlink{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}{GetPrevWP}}(larcfm::Plan*fp, \textcolor{keywordtype}{int} nextWP);}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{408 larcfm::Velocity \mbox{\hyperlink{_cognition_8hpp_a5759c49855c795a61af13d3022998648}{GetNextWPVelocity}}(larcfm::Plan*fp, \textcolor{keywordtype}{int} nextWP);}
+\DoxyCodeLine{409 }
+\DoxyCodeLine{422 \textcolor{keywordtype}{bool} \mbox{\hyperlink{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}{CheckProjectedTrafficConflict}}(larcfm::Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm::Velocity velocity,}
+\DoxyCodeLine{423                                    larcfm::Position prevWP,larcfm::Position nextWP,}
+\DoxyCodeLine{424                                    \textcolor{keywordtype}{double} timeToViolation,\textcolor{keywordtype}{double} DTHR,\textcolor{keywordtype}{double} ZTHR);}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{432 \textcolor{keywordtype}{bool} \mbox{\hyperlink{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}{ComputeTargetFeasibility}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,larcfm::Position target);}
+\DoxyCodeLine{433 }
+\DoxyCodeLine{442 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a82a273c9caea71bcb6499a088e5fedbc}{SetGuidanceVelCmd}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} \textcolor{keywordtype}{double} track,\textcolor{keyword}{const} \textcolor{keywordtype}{double} gs,\textcolor{keyword}{const} \textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{452 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_af8f799fe4a19a728cdc0aae64339c52f}{SetGuidanceSpeedCmd}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} std::string \&planID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed,\textcolor{keyword}{const} \textcolor{keywordtype}{int} hold = 0);}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{462 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a77e2300517939fc20123c2e329f5cf89}{SetGuidanceAltCmd}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} std::string \&planID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} alt,\textcolor{keyword}{const} \textcolor{keywordtype}{int} hold = 0);}
+\DoxyCodeLine{463 }
+\DoxyCodeLine{471 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_ae75ba7b8dfad50bc6bec31ba5f665301}{SetGuidanceFlightPlan}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} std::string \&plan\_id,\textcolor{keyword}{const} \textcolor{keywordtype}{int} wp\_index);}
+\DoxyCodeLine{472 }
+\DoxyCodeLine{478 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a880da76735a82c8f114e5f4e76a0230d}{SetLandCmd}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state);}
+\DoxyCodeLine{479 }
+\DoxyCodeLine{485 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}{SetDitchSiteRequestCmd}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state);}
+\DoxyCodeLine{486 }
+\DoxyCodeLine{497 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}{FindNewPath}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} std::string \&planID,\textcolor{keyword}{const} larcfm::Position \&positionA,}
+\DoxyCodeLine{498                 \textcolor{keyword}{const} larcfm::Velocity \&velocityA,}
+\DoxyCodeLine{499                 \textcolor{keyword}{const} larcfm::Position \&positionB,}
+\DoxyCodeLine{500                 \textcolor{keyword}{const} larcfm::Velocity \&velocityB);}
+\DoxyCodeLine{501 }
+\DoxyCodeLine{509 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}{SetGuidanceP2P}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} larcfm::Position \&point,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{518 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}{SendStatus}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}} *state,\textcolor{keyword}{const} \textcolor{keywordtype}{char} buffer[],\textcolor{keyword}{const} uint8\_t severity);}
+\DoxyCodeLine{519 }
+\DoxyCodeLine{526 \mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolutionType\_e}} \mbox{\hyperlink{_cognition_8hpp_a28a7dc5cd7b4c916d24adeaa16802a0d}{GetResolutionType}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state);}
+\DoxyCodeLine{527 }
+\DoxyCodeLine{534 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_ad8559541fb7ac99c310ac951b7199b86}{LogMessage}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state,std::string message);}
+\DoxyCodeLine{535 }
+\DoxyCodeLine{545 \textcolor{keywordtype}{double} \mbox{\hyperlink{_cognition_8hpp_a664684cec884944bca77b95e848337c7}{ComputeXtrackDistance}}(\textcolor{keyword}{const} larcfm::Position \&prev\_wp,}
+\DoxyCodeLine{546                             \textcolor{keyword}{const} larcfm::Position \&next\_wp,}
+\DoxyCodeLine{547                             \textcolor{keyword}{const} larcfm::Position \&pos,}
+\DoxyCodeLine{548                             \textcolor{keywordtype}{double} offset[]);}
+\DoxyCodeLine{549 }
+\DoxyCodeLine{558 larcfm::Position \mbox{\hyperlink{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}{GetNearestPositionOnPlan}}(\textcolor{keyword}{const} larcfm::Plan* fp,}
+\DoxyCodeLine{559                                           \textcolor{keyword}{const} larcfm::Position \&current\_pos,\textcolor{keywordtype}{int}\& nextWP);}
+\DoxyCodeLine{560 }
+\DoxyCodeLine{572 \textcolor{keywordtype}{bool} \mbox{\hyperlink{_cognition_8hpp_a096d2497cf50812d5bc2032fbfe714ed}{CheckTurnConflict}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} low,}
+\DoxyCodeLine{573                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} high,}
+\DoxyCodeLine{574                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} new\_heading,}
+\DoxyCodeLine{575                     \textcolor{keyword}{const} \textcolor{keywordtype}{double} old\_heading,\textcolor{keywordtype}{bool}\& rightTurnConflict,\textcolor{keywordtype}{bool}\& leftTurnConflict);}
+\DoxyCodeLine{576 }
+\DoxyCodeLine{583 std::map<std::string,int> \mbox{\hyperlink{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}{GetPriorityValues}}(\mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}}* params);}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,35 @@
+\hypertarget{_traffic_monitor_8h_source}{}\doxysection{Traffic\+Monitor.\+h}
+\label{_traffic_monitor_8h_source}\index{Modules/Core/TrafficMonitor/TrafficMonitor.h@{Modules/Core/TrafficMonitor/TrafficMonitor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TRAFFIC\_C\_WRAPPERS\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TRAFFIC\_C\_WRAPPERS\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Core/Interfaces/Interfaces.h"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{7 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keywordtype}{void}* newDaidalusTrafficMonitor(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *\mbox{\hyperlink{structcallsign}{callsign}},\textcolor{keyword}{const} \textcolor{keywordtype}{char} *carg2);}
+\DoxyCodeLine{12 \textcolor{keywordtype}{void} delDaidalusTrafficMonitor(\textcolor{keywordtype}{void} * obj);}
+\DoxyCodeLine{13 \textcolor{keywordtype}{void} TrafficMonitor\_UpdateParameters(\textcolor{keywordtype}{void} * obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} * carg2);}
+\DoxyCodeLine{14 \textcolor{keywordtype}{int} TrafficMonitor\_InputIntruderData(\textcolor{keywordtype}{void} * obj,\textcolor{keywordtype}{int} source, \textcolor{keywordtype}{int} carg2, \textcolor{keywordtype}{char}* calls, \textcolor{keywordtype}{double} *\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}},\textcolor{keywordtype}{double} * velocity, \textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} sumPos[6],\textcolor{keywordtype}{double} sumVel[6]);}
+\DoxyCodeLine{15 \textcolor{keywordtype}{void} TrafficMonitor\_InputOwnshipData(\textcolor{keywordtype}{void} * obj, \textcolor{keywordtype}{double} * \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, \textcolor{keywordtype}{double} * velocity, \textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} sumPos[6],\textcolor{keywordtype}{double} sumVel[6]);}
+\DoxyCodeLine{16 \textcolor{keywordtype}{void} TrafficMonitor\_MonitorTraffic(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double}* windfrom);}
+\DoxyCodeLine{17 \textcolor{keywordtype}{bool} TrafficMonitor\_CheckPointFeasibility(\textcolor{keywordtype}{void} * obj, \textcolor{keywordtype}{double} * point, \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{18 \textcolor{keywordtype}{void} TrafficMonitor\_GetTrackBands(\textcolor{keywordtype}{void} *obj,bands\_t*);}
+\DoxyCodeLine{19 \textcolor{keywordtype}{void} TrafficMonitor\_GetSpeedBands(\textcolor{keywordtype}{void} *obj,bands\_t*);}
+\DoxyCodeLine{20 \textcolor{keywordtype}{void} TrafficMonitor\_GetAltBands(\textcolor{keywordtype}{void} *obj,bands\_t*);}
+\DoxyCodeLine{21 \textcolor{keywordtype}{void} TrafficMonitor\_GetVerticalSpeedBands(\textcolor{keywordtype}{void} *obj,bands\_t*);}
+\DoxyCodeLine{22 \textcolor{keywordtype}{int} TrafficMonitor\_GetTrafficAlerts(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id},\textcolor{keywordtype}{char}* calls,\textcolor{keywordtype}{int}* alert);}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{25 \}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,44 @@
+\hypertarget{class_target_tracker}{}\doxysection{Target\+Tracker Class Reference}
+\label{class_target_tracker}\index{TargetTracker@{TargetTracker}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}\label{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}} 
+{\bfseries Target\+Tracker} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config\+File)
+\item 
+\mbox{\Hypertarget{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}\label{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}} 
+void {\bfseries Read\+Param\+From\+File} (std\+::string config\+File)
+\item 
+\mbox{\Hypertarget{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}\label{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}} 
+void {\bfseries Set\+Home\+Position} (larcfm\+::\+Position \&home)
+\item 
+\mbox{\Hypertarget{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}\label{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}} 
+void {\bfseries Set\+Gate\+Thresholds} (double p, double v)
+\item 
+\mbox{\Hypertarget{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}\label{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}} 
+void {\bfseries Update\+Predictions} (double time)
+\item 
+\mbox{\Hypertarget{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}\label{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}} 
+void {\bfseries Set\+Model\+Uncertainty} (double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
+\item 
+\mbox{\Hypertarget{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}\label{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}} 
+void {\bfseries Input\+Current\+State} (double time, larcfm\+::\+Position \&pos, larcfm\+::\+Velocity \&vel, double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
+\item 
+\mbox{\Hypertarget{class_target_tracker_af15330be6db6419158e806456b04b3af}\label{class_target_tracker_af15330be6db6419158e806456b04b3af}} 
+void {\bfseries Input\+Measurement} (\mbox{\hyperlink{structmeasurement}{measurement}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+\mbox{\Hypertarget{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}\label{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}} 
+int {\bfseries Get\+Total\+Traffic} ()
+\item 
+\mbox{\Hypertarget{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}\label{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}} 
+\mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries Get\+Intruder\+Data} (int i)
+\item 
+\mbox{\Hypertarget{class_target_tracker_abda1015569581c3ca1538a028199ff91}\label{class_target_tracker_abda1015569581c3ca1538a028199ff91}} 
+\mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries Get\+Data} (int i)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Target\+Tracker/Target\+Tracker.\+hpp\item 
+Modules/\+Core/\+Target\+Tracker/Target\+Tracker.\+cpp\end{DoxyCompactItemize}

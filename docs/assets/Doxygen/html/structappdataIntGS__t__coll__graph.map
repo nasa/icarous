@@ -1,9 +1,0 @@
-<map id="appdataIntGS_t" name="appdataIntGS_t">
-<area shape="rect" id="node2" href="$structnoArgsCmd__t.html" title="Command without arguments. " alt="" coords="5,95,108,121"/>
-<area shape="rect" id="node3" href="$structflightplan__t.html" title="message encoding flight plan information " alt="" coords="133,95,218,121"/>
-<area shape="rect" id="node4" href="$structwaypoint__t.html" title="waypoint data. " alt="" coords="133,5,218,32"/>
-<area shape="rect" id="node5" href="$structargsCmd__t.html" title="Command with arguments. " alt="" coords="243,95,329,121"/>
-<area shape="rect" id="node6" href="$structport__t.html" title="Structure to hold port attributes. " alt="" coords="359,95,413,121"/>
-<area shape="rect" id="node7" href="$structgeofence__t.html" title="message encoding geofence vertex information. " alt="" coords="437,95,524,121"/>
-<area shape="rect" id="node8" href="$structobject__t.html" title="message to represent information about an static/dynamic object " alt="" coords="548,95,616,121"/>
-</map>

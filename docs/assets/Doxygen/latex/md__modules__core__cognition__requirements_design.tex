@@ -1,0 +1,46 @@
+\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md1}{}\doxysection{What is it?}\label{md__modules__core__cognition__requirements_design_autotoc_md1}
+The \mbox{\hyperlink{class_cognition}{Cognition}} module is, at its core, a simple mapping between event triggers and handlers. It uses the Event Manager module to define trigger functions and also associate specfic handlers with trigger functions. Using the Event Manager library, \mbox{\hyperlink{class_cognition}{Cognition}} builds an elaborate decision making framework. In the context of Icarous, one of the main roles of \mbox{\hyperlink{class_cognition}{Cognition}} is to detect anomalies/off-\/nomial conditions and triggers specific resolutions to mitigate those anomalies. ~\newline
+\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md2}{}\doxysection{How does it work?}\label{md__modules__core__cognition__requirements_design_autotoc_md2}
+
+\begin{DoxyItemize}
+\item Refer to the \mbox{\hyperlink{_triggers_8hpp}{Triggers.\+hpp}} file for a list of all the defined trigger functions. These triggers outline the various events \mbox{\hyperlink{class_cognition}{Cognition}} is monitoring for.
+\item Refer to the \mbox{\hyperlink{_handlers_8hpp}{Handlers.\+hpp}} file for a list of available handlers.
+\item \mbox{\hyperlink{_core_logic_8cpp}{Core\+Logic.\+cpp}} defines the mapping between triggers, handlers and their associated priroity values.
+\end{DoxyItemize}\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md3}{}\doxysection{Usage}\label{md__modules__core__cognition__requirements_design_autotoc_md3}
+
+\begin{DoxyItemize}
+\item Using the examples in the above files, you should be able to construct new trigger functions and associate them with custom handler functions.
+\end{DoxyItemize}\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md4}{}\doxysection{Requirements}\label{md__modules__core__cognition__requirements_design_autotoc_md4}
+Below is a list of requirements that drive the definition of various triggers and handlers currently in use in \mbox{\hyperlink{class_cognition}{Cognition}}\+:\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md5}{}\doxysubsection{High level}\label{md__modules__core__cognition__requirements_design_autotoc_md5}
+
+\begin{DoxyItemize}
+\item Detect conflicts.
+\item Resolve imminent conflicts.
+\item Return to mission and resume.
+\item Remain passive when no conflicts are detected.
+\end{DoxyItemize}\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md6}{}\doxysubsection{Type of conflicts monitored.}\label{md__modules__core__cognition__requirements_design_autotoc_md6}
+
+\begin{DoxyItemize}
+\item Fence violations
+\item Well clear violations
+\item Flight plan deviations
+\item External ditch requests.
+\end{DoxyItemize}\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md7}{}\doxysubsection{Resolution types}\label{md__modules__core__cognition__requirements_design_autotoc_md7}
+
+\begin{DoxyItemize}
+\item Vector based resolutions\+: Heading, Speed and Altitude change by following time varying velocity vectors.
+\item Vector based resolutions for traffic resolutions are computed based on DAIDALUS guidance.
+\item Trajectory resolutions\+: Full path from origin to destination avoiding all obstacles.
+\end{DoxyItemize}\hypertarget{md__modules__core__cognition__requirements_design_autotoc_md8}{}\doxysection{NOTES}\label{md__modules__core__cognition__requirements_design_autotoc_md8}
+
+\begin{DoxyItemize}
+\item A nominal path has id \char`\"{}\+Plan0\char`\"{}
+\item A resolution path has id \char`\"{}\+Plani\char`\"{} where i \texorpdfstring{$>$}{>} 0. e.\+g. Plan1,Plan2,...
+\item A ditch path has id \char`\"{}\+Ditch\+Path\char`\"{}
+\item Although a ditching path is also a resolution, it is treated differently due to integration with safe2ditch.
+\item After executing a resolution plan, transition back to nominal path (to the next feasible waypoint)
+\item A feasible waypoint is a waypoint that is reachable.
+\item There can be multiple resolution paths during the course of a mission.
+\item The Event Manager framework that is being used only enables attaching a unique handler to a given trigger.
+\item However, we can define multiple triggers for the same conflict if we want to attach different handlers to the same conflict. you may want to do this if you want different behaviors (that can be configured by the user) for a given conflict. 
+\end{DoxyItemize}

@@ -1,0 +1,145 @@
+\hypertarget{structguidance__parameters__t}{}\doxysection{guidance\+\_\+parameters\+\_\+t Struct Reference}
+\label{structguidance__parameters__t}\index{guidance\_parameters\_t@{guidance\_parameters\_t}}
+
+
+parameters used by the guidance application  
+
+
+
+
+{\ttfamily \#include $<$guidance\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structguidance__parameters__t_a2edb3d077cb1ba94433420045d553f00}\label{structguidance__parameters__t_a2edb3d077cb1ba94433420045d553f00}} 
+uint8\+\_\+t {\bfseries Tlm\+Header} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a323bd3106bf8e17f0cab423f9c39ab18}{default\+Wp\+Speed}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_adcabcb8be3cd953d600c5c2bdfc57fbe}{capture\+Radius\+Scaling}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a82246b99631a372f5ecf0ed570c6ff6e}{guidance\+Radius\+Scaling}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a244fa07f783ad9c375cb570167e7c997}{turn\+Rate\+Gain}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a396e5aa7732256b6e78bd81a2bb0d540}{climb\+Angle}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a60a0a70f698579ee3f8614a6a973c487}{climb\+Angle\+VRange}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_aae1970ef09037dfd12e1bcba63015865}{climb\+Angle\+HRange}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_ad15d89be38314b96ba2fae67fc0289a9}{climb\+Rate\+Gain}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_aa5a846fc24c0a7446da9ff44a47ebf53}{max\+Climb\+Rate}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_ac1469b9bae4f36ff6ff0e52b6ba0bc2b}{min\+Climb\+Rate}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_af41c94399b9bb0a346cd93190d933a53}{max\+Cap}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a6143051e09315446e2e0335d3c786738}{min\+Cap}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a998c26c6048303fa7bf2e7d6e7929db4}{max\+Speed}}
+\item 
+double \mbox{\hyperlink{structguidance__parameters__t_a8fdd0410abad2f84150b295efa370478}{min\+Speed}}
+\item 
+bool \mbox{\hyperlink{structguidance__parameters__t_accac91f81c754d86a8f45ba3ebe919ad}{yaw\+Forward}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structguidance__parameters__t_adcabcb8be3cd953d600c5c2bdfc57fbe}\label{structguidance__parameters__t_adcabcb8be3cd953d600c5c2bdfc57fbe}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!captureRadiusScaling@{captureRadiusScaling}}
+\index{captureRadiusScaling@{captureRadiusScaling}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{captureRadiusScaling}{captureRadiusScaling}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::capture\+Radius\+Scaling}
+
+Scaling factor to compute capture radius to determine if a wp has been reached \mbox{\Hypertarget{structguidance__parameters__t_a396e5aa7732256b6e78bd81a2bb0d540}\label{structguidance__parameters__t_a396e5aa7732256b6e78bd81a2bb0d540}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!climbAngle@{climbAngle}}
+\index{climbAngle@{climbAngle}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{climbAngle}{climbAngle}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::climb\+Angle}
+
+Desired angle to climb/descend at (deg) \mbox{\Hypertarget{structguidance__parameters__t_aae1970ef09037dfd12e1bcba63015865}\label{structguidance__parameters__t_aae1970ef09037dfd12e1bcba63015865}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!climbAngleHRange@{climbAngleHRange}}
+\index{climbAngleHRange@{climbAngleHRange}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{climbAngleHRange}{climbAngleHRange}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::climb\+Angle\+HRange}
+
+Use proportional control when within climb\+Angle\+HRange of target wp (m) \mbox{\Hypertarget{structguidance__parameters__t_a60a0a70f698579ee3f8614a6a973c487}\label{structguidance__parameters__t_a60a0a70f698579ee3f8614a6a973c487}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!climbAngleVRange@{climbAngleVRange}}
+\index{climbAngleVRange@{climbAngleVRange}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{climbAngleVRange}{climbAngleVRange}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::climb\+Angle\+VRange}
+
+Use proportional control when within climb\+Angle\+VRange of target altitude (m) \mbox{\Hypertarget{structguidance__parameters__t_ad15d89be38314b96ba2fae67fc0289a9}\label{structguidance__parameters__t_ad15d89be38314b96ba2fae67fc0289a9}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!climbRateGain@{climbRateGain}}
+\index{climbRateGain@{climbRateGain}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{climbRateGain}{climbRateGain}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::climb\+Rate\+Gain}
+
+Gain used for proportional altitude control \mbox{\Hypertarget{structguidance__parameters__t_a323bd3106bf8e17f0cab423f9c39ab18}\label{structguidance__parameters__t_a323bd3106bf8e17f0cab423f9c39ab18}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!defaultWpSpeed@{defaultWpSpeed}}
+\index{defaultWpSpeed@{defaultWpSpeed}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{defaultWpSpeed}{defaultWpSpeed}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::default\+Wp\+Speed}
+
+Default waypoint to waypoint speed (m/s) \mbox{\Hypertarget{structguidance__parameters__t_a82246b99631a372f5ecf0ed570c6ff6e}\label{structguidance__parameters__t_a82246b99631a372f5ecf0ed570c6ff6e}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!guidanceRadiusScaling@{guidanceRadiusScaling}}
+\index{guidanceRadiusScaling@{guidanceRadiusScaling}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{guidanceRadiusScaling}{guidanceRadiusScaling}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::guidance\+Radius\+Scaling}
+
+Scaling factor to compute guidance radius used for waypoint navigation \mbox{\Hypertarget{structguidance__parameters__t_af41c94399b9bb0a346cd93190d933a53}\label{structguidance__parameters__t_af41c94399b9bb0a346cd93190d933a53}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!maxCap@{maxCap}}
+\index{maxCap@{maxCap}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{maxCap}{maxCap}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::max\+Cap}
+
+Maximum allowed capture radius \mbox{\Hypertarget{structguidance__parameters__t_aa5a846fc24c0a7446da9ff44a47ebf53}\label{structguidance__parameters__t_aa5a846fc24c0a7446da9ff44a47ebf53}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!maxClimbRate@{maxClimbRate}}
+\index{maxClimbRate@{maxClimbRate}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{maxClimbRate}{maxClimbRate}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::max\+Climb\+Rate}
+
+Maximum allowed climb rate (m/s) \mbox{\Hypertarget{structguidance__parameters__t_a998c26c6048303fa7bf2e7d6e7929db4}\label{structguidance__parameters__t_a998c26c6048303fa7bf2e7d6e7929db4}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!maxSpeed@{maxSpeed}}
+\index{maxSpeed@{maxSpeed}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{maxSpeed}{maxSpeed}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::max\+Speed}
+
+Maximum vehicle speed \mbox{\Hypertarget{structguidance__parameters__t_a6143051e09315446e2e0335d3c786738}\label{structguidance__parameters__t_a6143051e09315446e2e0335d3c786738}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!minCap@{minCap}}
+\index{minCap@{minCap}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{minCap}{minCap}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::min\+Cap}
+
+Minimum allowed for capture radius \mbox{\Hypertarget{structguidance__parameters__t_ac1469b9bae4f36ff6ff0e52b6ba0bc2b}\label{structguidance__parameters__t_ac1469b9bae4f36ff6ff0e52b6ba0bc2b}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!minClimbRate@{minClimbRate}}
+\index{minClimbRate@{minClimbRate}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{minClimbRate}{minClimbRate}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::min\+Climb\+Rate}
+
+Minimum allowed climb rate (maximum descend rate) (m/s) \mbox{\Hypertarget{structguidance__parameters__t_a8fdd0410abad2f84150b295efa370478}\label{structguidance__parameters__t_a8fdd0410abad2f84150b295efa370478}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!minSpeed@{minSpeed}}
+\index{minSpeed@{minSpeed}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{minSpeed}{minSpeed}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::min\+Speed}
+
+Minimum vehicle speed \mbox{\Hypertarget{structguidance__parameters__t_a244fa07f783ad9c375cb570167e7c997}\label{structguidance__parameters__t_a244fa07f783ad9c375cb570167e7c997}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!turnRateGain@{turnRateGain}}
+\index{turnRateGain@{turnRateGain}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{turnRateGain}{turnRateGain}}
+{\footnotesize\ttfamily double guidance\+\_\+parameters\+\_\+t\+::turn\+Rate\+Gain}
+
+Max deviation from flight plan to use guidance radius navigation method (m) \mbox{\Hypertarget{structguidance__parameters__t_accac91f81c754d86a8f45ba3ebe919ad}\label{structguidance__parameters__t_accac91f81c754d86a8f45ba3ebe919ad}} 
+\index{guidance\_parameters\_t@{guidance\_parameters\_t}!yawForward@{yawForward}}
+\index{yawForward@{yawForward}!guidance\_parameters\_t@{guidance\_parameters\_t}}
+\doxysubsubsection{\texorpdfstring{yawForward}{yawForward}}
+{\footnotesize\ttfamily bool guidance\+\_\+parameters\+\_\+t\+::yaw\+Forward}
+
+When true, yaw the vehicle so that it points in the direction of travel 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/guidance/fsw/platform\+\_\+inc/\mbox{\hyperlink{guidance__msg_8h}{guidance\+\_\+msg.\+h}}\end{DoxyCompactItemize}

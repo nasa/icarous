@@ -1,0 +1,232 @@
+\hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s}{}\doxysection{ICAROUS\+\_\+\+COMMON\+\_\+\+MESSAGES}
+\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structmission_item_reached__t}{mission\+Item\+Reached\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message indicating a specific waypoint has been reached. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structgeofence__t}{geofence\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message encoding geofence vertex information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structobject__t}{object\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message to represent information about an static/dynamic object \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structposition__t}{position\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em position information of aircraft. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structlocal__position__t}{local\+\_\+position\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em aircraft local position information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structattitude__t}{attitude\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em aircraft attitude information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structno_args_cmd__t}{no\+Args\+Cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} without arguments. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structargs_cmd__t}{args\+Cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} with arguments. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcmd_ack__t}{cmd\+Ack\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} acknowledgement. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstatus__t}{status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message to provide status information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvfrhud__t}{vfrhud\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structbattery__status__t}{battery\+\_\+status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message containing battery status. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrc__channels__t}{rc\+\_\+channels\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message containing rc channel information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhome__position__t}{home\+\_\+position\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message encoding flight plan information \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structeutl__t}{eutl\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message encoding flight plan information \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvfr_hud__t}{vfr\+Hud\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message containing information to be displayed on a hud. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcfs_bands__t}{cfs\+Bands\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em kinematics bands. user data type\+: bands\+\_\+t \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcfs_geofence_conflict__t}{cfs\+Geofence\+Conflict\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message contaning information about geofence conflicts. user data type\+: geofence\+Conflict\+\_\+t \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcfs_trajectory_monitor_data__t}{cfs\+Trajectory\+Monitor\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message contaning information about trajectory conflicts \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}{icarous\+Control\+Mode\+\_\+e}} \{ \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a4e126595509faceca85c09b46a7103e9}{\+\_\+\+PASSIVE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a7ea461a85fe09624bd6738aaa004fa05}{\+\_\+\+ACTIVE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025ab20400764f2d91a122e90ac080776eae}{\+\_\+\+INACTIVE\+\_\+}}
+ \}
+\begin{DoxyCompactList}\small\item\em Defines the mode of operation of Icarous. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga2553c4902a141953f0452d22021cbf26}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga2553c4902a141953f0452d22021cbf26}} 
+enum {\bfseries severity\+\_\+e} \{ \newline
+{\bfseries SEVERITY\+\_\+\+EMERGENCY} =0
+, {\bfseries SEVERITY\+\_\+\+ALERT} =1
+, {\bfseries SEVERITY\+\_\+\+CRITICAL} =2
+, {\bfseries SEVERITY\+\_\+\+ERROR} =3
+, \newline
+{\bfseries SEVERITY\+\_\+\+WARNING} =4
+, {\bfseries SEVERITY\+\_\+\+NOTICE} =5
+, {\bfseries SEVERITY\+\_\+\+INFO} =6
+, {\bfseries SEVERITY\+\_\+\+DEBUG} =7
+ \}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}{command\+Name\+\_\+e}} \{ \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988}{\+\_\+\+ARM\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb}{\+\_\+\+TAKEOFF\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35}{\+\_\+\+LAND\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba}{\+\_\+\+GOTOWP\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672}{\+\_\+\+SETPOS\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d}{\+\_\+\+SETVEL\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7}{\+\_\+\+SETYAW\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c}{\+\_\+\+SETSPEED\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c}{\+\_\+\+SETMODE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48}{\+\_\+\+STATUS\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da2d6e955220e206d73e074760e5f83914}{\+\_\+\+DITCH\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da106bb3dda6fc6cfa02712179f3f62278}{\+\_\+\+RADAR\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da304b2c8b1709b591b29162a69429910b}{\+\_\+\+GUIDANCE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da6e060882c0f5bc6833104f3b25729e60}{\+\_\+\+TRAFFIC\+\_\+\+RES\+\_\+}}
+ \}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}{geofence\+Type\+\_\+e}} \{ \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca889c7df740da84ac1e2d5de06d0135cc}{\+\_\+\+KEEPIN\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca88f5c150b346e5f948ebffac5eb31c57}{\+\_\+\+KEEPOUT\+\_\+}}
+ \}
+\begin{DoxyCompactList}\small\item\em geofence type \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga7b6fc3c08dc9960fbd5c41741af4825f}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga7b6fc3c08dc9960fbd5c41741af4825f}} 
+{\bfseries flightplan\+\_\+t}
+\item 
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga9268bd2d50e9535b9f8a92fcf5c8f8ac}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga9268bd2d50e9535b9f8a92fcf5c8f8ac}} 
+{\bfseries stringdata\+\_\+t}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}} 
+\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!commandName\_e@{commandName\_e}}
+\index{commandName\_e@{commandName\_e}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{commandName\_e}{commandName\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}{command\+Name\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_ARM\_@{\_ARM\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_ARM\_@{\_ARM\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988}} 
+\+\_\+\+ARM\+\_\+&Arm motors \+: will be deprecated. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TAKEOFF\_@{\_TAKEOFF\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_TAKEOFF\_@{\_TAKEOFF\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb}} 
+\+\_\+\+TAKEOFF\+\_\+&Start the takeoff sequence (used in quadcopters). 1 parameter (takeoff altitude \mbox{[}m\mbox{]}) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_LAND\_@{\_LAND\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_LAND\_@{\_LAND\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35}} 
+\+\_\+\+LAND\+\_\+&Start the landing sequence. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_GOTOWP\_@{\_GOTOWP\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_GOTOWP\_@{\_GOTOWP\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba}} 
+\+\_\+\+GOTOWP\+\_\+&Goto waypoint. 1 parameter (waypoint index) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SETPOS\_@{\_SETPOS\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_SETPOS\_@{\_SETPOS\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672}} 
+\+\_\+\+SETPOS\+\_\+&Set position. 3 parameters (lat \mbox{[}deg\mbox{]}, lon \mbox{[}deg\mbox{]}, alt \mbox{[}m\mbox{]}) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SETVEL\_@{\_SETVEL\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_SETVEL\_@{\_SETVEL\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d}} 
+\+\_\+\+SETVEL\+\_\+&Set velocity. 4 parameters (Vn \mbox{[}m/s\mbox{]}, Ve \mbox{[}m/s\mbox{]}, Vu \mbox{[}m/s\mbox{]}, yaw behavior (1/0) \mbox{[}yaw to face forward/don\textquotesingle{}t yaw\mbox{]}) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SETYAW\_@{\_SETYAW\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_SETYAW\_@{\_SETYAW\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7}} 
+\+\_\+\+SETYAW\+\_\+&Set yaw. 4 parameters (target angle \mbox{[}deg\mbox{]}, angular rate \mbox{[}deg/s\mbox{]}, direction (clk,anit-\/clk) \mbox{[}1,-\/1\mbox{]}, type (1/0) \mbox{[}relative/absolute\mbox{]} ) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SETSPEED\_@{\_SETSPEED\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_SETSPEED\_@{\_SETSPEED\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c}} 
+\+\_\+\+SETSPEED\+\_\+&Set speed. 1 parameter (speed \mbox{[}m/s\mbox{]}) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_SETMODE\_@{\_SETMODE\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_SETMODE\_@{\_SETMODE\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c}} 
+\+\_\+\+SETMODE\+\_\+&Set mode. will be deprecated. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_STATUS\_@{\_STATUS\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_STATUS\_@{\_STATUS\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48}} 
+\+\_\+\+STATUS\+\_\+&Status command. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_DITCH\_@{\_DITCH\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_DITCH\_@{\_DITCH\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da2d6e955220e206d73e074760e5f83914}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da2d6e955220e206d73e074760e5f83914}} 
+\+\_\+\+DITCH\+\_\+&Start ditching status. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_RADAR\_@{\_RADAR\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_RADAR\_@{\_RADAR\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da106bb3dda6fc6cfa02712179f3f62278}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da106bb3dda6fc6cfa02712179f3f62278}} 
+\+\_\+\+RADAR\+\_\+&Start radar. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_GUIDANCE\_@{\_GUIDANCE\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_GUIDANCE\_@{\_GUIDANCE\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da304b2c8b1709b591b29162a69429910b}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da304b2c8b1709b591b29162a69429910b}} 
+\+\_\+\+GUIDANCE\+\_\+&Commands for guidance applications. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TRAFFIC\_RES\_@{\_TRAFFIC\_RES\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_TRAFFIC\_RES\_@{\_TRAFFIC\_RES\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da6e060882c0f5bc6833104f3b25729e60}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da6e060882c0f5bc6833104f3b25729e60}} 
+\+\_\+\+TRAFFIC\+\_\+\+RES\+\_\+&Traffic resolution. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}} 
+\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!geofenceType\_e@{geofenceType\_e}}
+\index{geofenceType\_e@{geofenceType\_e}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{geofenceType\_e}{geofenceType\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}{geofence\+Type\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_KEEPIN\_@{\_KEEPIN\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_KEEPIN\_@{\_KEEPIN\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca889c7df740da84ac1e2d5de06d0135cc}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca889c7df740da84ac1e2d5de06d0135cc}} 
+\+\_\+\+KEEPIN\+\_\+&Keep in fence. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_KEEPOUT\_@{\_KEEPOUT\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_KEEPOUT\_@{\_KEEPOUT\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca88f5c150b346e5f948ebffac5eb31c57}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca88f5c150b346e5f948ebffac5eb31c57}} 
+\+\_\+\+KEEPOUT\+\_\+&Keep out fence. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}} 
+\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!icarousControlMode\_e@{icarousControlMode\_e}}
+\index{icarousControlMode\_e@{icarousControlMode\_e}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{icarousControlMode\_e}{icarousControlMode\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}{icarous\+Control\+Mode\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_PASSIVE\_@{\_PASSIVE\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_PASSIVE\_@{\_PASSIVE\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a4e126595509faceca85c09b46a7103e9}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a4e126595509faceca85c09b46a7103e9}} 
+\+\_\+\+PASSIVE\+\_\+&Passive mode, Icarous only monitors and logs data. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_ACTIVE\_@{\_ACTIVE\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_ACTIVE\_@{\_ACTIVE\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a7ea461a85fe09624bd6738aaa004fa05}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a7ea461a85fe09624bd6738aaa004fa05}} 
+\+\_\+\+ACTIVE\+\_\+&Active mode, Icarous will interfere if conflicts are about to be violated. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_INACTIVE\_@{\_INACTIVE\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_INACTIVE\_@{\_INACTIVE\_}}}\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025ab20400764f2d91a122e90ac080776eae}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025ab20400764f2d91a122e90ac080776eae}} 
+\+\_\+\+INACTIVE\+\_\+&Inactive mode. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}} 
+\index{ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!ICAROUS\_COMMON\_MESSAGES@{ICAROUS\_COMMON\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily struct \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+packed\+\_\+\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} c\+FS header information
+
+\texorpdfstring{$<$}{<} identifier
+
+\texorpdfstring{$<$}{<} total waypoints. Cannot be greater than max.
+
+\texorpdfstring{$<$}{<} flight plan time
+
+\texorpdfstring{$<$}{<} waypoint data
+
+\texorpdfstring{$<$}{<} c\+FS header information

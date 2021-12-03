@@ -1,0 +1,104 @@
+\hypertarget{sch__platform__cfg_8h_source}{}\doxysection{sch\+\_\+platform\+\_\+cfg.\+h}
+\label{sch__platform__cfg_8h_source}\index{apps/scheduler/fsw/platform\_inc/sch\_platform\_cfg.h@{apps/scheduler/fsw/platform\_inc/sch\_platform\_cfg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File:}}
+\DoxyCodeLine{3 \textcolor{comment}{**   \$Id: sch\_platform\_cfg.h 1.4 2017/06/21 15:28:58EDT mdeschu Exp  \$}}
+\DoxyCodeLine{4 \textcolor{comment}{**}}
+\DoxyCodeLine{5 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{6 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{7 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{10 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{11 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{12 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{13 \textcolor{comment}{**}}
+\DoxyCodeLine{14 \textcolor{comment}{** Purpose: }}
+\DoxyCodeLine{15 \textcolor{comment}{**  The CFS Scheduler (SCH) Application platform configuration header file}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{18 \textcolor{comment}{**}}
+\DoxyCodeLine{19 \textcolor{comment}{*************************************************************************/}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#ifndef \_sch\_platform\_cfg\_h\_}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define \_sch\_platform\_cfg\_h\_}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{26 \textcolor{comment}{** Macro definitions}}
+\DoxyCodeLine{27 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define SCH\_PIPE\_DEPTH      12              }}
+\DoxyCodeLine{41 \textcolor{comment}{/*}}
+\DoxyCodeLine{42 \textcolor{comment}{** Schedule table definitions...}}
+\DoxyCodeLine{43 \textcolor{comment}{*/}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#define SCH\_TOTAL\_SLOTS         100    }\textcolor{comment}{/* SCH wake-\/up rate (Hz) */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define SCH\_ENTRIES\_PER\_SLOT    5}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define SCH\_MAX\_MESSAGES      128}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define SCH\_MDT\_MIN\_MSG\_ID    0}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#define SCH\_MDT\_MAX\_MSG\_ID    CFE\_SB\_HIGHEST\_VALID\_MSGID}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{113 \textcolor{preprocessor}{\#define SCH\_MAX\_MSG\_WORDS      64   }\textcolor{comment}{/* max message length (in words) */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{comment}{/*}}
+\DoxyCodeLine{117 \textcolor{comment}{** Limits for how far we can get behind and how much we can do at once...}}
+\DoxyCodeLine{118 \textcolor{comment}{*/}}
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#define SCH\_MAX\_LAG\_COUNT             (SCH\_TOTAL\_SLOTS / 2)}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#define SCH\_MAX\_SLOTS\_PER\_WAKEUP      5}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{comment}{/*}}
+\DoxyCodeLine{145 \textcolor{comment}{** Conversion factor for how many microseconds in a wake-\/up period...}}
+\DoxyCodeLine{146 \textcolor{comment}{*/}}
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#define SCH\_MICROS\_PER\_MAJOR\_FRAME    1000000}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{170 \textcolor{preprocessor}{\#define SCH\_SYNC\_SLOT\_DRIFT\_WINDOW   5000 }}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{185 \textcolor{preprocessor}{\#define SCH\_STARTUP\_SYNC\_TIMEOUT   50000 }}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{199 \textcolor{preprocessor}{\#define SCH\_STARTUP\_PERIOD   (5*SCH\_MICROS\_PER\_MAJOR\_FRAME) }}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{comment}{/*}}
+\DoxyCodeLine{203 \textcolor{comment}{** Specifies the limit on the number of consecutive noisy Major Frame signals}}
+\DoxyCodeLine{204 \textcolor{comment}{** before we begin to ignore them.}}
+\DoxyCodeLine{205 \textcolor{comment}{*/}}
+\DoxyCodeLine{218 \textcolor{preprocessor}{\#define SCH\_MAX\_NOISY\_MAJORF             2}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 }
+\DoxyCodeLine{234 \textcolor{preprocessor}{\#define SCH\_LIB\_PRESENCE            1}}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 }
+\DoxyCodeLine{248 \textcolor{preprocessor}{\#define SCH\_LIB\_DIS\_CTR             0}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{263 \textcolor{preprocessor}{\#define SCH\_SCHEDULE\_FILENAME  "{}/cf/sch\_def\_schtbl.tbl"{}}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{278 \textcolor{preprocessor}{\#define SCH\_MESSAGE\_FILENAME   "{}/cf/sch\_def\_msgtbl.tbl"{}}}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{295 \textcolor{preprocessor}{\#define SCH\_MISSION\_REV            0}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_platform\_cfg\_h\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{301 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{302 \textcolor{comment}{/************************/}}
+
+\end{DoxyCode}

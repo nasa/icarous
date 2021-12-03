@@ -1,0 +1,10 @@
+\hypertarget{group___t_r_a_f_f_i_c}{}\doxysection{TRAFFIC}
+\label{group___t_r_a_f_f_i_c}\index{TRAFFIC@{TRAFFIC}}
+
+
+Application to monitor traffic conflicts.  
+
+
+Application to monitor traffic conflicts. 
+
+This application subscribes to the ownship information (position/velocity) and intruder information and computes relevant metrics to identify imminent loss of separation. If a loss of separation is predicted, four different resolutions are generated. Executing on of these resolutions well maeuver the ownship to remain well clear of any intruding aircraft. Also provides a flag indicating the existence of conflict on a direct path from the current position of the ownship to any of the mission waypoints. The internals of the traffic application makes use of the DAIDALUS (\href{https://github.com/nasa/WellClear}{\texttt{ https\+://github.\+com/nasa/\+Well\+Clear}}) library. The input configuration file is specified in the input tables. Refer to the DAIDALUS repository for more information on each parameter specified in the input configuration file. The information published by this application is controlled by the scheduler. 

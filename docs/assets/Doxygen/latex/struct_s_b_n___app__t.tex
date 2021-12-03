@@ -1,0 +1,95 @@
+\hypertarget{struct_s_b_n___app__t}{}\doxysection{SBN\+\_\+\+App\+\_\+t Struct Reference}
+\label{struct_s_b_n___app__t}\index{SBN\_App\_t@{SBN\_App\_t}}
+
+
+SBN global data structure definition.  
+
+
+
+
+{\ttfamily \#include $<$sbn\+\_\+app.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a81ca4355b2b1e1e56934f69acbb1d81d}\label{struct_s_b_n___app__t_a81ca4355b2b1e1e56934f69acbb1d81d}} 
+SBN\+\_\+\+Net\+Idx\+\_\+t {\bfseries Net\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a7f7d8ba38422ec09058b61dac9e1e0ae}\label{struct_s_b_n___app__t_a7f7d8ba38422ec09058b61dac9e1e0ae}} 
+\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} {\bfseries Nets} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+NETS\mbox{]}
+\begin{DoxyCompactList}\small\item\em Data only on host definitions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_ab3b84870a2379fcd39e87a9d4e5eb9ca}\label{struct_s_b_n___app__t_ab3b84870a2379fcd39e87a9d4e5eb9ca}} 
+CFE\+\_\+\+ES\+\_\+\+App\+ID\+\_\+t {\bfseries App\+ID}
+\begin{DoxyCompactList}\small\item\em The application ID provided by ES. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a0037bd07121bad37b05c5059bb4ac027}\label{struct_s_b_n___app__t_a0037bd07121bad37b05c5059bb4ac027}} 
+char {\bfseries App\+\_\+\+Full\+Name} \mbox{[}(OS\+\_\+\+MAX\+\_\+\+API\+\_\+\+NAME $\ast$2)\mbox{]}
+\begin{DoxyCompactList}\small\item\em The application full name provided by SB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a9acca7a96402db89c94ce08b934c3165}\label{struct_s_b_n___app__t_a9acca7a96402db89c94ce08b934c3165}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Sub\+Pipe}
+\begin{DoxyCompactList}\small\item\em The subscription pipe used to monitor local subscriptions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a7fa877f3eafa5df20302a6e29c3ad01c}\label{struct_s_b_n___app__t_a7fa877f3eafa5df20302a6e29c3ad01c}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Cmd\+Pipe}
+\begin{DoxyCompactList}\small\item\em The command pipe used to receive commands. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_ac7a4d1119d6b1129d90bdf666ede5c51}\label{struct_s_b_n___app__t_ac7a4d1119d6b1129d90bdf666ede5c51}} 
+SBN\+\_\+\+Sub\+Cnt\+\_\+t {\bfseries Sub\+Cnt}
+\begin{DoxyCompactList}\small\item\em Number of local subs. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_s_b_n___subs__t}{SBN\+\_\+\+Subs\+\_\+t}} \mbox{\hyperlink{struct_s_b_n___app__t_a9f0ec623884323b403809499b4b9f866}{Subs}} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+SUBS\+\_\+\+PER\+\_\+\+PEER+1\mbox{]}
+\begin{DoxyCompactList}\small\item\em All subscriptions by apps connected to the SB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a43c8cd26346e6c51dff9724f2d55e249}\label{struct_s_b_n___app__t_a43c8cd26346e6c51dff9724f2d55e249}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Sch\+Pipe}
+\begin{DoxyCompactList}\small\item\em CFE scheduling pipe. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\+\_\+\+If\+Ops\+\_\+t}} $\ast$ \mbox{\hyperlink{struct_s_b_n___app__t_a921d9c4b1d8439ce19403f9c535340be}{If\+Ops}} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+CNT\mbox{]}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a907c3dedee7427254700c00f8af4d5bb}\label{struct_s_b_n___app__t_a907c3dedee7427254700c00f8af4d5bb}} 
+CFE\+\_\+\+ES\+\_\+\+Module\+ID\+\_\+t {\bfseries Protocol\+Modules} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+CNT\mbox{]}
+\begin{DoxyCompactList}\small\item\em Retain the module ID\textquotesingle{}s for each interface in case we need to unload. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a2746760818daaacd3e97b75b5aceb02e}\label{struct_s_b_n___app__t_a2746760818daaacd3e97b75b5aceb02e}} 
+CFE\+\_\+\+ES\+\_\+\+Module\+ID\+\_\+t {\bfseries Filter\+Modules} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+CNT\mbox{]}
+\begin{DoxyCompactList}\small\item\em Retain the module ID\textquotesingle{}s for each interface in case we need to unload. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a5ec9bc1c694a50436a065a4b8eec44e8}\label{struct_s_b_n___app__t_a5ec9bc1c694a50436a065a4b8eec44e8}} 
+\mbox{\hyperlink{struct_s_b_n___conf_tbl__t}{SBN\+\_\+\+Conf\+Tbl\+\_\+t}} $\ast$ {\bfseries Conf\+Tbl}
+\item 
+CFE\+\_\+\+ES\+\_\+\+Mutex\+ID\+\_\+t \mbox{\hyperlink{struct_s_b_n___app__t_a6882bfbe23442831612fcba13c153f23}{Send\+Mutex}}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_aac6b3b2eea052e2ba0ada8f106ce899a}\label{struct_s_b_n___app__t_aac6b3b2eea052e2ba0ada8f106ce899a}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Cmd\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a5cb19717121cd292a248b1a69938b41e}\label{struct_s_b_n___app__t_a5cb19717121cd292a248b1a69938b41e}} 
+SBN\+\_\+\+HKTlm\+\_\+t {\bfseries Cmd\+Err\+Cnt}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___app__t_a3ec3f18f1d36c1330258977550128c30}\label{struct_s_b_n___app__t_a3ec3f18f1d36c1330258977550128c30}} 
+CFE\+\_\+\+TBL\+\_\+\+Handle\+\_\+t {\bfseries Conf\+Tbl\+Handle}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SBN global data structure definition. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_b_n___app__t_a921d9c4b1d8439ce19403f9c535340be}\label{struct_s_b_n___app__t_a921d9c4b1d8439ce19403f9c535340be}} 
+\index{SBN\_App\_t@{SBN\_App\_t}!IfOps@{IfOps}}
+\index{IfOps@{IfOps}!SBN\_App\_t@{SBN\_App\_t}}
+\doxysubsubsection{\texorpdfstring{IfOps}{IfOps}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\+\_\+\+If\+Ops\+\_\+t}}$\ast$ SBN\+\_\+\+App\+\_\+t\+::\+If\+Ops\mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+CNT\mbox{]}}
+
+Each SBN back-\/end module provides a number of functions to implement the protocols to connect peers. \mbox{\Hypertarget{struct_s_b_n___app__t_a6882bfbe23442831612fcba13c153f23}\label{struct_s_b_n___app__t_a6882bfbe23442831612fcba13c153f23}} 
+\index{SBN\_App\_t@{SBN\_App\_t}!SendMutex@{SendMutex}}
+\index{SendMutex@{SendMutex}!SBN\_App\_t@{SBN\_App\_t}}
+\doxysubsubsection{\texorpdfstring{SendMutex}{SendMutex}}
+{\footnotesize\ttfamily CFE\+\_\+\+ES\+\_\+\+Mutex\+ID\+\_\+t SBN\+\_\+\+App\+\_\+t\+::\+Send\+Mutex}
+
+Global mutex for Send Tasks. \mbox{\Hypertarget{struct_s_b_n___app__t_a9f0ec623884323b403809499b4b9f866}\label{struct_s_b_n___app__t_a9f0ec623884323b403809499b4b9f866}} 
+\index{SBN\_App\_t@{SBN\_App\_t}!Subs@{Subs}}
+\index{Subs@{Subs}!SBN\_App\_t@{SBN\_App\_t}}
+\doxysubsubsection{\texorpdfstring{Subs}{Subs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_s_b_n___subs__t}{SBN\+\_\+\+Subs\+\_\+t}} SBN\+\_\+\+App\+\_\+t\+::\+Subs\mbox{[}SBN\+\_\+\+MAX\+\_\+\+SUBS\+\_\+\+PER\+\_\+\+PEER+1\mbox{]}}
+
+
+
+All subscriptions by apps connected to the SB. 
+
+When a peer and I connect, I send that peer all subscriptions I have and they send me theirs. All messages on the local bus that are subscribed to by the peer are sent over, and vice-\/versa. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/src/sbn\+\_\+app.\+h\end{DoxyCompactItemize}

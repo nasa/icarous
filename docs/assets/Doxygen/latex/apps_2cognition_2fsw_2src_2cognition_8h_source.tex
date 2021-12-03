@@ -1,0 +1,121 @@
+\hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_source}{}\doxysection{cognition.\+h}
+\label{apps_2cognition_2fsw_2src_2cognition_8h_source}\index{apps/cognition/fsw/src/cognition.h@{apps/cognition/fsw/src/cognition.h}}
+\mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef \_cognition\_h\_}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define \_cognition\_h\_}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{cognition__events_8h}{cognition\_events.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msg_8h}{trajectory\_msg.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{geofence__msg_8h}{geofence\_msg.h}}"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msg_8h}{guidance\_msg.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msgids_8h}{traffic\_msgids.h}}"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msgids_8h}{trajectory\_msgids.h}}"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{geofence__msgids_8h}{geofence\_msgids.h}}"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msgids_8h}{guidance\_msgids.h}}"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}UtilFunctions.h"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}Guidance.h"{}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include "{}Core/Cognition/Cognition.h"{}}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#ifdef APPDEF\_MERGER}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msgids_8h}{merger\_msgids.h}}"{}}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msg_8h}{merger\_msg.h}}"{}}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#ifdef APPDEF\_SAFE2DITCH}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{safe2ditch__msg_8h}{safe2ditch\_msg.h}}"{}}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{safe2ditch__msgids_8h}{safe2ditch\_msgids.h}}"{}}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define COGNITION\_PIPE\_NAME "{}COGPIPE"{}}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#define COGNITION\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define SCH\_COGNITION\_PIPE\_NAME "{}SCH\_COGNITION"{}}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{64 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{65     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_cog__t_ab677147b133bd89edb064552a4800f38}{CognitionPipe}};      }
+\DoxyCodeLine{66     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_cog__t_af3ebc2a3dc14d36cbd1a80701db4b468}{SchPipe}};            }
+\DoxyCodeLine{67     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_cog__t_a04e9b4e6c930399285ebb126b405eedd}{CogMsgPtr}};          }
+\DoxyCodeLine{68     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_cog__t_a517e249fa97333ed035c8746e7bd45c3}{SchMsgPtr}};          }
+\DoxyCodeLine{69     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{structappdata_cog__t_ae024018a2c9dfb9d8a36448f55e2d036}{CogtblHandle}};       }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \mbox{\hyperlink{structposition__t}{position\_t}} \mbox{\hyperlink{structappdata_cog__t_af150fd137123e0c8abb892127f64b255}{position}};                   }
+\DoxyCodeLine{72     \mbox{\hyperlink{structattitude__t}{attitude\_t}} \mbox{\hyperlink{structappdata_cog__t_a0cc7946475febd7596a94c9a9c1481b5}{attitude}};                   }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{structappdata_cog__t_ac25cb990dd12da8c0813272b391068dd}{flightplan1}};              }
+\DoxyCodeLine{75     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{structappdata_cog__t_a0f82be88a5480fdc3352a6dc5d79454d}{flightplan2}};              }
+\DoxyCodeLine{76     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} *fp;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     bands\_t trkBands;}
+\DoxyCodeLine{79     bands\_t gsBands;}
+\DoxyCodeLine{80     bands\_t altBands;}
+\DoxyCodeLine{81     bands\_t vsBands;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     \mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47}{algorithm\_e}} searchAlgType;}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \mbox{\hyperlink{structstatus__t}{status\_t}} statustxt;}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87     \mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}} parameters;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{keywordtype}{void}* \mbox{\hyperlink{structappdata_cog__t_a3c45e15c4662d37048d8c0f4e9ca6c74}{cog}};                              }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \}\mbox{\hyperlink{structappdata_cog__t}{appdataCog\_t}};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{98 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a63db52418dddb45ecd468860ff8bdcbf}{COGNITION\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{104 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a26665cd5ac59e9a1c846ef0486f91c8c}{COGNITION\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{109 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a8bedf49a38dab1e3aeb7338c5dd391e2}{COGNITION\_AppInitData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{114 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a30aa0dfbb20151792b76ef970bf35de7}{COGNITION\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{120 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_ae275e63a127ad1ef82b86cc31bb2494f}{COGNITION\_ProcessSBData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{126 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a06abe4570e72f736b14bbe056424b602}{COGNITION\_GetADSBData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keywordtype}{void} COGNITION\_DecisionProcess(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{134 int32\_t \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_ab01e0a70a2a54ca2594614579d1963aa}{cognitionTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{keywordtype}{void} COGNITION\_SendGuidanceVelCmd(\mbox{\hyperlink{struct_velocity_command}{VelocityCommand}} cmd);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keywordtype}{void} COGNITION\_SendGuidanceFlightPlan(\mbox{\hyperlink{struct_fp_change}{FpChange}} cmd);}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{keywordtype}{void} COGNITION\_SendGuidanceP2P(\mbox{\hyperlink{struct_p2_p_command}{P2PCommand}} cmd);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keywordtype}{void} COGNITION\_SendSpeedChange(\mbox{\hyperlink{struct_speed_change}{SpeedChange}} cmd);}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{keywordtype}{void} COGNITION\_SendAltChange(\mbox{\hyperlink{struct_alt_change}{AltChange}} cmd);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keywordtype}{void} COGNITION\_SendTakeoff(\mbox{\hyperlink{struct_takeoff_command}{TakeoffCommand}} cmd);}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keywordtype}{void} COGNITION\_SendLand(\mbox{\hyperlink{struct_land_command}{LandCommand}} cmd);}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keywordtype}{void} COGNITION\_FindNewPath(\mbox{\hyperlink{struct_fp_request}{FpRequest}} cmd);}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keywordtype}{void} COGNITION\_SendDitchRequest(\mbox{\hyperlink{struct_ditch_command}{DitchCommand}} cmd);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 EXTERN \mbox{\hyperlink{structappdata_cog__t}{appdataCog\_t}} appdataCog;}
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_apInterface\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

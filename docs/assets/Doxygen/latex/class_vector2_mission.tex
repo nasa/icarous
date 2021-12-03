@@ -1,0 +1,125 @@
+\hypertarget{class_vector2_mission}{}\doxysection{Vector2\+Mission Class Reference}
+\label{class_vector2_mission}\index{Vector2Mission@{Vector2Mission}}
+
+
+A return to mission handler using only vector commands.  
+
+
+
+
+{\ttfamily \#include $<$Handlers.\+hpp$>$}
+
+Inheritance diagram for Vector2\+Mission\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_vector2_mission}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_vector2_mission_ada1c3006ee891a0ea2257918881ef3de}{Initialize}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_vector2_mission_a04f0a274a64e175d47ed3e630223d7c0}{Execute}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_vector2_mission_a1038644601a353ab53e7285ff3ad063b}{Terminate}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform termination activities \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_vector2_mission_a802a30f3e8b57b0967d4e1a455398c75}\label{class_vector2_mission_a802a30f3e8b57b0967d4e1a455398c75}} 
+larcfm\+::\+Position {\bfseries target}
+\begin{DoxyCompactList}\small\item\em target position we are currently vectoring to \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_vector2_mission_a2cd57ec7280f078d71d84b8f9c5e6bc3}\label{class_vector2_mission_a2cd57ec7280f078d71d84b8f9c5e6bc3}} 
+double {\bfseries gs}
+\begin{DoxyCompactList}\small\item\em ground speed \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_vector2_mission_a04f0a274a64e175d47ed3e630223d7c0}\label{class_vector2_mission_a04f0a274a64e175d47ed3e630223d7c0}} 
+\index{Vector2Mission@{Vector2Mission}!Execute@{Execute}}
+\index{Execute@{Execute}!Vector2Mission@{Vector2Mission}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Vector2\+Mission\+::\+Execute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+get heading to target
+
+compute proportial control to reach target altitude
+
+Determine turn direction based on turn conflicts
+
+
+\begin{DoxyItemize}
+\item left turn if right turn conflict
+\item right turn if left turn conflict
+\end{DoxyItemize}
+
+speed reduction when near target to facilitate capture
+
+Limit climb rate within \mbox{[}-\/2.\+5,2.\+5\mbox{]} m/s. TODO\+: Use parameters here
+
+Enqueue the computed velocity commands
+
+Finish vectoring if in the vicinity
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_vector2_mission_ada1c3006ee891a0ea2257918881ef3de}\label{class_vector2_mission_ada1c3006ee891a0ea2257918881ef3de}} 
+\index{Vector2Mission@{Vector2Mission}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!Vector2Mission@{Vector2Mission}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Vector2\+Mission\+::\+Initialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+Extract current ground speed at initialization and maintain this speed
+
+Two possible targets based on user input
+
+
+\begin{DoxyItemize}
+\item Vector to next feasible waypoint in the mission plan
+\item Vector to nearest point on the mission flightplan
+\end{DoxyItemize}
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_vector2_mission_a1038644601a353ab53e7285ff3ad063b}\label{class_vector2_mission_a1038644601a353ab53e7285ff3ad063b}} 
+\index{Vector2Mission@{Vector2Mission}!Terminate@{Terminate}}
+\index{Terminate@{Terminate}!Vector2Mission@{Vector2Mission}}
+\doxysubsubsection{\texorpdfstring{Terminate()}{Terminate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Vector2\+Mission\+::\+Terminate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+Engage nominal mission plan upon termination
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_handlers_8hpp}{Handlers.\+hpp}}\end{DoxyCompactItemize}

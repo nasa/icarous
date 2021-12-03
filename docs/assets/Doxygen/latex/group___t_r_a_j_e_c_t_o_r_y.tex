@@ -1,0 +1,16 @@
+\hypertarget{group___t_r_a_j_e_c_t_o_r_y}{}\doxysection{TRAJECTORY}
+\label{group___t_r_a_j_e_c_t_o_r_y}\index{TRAJECTORY@{TRAJECTORY}}
+
+
+Trajectory monitoring application.  
+
+
+Trajectory monitoring application. 
+
+This application provides trajectory monitoring and management services. Trajectory monitoring is done on the uploaded mission flight plan from a ground control station. The misison flight plan is primarily monitored for cross-\/track deviaiton. Other metrics such as distance to the next waypoint waypoint, heading to intercept flight plan enroute to next waypoint, resolution maneuver to intercept flight plan are also computed. This information is published at a rate controlled by the c\+FS scheduler.
+
+This application also provides path computation services. It subscribes to a trajectory request message that encodes the initial and final conditions of the path. A path is computed using the requested algorithm. After a path is computed the resulting trajectory is published on the c\+FS software bus. Properties of the search algorithms used are specified in the input tables.
+
+\begin{DoxySeeAlso}{See also}
+TRAJECTORY\+\_\+\+MESSAGES, TRAJECTORY\+\_\+\+MESSAGE\+\_\+\+TOPICS, TRAJECTORY\+\_\+\+TABLES 
+\end{DoxySeeAlso}

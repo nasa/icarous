@@ -1,0 +1,81 @@
+\hypertarget{structsafe2ditch_status__t}{}\doxysection{safe2ditch\+Status\+\_\+t Struct Reference}
+\label{structsafe2ditch_status__t}\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+
+
+message contaning status information about safe2ditch  
+
+
+
+
+{\ttfamily \#include $<$safe2ditch\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structsafe2ditch_status__t_aa2895d17fa51979373e4243335ce177d}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{structsafe2ditch_status__t_a99b9642711be9a1a2763a2f4338ac3e5}{ditchsite}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{structsafe2ditch_status__t_a7e716cf2c78d6fcf12a8510731e8caa2}{tod\+Altitude}}
+\item 
+bool \mbox{\hyperlink{structsafe2ditch_status__t_ac537f000e3f1030c27d7d9693d9c70fc}{reset\+Ditch}}
+\item 
+bool \mbox{\hyperlink{structsafe2ditch_status__t_aaf5ed85e5e488c184ef5618af62e5975}{end\+Ditch}}
+\item 
+bool \mbox{\hyperlink{structsafe2ditch_status__t_a90385cba520828b86844521a9119fd96}{ditch\+Guidance\+Required}}
+\item 
+bool \mbox{\hyperlink{structsafe2ditch_status__t_aecb89739afb0394f5aa90c3dc080096b}{ditch\+Requested}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Published under the SAFE2\+DITCH\+\_\+\+STATUS\+\_\+\+MID topic 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structsafe2ditch_status__t_a90385cba520828b86844521a9119fd96}\label{structsafe2ditch_status__t_a90385cba520828b86844521a9119fd96}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!ditchGuidanceRequired@{ditchGuidanceRequired}}
+\index{ditchGuidanceRequired@{ditchGuidanceRequired}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{ditchGuidanceRequired}{ditchGuidanceRequired}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::ditch\+Guidance\+Required}
+
+Ditch guidance required \mbox{\Hypertarget{structsafe2ditch_status__t_aecb89739afb0394f5aa90c3dc080096b}\label{structsafe2ditch_status__t_aecb89739afb0394f5aa90c3dc080096b}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!ditchRequested@{ditchRequested}}
+\index{ditchRequested@{ditchRequested}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{ditchRequested}{ditchRequested}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::ditch\+Requested}
+
+Ditching requested \mbox{\Hypertarget{structsafe2ditch_status__t_a99b9642711be9a1a2763a2f4338ac3e5}\label{structsafe2ditch_status__t_a99b9642711be9a1a2763a2f4338ac3e5}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!ditchsite@{ditchsite}}
+\index{ditchsite@{ditchsite}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{ditchsite}{ditchsite}}
+{\footnotesize\ttfamily double safe2ditch\+Status\+\_\+t\+::ditchsite\mbox{[}3\mbox{]}}
+
+Ditch site selected by safe2ditch \mbox{\Hypertarget{structsafe2ditch_status__t_aaf5ed85e5e488c184ef5618af62e5975}\label{structsafe2ditch_status__t_aaf5ed85e5e488c184ef5618af62e5975}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!endDitch@{endDitch}}
+\index{endDitch@{endDitch}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{endDitch}{endDitch}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::end\+Ditch}
+
+End ditching \mbox{\Hypertarget{structsafe2ditch_status__t_ac537f000e3f1030c27d7d9693d9c70fc}\label{structsafe2ditch_status__t_ac537f000e3f1030c27d7d9693d9c70fc}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!resetDitch@{resetDitch}}
+\index{resetDitch@{resetDitch}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{resetDitch}{resetDitch}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::reset\+Ditch}
+
+Reset ditching \mbox{\Hypertarget{structsafe2ditch_status__t_aa2895d17fa51979373e4243335ce177d}\label{structsafe2ditch_status__t_aa2895d17fa51979373e4243335ce177d}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t safe2ditch\+Status\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structsafe2ditch_status__t_a7e716cf2c78d6fcf12a8510731e8caa2}\label{structsafe2ditch_status__t_a7e716cf2c78d6fcf12a8510731e8caa2}} 
+\index{safe2ditchStatus\_t@{safe2ditchStatus\_t}!todAltitude@{todAltitude}}
+\index{todAltitude@{todAltitude}!safe2ditchStatus\_t@{safe2ditchStatus\_t}}
+\doxysubsubsection{\texorpdfstring{todAltitude}{todAltitude}}
+{\footnotesize\ttfamily double safe2ditch\+Status\+\_\+t\+::tod\+Altitude}
+
+Altitude at TOD 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/safe2ditch/fsw/platform\+\_\+inc/\mbox{\hyperlink{safe2ditch__msg_8h}{safe2ditch\+\_\+msg.\+h}}\end{DoxyCompactItemize}

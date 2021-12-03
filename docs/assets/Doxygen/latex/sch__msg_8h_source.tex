@@ -1,0 +1,159 @@
+\hypertarget{sch__msg_8h_source}{}\doxysection{sch\+\_\+msg.\+h}
+\label{sch__msg_8h_source}\index{apps/scheduler/fsw/src/sch\_msg.h@{apps/scheduler/fsw/src/sch\_msg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{** \$Id: sch\_msg.h 1.3 2017/06/21 15:29:01EDT mdeschu Exp  \$}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{5 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{6 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{10 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{11 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Subsystem: Scheduler (SCH) packet definitions}}
+\DoxyCodeLine{14 \textcolor{comment}{**}}
+\DoxyCodeLine{15 \textcolor{comment}{** Author:}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{18 \textcolor{comment}{**}}
+\DoxyCodeLine{19 \textcolor{comment}{*/}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{22 \textcolor{comment}{**}}
+\DoxyCodeLine{23 \textcolor{comment}{** Ensure that "{}this"{} header is included only once}}
+\DoxyCodeLine{24 \textcolor{comment}{**}}
+\DoxyCodeLine{25 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#ifndef \_sch\_msg\_}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define \_sch\_msg\_}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{31 \textcolor{comment}{**}}
+\DoxyCodeLine{32 \textcolor{comment}{** Include section}}
+\DoxyCodeLine{33 \textcolor{comment}{**}}
+\DoxyCodeLine{34 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include "{}common\_types.h"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include "{}sch\_msgdefs.h"{}}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{40 \textcolor{comment}{**}}
+\DoxyCodeLine{41 \textcolor{comment}{** SCH command packet structure definitions}}
+\DoxyCodeLine{42 \textcolor{comment}{**}}
+\DoxyCodeLine{43 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{/*}}
+\DoxyCodeLine{46 \textcolor{comment}{** SCH\_SEND\_HK\_MID, SCH\_NOOP\_CC, SCH\_RESET\_CC, }}
+\DoxyCodeLine{47 \textcolor{comment}{** SCH\_ENABLE\_SYNC\_CC, SCH\_SEND\_DIAG\_TLM\_CC}}
+\DoxyCodeLine{48 \textcolor{comment}{*/}}
+\DoxyCodeLine{55 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{56 \{}
+\DoxyCodeLine{57     uint8             CmdHeader[CFE\_SB\_CMD\_HDR\_SIZE];  }
+\DoxyCodeLine{59 \} \mbox{\hyperlink{struct_s_c_h___no_args_cmd__t}{SCH\_NoArgsCmd\_t}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{comment}{/*}}
+\DoxyCodeLine{62 \textcolor{comment}{** SCH\_ENABLE\_CC, SCH\_DISABLE\_CC}}
+\DoxyCodeLine{63 \textcolor{comment}{*/}}
+\DoxyCodeLine{69 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{70 \{}
+\DoxyCodeLine{71     uint8    CmdHeader[CFE\_SB\_CMD\_HDR\_SIZE];          }
+\DoxyCodeLine{73     uint16   \mbox{\hyperlink{struct_s_c_h___entry_cmd__t_ab2c4beb6673659795bb1afa5681699e0}{SlotNumber}};                              }
+\DoxyCodeLine{75     uint16   \mbox{\hyperlink{struct_s_c_h___entry_cmd__t_aa81b9c8fe12cf77493abffab77193e25}{EntryNumber}};                             }
+\DoxyCodeLine{78 \} \mbox{\hyperlink{struct_s_c_h___entry_cmd__t}{SCH\_EntryCmd\_t}};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{comment}{/*}}
+\DoxyCodeLine{81 \textcolor{comment}{** SCH\_ENABLE\_GROUP\_CC, SCH\_DISABLE\_GROUP\_CC}}
+\DoxyCodeLine{82 \textcolor{comment}{*/}}
+\DoxyCodeLine{88 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{89 \{}
+\DoxyCodeLine{90     uint8    CmdHeader[CFE\_SB\_CMD\_HDR\_SIZE];          }
+\DoxyCodeLine{92     uint32   \mbox{\hyperlink{struct_s_c_h___group_cmd__t_a7b3bc39e9f4e01e8dad54dea3e7da611}{GroupData}};                               }
+\DoxyCodeLine{95 \} \mbox{\hyperlink{struct_s_c_h___group_cmd__t}{SCH\_GroupCmd\_t}};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{99 \textcolor{comment}{**}}
+\DoxyCodeLine{100 \textcolor{comment}{** SCH housekeeping telemetry packet definition}}
+\DoxyCodeLine{101 \textcolor{comment}{**}}
+\DoxyCodeLine{102 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{108 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{109 \{}
+\DoxyCodeLine{110     uint8    TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];          }
+\DoxyCodeLine{112     \textcolor{comment}{/*}}
+\DoxyCodeLine{113 \textcolor{comment}{    ** Command execution counters (ground commands)}}
+\DoxyCodeLine{114 \textcolor{comment}{    */}}
+\DoxyCodeLine{115     uint8    \mbox{\hyperlink{struct_s_c_h___hk_packet__t_af8901da757eaf6f3e35b641f553c4c13}{CmdCounter}};                              }
+\DoxyCodeLine{118     uint8    \mbox{\hyperlink{struct_s_c_h___hk_packet__t_abf0292ba71a3c8c7bb3e13d4de936103}{ErrCounter}};                              }
+\DoxyCodeLine{121     uint8    \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ac8936e4ac0482d7f26806bb4cf40b178}{SyncToMET}};                               }
+\DoxyCodeLine{124     uint8    \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a4ced3d9fa1ab9f5266f697ae96d0f120}{MajorFrameSource}};                        }
+\DoxyCodeLine{128     \textcolor{comment}{/*}}
+\DoxyCodeLine{129 \textcolor{comment}{    ** Messages sent by schedule table processor}}
+\DoxyCodeLine{130 \textcolor{comment}{    */}}
+\DoxyCodeLine{131     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_aab70a9dbdda2f80b31d12fbfd0da2289}{ScheduleActivitySuccessCount}};            }
+\DoxyCodeLine{134     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ad60184fa8adc5e7d813e21a5821163ad}{ScheduleActivityFailureCount}};            }
+\DoxyCodeLine{138     \textcolor{comment}{/*}}
+\DoxyCodeLine{139 \textcolor{comment}{    ** Total schedule table slots processed}}
+\DoxyCodeLine{140 \textcolor{comment}{    */}}
+\DoxyCodeLine{141     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a44390eb7a92bbd1a9250db505ee55ee1}{SlotsProcessedCount}};                     }
+\DoxyCodeLine{145     \textcolor{comment}{/*}}
+\DoxyCodeLine{146 \textcolor{comment}{    ** The number of times that slots were skipped}}
+\DoxyCodeLine{147 \textcolor{comment}{    ** (not the number of slots that were skipped)}}
+\DoxyCodeLine{148 \textcolor{comment}{    */}}
+\DoxyCodeLine{149     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a459d3cd3c53c6a67acdcbf0ba0f1a012}{SkippedSlotsCount}};                       }
+\DoxyCodeLine{155     \textcolor{comment}{/*}}
+\DoxyCodeLine{156 \textcolor{comment}{    ** The number of times that multiple slots were processed}}
+\DoxyCodeLine{157 \textcolor{comment}{    ** (not the number of slots that were processed)}}
+\DoxyCodeLine{158 \textcolor{comment}{    */}}
+\DoxyCodeLine{159     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a695c7b6a3104ab7a6785d893d4160791}{MultipleSlotsCount}};                      }
+\DoxyCodeLine{166     \textcolor{comment}{/*}}
+\DoxyCodeLine{167 \textcolor{comment}{    ** The number of times that SH woke up in the same slot as last time}}
+\DoxyCodeLine{168 \textcolor{comment}{    */}}
+\DoxyCodeLine{169     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a1561fff6ce46cfd10199ac0fc75bcd8a}{SameSlotCount}};                           }
+\DoxyCodeLine{173     \textcolor{comment}{/*}}
+\DoxyCodeLine{174 \textcolor{comment}{    ** The number of times that a table entry with bad data was processed}}
+\DoxyCodeLine{175 \textcolor{comment}{    ** (the entry previously passed validation but then somehow went bad)}}
+\DoxyCodeLine{176 \textcolor{comment}{    */}}
+\DoxyCodeLine{177     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a5624d597e340833d8b9722a8574b3d82}{BadTableDataCount}};                       }
+\DoxyCodeLine{181     \textcolor{comment}{/*}}
+\DoxyCodeLine{182 \textcolor{comment}{    ** The number of tables verified prior to table load}}
+\DoxyCodeLine{183 \textcolor{comment}{    */}}
+\DoxyCodeLine{184     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a126130a80d7a65fb71f6230e97dd135a}{TableVerifySuccessCount}};                 }
+\DoxyCodeLine{187     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a901e3dc103b43255e939381c0a0c5bf1}{TableVerifyFailureCount}};                 }
+\DoxyCodeLine{190     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a2594e01e5967e7990f894f3d55ce5c5b}{TablePassCount}};                          }
+\DoxyCodeLine{193     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a5abac9e231383a6b638fc023e9f6b97a}{ValidMajorFrameCount}};                    }
+\DoxyCodeLine{196     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a43370c7f9351b5988f71062e91123dca}{MissedMajorFrameCount}};                   }
+\DoxyCodeLine{199     uint32   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a54b85845fcacca5e84abd815d25c17f6}{UnexpectedMajorFrameCount}};               }
+\DoxyCodeLine{202     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a06ae5537a6a8e5977ba9fcb900e6eacd}{MinorFramesSinceTone}};                    }
+\DoxyCodeLine{205     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_aba5afc7b546e7d0015ceed38f75d9443}{NextSlotNumber}};                          }
+\DoxyCodeLine{208     uint16   \mbox{\hyperlink{struct_s_c_h___hk_packet__t_ae4154048d2aadc9ac87fb057d580d996}{LastSyncMETSlot}};                         }
+\DoxyCodeLine{211     \textcolor{keywordtype}{boolean}  \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a812b8cebfc9f6e0df40429b830d8a46b}{IgnoreMajorFrame}};                        }
+\DoxyCodeLine{214     \textcolor{keywordtype}{boolean}  \mbox{\hyperlink{struct_s_c_h___hk_packet__t_a215410bd2db5050ec6ce13f40d51d789}{UnexpectedMajorFrame}};                    }
+\DoxyCodeLine{217 \} \mbox{\hyperlink{struct_s_c_h___hk_packet__t}{SCH\_HkPacket\_t}};}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{221 \textcolor{comment}{**}}
+\DoxyCodeLine{222 \textcolor{comment}{** SCH diagnostic telemetry packet definition}}
+\DoxyCodeLine{223 \textcolor{comment}{**}}
+\DoxyCodeLine{224 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{230 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{231 \{}
+\DoxyCodeLine{232     uint8           TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];   }
+\DoxyCodeLine{234     uint16          EntryStates[SCH\_NUM\_STATUS\_BYTES\_REQD/2]; }
+\DoxyCodeLine{241     CFE\_SB\_MsgId\_t   MsgIDs[SCH\_TABLE\_ENTRIES]; }
+\DoxyCodeLine{244 \} \mbox{\hyperlink{struct_s_c_h___diag_packet__t}{SCH\_DiagPacket\_t}};}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_msg\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{249 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{250 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{251 }
+
+\end{DoxyCode}

@@ -1,0 +1,44 @@
+\hypertarget{struct_s_c_h___entry_cmd__t}{}\doxysection{SCH\+\_\+\+Entry\+Cmd\+\_\+t Struct Reference}
+\label{struct_s_c_h___entry_cmd__t}\index{SCH\_EntryCmd\_t@{SCH\_EntryCmd\_t}}
+
+
+Entry Enable/\+Disable Commands.  
+
+
+
+
+{\ttfamily \#include $<$sch\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_c_h___entry_cmd__t_a43feadfb6b45a5183b751fbb2d9dc504}\label{struct_s_c_h___entry_cmd__t_a43feadfb6b45a5183b751fbb2d9dc504}} 
+uint8 {\bfseries Cmd\+Header} \mbox{[}CFE\+\_\+\+SB\+\_\+\+CMD\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\begin{DoxyCompactList}\small\item\em c\+FE Software Bus \mbox{\hyperlink{struct_command}{Command}} Message Header \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___entry_cmd__t_ab2c4beb6673659795bb1afa5681699e0}{Slot\+Number}}
+\begin{DoxyCompactList}\small\item\em Slot Number of Activity whose state is to change. \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___entry_cmd__t_aa81b9c8fe12cf77493abffab77193e25}{Entry\+Number}}
+\begin{DoxyCompactList}\small\item\em Entry Number of Activity whose state is to change. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+For command details see \#\+SCH\+\_\+\+ENABLE\+\_\+\+CC, \#\+SCH\+\_\+\+DISABLE\+\_\+\+CC 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_c_h___entry_cmd__t_aa81b9c8fe12cf77493abffab77193e25}\label{struct_s_c_h___entry_cmd__t_aa81b9c8fe12cf77493abffab77193e25}} 
+\index{SCH\_EntryCmd\_t@{SCH\_EntryCmd\_t}!EntryNumber@{EntryNumber}}
+\index{EntryNumber@{EntryNumber}!SCH\_EntryCmd\_t@{SCH\_EntryCmd\_t}}
+\doxysubsubsection{\texorpdfstring{EntryNumber}{EntryNumber}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Entry\+Cmd\+\_\+t\+::\+Entry\+Number}
+
+Valid Range is zero to (\#\+SCH\+\_\+\+ENTRIES\+\_\+\+PER\+\_\+\+SLOT -\/ 1) \mbox{\Hypertarget{struct_s_c_h___entry_cmd__t_ab2c4beb6673659795bb1afa5681699e0}\label{struct_s_c_h___entry_cmd__t_ab2c4beb6673659795bb1afa5681699e0}} 
+\index{SCH\_EntryCmd\_t@{SCH\_EntryCmd\_t}!SlotNumber@{SlotNumber}}
+\index{SlotNumber@{SlotNumber}!SCH\_EntryCmd\_t@{SCH\_EntryCmd\_t}}
+\doxysubsubsection{\texorpdfstring{SlotNumber}{SlotNumber}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Entry\+Cmd\+\_\+t\+::\+Slot\+Number}
+
+Valid Range is zero to (\#\+SCH\+\_\+\+TOTAL\+\_\+\+SLOTS -\/ 1) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/scheduler/fsw/src/sch\+\_\+msg.\+h\end{DoxyCompactItemize}

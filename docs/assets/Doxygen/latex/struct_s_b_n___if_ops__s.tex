@@ -1,0 +1,232 @@
+\hypertarget{struct_s_b_n___if_ops__s}{}\doxysection{SBN\+\_\+\+If\+Ops\+\_\+s Struct Reference}
+\label{struct_s_b_n___if_ops__s}\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+
+
+{\ttfamily \#include $<$sbn\+\_\+interfaces.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+CFE\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a584b7a0d8d069fed5546e36009c4dbfa}{Init\+Module}} )(int Protocol\+Version, CFE\+\_\+\+EVS\+\_\+\+Event\+ID\+\_\+t Base\+EID)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}{Load\+Net}} )(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, const char $\ast$Address)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}{Load\+Peer}} )(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, const char $\ast$Address)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a25bfaf7ba27625dce7c2d73f3809415e}{Init\+Net}} )(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Host)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_ad04a5b4cc2934f55ca56f7967888abfa}{Init\+Peer}} )(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a1714ecb40c8734bb1140faba02f07470}{Poll\+Peer}} )(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)
+\item 
+SBN\+\_\+\+Msg\+Sz\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a4d014d7681bbdabc7860899b98a94bbf}{Send}} )(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, SBN\+\_\+\+Msg\+Type\+\_\+t Msg\+Type, SBN\+\_\+\+Msg\+Sz\+\_\+t Msg\+Sz, void $\ast$Payload)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a0a1bfcc04be35096d4f577d45b1d1c53}{Recv\+From\+Peer}} )(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, SBN\+\_\+\+Msg\+Type\+\_\+t $\ast$Msg\+Type\+Ptr, SBN\+\_\+\+Msg\+Sz\+\_\+t $\ast$Msg\+Sz\+Ptr, CFE\+\_\+\+Processor\+ID\+\_\+t $\ast$Processor\+IDPtr, void $\ast$Payload\+Buffer)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a5aacf2ca1d52350a6d60cb91f622ae28}{Recv\+From\+Net}} )(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, SBN\+\_\+\+Msg\+Type\+\_\+t $\ast$Msg\+Type\+Ptr, SBN\+\_\+\+Msg\+Sz\+\_\+t $\ast$Msg\+Sz\+Ptr, CFE\+\_\+\+Processor\+ID\+\_\+t $\ast$Processor\+IDPtr, void $\ast$Payload\+Buffer)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a6cab0d13ea4e4a34e2f94b237812743d}{Unload\+Net}} )(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___if_ops__s_a214f480f04c57971f8552472e80dacd6}{Unload\+Peer}} )(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This structure contains function pointers to interface-\/specific versions of the key SBN functions. Every interface module must have an equivalent structure that points to the approprate functions for that interface. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a584b7a0d8d069fed5546e36009c4dbfa}\label{struct_s_b_n___if_ops__s_a584b7a0d8d069fed5546e36009c4dbfa}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!InitModule@{InitModule}}
+\index{InitModule@{InitModule}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{InitModule}{InitModule}}
+{\footnotesize\ttfamily CFE\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Init\+Module) (int Protocol\+Version, CFE\+\_\+\+EVS\+\_\+\+Event\+ID\+\_\+t Base\+EID)}
+
+Initializes the protocol module.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Filter\+Version\mbox{[}in\mbox{]}} & The version \# of the protocol API. \\
+\hline
+{\em Base\+EID\mbox{[}in\mbox{]}} & The start of the Event ID\textquotesingle{}s for this module.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CFE\+\_\+\+SUCCESS on successful initialization, otherwise error specific to failure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a25bfaf7ba27625dce7c2d73f3809415e}\label{struct_s_b_n___if_ops__s_a25bfaf7ba27625dce7c2d73f3809415e}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!InitNet@{InitNet}}
+\index{InitNet@{InitNet}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{InitNet}{InitNet}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Init\+Net) (\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Host)}
+
+Initializes the host interface.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Net\mbox{[}in,out\mbox{]}} & Struct pointer describing a single interface \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS on successful initialization SBN\+\_\+\+ERROR otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_ad04a5b4cc2934f55ca56f7967888abfa}\label{struct_s_b_n___if_ops__s_ad04a5b4cc2934f55ca56f7967888abfa}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!InitPeer@{InitPeer}}
+\index{InitPeer@{InitPeer}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{InitPeer}{InitPeer}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Init\+Peer) (\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)}
+
+Initializes the peer interface.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Peer\mbox{[}in,out\mbox{]}} & The peer interface to initialize \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS on successful initialization SBN\+\_\+\+ERROR otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}\label{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!LoadNet@{LoadNet}}
+\index{LoadNet@{LoadNet}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{LoadNet}{LoadNet}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Load\+Net) (\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, const char $\ast$Address)}
+
+TODO\+: Document \mbox{\Hypertarget{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}\label{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!LoadPeer@{LoadPeer}}
+\index{LoadPeer@{LoadPeer}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{LoadPeer}{LoadPeer}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Load\+Peer) (\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, const char $\ast$Address)}
+
+TODO\+: Document \mbox{\Hypertarget{struct_s_b_n___if_ops__s_a1714ecb40c8734bb1140faba02f07470}\label{struct_s_b_n___if_ops__s_a1714ecb40c8734bb1140faba02f07470}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!PollPeer@{PollPeer}}
+\index{PollPeer@{PollPeer}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{PollPeer}{PollPeer}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Poll\+Peer) (\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)}
+
+SBN will poll any peer that does not have any messages to be sent after a timeout period. This is for (re)establishing connections and handshaking subscriptions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Peer\mbox{[}in\mbox{]}} & The peer to poll.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS on successful polling, SBN\+\_\+\+ERROR otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a5aacf2ca1d52350a6d60cb91f622ae28}\label{struct_s_b_n___if_ops__s_a5aacf2ca1d52350a6d60cb91f622ae28}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!RecvFromNet@{RecvFromNet}}
+\index{RecvFromNet@{RecvFromNet}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{RecvFromNet}{RecvFromNet}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Recv\+From\+Net) (\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, SBN\+\_\+\+Msg\+Type\+\_\+t $\ast$Msg\+Type\+Ptr, SBN\+\_\+\+Msg\+Sz\+\_\+t $\ast$Msg\+Sz\+Ptr, CFE\+\_\+\+Processor\+ID\+\_\+t $\ast$Processor\+IDPtr, void $\ast$Payload\+Buffer)}
+
+Receives an individual message from the network.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Net\mbox{[}in\mbox{]}} & Interface data for the network where this peer lives. \\
+\hline
+{\em Msg\+Type\+Ptr\mbox{[}out\mbox{]}} & SBN message type received. \\
+\hline
+{\em Msg\+Sz\+Ptr\mbox{[}out\mbox{]}} & Payload size received. \\
+\hline
+{\em Processor\+IDPtr\mbox{[}out\mbox{]}} & Processor\+ID of the sender. \\
+\hline
+{\em Payload\+Buffer\mbox{[}out\mbox{]}} & Payload buffer (pass in a buffer of CFE\+\_\+\+SB\+\_\+\+MAX\+\_\+\+SB\+\_\+\+MSG\+\_\+\+SIZE)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS on success, SBN\+\_\+\+ERROR on failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a0a1bfcc04be35096d4f577d45b1d1c53}\label{struct_s_b_n___if_ops__s_a0a1bfcc04be35096d4f577d45b1d1c53}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!RecvFromPeer@{RecvFromPeer}}
+\index{RecvFromPeer@{RecvFromPeer}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{RecvFromPeer}{RecvFromPeer}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Recv\+From\+Peer) (\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net, \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, SBN\+\_\+\+Msg\+Type\+\_\+t $\ast$Msg\+Type\+Ptr, SBN\+\_\+\+Msg\+Sz\+\_\+t $\ast$Msg\+Sz\+Ptr, CFE\+\_\+\+Processor\+ID\+\_\+t $\ast$Processor\+IDPtr, void $\ast$Payload\+Buffer)}
+
+Receives an individual message from the specified peer. Note, only define this or the Recv\+From\+Net method, not both!
+
+
+\begin{DoxyParams}{Parameters}
+{\em Net\mbox{[}in\mbox{]}} & Interface data for the network where this peer lives. \\
+\hline
+{\em Peer\mbox{[}in\mbox{]}} & Interface data describing the intended peer recipient. \\
+\hline
+{\em Msg\+Type\+Ptr\mbox{[}out\mbox{]}} & SBN message type received. \\
+\hline
+{\em Msg\+Sz\+Ptr\mbox{[}out\mbox{]}} & Payload size received. \\
+\hline
+{\em Processor\+IDPtr\mbox{[}out\mbox{]}} & Processor\+ID of the sender. \\
+\hline
+{\em Payload\+Buffer\mbox{[}out\mbox{]}} & Payload buffer (pass in a buffer of CFE\+\_\+\+SB\+\_\+\+MAX\+\_\+\+SB\+\_\+\+MSG\+\_\+\+SIZE)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS on success, SBN\+\_\+\+ERROR on failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a4d014d7681bbdabc7860899b98a94bbf}\label{struct_s_b_n___if_ops__s_a4d014d7681bbdabc7860899b98a94bbf}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!Send@{Send}}
+\index{Send@{Send}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{Send}{Send}}
+{\footnotesize\ttfamily SBN\+\_\+\+Msg\+Sz\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Send) (\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer, SBN\+\_\+\+Msg\+Type\+\_\+t Msg\+Type, SBN\+\_\+\+Msg\+Sz\+\_\+t Msg\+Sz, void $\ast$Payload)}
+
+Sends a message to a peer over the specified interface. Both protocol and data message buffers are included in the parameters, but only one is used at a time. The data message buffer is used for un/subscriptions and app messages. The protocol message buffer is used for announce and heartbeat messages/acks.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Net\mbox{[}in\mbox{]}} & Interface data for the network where this peer lives. \\
+\hline
+{\em Peer\mbox{[}in\mbox{]}} & Interface data describing the intended peer recipient. \\
+\hline
+{\em Msg\+Type\mbox{[}in\mbox{]}} & The SBN message type. \\
+\hline
+{\em Msg\+Sz\mbox{[}in\mbox{]}} & The size of the SBN message payload. \\
+\hline
+{\em Payload\mbox{[}in\mbox{]}} & The SBN message payload.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes sent on success, -\/1 on error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a6cab0d13ea4e4a34e2f94b237812743d}\label{struct_s_b_n___if_ops__s_a6cab0d13ea4e4a34e2f94b237812743d}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!UnloadNet@{UnloadNet}}
+\index{UnloadNet@{UnloadNet}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{UnloadNet}{UnloadNet}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Unload\+Net) (\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+t}} $\ast$Net)}
+
+Unload a network. This will unload all associated peers as well.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Net\mbox{[}in\mbox{]}} & Network to unload.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS when the net is unloaded. SBN\+\_\+\+ERROR if the net cannot be unloaded. SBN\+\_\+\+NOT\+\_\+\+IMPLEMENTED if the module does not implement this function.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}{Load\+Net}}, \mbox{\hyperlink{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}{Load\+Peer}}, \mbox{\hyperlink{struct_s_b_n___if_ops__s_a214f480f04c57971f8552472e80dacd6}{Unload\+Peer}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{struct_s_b_n___if_ops__s_a214f480f04c57971f8552472e80dacd6}\label{struct_s_b_n___if_ops__s_a214f480f04c57971f8552472e80dacd6}} 
+\index{SBN\_IfOps\_s@{SBN\_IfOps\_s}!UnloadPeer@{UnloadPeer}}
+\index{UnloadPeer@{UnloadPeer}!SBN\_IfOps\_s@{SBN\_IfOps\_s}}
+\doxysubsubsection{\texorpdfstring{UnloadPeer}{UnloadPeer}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+If\+Ops\+\_\+s\+::\+Unload\+Peer) (\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}} $\ast$Peer)}
+
+Unload a peer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Peer\mbox{[}in\mbox{]}} & Peer to unload.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS when the peer is unloaded. SBN\+\_\+\+ERROR if the peer cannot be unloaded. SBN\+\_\+\+NOT\+\_\+\+IMPLEMENTED if the module does not implement this function.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{struct_s_b_n___if_ops__s_a8c32902e3655bd7675f6ceb16ba34c00}{Load\+Net}}, \mbox{\hyperlink{struct_s_b_n___if_ops__s_ade77369aba8defa27448e19c859aa522}{Load\+Peer}}, \mbox{\hyperlink{struct_s_b_n___if_ops__s_a6cab0d13ea4e4a34e2f94b237812743d}{Unload\+Net}} 
+\end{DoxySeeAlso}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+interfaces.\+h\end{DoxyCompactItemize}

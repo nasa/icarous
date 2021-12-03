@@ -1,0 +1,33 @@
+\hypertarget{_target_tracker_8h_source}{}\doxysection{Target\+Tracker.\+h}
+\label{_target_tracker_8h_source}\index{Modules/Core/TargetTracker/TargetTracker.h@{Modules/Core/TargetTracker/TargetTracker.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef TARGET\_TRACKER\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define TARGET\_TRACKER\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{5 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keywordtype}{void}* new\_TargetTracker(\textcolor{keywordtype}{char}* \mbox{\hyperlink{structcallsign}{callsign}},\textcolor{keywordtype}{char}* configFile);}
+\DoxyCodeLine{10 \textcolor{keywordtype}{void} TargetTracker\_ReadParamsFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char}* configFile);}
+\DoxyCodeLine{11 \textcolor{keywordtype}{void} TargetTracker\_SetHomePosition(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3]);}
+\DoxyCodeLine{12 \textcolor{keywordtype}{void} TargetTracker\_SetModelUncertainty(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} sigmaP[6],\textcolor{keywordtype}{double} sigmaV[6]);}
+\DoxyCodeLine{13 \textcolor{keywordtype}{void} TargetTracker\_SetGateThresholds(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} p, \textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{14 \textcolor{keywordtype}{void} TargetTracker\_InputMeasurement(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char}* \mbox{\hyperlink{structcallsign}{callsign}},\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3],\textcolor{keywordtype}{double} velocity[3],\textcolor{keywordtype}{double} sigmaPos[6],\textcolor{keywordtype}{double} sigmaVel[6]);}
+\DoxyCodeLine{15 \textcolor{keywordtype}{void} TargetTracker\_InputCurrentState(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3],\textcolor{keywordtype}{double} velocity[3],\textcolor{keywordtype}{double} sigmaP[6],\textcolor{keywordtype}{double} sigmaV[6]);}
+\DoxyCodeLine{16 \textcolor{keywordtype}{int} TargetTracker\_GetTotalIntruders(\textcolor{keywordtype}{void}* obj);}
+\DoxyCodeLine{17 \textcolor{keywordtype}{void} TargetTracker\_GetIntruderData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{int} i,\textcolor{keywordtype}{char}* \mbox{\hyperlink{structcallsign}{callsign}},\textcolor{keywordtype}{double}* time,\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3],\textcolor{keywordtype}{double} velocity[3],\textcolor{keywordtype}{double} sigmaPos[6],\textcolor{keywordtype}{double} sigmaVel[6]);}
+\DoxyCodeLine{18 \textcolor{keywordtype}{void} TargetTracker\_UpdatePredictions(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{22 \}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

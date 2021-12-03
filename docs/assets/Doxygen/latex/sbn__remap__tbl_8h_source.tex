@@ -1,0 +1,62 @@
+\hypertarget{sbn__remap__tbl_8h_source}{}\doxysection{sbn\+\_\+remap\+\_\+tbl.\+h}
+\label{sbn__remap__tbl_8h_source}\index{apps/SBN/modules/filter/remap/fsw/platform\_inc/sbn\_remap\_tbl.h@{apps/SBN/modules/filter/remap/fsw/platform\_inc/sbn\_remap\_tbl.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_remap\_tbl\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_remap\_tbl\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}sbn\_types.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/****}}
+\DoxyCodeLine{9 \textcolor{comment}{ * @brief The RemapTbl defines, for a peer, which MID's should be remapped}}
+\DoxyCodeLine{10 \textcolor{comment}{ * (listing a "{}from"{} MID and a "{}to"{} MID, determining when a message is}}
+\DoxyCodeLine{11 \textcolor{comment}{ * published locally with the "{}from"{} MID, it is sent to the peer with the "{}to"{}}}
+\DoxyCodeLine{12 \textcolor{comment}{ * MID.)}}
+\DoxyCodeLine{13 \textcolor{comment}{ *}}
+\DoxyCodeLine{14 \textcolor{comment}{ * Note that there should only be one "{}to"{} for any "{}from"{}. One-\/to-\/many is not supported by the module.}}
+\DoxyCodeLine{15 \textcolor{comment}{ *}}
+\DoxyCodeLine{16 \textcolor{comment}{ * The RemapTbl must be sorted and unique for ProcessorID + from}}
+\DoxyCodeLine{17 \textcolor{comment}{ * Logic is as follows:}}
+\DoxyCodeLine{18 \textcolor{comment}{ * for each message-\/>}}
+\DoxyCodeLine{19 \textcolor{comment}{ *      if there's an entry-\/>}}
+\DoxyCodeLine{20 \textcolor{comment}{ *          if the "{}to"{} is defined-\/>remap the MID to the new MID}}
+\DoxyCodeLine{21 \textcolor{comment}{ *              (note new MID can be the same as the old MID to send unmodified)}}
+\DoxyCodeLine{22 \textcolor{comment}{ *          else-\/>ignore the message}}
+\DoxyCodeLine{23 \textcolor{comment}{ *      else-\/>}}
+\DoxyCodeLine{24 \textcolor{comment}{ *          if the RemapDefaultFlag == SBN\_REMAP\_DEFAULT\_IGNORE-\/>}}
+\DoxyCodeLine{25 \textcolor{comment}{ *              ignore the message}}
+\DoxyCodeLine{26 \textcolor{comment}{ *          else-\/>send the message on unmodified}}
+\DoxyCodeLine{27 \textcolor{comment}{ */}}
+\DoxyCodeLine{28 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{29 \{}
+\DoxyCodeLine{31     CFE\_ProcessorID\_t \mbox{\hyperlink{struct_s_b_n___remap_tbl_entry__t_a9a454add527e47b14ab5acc484d61308}{ProcessorID}};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{34     CFE\_SB\_MsgId\_t \mbox{\hyperlink{struct_s_b_n___remap_tbl_entry__t_a5ccb1f1e95ed9074eb77f84c30c55f2e}{FromMID}};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{37     CFE\_SB\_MsgId\_t \mbox{\hyperlink{struct_s_b_n___remap_tbl_entry__t_aa98bb7235c51890df046a2c73011220c}{ToMID}};}
+\DoxyCodeLine{38 \}}
+\DoxyCodeLine{39 \mbox{\hyperlink{struct_s_b_n___remap_tbl_entry__t}{SBN\_RemapTblEntry\_t}};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define SBN\_REMAP\_TABLE\_SHARENAME "{}SBN.RemapTbl"{}}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#define SBN\_REMAP\_DEFAULT\_IGNORE 0}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#define SBN\_REMAP\_DEFAULT\_SEND 1}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#define SBN\_REMAP\_TABLE\_SIZE 256}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{58 \{}
+\DoxyCodeLine{60     uint32 \mbox{\hyperlink{struct_s_b_n___remap_tbl__t_a6be6004ce10c9b2687026a2f37b11907}{RemapDefaultFlag}};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{63     uint32 \mbox{\hyperlink{struct_s_b_n___remap_tbl__t_a150b32a56da3fbffd02739f3044d70be}{EntryCnt}};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{66     \mbox{\hyperlink{struct_s_b_n___remap_tbl_entry__t}{SBN\_RemapTblEntry\_t}} Entries[SBN\_REMAP\_TABLE\_SIZE];}
+\DoxyCodeLine{67 \}}
+\DoxyCodeLine{68 \mbox{\hyperlink{struct_s_b_n___remap_tbl__t}{SBN\_RemapTbl\_t}};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_remap\_tbl\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

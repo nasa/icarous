@@ -1,0 +1,77 @@
+\hypertarget{apps_2guidance_2fsw_2src_2guidance_8h_source}{}\doxysection{guidance.\+h}
+\label{apps_2guidance_2fsw_2src_2guidance_8h_source}\index{apps/guidance/fsw/src/guidance.h@{apps/guidance/fsw/src/guidance.h}}
+\mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_GUIDANCE\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_GUIDANCE\_H}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define GUIDANCE}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msgids_8h}{trajectory\_msgids.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msg_8h}{guidance\_msg.h}}"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msgids_8h}{guidance\_msgids.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}UtilFunctions.h"{}}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}Core/Guidance/Guidance.h"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define GUIDANCE\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define GUIDANCE\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define GUIDANCE\_PIPE\_DEPTH 30 }}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define GUIDANCE\_PIPE\_NAME "{}GUIDANCE\_PIPE"{}}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define GUIDANCE\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define GUIDANCE\_MINOR\_VERSION 0}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{52 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{53     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structguidance_app_data__t_a56bf9e6ddd929e5c2b0c6c5b80f68985}{guidance\_Pipe}};       }
+\DoxyCodeLine{54     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structguidance_app_data__t_a47ad94baa1befb8ba9d077eae33d1f12}{guidance\_MsgPtr}};     }
+\DoxyCodeLine{55     \mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}   \mbox{\hyperlink{structguidance_app_data__t_af1344565768de55a5d2dd034a6652aea}{guidance\_params}};     }
+\DoxyCodeLine{56     \textcolor{keywordtype}{bool} takeoffComplete;}
+\DoxyCodeLine{57     \mbox{\hyperlink{structposition__t}{position\_t}} pos;}
+\DoxyCodeLine{58     \textcolor{keywordtype}{void}* \mbox{\hyperlink{class_guidance}{Guidance}};}
+\DoxyCodeLine{59     \textcolor{keywordtype}{char} activePlan[25];}
+\DoxyCodeLine{60     \mbox{\hyperlink{structstatus__t}{status\_t}} statustxt;}
+\DoxyCodeLine{61     \textcolor{keywordtype}{bool} sentPos;}
+\DoxyCodeLine{62     \textcolor{keywordtype}{int} lastReachedWaypoint;}
+\DoxyCodeLine{63     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} plan;}
+\DoxyCodeLine{64 \}\mbox{\hyperlink{structguidance_app_data__t}{guidanceAppData\_t}};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_a8228865df2ab3701305c1b2921030cf8}{GUIDANCE\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_a344c92eff8656e572b30edfbd7afa917}{GUIDANCE\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{79 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_a1fe32f4a8b69f4436b61eec1be6c7466}{GUIDANCE\_AppInitData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_aea788fbeae70d0a657cb4e1a6e70fefa}{GUIDANCE\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{89 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_ad10039c32d652e73fb3758a75e8da987}{GUIDANCE\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_af92bbc2a7ad0ff2ca881059bd2ac16bc}{GUIDANCE\_Run}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{101 int32\_t \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_ac70d4349f9fda05c5efb2bd9645f8858}{GuidanceTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{106 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_a71b129046b85eb8c58bbe770a5d26d30}{HandleGuidanceCommands}}(\mbox{\hyperlink{structargs_cmd__t}{argsCmd\_t}} *cmd);}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{111 \textcolor{keywordtype}{void} \mbox{\hyperlink{apps_2guidance_2fsw_2src_2guidance_8h_afc765ed3c5d585e9324dc2df4beb5fae}{ComputeTakeoffGuidanceInput}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117 EXTERN \mbox{\hyperlink{structguidance_app_data__t}{guidanceAppData\_t}} guidanceAppData;}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_GUIDANCE\_H}}
+
+\end{DoxyCode}

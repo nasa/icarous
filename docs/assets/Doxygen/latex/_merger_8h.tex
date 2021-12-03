@@ -1,0 +1,127 @@
+\hypertarget{_merger_8h}{}\doxysection{Modules/\+Core/\+Merger/\+Merger.h File Reference}
+\label{_merger_8h}\index{Modules/Core/Merger/Merger.h@{Modules/Core/Merger/Merger.h}}
+
+
+Definition of defines, structs and functions for merger app.  
+
+
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_merger_8h_abd2aacdca9cb2a1a30f3392256b96ea3}\label{_merger_8h_abd2aacdca9cb2a1a30f3392256b96ea3}} 
+\#define {\bfseries MAX\+\_\+\+NODES}~10
+\item 
+\mbox{\Hypertarget{_merger_8h_a46233d58d1564f71123920967da53b90}\label{_merger_8h_a46233d58d1564f71123920967da53b90}} 
+\#define {\bfseries INTERSECTION\+\_\+\+MAX}~5
+\item 
+\mbox{\Hypertarget{_merger_8h_ab9384f37864636a4cc74ecacf3d278d3}\label{_merger_8h_ab9384f37864636a4cc74ecacf3d278d3}} 
+\#define {\bfseries MERGER\+\_\+\+MAXAIRCRAFT}~MAX\+\_\+\+NODES
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_merger_8h_aa86c604cdcc2530671f6fbcd130ddf0b}\label{_merger_8h_aa86c604cdcc2530671f6fbcd130ddf0b}} 
+enum {\bfseries local\+Merger\+Nav\+States\+\_\+e} \{ {\bfseries \+\_\+\+MERGER\+\_\+\+NOOP\+\_\+}
+, {\bfseries \+\_\+\+MERGER\+\_\+\+IDLE\+\_\+}
+, {\bfseries \+\_\+\+MERGER\+\_\+\+VECTOR\+\_\+\+CONTROL\+\_\+}
+, {\bfseries \+\_\+\+MERGER\+\_\+\+GIVECONTROL\+\_\+}
+ \}
+\item 
+\mbox{\Hypertarget{_merger_8h_a41891bba5a9324bb1f672f2672e1c842}\label{_merger_8h_a41891bba5a9324bb1f672f2672e1c842}} 
+enum {\bfseries zone\+Type\+\_\+e} \{ {\bfseries NULL\+\_\+\+ZONE}
+, {\bfseries COORD\+\_\+\+ZONE}
+, {\bfseries SCHED\+\_\+\+ZONE}
+, {\bfseries ENTRY\+\_\+\+ZONE}
+ \}
+\item 
+\mbox{\Hypertarget{_merger_8h_a6e5afa80a39b9b19c3920f45b4518a13}\label{_merger_8h_a6e5afa80a39b9b19c3920f45b4518a13}} 
+enum {\bfseries merge\+Status\+\_\+e} \{ {\bfseries MERGING\+\_\+\+INACTIVE}
+, {\bfseries MERGING\+\_\+\+ACTIVE}
+, {\bfseries MERGING\+\_\+\+GUIDANCE\+\_\+\+INACTIVE}
+, {\bfseries MERGING\+\_\+\+GUIDANCE\+\_\+\+ACTIVE}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{_merger_8h_ad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\item 
+\mbox{\Hypertarget{_merger_8h_adc1f43f90f076bc8f9e8f26cd62b32a3}\label{_merger_8h_adc1f43f90f076bc8f9e8f26cd62b32a3}} 
+void $\ast$ {\bfseries Merger\+Init} (char \mbox{\hyperlink{structcallsign}{callsign}}\mbox{[}$\,$\mbox{]}, char config\mbox{[}$\,$\mbox{]}, int vehicle\+ID)
+\item 
+\mbox{\Hypertarget{_merger_8h_a0b2ee9ef035928683c32247b43c330db}\label{_merger_8h_a0b2ee9ef035928683c32247b43c330db}} 
+void {\bfseries Merger\+Read\+Param\+From\+File} (void $\ast$obj, char config\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_merger_8h_a2b576730f9648454d9741bcb0c2ec9b2}\label{_merger_8h_a2b576730f9648454d9741bcb0c2ec9b2}} 
+void {\bfseries Merger\+Deinit} (void $\ast$obj)
+\item 
+\mbox{\Hypertarget{_merger_8h_a2cf1310db93b0fe870ee2a8f1b84af12}\label{_merger_8h_a2cf1310db93b0fe870ee2a8f1b84af12}} 
+void {\bfseries Merger\+Set\+Aircraft\+State} (void $\ast$obj, double pos\mbox{[}$\,$\mbox{]}, double vel\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_merger_8h_aa123798652cf552ea6df3c1bcd8eea09}\label{_merger_8h_aa123798652cf552ea6df3c1bcd8eea09}} 
+void {\bfseries Merger\+Set\+Vehicle\+Constraints} (void $\ast$obj, double min\+Vel, double max\+Vel, double turn\+Radius)
+\item 
+\mbox{\Hypertarget{_merger_8h_aad79219c4771e765eba3b45e16af6a98}\label{_merger_8h_aad79219c4771e765eba3b45e16af6a98}} 
+void {\bfseries Merger\+Set\+Fix\+Params} (void $\ast$obj, double separation\+Time, double coordzone, double schzone, double entryzone, double corridor\+Width)
+\item 
+\mbox{\Hypertarget{_merger_8h_a19d2df3514ad8eba07e6c9985d872e77}\label{_merger_8h_a19d2df3514ad8eba07e6c9985d872e77}} 
+void {\bfseries Merger\+Set\+Intersection\+Data} (void $\ast$obj, int i, int id, double \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_merger_8h_aad054a50f511d728295c5f0b7bd3ce51}\label{_merger_8h_aad054a50f511d728295c5f0b7bd3ce51}} 
+void {\bfseries Merger\+Set\+Node\+Log} (void $\ast$obj, \mbox{\hyperlink{structdata_log__t}{data\+Log\+\_\+t}} $\ast$mg\+Data)
+\item 
+\mbox{\Hypertarget{_merger_8h_a5046fd1af63da3fb164df7bdfdb0da68}\label{_merger_8h_a5046fd1af63da3fb164df7bdfdb0da68}} 
+unsigned char {\bfseries Merger\+Run} (void $\ast$obj, double time)
+\item 
+\mbox{\Hypertarget{_merger_8h_a1970935b75e38a50ed16a25bbabfc295}\label{_merger_8h_a1970935b75e38a50ed16a25bbabfc295}} 
+void {\bfseries Merger\+Output\+Velocity} (void $\ast$obj, double $\ast$trk, double $\ast$gs, double $\ast$vs)
+\item 
+\mbox{\Hypertarget{_merger_8h_a5d5c49e71740a868459d042c4c0833a3}\label{_merger_8h_a5d5c49e71740a868459d042c4c0833a3}} 
+int {\bfseries Merger\+Output\+Trajectory} (void $\ast$obj, int i, double wp\mbox{[}4\mbox{]})
+\item 
+\mbox{\Hypertarget{_merger_8h_a59981ac889009c86dda4d0bc98fc116c}\label{_merger_8h_a59981ac889009c86dda4d0bc98fc116c}} 
+bool {\bfseries Merger\+Get\+Arrival\+Times} (void $\ast$obj, \mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} $\ast$mg\+Data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_merger_8h_abbda0ead6f4bb790d7d16ec74ab1359e}\label{_merger_8h_abbda0ead6f4bb790d7d16ec74ab1359e}} 
+{\bfseries merging\+Data\+\_\+t}
+\item 
+\mbox{\Hypertarget{_merger_8h_a9857bcd0087075fb2a14c7f2dad8e5f9}\label{_merger_8h_a9857bcd0087075fb2a14c7f2dad8e5f9}} 
+{\bfseries data\+Log\+\_\+t}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Swee Balachandran 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_merger_8h_ad09246453a4dabd919c7541484046a87}\label{_merger_8h_ad09246453a4dabd919c7541484046a87}} 
+\index{Merger.h@{Merger.h}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!Merger.h@{Merger.h}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily struct \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+packed\+\_\+\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} Aircraft ID
+
+\texorpdfstring{$<$}{<} Current intersection for which scheduling is required
+
+\texorpdfstring{$<$}{<} Earliest a/c can reach the intersection (using max speed)
+
+\texorpdfstring{$<$}{<} Current arrival time (using current speed)
+
+\texorpdfstring{$<$}{<} Late arrival time (using slowest speed + allowed deviations)
+
+\texorpdfstring{$<$}{<} Number of times scheduler has been run
+
+\texorpdfstring{$<$}{<} zone status
+
+\texorpdfstring{$<$}{<} Intersection ID for the current raft network
+
+\texorpdfstring{$<$}{<} Raft node status of current vehicle
+
+\texorpdfstring{$<$}{<} Total number of nodes in the network

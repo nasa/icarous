@@ -1,0 +1,107 @@
+\hypertarget{sch__cmds_8h_source}{}\doxysection{sch\+\_\+cmds.\+h}
+\label{sch__cmds_8h_source}\index{apps/scheduler/fsw/src/sch\_cmds.h@{apps/scheduler/fsw/src/sch\_cmds.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File:}}
+\DoxyCodeLine{3 \textcolor{comment}{**   \$Id: sch\_cmds.h 1.4 2017/06/21 15:29:00EDT mdeschu Exp  \$}}
+\DoxyCodeLine{4 \textcolor{comment}{**}}
+\DoxyCodeLine{5 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{6 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{7 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{10 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{11 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{12 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{13 \textcolor{comment}{**}}
+\DoxyCodeLine{14 \textcolor{comment}{** Purpose: }}
+\DoxyCodeLine{15 \textcolor{comment}{**  The CFS Scheduler (SCH) Application header file}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{18 \textcolor{comment}{**}}
+\DoxyCodeLine{19 \textcolor{comment}{**}}
+\DoxyCodeLine{20 \textcolor{comment}{*************************************************************************/}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifndef \_sch\_cmds\_}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define \_sch\_cmds\_}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{25 \textcolor{comment}{**}}
+\DoxyCodeLine{26 \textcolor{comment}{** Include section}}
+\DoxyCodeLine{27 \textcolor{comment}{**}}
+\DoxyCodeLine{28 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{33 \textcolor{comment}{**}}
+\DoxyCodeLine{34 \textcolor{comment}{** Macro definitions}}
+\DoxyCodeLine{35 \textcolor{comment}{**}}
+\DoxyCodeLine{36 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{39 \textcolor{comment}{**}}
+\DoxyCodeLine{40 \textcolor{comment}{** Type definitions}}
+\DoxyCodeLine{41 \textcolor{comment}{**}}
+\DoxyCodeLine{42 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{45 \textcolor{comment}{**}}
+\DoxyCodeLine{46 \textcolor{comment}{** Exported data}}
+\DoxyCodeLine{47 \textcolor{comment}{**}}
+\DoxyCodeLine{48 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{51 \textcolor{comment}{**}}
+\DoxyCodeLine{52 \textcolor{comment}{** Exported functions}}
+\DoxyCodeLine{53 \textcolor{comment}{**}}
+\DoxyCodeLine{54 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{55 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{79 int32 SCH\_AppPipe(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{99 int32 SCH\_AcquirePointers(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{121 int32 SCH\_HousekeepingCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{comment}{/*}}
+\DoxyCodeLine{124 \textcolor{comment}{** Application command handlers}}
+\DoxyCodeLine{125 \textcolor{comment}{*/}}
+\DoxyCodeLine{126 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{141 \textcolor{keywordtype}{void} SCH\_NoopCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{160 \textcolor{keywordtype}{void} SCH\_ResetCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{178 \textcolor{keywordtype}{void} SCH\_EnableCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{196 \textcolor{keywordtype}{void} SCH\_DisableCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{214 \textcolor{keywordtype}{void} SCH\_EnableGroupCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{232 \textcolor{keywordtype}{void} SCH\_DisableGroupCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{251 \textcolor{keywordtype}{void} SCH\_EnableSyncCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{266 \textcolor{keywordtype}{void} SCH\_SendDiagTlmCmd(CFE\_SB\_MsgPtr\_t MessagePtr);}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{284 \textcolor{keywordtype}{void} SCH\_PostCommandResult(\textcolor{keywordtype}{boolean} GoodCommand);}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286 \textcolor{comment}{/************************************************************************/}}
+\DoxyCodeLine{314 int32 SCH\_VerifyCmdLength (CFE\_SB\_MsgPtr\_t MessagePtr, uint32 ExpectedLength);}
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_cmds\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{319 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{320 \textcolor{comment}{/************************/}}
+
+\end{DoxyCode}

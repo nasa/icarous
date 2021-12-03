@@ -1,0 +1,92 @@
+\hypertarget{trajectory_8h_source}{}\doxysection{trajectory.\+h}
+\label{trajectory_8h_source}\index{apps/trajectory/fsw/src/trajectory.h@{apps/trajectory/fsw/src/trajectory.h}}
+\mbox{\hyperlink{trajectory_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_TRAJECTORY\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_TRAJECTORY\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Icarous.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}TrajManager.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msgids_8h}{trajectory\_msgids.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msgids_8h}{traffic\_msgids.h}}"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{guidance__msgids_8h}{guidance\_msgids.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msg_8h}{trajectory\_msg.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__tbl_8h}{trajectory\_tbl.h}}"{}}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define TRAJECTORY\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define TRAJECTORY\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define TRAJECTORY\_RECEIVED\_INTRUDER\_EID 2}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define TRAJECTORY\_RECEIVED\_FLIGHTPLAN\_EID 3}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define TRAJECTORY\_RECEIVED\_GEOFENCE\_EID 4}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define TRAJECTORY\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define TRAJECTORY\_PIPE\_NAME "{}TRAJECTORY\_PIPE"{}}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define TRAJECTORY\_SCH\_PIPE\_NAME "{}TRAJ\_SCH\_PIPE"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define TRAJECTORY\_SCH\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define TRAJECTORY\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define TRAJECTORY\_MINOR\_VERSION 0}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define TRAJ\_MONITOR\_TASK\_ID 23}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define TRAJ\_MONITOR\_TASK\_STACK\_SIZE 1024}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define TRAJ\_MONITOR\_PRIORITY 65}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 uint32 traj\_monitor\_stack[TRAJ\_MONITOR\_TASK\_STACK\_SIZE];}
+\DoxyCodeLine{47 uint32 traj\_monitor\_task\_id;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{71 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{72     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{struct_trajectory_app_data__t_a0668df8e9f97b1b0eb3b1afa601c21c0}{TrajRequest\_Pipe}};       }
+\DoxyCodeLine{73     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{struct_trajectory_app_data__t_a8f6b2d6420c46144174f39511cd4522e}{TrajData\_Pipe}};          }
+\DoxyCodeLine{74     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{struct_trajectory_app_data__t_af26b16f48d663ad3b948208b350623f6}{TrajRequest\_MsgPtr}};     }
+\DoxyCodeLine{75     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{struct_trajectory_app_data__t_a8f13dce158694547f1132c3259cb91f6}{Traj\_MsgPtr}};            }
+\DoxyCodeLine{76     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{struct_trajectory_app_data__t_adbbdc4ae934db9539e29e6dca6965056}{Trajectory\_TblHandle}};   }
+\DoxyCodeLine{77     \textcolor{keywordtype}{void}* \mbox{\hyperlink{struct_trajectory_app_data__t_aa730707f727ccd8caa1c706b0e71368c}{pplanner}};                            }
+\DoxyCodeLine{78     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_trajectory_app_data__t_a1cf679c4db5cb55324c01d9b015fbd88}{numPlansComputed}};                      }
+\DoxyCodeLine{79     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_trajectory_app_data__t_a2e51ba7291984395823114cef2268166}{runThreads}};                            }
+\DoxyCodeLine{80     \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3];                        }
+\DoxyCodeLine{81     \textcolor{keywordtype}{double} velocity[3];                        }
+\DoxyCodeLine{82     uint32\_t \mbox{\hyperlink{struct_trajectory_app_data__t_a84c7908c0284fcea5ebef5805d7cef24}{mutexAcState}};                     }
+\DoxyCodeLine{83     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_trajectory_app_data__t_a7684991a53be7db47bc2259340cc60b8}{nextWP1}};                               }
+\DoxyCodeLine{84     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_trajectory_app_data__t_ad5ffa11e9643d02b2b2847e006e0efe9}{nextWP2}};                               }
+\DoxyCodeLine{85     \textcolor{keywordtype}{char} planID[20];                           }
+\DoxyCodeLine{86     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_trajectory_app_data__t_a7be94e4ab8d0810f89be6e72450c3592}{monitor}};                              }
+\DoxyCodeLine{87     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_trajectory_app_data__t_a76ac891c29ebe750d95b2a2a9bb573d4}{updateDAAParams}};                      }
+\DoxyCodeLine{88     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{struct_trajectory_app_data__t_ab87e3de6ef6d2576de7c65c4f143c829}{flightplan1}};                  }
+\DoxyCodeLine{89     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{struct_trajectory_app_data__t_ad588a610de269347e44d02384c3e7be1}{flightplan2}};                  }
+\DoxyCodeLine{90     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_trajectory_app_data__t_a548d9a5c1470245f88dcbc8306734f75}{eutlReceived}};                         }
+\DoxyCodeLine{91     \textcolor{keywordtype}{double} timeNow;}
+\DoxyCodeLine{92 \}\mbox{\hyperlink{struct_trajectory_app_data__t}{TrajectoryAppData\_t}};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{97 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_adaba662c1aaa621741ecb4fd035c628f}{TRAJECTORY\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{102 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_a75a446a475c965536040fbc79d0d76ad}{TRAJECTORY\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{107 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_a8fd2f9ce7da336a99eea7a4468baaf52}{TRAJECTORY\_AppInitData}}(\mbox{\hyperlink{struct_trajectory_table__t}{TrajectoryTable\_t}}* TblPtr);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{112 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_ad4f994a74a9fb33929ff17ea3a6a182c}{TRAJECTORY\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_a9df58c5853502dffbe46d6eee44f8d12}{TRAJECTORY\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122 \textcolor{keywordtype}{void} \mbox{\hyperlink{trajectory_8h_a1640130e551a840c86a07d2ea2dcea75}{TRAJECTORY\_Monitor}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{129 int32\_t \mbox{\hyperlink{trajectory_8h_a29d6d3a5a8db1f0b53b33039d060aeb6}{TrajectoryTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{134 \mbox{\hyperlink{struct_trajectory_app_data__t}{TrajectoryAppData\_t}} TrajectoryAppData;}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_TRAJECTORY\_H}}
+
+\end{DoxyCode}

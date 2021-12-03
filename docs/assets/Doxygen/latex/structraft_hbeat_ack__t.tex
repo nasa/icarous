@@ -1,0 +1,66 @@
+\hypertarget{structraft_hbeat_ack__t}{}\doxysection{raft\+Hbeat\+Ack\+\_\+t Struct Reference}
+\label{structraft_hbeat_ack__t}\index{raftHbeatAck\_t@{raftHbeatAck\_t}}
+
+
+acknowledgement data from follower nodes  
+
+
+
+
+{\ttfamily \#include $<$raft\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structraft_hbeat_ack__t_a6d7d0a7f03868a503064c163b56f9433}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structraft_hbeat_ack__t_ae9476de1675fb7de5608c6c2b66a4631}{intersection\+ID}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat_ack__t_a7738f5a47545ba2189c10ffffe747d42}{follower\+ID}}
+\item 
+report\+\_\+t \mbox{\hyperlink{structraft_hbeat_ack__t_ab6854a2edd213bd3fe77f222684cf736}{node\+Data}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structraft_hbeat_ack__t_a405aa5aedc15b2f9ffed5fa0074f6521}{log\+Index}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Published under the ICAROUS\+\_\+\+RAFT\+\_\+\+HBEATACK\+\_\+\+MID topic 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structraft_hbeat_ack__t_a7738f5a47545ba2189c10ffffe747d42}\label{structraft_hbeat_ack__t_a7738f5a47545ba2189c10ffffe747d42}} 
+\index{raftHbeatAck\_t@{raftHbeatAck\_t}!followerID@{followerID}}
+\index{followerID@{followerID}!raftHbeatAck\_t@{raftHbeatAck\_t}}
+\doxysubsubsection{\texorpdfstring{followerID}{followerID}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+Ack\+\_\+t\+::follower\+ID}
+
+Follower node\textquotesingle{}s aircraft ID \mbox{\Hypertarget{structraft_hbeat_ack__t_ae9476de1675fb7de5608c6c2b66a4631}\label{structraft_hbeat_ack__t_ae9476de1675fb7de5608c6c2b66a4631}} 
+\index{raftHbeatAck\_t@{raftHbeatAck\_t}!intersectionID@{intersectionID}}
+\index{intersectionID@{intersectionID}!raftHbeatAck\_t@{raftHbeatAck\_t}}
+\doxysubsubsection{\texorpdfstring{intersectionID}{intersectionID}}
+{\footnotesize\ttfamily int32\+\_\+t raft\+Hbeat\+Ack\+\_\+t\+::intersection\+ID}
+
+Intersection ID of the participating node \mbox{\Hypertarget{structraft_hbeat_ack__t_a405aa5aedc15b2f9ffed5fa0074f6521}\label{structraft_hbeat_ack__t_a405aa5aedc15b2f9ffed5fa0074f6521}} 
+\index{raftHbeatAck\_t@{raftHbeatAck\_t}!logIndex@{logIndex}}
+\index{logIndex@{logIndex}!raftHbeatAck\_t@{raftHbeatAck\_t}}
+\doxysubsubsection{\texorpdfstring{logIndex}{logIndex}}
+{\footnotesize\ttfamily uint32\+\_\+t raft\+Hbeat\+Ack\+\_\+t\+::log\+Index}
+
+log index for which ack is issued \mbox{\Hypertarget{structraft_hbeat_ack__t_ab6854a2edd213bd3fe77f222684cf736}\label{structraft_hbeat_ack__t_ab6854a2edd213bd3fe77f222684cf736}} 
+\index{raftHbeatAck\_t@{raftHbeatAck\_t}!nodeData@{nodeData}}
+\index{nodeData@{nodeData}!raftHbeatAck\_t@{raftHbeatAck\_t}}
+\doxysubsubsection{\texorpdfstring{nodeData}{nodeData}}
+{\footnotesize\ttfamily report\+\_\+t raft\+Hbeat\+Ack\+\_\+t\+::node\+Data}
+
+Merging data for the current node \mbox{\Hypertarget{structraft_hbeat_ack__t_a6d7d0a7f03868a503064c163b56f9433}\label{structraft_hbeat_ack__t_a6d7d0a7f03868a503064c163b56f9433}} 
+\index{raftHbeatAck\_t@{raftHbeatAck\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!raftHbeatAck\_t@{raftHbeatAck\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t raft\+Hbeat\+Ack\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information 
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+apps/raft/fsw/platform\+\_\+inc/\mbox{\hyperlink{raft__msg_8h}{raft\+\_\+msg.\+h}}\item 
+Modules/\+Core/\+Raft/Raft\+Core.\+hpp\end{DoxyCompactItemize}

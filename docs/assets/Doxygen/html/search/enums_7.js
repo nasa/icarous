@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wp_5fmetric_5fe',['wp_metric_e',['../group__ARDUPILOT__MESSAGES.html#gae04d967ed80badd3f6175e2e526d6b24',1,'ardupilot_msg.h']]]
+  ['takeoff_5fstatus_5fe_0',['takeoff_status_e',['../_cognition_8hpp.html#ae43a793abb723e0714d93ca186662e7c',1,'Cognition.hpp']]]
 ];

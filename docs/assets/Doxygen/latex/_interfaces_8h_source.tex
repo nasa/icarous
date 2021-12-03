@@ -1,0 +1,132 @@
+\hypertarget{_interfaces_8h_source}{}\doxysection{Interfaces.\+h}
+\label{_interfaces_8h_source}\index{Modules/Core/Interfaces/Interfaces.h@{Modules/Core/Interfaces/Interfaces.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef INTERFACES\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define INTERFACES\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define MAX\_FIX\_NAME\_SIZE 20}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{13 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{14     TCP\_NONE      = 0, }
+\DoxyCodeLine{15     TCP\_BOT       = 1, }
+\DoxyCodeLine{16     TCP\_EOT       = 2, }
+\DoxyCodeLine{17     TCP\_MOT       = 4, }
+\DoxyCodeLine{18     TCP\_EOTBOT    = 5, }
+\DoxyCodeLine{19     TCP\_NONEg     = 6, }
+\DoxyCodeLine{20     TCP\_BGS       = 7, }
+\DoxyCodeLine{21     TCP\_EGS       = 8, }
+\DoxyCodeLine{22     TCP\_EGSBGS    = 9, }
+\DoxyCodeLine{23     TCP\_NONEv     = 10,}
+\DoxyCodeLine{24     TCP\_BVS       = 11,}
+\DoxyCodeLine{25     TCP\_EVS       = 12,}
+\DoxyCodeLine{26     TCP\_EVSBVS    = 13,}
+\DoxyCodeLine{27 \}tcp\_e;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{30     BANDREGION\_UNKNOWN  = 0,}
+\DoxyCodeLine{31     BANDREGION\_NONE     = 1,}
+\DoxyCodeLine{32     BANDREGION\_FAR      = 2,}
+\DoxyCodeLine{33     BANDREGION\_MID      = 3,}
+\DoxyCodeLine{34     BANDREGION\_NEAR     = 4,}
+\DoxyCodeLine{35     BANDREGION\_RECOVERY = 5}
+\DoxyCodeLine{36 \}bandRegion\_e;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{42 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{43     \_TRAFFIC\_SIM\_,   }
+\DoxyCodeLine{44     \_TRAFFIC\_ADSB\_,  }
+\DoxyCodeLine{45     \_TRAFFIC\_RADAR\_, }
+\DoxyCodeLine{46     \_TRAFFIC\_FLARM\_, }
+\DoxyCodeLine{47     \_OBSTACLE\_       }
+\DoxyCodeLine{48 \}objectType\_e;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{56 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))}
+\DoxyCodeLine{57 \{}
+\DoxyCodeLine{58     uint16\_t  index;                        }
+\DoxyCodeLine{59     \textcolor{keywordtype}{double}  time;                           }
+\DoxyCodeLine{60     \textcolor{keywordtype}{char}    name[MAX\_FIX\_NAME\_SIZE];        }
+\DoxyCodeLine{61     \textcolor{keywordtype}{double}  latitude;                       }
+\DoxyCodeLine{62     \textcolor{keywordtype}{double}  longitude;                      }
+\DoxyCodeLine{63     \textcolor{keywordtype}{double}  altitude;                       }
+\DoxyCodeLine{64     tcp\_e tcp[3];                           }
+\DoxyCodeLine{65     \textcolor{keywordtype}{double}  tcpValue[3];                    }
+\DoxyCodeLine{66     \textcolor{keywordtype}{char} info[100];                         }
+\DoxyCodeLine{67 \}\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{70     \textcolor{keywordtype}{double} time;                             }
+\DoxyCodeLine{71     \textcolor{keywordtype}{int} numConflictTraffic;                  }
+\DoxyCodeLine{72     \textcolor{keywordtype}{int} numBands;                            }
+\DoxyCodeLine{73     \textcolor{keywordtype}{int} type[20];                            }
+\DoxyCodeLine{74     \textcolor{keywordtype}{double} min[20];                          }
+\DoxyCodeLine{75     \textcolor{keywordtype}{double} max[20];                          }
+\DoxyCodeLine{76     \textcolor{keywordtype}{int} recovery;                            }
+\DoxyCodeLine{77     \textcolor{keywordtype}{int} currentConflictBand;                 }
+\DoxyCodeLine{78     \textcolor{keywordtype}{double} timeToViolation[2];               }
+\DoxyCodeLine{79     \textcolor{keywordtype}{double} timeToRecovery;                   }
+\DoxyCodeLine{80     \textcolor{keywordtype}{double} minHDist;                         }
+\DoxyCodeLine{81     \textcolor{keywordtype}{double} minVDist;                         }
+\DoxyCodeLine{82     \textcolor{keywordtype}{double} resUp;                            }
+\DoxyCodeLine{83     \textcolor{keywordtype}{double} resDown;                          }
+\DoxyCodeLine{84     \textcolor{keywordtype}{double} resPreferred;                     }
+\DoxyCodeLine{85 \}bands\_t;}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{88     uint8\_t numConflicts;                    }
+\DoxyCodeLine{89     uint16\_t numFences;                      }
+\DoxyCodeLine{90     uint8\_t conflictFenceIDs[5];             }
+\DoxyCodeLine{91     uint8\_t conflictTypes[5];                }
+\DoxyCodeLine{92     \textcolor{keywordtype}{double} timeToViolation[5];               }
+\DoxyCodeLine{93     \textcolor{keywordtype}{double} recoveryPosition[3];              }
+\DoxyCodeLine{94 \}geofenceConflict\_t;}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{97     \textcolor{keywordtype}{bool} fenceConflict;                      }
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} trafficConflict;                    }
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} lineOfSight2goal;                   }
+\DoxyCodeLine{100     uint8\_t conflictFenceID;                 }
+\DoxyCodeLine{101     \textcolor{keywordtype}{char} conflictCallSign[20];               }
+\DoxyCodeLine{102     \textcolor{keywordtype}{double} timeToTrafficViolation;           }
+\DoxyCodeLine{103     \textcolor{keywordtype}{double} timeToFenceViolation;             }
+\DoxyCodeLine{104     \textcolor{keywordtype}{double} recoveryPosition[3];              }
+\DoxyCodeLine{105     \textcolor{keywordtype}{double} offsets1[3];                      }
+\DoxyCodeLine{106     \textcolor{keywordtype}{double} offsets2[3];                      }
+\DoxyCodeLine{107     \textcolor{keywordtype}{int} nextWP;                              }
+\DoxyCodeLine{108     \textcolor{keywordtype}{int} nextFeasibleWP;                      }
+\DoxyCodeLine{109 \}trajectoryMonitorData\_t;}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{113     \textcolor{keywordtype}{int} resolutionType;             \textcolor{comment}{// Type of resolutions to use, one of resolutionType\_e}}
+\DoxyCodeLine{114     \textcolor{keywordtype}{double} DTHR;                    \textcolor{comment}{// Well clear radius threshold (ft)}}
+\DoxyCodeLine{115     \textcolor{keywordtype}{double} ZTHR;                    \textcolor{comment}{// Well clear vertical distance threshold (ft)}}
+\DoxyCodeLine{116     \textcolor{keywordtype}{double} allowedXtrackDeviation;  \textcolor{comment}{// Allowed deviation from flight plan (m)}}
+\DoxyCodeLine{117     \textcolor{keywordtype}{double} planLookaheadTime;       \textcolor{comment}{// lookahead time for traffic and fence conflicts}}
+\DoxyCodeLine{118     \textcolor{keywordtype}{double} persistenceTime;         \textcolor{comment}{// traffic conflict persistence time}}
+\DoxyCodeLine{119     \textcolor{keywordtype}{bool} return2NextWP;             \textcolor{comment}{// Return to path behavior. 0 return to nearest point. 1. next WP}}
+\DoxyCodeLine{120     \textcolor{keywordtype}{bool} active;                    \textcolor{comment}{// Make cognition active                   }}
+\DoxyCodeLine{121     \textcolor{keywordtype}{bool} returnVector;              \textcolor{comment}{// Use vectors to command the vehicle to return to mission}}
+\DoxyCodeLine{122     \textcolor{keywordtype}{bool} verifyPlanConflict;        \textcolor{comment}{// Verify if imminent conflict is a real conflicty by comparing it with current plan}}
+\DoxyCodeLine{123     \textcolor{keywordtype}{int} PriorityTakeoff;}
+\DoxyCodeLine{124     \textcolor{keywordtype}{int} PrioirtyNominalDeparture;}
+\DoxyCodeLine{125     \textcolor{keywordtype}{int} PriorityPrimaryPlanComplete;}
+\DoxyCodeLine{126     \textcolor{keywordtype}{int} PrioritySecondaryPlanComplete;}
+\DoxyCodeLine{127     \textcolor{keywordtype}{int} PriorityReplanning;}
+\DoxyCodeLine{128     \textcolor{keywordtype}{int} PriorityMerging;}
+\DoxyCodeLine{129     \textcolor{keywordtype}{int} PriorityFenceConflict;}
+\DoxyCodeLine{130     \textcolor{keywordtype}{int} PriorityTrafficConflict1;}
+\DoxyCodeLine{131     \textcolor{keywordtype}{int} PriorityTrafficConflict2;}
+\DoxyCodeLine{132     \textcolor{keywordtype}{int} PriorityTrafficConflict3;}
+\DoxyCodeLine{133     \textcolor{keywordtype}{int} PriorityFlightPlanDeviation;}
+\DoxyCodeLine{134     \textcolor{keywordtype}{int} PriorityDitching;}
+\DoxyCodeLine{135     \textcolor{keywordtype}{int} PriorityTODReached;}
+\DoxyCodeLine{136 \}\mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,16 @@
+\hypertarget{sbn__tcp__events_8h_source}{}\doxysection{sbn\+\_\+tcp\+\_\+events.\+h}
+\label{sbn__tcp__events_8h_source}\index{apps/SBN/modules/protocol/tcp/fsw/src/sbn\_tcp\_events.h@{apps/SBN/modules/protocol/tcp/fsw/src/sbn\_tcp\_events.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_tcp\_events\_h}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_tcp\_events\_h}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{keyword}{extern} CFE\_EVS\_EventID\_t SBN\_TCP\_FIRST\_EID; \textcolor{comment}{/* defined at module init time */}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define SBN\_TCP\_SOCK\_EID       SBN\_TCP\_FIRST\_EID + 1 }\textcolor{comment}{/* skip 0th */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define SBN\_TCP\_CONFIG\_EID     SBN\_TCP\_FIRST\_EID + 2}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define SBN\_TCP\_DEBUG\_EID      SBN\_TCP\_FIRST\_EID + 3}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_tcp\_events\_h */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

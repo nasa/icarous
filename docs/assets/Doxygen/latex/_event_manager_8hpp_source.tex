@@ -1,0 +1,173 @@
+\hypertarget{_event_manager_8hpp_source}{}\doxysection{Event\+Manager.\+hpp}
+\label{_event_manager_8hpp_source}\index{Modules/Core/EventManager/EventManager.hpp@{Modules/Core/EventManager/EventManager.hpp}}
+\mbox{\hyperlink{_event_manager_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef EVENT\_ACTION\_MANAGER\_HPP}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define EVENT\_ACTION\_MANAGER\_HPP}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <climits>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{_event_handler_8hpp}{EventHandler.hpp}}>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{class} T,\textcolor{keyword}{class} Compare>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classheapset}{heapset}}\{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{private}:}
+\DoxyCodeLine{29     std::priority\_queue<T,std::vector<T>,Compare> priq;}
+\DoxyCodeLine{30     std::set<T> priset;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keyword}{public}:}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \mbox{\hyperlink{classheapset}{heapset}}(Compare comp):priq(comp)\{\};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} \mbox{\hyperlink{classheapset_a0ef3d885f2e9b3a04f48dc8a06c9e8f0}{push}}(T\& value)\{}
+\DoxyCodeLine{42         priq.push(value);}
+\DoxyCodeLine{43         priset.insert(value);}
+\DoxyCodeLine{44     \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} \mbox{\hyperlink{classheapset_a2c4b5e77db8078795b5c706412125d42}{pop}}()\{}
+\DoxyCodeLine{51         \textcolor{keyword}{const} T\& val = priq.top();}
+\DoxyCodeLine{52         priq.pop();}
+\DoxyCodeLine{53         priset.erase(val);}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{61     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classheapset_a71f5097b468043f619bc133d1e515b37}{empty}}()\{}
+\DoxyCodeLine{62         \textcolor{keywordflow}{return} priq.empty();}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{70     \textcolor{keyword}{const} T\& \mbox{\hyperlink{classheapset_a829bcc324290049d81d4f9e6ae9c163a}{top}}()\{}
+\DoxyCodeLine{71         \textcolor{keywordflow}{return} priq.top();}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{79     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classheapset_a812fdb9f3745d42f84064b234d10f83a}{contains}}(T\& val)\{}
+\DoxyCodeLine{80         \textcolor{keywordflow}{if}(priset.find(val) == priset.end())\{}
+\DoxyCodeLine{81             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{82         \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{83             \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{84         \}}
+\DoxyCodeLine{85     \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90     \textcolor{keywordtype}{void} \mbox{\hyperlink{classheapset_a2f181217ab521d276592605dcd5f3531}{clear}}()\{}
+\DoxyCodeLine{91         \textcolor{keywordflow}{while}(!priq.empty())\{}
+\DoxyCodeLine{92             priq.pop();}
+\DoxyCodeLine{93         \}}
+\DoxyCodeLine{94         priset.clear();}
+\DoxyCodeLine{95     \}}
+\DoxyCodeLine{96 \};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{103 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{104 \textcolor{keyword}{class }\mbox{\hyperlink{class_event_management}{EventManagement}}\{}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106   \textcolor{keyword}{public}:}
+\DoxyCodeLine{107      \mbox{\hyperlink{class_event_management}{EventManagement}}():activeEventHandlers(handlerComp)\{\};}
+\DoxyCodeLine{116      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}{AddEventHandler}}(std::string eventName,\textcolor{keywordtype}{int} priority,std::function<\textcolor{keywordtype}{bool}(T*)> monitorFunc, std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}> eventHandler=\textcolor{keyword}{nullptr});}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{121      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a9f12284c53782acdc62b784d4188f055}{RunEventMonitors}}(T*);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{126      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_aabb3f062c47e9eb5f81c66ee847083de}{RunEventHandlers}}(T*);}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{131      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a96286032040430816ae68d68b1235abb}{Run}}(T*);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{137      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}{Reset}}();}
+\DoxyCodeLine{138      }
+\DoxyCodeLine{139   \textcolor{keyword}{private}:}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{142      \mbox{\hyperlink{struct_handler_comp}{HandlerComp<T>}} handlerComp;}
+\DoxyCodeLine{143      std::map<std::string,std::function<bool(T*)>> events;}
+\DoxyCodeLine{144      std::map<std::string,std::shared\_ptr<EventHandler<T>>> handlers;}
+\DoxyCodeLine{145      \mbox{\hyperlink{classheapset}{heapset<std::shared\_ptr<EventHandler<T>}}>,\mbox{\hyperlink{struct_handler_comp}{HandlerComp<T>}}> activeEventHandlers;}
+\DoxyCodeLine{146 \};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{149 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}{EventManagement<T>::AddEventHandler}}(std::string eventName,\textcolor{keywordtype}{int} priority,std::function<\textcolor{keywordtype}{bool}(T*)> monitorFunc,std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}> eventHandler)\{}
+\DoxyCodeLine{150     events[eventName] = monitorFunc;}
+\DoxyCodeLine{151     \textcolor{keywordflow}{if}(eventHandler != \textcolor{keyword}{nullptr})\{}
+\DoxyCodeLine{152         eventHandler-\/>priority = priority;}
+\DoxyCodeLine{153         eventHandler-\/>defaultPriority = priority;}
+\DoxyCodeLine{154         handlers[eventName] = eventHandler;}
+\DoxyCodeLine{155     \}}
+\DoxyCodeLine{156 \}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{159 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}{EventManagement<T>::Reset}}()\{}
+\DoxyCodeLine{160     events.clear();}
+\DoxyCodeLine{161     handlers.clear();}
+\DoxyCodeLine{163     activeEventHandlers.clear();}
+\DoxyCodeLine{164 \}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{167 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a9f12284c53782acdc62b784d4188f055}{EventManagement<T>::RunEventMonitors}}(T* state)\{}
+\DoxyCodeLine{168     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} \&elem: events)\{}
+\DoxyCodeLine{170         \textcolor{keywordtype}{bool} val = elem.second(state);}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{173         \textcolor{keywordflow}{if}(val)\{}
+\DoxyCodeLine{174             \textcolor{keywordtype}{bool} avail = \textcolor{keyword}{false};}
+\DoxyCodeLine{176             \textcolor{keywordflow}{if}(activeEventHandlers.contains(handlers[elem.first]))\{}
+\DoxyCodeLine{177                 avail = \textcolor{keyword}{true};}
+\DoxyCodeLine{178             \}}
+\DoxyCodeLine{179             }
+\DoxyCodeLine{181             \textcolor{keywordflow}{if}(!avail)\{}
+\DoxyCodeLine{182                 \textcolor{keywordflow}{if}(handlers[elem.first] != \textcolor{keyword}{nullptr})\{}
+\DoxyCodeLine{183                     handlers[elem.first]-\/>eventName = elem.first;}
+\DoxyCodeLine{184                     handlers[elem.first]-\/>execState = \mbox{\hyperlink{class_event_handler}{EventHandler<T>::NOOP}};}
+\DoxyCodeLine{185                     \textcolor{keywordflow}{if}(!activeEventHandlers.empty())\{}
+\DoxyCodeLine{187                         \textcolor{keyword}{auto} currHandler = activeEventHandlers.top();}
+\DoxyCodeLine{188                         activeEventHandlers.push(handlers[elem.first]);}
+\DoxyCodeLine{190                         \textcolor{keywordflow}{if}(currHandler != activeEventHandlers.top())\{}
+\DoxyCodeLine{191                             currHandler-\/>\mbox{\hyperlink{class_event_handler_a23e5c40362639a9a6df8a2c885993ce5}{execState}} = \mbox{\hyperlink{class_event_handler}{EventHandler<T>::DONE}};}
+\DoxyCodeLine{192                         \}}
+\DoxyCodeLine{193                     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{194                         activeEventHandlers.push(handlers[elem.first]);}
+\DoxyCodeLine{195                     \}}
+\DoxyCodeLine{196                     }
+\DoxyCodeLine{197                 \}}
+\DoxyCodeLine{198             \}}
+\DoxyCodeLine{199         \}}
+\DoxyCodeLine{200     \}}
+\DoxyCodeLine{201 \}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{204 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_aabb3f062c47e9eb5f81c66ee847083de}{EventManagement<T>::RunEventHandlers}}(T* state)\{}
+\DoxyCodeLine{205     \textcolor{keywordflow}{if}(activeEventHandlers.empty())\{}
+\DoxyCodeLine{206         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{207     \}}
+\DoxyCodeLine{208     \textcolor{keyword}{auto} handler = activeEventHandlers.top();}
+\DoxyCodeLine{209     \textcolor{keywordtype}{bool} val = \textcolor{keyword}{false};}
+\DoxyCodeLine{210     \textcolor{keywordflow}{if}(handler-\/>execState == \mbox{\hyperlink{class_event_handler}{EventHandler<T>::NOOP}} \&\& handler-\/>\mbox{\hyperlink{class_event_handler_a8397ca99260012417d01bb18dc3756b8}{eventName}} != \textcolor{stringliteral}{"{}"{}})\{}
+\DoxyCodeLine{213         \textcolor{keywordflow}{if}(events[handler-\/>eventName](state))\{}
+\DoxyCodeLine{214            handler-\/>execState = \mbox{\hyperlink{class_event_handler}{EventHandler<T>::INITIALIZE}};}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{218            handler-\/>\mbox{\hyperlink{class_event_handler_af09e6c69c2b80c0060352d9bb15b0516}{priority}} = handler-\/>defaultPriority + 0.5;}
+\DoxyCodeLine{219            val = handler-\/>RunEvent(state);}
+\DoxyCodeLine{220         \}}
+\DoxyCodeLine{221     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{222         val = handler-\/>RunEvent(state);}
+\DoxyCodeLine{223     \}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{226     \textcolor{keywordflow}{if} (val) \{}
+\DoxyCodeLine{227         handler-\/>priority = handler-\/>defaultPriority;}
+\DoxyCodeLine{228         activeEventHandlers.pop();}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{232     \textcolor{keywordflow}{while} (handler-\/>children.size() > 0)\{}
+\DoxyCodeLine{233         activeEventHandlers.push(handler-\/>children.back());}
+\DoxyCodeLine{234         handler-\/>children.pop\_back();}
+\DoxyCodeLine{235     \}}
+\DoxyCodeLine{236 \}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{239 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a96286032040430816ae68d68b1235abb}{EventManagement<T>::Run}}(T* state)\{}
+\DoxyCodeLine{240     RunEventMonitors(state);}
+\DoxyCodeLine{241     RunEventHandlers(state);}
+\DoxyCodeLine{242 \}}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

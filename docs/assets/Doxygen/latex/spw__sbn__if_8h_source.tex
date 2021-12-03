@@ -1,0 +1,55 @@
+\hypertarget{spw__sbn__if_8h_source}{}\doxysection{spw\+\_\+sbn\+\_\+if.\+h}
+\label{spw__sbn__if_8h_source}\index{apps/SBN/modules/protocol/spacewire/fsw/src/spw\_sbn\_if.h@{apps/SBN/modules/protocol/spacewire/fsw/src/spw\_sbn\_if.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_spw\_if\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_spw\_if\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_constants.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define SBN\_OK 0}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define SBN\_ERROR 1}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define SBN\_SPW\_ITEMS\_PER\_FILE\_LINE 2}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define SBN\_SPW\_MAX\_CHAR\_NAME 32}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{comment}{/* for string allocation, unless you want it dynamic... */}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define SBN\_SPW\_MAX\_PATH\_LENGTH 4096}}
+\DoxyCodeLine{15 \textcolor{comment}{/* sprintf format for Sysfs path to spacewire status files */}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define SBN\_SPW\_SYSFS\_PATH "{}/sys/class/\%s/\%s/device/"{}}}
+\DoxyCodeLine{17 \textcolor{comment}{/*sprintf format for dev path to spacewire device file */}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define SBN\_SPW\_DEV\_PATH "{}/dev/\%s"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{comment}{/* SpaceWire status file names in Sysfs */}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define SBN\_SPW\_LINK\_STATUS "{}link\_status"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define SBN\_SPW\_RX\_DATA\_AVAILABLE "{}rxqueue\_len"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define SPW\_FREAD\_NO\_ERROR 0}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{/* Interface-\/specific functions */}}
+\DoxyCodeLine{27 \textcolor{keywordtype}{void}  SBN\_ShowSPWPeerData(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{comment}{/* SBN\_InterfaceOperations functions */}}
+\DoxyCodeLine{30 int32 SBN\_CheckForSPWNetProtoMsg(SBN\_InterfaceData *Peer, SBN\_NetProtoMsg\_t *ProtoMsgBuf);}
+\DoxyCodeLine{31 \textcolor{keywordtype}{int}   SBN\_SPWRcvMsg(SBN\_InterfaceData *Host, NetDataUnion *DataMsgBuf);}
+\DoxyCodeLine{32 int32 SBN\_ParseSPWFileEntry(\textcolor{keywordtype}{char} *FileEntry, uint32 LineNum, \textcolor{keywordtype}{void}** EntryAddr);}
+\DoxyCodeLine{33 int32 SBN\_InitSPWIF(SBN\_InterfaceData* data);}
+\DoxyCodeLine{34 int32 SBN\_SendSPWNetMsg(uint32 MsgType, uint32 MsgSz, SBN\_InterfaceData *HostList[], int32 NumHosts, CFE\_SB\_SenderId\_t *SenderPtr, SBN\_InterfaceData *IfData, SBN\_NetProtoMsg\_t *ProtoMsgBuf, NetDataUnion *DataMsgBuf);}
+\DoxyCodeLine{35 int32 SPW\_VerifyPeerInterface(SBN\_InterfaceData *Peer, SBN\_InterfaceData *HostList[], int32 NumHosts);}
+\DoxyCodeLine{36 int32 SPW\_VerifyHostInterface(SBN\_InterfaceData *Host, SBN\_PeerData\_t *PeerList, int32 NumPeers);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 SBN\_InterfaceOperations SPWOps = \{}
+\DoxyCodeLine{39     SBN\_ParseSPWFileEntry,}
+\DoxyCodeLine{40     SBN\_InitSPWIF,}
+\DoxyCodeLine{41     SBN\_SendSPWNetMsg,}
+\DoxyCodeLine{42     SBN\_CheckForSPWNetProtoMsg,}
+\DoxyCodeLine{43     SBN\_SPWRcvMsg,}
+\DoxyCodeLine{44     SPW\_VerifyPeerInterface,}
+\DoxyCodeLine{45     SPW\_VerifyHostInterface}
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_spw\_if\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

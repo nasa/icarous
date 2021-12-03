@@ -1,0 +1,232 @@
+\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md5}{}\doxysection{Documentation Version History}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md5}
+This document details the design and use of the SBN application. This is current as of SBN version 1.\+11.
+
+This document is maintained by \href{Christopher.D.Knight@nasa.gov}{\texttt{ Chris Knight, NASA Ames Research Center}}.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md6}{}\doxysection{SBN Version History}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md6}
+
+\begin{DoxyItemize}
+\item SBN 1.\+0 – UDP-\/only monolithic application.
+\item SBN 1.\+1 – Added a modular network layer for Spacewire, Serial.
+\item SBN 1.\+2 @ce1b3ca – TCP module. Merged protocol and data traffic into the same connections/sockets. Heartbeats only sent if no other traffic sent in the last number of seconds. Bug-\/fix to ensure SBN ignores messages it publishes on the SB, ensures all network messages are big-\/endian and aligned, removes windowing/retransmit logic.
+\item SBN 1.\+3 @15f3754 – Removed sync word. Simplified module API, added MID remapping/filtering. Added the (compile-\/time) option of per-\/peer tasks for watching pipes and net.
+\item SBN 1.\+4 @2b6556a – DTN module. Pushed protocol handling (announce/heartbeat) down into the modules that need it (UDP.)
+\item SBN 1.\+5 @b5cb3d7 – When sending all subs, send them in one message.
+\item SBN 1.\+6 @b0d0027 – Added “unload” method to modules.
+\item SBN 1.\+7 @eff7047 – Polling occurs each cycle (modules are responsible for managing timeouts), re-\/added serial backend, Sbn\+Peer\+Data.\+dat uses a numeric network ID, not name.
+\item SBN 1.\+8 @ae9a1f5 -\/ Removed separate housekeeping status structs (moved housekeeping-\/related values to the main structs ({\ttfamily \mbox{\hyperlink{struct_s_b_n___app__t}{SBN\+\_\+\+App\+\_\+t}}}, {\ttfamily \mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\+\_\+\+Net\+Interface\+\_\+s}}} ({\ttfamily SBN\+\_\+\+Net\+Interface\+\_\+t}), {\ttfamily \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\+\_\+\+Peer\+Interface\+\_\+t}}}). standardized on housekeeping being hand-\/packed big-\/endian.
+\item SBN 1.\+9 @063ebf2 -\/ Adds protocol packet to identify protocol version. For now SBN reports if the version matches or not. (Is backward-\/compatible.) Also modules communicate to the main SBN app when a connection is established and lost and message pipes are only created/maintained for connected peers.
+\item SBN 1.\+10 -\/ Table-\/driven configuration, rather than flat-\/file. Removed net and peer names, instead should always use Processor\+ID and Net\+Idx.
+\item SBN 1.\+11 -\/ Modules loaded by ES as libraries, OSAL used for TCP + UDP.
+\end{DoxyItemize}\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md7}{}\doxysection{Overview}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md7}
+SBN is a c\+FS application that connects the local software bus to one or more other c\+FS nodes (who are also running SBN) such that all messages sent by an application on one bus will be received by an application on another bus. SBN has a modular {\itshape network} architecture (TCP, UDP, Serial, Space\+Wire, etc.) to connect {\itshape peers} and supports multiple peer networks with a local {\itshape host} connection affiliated with each. SBN also remaps and filters messages (c\+FS table-\/configured.)
+
+\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md8}{}\doxysection{SBN Build and Configuration}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md8}
+SBN is built like any other c\+FS application, either via specifying it in the the {\ttfamily TGT\#\+\_\+\+APPLISTS} parameter in the targets.\+cmake. Protocol modules ({\ttfamily sbn\+\_\+udp}, {\ttfamily sbn\+\_\+tcp}, {\ttfamily sbn\+\_\+dtn}, ...) must also be specified as an application in the build process and loaded by ES after the core SBN application.
+
+SBN uses two tables, the \char`\"{}conf\char`\"{} table for configuring which modules to connect and which networks and peers to communicate with and the \char`\"{}remap\char`\"{} table for identifying which Message ID\textquotesingle{}s should be remapped or filtered before sending to specific peers.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md9}{}\doxysubsection{SBN Platform Configuration}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md9}
+The {\ttfamily \mbox{\hyperlink{sbn__platform__cfg_8h_source}{sbn\+\_\+platform\+\_\+cfg.\+h}}} file contains a number of definitions that control how SBN allocates and limits resources as well as controlling the behavior of SBN. Most \char`\"{}max\char`\"{} definitions relate to in-\/memory static arrays, so increasing the value increases the memory footprint of SBN (in some cases, non-\/linearly.)\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md10}{}\doxysubsection{SBN Configuration Table}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md10}
+The SBN configuration table is a standard c\+FS table defining modules and networks of peers.
+
+See {\ttfamily \mbox{\hyperlink{sbn__tbl_8h_source}{sbn\+\_\+tbl.\+h}}} and {\ttfamily sbn\+\_\+conf\+\_\+tbl.\+c}.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md11}{}\doxysubsection{SBN Remapping Table}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md11}
+The SBN remapping table is a standard c\+FS table defining, on a peer-\/by-\/peer basis, which message ID\textquotesingle{}s should be remapped to other ID\textquotesingle{}s, or which message ID\textquotesingle{}s should be filtered (where the \char`\"{}\+To\char`\"{} field is 0).
+
+See {\ttfamily \mbox{\hyperlink{sbn__tbl_8h_source}{sbn\+\_\+tbl.\+h}}} and {\ttfamily sbn\+\_\+remap\+\_\+tbl.\+c}.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md12}{}\doxysection{SBN Remapping and Filtering}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md12}
+In complex SBN peer networks, it may be useful to have each node have its own configuration of message ID\textquotesingle{}s that local apps publish and subscribe to, and to limit traffic between the nodes or map from one ID space to another. SBN supports this via the remapping and filtering capability, which can be configured both by the remap table at initialization time and via commands at runtime.
+
+The SBN remapping subsystem, by default, does not affect traffic and all messages published on one node is sent to any peers that have subscribed to that ID. Alternatively, SBN remapping can be configured so that ONLY those entries that are remapped are sent to peers; and, yes, you can remap from an MID to the same MID.
+
+SBN remapping may be enabled at start time via a compile-\/time macro, and can be enabled and disabled at runtime via the remapping configuration command.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md13}{}\doxysection{SBN Control Commands}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md13}
+SBN has a number of commands for managing the SBN application\textquotesingle{}s configuration and for requesting housekeeping telemetry.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Macro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ CC   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \mbox{\hyperlink{struct_command}{Command}} Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parameters    }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Macro   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ CC   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ \mbox{\hyperlink{struct_command}{Command}} Description   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Parameters    }\\\cline{1-4}
+\endhead
+{\ttfamily SBN\+\_\+\+NOOP\+\_\+\+CC}   &{\ttfamily 0x00}   &Do nothing beyond reporting an event.   &$<$none$>$    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+RESET\+\_\+\+CC}   &{\ttfamily 0x01}   &Resets the SBN network.   &$<$none$>$    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+RESET\+\_\+\+PEER\+\_\+\+CC}   &{\ttfamily 0x02}   &Resets a connection to a particular peer.   &{\ttfamily uint8 Net\+Idx, uint8 Peer\+Idx}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+REMAPCFG\+\_\+\+CC}   &{\ttfamily 0x05}   &Sets the remapping configuration.   &{\ttfamily uint8 Enabled, uint8 Remap\+Default\+Flag}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+REMAPADD\+\_\+\+CC}   &{\ttfamily 0x06}   &Adds a remapping.   &{\ttfamily uint32 Processor\+ID, CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t From\+MID, CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t To\+MID}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+REMAPDEL\+\_\+\+CC}   &{\ttfamily 0x07}   &Removes a remapping.   &{\ttfamily uint32 Processor\+ID, CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t From\+MID}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+HK\+\_\+\+CC}   &{\ttfamily 0x0A}   &Requests main housekeeping telemetry.   &$<$none$>$    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+HK\+\_\+\+NET\+\_\+\+CC}   &{\ttfamily 0x0B}   &Requests housekeeping telemetry for a net.   &{\ttfamily uint8 Net\+Idx}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+HK\+\_\+\+PEER\+\_\+\+CC}   &{\ttfamily 0x0C}   &Requests housekeeping telemetry for a peer.   &{\ttfamily uint8 Net\+Idx, uint8 Peer\+Idx}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+HK\+\_\+\+PEERSUBS\+\_\+\+CC}   &{\ttfamily 0x0D}   &Requests hk telemetry for a peer\textquotesingle{}s subs.   &{\ttfamily uint8 Net\+Idx, uint8 Peer\+Idx}    \\\cline{1-4}
+{\ttfamily SBN\+\_\+\+HK\+\_\+\+MYSUBS\+\_\+\+CC}   &{\ttfamily 0x0E}   &Requests hk telemetry for my subs.   &$<$none$>$   \\\cline{1-4}
+\end{longtabu}
+\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md14}{}\doxysection{SBN Housekeeping Telemetry}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md14}
+Housekeeping command codes are used to request housekeeping telemetry messages. As all housekeeping is requested with command codes to the main (and only) command MID, the command code used to request the housekeeping is returned in the housekeeping payload so that they can be differentiated. All numeric values are transmitted in big-\/endian order and no padding is used.
+
+The following commands generate payloads in the following format\+:
+
+{\itshape SBN\+\_\+\+HK\+\_\+\+CC}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily CC}   &{\ttfamily uint8}   &\mbox{\hyperlink{struct_command}{Command}} code of HK request.    \\\cline{1-3}
+{\ttfamily Cmd\+Cnt}   &{\ttfamily uint16}   &Number of commands received.    \\\cline{1-3}
+{\ttfamily Cmd\+Err\+Cnt}   &{\ttfamily uint16}   &Number of commands that generated errors.    \\\cline{1-3}
+{\ttfamily Sub\+Cnt}   &{\ttfamily uint16}   &Number of local subscriptions.    \\\cline{1-3}
+{\ttfamily Net\+Cnt}   &{\ttfamily uint16}   &Number of networks configured.   \\\cline{1-3}
+\end{longtabu}
+
+
+{\itshape SBN\+\_\+\+HK\+\_\+\+NET\+\_\+\+CC}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily CC}   &{\ttfamily uint8}   &\mbox{\hyperlink{struct_command}{Command}} code of HK request.    \\\cline{1-3}
+{\ttfamily Protocol\+ID}   &{\ttfamily uint8}   &The ID of the protocol of this network.    \\\cline{1-3}
+{\ttfamily Peer\+Cnt}   &{\ttfamily uint16}   &The number of peers associated with this network.   \\\cline{1-3}
+\end{longtabu}
+
+
+{\itshape SBN\+\_\+\+HK\+\_\+\+PEER\+\_\+\+CC}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily CC}   &{\ttfamily uint8}   &\mbox{\hyperlink{struct_command}{Command}} code of HK request.    \\\cline{1-3}
+{\ttfamily QoS}   &{\ttfamily CFE\+\_\+\+SB\+\_\+\+Qos\+\_\+t}   &QoS flags for this peer.    \\\cline{1-3}
+{\ttfamily Sub\+Cnt}   &{\ttfamily uint16}   &Number of errors generated in trying to receive from this peer.    \\\cline{1-3}
+{\ttfamily Processor\+ID}   &{\ttfamily uint32}   &The Processor\+ID of the peer.    \\\cline{1-3}
+{\ttfamily Last\+Send}   &{\ttfamily OS\+\_\+time\+\_\+t}   &The last time I sent a message to this peer.    \\\cline{1-3}
+{\ttfamily Last\+Recv}   &{\ttfamily OS\+\_\+time\+\_\+t}   &The last time I received a message from this peer.    \\\cline{1-3}
+{\ttfamily Send\+Cnt}   &{\ttfamily uint16}   &Number of messages sent to this peer.    \\\cline{1-3}
+{\ttfamily Recv\+Cnt}   &{\ttfamily uint16}   &Number of messages received from this peer.    \\\cline{1-3}
+{\ttfamily Send\+Err\+Cnt}   &{\ttfamily uint16}   &Number of errors generated in trying to send to this peer.    \\\cline{1-3}
+{\ttfamily Recv\+Err\+Cnt}   &{\ttfamily uint16}   &Number of errors generated in trying to receive from this peer.   \\\cline{1-3}
+\end{longtabu}
+
+
+{\itshape SBN\+\_\+\+HK\+\_\+\+PEERSUBS\+\_\+\+CC}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily CC}   &{\ttfamily uint8}   &\mbox{\hyperlink{struct_command}{Command}} code of HK request.    \\\cline{1-3}
+{\ttfamily Peer\+Idx}   &{\ttfamily uint16}   &Index of the peer in the request.    \\\cline{1-3}
+{\ttfamily Sub\+Cnt}   &{\ttfamily uint16}   &Number of local subscriptions.    \\\cline{1-3}
+{\ttfamily Subs}   &{\ttfamily CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t\mbox{[}Sub\+Cnt\mbox{]}}   &Subscriptions.   \\\cline{1-3}
+\end{longtabu}
+
+
+{\itshape SBN\+\_\+\+HK\+\_\+\+MYSUBS\+\_\+\+CC}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily CC}   &{\ttfamily uint8}   &\mbox{\hyperlink{struct_command}{Command}} code of HK request.    \\\cline{1-3}
+{\ttfamily Sub\+Cnt}   &{\ttfamily uint16}   &Number of local subscriptions.    \\\cline{1-3}
+{\ttfamily Subs}   &{\ttfamily CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t\mbox{[}Sub\+Cnt\mbox{]}}   &Subscriptions.   \\\cline{1-3}
+\end{longtabu}
+\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md15}{}\doxysection{SBN Interactions With the Software Bus (\+SB)}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md15}
+SBN treats all nodes as peers and (by default) all subscriptions of local applications should receive messages sent by publishers on other peers, and all messages published on the local bus should be transmitted to any peers who have applications subscribed to that message ID.
+
+
+
+The Software Bus (SB), when an application subscribes to a message ID or unsubscribes from a message ID, sends a message that SBN receives. Upon receipt of these messages, SBN updates its internal state tables and sends a message to the peers with the information on the update.
+
+\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md16}{}\doxysection{SBN Application-\/\+Level Network Protocol}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md16}
+In communicating with peers over a network protocol provided by a protocol module, SBN uses an SBN message format which is comprised of the following fields in big-\/endian, packed (no alignment) format\+:
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Field   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily Msg\+Sz}   &{\ttfamily uint16}   &The total size of the message, excluding this header.    \\\cline{1-3}
+{\ttfamily Msg\+Type}   &{\ttfamily uint8}   &The type of the message (see below).    \\\cline{1-3}
+{\ttfamily Cpu\+ID}   &{\ttfamily uint32}   &The Processor\+ID of the sender.   \\\cline{1-3}
+\end{longtabu}
+
+
+Message types are an enumeration from below, although protocol modules may send additional message types. Type values of 128 or higher (high bit set) are reserved for module use.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Msg\+Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Msg\+Type   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+{\ttfamily SBN\+\_\+\+NO\+\_\+\+MSG}   &{\ttfamily 0x00}   &No payload. (Unused.)    \\\cline{1-3}
+{\ttfamily SBN\+\_\+\+SUB\+\_\+\+MSG}   &{\ttfamily 0x01}   &Payload is local subs for peer to add.    \\\cline{1-3}
+{\ttfamily SBN\+\_\+\+UNSUB\+\_\+\+MSG}   &{\ttfamily 0x02}   &Payload is local unsubscriptions for peer to remove.    \\\cline{1-3}
+{\ttfamily SBN\+\_\+\+APP\+\_\+\+MSG}   &{\ttfamily 0x03}   &Payload is a message from the local software bus.    \\\cline{1-3}
+{\ttfamily SBN\+\_\+\+PROTO\+\_\+\+MSG}   &{\ttfamily 0x04}   &Payload is a protocol informational packet.   \\\cline{1-3}
+\end{longtabu}
+
+
+Currently protocol messages contain a single byte value representing the current protocol version defined by {\ttfamily SBN\+\_\+\+PROTO\+\_\+\+VER}.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md17}{}\doxysection{SBN Scheduling and Tasks}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md17}
+SBN has two modes of operation (configured at compile time)\+:
+
+
+\begin{DoxyItemize}
+\item A traditional scheduler (SCH)-\/driven mode where SCH sends a wakeup message periodically and SBN polls pipes and network modules. SBN has a built-\/in timeout period so that if SCH is somehow not functioning properly, or is mis-\/configured, SBN will continue to function. This mode is preferable in environments where resources are constrained, where network traffic load is well understood, and deterministic behavior is expected.
+\item A per-\/peer task model where the local SBN instance creates two tasks for every peer--one task blocks on reading the local pipe (waiting for messages to send to the respective peer) and the other task blocks on the network module\textquotesingle{}s \char`\"{}receive\char`\"{} function, waiting for messages from the peer to send to the local bus. This model is preferred in environments where network traffic load may vary significantly (posing a risk of overloading pipes), and where determinism is not expected and resources are not particularly constrained.
+\end{DoxyItemize}
+
+Technically, the choice of task or SCH-\/driven processing is set for each direction (\char`\"{}sending\char`\"{} local bus messages to the peer and \char`\"{}receiving\char`\"{} messages from the peer to put on the local bus.) However, it\textquotesingle{}s generally best to stick with either SCH-\/driven processing or task-\/driven processing.\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md18}{}\doxysection{SBN Protocol Modules}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md18}
+SBN requires the use of protocol libraries that provide a defined set of functions to send and receive encapsulated software bus messages and subscription updates. Protocol modules may use connection-\/less (UDP) or connection-\/based (TCP) network technologies and network reliability and connection maintenance is expected to be provided by the module or the network technology it is using. SBN does benefit from knowing when a peer is \char`\"{}connected\char`\"{} so that the local subscriptions can be sent (in bulk) to that peer; otherwise SBN does not need to know the state of the network the module is communicating with.
+
+Currently SBN provides the following modules\+:
+\begin{DoxyItemize}
+\item UDP -\/ Utilizing the UDP/\+IP connectionless protocol, the UDP module uses \char`\"{}announce\char`\"{} and \char`\"{}heartbeat\char`\"{} internal messages to determine when a peer has connected to the network (and that the subscriptions need to be sent.) Otherwise no network reliability is provided by the UDP module, packets may be lost or jumbled without the knowledge of SBN.
+\item TCP -\/ The TCP module utilizes the Internet-\/standard, high reliability TCP protocol, which provides for error correction and connection management.
+\item DTN -\/ Integrating the ION-\/\+DTN 3.\+6.\+0 libraries, the DTN module provides high reliability, multi-\/path transmission, and queueing. Effectively, DTN peers are always connected.
+\item Serial -\/ Supports SBN over standard serial devices.
+\end{DoxyItemize}\hypertarget{md_apps__s_b_n_doc_cfs_sbn_autotoc_md19}{}\doxysection{SBN Datastructures}\label{md_apps__s_b_n_doc_cfs_sbn_autotoc_md19}
+SBN utilizes a complex set of data structures in memory to track the state of the local system and its state knowledge of the peers on the network.
+
+ 

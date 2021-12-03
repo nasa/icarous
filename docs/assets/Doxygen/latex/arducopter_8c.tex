@@ -1,0 +1,84 @@
+\hypertarget{arducopter_8c}{}\doxysection{apps/arducopter/fsw/src/arducopter.c File Reference}
+\label{arducopter_8c}\index{apps/arducopter/fsw/src/arducopter.c@{apps/arducopter/fsw/src/arducopter.c}}
+
+
+function definitions for arducopter app  
+
+
+{\ttfamily \#include \char`\"{}arducopter.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}arducopter\+\_\+version.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}intf\+\_\+tbl.\+c\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{arducopter_8c_a62f0d473eaf67561e9271712dfb178ab}{ARDUCOPTER\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8c_af4d85ff1bfe8049adf765b3a2637159f}{ARDUCOPTER\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{arducopter_8c_a7d57285f2538647fa6767139e52d1eba}{ARDUCOPTER\+\_\+\+App\+Initialize\+Data}} ()
+\item 
+void \mbox{\hyperlink{arducopter_8c_a4b2b7dc0f1c1005e0e8c9c068d25ba48}{ARDUCOPTER\+\_\+\+App\+Clean\+Up}} ()
+\item 
+int32\+\_\+t \mbox{\hyperlink{arducopter_8c_a73843075a22329bae03451ae0fad6de8}{Arducopter\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t \mbox{\hyperlink{arducopter_8c_a07644ca535a86d7be7135015513f563f}{ARDUCOPTER\+\_\+\+Event\+Filters}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Event filter definition for arducopter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{arducopter_8c_a4b2b7dc0f1c1005e0e8c9c068d25ba48}\label{arducopter_8c_a4b2b7dc0f1c1005e0e8c9c068d25ba48}} 
+\index{arducopter.c@{arducopter.c}!ARDUCOPTER\_AppCleanUp@{ARDUCOPTER\_AppCleanUp}}
+\index{ARDUCOPTER\_AppCleanUp@{ARDUCOPTER\_AppCleanUp}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppCleanUp()}{ARDUCOPTER\_AppCleanUp()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{arducopter_8c_af4d85ff1bfe8049adf765b3a2637159f}\label{arducopter_8c_af4d85ff1bfe8049adf765b3a2637159f}} 
+\index{arducopter.c@{arducopter.c}!ARDUCOPTER\_AppInit@{ARDUCOPTER\_AppInit}}
+\index{ARDUCOPTER\_AppInit@{ARDUCOPTER\_AppInit}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppInit()}{ARDUCOPTER\_AppInit()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{arducopter_8c_a7d57285f2538647fa6767139e52d1eba}\label{arducopter_8c_a7d57285f2538647fa6767139e52d1eba}} 
+\index{arducopter.c@{arducopter.c}!ARDUCOPTER\_AppInitializeData@{ARDUCOPTER\_AppInitializeData}}
+\index{ARDUCOPTER\_AppInitializeData@{ARDUCOPTER\_AppInitializeData}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppInitializeData()}{ARDUCOPTER\_AppInitializeData()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Initialize\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app data \mbox{\Hypertarget{arducopter_8c_a62f0d473eaf67561e9271712dfb178ab}\label{arducopter_8c_a62f0d473eaf67561e9271712dfb178ab}} 
+\index{arducopter.c@{arducopter.c}!ARDUCOPTER\_AppMain@{ARDUCOPTER\_AppMain}}
+\index{ARDUCOPTER\_AppMain@{ARDUCOPTER\_AppMain}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_AppMain()}{ARDUCOPTER\_AppMain()}}
+{\footnotesize\ttfamily void ARDUCOPTER\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{arducopter_8c_a73843075a22329bae03451ae0fad6de8}\label{arducopter_8c_a73843075a22329bae03451ae0fad6de8}} 
+\index{arducopter.c@{arducopter.c}!ArducopterTableValidationFunc@{ArducopterTableValidationFunc}}
+\index{ArducopterTableValidationFunc@{ArducopterTableValidationFunc}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ArducopterTableValidationFunc()}{ArducopterTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Arducopter\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{arducopter_8c_a07644ca535a86d7be7135015513f563f}\label{arducopter_8c_a07644ca535a86d7be7135015513f563f}} 
+\index{arducopter.c@{arducopter.c}!ARDUCOPTER\_EventFilters@{ARDUCOPTER\_EventFilters}}
+\index{ARDUCOPTER\_EventFilters@{ARDUCOPTER\_EventFilters}!arducopter.c@{arducopter.c}}
+\doxysubsubsection{\texorpdfstring{ARDUCOPTER\_EventFilters}{ARDUCOPTER\_EventFilters}}
+{\footnotesize\ttfamily CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t ARDUCOPTER\+\_\+\+Event\+Filters\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\{  }
+\DoxyCodeLine{        \{ARDUCOPTER\_STARTUP\_INF\_EID,       0x0000\},}
+\DoxyCodeLine{        \{ARDUCOPTER\_COMMAND\_ERR\_EID,       0x0000\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

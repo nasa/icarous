@@ -1,0 +1,108 @@
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{sbnserialrevhist}{SBN Serial Module User\textquotesingle{}s Guide Revision History}}  
+\item \mbox{\hyperlink{sbnserialovr}{SBN Serial Module Overview}}  
+\item \mbox{\hyperlink{sbnserialopr}{SBN Serial Module Operation}}  
+\item \mbox{\hyperlink{sbnserialcfg}{SBN Serial Module Configuration}}  
+\item \mbox{\hyperlink{sbnserialcons}{SBN Serial Module Constraints}}  
+\end{DoxyItemize}\hypertarget{sbnserialrevhist}{}\doxysection{SBN Serial Module User\textquotesingle{}s Guide Revision History}\label{sbnserialrevhist}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+{\bfseries{Date}} &{\bfseries{Author}} &{\bfseries{Comments}} \\\cline{1-3}
+6/02/2014 &ejtimmon &Content template from similar module \\\cline{1-3}
+8/08/2014 &jurriste &Initial revision \\\cline{1-3}
+6/24/2015 &jrbeck &Updated with changes from finished module. \\\cline{1-3}
+\end{longtabu}
+
+
+Next\+: \mbox{\hyperlink{sbnserialovr}{SBN Serial Module Overview}} \hypertarget{sbnserialovr}{}\doxysection{SBN Serial Module Overview}\label{sbnserialovr}
+The Serial plugin for the Software Bus Network (SBN) allows two CPUs running c\+FE to send software bus (SB) messages to each other through a serial connection (e.\+g. RS-\/232). This plugin is never used directly by a user c\+FE app; instead it is used by the SBN to make message passing across CPUs transparent to other apps.
+
+SBN uses this module by internally calling a set of functions\+: 
+\begin{DoxyItemize}
+\item \#\+Serial\+\_\+\+Sbn\+Parse\+Interface\+File\+Entry (Reads module setup from SBN peer data file) 
+\item \#\+Serial\+\_\+\+Sbn\+Init\+Peer\+Interface (Initializes Serial interface) 
+\item \#\+Serial\+\_\+\+Sbn\+Send\+Net\+Msg (Sends SB or SBN messages to other CPU) 
+\item \#\+Serial\+\_\+\+Sbn\+Check\+For\+Net\+Proto\+Msg (Checks for SBN protocol messages) 
+\item \#\+Serial\+\_\+\+Sbn\+Receive\+Msg (Reads software bus messages from other CPU) 
+\item \#\+Serial\+\_\+\+Sbn\+Verify\+Peer\+Interface (Verifies that a given peer has a matching host) 
+\item \#\+Serial\+\_\+\+Sbn\+Verify\+Host\+Interface (Verifies that a given host has a matching peer) 
+\item \#\+Serial\+\_\+\+Sbn\+Report\+Module\+Status (Reports the status of a peer) 
+\item \#\+Serial\+\_\+\+Sbn\+Reset\+Peer (Resets a peer\textquotesingle{}s interface) 
+\end{DoxyItemize}
+
+These functions then use general read/write operations to pass messages, with serial-\/specific formatting for handling discrete messages.
+
+Next\+: \mbox{\hyperlink{sbnserialopr}{SBN Serial Module Operation}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnserialrevhist}{SBN Serial Module User\textquotesingle{}s Guide Revision History}} \hypertarget{sbnserialopr}{}\doxysection{SBN Serial Module Operation}\label{sbnserialopr}
+The serial module operates point-\/to-\/point, so there is one \char`\"{}host\char`\"{} and one \char`\"{}peer\char`\"{} per serial port. The serial module operates a little differently than other SBN modules due to the fact that one serial wire cannot be divided into two different ports like IPv4. Instead of having a separate protocol port and a separate data port, the serial module uses two OS Queues provided by OSAL to simulate the two different streams of data coming from one serial port.
+
+The module operates as follows\+: 
+\begin{DoxyItemize}
+\item On module load, host/peer data is read from SBN\textquotesingle{}s peer data file 
+\item All peers are verified as valid (having a matching host with correct settings) 
+\item During the host verification process, if a matching peer is found for a host, a thread is started to begin reading from the serial port shared by that host/peer 
+\item That thread reads messages from the serial port, looks at the \char`\"{}\+Type\char`\"{} in the SBN header, and determines whether to put it in the protocol queue or data queue for that host/peer 
+\item Outside the thread, in main SBN operations, the host/peer check their appropriate queue (protocol or data) for messages instead of reading from the serial port. 
+\end{DoxyItemize}
+
+Next\+: \mbox{\hyperlink{sbnserialcfg}{SBN Serial Module Configuration}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnserialovr}{SBN Serial Module Overview}} \hypertarget{sbnserialcfg}{}\doxysection{SBN Serial Module Configuration}\label{sbnserialcfg}
+\doxysection*{SBN Peer Data File Entry}
+
+The file entry in Sbn\+Peer\+Data.\+dat for a Serial interface requires 7 fields. The first 4 fields are the fields required of all interface modules\+: 
+\begin{DoxyItemize}
+\item Peer Name 
+\item Processor ID 
+\item Protocol ID (6 for Serial) 
+\item Spacecraft ID 
+\end{DoxyItemize}
+
+The remaining fields are the interface specific fields that are determined by the device driver\textquotesingle{}s behavior\+: 
+\begin{DoxyItemize}
+\item Pair Number, a number that is used to identify two lines in the file as \char`\"{}paired\char`\"{} (connected by the serial wire) 
+\item Device Name, as it would appear on the file system (e.\+g. /dev/tty\+S0) 
+\item Baud Rate, the desired baud rate for the serial port 
+\end{DoxyItemize}
+
+These three fields have some constraints on their values\+:
+
+{\bfseries{Pair Number}} 
+\begin{DoxyItemize}
+\item The two lines representing a host/peer pair connected by a serial wire must have the same pair number. 
+\item Pair numbers must be unique across pairs of lines 
+\end{DoxyItemize}
+
+{\bfseries{Device Name\+:}} The serial Device Name value is defined by the device driver.
+
+{\bfseries{Baud Rate\+:}} 
+\begin{DoxyItemize}
+\item Valid values for Linux are 38400, 57600, 115200, 230400. Other operating systems are not implemented. 
+\item Larger baud rates are preferred, especially if SBN will be routing messages larger than 100 bytes. However, the highest baud rate may produce tty overruns so test different baud rates for your specific system. 
+\end{DoxyItemize}
+
+In order for the serial interface to work, there must be a \char`\"{}matching\char`\"{} set of two peers for each serial wire. Two peers \char`\"{}match\char`\"{} if they have the same pair number and the same baud rate. An example of serial entries is below, showing a setup where CPU1 has two serial connections\+: one to CPU2 and one to CPU3.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{7}{|X[-1]}|}
+\hline
+{\bfseries{Name}} &{\bfseries{Processor ID}} &{\bfseries{Protocol ID}} &{\bfseries{Spacecraft ID}} &{\bfseries{Pair Number}} &{\bfseries{Device Name}} &{\bfseries{Baud Rate}}  \\\cline{1-7}
+CPU1 &1 &6 &0 &1 &/dev/tty\+S0 &115200  \\\cline{1-7}
+CPU2 &2 &6 &0 &1 &/dev/tty\+S0 &115200  \\\cline{1-7}
+CPU1 &1 &6 &0 &2 &/dev/tty\+S1 &115200  \\\cline{1-7}
+CPU3 &3 &6 &0 &2 &/dev/tty\+S0 &115200  \\\cline{1-7}
+\end{longtabu}
+
+
+Next\+: \mbox{\hyperlink{sbnserialcons}{SBN Serial Module Constraints}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnserialopr}{SBN Serial Module Operation}} \hypertarget{sbnserialcons}{}\doxysection{SBN Serial Module Constraints}\label{sbnserialcons}
+
+\begin{DoxyItemize}
+\item This module is dependent on Linux structures for managing a TTY device. There is a function hook available for future implementation for other operating systems but this function is not used currently. 
+\item Current implementation does not abstract endianness differences when handling message lengths, so both CPUs must have the same endianness. 
+\item The directory /dev must be mountable by CFE. This is accomplished by adding the following line to the cfe\+\_\+psp\+\_\+voltab.\+c file\+:~\newline
+ \{\char`\"{}/\char`\"{}, \char`\"{}/dev\char`\"{}, FS\+\_\+\+BASED, FALSE, FALSE, FALSE, \char`\"{}\+DEV\char`\"{}, \char`\"{}/dev\char`\"{}, 512 \}, 
+\end{DoxyItemize}
+
+Prev\+: \mbox{\hyperlink{sbnserialcfg}{SBN Serial Module Configuration}} 

@@ -1,0 +1,71 @@
+\hypertarget{sbn__serial__if_8h_source}{}\doxysection{sbn\+\_\+serial\+\_\+if.\+h}
+\label{sbn__serial__if_8h_source}\index{apps/SBN/modules/protocol/serial/fsw/src/sbn\_serial\_if.h@{apps/SBN/modules/protocol/serial/fsw/src/sbn\_serial\_if.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_serial\_if\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_serial\_if\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_constants.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/* The version \#'s this module works with. If this doesn't match the core}}
+\DoxyCodeLine{9 \textcolor{comment}{ * SBN application version \#'s, this module should report and return an error.}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Note: these DEFINITELY should be hardcoded here, do not map them to}}
+\DoxyCodeLine{11 \textcolor{comment}{ * the SBN version numbers.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define SBN\_SERIAL\_MAJOR 1}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define SBN\_SERIAL\_MINOR 11}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define SBN\_SERIAL\_REVISION 0}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keywordtype}{int} SBN\_SERIAL\_Init(\textcolor{keywordtype}{int} Major, \textcolor{keywordtype}{int} Minor, \textcolor{keywordtype}{int} Revision);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keywordtype}{int} SBN\_SERIAL\_LoadNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keywordtype}{int} SBN\_SERIAL\_LoadPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keywordtype}{int} SBN\_SERIAL\_InitNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keywordtype}{int} SBN\_SERIAL\_InitPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keywordtype}{int} SBN\_SERIAL\_PollPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keywordtype}{int} SBN\_SERIAL\_Send(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, SBN\_MsgType\_t MsgType,}
+\DoxyCodeLine{30     SBN\_MsgSz\_t MsgSz, \textcolor{keywordtype}{void} *Payload);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keywordtype}{int} SBN\_SERIAL\_Recv(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer,}
+\DoxyCodeLine{33         SBN\_MsgType\_t *MsgTypePtr, SBN\_MsgSz\_t *MsgSzPtr,}
+\DoxyCodeLine{34         SBN\_CpuID\_t *CpuIDPtr, \textcolor{keywordtype}{void} *PayloadBuffer);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keywordtype}{int} SBN\_SERIAL\_ReportModuleStatus(\mbox{\hyperlink{struct_s_b_n___module_status_packet__t}{SBN\_ModuleStatusPacket\_t}} *Packet);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keywordtype}{int} SBN\_SERIAL\_ResetPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keywordtype}{int} SBN\_SERIAL\_UnloadNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{int} SBN\_SERIAL\_UnloadPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_t}} SBN\_SERIAL\_Ops =}
+\DoxyCodeLine{45 \{}
+\DoxyCodeLine{46     SBN\_SERIAL\_Init,}
+\DoxyCodeLine{47     SBN\_SERIAL\_LoadNet,}
+\DoxyCodeLine{48     SBN\_SERIAL\_LoadPeer,}
+\DoxyCodeLine{49     SBN\_SERIAL\_InitNet,}
+\DoxyCodeLine{50     SBN\_SERIAL\_InitPeer,}
+\DoxyCodeLine{51     SBN\_SERIAL\_PollPeer,}
+\DoxyCodeLine{52     SBN\_SERIAL\_Send,}
+\DoxyCodeLine{53     SBN\_SERIAL\_Recv,}
+\DoxyCodeLine{54     NULL,}
+\DoxyCodeLine{55     SBN\_SERIAL\_ReportModuleStatus,}
+\DoxyCodeLine{56     SBN\_SERIAL\_ResetPeer,}
+\DoxyCodeLine{57     SBN\_SERIAL\_UnloadNet,}
+\DoxyCodeLine{58     SBN\_SERIAL\_UnloadPeer}
+\DoxyCodeLine{59 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define SBN\_SERIAL\_HEARTBEAT\_MSG 0xA0}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define SBN\_SERIAL\_CONNTRY\_TIME 10}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_serial\_if\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,271 @@
+\hypertarget{struct_cognition_state__t}{}\doxysection{Cognition\+State\+\_\+t Struct Reference}
+\label{struct_cognition_state__t}\index{CognitionState\_t@{CognitionState\_t}}
+
+
+state containing all data required for decision making  
+
+
+
+
+{\ttfamily \#include $<$Cognition.\+hpp$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a7f4e8c1d9f90b66ca9bdd55fc33d3321}\label{struct_cognition_state__t_a7f4e8c1d9f90b66ca9bdd55fc33d3321}} 
+double {\bfseries utc\+Time}
+\begin{DoxyCompactList}\small\item\em Current time. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ad3ad5beadd2784a2dbdb52e42561b442}\label{struct_cognition_state__t_ad3ad5beadd2784a2dbdb52e42561b442}} 
+std\+::string {\bfseries time\+String}
+\begin{DoxyCompactList}\small\item\em Formatted time string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a493006fa7a1d466d52cb4d1c0a4d8948}\label{struct_cognition_state__t_a493006fa7a1d466d52cb4d1c0a4d8948}} 
+std\+::string {\bfseries call\+Sign}
+\begin{DoxyCompactList}\small\item\em Vehicle\textquotesingle{}s callsign string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ad3029ab521cfd2c41766dea7937223cf}\label{struct_cognition_state__t_ad3029ab521cfd2c41766dea7937223cf}} 
+std\+::string {\bfseries mission\+Plan}
+\begin{DoxyCompactList}\small\item\em Mission plan id (should be \char`\"{}\+Plan0\char`\"{}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_af6c583b3c5071419e1e5cdad08018e59}\label{struct_cognition_state__t_af6c583b3c5071419e1e5cdad08018e59}} 
+\mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} {\bfseries parameters}
+\begin{DoxyCompactList}\small\item\em Configurable parameters used by \mbox{\hyperlink{class_cognition}{Cognition}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a54fd7f200339114b10a7865604630070}\label{struct_cognition_state__t_a54fd7f200339114b10a7865604630070}} 
+bool {\bfseries ic\+Ready}
+\begin{DoxyCompactList}\small\item\em True if icarous is ready. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a35ce39617b78b33c4f66dd28b06de13a}\label{struct_cognition_state__t_a35ce39617b78b33c4f66dd28b06de13a}} 
+std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries flight\+Plans}
+\begin{DoxyCompactList}\small\item\em List of flight plans. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0669529e970de1a93162c07e4aae1cf1}\label{struct_cognition_state__t_a0669529e970de1a93162c07e4aae1cf1}} 
+larcfm\+::\+Plan $\ast$ {\bfseries active\+Plan}
+\begin{DoxyCompactList}\small\item\em Pointer to the active flight plan. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a12e10cd60bb81a3afbd1e87f8f90d4d7}\label{struct_cognition_state__t_a12e10cd60bb81a3afbd1e87f8f90d4d7}} 
+std\+::map$<$ std\+::string, int $>$ {\bfseries next\+Wp\+Id}
+\begin{DoxyCompactList}\small\item\em Map from flight plan id to next waypoint id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_afe9716c3ee63d632c5aa1a08e524f571}\label{struct_cognition_state__t_afe9716c3ee63d632c5aa1a08e524f571}} 
+int {\bfseries next\+Feasible\+Wp\+Id}
+\begin{DoxyCompactList}\small\item\em Next feasible waypoint id. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aea2bd3656d0f2cdaffa69d2c6995a85b}\label{struct_cognition_state__t_aea2bd3656d0f2cdaffa69d2c6995a85b}} 
+bool {\bfseries closest\+Point\+Feasible}
+\begin{DoxyCompactList}\small\item\em Feasibility of nearest point on primary flight plan. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a219e55e882751d5a8e524d924a021d4c}\label{struct_cognition_state__t_a219e55e882751d5a8e524d924a021d4c}} 
+\mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolution\+Type\+\_\+e}} {\bfseries res\+Type}
+\begin{DoxyCompactList}\small\item\em Resolution type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a53c198d46d0622622d996ad1b33589b5}\label{struct_cognition_state__t_a53c198d46d0622622d996ad1b33589b5}} 
+bool {\bfseries primary\+FPReceived}
+\begin{DoxyCompactList}\small\item\em Received primary flightplan. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a8c957abd2842488ac38e0ba4cdac7a0e}\label{struct_cognition_state__t_a8c957abd2842488ac38e0ba4cdac7a0e}} 
+bool {\bfseries recovery} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em true if recovery is active in the 4 dimensions (speed,track,altitude,vs) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_afde51812e9c70a31465372eccc77c22f}\label{struct_cognition_state__t_afde51812e9c70a31465372eccc77c22f}} 
+bool {\bfseries valid\+Resolution} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em true if there is a valid resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_abc984ff4b973240be8bbef03446d6878}\label{struct_cognition_state__t_abc984ff4b973240be8bbef03446d6878}} 
+double {\bfseries scenario\+Time}
+\begin{DoxyCompactList}\small\item\em flightplan start time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a5bf532ecaf302d0e1c1e92bf31fb5b9a}\label{struct_cognition_state__t_a5bf532ecaf302d0e1c1e92bf31fb5b9a}} 
+double {\bfseries time\+To\+Traffic\+Violation1}
+\begin{DoxyCompactList}\small\item\em time in to violation from DAA \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aa079861c3b351a7f3f7256bf72ffdec9}\label{struct_cognition_state__t_aa079861c3b351a7f3f7256bf72ffdec9}} 
+double {\bfseries time\+To\+Traffic\+Violation2}
+\begin{DoxyCompactList}\small\item\em time out of violation from DAA \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0a4aa1e282135befb1c655f344243e96}\label{struct_cognition_state__t_a0a4aa1e282135befb1c655f344243e96}} 
+double {\bfseries time\+To\+Traffic\+Violation3}
+\begin{DoxyCompactList}\small\item\em time in to violation from Trajectory Monitor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a46258eb8b91d09d4941662f76a90dbf8}\label{struct_cognition_state__t_a46258eb8b91d09d4941662f76a90dbf8}} 
+double {\bfseries time\+To\+Fence\+Violation}
+\begin{DoxyCompactList}\small\item\em time to violate fence \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ac9c0e608c7733a770f5cc4db2125cc4c}\label{struct_cognition_state__t_ac9c0e608c7733a770f5cc4db2125cc4c}} 
+double {\bfseries xtrack\+Deviation}
+\begin{DoxyCompactList}\small\item\em Cross track deviation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a696510b9d13eb05c504ea81a234d748f}\label{struct_cognition_state__t_a696510b9d13eb05c504ea81a234d748f}} 
+larcfm\+::\+Position {\bfseries position}
+\begin{DoxyCompactList}\small\item\em position \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a694f323f24ecc1a6e487786159d5e55d}\label{struct_cognition_state__t_a694f323f24ecc1a6e487786159d5e55d}} 
+larcfm\+::\+Velocity {\bfseries velocity}
+\begin{DoxyCompactList}\small\item\em velocity \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a97e8d727df757c0b1bae6c7daa036c72}\label{struct_cognition_state__t_a97e8d727df757c0b1bae6c7daa036c72}} 
+double {\bfseries hdg}
+\begin{DoxyCompactList}\small\item\em heading \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_acbff40d9c157386e3267e736371b4e29}\label{struct_cognition_state__t_acbff40d9c157386e3267e736371b4e29}} 
+double {\bfseries speed}
+\begin{DoxyCompactList}\small\item\em speed \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a1378abfdec924d3080a8d1b564f08539}\label{struct_cognition_state__t_a1378abfdec924d3080a8d1b564f08539}} 
+bool {\bfseries keep\+In\+Conflict}
+\begin{DoxyCompactList}\small\item\em keep in geofence conflict \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a4ca684bc2771781625d1d1d0658a39ba}\label{struct_cognition_state__t_a4ca684bc2771781625d1d1d0658a39ba}} 
+bool {\bfseries keep\+Out\+Conflict}
+\begin{DoxyCompactList}\small\item\em keep out geofence conflict \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a55c0ef4413b57f283445af75175f8c02}\label{struct_cognition_state__t_a55c0ef4413b57f283445af75175f8c02}} 
+larcfm\+::\+Position {\bfseries recovery\+Position}
+\begin{DoxyCompactList}\small\item\em recovery position (safe position) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ab5bc17ef1985c6976497962ba8dc955d}\label{struct_cognition_state__t_ab5bc17ef1985c6976497962ba8dc955d}} 
+larcfm\+::\+Position {\bfseries clst\+Point}
+\begin{DoxyCompactList}\small\item\em closest point on nominal plan \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aeace19241991feca3b15592cb9c8c542}\label{struct_cognition_state__t_aeace19241991feca3b15592cb9c8c542}} 
+bool {\bfseries line\+Of\+Sight2\+Goal}
+\begin{DoxyCompactList}\small\item\em true if line of sight to next feasible waypoint is available \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a999a702044a528e4c0e63e4d46c268fc}\label{struct_cognition_state__t_a999a702044a528e4c0e63e4d46c268fc}} 
+bool {\bfseries line\+Of\+Sight2\+Goal\+Prev}
+\begin{DoxyCompactList}\small\item\em previous value of line\+Of\+Sight2\+Goal \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aea377f9e7f55f7a8d00a69ea58c92060}\label{struct_cognition_state__t_aea377f9e7f55f7a8d00a69ea58c92060}} 
+bool {\bfseries traffic\+Conflict}
+\begin{DoxyCompactList}\small\item\em true if there a traffic conflict \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a3afb07806773bbcbc44376f1f2b20f25}\label{struct_cognition_state__t_a3afb07806773bbcbc44376f1f2b20f25}} 
+bool {\bfseries all\+Traffic\+Conflicts} \mbox{[}4\mbox{]}
+\begin{DoxyCompactList}\small\item\em traffic conflict with respect to each dimension \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0d9d3e8c4a75d8a1ecb5d5eb9fe21f54}\label{struct_cognition_state__t_a0d9d3e8c4a75d8a1ecb5d5eb9fe21f54}} 
+bool {\bfseries new\+Alt\+Conflict}
+\begin{DoxyCompactList}\small\item\em new altitude conflict \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_abd7477d67de0a5250252532b90cedb68}\label{struct_cognition_state__t_abd7477d67de0a5250252532b90cedb68}} 
+double {\bfseries traffic\+Conflict\+Start\+Time}
+\begin{DoxyCompactList}\small\item\em traffic conflict start time \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a5aece0d762d90ca5317890c6ae8fe29e}\label{struct_cognition_state__t_a5aece0d762d90ca5317890c6ae8fe29e}} 
+bool {\bfseries plan\+Projected\+Traffic\+Conflict}
+\begin{DoxyCompactList}\small\item\em traffic conflict based on projection of time to violation on current plan \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a78ee9e12276b90a5b306503b41b416c5}\label{struct_cognition_state__t_a78ee9e12276b90a5b306503b41b416c5}} 
+bool {\bfseries plan\+Projected\+Fence\+Conflict}
+\begin{DoxyCompactList}\small\item\em fence conflict based on projection of time to violation on current plan \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_afe6dbd7abfb4ee828d79919821be251b}\label{struct_cognition_state__t_afe6dbd7abfb4ee828d79919821be251b}} 
+bool {\bfseries return\+Safe}
+\begin{DoxyCompactList}\small\item\em safe to return to mission \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ae9834339bfc0674eb72fe0137622c178}\label{struct_cognition_state__t_ae9834339bfc0674eb72fe0137622c178}} 
+double {\bfseries resolution\+Start\+Speed}
+\begin{DoxyCompactList}\small\item\em speed to start resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a8a33b237bbe84a2b4dfd387954792e30}\label{struct_cognition_state__t_a8a33b237bbe84a2b4dfd387954792e30}} 
+double {\bfseries preferred\+Track}
+\begin{DoxyCompactList}\small\item\em track resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a2b83400f98441412db3eaa531b0d1ed9}\label{struct_cognition_state__t_a2b83400f98441412db3eaa531b0d1ed9}} 
+double {\bfseries preferred\+Speed}
+\begin{DoxyCompactList}\small\item\em speed resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a506684130a5e6fb51288ff3c3346b74c}\label{struct_cognition_state__t_a506684130a5e6fb51288ff3c3346b74c}} 
+double {\bfseries preferred\+Alt}
+\begin{DoxyCompactList}\small\item\em altitude resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a3263d9466d4b2c9971c72af218fdae99}\label{struct_cognition_state__t_a3263d9466d4b2c9971c72af218fdae99}} 
+double {\bfseries preferred\+VSpeed}
+\begin{DoxyCompactList}\small\item\em vertical speed resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a8774f06d9c8acecdc9aab2026e33ed5b}\label{struct_cognition_state__t_a8774f06d9c8acecdc9aab2026e33ed5b}} 
+int {\bfseries vs\+Bands\+Num}
+\begin{DoxyCompactList}\small\item\em number of vertical speed bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a3f453d2807a10e9b7b41701f3e617e0d}\label{struct_cognition_state__t_a3f453d2807a10e9b7b41701f3e617e0d}} 
+double {\bfseries res\+VUp}
+\begin{DoxyCompactList}\small\item\em up vertical resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a1ce273e99246009874a85b2b5dccbe83}\label{struct_cognition_state__t_a1ce273e99246009874a85b2b5dccbe83}} 
+double {\bfseries res\+VDown}
+\begin{DoxyCompactList}\small\item\em down vertical resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a5e86bba7404eee2f16ad923795280084}\label{struct_cognition_state__t_a5e86bba7404eee2f16ad923795280084}} 
+std\+::set$<$ std\+::string $>$ {\bfseries conflict\+Traffics}
+\begin{DoxyCompactList}\small\item\em conflicting traffic ids \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a07c0a79500ded6d283b9a0a93f5fc69e}\label{struct_cognition_state__t_a07c0a79500ded6d283b9a0a93f5fc69e}} 
+double {\bfseries prev\+Res\+Speed}
+\begin{DoxyCompactList}\small\item\em previous speed resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a85252f491f9a0fb499e70bdf4bf48559}\label{struct_cognition_state__t_a85252f491f9a0fb499e70bdf4bf48559}} 
+double {\bfseries prev\+Res\+Alt}
+\begin{DoxyCompactList}\small\item\em previous altitude resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aaec65ac53367d1aa5588a0fbd5d0a2c2}\label{struct_cognition_state__t_aaec65ac53367d1aa5588a0fbd5d0a2c2}} 
+double {\bfseries prev\+Res\+Track}
+\begin{DoxyCompactList}\small\item\em previous track resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_add2818ba18eadd24188fa650f78680dd}\label{struct_cognition_state__t_add2818ba18eadd24188fa650f78680dd}} 
+double {\bfseries prev\+Res\+Vspeed}
+\begin{DoxyCompactList}\small\item\em previous vertical speed resolution \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aac8afd320f1da6673c8cc763289e88ce}\label{struct_cognition_state__t_aac8afd320f1da6673c8cc763289e88ce}} 
+int {\bfseries trk\+Band\+Num}
+\begin{DoxyCompactList}\small\item\em number of track bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ac3c7fbad56267a8522936359a162e954}\label{struct_cognition_state__t_ac3c7fbad56267a8522936359a162e954}} 
+int {\bfseries trk\+Band\+Type} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em band types \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a41cb6aea2679835144e979369b43c296}\label{struct_cognition_state__t_a41cb6aea2679835144e979369b43c296}} 
+double {\bfseries trk\+Band\+Min} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em min track bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aa5a015f9cc016a0c7f99f811751a0cef}\label{struct_cognition_state__t_aa5a015f9cc016a0c7f99f811751a0cef}} 
+double {\bfseries trk\+Band\+Max} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em max track bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aa0194e723a1a5782ad69bb6b31535a4c}\label{struct_cognition_state__t_aa0194e723a1a5782ad69bb6b31535a4c}} 
+int {\bfseries gs\+Band\+Num}
+\begin{DoxyCompactList}\small\item\em number of ground speed bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ad4bbef41d458c2f8ae5f05ea7881a13f}\label{struct_cognition_state__t_ad4bbef41d458c2f8ae5f05ea7881a13f}} 
+int {\bfseries gs\+Band\+Type} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em ground speed band type \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0ef7585451a9cd9559014c13db31a69d}\label{struct_cognition_state__t_a0ef7585451a9cd9559014c13db31a69d}} 
+double {\bfseries gs\+Band\+Min} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em min ground speed \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a2ef1e99f29bf7c7dc6d93486c06f771a}\label{struct_cognition_state__t_a2ef1e99f29bf7c7dc6d93486c06f771a}} 
+double {\bfseries gs\+Band\+Max} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em max ground speed \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a45efe06d774dcd967739e3eb5e335b0b}\label{struct_cognition_state__t_a45efe06d774dcd967739e3eb5e335b0b}} 
+int {\bfseries alt\+Band\+Num}
+\begin{DoxyCompactList}\small\item\em number of altitude bands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a70e16842caa4c92e2a948113ea59cdc6}\label{struct_cognition_state__t_a70e16842caa4c92e2a948113ea59cdc6}} 
+int {\bfseries alt\+Band\+Type} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em altitude band types \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a92543003db6df51c44562a1d071511be}\label{struct_cognition_state__t_a92543003db6df51c44562a1d071511be}} 
+double {\bfseries alt\+Band\+Min} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em min alt band \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ab73382321c4b46f98c09926a537d1e16}\label{struct_cognition_state__t_ab73382321c4b46f98c09926a537d1e16}} 
+double {\bfseries alt\+Band\+Max} \mbox{[}20\mbox{]}
+\begin{DoxyCompactList}\small\item\em max alt band \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_aa68b8788815825c475cec9e92af819da}\label{struct_cognition_state__t_aa68b8788815825c475cec9e92af819da}} 
+bool {\bfseries Xtrack\+Conflict}
+\begin{DoxyCompactList}\small\item\em cross track conflict \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a3892588ee0dd51494523335a1ccdfcc5}\label{struct_cognition_state__t_a3892588ee0dd51494523335a1ccdfcc5}} 
+bool {\bfseries direct\+Path\+To\+Feasible\+WP1}
+\begin{DoxyCompactList}\small\item\em direct path to next feasible wp on primary plan \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_adf8cb98173de7d1d2b04efa9af54367c}\label{struct_cognition_state__t_adf8cb98173de7d1d2b04efa9af54367c}} 
+bool {\bfseries direct\+Path\+To\+Feasible\+WP2}
+\begin{DoxyCompactList}\small\item\em direct path to next feasible wp on secondary plan \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a38b32950b832a5c6572ec6773d4168d7}\label{struct_cognition_state__t_a38b32950b832a5c6572ec6773d4168d7}} 
+larcfm\+::\+Position {\bfseries ditch\+Site}
+\begin{DoxyCompactList}\small\item\em position of ditch site \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a3245822666de31f6bdc53cc7d7b14439}\label{struct_cognition_state__t_a3245822666de31f6bdc53cc7d7b14439}} 
+double {\bfseries tod\+Altitude}
+\begin{DoxyCompactList}\small\item\em top of descent altitude \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a698312171622d5976db818594e89de53}\label{struct_cognition_state__t_a698312171622d5976db818594e89de53}} 
+bool {\bfseries ditch}
+\begin{DoxyCompactList}\small\item\em start ditching when true \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a407d803eeca94a416192e094f555b880}\label{struct_cognition_state__t_a407d803eeca94a416192e094f555b880}} 
+bool {\bfseries reset\+Ditch}
+\begin{DoxyCompactList}\small\item\em reset ditching \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a1dccb45777f4c475175172549d7e576f}\label{struct_cognition_state__t_a1dccb45777f4c475175172549d7e576f}} 
+bool {\bfseries end\+Ditch}
+\begin{DoxyCompactList}\small\item\em end ditching \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ab59308690ff4d2638321565c3a204114}\label{struct_cognition_state__t_ab59308690ff4d2638321565c3a204114}} 
+bool {\bfseries ditch\+Route\+Feasible}
+\begin{DoxyCompactList}\small\item\em true if direct path to ditch site is feasible \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a1dec3f94dc45ad4c3acd5efd70881ab9}\label{struct_cognition_state__t_a1dec3f94dc45ad4c3acd5efd70881ab9}} 
+bool {\bfseries left\+Turn\+Conflict}
+\begin{DoxyCompactList}\small\item\em true if left turn is not possible \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a53ac442b3806061613eb420cb1fc942d}\label{struct_cognition_state__t_a53ac442b3806061613eb420cb1fc942d}} 
+bool {\bfseries right\+Turn\+Conflict}
+\begin{DoxyCompactList}\small\item\em true if right turn is not possible \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a7c4fe1f7de25c29354ae5a8c33a03512}\label{struct_cognition_state__t_a7c4fe1f7de25c29354ae5a8c33a03512}} 
+\mbox{\hyperlink{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}{takeoff\+\_\+status\+\_\+e}} {\bfseries takeoff\+State}
+\begin{DoxyCompactList}\small\item\em takeoff state \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a80493c05d09cfbe3b3e54e3d1a3ef2fa}\label{struct_cognition_state__t_a80493c05d09cfbe3b3e54e3d1a3ef2fa}} 
+\mbox{\hyperlink{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}{request\+\_\+e}} {\bfseries path\+Request}
+\begin{DoxyCompactList}\small\item\em status of path request \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a7406391daa0166dd27f38052c27de69e}\label{struct_cognition_state__t_a7406391daa0166dd27f38052c27de69e}} 
+int {\bfseries mission\+Start}
+\begin{DoxyCompactList}\small\item\em mission start waypoint \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0eb91f5cc20470559b6df144801ff320}\label{struct_cognition_state__t_a0eb91f5cc20470559b6df144801ff320}} 
+int {\bfseries request\+Guidance2\+Next\+WP}
+\begin{DoxyCompactList}\small\item\em -\/1\+: undediced, 0\+: no guidance, 1\+: obtain guidance \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a35e91b049f4313021788dc7e24521823}\label{struct_cognition_state__t_a35e91b049f4313021788dc7e24521823}} 
+bool {\bfseries p2p\+Complete}
+\begin{DoxyCompactList}\small\item\em status of point 2 point guidance \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a0789cf422956239e5bcb63314540cb03}\label{struct_cognition_state__t_a0789cf422956239e5bcb63314540cb03}} 
+bool {\bfseries top\+Of\+Descent}
+\begin{DoxyCompactList}\small\item\em reached top of descent \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_ade10e7bdffd44089ea755de5bcda9ada}\label{struct_cognition_state__t_ade10e7bdffd44089ea755de5bcda9ada}} 
+uint8\+\_\+t {\bfseries merging\+Active}
+\begin{DoxyCompactList}\small\item\em status of merging activity \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a844919bb4e454a78fdd8cf3f8fbcf5f7}\label{struct_cognition_state__t_a844919bb4e454a78fdd8cf3f8fbcf5f7}} 
+uint16\+\_\+t {\bfseries num\+Sec\+Paths}
+\begin{DoxyCompactList}\small\item\em number of secondary paths \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a302bcf3ab633b8ba927cdf97ef13f942}\label{struct_cognition_state__t_a302bcf3ab633b8ba927cdf97ef13f942}} 
+std\+::list$<$ \mbox{\hyperlink{struct_command}{Command}} $>$ {\bfseries cognition\+Commands}
+\begin{DoxyCompactList}\small\item\em output commands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_cognition_state__t_a6b2653f62c7df11855d3829e575f9637}\label{struct_cognition_state__t_a6b2653f62c7df11855d3829e575f9637}} 
+std\+::ofstream {\bfseries log}
+\begin{DoxyCompactList}\small\item\em log file handle \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_cognition_8hpp}{Cognition.\+hpp}}\end{DoxyCompactItemize}

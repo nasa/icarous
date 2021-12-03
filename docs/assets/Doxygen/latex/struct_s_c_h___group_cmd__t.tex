@@ -1,0 +1,36 @@
+\hypertarget{struct_s_c_h___group_cmd__t}{}\doxysection{SCH\+\_\+\+Group\+Cmd\+\_\+t Struct Reference}
+\label{struct_s_c_h___group_cmd__t}\index{SCH\_GroupCmd\_t@{SCH\_GroupCmd\_t}}
+
+
+Entry Enable/\+Disable Commands.  
+
+
+
+
+{\ttfamily \#include $<$sch\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_c_h___group_cmd__t_ae7c5ee3a201522ec58dfe3de3d6beb76}\label{struct_s_c_h___group_cmd__t_ae7c5ee3a201522ec58dfe3de3d6beb76}} 
+uint8 {\bfseries Cmd\+Header} \mbox{[}CFE\+\_\+\+SB\+\_\+\+CMD\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\begin{DoxyCompactList}\small\item\em c\+FE Software Bus \mbox{\hyperlink{struct_command}{Command}} Message Header \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{struct_s_c_h___group_cmd__t_a7b3bc39e9f4e01e8dad54dea3e7da611}{Group\+Data}}
+\begin{DoxyCompactList}\small\item\em Group and Multi-\/\+Group Identifiers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+For command details see \#\+SCH\+\_\+\+ENABLE\+\_\+\+GROUP\+\_\+\+CC, \#\+SCH\+\_\+\+DISABLE\+\_\+\+GROUP\+\_\+\+CC 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_c_h___group_cmd__t_a7b3bc39e9f4e01e8dad54dea3e7da611}\label{struct_s_c_h___group_cmd__t_a7b3bc39e9f4e01e8dad54dea3e7da611}} 
+\index{SCH\_GroupCmd\_t@{SCH\_GroupCmd\_t}!GroupData@{GroupData}}
+\index{GroupData@{GroupData}!SCH\_GroupCmd\_t@{SCH\_GroupCmd\_t}}
+\doxysubsubsection{\texorpdfstring{GroupData}{GroupData}}
+{\footnotesize\ttfamily uint32 SCH\+\_\+\+Group\+Cmd\+\_\+t\+::\+Group\+Data}
+
+Most Significant Byte contains a Group ID of 1 to 255, remaining 24 bits identify 24 Multi-\/\+Group Identifiers 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/scheduler/fsw/src/sch\+\_\+msg.\+h\end{DoxyCompactItemize}

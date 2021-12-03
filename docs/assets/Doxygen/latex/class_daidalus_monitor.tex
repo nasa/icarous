@@ -1,0 +1,123 @@
+\hypertarget{class_daidalus_monitor}{}\doxysection{Daidalus\+Monitor Class Reference}
+\label{class_daidalus_monitor}\index{DaidalusMonitor@{DaidalusMonitor}}
+Inheritance diagram for Daidalus\+Monitor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_daidalus_monitor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ada54de72fbfbf2c45c5b5967e67fb6f7}\label{class_daidalus_monitor_ada54de72fbfbf2c45c5b5967e67fb6f7}} 
+{\bfseries Daidalus\+Monitor} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string daa\+Config)
+\item 
+void \mbox{\hyperlink{class_daidalus_monitor_aa7aefbb58bffb8d2079efd65195b988a}{Monitor\+Traffic}} (larcfm\+::\+Velocity windfrom)
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a272b552d1d49c202460ae119877c5b11}\label{class_daidalus_monitor_a272b552d1d49c202460ae119877c5b11}} 
+std\+::string {\bfseries Get\+Alerter} (\mbox{\hyperlink{structobject}{object}} \&intruder)
+\item 
+bool \mbox{\hyperlink{class_daidalus_monitor_a938478482292d7b9e5c0a9b26a3a83c4}{Check\+Position\+Feasibility}} (const larcfm\+::\+Position pos, const double speed)
+\item 
+void \mbox{\hyperlink{class_daidalus_monitor_a58e9beeeef3500e447c90e3416b7720f}{Update\+Parameters}} (std\+::string daa\+Parameters)
+\item 
+int \mbox{\hyperlink{class_daidalus_monitor_a1389381f3a32215912809d443bcf196c}{Get\+Traffic\+Alerts}} (int index, std\+::string \&traffic\+ID, int \&alert\+Level)
+\item 
+bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_a205f5ea737b677d6b370381cdb5dba16}{Get\+Track\+Bands}} (void)
+\item 
+bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_a2676fba677a8155caa9a862b6fafb2d2}{Get\+Speed\+Bands}} (void)
+\item 
+bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_a3374cd6b7c87632ed5b32466c42fc5d7}{Get\+Alt\+Bands}} (void)
+\item 
+bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_ae494d2198ad36c68fbc797c465b28d0a}{Get\+Vertical\+Speed\+Bands}} (void)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_daidalus_monitor_a938478482292d7b9e5c0a9b26a3a83c4}\label{class_daidalus_monitor_a938478482292d7b9e5c0a9b26a3a83c4}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!CheckPositionFeasibility@{CheckPositionFeasibility}}
+\index{CheckPositionFeasibility@{CheckPositionFeasibility}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{CheckPositionFeasibility()}{CheckPositionFeasibility()}}
+{\footnotesize\ttfamily bool Daidalus\+Monitor\+::\+Check\+Position\+Feasibility (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position}]{pos,  }\item[{const double}]{speed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_a3374cd6b7c87632ed5b32466c42fc5d7}\label{class_daidalus_monitor_a3374cd6b7c87632ed5b32466c42fc5d7}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!GetAltBands@{GetAltBands}}
+\index{GetAltBands@{GetAltBands}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{GetAltBands()}{GetAltBands()}}
+{\footnotesize\ttfamily bands\+\_\+t Daidalus\+Monitor\+::\+Get\+Alt\+Bands (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_a2676fba677a8155caa9a862b6fafb2d2}\label{class_daidalus_monitor_a2676fba677a8155caa9a862b6fafb2d2}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!GetSpeedBands@{GetSpeedBands}}
+\index{GetSpeedBands@{GetSpeedBands}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{GetSpeedBands()}{GetSpeedBands()}}
+{\footnotesize\ttfamily bands\+\_\+t Daidalus\+Monitor\+::\+Get\+Speed\+Bands (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_a205f5ea737b677d6b370381cdb5dba16}\label{class_daidalus_monitor_a205f5ea737b677d6b370381cdb5dba16}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!GetTrackBands@{GetTrackBands}}
+\index{GetTrackBands@{GetTrackBands}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{GetTrackBands()}{GetTrackBands()}}
+{\footnotesize\ttfamily bands\+\_\+t Daidalus\+Monitor\+::\+Get\+Track\+Bands (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_a1389381f3a32215912809d443bcf196c}\label{class_daidalus_monitor_a1389381f3a32215912809d443bcf196c}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!GetTrafficAlerts@{GetTrafficAlerts}}
+\index{GetTrafficAlerts@{GetTrafficAlerts}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{GetTrafficAlerts()}{GetTrafficAlerts()}}
+{\footnotesize\ttfamily int Daidalus\+Monitor\+::\+Get\+Traffic\+Alerts (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{std\+::string \&}]{traffic\+ID,  }\item[{int \&}]{alert\+Level }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_ae494d2198ad36c68fbc797c465b28d0a}\label{class_daidalus_monitor_ae494d2198ad36c68fbc797c465b28d0a}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!GetVerticalSpeedBands@{GetVerticalSpeedBands}}
+\index{GetVerticalSpeedBands@{GetVerticalSpeedBands}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{GetVerticalSpeedBands()}{GetVerticalSpeedBands()}}
+{\footnotesize\ttfamily bands\+\_\+t Daidalus\+Monitor\+::\+Get\+Vertical\+Speed\+Bands (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_aa7aefbb58bffb8d2079efd65195b988a}\label{class_daidalus_monitor_aa7aefbb58bffb8d2079efd65195b988a}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!MonitorTraffic@{MonitorTraffic}}
+\index{MonitorTraffic@{MonitorTraffic}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{MonitorTraffic()}{MonitorTraffic()}}
+{\footnotesize\ttfamily void Daidalus\+Monitor\+::\+Monitor\+Traffic (\begin{DoxyParamCaption}\item[{larcfm\+::\+Velocity}]{windfrom }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+\mbox{\Hypertarget{class_daidalus_monitor_a58e9beeeef3500e447c90e3416b7720f}\label{class_daidalus_monitor_a58e9beeeef3500e447c90e3416b7720f}} 
+\index{DaidalusMonitor@{DaidalusMonitor}!UpdateParameters@{UpdateParameters}}
+\index{UpdateParameters@{UpdateParameters}!DaidalusMonitor@{DaidalusMonitor}}
+\doxysubsubsection{\texorpdfstring{UpdateParameters()}{UpdateParameters()}}
+{\footnotesize\ttfamily void Daidalus\+Monitor\+::\+Update\+Parameters (\begin{DoxyParamCaption}\item[{std\+::string}]{daa\+Parameters }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_traffic_monitor}{Traffic\+Monitor}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Traffic\+Monitor/Daidalus\+Monitor.\+hpp\item 
+Modules/\+Core/\+Traffic\+Monitor/Daidalus\+Monitor.\+cpp\end{DoxyCompactItemize}

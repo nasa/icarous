@@ -1,0 +1,153 @@
+\hypertarget{apps_2cognition_2fsw_2src_2cognition_8h}{}\doxysection{apps/cognition/fsw/src/cognition.h File Reference}
+\label{apps_2cognition_2fsw_2src_2cognition_8h}\index{apps/cognition/fsw/src/cognition.h@{apps/cognition/fsw/src/cognition.h}}
+
+
+function declarations, definitions of macros, datastructures and global variables for the cognition application  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}cognition\+\_\+events.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geofence\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}guidance\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geofence\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}guidance\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Util\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Guidance.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Core/\+Cognition/\+Cognition.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structappdata_cog__t}{appdata\+Cog\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a42acea69221f981d801117031d456b4f}\label{apps_2cognition_2fsw_2src_2cognition_8h_a42acea69221f981d801117031d456b4f}} 
+\#define {\bfseries COGNITION\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}COGPIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_aae207eabc72b49e44601323503076ba3}\label{apps_2cognition_2fsw_2src_2cognition_8h_aae207eabc72b49e44601323503076ba3}} 
+\#define {\bfseries COGNITION\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a9c1236a57e94e4c6851ac6f9204dd280}\label{apps_2cognition_2fsw_2src_2cognition_8h_a9c1236a57e94e4c6851ac6f9204dd280}} 
+\#define {\bfseries SCH\+\_\+\+COGNITION\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}SCH\+\_\+\+COGNITION\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a63db52418dddb45ecd468860ff8bdcbf}{COGNITION\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em This is the main entry point for your application that will be used by c\+FS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a26665cd5ac59e9a1c846ef0486f91c8c}{COGNITION\+\_\+\+App\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize app data\+: set up pipes, subscribe to messages, read table, initialize data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a8bedf49a38dab1e3aeb7338c5dd391e2}{COGNITION\+\_\+\+App\+Init\+Data}} (void)
+\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a30aa0dfbb20151792b76ef970bf35de7}{COGNITION\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_ae275e63a127ad1ef82b86cc31bb2494f}{COGNITION\+\_\+\+Process\+SBData}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from software bus and send data to autopilot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_a06abe4570e72f736b14bbe056424b602}{COGNITION\+\_\+\+Get\+ADSBData}} (void)
+\begin{DoxyCompactList}\small\item\em Read ADSB data from ADSB transponder and publish traffic data on software bus. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a449c9f9c04a3f0727a4a7cfe802dfffa}\label{apps_2cognition_2fsw_2src_2cognition_8h_a449c9f9c04a3f0727a4a7cfe802dfffa}} 
+void {\bfseries COGNITION\+\_\+\+Decision\+Process} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{apps_2cognition_2fsw_2src_2cognition_8h_ab01e0a70a2a54ca2594614579d1963aa}{cognition\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a3dfdf75ae934d7970134d25f23fe3edf}\label{apps_2cognition_2fsw_2src_2cognition_8h_a3dfdf75ae934d7970134d25f23fe3edf}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+Vel\+Cmd} (\mbox{\hyperlink{struct_velocity_command}{Velocity\+Command}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_adc7ea72d69d89d1036c252120f795089}\label{apps_2cognition_2fsw_2src_2cognition_8h_adc7ea72d69d89d1036c252120f795089}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+Flight\+Plan} (\mbox{\hyperlink{struct_fp_change}{Fp\+Change}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a99aeb8a9aecab86d2260c5c944b45df4}\label{apps_2cognition_2fsw_2src_2cognition_8h_a99aeb8a9aecab86d2260c5c944b45df4}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+P2P} (\mbox{\hyperlink{struct_p2_p_command}{P2\+PCommand}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a8253aae5726ed88f811d6a39ec4d6b98}\label{apps_2cognition_2fsw_2src_2cognition_8h_a8253aae5726ed88f811d6a39ec4d6b98}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Speed\+Change} (\mbox{\hyperlink{struct_speed_change}{Speed\+Change}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_ac1f99a6922122063a1faf0b1cc338460}\label{apps_2cognition_2fsw_2src_2cognition_8h_ac1f99a6922122063a1faf0b1cc338460}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Alt\+Change} (\mbox{\hyperlink{struct_alt_change}{Alt\+Change}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a77b10afffe60a14e3d8fd0c6870b1a40}\label{apps_2cognition_2fsw_2src_2cognition_8h_a77b10afffe60a14e3d8fd0c6870b1a40}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Takeoff} (\mbox{\hyperlink{struct_takeoff_command}{Takeoff\+Command}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a9f432b46910cc81a47c8f4f554375cb8}\label{apps_2cognition_2fsw_2src_2cognition_8h_a9f432b46910cc81a47c8f4f554375cb8}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Land} (\mbox{\hyperlink{struct_land_command}{Land\+Command}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a4100610022f8a6fded7b345576032710}\label{apps_2cognition_2fsw_2src_2cognition_8h_a4100610022f8a6fded7b345576032710}} 
+void {\bfseries COGNITION\+\_\+\+Find\+New\+Path} (\mbox{\hyperlink{struct_fp_request}{Fp\+Request}} cmd)
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_ab0dd44495f9c8692c181baa7398556a8}\label{apps_2cognition_2fsw_2src_2cognition_8h_ab0dd44495f9c8692c181baa7398556a8}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Ditch\+Request} (\mbox{\hyperlink{struct_ditch_command}{Ditch\+Command}} cmd)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a52a70eea9176525ef246372df0410ede}\label{apps_2cognition_2fsw_2src_2cognition_8h_a52a70eea9176525ef246372df0410ede}} 
+EXTERN \mbox{\hyperlink{structappdata_cog__t}{appdata\+Cog\+\_\+t}} {\bfseries appdata\+Cog}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a30aa0dfbb20151792b76ef970bf35de7}\label{apps_2cognition_2fsw_2src_2cognition_8h_a30aa0dfbb20151792b76ef970bf35de7}} 
+\index{cognition.h@{cognition.h}!COGNITION\_AppCleanUp@{COGNITION\_AppCleanUp}}
+\index{COGNITION\_AppCleanUp@{COGNITION\_AppCleanUp}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppCleanUp()}{COGNITION\_AppCleanUp()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a26665cd5ac59e9a1c846ef0486f91c8c}\label{apps_2cognition_2fsw_2src_2cognition_8h_a26665cd5ac59e9a1c846ef0486f91c8c}} 
+\index{cognition.h@{cognition.h}!COGNITION\_AppInit@{COGNITION\_AppInit}}
+\index{COGNITION\_AppInit@{COGNITION\_AppInit}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppInit()}{COGNITION\_AppInit()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a8bedf49a38dab1e3aeb7338c5dd391e2}\label{apps_2cognition_2fsw_2src_2cognition_8h_a8bedf49a38dab1e3aeb7338c5dd391e2}} 
+\index{cognition.h@{cognition.h}!COGNITION\_AppInitData@{COGNITION\_AppInitData}}
+\index{COGNITION\_AppInitData@{COGNITION\_AppInitData}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppInitData()}{COGNITION\_AppInitData()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Init\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app specific data \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a63db52418dddb45ecd468860ff8bdcbf}\label{apps_2cognition_2fsw_2src_2cognition_8h_a63db52418dddb45ecd468860ff8bdcbf}} 
+\index{cognition.h@{cognition.h}!COGNITION\_AppMain@{COGNITION\_AppMain}}
+\index{COGNITION\_AppMain@{COGNITION\_AppMain}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppMain()}{COGNITION\_AppMain()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_a06abe4570e72f736b14bbe056424b602}\label{apps_2cognition_2fsw_2src_2cognition_8h_a06abe4570e72f736b14bbe056424b602}} 
+\index{cognition.h@{cognition.h}!COGNITION\_GetADSBData@{COGNITION\_GetADSBData}}
+\index{COGNITION\_GetADSBData@{COGNITION\_GetADSBData}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_GetADSBData()}{COGNITION\_GetADSBData()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+Get\+ADSBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process ADSB data \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_ae275e63a127ad1ef82b86cc31bb2494f}\label{apps_2cognition_2fsw_2src_2cognition_8h_ae275e63a127ad1ef82b86cc31bb2494f}} 
+\index{cognition.h@{cognition.h}!COGNITION\_ProcessSBData@{COGNITION\_ProcessSBData}}
+\index{COGNITION\_ProcessSBData@{COGNITION\_ProcessSBData}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_ProcessSBData()}{COGNITION\_ProcessSBData()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+Process\+SBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the SB message \mbox{\Hypertarget{apps_2cognition_2fsw_2src_2cognition_8h_ab01e0a70a2a54ca2594614579d1963aa}\label{apps_2cognition_2fsw_2src_2cognition_8h_ab01e0a70a2a54ca2594614579d1963aa}} 
+\index{cognition.h@{cognition.h}!cognitionTableValidationFunc@{cognitionTableValidationFunc}}
+\index{cognitionTableValidationFunc@{cognitionTableValidationFunc}!cognition.h@{cognition.h}}
+\doxysubsubsection{\texorpdfstring{cognitionTableValidationFunc()}{cognitionTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t cognition\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}

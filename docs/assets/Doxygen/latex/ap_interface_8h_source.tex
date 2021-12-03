@@ -1,0 +1,72 @@
+\hypertarget{ap_interface_8h_source}{}\doxysection{ap\+Interface.\+h}
+\label{ap_interface_8h_source}\index{apps/apInterface/fsw/src/apInterface.h@{apps/apInterface/fsw/src/apInterface.h}}
+\mbox{\hyperlink{ap_interface_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef \_apInterface\_h\_}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define \_apInterface\_h\_}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}network\_includes.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{ap_interface__events_8h}{apInterface\_events.h}}"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msgids_8h}{traffic\_msgids.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{port__lib_8h}{port\_lib.h}}"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define APINTERFACE\_PIPE\_NAME "{}APFLTPLAN"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define APINTERFACE\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define SCH\_APINTERFACE\_PIPE1\_NAME "{}SCH\_AUTOPILOT"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{47 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{48     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a568edfe99f8424996d461208bf0e5b8c}{INTERFACE\_Pipe}};      }
+\DoxyCodeLine{49     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a268efe00b5492f9b701a1866af61e57c}{SchInterface\_Pipe}};   }
+\DoxyCodeLine{50     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_int__t_abbe995097a32897e2106b6baeb342504}{INTERFACEMsgPtr}};     }
+\DoxyCodeLine{51     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_int__t_a3fe2e973a885666348f1289d07964af9}{Sch\_MsgPtr}};          }
+\DoxyCodeLine{52     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{structappdata_int__t_ae7021f5e874a93674b1ab92b5644369d}{INTERFACE\_tblHandle}}; }
+\DoxyCodeLine{53     \mbox{\hyperlink{structport__t}{port\_t}} \mbox{\hyperlink{structappdata_int__t_a970f9d9643fe9bd7bacc627f64cec922}{ap}};                              }
+\DoxyCodeLine{54     \mbox{\hyperlink{structposition__t}{position\_t}} \mbox{\hyperlink{structappdata_int__t_ab2384248e01f070b0d790a54ca51b74a}{position}};                    }
+\DoxyCodeLine{55     \mbox{\hyperlink{structattitude__t}{attitude\_t}} \mbox{\hyperlink{structappdata_int__t_abfd9ddcbefa16a3c3005427885e2aeb2}{attitude}};                    }
+\DoxyCodeLine{56     \mbox{\hyperlink{structobject__t}{object\_t}} \mbox{\hyperlink{structappdata_int__t_aa4ddb988b857e79903692d82316a08e3}{traffic}};                       }
+\DoxyCodeLine{57     \mbox{\hyperlink{structmission_item_reached__t}{missionItemReached\_t}} \mbox{\hyperlink{structappdata_int__t_ae3693b8fb67eea585c8b96e93f169fe1}{wpReached}};         }
+\DoxyCodeLine{58     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a8dfca40223c4c88ced005b012e88fab9}{currentWP}};                          }
+\DoxyCodeLine{59     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} flightplan;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{comment}{// You may need additional ports if data is obtained from other sensors}}
+\DoxyCodeLine{62     \textcolor{comment}{// (e.g ADSB)}}
+\DoxyCodeLine{63     \textcolor{comment}{//port\_t sensor1;}}
+\DoxyCodeLine{64 \}\mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{71 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a00a750f06000bcc53a5aa3082de40481}{APINTERFACE\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a9236e1ef806d65661c542bf0abd92524}{APINTERFACE\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{82 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a7abdfee059b5d3dfba864c4fa6f3ea32}{APINTERFACE\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{88 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a085ed68bcee25fae012d6481b6515666}{APINTERFACE\_InitializeAPPorts}}();}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a8bdffdb7fa14f995c63afe0773dc19bd}{APINTERFACE\_ProcessAPData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{100 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_a89d84bab6682fbec54e6cf933e12817c}{APINTERFACE\_ProcessSBData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{106 \textcolor{keywordtype}{void} \mbox{\hyperlink{ap_interface_8h_aafafd8cad7feb95f8f5bc64470b9190b}{APINTERFACE\_GetADSBData}}();}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{112 int32\_t \mbox{\hyperlink{ap_interface_8h_ac1eeab798259137088a788a94d20df83}{ApInterfaceTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}} appdataApIntf;}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_apInterface\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

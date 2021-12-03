@@ -1,0 +1,104 @@
+\hypertarget{_commands_8hpp_source}{}\doxysection{Commands.\+hpp}
+\label{_commands_8hpp_source}\index{Modules/Core/Cognition/Commands.hpp@{Modules/Core/Cognition/Commands.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef COGNITION\_COMMANDS\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define COGNITION\_COMMANDS\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{comment}{// Command structure containing data for velocity commands / vector control}}
+\DoxyCodeLine{5 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{6     \textcolor{keywordtype}{double} vn;          \textcolor{comment}{// Speed North (m/s)}}
+\DoxyCodeLine{7     \textcolor{keywordtype}{double} ve;          \textcolor{comment}{// Speed East (m/s)}}
+\DoxyCodeLine{8     \textcolor{keywordtype}{double} vu;          \textcolor{comment}{// Speed Up (m/s)}}
+\DoxyCodeLine{9 \}\mbox{\hyperlink{struct_velocity_command}{VelocityCommand}};}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{comment}{// Command structure containing data for a point to point command}}
+\DoxyCodeLine{12 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{13     \textcolor{keywordtype}{double} point[3];    \textcolor{comment}{// Target point lat, lon, alt (deg, deg, m)}}
+\DoxyCodeLine{14     \textcolor{keywordtype}{double} speed;       \textcolor{comment}{// Speed to target point (m/s)}}
+\DoxyCodeLine{15 \}\mbox{\hyperlink{struct_p2_p_command}{P2PCommand}};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{comment}{// Command structure containing data for speed changes}}
+\DoxyCodeLine{18 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{19     \textcolor{keywordtype}{char} name[25];      \textcolor{comment}{// Plan ID}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double} speed;       \textcolor{comment}{// New speed value (m/s)}}
+\DoxyCodeLine{21     \textcolor{keywordtype}{int} hold;           \textcolor{comment}{// 0: use new speed only until next wp, 1: use new speed for all future wps}}
+\DoxyCodeLine{22 \}\mbox{\hyperlink{struct_speed_change}{SpeedChange}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{25     \textcolor{keywordtype}{char} name[25];}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double} altitude;}
+\DoxyCodeLine{27     \textcolor{keywordtype}{int} hold;}
+\DoxyCodeLine{28 \}\mbox{\hyperlink{struct_alt_change}{AltChange}};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{comment}{// Command structure containing data for takeoff commands}}
+\DoxyCodeLine{31 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{32     \textcolor{keywordtype}{char} temp;}
+\DoxyCodeLine{33 \}\mbox{\hyperlink{struct_takeoff_command}{TakeoffCommand}};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{comment}{// Command structure containing data for land commands}}
+\DoxyCodeLine{36 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{37     \textcolor{keywordtype}{char} temp;}
+\DoxyCodeLine{38 \}\mbox{\hyperlink{struct_land_command}{LandCommand}};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{// Command structure containing data for ditch commands}}
+\DoxyCodeLine{41 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{42     \textcolor{keywordtype}{char} temp;}
+\DoxyCodeLine{43 \}\mbox{\hyperlink{struct_ditch_command}{DitchCommand}};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{// Command structure containing data for flightplan changes}}
+\DoxyCodeLine{46 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{47     \textcolor{keywordtype}{char} name[25];}
+\DoxyCodeLine{48     \textcolor{keywordtype}{int} wpIndex;}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} nextFeasibleWp;}
+\DoxyCodeLine{50 \}\mbox{\hyperlink{struct_fp_change}{FpChange}};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{comment}{// Command structure containing data for a new flightplan request}}
+\DoxyCodeLine{53 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{54     \textcolor{keywordtype}{char} name[25];}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double} fromPosition[3];}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double} toPosition[3];}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double} startVelocity[3];}
+\DoxyCodeLine{58     \textcolor{keywordtype}{double} endVelocity[3];}
+\DoxyCodeLine{59 \}\mbox{\hyperlink{struct_fp_request}{FpRequest}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{comment}{// Command structure containing data for a new flightplan request}}
+\DoxyCodeLine{62 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{63     \textcolor{keywordtype}{int} severity;}
+\DoxyCodeLine{64     \textcolor{keywordtype}{char} buffer[250];}
+\DoxyCodeLine{65 \}\mbox{\hyperlink{struct_status_message}{StatusMessage}};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{68         VELOCITY\_COMMAND,}
+\DoxyCodeLine{69         P2P\_COMMAND,}
+\DoxyCodeLine{70         SPEED\_CHANGE\_COMMAND,}
+\DoxyCodeLine{71         ALT\_CHANGE\_COMMAND,}
+\DoxyCodeLine{72         TAKEOFF\_COMMAND,}
+\DoxyCodeLine{73         LAND\_COMMAND,}
+\DoxyCodeLine{74         DITCH\_COMMAND,}
+\DoxyCodeLine{75         FP\_CHANGE,}
+\DoxyCodeLine{76         FP\_REQUEST,}
+\DoxyCodeLine{77         STATUS\_MESSAGE}
+\DoxyCodeLine{78 \}CommandType\_e;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{comment}{// Union type for all cognition output commands}}
+\DoxyCodeLine{81 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{82     }
+\DoxyCodeLine{83     CommandType\_e commandType;}
+\DoxyCodeLine{84     \textcolor{keyword}{union }\{}
+\DoxyCodeLine{85         \mbox{\hyperlink{struct_velocity_command}{VelocityCommand}} velocityCommand;}
+\DoxyCodeLine{86         \mbox{\hyperlink{struct_p2_p_command}{P2PCommand}} p2PCommand;}
+\DoxyCodeLine{87         \mbox{\hyperlink{struct_speed_change}{SpeedChange}} speedChange;}
+\DoxyCodeLine{88         \mbox{\hyperlink{struct_alt_change}{AltChange}} altChange;}
+\DoxyCodeLine{89         \mbox{\hyperlink{struct_takeoff_command}{TakeoffCommand}} takeoffCommand;}
+\DoxyCodeLine{90         \mbox{\hyperlink{struct_land_command}{LandCommand}} landCommand;}
+\DoxyCodeLine{91         \mbox{\hyperlink{struct_ditch_command}{DitchCommand}} ditchCommand;}
+\DoxyCodeLine{92         \mbox{\hyperlink{struct_fp_change}{FpChange}} fpChange;}
+\DoxyCodeLine{93         \mbox{\hyperlink{struct_fp_request}{FpRequest}} fpRequest;}
+\DoxyCodeLine{94         \mbox{\hyperlink{struct_status_message}{StatusMessage}} statusMessage;}
+\DoxyCodeLine{95     \};}
+\DoxyCodeLine{96 \}\mbox{\hyperlink{struct_command}{Command}};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

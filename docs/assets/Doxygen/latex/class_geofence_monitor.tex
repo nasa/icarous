@@ -1,0 +1,41 @@
+\hypertarget{class_geofence_monitor}{}\doxysection{Geofence\+Monitor Class Reference}
+\label{class_geofence_monitor}\index{GeofenceMonitor@{GeofenceMonitor}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_aed74eef5167f65635eca1be4da448d38}\label{class_geofence_monitor_aed74eef5167f65635eca1be4da448d38}} 
+{\bfseries Geofence\+Monitor} (double\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a93b493c424ca29aa11eed2dca933dd2f}\label{class_geofence_monitor_a93b493c424ca29aa11eed2dca933dd2f}} 
+void {\bfseries Set\+Geofence\+Parameters} (double\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a39c7c0fd19a44fc84bcf4b5ed82b28f2}\label{class_geofence_monitor_a39c7c0fd19a44fc84bcf4b5ed82b28f2}} 
+void {\bfseries Input\+Geofence\+Data} (int type, int index, int total\+Vertices, double floor, double ceiling, double pos\mbox{[}$\,$\mbox{]}\mbox{[}2\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_ac8aa40dd2e7468c8d80af507bc917a5f}\label{class_geofence_monitor_ac8aa40dd2e7468c8d80af507bc917a5f}} 
+bool {\bfseries Check\+Violation} (double \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}\mbox{[}$\,$\mbox{]}, double track, double ground\+Speed, double vertical\+Speed)
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a81612423ac5a579f8be67a7aa1a0f98b}\label{class_geofence_monitor_a81612423ac5a579f8be67a7aa1a0f98b}} 
+bool {\bfseries Check\+WPFeasibility} (double from\+Position\mbox{[}$\,$\mbox{]}, double to\+Position\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a73187ca15a76a438247c5f1af4f4d587}\label{class_geofence_monitor_a73187ca15a76a438247c5f1af4f4d587}} 
+int {\bfseries Get\+Num\+Conflicts} ()
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_aa0ad9a8a0847ca868f76944b6c02ff13}\label{class_geofence_monitor_aa0ad9a8a0847ca868f76944b6c02ff13}} 
+void {\bfseries Get\+Conflict\+Status} (bool conflicts\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a2eee672b13d181a9584c17b9460814f9}\label{class_geofence_monitor_a2eee672b13d181a9584c17b9460814f9}} 
+void {\bfseries Get\+Conflict} (int id, int \&fence\+Id, uint8\+\_\+t \&conflict, uint8\+\_\+t \&violation, double recovery\+Point\mbox{[}$\,$\mbox{]}, uint8\+\_\+t \&type)
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_aa7cea5460dbfee704538d7063f835ff9}\label{class_geofence_monitor_aa7cea5460dbfee704538d7063f835ff9}} 
+void {\bfseries Get\+Closest\+Recovery\+Point} (double current\+Position\mbox{[}$\,$\mbox{]}, double recovery\+Position\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a71c3a45127b47d90f9a1651e4169be61}\label{class_geofence_monitor_a71c3a45127b47d90f9a1651e4169be61}} 
+void {\bfseries Clear\+Fences} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Geofence\+Monitor/Geofence\+Monitor.\+hpp\item 
+Modules/\+Core/\+Geofence\+Monitor/Geofence\+Monitor.\+cpp\end{DoxyCompactItemize}

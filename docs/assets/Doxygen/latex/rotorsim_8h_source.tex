@@ -1,0 +1,84 @@
+\hypertarget{rotorsim_8h_source}{}\doxysection{rotorsim.\+h}
+\label{rotorsim_8h_source}\index{apps/rotorsim/fsw/src/rotorsim.h@{apps/rotorsim/fsw/src/rotorsim.h}}
+\mbox{\hyperlink{rotorsim_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_ROTORSIM\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_ROTORSIM\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{rotorsim__table_8h}{rotorsim\_table.h}}"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define ROTORSIM\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define ROTORSIM\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define ROTORSIM\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define ROTORSIM\_PIPE\_NAME "{}ROTORSIM\_PIPE"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define ROTORSIM\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define ROTORSIM\_MINOR\_VERSION 0}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{48 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{49     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structrotorsim_app_data__t_afd181a79792f83ccd7e9ab88ac1e6e04}{Rotorsim\_Pipe}};       }
+\DoxyCodeLine{50     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structrotorsim_app_data__t_a020ecc9648e9638a7dd9d7194742d51f}{Rotorsim\_MsgPtr}};     }
+\DoxyCodeLine{51     \mbox{\hyperlink{struct_rotorsim_table__t}{RotorsimTable\_t}} \mbox{\hyperlink{structrotorsim_app_data__t_ad34f84ef1a93cfbe9a6f180bc8b14551}{Rotorsim\_Tbl}};           }
+\DoxyCodeLine{52     \textcolor{keywordtype}{double} externalCmdV[3];                 }
+\DoxyCodeLine{53     \textcolor{keywordtype}{double} externalCmdP[3];                 }
+\DoxyCodeLine{54     \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3];                     }
+\DoxyCodeLine{55     \textcolor{keywordtype}{double} velocity[3];                     }
+\DoxyCodeLine{56     \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_aaa1b88357ed34d226cf21356516d8e99}{attitude}}[3];                     }
+\DoxyCodeLine{57     \textcolor{keywordtype}{double} heading;}
+\DoxyCodeLine{58     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrotorsim_app_data__t_a9211b91ed1cef825cfea5a727b602ef7}{passive}};                           }
+\DoxyCodeLine{59     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrotorsim_app_data__t_a71abcd91632b4207831da8af400e4d97}{startMission}};                      }
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrotorsim_app_data__t_ae6608d82116d6943b002088ecbc34565}{positionControl}};                   }
+\DoxyCodeLine{61     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrotorsim_app_data__t_aa79e18f76a7bf4cc30f480e1dcb74cc1}{velocityControl}};                   }
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structrotorsim_app_data__t_a9572c859fc97724cc080e0beed973fb6}{flightplanSent}};                    }
+\DoxyCodeLine{63     \textcolor{keywordtype}{int} \mbox{\hyperlink{structrotorsim_app_data__t_ad627c26a3ca2d4bebb5d596d858b5bb3}{nextWP}};                             }
+\DoxyCodeLine{64     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{structrotorsim_app_data__t_ac60557757aff51242363ca08c6eefbc6}{flightPlan}};                }
+\DoxyCodeLine{65     uint32\_t \mbox{\hyperlink{structrotorsim_app_data__t_a9bdee298d5e1f1107c0314c56b12658d}{timerId}};                       }
+\DoxyCodeLine{66     \textcolor{keywordtype}{double} \mbox{\hyperlink{structrotorsim_app_data__t_a812ed14ad73f5aa66ff9adc7ca8cd4c1}{time}};                            }
+\DoxyCodeLine{67     \textcolor{keywordtype}{double} \mbox{\hyperlink{structrotorsim_app_data__t_a3b171e7e064ce4aebcc5e8e5b24d982d}{offsetdist}};                      }
+\DoxyCodeLine{68     uint32\_t \mbox{\hyperlink{structrotorsim_app_data__t_a8eacc9da565c3ea48f82e3358d11d1fd}{velcount}};                      }
+\DoxyCodeLine{69 \}\mbox{\hyperlink{structrotorsim_app_data__t}{rotorsimAppData\_t}};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} \mbox{\hyperlink{rotorsim_8h_acd8cdecf548f2fa10a3397dfb91da02f}{Rotorsim\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{79 \textcolor{keywordtype}{void} \mbox{\hyperlink{rotorsim_8h_aaa88026897ab7bf16c15359e7caec64c}{Rotorsim\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} \mbox{\hyperlink{rotorsim_8h_a2e14de5ac0fb527eb20b1288a4789f4c}{Rotorsim\_AppInitData}}(\mbox{\hyperlink{struct_rotorsim_table__t}{RotorsimTable\_t}}* TblPtr);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{89 \textcolor{keywordtype}{void} \mbox{\hyperlink{rotorsim_8h_ae1ba2476245860fb30d83867d9fc4bd3}{Rotorsim\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} \mbox{\hyperlink{rotorsim_8h_a3d4756dfb45e3b9bf89019a7658bbbb1}{Rotorsim\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{100 \mbox{\hyperlink{structrotorsim_app_data__t}{rotorsimAppData\_t}} \mbox{\hyperlink{rotorsim_8h_a295ab08430a6f123a2f383ee5ab54aa5}{rotorsimAppData}};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{107 int32\_t \mbox{\hyperlink{rotorsim_8h_aa7d4b723a4acc190cc30663a91193f99}{RotorsimTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keywordtype}{void} Rotorsim\_InitModules(\mbox{\hyperlink{struct_rotorsim_table__t}{RotorsimTable\_t}}* params);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keywordtype}{void} Rotorsim\_GetInputs(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keywordtype}{void} Rotorsim\_GetOutputs(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keywordtype}{void} timer\_callback(uint32\_t timerId);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{keywordtype}{bool} ComputeOffSetPositionOnPlan(\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{int} currentLeg,\textcolor{keywordtype}{double} output[]);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keywordtype}{void} GetCorrectIntersectionPoint(\textcolor{keywordtype}{double} \_wpA[],\textcolor{keywordtype}{double} \_wpB[],\textcolor{keywordtype}{double} heading,\textcolor{keywordtype}{double} r,\textcolor{keywordtype}{double} output[]);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{keywordtype}{double} distance(\textcolor{keywordtype}{double} x1,\textcolor{keywordtype}{double} y1,\textcolor{keywordtype}{double} x2,\textcolor{keywordtype}{double} y2);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_ROTORSIM\_H}}
+
+\end{DoxyCode}

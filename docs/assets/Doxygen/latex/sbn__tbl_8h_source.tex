@@ -1,0 +1,59 @@
+\hypertarget{sbn__tbl_8h_source}{}\doxysection{sbn\+\_\+tbl.\+h}
+\label{sbn__tbl_8h_source}\index{apps/SBN/fsw/platform\_inc/sbn\_tbl.h@{apps/SBN/fsw/platform\_inc/sbn\_tbl.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_tbl\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_tbl\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}sbn\_types.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/****}}
+\DoxyCodeLine{9 \textcolor{comment}{ * @brief The config table contains entries for peers (other CPU's),}}
+\DoxyCodeLine{10 \textcolor{comment}{ * modules (back-\/end libraries used to talk to peers), networks}}
+\DoxyCodeLine{11 \textcolor{comment}{ * (all peers that communicate amonsgt each other using a specific}}
+\DoxyCodeLine{12 \textcolor{comment}{ * protocol/network technology), and interfaces (the interconnection}}
+\DoxyCodeLine{13 \textcolor{comment}{ * between the "{}host"{} end and the peer end of the network.)}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{18     \textcolor{keywordtype}{char} Name[SBN\_MAX\_MOD\_NAME\_LEN];}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{21     \textcolor{keywordtype}{char} LibFileName[OS\_MAX\_PATH\_LEN];}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{26     \textcolor{keywordtype}{char} LibSymbol[OS\_MAX\_API\_NAME];}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     CFE\_EVS\_EventID\_t BaseEID;}
+\DoxyCodeLine{29 \} \mbox{\hyperlink{struct_s_b_n___module___entry__t}{SBN\_Module\_Entry\_t}};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{32 \{   }
+\DoxyCodeLine{34     CFE\_ProcessorID\_t \mbox{\hyperlink{struct_s_b_n___peer___entry__t_aa159a5861883cdb923f1468454a0db79}{ProcessorID}};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{37     CFE\_SpacecraftID\_t \mbox{\hyperlink{struct_s_b_n___peer___entry__t_a5afa6ddc479e73e7e9288b63fbf0e4b5}{SpacecraftID}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{40     SBN\_NetIdx\_t \mbox{\hyperlink{struct_s_b_n___peer___entry__t_a0b01acee76d6606aa81a1b989ef9af0c}{NetNum}};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{43     \textcolor{keyword}{const} \textcolor{keywordtype}{char} ProtocolName[SBN\_MAX\_MOD\_NAME\_LEN];}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{46     \textcolor{keyword}{const} \textcolor{keywordtype}{char} Filters[SBN\_MAX\_FILTERS\_PER\_PEER][SBN\_MAX\_MOD\_NAME\_LEN];}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{49     uint8 Address[SBN\_ADDR\_SZ];}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54     SBN\_Task\_Flag\_t \mbox{\hyperlink{struct_s_b_n___peer___entry__t_a209f3072b038c0f26cf186428e909af7}{TaskFlags}};}
+\DoxyCodeLine{55 \} \mbox{\hyperlink{struct_s_b_n___peer___entry__t}{SBN\_Peer\_Entry\_t}};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{58 \{}
+\DoxyCodeLine{59     \mbox{\hyperlink{struct_s_b_n___module___entry__t}{SBN\_Module\_Entry\_t}} ProtocolModules[SBN\_MAX\_MOD\_CNT];}
+\DoxyCodeLine{60     SBN\_ModuleIdx\_t ProtocolCnt;}
+\DoxyCodeLine{61     \mbox{\hyperlink{struct_s_b_n___module___entry__t}{SBN\_Module\_Entry\_t}} FilterModules[SBN\_MAX\_MOD\_CNT];}
+\DoxyCodeLine{62     SBN\_ModuleIdx\_t FilterCnt;}
+\DoxyCodeLine{63     \mbox{\hyperlink{struct_s_b_n___peer___entry__t}{SBN\_Peer\_Entry\_t}} Peers[SBN\_MAX\_PEER\_CNT];}
+\DoxyCodeLine{64     SBN\_PeerIdx\_t PeerCnt;}
+\DoxyCodeLine{65 \} \mbox{\hyperlink{struct_s_b_n___conf_tbl__t}{SBN\_ConfTbl\_t}};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_tbl\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

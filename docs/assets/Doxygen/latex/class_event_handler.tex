@@ -1,0 +1,162 @@
+\hypertarget{class_event_handler}{}\doxysection{Event\+Handler\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{class_event_handler}\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}{exec\+State\+\_\+e}} \{ \newline
+{\bfseries NOOP}
+, {\bfseries INITIALIZE}
+, {\bfseries EXECUTE}
+, {\bfseries TERMINATE}
+, \newline
+{\bfseries DONE}
+ \}
+\begin{DoxyCompactList}\small\item\em enumerations for the execution state \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}\label{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}} 
+enum \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \{ {\bfseries SUCCESS}
+, {\bfseries RESET}
+, {\bfseries INPROGRESS}
+, {\bfseries SHUTDOWN}
+ \}
+\begin{DoxyCompactList}\small\item\em enumerations for the return state \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Initialize}} (T $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Execute}} (T $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}{Terminate}} (T $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform termination activities \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_event_handler_af57750005d585f47d91c5131e4236d49}{Run\+Event}} (T $\ast$state)
+\begin{DoxyCompactList}\small\item\em Run this event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_event_handler_a3e4a0aa40348403f7326bdd44eeef106}{Execute\+Handler}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$ hdl, std\+::string \mbox{\hyperlink{class_event_handler_a8397ca99260012417d01bb18dc3756b8}{event\+Name}}, float priority\+New=0)
+\begin{DoxyCompactList}\small\item\em Spawn another handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_event_handler_a8397ca99260012417d01bb18dc3756b8}\label{class_event_handler_a8397ca99260012417d01bb18dc3756b8}} 
+std\+::string {\bfseries event\+Name}
+\begin{DoxyCompactList}\small\item\em event name \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_handler_a23e5c40362639a9a6df8a2c885993ce5}\label{class_event_handler_a23e5c40362639a9a6df8a2c885993ce5}} 
+\mbox{\hyperlink{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}{exec\+State\+\_\+e}} {\bfseries exec\+State}
+\begin{DoxyCompactList}\small\item\em current execution state for this handler \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_handler_ae7ada3b91d9a2c29f8e9441733aa425d}\label{class_event_handler_ae7ada3b91d9a2c29f8e9441733aa425d}} 
+std\+::list$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$ $>$ {\bfseries children}
+\begin{DoxyCompactList}\small\item\em list of child handlers \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_handler_af09e6c69c2b80c0060352d9bb15b0516}\label{class_event_handler_af09e6c69c2b80c0060352d9bb15b0516}} 
+float {\bfseries priority}
+\begin{DoxyCompactList}\small\item\em current execution priority \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_handler_adbc397f22614560ee3996344e145fae8}\label{class_event_handler_adbc397f22614560ee3996344e145fae8}} 
+float {\bfseries default\+Priority}
+\begin{DoxyCompactList}\small\item\em user defined priority for this handler \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}\label{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!execState\_e@{execState\_e}}
+\index{execState\_e@{execState\_e}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{execState\_e}{execState\_e}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+enum \mbox{\hyperlink{class_event_handler_a41eb6afb5148f9ceb1245ce2397bbf9f}{Event\+Handler\+::exec\+State\+\_\+e}}}
+
+~\newline
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}\label{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!Execute@{Execute}}
+\index{Execute@{Execute}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$\+::Execute (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{class_engage_nominal_plan_aecebc5a717aba2ed6d4286aa3754c3b7}{Engage\+Nominal\+Plan}}, \mbox{\hyperlink{class_takeoff_phase_handler_a9651defe5225d102a1917cdc39d0beff}{Takeoff\+Phase\+Handler}}, \mbox{\hyperlink{class_vector2_mission_a04f0a274a64e175d47ed3e630223d7c0}{Vector2\+Mission}}, \mbox{\hyperlink{class_return_to_mission_a9dc528b3e6536edd7444a11d69276517}{Return\+To\+Mission}}, \mbox{\hyperlink{class_traffic_conflict_handler_ad9e83bd39ae4f618967eb217552f7198}{Traffic\+Conflict\+Handler}}, \mbox{\hyperlink{class_merging_handler_a6c9c2223621f69b282dc8574b41a391f}{Merging\+Handler}}, \mbox{\hyperlink{class_request_ditch_site_a8c63317d1eedbbc46031d3f3c4c92654}{Request\+Ditch\+Site}}, \mbox{\hyperlink{class_proceed_to_ditch_site_a6557a4c2fe5fcf1a9fb59281363ca68d}{Proceed\+To\+Ditch\+Site}}, and \mbox{\hyperlink{class_proceed_from_t_o_dto_land_a58dc22c18a812aae16778f9bbc6af907}{Proceed\+From\+TODto\+Land}}.
+
+\mbox{\Hypertarget{class_event_handler_a3e4a0aa40348403f7326bdd44eeef106}\label{class_event_handler_a3e4a0aa40348403f7326bdd44eeef106}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!ExecuteHandler@{ExecuteHandler}}
+\index{ExecuteHandler@{ExecuteHandler}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ExecuteHandler()}{ExecuteHandler()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$\+::Execute\+Handler (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$}]{hdl,  }\item[{std\+::string}]{event\+Name,  }\item[{float}]{priority\+New = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em hdl} & pointer to the other handler \\
+\hline
+{\em event\+Name} & \\
+\hline
+{\em priority\+New} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_event_handler_aac07dab7026608d668aeaa191455fa21}\label{class_event_handler_aac07dab7026608d668aeaa191455fa21}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$\+::Initialize (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{class_takeoff_phase_handler_a4fff72ba8762541969fa61ec725ba327}{Takeoff\+Phase\+Handler}}, \mbox{\hyperlink{class_vector2_mission_ada1c3006ee891a0ea2257918881ef3de}{Vector2\+Mission}}, \mbox{\hyperlink{class_return_to_mission_ac74b48869bad86fc59fb7ef37661e92f}{Return\+To\+Mission}}, \mbox{\hyperlink{class_traffic_conflict_handler_a58189c59ba7087d8327be0fdb81e3ad7}{Traffic\+Conflict\+Handler}}, \mbox{\hyperlink{class_proceed_to_ditch_site_a9e5292f01334a6cb09cade5386b80466}{Proceed\+To\+Ditch\+Site}}, and \mbox{\hyperlink{class_proceed_from_t_o_dto_land_af4175c9364c41502da2497b48301f54f}{Proceed\+From\+TODto\+Land}}.
+
+\mbox{\Hypertarget{class_event_handler_af57750005d585f47d91c5131e4236d49}\label{class_event_handler_af57750005d585f47d91c5131e4236d49}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!RunEvent@{RunEvent}}
+\index{RunEvent@{RunEvent}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{RunEvent()}{RunEvent()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$\+::Run\+Event (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}\label{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}} 
+\index{EventHandler$<$ T $>$@{EventHandler$<$ T $>$}!Terminate@{Terminate}}
+\index{Terminate@{Terminate}!EventHandler$<$ T $>$@{EventHandler$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Terminate()}{Terminate()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$\+::Terminate (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{class_takeoff_phase_handler_a5271f8fe1363b76f8625e81ef32bebfd}{Takeoff\+Phase\+Handler}}, \mbox{\hyperlink{class_vector2_mission_a1038644601a353ab53e7285ff3ad063b}{Vector2\+Mission}}, \mbox{\hyperlink{class_traffic_conflict_handler_a92c6744a4467dddbecffbbe04dbd936c}{Traffic\+Conflict\+Handler}}, \mbox{\hyperlink{class_merging_handler_a2d4439276943c3392e5c1f4a4f8803f0}{Merging\+Handler}}, and \mbox{\hyperlink{class_proceed_from_t_o_dto_land_ab30430bf17672addeede7d64df33f965}{Proceed\+From\+TODto\+Land}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Event\+Manager/\mbox{\hyperlink{_event_handler_8hpp}{Event\+Handler.\+hpp}}\end{DoxyCompactItemize}

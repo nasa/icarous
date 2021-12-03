@@ -1,0 +1,97 @@
+\hypertarget{traffic__msg_8h_source}{}\doxysection{traffic\+\_\+msg.\+h}
+\label{traffic__msg_8h_source}\index{apps/traffic/fsw/platform\_inc/traffic\_msg.h@{apps/traffic/fsw/platform\_inc/traffic\_msg.h}}
+\mbox{\hyperlink{traffic__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_TRAFFIC\_MSG\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_TRAFFIC\_MSG\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}stdbool.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define MAX\_TRAFFIC\_ALERTS 10}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{21 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{22     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{23     bands\_t altitudeBands;}
+\DoxyCodeLine{24     bands\_t groundSpeedBands;}
+\DoxyCodeLine{25     bands\_t trackBands;}
+\DoxyCodeLine{26     bands\_t verticalSpeedBands;}
+\DoxyCodeLine{27 \} \mbox{\hyperlink{structband__report__t}{band\_report\_t}};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{30     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];}
+\DoxyCodeLine{31     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structcallsign}{callsign}}[MAX\_TRAFFIC\_ALERTS];}
+\DoxyCodeLine{32     \textcolor{keywordtype}{double} time;}
+\DoxyCodeLine{33     uint32\_t numAlerts;}
+\DoxyCodeLine{34     int32\_t trafficAlerts[MAX\_TRAFFIC\_ALERTS];}
+\DoxyCodeLine{35 \}\mbox{\hyperlink{structtraffic__alerts__t}{traffic\_alerts\_t}};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{45    uint8\_t  TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{46    \textcolor{keywordtype}{double} \mbox{\hyperlink{structcheck_turn_safety__t_a7b599b1f8f1001df772fd7a0de2a01a7}{fromHeading}};                      }
+\DoxyCodeLine{47    \textcolor{keywordtype}{double} \mbox{\hyperlink{structcheck_turn_safety__t_acc73d2bb3994f979b299242ce55f9ba3}{toHeading}};                       }
+\DoxyCodeLine{48    \textcolor{keywordtype}{bool} \mbox{\hyperlink{structcheck_turn_safety__t_a2b6a6b827202d2531992d1b983e229be}{safe}};                               }
+\DoxyCodeLine{49 \}\mbox{\hyperlink{structcheck_turn_safety__t}{checkTurnSafety\_t}};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{56 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{57   uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];}
+\DoxyCodeLine{58   \textcolor{keywordtype}{bool} logDAAdata;}
+\DoxyCodeLine{59   \textcolor{keywordtype}{float} lookahead\_time;}
+\DoxyCodeLine{60   \textcolor{keywordtype}{float} left\_trk;}
+\DoxyCodeLine{61   \textcolor{keywordtype}{float} right\_trk;}
+\DoxyCodeLine{62   \textcolor{keywordtype}{float} min\_gs;}
+\DoxyCodeLine{63   \textcolor{keywordtype}{float} max\_gs;}
+\DoxyCodeLine{64   \textcolor{keywordtype}{float} min\_vs;}
+\DoxyCodeLine{65   \textcolor{keywordtype}{float} max\_vs;}
+\DoxyCodeLine{66   \textcolor{keywordtype}{float} min\_alt;}
+\DoxyCodeLine{67   \textcolor{keywordtype}{float} max\_alt;}
+\DoxyCodeLine{68   \textcolor{keywordtype}{float} trk\_step;}
+\DoxyCodeLine{69   \textcolor{keywordtype}{float} gs\_step;}
+\DoxyCodeLine{70   \textcolor{keywordtype}{float} vs\_step;}
+\DoxyCodeLine{71   \textcolor{keywordtype}{float} alt\_step;}
+\DoxyCodeLine{72   \textcolor{keywordtype}{float} horizontal\_accel;}
+\DoxyCodeLine{73   \textcolor{keywordtype}{float} vertical\_accel;}
+\DoxyCodeLine{74   \textcolor{keywordtype}{float} turn\_rate;}
+\DoxyCodeLine{75   \textcolor{keywordtype}{float} bank\_angle;}
+\DoxyCodeLine{76   \textcolor{keywordtype}{float} vertical\_rate;}
+\DoxyCodeLine{77   \textcolor{keywordtype}{float} recovery\_stability\_time;}
+\DoxyCodeLine{78   \textcolor{keywordtype}{float} persistence\_time;}
+\DoxyCodeLine{79   \textcolor{keywordtype}{float} min\_horizontal\_recovery;}
+\DoxyCodeLine{80   \textcolor{keywordtype}{float} min\_vertical\_recovery;}
+\DoxyCodeLine{81   \textcolor{keywordtype}{bool} recovery\_trk;}
+\DoxyCodeLine{82   \textcolor{keywordtype}{bool} recovery\_gs;}
+\DoxyCodeLine{83   \textcolor{keywordtype}{bool} recovery\_vs;}
+\DoxyCodeLine{84   \textcolor{keywordtype}{bool} recovery\_alt;}
+\DoxyCodeLine{85   \textcolor{keywordtype}{bool} ca\_bands;}
+\DoxyCodeLine{86   \textcolor{keywordtype}{float} ca\_factor;}
+\DoxyCodeLine{87   \textcolor{keywordtype}{float} horizontal\_nmac;}
+\DoxyCodeLine{88   \textcolor{keywordtype}{float} vertical\_nmac;}
+\DoxyCodeLine{89   \textcolor{keywordtype}{bool} conflict\_crit;}
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool} recovery\_crit;}
+\DoxyCodeLine{91   \textcolor{keywordtype}{float} contour\_thr;}
+\DoxyCodeLine{92   \textcolor{keywordtype}{float} alert\_1\_alerting\_time;}
+\DoxyCodeLine{93   \textcolor{keywordtype}{char}  alert\_1\_detector[10];}
+\DoxyCodeLine{94   \textcolor{keywordtype}{float} alert\_1\_early\_alerting\_time;}
+\DoxyCodeLine{95   \textcolor{keywordtype}{char}  alert\_1\_region[10];}
+\DoxyCodeLine{96   \textcolor{keywordtype}{float} alert\_1\_spread\_alt;}
+\DoxyCodeLine{97   \textcolor{keywordtype}{float} alert\_1\_spread\_gs;}
+\DoxyCodeLine{98   \textcolor{keywordtype}{float} alert\_1\_spread\_trk;}
+\DoxyCodeLine{99   \textcolor{keywordtype}{float} alert\_1\_spread\_vs;}
+\DoxyCodeLine{100   uint8\_t conflict\_level;}
+\DoxyCodeLine{101   \textcolor{keywordtype}{char} load\_core\_detection\_det\_1[50];}
+\DoxyCodeLine{102   \textcolor{keywordtype}{float} det\_1\_WCV\_DTHR;}
+\DoxyCodeLine{103   \textcolor{keywordtype}{float} det\_1\_WCV\_TCOA;}
+\DoxyCodeLine{104   \textcolor{keywordtype}{float} det\_1\_WCV\_TTHR;}
+\DoxyCodeLine{105   \textcolor{keywordtype}{float} det\_1\_WCV\_ZTHR;}
+\DoxyCodeLine{106   uint32\_t trafficSource;}
+\DoxyCodeLine{107   uint8\_t resType;}
+\DoxyCodeLine{108 \}\mbox{\hyperlink{structtraffic__parameters__t}{traffic\_parameters\_t}};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{114 \textcolor{keyword}{enum} \mbox{\hyperlink{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}{Region}} \{UNKNOWN,NONE,FAR,MID,NEAR,RECOVERY,END\_OF\_REGION\};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{117 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_TRAFFIC\_MSG\_H}}
+
+\end{DoxyCode}

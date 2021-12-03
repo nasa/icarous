@@ -1,0 +1,83 @@
+\hypertarget{classheapset}{}\doxysection{heapset\texorpdfstring{$<$}{<} T, Compare \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classheapset}\index{heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}}
+
+
+A heap+set data structure to maintain priority queue while also enabling fast set membership tests.  
+
+
+
+
+{\ttfamily \#include $<$Event\+Manager.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classheapset_a1b1aaff4161389ef6e31be9d347454a5}\label{classheapset_a1b1aaff4161389ef6e31be9d347454a5}} 
+{\bfseries heapset} (Compare comp)
+\item 
+void \mbox{\hyperlink{classheapset_a0ef3d885f2e9b3a04f48dc8a06c9e8f0}{push}} (T \&value)
+\begin{DoxyCompactList}\small\item\em add item to container \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classheapset_a2c4b5e77db8078795b5c706412125d42}\label{classheapset_a2c4b5e77db8078795b5c706412125d42}} 
+void {\bfseries pop} ()
+\begin{DoxyCompactList}\small\item\em remove item from the top of the container \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classheapset_a71f5097b468043f619bc133d1e515b37}{empty}} ()
+\begin{DoxyCompactList}\small\item\em check if the container is empty \end{DoxyCompactList}\item 
+const T \& \mbox{\hyperlink{classheapset_a829bcc324290049d81d4f9e6ae9c163a}{top}} ()
+\begin{DoxyCompactList}\small\item\em return element at top \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classheapset_a812fdb9f3745d42f84064b234d10f83a}{contains}} (T \&val)
+\begin{DoxyCompactList}\small\item\em Check if container contains the given element. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classheapset_a2f181217ab521d276592605dcd5f3531}\label{classheapset_a2f181217ab521d276592605dcd5f3531}} 
+void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em clear the container \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classheapset_a812fdb9f3745d42f84064b234d10f83a}\label{classheapset_a812fdb9f3745d42f84064b234d10f83a}} 
+\index{heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}!contains@{contains}}
+\index{contains@{contains}!heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily template$<$class T , class Compare $>$ \\
+bool \mbox{\hyperlink{classheapset}{heapset}}$<$ T, Compare $>$\+::contains (\begin{DoxyParamCaption}\item[{T \&}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classheapset_a71f5097b468043f619bc133d1e515b37}\label{classheapset_a71f5097b468043f619bc133d1e515b37}} 
+\index{heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}!empty@{empty}}
+\index{empty@{empty}!heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}}
+\doxysubsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$class T , class Compare $>$ \\
+bool \mbox{\hyperlink{classheapset}{heapset}}$<$ T, Compare $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classheapset_a0ef3d885f2e9b3a04f48dc8a06c9e8f0}\label{classheapset_a0ef3d885f2e9b3a04f48dc8a06c9e8f0}} 
+\index{heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}!push@{push}}
+\index{push@{push}!heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$class T , class Compare $>$ \\
+void \mbox{\hyperlink{classheapset}{heapset}}$<$ T, Compare $>$\+::push (\begin{DoxyParamCaption}\item[{T \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classheapset_a829bcc324290049d81d4f9e6ae9c163a}\label{classheapset_a829bcc324290049d81d4f9e6ae9c163a}} 
+\index{heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}!top@{top}}
+\index{top@{top}!heapset$<$ T, Compare $>$@{heapset$<$ T, Compare $>$}}
+\doxysubsubsection{\texorpdfstring{top()}{top()}}
+{\footnotesize\ttfamily template$<$class T , class Compare $>$ \\
+const T \& \mbox{\hyperlink{classheapset}{heapset}}$<$ T, Compare $>$\+::top (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+const T\& 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Event\+Manager/\mbox{\hyperlink{_event_manager_8hpp}{Event\+Manager.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,71 @@
+\hypertarget{raft__msg_8h_source}{}\doxysection{raft\+\_\+msg.\+h}
+\label{raft__msg_8h_source}\index{apps/raft/fsw/platform\_inc/raft\_msg.h@{apps/raft/fsw/platform\_inc/raft\_msg.h}}
+\mbox{\hyperlink{raft__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_RAFT\_MSG\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_RAFT\_MSG\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msg_8h}{merger\_msg.h}}"{}}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define MAX\_NODES 5}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{raft__msg_8h_ad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{15    int8\_t aircraftID;           }
+\DoxyCodeLine{16    int8\_t intersectionID;       }
+\DoxyCodeLine{17    \textcolor{keywordtype}{double} earlyArrivalTime;     }
+\DoxyCodeLine{18    \textcolor{keywordtype}{double} currentArrivalTime;   }
+\DoxyCodeLine{19    \textcolor{keywordtype}{double} lateArrivalTime;      }
+\DoxyCodeLine{20    int32\_t numSchedulesComputed;}
+\DoxyCodeLine{21    uint8\_t zoneStatus;          }
+\DoxyCodeLine{22 \}report\_t;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{30 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{raft__msg_8h_ad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{31    CCSDS\_PriHdr\_t hdr;                      }
+\DoxyCodeLine{32    int32\_t intersectionID;                  }
+\DoxyCodeLine{33    uint8\_t nodeRole;                        }
+\DoxyCodeLine{34    uint32\_t totalNodes;                     }
+\DoxyCodeLine{35    report\_t log[MAX\_NODES];}
+\DoxyCodeLine{36 \}cDataLog\_t;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{45    uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{46    int32\_t \mbox{\hyperlink{structraft_hbeat__t_a13ecb2b125d70a3af30c98e1f6f859c3}{intersectionID}};                  }
+\DoxyCodeLine{47    uint32\_t \mbox{\hyperlink{structraft_hbeat__t_aacdf098ad740293dd4d220f163eaba55}{leaderID}};                       }
+\DoxyCodeLine{48    uint32\_t \mbox{\hyperlink{structraft_hbeat__t_ae302bd50410cdeec5aa0bb13189b32cd}{totalNodes}};                     }
+\DoxyCodeLine{49    uint32\_t \mbox{\hyperlink{structraft_hbeat__t_aa6436c895f5c9c8163921b438bc795a0}{logIndex}};                       }
+\DoxyCodeLine{50    uint32\_t \mbox{\hyperlink{structraft_hbeat__t_a7bacdcac82432e5da08c10f9b9ca51c4}{term}};                           }
+\DoxyCodeLine{51    report\_t log[MAX\_NODES];}
+\DoxyCodeLine{52 \}\mbox{\hyperlink{structraft_hbeat__t}{raftHbeat\_t}};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{60 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{61   uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{62   int32\_t \mbox{\hyperlink{structraft_hbeat_ack__t_ae9476de1675fb7de5608c6c2b66a4631}{intersectionID}};                 }
+\DoxyCodeLine{63   uint32\_t \mbox{\hyperlink{structraft_hbeat_ack__t_a7738f5a47545ba2189c10ffffe747d42}{followerID}};                    }
+\DoxyCodeLine{64   report\_t nodeData;                      }
+\DoxyCodeLine{65   uint32\_t \mbox{\hyperlink{structraft_hbeat_ack__t_a405aa5aedc15b2f9ffed5fa0074f6521}{logIndex}};                      }
+\DoxyCodeLine{66 \}\mbox{\hyperlink{structraft_hbeat_ack__t}{raftHbeatAck\_t}};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{73 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{74   uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{75   int32\_t \mbox{\hyperlink{structraft_vote_request__t_a84729c9e679834ac7dc4ab277ca9b42d}{intersectionID}};                 }
+\DoxyCodeLine{76   uint32\_t \mbox{\hyperlink{structraft_vote_request__t_a5a8d645673f55d9228471c9d16fdca8d}{candidateID}};                   }
+\DoxyCodeLine{77   uint32\_t \mbox{\hyperlink{structraft_vote_request__t_a11e84bf95b9f85850f00b672490571ce}{term}};                          }
+\DoxyCodeLine{78 \}\mbox{\hyperlink{structraft_vote_request__t}{raftVoteRequest\_t}};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{84 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{85   uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE]; }
+\DoxyCodeLine{86   int32\_t \mbox{\hyperlink{structraft_vote_response__t_a258963eeb83de03f72f33e4fa7d7d387}{intersectionID}};                 }
+\DoxyCodeLine{87   uint32\_t \mbox{\hyperlink{structraft_vote_response__t_af2c15cbd1afe081a2454602f99b6c9a2}{candidateID}};                   }
+\DoxyCodeLine{88   uint32\_t \mbox{\hyperlink{structraft_vote_response__t_a6d8f38e0fa20d48a5fc38901203ad96f}{nodeID}};                        }
+\DoxyCodeLine{89   uint32\_t \mbox{\hyperlink{structraft_vote_response__t_aeb4b57c66914cbe8ba6d19cceaf310bd}{term}};                          }
+\DoxyCodeLine{90 \}\mbox{\hyperlink{structraft_vote_response__t}{raftVoteResponse\_t}};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_RAFT\_MSG\_H}}
+
+\end{DoxyCode}

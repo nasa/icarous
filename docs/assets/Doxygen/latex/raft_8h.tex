@@ -1,0 +1,174 @@
+\hypertarget{raft_8h}{}\doxysection{apps/raft/fsw/src/raft.h File Reference}
+\label{raft_8h}\index{apps/raft/fsw/src/raft.h@{apps/raft/fsw/src/raft.h}}
+
+
+Definition of defines, structs and functions for raft app.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}raft\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}raft\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msgids.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structraft_app_data__t}{raft\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Struct to hold raft app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{raft_8h_ad3c0e9119ff483c7222081398c9c4b31}\label{raft_8h_ad3c0e9119ff483c7222081398c9c4b31}} 
+\#define {\bfseries RAFT\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{raft_8h_aeaee73969931ce3986cc9c02922195c8}\label{raft_8h_aeaee73969931ce3986cc9c02922195c8}} 
+\#define {\bfseries RAFT\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{raft_8h_a9e1584ceb19486ff520c04038a6acc73}\label{raft_8h_a9e1584ceb19486ff520c04038a6acc73}} 
+\#define {\bfseries RAFT\+\_\+\+RECEIVED\+\_\+\+FENCE\+\_\+\+EID}~3
+\item 
+\mbox{\Hypertarget{raft_8h_ae7257776ca10233c9c03267153a61f5e}\label{raft_8h_ae7257776ca10233c9c03267153a61f5e}} 
+\#define {\bfseries RAFT\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{raft_8h_ae571a987d1a82040b22f12b2947f568b}\label{raft_8h_ae571a987d1a82040b22f12b2947f568b}} 
+\#define {\bfseries RAFT\+\_\+\+HBEATPIPE\+\_\+\+NAME}~\char`\"{}RAFT\+\_\+\+HBEAT\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{raft_8h_a43a3ccfa2ea4c9687496dddc55d1fbf4}\label{raft_8h_a43a3ccfa2ea4c9687496dddc55d1fbf4}} 
+\#define {\bfseries RAFT\+\_\+\+SCHPIPE\+\_\+\+NAME}~\char`\"{}RAFT\+\_\+\+SCH\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{raft_8h_a58386341e22be29c9c6754905b33a718}\label{raft_8h_a58386341e22be29c9c6754905b33a718}} 
+\#define {\bfseries RAFT\+\_\+\+VOTEPIPE\+\_\+\+NAME}~\char`\"{}RAFT\+\_\+\+VOTE\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{raft_8h_a23f4689b5595285e29cd8b34f758570d}\label{raft_8h_a23f4689b5595285e29cd8b34f758570d}} 
+\#define {\bfseries RAFT\+\_\+\+DATAPIPE\+\_\+\+NAME}~\char`\"{}RAFT\+\_\+\+DATA\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{raft_8h_aed44548bfa1b39f4a42fcd6b0b9772b2}\label{raft_8h_aed44548bfa1b39f4a42fcd6b0b9772b2}} 
+\#define {\bfseries RAFT\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{raft_8h_a656d22868206386568a0d79c08275411}\label{raft_8h_a656d22868206386568a0d79c08275411}} 
+\#define {\bfseries RAFT\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{raft_8h_acd289ea0ba338823655e4cdf98cbf7b7}\label{raft_8h_acd289ea0ba338823655e4cdf98cbf7b7}} 
+enum {\bfseries Role\+\_\+e} \{ \newline
+{\bfseries NEUTRAL}
+, {\bfseries FOLLOWER}
+, {\bfseries CANDIDATE}
+, {\bfseries LEADER}
+, \newline
+{\bfseries NEUTRAL}
+, {\bfseries FOLLOWER}
+, {\bfseries CANDIDATE}
+, {\bfseries LEADER}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{raft_8h_a40c7ade777b1b7bbe15f8f4ee955a814}{RAFT\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{raft_8h_aef9e72d26787c79fc8a6c8cdec19fefd}{RAFT\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{raft_8h_aa7b2b968fa90f344b33f2d64a8ec615f}{RAFT\+\_\+\+App\+Initialize\+Data}} (void)
+\item 
+void \mbox{\hyperlink{raft_8h_ad11f5117c24a17d37911e61358d1e7bd}{RAFT\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{raft_8h_a5b7b2f54fd647c5da51a392eadf457cb}{RAFT\+\_\+\+Process\+Packet}} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a8805925abdf0072593fb252caf00764f}\label{raft_8h_a8805925abdf0072593fb252caf00764f}} 
+void {\bfseries heartbeat\+Timeout\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{raft_8h_a265b79609a0254bd985c2816f0ee84b1}\label{raft_8h_a265b79609a0254bd985c2816f0ee84b1}} 
+void {\bfseries election\+Timeout\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{raft_8h_a260b7ed3cea152e69162a111a224b6a2}\label{raft_8h_a260b7ed3cea152e69162a111a224b6a2}} 
+void {\bfseries leader\+Timeout\+Callback} (uint32\+\_\+t timer\+Id)
+\item 
+\mbox{\Hypertarget{raft_8h_a513ed45851aa94706bb766ae95cf6fcf}\label{raft_8h_a513ed45851aa94706bb766ae95cf6fcf}} 
+void {\bfseries raft\+\_\+loop} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a7e48f619f53794f209b76b345cf22ab0}\label{raft_8h_a7e48f619f53794f209b76b345cf22ab0}} 
+void {\bfseries raft\+\_\+neutral} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_ae4f888bff913175a0f66d6c0567f46fb}\label{raft_8h_ae4f888bff913175a0f66d6c0567f46fb}} 
+void {\bfseries raft\+\_\+follower} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_ab6cd118cf8273c89d232ab15cf4af649}\label{raft_8h_ab6cd118cf8273c89d232ab15cf4af649}} 
+void {\bfseries raft\+\_\+candidate} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a867020cfb4ae7135d2d46393a6c886bb}\label{raft_8h_a867020cfb4ae7135d2d46393a6c886bb}} 
+void {\bfseries raft\+\_\+leader} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a67fe94ebeabe55d5ce92c20cecca1cbc}\label{raft_8h_a67fe94ebeabe55d5ce92c20cecca1cbc}} 
+void {\bfseries raft\+Process\+Client\+Data} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a0ffa44668dc0bc5c3717c2315ae11c81}\label{raft_8h_a0ffa44668dc0bc5c3717c2315ae11c81}} 
+void {\bfseries raft\+Send\+Data\+To\+Client} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_aec5a4ee1a348dbf4bba562050d40231c}\label{raft_8h_aec5a4ee1a348dbf4bba562050d40231c}} 
+void {\bfseries RAFT\+\_\+\+Set\+Neutral\+Pipe\+Configuration} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a62ae9ab07b2cc743f796b5f50921dfe8}\label{raft_8h_a62ae9ab07b2cc743f796b5f50921dfe8}} 
+void {\bfseries RAFT\+\_\+\+Set\+Follower\+Pipe\+Configuration} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_abc196d92f01468bdddf9fba3372631b8}\label{raft_8h_abc196d92f01468bdddf9fba3372631b8}} 
+void {\bfseries RAFT\+\_\+\+Set\+Candidate\+Pipe\+Configuration} (void)
+\item 
+\mbox{\Hypertarget{raft_8h_a86ea311fd10f5078871a4f65a0fbe2e5}\label{raft_8h_a86ea311fd10f5078871a4f65a0fbe2e5}} 
+void {\bfseries RAFT\+\_\+\+Set\+Leader\+Pipe\+Configuration} (void)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{raft_8h_a07949cd239189c77922b4dea3977ec87}\label{raft_8h_a07949cd239189c77922b4dea3977ec87}} 
+EXTERN \mbox{\hyperlink{structraft_app_data__t}{raft\+App\+Data\+\_\+t}} {\bfseries raft\+App\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Swee Balachandran 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{raft_8h_ad11f5117c24a17d37911e61358d1e7bd}\label{raft_8h_ad11f5117c24a17d37911e61358d1e7bd}} 
+\index{raft.h@{raft.h}!RAFT\_AppCleanUp@{RAFT\_AppCleanUp}}
+\index{RAFT\_AppCleanUp@{RAFT\_AppCleanUp}!raft.h@{raft.h}}
+\doxysubsubsection{\texorpdfstring{RAFT\_AppCleanUp()}{RAFT\_AppCleanUp()}}
+{\footnotesize\ttfamily void RAFT\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App clean up \mbox{\Hypertarget{raft_8h_aef9e72d26787c79fc8a6c8cdec19fefd}\label{raft_8h_aef9e72d26787c79fc8a6c8cdec19fefd}} 
+\index{raft.h@{raft.h}!RAFT\_AppInit@{RAFT\_AppInit}}
+\index{RAFT\_AppInit@{RAFT\_AppInit}!raft.h@{raft.h}}
+\doxysubsubsection{\texorpdfstring{RAFT\_AppInit()}{RAFT\_AppInit()}}
+{\footnotesize\ttfamily void RAFT\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App initialization \mbox{\Hypertarget{raft_8h_aa7b2b968fa90f344b33f2d64a8ec615f}\label{raft_8h_aa7b2b968fa90f344b33f2d64a8ec615f}} 
+\index{raft.h@{raft.h}!RAFT\_AppInitializeData@{RAFT\_AppInitializeData}}
+\index{RAFT\_AppInitializeData@{RAFT\_AppInitializeData}!raft.h@{raft.h}}
+\doxysubsubsection{\texorpdfstring{RAFT\_AppInitializeData()}{RAFT\_AppInitializeData()}}
+{\footnotesize\ttfamily void RAFT\+\_\+\+App\+Initialize\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize data for this app \mbox{\Hypertarget{raft_8h_a40c7ade777b1b7bbe15f8f4ee955a814}\label{raft_8h_a40c7ade777b1b7bbe15f8f4ee955a814}} 
+\index{raft.h@{raft.h}!RAFT\_AppMain@{RAFT\_AppMain}}
+\index{RAFT\_AppMain@{RAFT\_AppMain}!raft.h@{raft.h}}
+\doxysubsubsection{\texorpdfstring{RAFT\_AppMain()}{RAFT\_AppMain()}}
+{\footnotesize\ttfamily void RAFT\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App\textquotesingle{}s main entry point \mbox{\Hypertarget{raft_8h_a5b7b2f54fd647c5da51a392eadf457cb}\label{raft_8h_a5b7b2f54fd647c5da51a392eadf457cb}} 
+\index{raft.h@{raft.h}!RAFT\_ProcessPacket@{RAFT\_ProcessPacket}}
+\index{RAFT\_ProcessPacket@{RAFT\_ProcessPacket}!raft.h@{raft.h}}
+\doxysubsubsection{\texorpdfstring{RAFT\_ProcessPacket()}{RAFT\_ProcessPacket()}}
+{\footnotesize\ttfamily void RAFT\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Function to process received packets 

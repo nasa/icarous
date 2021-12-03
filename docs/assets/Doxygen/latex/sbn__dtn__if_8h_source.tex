@@ -1,0 +1,67 @@
+\hypertarget{sbn__dtn__if_8h_source}{}\doxysection{sbn\+\_\+dtn\+\_\+if.\+h}
+\label{sbn__dtn__if_8h_source}\index{apps/SBN/modules/protocol/dtn/fsw/src/sbn\_dtn\_if.h@{apps/SBN/modules/protocol/dtn/fsw/src/sbn\_dtn\_if.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_dtn\_if\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_dtn\_if\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_constants.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/* The version \#'s this module works with. If this doesn't match the core}}
+\DoxyCodeLine{9 \textcolor{comment}{ * SBN application version \#'s, this module should report and return an error.}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Note: these DEFINITELY should be hardcoded here, do not map them to}}
+\DoxyCodeLine{11 \textcolor{comment}{ * the SBN version numbers.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define SBN\_DTN\_MAJOR 1}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define SBN\_DTN\_MINOR 11}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define SBN\_DTN\_REVISION 0}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keywordtype}{int} SBN\_DTN\_Init(\textcolor{keywordtype}{int} Major, \textcolor{keywordtype}{int} Minor, \textcolor{keywordtype}{int} Revision);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keywordtype}{int} SBN\_DTN\_LoadNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keywordtype}{int} SBN\_DTN\_LoadPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Address);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keywordtype}{int} SBN\_DTN\_InitNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *NetInterface);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keywordtype}{int} SBN\_DTN\_InitPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *PeerInterface);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keywordtype}{int} SBN\_DTN\_PollPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *PeerInterface);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keywordtype}{int} SBN\_DTN\_Send(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, SBN\_MsgType\_t MsgType,}
+\DoxyCodeLine{30     SBN\_MsgSz\_t MsgSz, \textcolor{keywordtype}{void} *Payload);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keywordtype}{int} SBN\_DTN\_Recv(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, SBN\_MsgType\_t *MsgTypePtr,}
+\DoxyCodeLine{33         SBN\_MsgSz\_t *MsgSzPtr, SBN\_CpuID\_t *CpuIDPtr,}
+\DoxyCodeLine{34         \textcolor{keywordtype}{void} *PayloadBuffer);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keywordtype}{int} SBN\_DTN\_ReportModuleStatus(\mbox{\hyperlink{struct_s_b_n___module_status_packet__t}{SBN\_ModuleStatusPacket\_t}} *Packet);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keywordtype}{int} SBN\_DTN\_ResetPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *PeerInterface);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keywordtype}{int} SBN\_DTN\_UnloadNet(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *NetInterface);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{int} SBN\_DTN\_UnloadPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *PeerInterface);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_t}} SBN\_DTN\_Ops =}
+\DoxyCodeLine{45 \{}
+\DoxyCodeLine{46     SBN\_DTN\_Init,}
+\DoxyCodeLine{47     SBN\_DTN\_LoadNet,}
+\DoxyCodeLine{48     SBN\_DTN\_LoadPeer,}
+\DoxyCodeLine{49     SBN\_DTN\_InitNet,}
+\DoxyCodeLine{50     SBN\_DTN\_InitPeer,}
+\DoxyCodeLine{51     SBN\_DTN\_PollPeer,}
+\DoxyCodeLine{52     SBN\_DTN\_Send,}
+\DoxyCodeLine{53     NULL,}
+\DoxyCodeLine{54     SBN\_DTN\_Recv,}
+\DoxyCodeLine{55     SBN\_DTN\_ReportModuleStatus,}
+\DoxyCodeLine{56     SBN\_DTN\_ResetPeer,}
+\DoxyCodeLine{57     SBN\_DTN\_UnloadNet,}
+\DoxyCodeLine{58     SBN\_DTN\_UnloadPeer}
+\DoxyCodeLine{59 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_dtn\_if\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

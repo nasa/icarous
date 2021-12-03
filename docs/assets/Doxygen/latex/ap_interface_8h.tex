@@ -1,0 +1,121 @@
+\hypertarget{ap_interface_8h}{}\doxysection{apps/ap\+Interface/fsw/src/ap\+Interface.h File Reference}
+\label{ap_interface_8h}\index{apps/apInterface/fsw/src/apInterface.h@{apps/apInterface/fsw/src/apInterface.h}}
+
+
+function declarations, definitions of macros, datastructures and global variables for the ap\+Interface application  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}network\+\_\+includes.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ap\+Interface\+\_\+events.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}traffic\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}port\+\_\+lib.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structappdata_int__t}{appdata\+Int\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{ap_interface_8h_a71517c1df70e71f25fa0f681e103b637}\label{ap_interface_8h_a71517c1df70e71f25fa0f681e103b637}} 
+\#define {\bfseries APINTERFACE\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}APFLTPLAN\char`\"{}
+\item 
+\mbox{\Hypertarget{ap_interface_8h_a748b0a96818f816b627e99f4a5e2fd60}\label{ap_interface_8h_a748b0a96818f816b627e99f4a5e2fd60}} 
+\#define {\bfseries APINTERFACE\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{ap_interface_8h_a8f91df07bdd36daf4797ac8d60bc4cae}\label{ap_interface_8h_a8f91df07bdd36daf4797ac8d60bc4cae}} 
+\#define {\bfseries SCH\+\_\+\+APINTERFACE\+\_\+\+PIPE1\+\_\+\+NAME}~\char`\"{}SCH\+\_\+\+AUTOPILOT\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{ap_interface_8h_a00a750f06000bcc53a5aa3082de40481}{APINTERFACE\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em This is the main entry point for your application that will be used by c\+FS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8h_a9236e1ef806d65661c542bf0abd92524}{APINTERFACE\+\_\+\+App\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize app data\+: set up pipes, subscribe to messages, read table, initialize data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8h_a7abdfee059b5d3dfba864c4fa6f3ea32}{APINTERFACE\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{ap_interface_8h_a085ed68bcee25fae012d6481b6515666}{APINTERFACE\+\_\+\+Initialize\+APPorts}} ()
+\begin{DoxyCompactList}\small\item\em Open ports to autopilot and intialize ports here. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8h_a8bdffdb7fa14f995c63afe0773dc19bd}{APINTERFACE\+\_\+\+Process\+APData}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from the autopilot and construct software bus messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8h_a89d84bab6682fbec54e6cf933e12817c}{APINTERFACE\+\_\+\+Process\+SBData}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from software bus and send data to autopilot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ap_interface_8h_aafafd8cad7feb95f8f5bc64470b9190b}{APINTERFACE\+\_\+\+Get\+ADSBData}} ()
+\begin{DoxyCompactList}\small\item\em Read ADSB data from ADSB transponder and publish traffic data on software bus. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{ap_interface_8h_ac1eeab798259137088a788a94d20df83}{Ap\+Interface\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{ap_interface_8h_a22cf96c108e57cc216b3881aeddfb568}\label{ap_interface_8h_a22cf96c108e57cc216b3881aeddfb568}} 
+\mbox{\hyperlink{structappdata_int__t}{appdata\+Int\+\_\+t}} {\bfseries appdata\+Ap\+Intf}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{ap_interface_8h_a7abdfee059b5d3dfba864c4fa6f3ea32}\label{ap_interface_8h_a7abdfee059b5d3dfba864c4fa6f3ea32}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_AppCleanUp@{APINTERFACE\_AppCleanUp}}
+\index{APINTERFACE\_AppCleanUp@{APINTERFACE\_AppCleanUp}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppCleanUp()}{APINTERFACE\_AppCleanUp()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{ap_interface_8h_a9236e1ef806d65661c542bf0abd92524}\label{ap_interface_8h_a9236e1ef806d65661c542bf0abd92524}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_AppInit@{APINTERFACE\_AppInit}}
+\index{APINTERFACE\_AppInit@{APINTERFACE\_AppInit}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppInit()}{APINTERFACE\_AppInit()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{ap_interface_8h_a00a750f06000bcc53a5aa3082de40481}\label{ap_interface_8h_a00a750f06000bcc53a5aa3082de40481}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_AppMain@{APINTERFACE\_AppMain}}
+\index{APINTERFACE\_AppMain@{APINTERFACE\_AppMain}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_AppMain()}{APINTERFACE\_AppMain()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{ap_interface_8h_aafafd8cad7feb95f8f5bc64470b9190b}\label{ap_interface_8h_aafafd8cad7feb95f8f5bc64470b9190b}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_GetADSBData@{APINTERFACE\_GetADSBData}}
+\index{APINTERFACE\_GetADSBData@{APINTERFACE\_GetADSBData}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_GetADSBData()}{APINTERFACE\_GetADSBData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Get\+ADSBData (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Process ADSB data \mbox{\Hypertarget{ap_interface_8h_a085ed68bcee25fae012d6481b6515666}\label{ap_interface_8h_a085ed68bcee25fae012d6481b6515666}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_InitializeAPPorts@{APINTERFACE\_InitializeAPPorts}}
+\index{APINTERFACE\_InitializeAPPorts@{APINTERFACE\_InitializeAPPorts}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_InitializeAPPorts()}{APINTERFACE\_InitializeAPPorts()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Initialize\+APPorts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Initialize ports to the autopilot \mbox{\Hypertarget{ap_interface_8h_a8bdffdb7fa14f995c63afe0773dc19bd}\label{ap_interface_8h_a8bdffdb7fa14f995c63afe0773dc19bd}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_ProcessAPData@{APINTERFACE\_ProcessAPData}}
+\index{APINTERFACE\_ProcessAPData@{APINTERFACE\_ProcessAPData}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_ProcessAPData()}{APINTERFACE\_ProcessAPData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Process\+APData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the autopilot \mbox{\Hypertarget{ap_interface_8h_a89d84bab6682fbec54e6cf933e12817c}\label{ap_interface_8h_a89d84bab6682fbec54e6cf933e12817c}} 
+\index{apInterface.h@{apInterface.h}!APINTERFACE\_ProcessSBData@{APINTERFACE\_ProcessSBData}}
+\index{APINTERFACE\_ProcessSBData@{APINTERFACE\_ProcessSBData}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{APINTERFACE\_ProcessSBData()}{APINTERFACE\_ProcessSBData()}}
+{\footnotesize\ttfamily void APINTERFACE\+\_\+\+Process\+SBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the SB message \mbox{\Hypertarget{ap_interface_8h_ac1eeab798259137088a788a94d20df83}\label{ap_interface_8h_ac1eeab798259137088a788a94d20df83}} 
+\index{apInterface.h@{apInterface.h}!ApInterfaceTableValidationFunc@{ApInterfaceTableValidationFunc}}
+\index{ApInterfaceTableValidationFunc@{ApInterfaceTableValidationFunc}!apInterface.h@{apInterface.h}}
+\doxysubsubsection{\texorpdfstring{ApInterfaceTableValidationFunc()}{ApInterfaceTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Ap\+Interface\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}

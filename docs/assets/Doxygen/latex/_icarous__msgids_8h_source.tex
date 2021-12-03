@@ -1,0 +1,50 @@
+\hypertarget{_icarous__msgids_8h_source}{}\doxysection{Icarous\+\_\+msgids.\+h}
+\label{_icarous__msgids_8h_source}\index{apps/Icarouslib/fsw/platform\_inc/Icarous\_msgids.h@{apps/Icarouslib/fsw/platform\_inc/Icarous\_msgids.h}}
+\mbox{\hyperlink{_icarous__msgids_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef CFETOP\_MSGIDS\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define CFETOP\_MSGIDS\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define ICAROUS\_FLIGHTPLAN\_MID    0x0811  }}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define ICAROUS\_WPREACHED\_MID 0x0812      }}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define ICAROUS\_GEOFENCE\_MID 0x0813       }}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define ICAROUS\_STARTMISSION\_MID 0x0814   }}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define ICAROUS\_RESET\_MID 0x0815          }}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define ICAROUS\_TRAFFIC\_MID 0x0816        }}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define ICAROUS\_POSITION\_MID 0x0817       }}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define ICAROUS\_ATTITUDE\_MID 0x0818       }}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define ICAROUS\_VELOCITY\_MID 0x0819       }}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define ICAROUS\_COMMANDS\_MID 0x081A       }}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define ICAROUS\_COMACK\_MID 0x081B         }}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define ICAROUS\_RESETFP\_MID 0x081D        }}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define ICAROUS\_STATUS\_MID 0x081E         }}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define ICAROUS\_DITCH\_MID 0x081F          }}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#ifdef APPDEF\_TRACKER}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID 0x0820   }}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID ICAROUS\_TRAFFIC\_MID }}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define UPLINK\_FLIGHTPLAN\_MID 0x0821      }}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define DOWNLINK\_FLIGHTPLAN\_MID 0x0822    }}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define ICAROUS\_VFRHUD\_MID 0x0823         }}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define ICAROUS\_BATTERY\_STATUS\_MID 0x0824 }}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define RADAR\_TRIGGER\_MID 0x0825          }}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define ICAROUS\_RC\_CHANNELS\_MID 0x0826    }}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define ICAROUS\_LOCAL\_POSITION\_MID 0x0827 }}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define ICAROUS\_HOME\_POSITION\_MID 0x0828  }}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define ICAROUS\_WPREACHED\_EXTERNAL\_MID 0x0829      }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define ICAROUS\_PARAMUPDATE\_MID 0x0830      }}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define SendSBMsg(msg)\(\backslash\)}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{CFE\_SB\_TimeStampMsg((CFE\_SB\_Msg\_t * ) \&msg); \(\backslash\)}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{CFE\_SB\_SendMsg((CFE\_SB\_Msg\_t * ) \&msg);}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define SetStatus(msg,txt,level)\(\backslash\)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{memset(msg.buffer,0,sizeof(char)*250); \(\backslash\)}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{strcpy(msg.buffer,txt); \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{msg.severity=level; \(\backslash\)}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{SendSBMsg(msg);}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//CFETOP\_MSGIDS\_H}}
+
+\end{DoxyCode}

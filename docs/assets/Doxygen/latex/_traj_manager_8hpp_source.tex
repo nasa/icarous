@@ -1,0 +1,101 @@
+\hypertarget{_traj_manager_8hpp_source}{}\doxysection{Traj\+Manager.\+hpp}
+\label{_traj_manager_8hpp_source}\index{Modules/Core/TrajectoryManager/TrajManager.hpp@{Modules/Core/TrajectoryManager/TrajManager.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{//}}
+\DoxyCodeLine{2 \textcolor{comment}{// Created by Swee Balachandran on 12/14/17.}}
+\DoxyCodeLine{3 \textcolor{comment}{//}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef TRAJMANAGER\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define TRAJMANAGER\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}CDII.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}CDSI.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}CDIIPolygon.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}CDPolycarp.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}PolycarpDetection.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}DubinsPlanner.hpp"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{22     std::string \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{23     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{double} time;}
+\DoxyCodeLine{25     larcfm::Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};}
+\DoxyCodeLine{26     larcfm::Velocity velocity;}
+\DoxyCodeLine{27 \}\mbox{\hyperlink{structp_object}{pObject}};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{30     \textcolor{keyword}{enum} FENCE\_TYPE \{KEEP\_IN, KEEP\_OUT\};}
+\DoxyCodeLine{31     \textcolor{keywordtype}{int} fenceType;}
+\DoxyCodeLine{32     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{33     larcfm::SimplePoly polygon;}
+\DoxyCodeLine{34 \}\mbox{\hyperlink{structfence_object}{fenceObject}};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{class }\mbox{\hyperlink{class_traj_manager}{TrajManager}}\{}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{private}:}
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40     \mbox{\hyperlink{class_dubins_planner}{DubinsPlanner}} dbPlanner;}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double} wellClearDistH;}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double} wellClearDistV;}
+\DoxyCodeLine{43     \textcolor{keywordtype}{int} numPlans;}
+\DoxyCodeLine{44     std::ofstream log;}
+\DoxyCodeLine{45     std::list<larcfm::Plan> flightPlans;}
+\DoxyCodeLine{46     std::list<larcfm::Plan> trafficPlans;}
+\DoxyCodeLine{47     std::list<fenceObject> fenceList;}
+\DoxyCodeLine{48     std::map<std::string,pObject> trafficList;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{comment}{// Function to compute dubins path}}
+\DoxyCodeLine{51     int64\_t FindDubinsPath(std::string planID);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{comment}{// Function to compute projected time to violation to all fence edges}}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double} FindTimeToFenceViolation(larcfm::Poly3D polygon,larcfm::Vect3 so,larcfm::Velocity vel);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{comment}{// Compute cross track (perpendicular deviation), along track (longitudinal deviations) and time delays }}
+\DoxyCodeLine{57     \textcolor{comment}{// for a given plan, next waypoint index, current position, velocity and time}}
+\DoxyCodeLine{58     std::vector<double> ComputePlanOffsets(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} nextWP,larcfm::Position currentPos,larcfm::Velocity currentVel,\textcolor{keywordtype}{double} timeAtPos);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} CheckLineOfSightconflict(larcfm::Position start, larcfm::Position end);}
+\DoxyCodeLine{61     \textcolor{keywordtype}{void} LogInput();}
+\DoxyCodeLine{62 \textcolor{keyword}{public}:}
+\DoxyCodeLine{63     larcfm::Position startPos;}
+\DoxyCodeLine{64     larcfm::Position endPos;}
+\DoxyCodeLine{65     larcfm::Velocity startVel;}
+\DoxyCodeLine{66     larcfm::Velocity endVel;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \mbox{\hyperlink{class_traj_manager}{TrajManager}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string config);}
+\DoxyCodeLine{69     \textcolor{keywordtype}{void} ReadParamFromFile(std::string config);}
+\DoxyCodeLine{70     \textcolor{keywordtype}{void} UpdateDubinsPlannerParameters(\mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}} \&params);}
+\DoxyCodeLine{71     \textcolor{keywordtype}{int} FindPath(std::string planID, larcfm::Position fromPosition,larcfm::Position toPosition,larcfm::Velocity fromVelocity,larcfm::Velocity toVelocity);}
+\DoxyCodeLine{72     \textcolor{keywordtype}{int} GetTotalWaypoints(std::string planID);}
+\DoxyCodeLine{73     \textcolor{keywordtype}{int} GetWaypoint(std::string planID,\textcolor{keywordtype}{int} wpid,\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}}\& wp);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     larcfm::Plan* GetPlan(std::string planID);}
+\DoxyCodeLine{77     \textcolor{keywordtype}{void} ClearAllPlans();}
+\DoxyCodeLine{78     \textcolor{keywordtype}{void} ClearFences();}
+\DoxyCodeLine{79     \textcolor{keywordtype}{void} InputGeofenceData(\textcolor{keywordtype}{int} type,\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{int} totalVertices, \textcolor{keywordtype}{double} floor, \textcolor{keywordtype}{double} ceiling, \textcolor{keywordtype}{double} pos[][2]);}
+\DoxyCodeLine{80     \textcolor{keywordtype}{void} InputGeofenceData(\textcolor{keywordtype}{int} type,\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{int} totalVertices, \textcolor{keywordtype}{double} floor, \textcolor{keywordtype}{double} ceiling, std::vector<larcfm::Position> \&vertices);}
+\DoxyCodeLine{81     \textcolor{keywordtype}{void} InputFlightPlan(\textcolor{keyword}{const} std::string \&plan\_id, \textcolor{keyword}{const} std::list<waypoint\_t> \&waypoints, }
+\DoxyCodeLine{82                          \textcolor{keyword}{const} \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} repair,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{83     \textcolor{keywordtype}{int} InputTraffic(std::string \mbox{\hyperlink{structcallsign}{callsign}}, larcfm::Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm::Velocity \&velocity,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{84     std::string PlanToString(std::string planID);}
+\DoxyCodeLine{85     \textcolor{keywordtype}{void} StringToPlan(std::string planID,std::string inputString);}
+\DoxyCodeLine{86     \textcolor{keywordtype}{void} CombinePlan(std::string planA,std::string planB,\textcolor{keywordtype}{int} index);}
+\DoxyCodeLine{87     \textcolor{keywordtype}{void} SetPlanOffset(std::string planID,\textcolor{keywordtype}{int} n,\textcolor{keywordtype}{double} offset);}
+\DoxyCodeLine{88     larcfm::Position GetPlanPosition(std::string planID,\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{89     trajectoryMonitorData\_t MonitorTrajectory(\textcolor{keywordtype}{double} time, std::string planID, larcfm::Position pos,larcfm::Velocity vel, \textcolor{keywordtype}{int} nextWP1,\textcolor{keywordtype}{int} nextWP2);}
+\DoxyCodeLine{90 \};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PATHPLANNER\_H}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+
+\end{DoxyCode}

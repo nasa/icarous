@@ -1,0 +1,102 @@
+\hypertarget{tracker_8h}{}\doxysection{apps/tracker/fsw/src/tracker.h File Reference}
+\label{tracker_8h}\index{apps/tracker/fsw/src/tracker.h@{apps/tracker/fsw/src/tracker.h}}
+
+
+Function declaration, MACRO and data structure definitions for the tracker application.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tracker\+\_\+tbl.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtracker_app_data__t}{tracker\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tracker_8h_a5844eba74f13856f97917bcdca5640a2}\label{tracker_8h_a5844eba74f13856f97917bcdca5640a2}} 
+\#define {\bfseries TRACKER\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{tracker_8h_a211cc3b3b0a123c650cde2c6d009fb92}\label{tracker_8h_a211cc3b3b0a123c650cde2c6d009fb92}} 
+\#define {\bfseries TRACKER\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{tracker_8h_a12c0f20879d28b9898b9d08924f2bb56}\label{tracker_8h_a12c0f20879d28b9898b9d08924f2bb56}} 
+\#define {\bfseries TRACKER\+\_\+\+PIPE\+\_\+\+DEPTH}~30
+\item 
+\mbox{\Hypertarget{tracker_8h_ad2b00e3c9edcf1c56491018b1a053dbb}\label{tracker_8h_ad2b00e3c9edcf1c56491018b1a053dbb}} 
+\#define {\bfseries TRACKER\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}TRACKER\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{tracker_8h_afe7863a3ea0d1435c41cb2cbe2c5cde5}\label{tracker_8h_afe7863a3ea0d1435c41cb2cbe2c5cde5}} 
+\#define {\bfseries TRACKER\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{tracker_8h_a4b039d7a91b96da477056b15f4e67cf8}\label{tracker_8h_a4b039d7a91b96da477056b15f4e67cf8}} 
+\#define {\bfseries TRACKER\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tracker_8h_ad6246bf56ee69e02bb60c945f54d3163}{TRACKER\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em Event ID definitions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tracker_8h_a11b0d78ccb5298978e71a05173bdf8c2}{TRACKER\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{tracker_8h_ac75134cbfc6056878b11c008819a2888}{TRACKER\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{tracker_8h_a4e4850630115433fea054e6a735527ee}{TRACKER\+\_\+\+Process\+Packet}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{tracker_8h_ade6defc343b0962ec06149fe5eb8c677}{tracker\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tracker_8h_a45812864e412fccea7823d495523777e}\label{tracker_8h_a45812864e412fccea7823d495523777e}} 
+\mbox{\hyperlink{structtracker_app_data__t}{tracker\+App\+Data\+\_\+t}} {\bfseries tracker\+App\+Data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tracker_8h_ac75134cbfc6056878b11c008819a2888}\label{tracker_8h_ac75134cbfc6056878b11c008819a2888}} 
+\index{tracker.h@{tracker.h}!TRACKER\_AppCleanUp@{TRACKER\_AppCleanUp}}
+\index{TRACKER\_AppCleanUp@{TRACKER\_AppCleanUp}!tracker.h@{tracker.h}}
+\doxysubsubsection{\texorpdfstring{TRACKER\_AppCleanUp()}{TRACKER\_AppCleanUp()}}
+{\footnotesize\ttfamily void TRACKER\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Deallocates memory \mbox{\Hypertarget{tracker_8h_a11b0d78ccb5298978e71a05173bdf8c2}\label{tracker_8h_a11b0d78ccb5298978e71a05173bdf8c2}} 
+\index{tracker.h@{tracker.h}!TRACKER\_AppInit@{TRACKER\_AppInit}}
+\index{TRACKER\_AppInit@{TRACKER\_AppInit}!tracker.h@{tracker.h}}
+\doxysubsubsection{\texorpdfstring{TRACKER\_AppInit()}{TRACKER\_AppInit()}}
+{\footnotesize\ttfamily void TRACKER\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initializes data structures and cfs related entities. \mbox{\Hypertarget{tracker_8h_ad6246bf56ee69e02bb60c945f54d3163}\label{tracker_8h_ad6246bf56ee69e02bb60c945f54d3163}} 
+\index{tracker.h@{tracker.h}!TRACKER\_AppMain@{TRACKER\_AppMain}}
+\index{TRACKER\_AppMain@{TRACKER\_AppMain}!tracker.h@{tracker.h}}
+\doxysubsubsection{\texorpdfstring{TRACKER\_AppMain()}{TRACKER\_AppMain()}}
+{\footnotesize\ttfamily void TRACKER\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App entry point \mbox{\Hypertarget{tracker_8h_a4e4850630115433fea054e6a735527ee}\label{tracker_8h_a4e4850630115433fea054e6a735527ee}} 
+\index{tracker.h@{tracker.h}!TRACKER\_ProcessPacket@{TRACKER\_ProcessPacket}}
+\index{TRACKER\_ProcessPacket@{TRACKER\_ProcessPacket}!tracker.h@{tracker.h}}
+\doxysubsubsection{\texorpdfstring{TRACKER\_ProcessPacket()}{TRACKER\_ProcessPacket()}}
+{\footnotesize\ttfamily void TRACKER\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Processes incoming software bus messages \mbox{\Hypertarget{tracker_8h_ade6defc343b0962ec06149fe5eb8c677}\label{tracker_8h_ade6defc343b0962ec06149fe5eb8c677}} 
+\index{tracker.h@{tracker.h}!trackerTableValidationFunc@{trackerTableValidationFunc}}
+\index{trackerTableValidationFunc@{trackerTableValidationFunc}!tracker.h@{tracker.h}}
+\doxysubsubsection{\texorpdfstring{trackerTableValidationFunc()}{trackerTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t tracker\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validates table parameters 
+\begin{DoxyParams}{Parameters}
+{\em Tbl\+Ptr} & Pointer to table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success 
+\end{DoxyReturn}

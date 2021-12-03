@@ -1,0 +1,76 @@
+\hypertarget{traffic_8h_source}{}\doxysection{traffic.\+h}
+\label{traffic_8h_source}\index{apps/traffic/fsw/src/traffic.h@{apps/traffic/fsw/src/traffic.h}}
+\mbox{\hyperlink{traffic_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_TRAFFIC\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_TRAFFIC\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <math.h>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}TrafficMonitor.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Icarous.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msgids_8h}{traffic\_msgids.h}}"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__tbl_8h}{traffic\_tbl.h}}"{}}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define TRAFFIC\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define TRAFFIC\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define TRAFFIC\_RECEIVED\_INTRUDER\_EID 2}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define TRAFFIC\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define TRAFFIC\_PIPE\_NAME "{}TRAFFIC\_PIPE"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define TRAFFIC\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define TRAFFIC\_MINOR\_VERSION 0}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{57 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{58     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{struct_traffic_app_data__t_a4a78de3e51ee0b3d8bb36374e453424e}{Traffic\_Pipe}};       }
+\DoxyCodeLine{59     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{struct_traffic_app_data__t_a0ebdf3a4641184e19242c603859230c3}{Traffic\_MsgPtr}};     }
+\DoxyCodeLine{60     \textcolor{keywordtype}{void}* \mbox{\hyperlink{struct_traffic_app_data__t_ad6052f56d4a3aa995bdd0452c8c5c048}{tfMonitor}};                       }
+\DoxyCodeLine{61     CFE\_TBL\_Handle\_t \mbox{\hyperlink{struct_traffic_app_data__t_ab9d07337512a5bfd295605f92391e4ec}{Traffic\_tblHandle}};    }
+\DoxyCodeLine{62     bands\_t \mbox{\hyperlink{struct_traffic_app_data__t_ac3dc14b4feef5cd07223494d3fd10592}{trackBands}};                    }
+\DoxyCodeLine{63     bands\_t \mbox{\hyperlink{struct_traffic_app_data__t_a1016a825edee3e8a55efadf5fecf325f}{speedBands}};                    }
+\DoxyCodeLine{64     bands\_t \mbox{\hyperlink{struct_traffic_app_data__t_aa961b336b5d93453ccdc01219ca9056a}{vsBands}};                       }
+\DoxyCodeLine{65     bands\_t \mbox{\hyperlink{struct_traffic_app_data__t_a20eda20a466c7f181a40a9080f4530c1}{altBands}};                      }
+\DoxyCodeLine{66     \mbox{\hyperlink{structband__report__t}{band\_report\_t}} \mbox{\hyperlink{struct_traffic_app_data__t_a9e8b741539d1866e93febbcc1c4757b9}{bandReport}};              }
+\DoxyCodeLine{67     \mbox{\hyperlink{structtraffic__alerts__t}{traffic\_alerts\_t}} \mbox{\hyperlink{struct_traffic_app_data__t_a668c08a1f5f0e39195b9f87958717d8f}{tfAlerts}};             }
+\DoxyCodeLine{68     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{struct_traffic_app_data__t_a7e9a528e346cc474398bb7d8317596da}{flightplan1}};              }
+\DoxyCodeLine{69     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{struct_traffic_app_data__t_a37dd1c1e7d4538ad2e2bcce575344a87}{flightplan2}};              }
+\DoxyCodeLine{70     \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3];                    }
+\DoxyCodeLine{71     \textcolor{keywordtype}{double} velocity[3];                    }
+\DoxyCodeLine{72     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_traffic_app_data__t_a867c381b45910858bf9a95803d7a2fcb}{time}};                           }
+\DoxyCodeLine{73     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_traffic_app_data__t_ac655b563c2dd27caa6770ca54ed4bc12}{log}};                              }
+\DoxyCodeLine{74     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_traffic_app_data__t_a0f3cbfe878ef7f1718e37bb4967546b0}{numTraffic}};                        }
+\DoxyCodeLine{75     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_traffic_app_data__t_a1846ef5f85290483677d3ffd18579715}{return2fp1leg}};                    }
+\DoxyCodeLine{76     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_traffic_app_data__t_ab6ad440068e64e77a2fa207d74d583e3}{return2fp2leg}};                    }
+\DoxyCodeLine{77     uint32\_t \mbox{\hyperlink{struct_traffic_app_data__t_ad02ffe12a170caa9a69609006b28d094}{trafficSrc}};                   }
+\DoxyCodeLine{78     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_traffic_app_data__t_a6b41b862c66609d5fa1efc0042f632c1}{updateDaaParams}};                  }
+\DoxyCodeLine{79     \mbox{\hyperlink{structtraffic__parameters__t}{traffic\_parameters\_t}} \mbox{\hyperlink{struct_traffic_app_data__t_a0d785e938368bb41da064ee1c77737e2}{params}};           }
+\DoxyCodeLine{80 \}\mbox{\hyperlink{struct_traffic_app_data__t}{TrafficAppData\_t}};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{85 \textcolor{keywordtype}{void} \mbox{\hyperlink{traffic_8h_a0ba93009b8def22907ba0a8ac49851ab}{TRAFFIC\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90 \textcolor{keywordtype}{void} \mbox{\hyperlink{traffic_8h_a21d35f1721b07c5715a090e32d17d0fe}{TRAFFIC\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95 \textcolor{keywordtype}{void} \mbox{\hyperlink{traffic_8h_a5e8fc620e4b71f5c178028b7185f757d}{TRAFFIC\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{100 \textcolor{keywordtype}{void} \mbox{\hyperlink{traffic_8h_a2e8450bbb8649d426c787e6bb4d065fb}{TRAFFIC\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{107 int32\_t \mbox{\hyperlink{traffic_8h_a0363cf678ca35e2ddc94dc4122dc8c80}{TrafficTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{112 \mbox{\hyperlink{struct_traffic_app_data__t}{TrafficAppData\_t}} trafficAppData;}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_TRAFFIC\_H}}
+
+\end{DoxyCode}

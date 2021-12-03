@@ -1,0 +1,25 @@
+\hypertarget{utils_8h_source}{}\doxysection{utils.\+h}
+\label{utils_8h_source}\index{apps/zmq\_iface/fsw/src/utils.h@{apps/zmq\_iface/fsw/src/utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <json-\/c/json.h>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 int32 SleepOneSecond(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#if defined(OS\_DEBUG\_PRINTF)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define APP\_DEBUG(...) do \{ OS\_printf("{}\%s():\%d:"{}},\_\_func\_\_,\_\_LINE\_\_); OS\_printf(\_\_VA\_ARGS\_\_); \} while(0)}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define APP\_DEBUG(...) do \{ ; \} while(0)}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{struct }json\_object * json\_object\_new\_string\_from\_double(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keywordtype}{char} \textcolor{keyword}{const} * json\_get\_string\_field(\textcolor{keyword}{struct} json\_object *, \textcolor{keywordtype}{char} \textcolor{keyword}{const} * \textcolor{keyword}{const} key);}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keywordtype}{bool} json\_get\_double\_field(\textcolor{keywordtype}{double} *dest, \textcolor{keyword}{struct} json\_object *obj, \textcolor{keywordtype}{char} \textcolor{keyword}{const} * \textcolor{keyword}{const} key);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keywordtype}{char} \textcolor{keyword}{const} * json\_to\_string(\textcolor{keyword}{struct} json\_object * obj);}
+
+\end{DoxyCode}

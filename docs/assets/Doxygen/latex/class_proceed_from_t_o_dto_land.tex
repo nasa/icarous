@@ -1,0 +1,90 @@
+\hypertarget{class_proceed_from_t_o_dto_land}{}\doxysection{Proceed\+From\+TODto\+Land Class Reference}
+\label{class_proceed_from_t_o_dto_land}\index{ProceedFromTODtoLand@{ProceedFromTODtoLand}}
+
+
+Post Ditch TOD handler.  
+
+
+
+
+{\ttfamily \#include $<$Handlers.\+hpp$>$}
+
+Inheritance diagram for Proceed\+From\+TODto\+Land\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_proceed_from_t_o_dto_land}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_proceed_from_t_o_dto_land_af4175c9364c41502da2497b48301f54f}{Initialize}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_proceed_from_t_o_dto_land_a58dc22c18a812aae16778f9bbc6af907}{Execute}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_proceed_from_t_o_dto_land_ab30430bf17672addeede7d64df33f965}{Terminate}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform termination activities \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_proceed_from_t_o_dto_land_a58dc22c18a812aae16778f9bbc6af907}\label{class_proceed_from_t_o_dto_land_a58dc22c18a812aae16778f9bbc6af907}} 
+\index{ProceedFromTODtoLand@{ProceedFromTODtoLand}!Execute@{Execute}}
+\index{Execute@{Execute}!ProceedFromTODtoLand@{ProceedFromTODtoLand}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Proceed\+From\+TODto\+Land\+::\+Execute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+if we receive the ditch signal again while tryin to land assume current ditch site is infeasible.
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_proceed_from_t_o_dto_land_af4175c9364c41502da2497b48301f54f}\label{class_proceed_from_t_o_dto_land_af4175c9364c41502da2497b48301f54f}} 
+\index{ProceedFromTODtoLand@{ProceedFromTODtoLand}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!ProceedFromTODtoLand@{ProceedFromTODtoLand}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Proceed\+From\+TODto\+Land\+::\+Initialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+Upon reaching TOD, proceed to landing site
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_proceed_from_t_o_dto_land_ab30430bf17672addeede7d64df33f965}\label{class_proceed_from_t_o_dto_land_ab30430bf17672addeede7d64df33f965}} 
+\index{ProceedFromTODtoLand@{ProceedFromTODtoLand}!Terminate@{Terminate}}
+\index{Terminate@{Terminate}!ProceedFromTODtoLand@{ProceedFromTODtoLand}}
+\doxysubsubsection{\texorpdfstring{Terminate()}{Terminate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Proceed\+From\+TODto\+Land\+::\+Terminate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_handlers_8hpp}{Handlers.\+hpp}}\end{DoxyCompactItemize}

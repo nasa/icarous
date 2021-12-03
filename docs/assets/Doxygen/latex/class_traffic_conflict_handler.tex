@@ -1,0 +1,139 @@
+\hypertarget{class_traffic_conflict_handler}{}\doxysection{Traffic\+Conflict\+Handler Class Reference}
+\label{class_traffic_conflict_handler}\index{TrafficConflictHandler@{TrafficConflictHandler}}
+
+
+Traffic conflict handler (for daidalus guidance)  
+
+
+
+
+{\ttfamily \#include $<$Handlers.\+hpp$>$}
+
+Inheritance diagram for Traffic\+Conflict\+Handler\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_traffic_conflict_handler}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_traffic_conflict_handler_a58189c59ba7087d8327be0fdb81e3ad7}{Initialize}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_traffic_conflict_handler_ad9e83bd39ae4f618967eb217552f7198}{Execute}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_traffic_conflict_handler_a92c6744a4467dddbecffbbe04dbd936c}{Terminate}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform termination activities \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_traffic_conflict_handler_a2cd8593fcd9728a36323f5bbe8123b72}\label{class_traffic_conflict_handler_a2cd8593fcd9728a36323f5bbe8123b72}} 
+double {\bfseries start\+Time}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_traffic_conflict_handler_ad9e83bd39ae4f618967eb217552f7198}\label{class_traffic_conflict_handler_ad9e83bd39ae4f618967eb217552f7198}} 
+\index{TrafficConflictHandler@{TrafficConflictHandler}!Execute@{Execute}}
+\index{Execute@{Execute}!TrafficConflictHandler@{TrafficConflictHandler}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Traffic\+Conflict\+Handler\+::\+Execute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+If track, gs and vs are in recovery, don\textquotesingle{}t allow combined resolution
+
+Extract next waypoint we are flying to
+
+Execute the specified resolution. Note that all resolution are constantly check if it safe to return to target position
+
+
+\begin{DoxyItemize}
+\item Send speed command
+\end{DoxyItemize}
+
+Implement an altitude resolution with the following criteria\+: Check if the previous target altitude has already been reached before implementing a new updated resolution.
+
+
+\begin{DoxyItemize}
+\item Send altitude command
+\end{DoxyItemize}
+
+Send velocity command for track resolution
+\begin{DoxyItemize}
+\item Use heading provided by daidalus.
+\item Maintain same speed at beginning of encounter
+\item No climb rate
+\end{DoxyItemize}
+
+For track resolutions, also check if is safe to return to closest point if that is requested
+
+Combined resolution. TODO\+: This is the least used resolution. Needs more testing
+
+Conflict is resolved only when there are no more conflicts and it is safe to return to target
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_traffic_conflict_handler_a58189c59ba7087d8327be0fdb81e3ad7}\label{class_traffic_conflict_handler_a58189c59ba7087d8327be0fdb81e3ad7}} 
+\index{TrafficConflictHandler@{TrafficConflictHandler}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!TrafficConflictHandler@{TrafficConflictHandler}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Traffic\+Conflict\+Handler\+::\+Initialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+Initialize required variables
+
+Determine the resolution type
+
+Check if we have a valid resolution
+
+Shutdown handler if no valid resolution
+
+Shutdown handler if cognition is required to remain passive
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_traffic_conflict_handler_a92c6744a4467dddbecffbbe04dbd936c}\label{class_traffic_conflict_handler_a92c6744a4467dddbecffbbe04dbd936c}} 
+\index{TrafficConflictHandler@{TrafficConflictHandler}!Terminate@{Terminate}}
+\index{Terminate@{Terminate}!TrafficConflictHandler@{TrafficConflictHandler}}
+\doxysubsubsection{\texorpdfstring{Terminate()}{Terminate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Traffic\+Conflict\+Handler\+::\+Terminate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+Do not terminate until the persistence time has elapsed. TODO\+: Not sure if this is required.
+
+For speed resolutions, just activate the nominal path Note that we first send the nominal speed for current leg before activating the nominal path
+
+For altitude resolutions, just activate the nominal path. First, send the nominal altitude for current leg
+
+For all other resolutions, Use the \mbox{\hyperlink{class_return_to_mission}{Return\+To\+Mission}} or \mbox{\hyperlink{class_vector2_mission}{Vector2\+Mission}} handlers as requested by user
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aee8e0423b7a0a239ebd9d973f35a0f51}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Cognition/\mbox{\hyperlink{_handlers_8hpp}{Handlers.\+hpp}}\end{DoxyCompactItemize}

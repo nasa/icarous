@@ -1,0 +1,132 @@
+\hypertarget{_icarous__msg_8h}{}\doxysection{apps/\+Icarouslib/fsw/platform\+\_\+inc/\+Icarous\+\_\+msg.h File Reference}
+\label{_icarous__msg_8h}\index{apps/Icarouslib/fsw/platform\_inc/Icarous\_msg.h@{apps/Icarouslib/fsw/platform\_inc/Icarous\_msg.h}}
+
+
+Icarous common message definitions.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Interfaces.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcallsign__t}{callsign\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structmission_item_reached__t}{mission\+Item\+Reached\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message indicating a specific waypoint has been reached. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structgeofence__t}{geofence\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message encoding geofence vertex information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structobject__t}{object\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message to represent information about an static/dynamic object \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structposition__t}{position\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em position information of aircraft. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structlocal__position__t}{local\+\_\+position\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em aircraft local position information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structattitude__t}{attitude\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em aircraft attitude information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structno_args_cmd__t}{no\+Args\+Cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} without arguments. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structargs_cmd__t}{args\+Cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} with arguments. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcmd_ack__t}{cmd\+Ack\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{struct_command}{Command}} acknowledgement. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstatus__t}{status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message to provide status information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvfrhud__t}{vfrhud\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structbattery__status__t}{battery\+\_\+status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message containing battery status. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrc__channels__t}{rc\+\_\+channels\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message containing rc channel information. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structhome__position__t}{home\+\_\+position\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a0351e86a69da7f513f59240246a49d09}\label{_icarous__msg_8h_a0351e86a69da7f513f59240246a49d09}} 
+\#define {\bfseries MAX\+\_\+\+WAYPOINTS}~25
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a0fdb7b933ef091574ff57d1f36dd4167}\label{_icarous__msg_8h_a0fdb7b933ef091574ff57d1f36dd4167}} 
+\#define {\bfseries MAX\+\_\+\+VERTICES}~100
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_abf5342a43a73c72f7af217e64f79a037}\label{_icarous__msg_8h_abf5342a43a73c72f7af217e64f79a037}} 
+\#define {\bfseries ACID\+\_\+\+SIZE}~25
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_aa55d0502e61717b40511139b6fc5e51d}\label{_icarous__msg_8h_aa55d0502e61717b40511139b6fc5e51d}} 
+\#define {\bfseries MAX\+\_\+\+FIX\+\_\+\+NAME\+\_\+\+SIZE}~20
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_ad4fa9c215534f6cb090ebabf6a156dac}\label{_icarous__msg_8h_ad4fa9c215534f6cb090ebabf6a156dac}} 
+\#define {\bfseries MAX\+\_\+\+GEOFENCES}~50
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a2e68b4a6ceb51bde36702802e622807a}\label{_icarous__msg_8h_a2e68b4a6ceb51bde36702802e622807a}} 
+\#define {\bfseries MAX\+\_\+\+CALLSIGN\+\_\+\+LEN}~17
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a105735368fbb4c58553ce7627002ea0e}\label{_icarous__msg_8h_a105735368fbb4c58553ce7627002ea0e}} 
+\#define {\bfseries MAX\+\_\+\+DATABUFFER\+\_\+\+SIZE}~10000
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a105735368fbb4c58553ce7627002ea0e}\label{_icarous__msg_8h_a105735368fbb4c58553ce7627002ea0e}} 
+\#define {\bfseries MAX\+\_\+\+DATABUFFER\+\_\+\+SIZE}~10000
+\item 
+\mbox{\Hypertarget{_icarous__msg_8h_a20754ef48619d402726c1ca7efebf6b5}\label{_icarous__msg_8h_a20754ef48619d402726c1ca7efebf6b5}} 
+\#define {\bfseries DEF\+\_\+\+MSG}(NAME,  SIZE)~typedef struct \mbox{\hyperlink{_merger_8h_ad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}}((\+\_\+\+\_\+packed\+\_\+\+\_\+))\{ CCSDS\+\_\+\+Pri\+Hdr\+\_\+t hdr; char databuffer\mbox{[}SIZE\mbox{]}; \}NAME;
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3b85ad2d7f85e73d6c6b5b75c6505025}{icarous\+Control\+Mode\+\_\+e}} \{ \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a4e126595509faceca85c09b46a7103e9}{\+\_\+\+PASSIVE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025a7ea461a85fe09624bd6738aaa004fa05}{\+\_\+\+ACTIVE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3b85ad2d7f85e73d6c6b5b75c6505025ab20400764f2d91a122e90ac080776eae}{\+\_\+\+INACTIVE\+\_\+}}
+ \}
+\begin{DoxyCompactList}\small\item\em Defines the mode of operation of Icarous. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga2553c4902a141953f0452d22021cbf26}\label{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga2553c4902a141953f0452d22021cbf26}} 
+enum {\bfseries severity\+\_\+e} \{ \newline
+{\bfseries SEVERITY\+\_\+\+EMERGENCY} =0
+, {\bfseries SEVERITY\+\_\+\+ALERT} =1
+, {\bfseries SEVERITY\+\_\+\+CRITICAL} =2
+, {\bfseries SEVERITY\+\_\+\+ERROR} =3
+, \newline
+{\bfseries SEVERITY\+\_\+\+WARNING} =4
+, {\bfseries SEVERITY\+\_\+\+NOTICE} =5
+, {\bfseries SEVERITY\+\_\+\+INFO} =6
+, {\bfseries SEVERITY\+\_\+\+DEBUG} =7
+ \}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ga3c2f9082ecaa451d1cd2ffc30fb01e8d}{command\+Name\+\_\+e}} \{ \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988}{\+\_\+\+ARM\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb}{\+\_\+\+TAKEOFF\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35}{\+\_\+\+LAND\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba}{\+\_\+\+GOTOWP\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672}{\+\_\+\+SETPOS\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d}{\+\_\+\+SETVEL\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7}{\+\_\+\+SETYAW\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c}{\+\_\+\+SETSPEED\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c}{\+\_\+\+SETMODE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48}{\+\_\+\+STATUS\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da2d6e955220e206d73e074760e5f83914}{\+\_\+\+DITCH\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da106bb3dda6fc6cfa02712179f3f62278}{\+\_\+\+RADAR\+\_\+}}
+, \newline
+\mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da304b2c8b1709b591b29162a69429910b}{\+\_\+\+GUIDANCE\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gga3c2f9082ecaa451d1cd2ffc30fb01e8da6e060882c0f5bc6833104f3b25729e60}{\+\_\+\+TRAFFIC\+\_\+\+RES\+\_\+}}
+ \}
+\item 
+enum \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gaebad12c3a3ae57e3d8c5af114770b7dc}{geofence\+Type\+\_\+e}} \{ \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca889c7df740da84ac1e2d5de06d0135cc}{\+\_\+\+KEEPIN\+\_\+}}
+, \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_ggaebad12c3a3ae57e3d8c5af114770b7dca88f5c150b346e5f948ebffac5eb31c57}{\+\_\+\+KEEPOUT\+\_\+}}
+ \}
+\begin{DoxyCompactList}\small\item\em geofence type \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{group___i_c_a_r_o_u_s___c_o_m_m_o_n___m_e_s_s_a_g_e_s_gad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries flightplan\+\_\+t}
+\item 
+{\bfseries stringdata\+\_\+t}
+\end{DoxyCompactItemize}

@@ -1,0 +1,79 @@
+\hypertarget{_modules_2_core_2_guidance_2guidance_8h_source}{}\doxysection{Guidance.\+h}
+\label{_modules_2_core_2_guidance_2guidance_8h_source}\index{Modules/Core/Guidance/Guidance.h@{Modules/Core/Guidance/Guidance.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef GUIDANCE\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define GUIDANCE\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{5 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <Interfaces.h>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{16     FLIGHTPLAN,             }
+\DoxyCodeLine{17     VECTOR,                 }
+\DoxyCodeLine{18     POINT2POINT,            }
+\DoxyCodeLine{19     TAKEOFF,                }
+\DoxyCodeLine{20     LAND,                   }
+\DoxyCodeLine{21     SPEED\_CHANGE,           }
+\DoxyCodeLine{22     ALT\_CHANGE,             }
+\DoxyCodeLine{23     GUIDE\_NOOP,}
+\DoxyCodeLine{24 \}GuidanceMode;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{30 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double} defaultWpSpeed;}
+\DoxyCodeLine{32     \textcolor{keywordtype}{double} captureRadiusScaling;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{double} guidanceRadiusScaling;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double} turnRateGain;}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double} climbFpAngle;}
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} climbAngleVRange;}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} climbAngleHRange;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} climbRateGain;}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double} maxClimbRate;}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double} minClimbRate;}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double} maxCap;}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double} minCap;}
+\DoxyCodeLine{43     \textcolor{keywordtype}{double} maxSpeed;}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double} minSpeed;}
+\DoxyCodeLine{45     \textcolor{keywordtype}{bool} yawForward;}
+\DoxyCodeLine{46     \textcolor{keywordtype}{bool} maintainEta;}
+\DoxyCodeLine{47 \}\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{50     \textcolor{keywordtype}{char} activePlan[25];}
+\DoxyCodeLine{51     \textcolor{keywordtype}{int} guidanceMode;}
+\DoxyCodeLine{52     \textcolor{keywordtype}{int} nextWP;}
+\DoxyCodeLine{53     \textcolor{keywordtype}{double} distH2WP;}
+\DoxyCodeLine{54     \textcolor{keywordtype}{double} distV2WP;}
+\DoxyCodeLine{55     \textcolor{keywordtype}{double} xtrackDev;}
+\DoxyCodeLine{56     \textcolor{keywordtype}{double} velCmd[3];}
+\DoxyCodeLine{57     \textcolor{keywordtype}{double} target[3];}
+\DoxyCodeLine{58     \textcolor{keywordtype}{bool} wpReached;}
+\DoxyCodeLine{59     \textcolor{keywordtype}{bool} yawForward;}
+\DoxyCodeLine{60 \}\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{void}* InitGuidance(\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{63 \textcolor{keywordtype}{void} guidReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{64 \textcolor{keywordtype}{void} guidSetParams(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}* params);}
+\DoxyCodeLine{65 \textcolor{keywordtype}{void} guidSetAircraftState(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[]);}
+\DoxyCodeLine{66 \textcolor{keywordtype}{void} guidSetWindData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} windFrom,\textcolor{keywordtype}{double} windSpeed);}
+\DoxyCodeLine{67 \textcolor{keywordtype}{void} guidInputFlightplanData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} wpts[],\textcolor{keywordtype}{int} totalWP,\textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} kinematize,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{68 \textcolor{keywordtype}{void} RunGuidance(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{69 \textcolor{keywordtype}{void} guidInputVelocityCmd(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} velcmd[]);}
+\DoxyCodeLine{70 \textcolor{keywordtype}{void} SetGuidanceMode(\textcolor{keywordtype}{void}* obj,GuidanceMode mode,\textcolor{keyword}{const} \textcolor{keywordtype}{char}* planID,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{bool} eta);}
+\DoxyCodeLine{71 \textcolor{keywordtype}{void} ChangeWaypointSpeed(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{72 \textcolor{keywordtype}{void} ChangeWaypointAlt(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{73 \textcolor{keywordtype}{void} ChangeWaypointETA(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} guidGetOutput(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}}* output);}
+\DoxyCodeLine{75 \textcolor{keywordtype}{int} guidGetWaypoint(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} *wp);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{78 \}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

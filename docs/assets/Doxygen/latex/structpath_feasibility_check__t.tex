@@ -1,0 +1,73 @@
+\hypertarget{structpath_feasibility_check__t}{}\doxysection{path\+Feasibility\+Check\+\_\+t Struct Reference}
+\label{structpath_feasibility_check__t}\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+
+
+request to check if a path is feasible between two given points. Also used as a response.  
+
+
+
+
+{\ttfamily \#include $<$geofence\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structpath_feasibility_check__t_ac5b586efabbf88be6c235d404474167d}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{structpath_feasibility_check__t_aeb2791de25a617983ba36e2f697e5485}{from\+Position}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{structpath_feasibility_check__t_a8d0ccf6fe5e1971a34208dd92928afd7}{to\+Position}} \mbox{[}3\mbox{]}
+\item 
+bool \mbox{\hyperlink{structpath_feasibility_check__t_a53016c348d10d1593a78644839151106}{feasibleA}}
+\item 
+bool \mbox{\hyperlink{structpath_feasibility_check__t_ae8e4cea5735d7139812492d96a9608fd}{feasibleB}}
+\item 
+bool \mbox{\hyperlink{structpath_feasibility_check__t_a211e58f250f7b96767c839ff0a24e454}{feasible\+AB}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Requests are published under the GEOFENCE\+\_\+\+PATH\+\_\+\+CHECK\+\_\+\+MID topic. Responses are published under the GEOFENCE\+\_\+\+PATH\+\_\+\+CHECK\+\_\+\+RESULT\+\_\+\+MID topic. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structpath_feasibility_check__t_a53016c348d10d1593a78644839151106}\label{structpath_feasibility_check__t_a53016c348d10d1593a78644839151106}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!feasibleA@{feasibleA}}
+\index{feasibleA@{feasibleA}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{feasibleA}{feasibleA}}
+{\footnotesize\ttfamily bool path\+Feasibility\+Check\+\_\+t\+::feasibleA}
+
+true if from position is free from conflict \mbox{\Hypertarget{structpath_feasibility_check__t_a211e58f250f7b96767c839ff0a24e454}\label{structpath_feasibility_check__t_a211e58f250f7b96767c839ff0a24e454}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!feasibleAB@{feasibleAB}}
+\index{feasibleAB@{feasibleAB}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{feasibleAB}{feasibleAB}}
+{\footnotesize\ttfamily bool path\+Feasibility\+Check\+\_\+t\+::feasible\+AB}
+
+true if path is feasible (free from geofence conflicts) \mbox{\Hypertarget{structpath_feasibility_check__t_ae8e4cea5735d7139812492d96a9608fd}\label{structpath_feasibility_check__t_ae8e4cea5735d7139812492d96a9608fd}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!feasibleB@{feasibleB}}
+\index{feasibleB@{feasibleB}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{feasibleB}{feasibleB}}
+{\footnotesize\ttfamily bool path\+Feasibility\+Check\+\_\+t\+::feasibleB}
+
+true if to position is free from conflict \mbox{\Hypertarget{structpath_feasibility_check__t_aeb2791de25a617983ba36e2f697e5485}\label{structpath_feasibility_check__t_aeb2791de25a617983ba36e2f697e5485}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!fromPosition@{fromPosition}}
+\index{fromPosition@{fromPosition}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{fromPosition}{fromPosition}}
+{\footnotesize\ttfamily double path\+Feasibility\+Check\+\_\+t\+::from\+Position\mbox{[}3\mbox{]}}
+
+Initial position in lat (deg), lon (deg) and alt (m) \mbox{\Hypertarget{structpath_feasibility_check__t_ac5b586efabbf88be6c235d404474167d}\label{structpath_feasibility_check__t_ac5b586efabbf88be6c235d404474167d}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t path\+Feasibility\+Check\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structpath_feasibility_check__t_a8d0ccf6fe5e1971a34208dd92928afd7}\label{structpath_feasibility_check__t_a8d0ccf6fe5e1971a34208dd92928afd7}} 
+\index{pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}!toPosition@{toPosition}}
+\index{toPosition@{toPosition}!pathFeasibilityCheck\_t@{pathFeasibilityCheck\_t}}
+\doxysubsubsection{\texorpdfstring{toPosition}{toPosition}}
+{\footnotesize\ttfamily double path\+Feasibility\+Check\+\_\+t\+::to\+Position\mbox{[}3\mbox{]}}
+
+To position in lat (deg), lon (deg) and alt (m) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/geofence/fsw/platform\+\_\+inc/\mbox{\hyperlink{geofence__msg_8h}{geofence\+\_\+msg.\+h}}\end{DoxyCompactItemize}

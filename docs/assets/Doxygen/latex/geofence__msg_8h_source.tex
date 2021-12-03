@@ -1,0 +1,32 @@
+\hypertarget{geofence__msg_8h_source}{}\doxysection{geofence\+\_\+msg.\+h}
+\label{geofence__msg_8h_source}\index{apps/geofence/fsw/platform\_inc/geofence\_msg.h@{apps/geofence/fsw/platform\_inc/geofence\_msg.h}}
+\mbox{\hyperlink{geofence__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_GEOFENCE\_MSG\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_GEOFENCE\_MSG\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 }
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{20     uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];  }
+\DoxyCodeLine{21     \textcolor{keywordtype}{double} fromPosition[3];                  }
+\DoxyCodeLine{22     \textcolor{keywordtype}{double} toPosition[3];                    }
+\DoxyCodeLine{23     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structpath_feasibility_check__t_a53016c348d10d1593a78644839151106}{feasibleA}};                          }
+\DoxyCodeLine{24     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structpath_feasibility_check__t_ae8e4cea5735d7139812492d96a9608fd}{feasibleB}};                          }
+\DoxyCodeLine{25     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structpath_feasibility_check__t_a211e58f250f7b96767c839ff0a24e454}{feasibleAB}};                         }
+\DoxyCodeLine{26 \}\mbox{\hyperlink{structpath_feasibility_check__t}{pathFeasibilityCheck\_t}};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{32 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{33    uint8\_t  TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];}
+\DoxyCodeLine{34    \textcolor{keywordtype}{double} lookahead;}
+\DoxyCodeLine{35    \textcolor{keywordtype}{double} hthreshold;}
+\DoxyCodeLine{36    \textcolor{keywordtype}{double} vthreshold;}
+\DoxyCodeLine{37    \textcolor{keywordtype}{double} hstepback;}
+\DoxyCodeLine{38    \textcolor{keywordtype}{double} vstepback;}
+\DoxyCodeLine{39 \}\mbox{\hyperlink{structgeofence__parameters__t}{geofence\_parameters\_t}};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_GEOFENCE\_MSG\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,45 @@
+\hypertarget{merger__msg_8h_source}{}\doxysection{merger\+\_\+msg.\+h}
+\label{merger__msg_8h_source}\index{apps/merger/fsw/platform\_inc/merger\_msg.h@{apps/merger/fsw/platform\_inc/merger\_msg.h}}
+\mbox{\hyperlink{merger__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_MERGER\_MSG\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_MERGER\_MSG\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <cfe.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define INTERSECTION\_MAXC 10 }}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 }
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{merger__msg_8h_ad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{20    CCSDS\_PriHdr\_t hdr;}
+\DoxyCodeLine{21    int8\_t aircraftID;           }
+\DoxyCodeLine{22    int8\_t intersectionID;       }
+\DoxyCodeLine{23    \textcolor{keywordtype}{double} earlyArrivalTime;    }
+\DoxyCodeLine{24    \textcolor{keywordtype}{double} currentArrivalTime;  }
+\DoxyCodeLine{25    \textcolor{keywordtype}{double} lateArrivalTime;     }
+\DoxyCodeLine{26    int32\_t numSchedulesComputed;}
+\DoxyCodeLine{27    uint8\_t zoneStatus;          }
+\DoxyCodeLine{28 \}cMergingData\_t;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{34  \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{35    uint8\_t TlmHeader[CFE\_SB\_TLM\_HDR\_SIZE];}
+\DoxyCodeLine{36    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a589ef8caf08e5564caa18f5b1369d792}{maxVehicleSpeed}};                           }
+\DoxyCodeLine{37    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_ab351351f653ba79af3822e5cbe624ef3}{minVehicleSpeed}};                           }
+\DoxyCodeLine{38    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_adf1577e6ef8ac41656301c9cfe834f2e}{corridorWidth}};                             }
+\DoxyCodeLine{39    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a9bd4c8c13b160aa72dd515baa86416d3}{entryRadius}};                               }
+\DoxyCodeLine{40    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a2ebe1e7a0cb6facbf012615992913d1a}{coordZone}};                                 }
+\DoxyCodeLine{41    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a0a2c5f2d783019f934d36f34952c7ce6}{scheduleZone}};                              }
+\DoxyCodeLine{42    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a87d5e91a1f3c6585ebdfe285eacae7da}{minSeparationDistance}};                     }
+\DoxyCodeLine{43    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a9f83e0b940b805855807e90c8357777b}{minSeparationTime}};                         }
+\DoxyCodeLine{44    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a46b681c19c71f7ca83bc5b35c5360349}{maxVehicleTurnRadius}};                      }
+\DoxyCodeLine{45    \textcolor{keywordtype}{double} IntersectionLocation[INTERSECTION\_MAXC][3]; }
+\DoxyCodeLine{46    uint32\_t IntersectionID[INTERSECTION\_MAXC];        }
+\DoxyCodeLine{47    \textcolor{keywordtype}{int}    \mbox{\hyperlink{structmerger__parameters__t_a02206b7c4708c1cb248da39c8604e50e}{startIntersection}};                         }
+\DoxyCodeLine{48    \textcolor{keywordtype}{double} \mbox{\hyperlink{structmerger__parameters__t_a0cde733b839cbaf13915ec0da56998d5}{missionSpeed}};                              }
+\DoxyCodeLine{49  \}\mbox{\hyperlink{structmerger__parameters__t}{merger\_parameters\_t}};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_MERGER\_MSG\_H}}
+
+\end{DoxyCode}

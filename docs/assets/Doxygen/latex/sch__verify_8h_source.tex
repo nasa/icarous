@@ -1,0 +1,137 @@
+\hypertarget{sch__verify_8h_source}{}\doxysection{sch\+\_\+verify.\+h}
+\label{sch__verify_8h_source}\index{apps/scheduler/fsw/src/sch\_verify.h@{apps/scheduler/fsw/src/sch\_verify.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{** \$Id: sch\_verify.h 1.3 2017/06/21 15:29:22EDT mdeschu Exp  \$}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{5 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{6 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{10 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{11 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Purpose:  CFS Scheduler (SCH) configuration verification}}
+\DoxyCodeLine{14 \textcolor{comment}{**}}
+\DoxyCodeLine{15 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{*/}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#ifndef \_sch\_verify\_}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define \_sch\_verify\_}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{/*************************************************************************/}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#if SCH\_PIPE\_DEPTH < 1}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{  \#error SCH\_PIPE\_DEPTH must be greater than zero. }}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#if SCH\_ENTRIES\_PER\_SLOT < 1}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{  \#error SCH\_ENTRIES\_PER\_SLOT must be greater than zero.  Schedule Definition Table must have at least one entry per slot.}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#if SCH\_MAX\_MESSAGES < 1}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{  \#error SCH\_MAX\_MESSAGES must be greater than zero.  Message Definition Table must have at least one message definition.}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#if SCH\_MAX\_MESSAGES < 1}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{  \#error SCH\_MAX\_MESSAGES must be greater than zero.  Message Definition Table must have at least one message definition.}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#if SCH\_MDT\_MIN\_MSG\_ID < 0}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{  \#error  SCH\_MDT\_MIN\_MSG\_ID must be at least 0.}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#if SCH\_MDT\_MAX\_MSG\_ID < SCH\_MDT\_MIN\_MSG\_ID}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{  \#error  SCH\_MDT\_MAX\_MSG\_ID must be at least SCH\_MDT\_MIN\_MSG\_ID.}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#if SCH\_MDT\_MAX\_MSG\_ID > CFE\_SB\_HIGHEST\_VALID\_MSGID}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{  \#error SCH\_MDT\_MAX\_MSG\_ID must be less than or equal to CFE\_SB\_HIGHEST\_VALID\_MSGID.}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#if SCH\_MAX\_LAG\_COUNT < 1}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{  \#error SCH\_MAX\_LAG\_COUNT must be at least 1.}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#if SCH\_MAX\_LAG\_COUNT > SCH\_TOTAL\_SLOTS}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{  \#error SCH\_MAX\_LAG\_COUNT cannot be greater than SCH\_TOTAL\_SLOTS.}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#if SCH\_MAX\_SLOTS\_PER\_WAKEUP < 1}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{  \#error SCH\_MAX\_SLOTS\_PER\_WAKEUP must be at least 1.}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#if SCH\_MICROS\_PER\_MAJOR\_FRAME < SCH\_TOTAL\_SLOTS}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{  \#error SCH\_MICROS\_PER\_MAJOR\_FRAME must be greater than SCH\_TOTAL\_SLOTS (i.e. -\/ a normal slot period must be at least 1 microsecond)}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#if SCH\_STARTUP\_SYNC\_TIMEOUT < 0}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{  \#error SCH\_STARTUP\_SYNC\_TIMEOUT must be greater than or equal to zero.}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#if SCH\_STARTUP\_PERIOD < SCH\_MICROS\_PER\_MAJOR\_FRAME}}
+\DoxyCodeLine{74 \textcolor{preprocessor}{  \#error SCH\_STARTUP\_PERIOD must be greater than or equal to SCH\_MICROS\_PER\_MAJOR\_FRAME.}}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{comment}{/*}}
+\DoxyCodeLine{78 \textcolor{comment}{** Make sure Diagnostic Packet does not exceed mission packet size}}
+\DoxyCodeLine{79 \textcolor{comment}{** NOTE: The "{}2"{} below is for the current size of a CFE\_SB\_MsgId\_t in bytes.  "{}sizeof"{} cannot be used in \#if statements.}}
+\DoxyCodeLine{80 \textcolor{comment}{**       and the "{}14"{} is the size of a CCSDS Telemetry Header}}
+\DoxyCodeLine{81 \textcolor{comment}{*/}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#ifdef MESSAGE\_FORMAT\_IS\_CCSDS}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#if (SCH\_NUM\_STATUS\_BYTES\_REQD + 2*SCH\_TABLE\_ENTRIES + 12 ) > CFE\_SB\_MAX\_SB\_MSG\_SIZE}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{  \#error SCH Diagnostic Packet exceeds maximum allowed message size (see CFE\_SB\_MAX\_SB\_MSG\_SIZE)}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{comment}{/*}}
+\DoxyCodeLine{89 \textcolor{comment}{** Validate Number of Minor Frames per Major Frame}}
+\DoxyCodeLine{90 \textcolor{comment}{*/}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#if SCH\_TOTAL\_SLOTS > 65535}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{  \#error SCH\_TOTAL\_SLOTS cannot specify more than 65535 minor frames per major frame}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#if SCH\_TOTAL\_SLOTS < 2}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{  \#error SCH\_TOTAL\_SLOTS must specify at least 2 minor frames per major frame}}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{comment}{/*}}
+\DoxyCodeLine{100 \textcolor{comment}{** Ensure Allowed Drift is not larger than a single slot}}
+\DoxyCodeLine{101 \textcolor{comment}{*/}}
+\DoxyCodeLine{102 \textcolor{preprocessor}{\#if SCH\_SYNC\_SLOT\_DRIFT\_WINDOW >= (SCH\_MICROS\_PER\_MAJOR\_FRAME/SCH\_TOTAL\_SLOTS)}}
+\DoxyCodeLine{103 \textcolor{preprocessor}{  \#error SCH\_SYNC\_SLOT\_DRIFT\_WINDOW must be less than one normal slot period}}
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#if SCH\_SYNC\_SLOT\_DRIFT\_WINDOW < 0}}
+\DoxyCodeLine{107 \textcolor{preprocessor}{  \#error SCH\_SYNC\_SLOT\_DRIFT\_WINDOW must be greater than or equal to zero}}
+\DoxyCodeLine{108 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{comment}{/*}}
+\DoxyCodeLine{111 \textcolor{comment}{** Noisy Major Frame}}
+\DoxyCodeLine{112 \textcolor{comment}{*/}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#if SCH\_MAX\_NOISY\_MAJORF < 2}}
+\DoxyCodeLine{115 \textcolor{preprocessor}{  \#error SCH\_MAX\_NOISY\_MAJORF must specify at least 2 noisy frames before disregarding}}
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#ifndef SCH\_MISSION\_REV}}
+\DoxyCodeLine{119 \textcolor{preprocessor}{    \#error SCH\_MISSION\_REV must be defined!}}
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#elif (SCH\_MISSION\_REV < 0)}}
+\DoxyCodeLine{121 \textcolor{preprocessor}{    \#error SCH\_MISSION\_REV must be greater than or equal to zero!}}
+\DoxyCodeLine{122 \textcolor{preprocessor}{\#endif }}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{comment}{/*************************************************************************/}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_verify\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{130 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{131 \textcolor{comment}{/************************/}}
+
+\end{DoxyCode}

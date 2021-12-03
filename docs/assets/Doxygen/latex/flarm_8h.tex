@@ -1,0 +1,126 @@
+\hypertarget{flarm_8h}{}\doxysection{apps/flarm/fsw/src/flarm.h File Reference}
+\label{flarm_8h}\index{apps/flarm/fsw/src/flarm.h@{apps/flarm/fsw/src/flarm.h}}
+
+
+function declarations, definitions of macros, datastructures and global variables for the FLARM application  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Util\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}network\+\_\+includes.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}flarm\+\_\+events.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}msgdef/ardupilot\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}msgdef/traffic\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}msgids/ardupilot\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}msgids/scheduler\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}msgids/traffic\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}port\+\_\+lib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pflaa.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_flarm_app_data__t}{Flarm\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{flarm_8h_af8401ce7203ef62bf6ff1bb238634676}\label{flarm_8h_af8401ce7203ef62bf6ff1bb238634676}} 
+\#define {\bfseries FLARM\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}FLARM\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{flarm_8h_add6963bd7cffb90ca92a2b00969d27f7}\label{flarm_8h_add6963bd7cffb90ca92a2b00969d27f7}} 
+\#define {\bfseries FLARM\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{flarm_8h_a58303d63918d4f52fc939c25ba4d8c0c}\label{flarm_8h_a58303d63918d4f52fc939c25ba4d8c0c}} 
+\#define {\bfseries SCH\+\_\+\+FLARM\+\_\+\+PIPE1\+\_\+\+NAME}~\char`\"{}SCH\+\_\+\+FLARM\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{flarm_8h_aedc37b8c1c9867ae5eba43df454388d3}{FLARM\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em This is the main entry point for your application that will be used by c\+FS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{flarm_8h_ace73b3cffd2bdf988e05fa8b5a92d2f3}{FLARM\+\_\+\+App\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize app data\+: set up pipes, subscribe to messages, read table, initialize data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{flarm_8h_a997968e20d62c91b3f485072bb599de6}{FLARM\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{flarm_8h_a3b0fdca76834c8e58b626d1a12ff1aa3}{FLARM\+\_\+\+Initialize\+Ports}} ()
+\begin{DoxyCompactList}\small\item\em Open ports to autopilot and intialize ports here. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{flarm_8h_a9642fc092065e4a350eb7f09827aabf6}{FLARM\+\_\+\+Process\+Data}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from the autopilot and construct software bus messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{flarm_8h_a223fd20d327f469975e4535cb9acee32}{FLARM\+\_\+\+Process\+SBData}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from software bus and send data to autopilot. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{flarm_8h_aed3b08cc47b8bb0f94e7350cda2f1d7e}{log\+Sentence}} (char $\ast$recvbuffer, \mbox{\hyperlink{structnmea__pflaa__s}{nmea\+\_\+pflaa\+\_\+s}} $\ast$pflaa)
+\begin{DoxyCompactList}\small\item\em Ensures read in serial data is full NMEA sentence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{flarm_8h_a026226042c160b8c2e6c166faac639e8}{get\+File\+Timeand\+Date}} (char $\ast$$\ast$Filename)
+\begin{DoxyCompactList}\small\item\em Ensures current time and date is captured. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{flarm_8h_a7a258ed94483248616a5903508322831}{FLARMTable\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{flarm_8h_a997968e20d62c91b3f485072bb599de6}\label{flarm_8h_a997968e20d62c91b3f485072bb599de6}} 
+\index{flarm.h@{flarm.h}!FLARM\_AppCleanUp@{FLARM\_AppCleanUp}}
+\index{FLARM\_AppCleanUp@{FLARM\_AppCleanUp}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_AppCleanUp()}{FLARM\_AppCleanUp()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{flarm_8h_ace73b3cffd2bdf988e05fa8b5a92d2f3}\label{flarm_8h_ace73b3cffd2bdf988e05fa8b5a92d2f3}} 
+\index{flarm.h@{flarm.h}!FLARM\_AppInit@{FLARM\_AppInit}}
+\index{FLARM\_AppInit@{FLARM\_AppInit}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_AppInit()}{FLARM\_AppInit()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{flarm_8h_aedc37b8c1c9867ae5eba43df454388d3}\label{flarm_8h_aedc37b8c1c9867ae5eba43df454388d3}} 
+\index{flarm.h@{flarm.h}!FLARM\_AppMain@{FLARM\_AppMain}}
+\index{FLARM\_AppMain@{FLARM\_AppMain}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_AppMain()}{FLARM\_AppMain()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{flarm_8h_a3b0fdca76834c8e58b626d1a12ff1aa3}\label{flarm_8h_a3b0fdca76834c8e58b626d1a12ff1aa3}} 
+\index{flarm.h@{flarm.h}!FLARM\_InitializePorts@{FLARM\_InitializePorts}}
+\index{FLARM\_InitializePorts@{FLARM\_InitializePorts}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_InitializePorts()}{FLARM\_InitializePorts()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+Initialize\+Ports (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Initialize ports to the autopilot \mbox{\Hypertarget{flarm_8h_a9642fc092065e4a350eb7f09827aabf6}\label{flarm_8h_a9642fc092065e4a350eb7f09827aabf6}} 
+\index{flarm.h@{flarm.h}!FLARM\_ProcessData@{FLARM\_ProcessData}}
+\index{FLARM\_ProcessData@{FLARM\_ProcessData}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_ProcessData()}{FLARM\_ProcessData()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+Process\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the autopilot \mbox{\Hypertarget{flarm_8h_a223fd20d327f469975e4535cb9acee32}\label{flarm_8h_a223fd20d327f469975e4535cb9acee32}} 
+\index{flarm.h@{flarm.h}!FLARM\_ProcessSBData@{FLARM\_ProcessSBData}}
+\index{FLARM\_ProcessSBData@{FLARM\_ProcessSBData}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARM\_ProcessSBData()}{FLARM\_ProcessSBData()}}
+{\footnotesize\ttfamily void FLARM\+\_\+\+Process\+SBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the SB message \mbox{\Hypertarget{flarm_8h_a7a258ed94483248616a5903508322831}\label{flarm_8h_a7a258ed94483248616a5903508322831}} 
+\index{flarm.h@{flarm.h}!FLARMTableValidationFunc@{FLARMTableValidationFunc}}
+\index{FLARMTableValidationFunc@{FLARMTableValidationFunc}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{FLARMTableValidationFunc()}{FLARMTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t FLARMTable\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{flarm_8h_a026226042c160b8c2e6c166faac639e8}\label{flarm_8h_a026226042c160b8c2e6c166faac639e8}} 
+\index{flarm.h@{flarm.h}!getFileTimeandDate@{getFileTimeandDate}}
+\index{getFileTimeandDate@{getFileTimeandDate}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{getFileTimeandDate()}{getFileTimeandDate()}}
+{\footnotesize\ttfamily void get\+File\+Timeand\+Date (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{Filename }\end{DoxyParamCaption})}
+
+Obtains current time and date for filename \mbox{\Hypertarget{flarm_8h_aed3b08cc47b8bb0f94e7350cda2f1d7e}\label{flarm_8h_aed3b08cc47b8bb0f94e7350cda2f1d7e}} 
+\index{flarm.h@{flarm.h}!logSentence@{logSentence}}
+\index{logSentence@{logSentence}!flarm.h@{flarm.h}}
+\doxysubsubsection{\texorpdfstring{logSentence()}{logSentence()}}
+{\footnotesize\ttfamily bool log\+Sentence (\begin{DoxyParamCaption}\item[{char $\ast$}]{recvbuffer,  }\item[{\mbox{\hyperlink{structnmea__pflaa__s}{nmea\+\_\+pflaa\+\_\+s}} $\ast$}]{pflaa }\end{DoxyParamCaption})}
+
+logs valid NMEA sentence 

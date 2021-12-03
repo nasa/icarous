@@ -1,0 +1,52 @@
+\hypertarget{structport__t}{}\doxysection{port\+\_\+t Struct Reference}
+\label{structport__t}\index{port\_t@{port\_t}}
+
+
+Structure to hold port attributes.  
+
+
+
+
+{\ttfamily \#include $<$port\+\_\+lib.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structport__t_a825ccd4810e8c5f6dfef12af5ec30ffc}\label{structport__t_a825ccd4810e8c5f6dfef12af5ec30ffc}} 
+int {\bfseries id}
+\begin{DoxyCompactList}\small\item\em id \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a57b5a10f6599778d29b2d18c02823ea5}\label{structport__t_a57b5a10f6599778d29b2d18c02823ea5}} 
+\mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}{port\+Type\+\_\+e}} {\bfseries port\+Type}
+\begin{DoxyCompactList}\small\item\em port type \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a459b20ace1b65843ab81c1c4234d62c3}\label{structport__t_a459b20ace1b65843ab81c1c4234d62c3}} 
+struct sockaddr\+\_\+in {\bfseries target\+\_\+addr}
+\begin{DoxyCompactList}\small\item\em target address \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a064da1e23f778d24e376a0634b016fce}\label{structport__t_a064da1e23f778d24e376a0634b016fce}} 
+struct sockaddr\+\_\+in {\bfseries self\+\_\+addr}
+\begin{DoxyCompactList}\small\item\em self address \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a4ca0c8b068f479a0d211aa99491a4c85}\label{structport__t_a4ca0c8b068f479a0d211aa99491a4c85}} 
+socklen\+\_\+t {\bfseries recvlen}
+\begin{DoxyCompactList}\small\item\em length of received host properties \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a83aa4debce1b9efa2980e91d131d490f}\label{structport__t_a83aa4debce1b9efa2980e91d131d490f}} 
+int {\bfseries sock\+Id}
+\begin{DoxyCompactList}\small\item\em socket id \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a63f1dc2ee48643c1cdc15e135c7e9680}\label{structport__t_a63f1dc2ee48643c1cdc15e135c7e9680}} 
+int {\bfseries portin}
+\begin{DoxyCompactList}\small\item\em input socket \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a714f2fc5b0b500eeda88448a3a2acd83}\label{structport__t_a714f2fc5b0b500eeda88448a3a2acd83}} 
+int {\bfseries portout}
+\begin{DoxyCompactList}\small\item\em output socket \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_ae6f40c7dd33740eadc53a926f9af1868}\label{structport__t_ae6f40c7dd33740eadc53a926f9af1868}} 
+char {\bfseries target} \mbox{[}50\mbox{]}
+\begin{DoxyCompactList}\small\item\em target ip address/or name of serial port \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_aae1a7c5a40dd235876567fad3e5d1b71}\label{structport__t_aae1a7c5a40dd235876567fad3e5d1b71}} 
+char {\bfseries recvbuffer} \mbox{[}\mbox{\hyperlink{port__lib_8h_af7b7dc9a200cb1404c280bd500fd1551}{BUFFER\+\_\+\+LENGTH}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em buffer for incoming data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structport__t_a6323a17296438d88765bc33f3da05741}\label{structport__t_a6323a17296438d88765bc33f3da05741}} 
+int {\bfseries baudrate}
+\begin{DoxyCompactList}\small\item\em baud rate only if a serial port \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/port\+\_\+lib/fsw/public\+\_\+inc/\mbox{\hyperlink{port__lib_8h}{port\+\_\+lib.\+h}}\end{DoxyCompactItemize}

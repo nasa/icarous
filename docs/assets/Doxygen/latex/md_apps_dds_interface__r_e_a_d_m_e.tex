@@ -1,0 +1,30 @@
+ICAROUS provides an application to communicate using Open\+Splice DDS. Enable this application as follows\+:
+
+
+\begin{DoxyEnumerate}
+\item Download and install an Open\+Splice DDS 32bit version
+\item Create an Open\+Splice configuration file (.xml) with {\bfseries{domain id}} 100. Follow the examples provided in the Open\+Splice DDS distribution directory within {\ttfamily etc/conf}.
+\item Add {\ttfamily dds\+\_\+interface} to the {\ttfamily TGT1\+\_\+\+APPLIST} in the file {\ttfamily c\+FS/apps/\+Icarous\+\_\+defs/targets.\+cmake} to compile the dds application\+:
+\item Define the following environment variable for building\+:
+\begin{DoxyItemize}
+\item {\ttfamily OSPL\+\_\+\+HOME}\+: the path of the Open\+Splice local installation; for example, {\ttfamily /opt/\+Open\+Splice/\+HDE/x86.linux}
+\end{DoxyItemize}
+\item Define the following environment variables before executing ICAROUS\+:
+\begin{DoxyItemize}
+\item {\ttfamily OSPL\+\_\+\+URI}\+: the URI of the Open\+Splice {\ttfamily $\ast$.xml} configuration file for {\bfseries{domain id}} 100 (the one of {\itshape Step 2}); for example, {\ttfamily \href{file:///opt/OpenSplice/HDE/x86.linux/etc/icarous-ospl.xml}{\texttt{ file\+:///opt/\+Open\+Splice/\+HDE/x86.\+linux/etc/icarous-\/ospl.\+xml}}} (note the three initial slashes)
+\item {\ttfamily OSPL\+\_\+\+HOME}\+: the path of the Open\+Splice local installation; for example, {\ttfamily /opt/\+Open\+Splice/\+HDE/x86.linux}
+\item {\ttfamily LD\+\_\+\+LIBRARY\+\_\+\+PATH}\+: it has to include the library path of the Open\+Splice local installation in order for ICAROUS to find them; for example, {\ttfamily /opt/\+Open\+Splice/\+HDE/x86.linux/lib}
+\end{DoxyItemize}
+
+An example command could look like this\+:
+\end{DoxyEnumerate}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{OSPL\_URI="{}file:///opt/OpenSplice/HDE/x86.linux/etc/icarous-\/ospl.xml"{} \(\backslash\)}
+\DoxyCodeLine{OSPL\_HOME="{}/opt/OpenSplice/HDE/x86.linux"{} \(\backslash\)}
+\DoxyCodeLine{LD\_LIBRARY\_PATH="{}\$\{LD\_LIBRARY\_PATH\}:/opt/OpenSplice/HDE/x86.linux/lib"{} \(\backslash\)}
+\DoxyCodeLine{sudo ./core-\/cpu1}
+
+\end{DoxyCode}
+ 

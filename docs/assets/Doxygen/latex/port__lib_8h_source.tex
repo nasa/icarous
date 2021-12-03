@@ -1,0 +1,59 @@
+\hypertarget{port__lib_8h_source}{}\doxysection{port\+\_\+lib.\+h}
+\label{port__lib_8h_source}\index{apps/port\_lib/fsw/public\_inc/port\_lib.h@{apps/port\_lib/fsw/public\_inc/port\_lib.h}}
+\mbox{\hyperlink{port__lib_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef \_port\_lib\_h\_}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define \_port\_lib\_h\_}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{/************************************************************************}}
+\DoxyCodeLine{9 \textcolor{comment}{** Includes}}
+\DoxyCodeLine{10 \textcolor{comment}{*************************************************************************/}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <fcntl.h>}   \textcolor{comment}{// File control definitions}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <termios.h>} \textcolor{comment}{// POSIX terminal control definitions}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}network\_includes.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}mavlink/ardupilotmega/mavlink.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define BUFFER\_LENGTH 1000  }}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{27 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{28     \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5ba0917971ba80f3b48c7d0cf1b2da024c7}{SOCKET}},  }
+\DoxyCodeLine{29     \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5bab110642f01505447ed49cf2d49fbf0a2}{SERIAL}}   }
+\DoxyCodeLine{30 \} \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}{portType\_e}};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{37 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{38     \textcolor{keywordtype}{int} \mbox{\hyperlink{structport__t_a825ccd4810e8c5f6dfef12af5ec30ffc}{id}};                          }
+\DoxyCodeLine{39     \mbox{\hyperlink{port__lib_8h_a66e863beb9373e5375cccc1270fcdb5b}{portType\_e}} \mbox{\hyperlink{structport__t_a57b5a10f6599778d29b2d18c02823ea5}{portType}};             }
+\DoxyCodeLine{40     \textcolor{keyword}{struct }sockaddr\_in target\_addr;  }
+\DoxyCodeLine{41     \textcolor{keyword}{struct }sockaddr\_in self\_addr;    }
+\DoxyCodeLine{42     socklen\_t \mbox{\hyperlink{structport__t_a4ca0c8b068f479a0d211aa99491a4c85}{recvlen}};               }
+\DoxyCodeLine{43     \textcolor{keywordtype}{int} \mbox{\hyperlink{structport__t_a83aa4debce1b9efa2980e91d131d490f}{sockId}};                      }
+\DoxyCodeLine{44     \textcolor{keywordtype}{int} \mbox{\hyperlink{structport__t_a63f1dc2ee48643c1cdc15e135c7e9680}{portin}};                      }
+\DoxyCodeLine{45     \textcolor{keywordtype}{int} \mbox{\hyperlink{structport__t_a714f2fc5b0b500eeda88448a3a2acd83}{portout}};                     }
+\DoxyCodeLine{46     \textcolor{keywordtype}{char} target[50];                 }
+\DoxyCodeLine{47     \textcolor{keywordtype}{char} recvbuffer[\mbox{\hyperlink{port__lib_8h_af7b7dc9a200cb1404c280bd500fd1551}{BUFFER\_LENGTH}}];  }
+\DoxyCodeLine{48     \textcolor{keywordtype}{int} \mbox{\hyperlink{structport__t_a6323a17296438d88765bc33f3da05741}{baudrate}};                    }
+\DoxyCodeLine{49 \}\mbox{\hyperlink{structport__t}{port\_t}};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{55 int32 \mbox{\hyperlink{port__lib_8h_ae0abbd394f152240173d8886a8028c89}{Port\_LibInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{61 \textcolor{keywordtype}{void} \mbox{\hyperlink{port__lib_8h_ae7c17d1fe2b349e540cd5da2d2d9b099}{InitializeSocketPort}}(\mbox{\hyperlink{structport__t}{port\_t}} *prt);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{67 \textcolor{keywordtype}{int} \mbox{\hyperlink{port__lib_8h_a2f8c16fefbc1455d663261965f212f9e}{InitializeSerialPort}}(\mbox{\hyperlink{structport__t}{port\_t}}* prt,\textcolor{keywordtype}{bool} should\_block);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} \mbox{\hyperlink{port__lib_8h_afb6fc10453a780fd7a17b91468316ddc}{writeMavlinkData}}(\mbox{\hyperlink{structport__t}{port\_t}}* prt,mavlink\_message\_t *message);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{80 \textcolor{keywordtype}{int} \mbox{\hyperlink{port__lib_8h_a03f2dc5b2f5b2d574266abb4d5bc0f00}{readPort}}(\mbox{\hyperlink{structport__t}{port\_t}} *prt);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{88 \textcolor{keywordtype}{void} \mbox{\hyperlink{port__lib_8h_a5422fa17fc6bf125dc315c24ee0fbaab}{writeData}}(\mbox{\hyperlink{structport__t}{port\_t}}* prt,\textcolor{keywordtype}{char}* sendbuffer,\textcolor{keywordtype}{int} datalength);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{91 }
+
+\end{DoxyCode}

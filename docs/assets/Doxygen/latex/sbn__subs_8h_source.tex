@@ -1,0 +1,43 @@
+\hypertarget{sbn__subs_8h_source}{}\doxysection{sbn\+\_\+subs.\+h}
+\label{sbn__subs_8h_source}\index{apps/SBN/fsw/src/sbn\_subs.h@{apps/SBN/fsw/src/sbn\_subs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: sbn\_subs.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**      Copyright (c) 2004-\/2006, United States government as represented by the}}
+\DoxyCodeLine{5 \textcolor{comment}{**      administrator of the National Aeronautics Space Administration.}}
+\DoxyCodeLine{6 \textcolor{comment}{**      All rights reserved. This software(cFE) was created at NASA's Goddard}}
+\DoxyCodeLine{7 \textcolor{comment}{**      Space Flight Center pursuant to government contracts.}}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{**      This software may be used only pursuant to a United States government}}
+\DoxyCodeLine{10 \textcolor{comment}{**      sponsored project and the United States government may not be charged}}
+\DoxyCodeLine{11 \textcolor{comment}{**      for use thereof.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{14 \textcolor{comment}{**      This header file contains prototypes for private functions related to }}
+\DoxyCodeLine{15 \textcolor{comment}{**      handling message subscriptions}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Authors:   J. Wilmot/GSFC Code582}}
+\DoxyCodeLine{18 \textcolor{comment}{**            R. McGraw/SSI}}
+\DoxyCodeLine{19 \textcolor{comment}{**            E. Timmons/GSFC Code587}}
+\DoxyCodeLine{20 \textcolor{comment}{**            C. Knight/ARC Code TI}}
+\DoxyCodeLine{21 \textcolor{comment}{**}}
+\DoxyCodeLine{22 \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#ifndef \_sbn\_subs\_h\_}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define \_sbn\_subs\_h\_}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}sbn\_app.h"{}}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keywordtype}{void}  SBN\_SendLocalSubsToPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer);}
+\DoxyCodeLine{30 \textcolor{keywordtype}{bool} SBN\_CheckSubscriptionPipe(\textcolor{keywordtype}{void}); }
+\DoxyCodeLine{31 \textcolor{keywordtype}{void}  SBN\_ProcessSubsFromPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, \textcolor{keywordtype}{void} *submsg);}
+\DoxyCodeLine{32 \textcolor{keywordtype}{void}  SBN\_ProcessUnsubsFromPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer, \textcolor{keywordtype}{void} *submsg);}
+\DoxyCodeLine{33 \textcolor{keywordtype}{void}  SBN\_ProcessAllSubscriptions(CFE\_SB\_PrevSubMsg\_t *Ptr); }
+\DoxyCodeLine{34 \textcolor{keywordtype}{void}  SBN\_RemoveAllSubsFromPeer(\mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *Peer); }
+\DoxyCodeLine{35 \textcolor{keywordtype}{void}  SBN\_SendSubsRequests(\textcolor{keywordtype}{void}); }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_subs\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

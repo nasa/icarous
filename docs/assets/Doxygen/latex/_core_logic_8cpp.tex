@@ -1,0 +1,21 @@
+\hypertarget{_core_logic_8cpp}{}\doxysection{Modules/\+Core/\+Cognition/\+Core\+Logic.cpp File Reference}
+\label{_core_logic_8cpp}\index{Modules/Core/Cognition/CoreLogic.cpp@{Modules/Core/Cognition/CoreLogic.cpp}}
+
+
+Mapping between triggers and handlers.  
+
+
+{\ttfamily \#include \char`\"{}Triggers.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Handlers.\+hpp\char`\"{}}\newline
+
+
+\doxysubsection{Detailed Description}
+This is a simple framework to associate events (or triggers) with a suitable action (or handler). inputs\+:
+\begin{DoxyItemize}
+\item event name\+: string
+\item priority\+: integer
+\item event function\+: \mbox{[}state-\/\texorpdfstring{$>$}{>}bool\mbox{]}
+\item handler object\+: Event\+Handler$<$state$>$ Here \textquotesingle{}state\textquotesingle{} is any data type.
+\end{DoxyItemize}
+
+Describe all the events that should be detected and provide appropriate handlers to deal with the respective event. The provided priority is used to determine which event is addressed first. 

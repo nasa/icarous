@@ -1,0 +1,92 @@
+\hypertarget{fence_8h_source}{}\doxysection{fence.\+h}
+\label{fence_8h_source}\index{Modules/Core/Utils/fence.h@{Modules/Core/Utils/fence.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#ifndef \_FENCE\_H\_}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define \_FENCE\_H\_}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{enum} FENCE\_TYPE \{KEEP\_IN = 0,KEEP\_OUT = 1\};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#include "{}AircraftState.h"{}}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#include "{}SimplePoly.h"{}}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#include "{}CDPolycarp.h"{}}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#include "{}CDIIPolygon.h"{}}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#include "{}PolycarpDetection.h"{}}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#include "{}PolycarpResolution.h"{}}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#include "{}math.h"{}}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{using namespace }larcfm;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{class }fence\{}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{private}:}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     FENCE\_TYPE fenceType;}
+\DoxyCodeLine{70     int16\_t id;}
+\DoxyCodeLine{71     uint16\_t nVertices;}
+\DoxyCodeLine{72     \textcolor{keywordtype}{double} floor;}
+\DoxyCodeLine{73     \textcolor{keywordtype}{double} ceiling;}
+\DoxyCodeLine{74     \textcolor{keywordtype}{double} BUFF = 0.1;}
+\DoxyCodeLine{75     \textcolor{keywordtype}{double} entryTime;}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double} exitTime;}
+\DoxyCodeLine{77     \textcolor{keywordtype}{bool} violation;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{bool} conflict;}
+\DoxyCodeLine{79     \textcolor{keywordtype}{bool} projectedViolation;}
+\DoxyCodeLine{80     EuclideanProjection proj;}
+\DoxyCodeLine{81     SimplePoly geoPoly0;          \textcolor{comment}{// Original polygon in lat,lon}}
+\DoxyCodeLine{82     SimplePoly geoPoly1;          \textcolor{comment}{// Expanded/Contracted polygon in lat,lon}}
+\DoxyCodeLine{83     Poly3D geoPoly3D;             \textcolor{comment}{// 3D polygon in cartesian coordinates}}
+\DoxyCodeLine{84     CDPolycarp geoPolyCarp;}
+\DoxyCodeLine{85     PolycarpResolution geoPolyResolution;}
+\DoxyCodeLine{86     PolycarpDetection geoPolyDetect;}
+\DoxyCodeLine{87     CDIIPolygon geoCDIIPolygon;}
+\DoxyCodeLine{88     std::vector<Vect2> fenceVertices0; \textcolor{comment}{// Cartesian coordinates of vertices of geoPoly0}}
+\DoxyCodeLine{89     std::vector<Vect2> fenceVertices1; \textcolor{comment}{//Cartesian coordinates of vertices of geoPoly1}}
+\DoxyCodeLine{90     Position recoveryPoint;}
+\DoxyCodeLine{91     PolyPath geoPolyPath;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{public}:}
+\DoxyCodeLine{94     fence()\{\};}
+\DoxyCodeLine{95     fence(\textcolor{keywordtype}{int} ID, FENCE\_TYPE ftype, uint16\_t nVert, \textcolor{keywordtype}{double} infloor, \textcolor{keywordtype}{double} inCeiling);}
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} AddVertex(\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon,\textcolor{keywordtype}{double} ResolBUFF);}
+\DoxyCodeLine{97     \textcolor{keywordtype}{void} CheckViolation(AircraftState acState,\textcolor{keywordtype}{double} elapsedTime,Plan fp);}
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} CollisionDetection(Position pos, Vect2 v,\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} CheckWPFeasibility(Position current, Position nextWP);}
+\DoxyCodeLine{100     int16\_t GetID();}
+\DoxyCodeLine{101     uint16\_t GetSize();}
+\DoxyCodeLine{102     Poly3D* GetPoly3D();}
+\DoxyCodeLine{103     Position GetRecoveryPoint();}
+\DoxyCodeLine{104     \textcolor{keywordtype}{bool} GetConflictStatus();}
+\DoxyCodeLine{105     \textcolor{keywordtype}{bool} GetProjectedStatus();}
+\DoxyCodeLine{106     \textcolor{keywordtype}{bool} GetViolationStatus();}
+\DoxyCodeLine{107     FENCE\_TYPE GetType();}
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} GetEntryExitTime(\textcolor{keywordtype}{double}\& in, \textcolor{keywordtype}{double}\& out);}
+\DoxyCodeLine{109     SimplePoly* GetPoly();}
+\DoxyCodeLine{110     SimplePoly* GetPolyMod();}
+\DoxyCodeLine{111     PolyPath* GetPolyPath();}
+\DoxyCodeLine{112     EuclideanProjection* GetProjection();}
+\DoxyCodeLine{113     \textcolor{keywordtype}{double} GetCeiling();}
+\DoxyCodeLine{114     \textcolor{keywordtype}{void} clear()\{\textcolor{keywordtype}{id} = -\/1;\};}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} Print();}
+\DoxyCodeLine{116     std::vector<Vect2>* getCartesianVertices();}
+\DoxyCodeLine{117     std::vector<Vect2>* getModCartesianVertices();}
+\DoxyCodeLine{118 \};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_FENCE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

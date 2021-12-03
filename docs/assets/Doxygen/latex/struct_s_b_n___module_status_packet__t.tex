@@ -1,0 +1,39 @@
+\hypertarget{struct_s_b_n___module_status_packet__t}{}\doxysection{SBN\+\_\+\+Module\+Status\+Packet\+\_\+t Struct Reference}
+\label{struct_s_b_n___module_status_packet__t}\index{SBN\_ModuleStatusPacket\_t@{SBN\_ModuleStatusPacket\_t}}
+
+
+Module status response packet structure.  
+
+
+
+
+{\ttfamily \#include $<$sbn\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8 \mbox{\hyperlink{struct_s_b_n___module_status_packet__t_a50892f0ff76b4c65eba65ae0c377bcad}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___module_status_packet__t_ae06cbb291610ede5e942a54c58aff495}\label{struct_s_b_n___module_status_packet__t_ae06cbb291610ede5e942a54c58aff495}} 
+SBN\+\_\+\+Module\+Idx\+\_\+t {\bfseries Protocol\+Idx}
+\begin{DoxyCompactList}\small\item\em The Protocol ID being queried. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___module_status_packet__t_a8d60eb89dcf1ce83a54bc6b182d116bb}\label{struct_s_b_n___module_status_packet__t_a8d60eb89dcf1ce83a54bc6b182d116bb}} 
+uint8 {\bfseries Module\+Status} \mbox{[}SBN\+\_\+\+MOD\+\_\+\+STATUS\+\_\+\+MSG\+\_\+\+SZ\mbox{]}
+\begin{DoxyCompactList}\small\item\em The module status as returned by the module. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Module status response packet structure. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_b_n___module_status_packet__t_a50892f0ff76b4c65eba65ae0c377bcad}\label{struct_s_b_n___module_status_packet__t_a50892f0ff76b4c65eba65ae0c377bcad}} 
+\index{SBN\_ModuleStatusPacket\_t@{SBN\_ModuleStatusPacket\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!SBN\_ModuleStatusPacket\_t@{SBN\_ModuleStatusPacket\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8 SBN\+\_\+\+Module\+Status\+Packet\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+This is a struct that will be sent (as-\/is) in a response to a HK command. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+msg.\+h\end{DoxyCompactItemize}

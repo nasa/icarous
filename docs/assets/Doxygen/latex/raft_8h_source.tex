@@ -1,0 +1,127 @@
+\hypertarget{raft_8h_source}{}\doxysection{raft.\+h}
+\label{raft_8h_source}\index{apps/raft/fsw/src/raft.h@{apps/raft/fsw/src/raft.h}}
+\mbox{\hyperlink{raft_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_RAFT\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_RAFT\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{raft__msg_8h}{raft\_msg.h}}"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{raft__msgids_8h}{raft\_msgids.h}}"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msgids_8h}{Icarous\_msgids.h}}"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define RAFT\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define RAFT\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define RAFT\_RECEIVED\_FENCE\_EID 3}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define RAFT\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define RAFT\_HBEATPIPE\_NAME "{}RAFT\_HBEAT\_PIPE"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define RAFT\_SCHPIPE\_NAME "{}RAFT\_SCH\_PIPE"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define RAFT\_VOTEPIPE\_NAME "{}RAFT\_VOTE\_PIPE"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define RAFT\_DATAPIPE\_NAME "{}RAFT\_DATA\_PIPE"{}}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define RAFT\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define RAFT\_MINOR\_VERSION 0}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{40    NEUTRAL,}
+\DoxyCodeLine{41    FOLLOWER,}
+\DoxyCodeLine{42    CANDIDATE,}
+\DoxyCodeLine{43    LEADER}
+\DoxyCodeLine{44 \}Role\_e;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{58 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{59     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structraft_app_data__t_aa2b09848c3e96ed9d2d83aaec1f4a882}{Raft\_HbeatPipe}};      }
+\DoxyCodeLine{60     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structraft_app_data__t_a39c71fd4510e703a45ceb124f795bf29}{Raft\_SchPipe}};        }
+\DoxyCodeLine{61     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structraft_app_data__t_a69324700122b310794695f616d544793}{Raft\_VotePipe}};       }
+\DoxyCodeLine{62     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structraft_app_data__t_a7b5acee8a971909e5ef1d5bec697bb9e}{Raft\_ClientPipe}};     }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structraft_app_data__t_a8f238769fffce0e9155669046b5d386a}{Raft\_HbeatMsgPtr}};    }
+\DoxyCodeLine{65     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structraft_app_data__t_a11dd2c7f7cbe8c628914793613b57f63}{Raft\_SchMsgPtr}};      }
+\DoxyCodeLine{66     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structraft_app_data__t_adb3f2de159126cc701ef8f69f8f8fa27}{Raft\_VoteMsgPtr}};     }
+\DoxyCodeLine{67     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structraft_app_data__t_a0c1c570441f8e95bf0d6c1e08815549e}{Raft\_ClientMsgPtr}};   }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     Role\_e  \mbox{\hyperlink{structraft_app_data__t_a844623b266304a61a2ea88d7cfd1b900}{nodeRole}};                       }
+\DoxyCodeLine{70     uint32\_t \mbox{\hyperlink{structraft_app_data__t_ab1376fd44972be3d8974463cec5412a5}{nodeID}};                        }
+\DoxyCodeLine{71     uint32\_t \mbox{\hyperlink{structraft_app_data__t_ad6dbf77d8afd16e5dd04f325f8413396}{leaderID}};                      }
+\DoxyCodeLine{72     int32\_t \mbox{\hyperlink{structraft_app_data__t_aa7e92a92f20df6aadca51a6ca1cd516a}{nodeTerm}};                       }
+\DoxyCodeLine{73     int32\_t \mbox{\hyperlink{structraft_app_data__t_a52fe286ffea15c1b0994fbc3373ae2fc}{votedTerm}};                      }
+\DoxyCodeLine{74     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a740060d3ae3dccf56c0faf1f1a5a98de}{votedForNodeId}};                }
+\DoxyCodeLine{75     int32\_t \mbox{\hyperlink{structraft_app_data__t_a211d94f9643d0fb8b71cfc50118ab191}{nodeIntersection}};               }
+\DoxyCodeLine{76     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a222a0a723a12c99205928f617742be30}{totalVotesReceived}};            }
+\DoxyCodeLine{77     uint32\_t \mbox{\hyperlink{structraft_app_data__t_ac9a1070f6f0144d27248df0375c095c8}{totalNodes}};                    }
+\DoxyCodeLine{78     int32\_t memberNodeID[MAX\_NODES];        }
+\DoxyCodeLine{79     uint32\_t \mbox{\hyperlink{structraft_app_data__t_aece86134a6fd61b158d59a7438bb4128}{followerTimerId}};               }
+\DoxyCodeLine{80     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a1f252510677ac6e512b13642ebbcc512}{candidateTimerId}};              }
+\DoxyCodeLine{81     uint32\_t \mbox{\hyperlink{structraft_app_data__t_af6679e4c4da324c0657d270c5c8d8b19}{leaderTimerId}};                 }
+\DoxyCodeLine{82     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a3c086cb3d7670ee8571dc37812bcfeda}{hbeatTimeoutCounter}};           }
+\DoxyCodeLine{83     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a7fda85e57e3b3580a1fefdd45057a4ca}{electionTimeoutCounter}};        }
+\DoxyCodeLine{84     uint32\_t \mbox{\hyperlink{structraft_app_data__t_a04b0415920bafa388f0dd33bc82d37a0}{leaderTimeoutCounter}};          }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86     report\_t mergingData[MAX\_NODES];   }
+\DoxyCodeLine{87     uint32\_t \mbox{\hyperlink{structraft_app_data__t_aabff6a4b5bf9311117ed936c61f08f65}{logDataIndex}};                  }
+\DoxyCodeLine{88     report\_t ownshipMergingData;       }
+\DoxyCodeLine{89     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_a971101cca8b6d7c20722125bc79b4693}{electionInitiated}};                 }
+\DoxyCodeLine{90     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_a8c31b03bd45baf17965282b2af204219}{neutralPipeInitialized}};            }
+\DoxyCodeLine{91     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_a91e5e25a366363f13122d90cd39c02be}{followerPipeInitialized}};           }
+\DoxyCodeLine{92     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_ae818af1fcfedefca448832894323501a}{candidatePipeInitialized}};          }
+\DoxyCodeLine{93     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_a9f4986f7ca0913e0d7666271289784fd}{leaderPipeInitialized}};             }
+\DoxyCodeLine{94     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structraft_app_data__t_a284d65119a556dc3c8bdcff26d73b961}{neutralFollower}};                   }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     FILE* \mbox{\hyperlink{structraft_app_data__t_a641f9b754fc5e6bd252e15384e656d2a}{logFile}};                          }
+\DoxyCodeLine{97 \}\mbox{\hyperlink{structraft_app_data__t}{raftAppData\_t}};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{102 \textcolor{keywordtype}{void} \mbox{\hyperlink{raft_8h_a40c7ade777b1b7bbe15f8f4ee955a814}{RAFT\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{107 \textcolor{keywordtype}{void} \mbox{\hyperlink{raft_8h_aef9e72d26787c79fc8a6c8cdec19fefd}{RAFT\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{112 \textcolor{keywordtype}{void} \mbox{\hyperlink{raft_8h_aa7b2b968fa90f344b33f2d64a8ec615f}{RAFT\_AppInitializeData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117 \textcolor{keywordtype}{void} \mbox{\hyperlink{raft_8h_ad11f5117c24a17d37911e61358d1e7bd}{RAFT\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122 \textcolor{keywordtype}{void} \mbox{\hyperlink{raft_8h_a5b7b2f54fd647c5da51a392eadf457cb}{RAFT\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keywordtype}{void} heartbeatTimeoutCallback(uint32\_t timerId);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keywordtype}{void} electionTimeoutCallback(uint32\_t timerId);}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keywordtype}{void} leaderTimeoutCallback(uint32\_t timerId);}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keywordtype}{void} raft\_loop(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{keywordtype}{void} raft\_neutral(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{keywordtype}{void} raft\_follower(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{keywordtype}{void} raft\_candidate(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{keywordtype}{void} raft\_leader(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{keywordtype}{void} raftProcessClientData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keywordtype}{void} raftSendDataToClient(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keywordtype}{void} RAFT\_SetNeutralPipeConfiguration(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keywordtype}{void} RAFT\_SetFollowerPipeConfiguration(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{keywordtype}{void} RAFT\_SetCandidatePipeConfiguration(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keywordtype}{void} RAFT\_SetLeaderPipeConfiguration(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 EXTERN \mbox{\hyperlink{structraft_app_data__t}{raftAppData\_t}} raftAppData;}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_RAFT\_H}}
+
+\end{DoxyCode}

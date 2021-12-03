@@ -1,0 +1,59 @@
+\hypertarget{dds__interface_8h_source}{}\doxysection{dds\+\_\+interface.\+h}
+\label{dds__interface_8h_source}\index{apps/dds\_interface/fsw/src/dds\_interface.h@{apps/dds\_interface/fsw/src/dds\_interface.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: interface.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{5 \textcolor{comment}{**   This file is main hdr file for the SAMPLE application.}}
+\DoxyCodeLine{6 \textcolor{comment}{**}}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{*******************************************************************************/}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef \_dds\_interface\_h\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define \_dds\_interface\_h\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}network\_includes.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}dds\_interface\_events.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_icarous__msg_8h}{Icarous\_msg.h}}"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}msgids/msgids.h"{}}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}mavlink/ardupilotmega/mavlink.h"{}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define DDS\_INTERFACE\_PIPE\_NAME "{}DDS\_INTERFACE"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define DDS\_INTERFACE\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{43 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{44     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_d_d_s_int__t_a938ec94733b2bf8b626bdb80fe561fdf}{DDS\_INTERFACE\_Pipe}};      }
+\DoxyCodeLine{45     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_d_d_s_int__t_a8b5ab2fdbf6bb9203acf0009779e4cd4}{DDS\_INTERFACEMsgPtr}};     }
+\DoxyCodeLine{46 \}\mbox{\hyperlink{structappdata_d_d_s_int__t}{appdataDDSInt\_t}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52 \textcolor{keywordtype}{void} DDS\_INTERFACE\_AppMain(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{57 \textcolor{keywordtype}{void} DDS\_INTERFACE\_AppInit(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{void} DDS\_INTERFACE\_AppCleanUp(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keywordtype}{void} DDS\_INTERFACE\_ProcessPacket(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 EXTERN \mbox{\hyperlink{structappdata_d_d_s_int__t}{appdataDDSInt\_t}} appdataDDSInt;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_dds\_interface\_app\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

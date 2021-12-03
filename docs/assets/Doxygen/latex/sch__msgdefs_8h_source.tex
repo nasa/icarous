@@ -1,0 +1,111 @@
+\hypertarget{sch__msgdefs_8h_source}{}\doxysection{sch\+\_\+msgdefs.\+h}
+\label{sch__msgdefs_8h_source}\index{apps/scheduler/fsw/src/sch\_msgdefs.h@{apps/scheduler/fsw/src/sch\_msgdefs.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{** \$Id: sch\_msgdefs.h 1.3 2017/06/21 15:28:58EDT mdeschu Exp  \$}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**  Copyright (c) 2007-\/2014 United States Government as represented by the }}
+\DoxyCodeLine{5 \textcolor{comment}{**  Administrator of the National Aeronautics and Space Administration. }}
+\DoxyCodeLine{6 \textcolor{comment}{**  All Other Rights Reserved.  }}
+\DoxyCodeLine{7 \textcolor{comment}{**}}
+\DoxyCodeLine{8 \textcolor{comment}{**  This software was created at NASA's Goddard Space Flight Center.}}
+\DoxyCodeLine{9 \textcolor{comment}{**  This software is governed by the NASA Open Source Agreement and may be }}
+\DoxyCodeLine{10 \textcolor{comment}{**  used, distributed and modified only pursuant to the terms of that }}
+\DoxyCodeLine{11 \textcolor{comment}{**  agreement.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Subsystem: Scheduler (SCH) packet macro definitions}}
+\DoxyCodeLine{14 \textcolor{comment}{**}}
+\DoxyCodeLine{15 \textcolor{comment}{** Author: David Kobe}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Notes:}}
+\DoxyCodeLine{18 \textcolor{comment}{**   These Macro definitions have been put in this file (instead of }}
+\DoxyCodeLine{19 \textcolor{comment}{**   sch\_msg.h) so this file can be included directly into ASIST build }}
+\DoxyCodeLine{20 \textcolor{comment}{**   test scripts. ASIST RDL files can accept C language \#defines but }}
+\DoxyCodeLine{21 \textcolor{comment}{**   can't handle type definitions. As a result: DO NOT PUT ANY}}
+\DoxyCodeLine{22 \textcolor{comment}{**   TYPEDEFS OR STRUCTURE DEFINITIONS IN THIS FILE! }}
+\DoxyCodeLine{23 \textcolor{comment}{**   ADD THEM TO sch\_msg.h IF NEEDED! }}
+\DoxyCodeLine{24 \textcolor{comment}{**}}
+\DoxyCodeLine{25 \textcolor{comment}{**}}
+\DoxyCodeLine{26 \textcolor{comment}{*/}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#ifndef \_sch\_msgdefs\_}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define \_sch\_msgdefs\_}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{32 \textcolor{comment}{**}}
+\DoxyCodeLine{33 \textcolor{comment}{** Include section}}
+\DoxyCodeLine{34 \textcolor{comment}{**}}
+\DoxyCodeLine{35 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include "{}sch\_platform\_cfg.h"{}}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{/*************************************************************************}}
+\DoxyCodeLine{41 \textcolor{comment}{**}}
+\DoxyCodeLine{42 \textcolor{comment}{** SCH application definitions}}
+\DoxyCodeLine{43 \textcolor{comment}{**}}
+\DoxyCodeLine{44 \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{/*}}
+\DoxyCodeLine{47 \textcolor{comment}{** Table value definitions}}
+\DoxyCodeLine{48 \textcolor{comment}{*/}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#define SCH\_UNUSED              0}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define SCH\_ENABLED             1}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#define SCH\_DISABLED            2}}
+\DoxyCodeLine{56 \textcolor{comment}{/*}}
+\DoxyCodeLine{57 \textcolor{comment}{** Table Entry Activity Types}}
+\DoxyCodeLine{58 \textcolor{comment}{*/}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define SCH\_ACTIVITY\_NONE       0}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define SCH\_ACTIVITY\_SEND\_MSG   1}}
+\DoxyCodeLine{65 \textcolor{comment}{/*}}
+\DoxyCodeLine{66 \textcolor{comment}{** Synchronized to Mission Elapsed Time States}}
+\DoxyCodeLine{67 \textcolor{comment}{*/}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define SCH\_NOT\_SYNCHRONIZED          0}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define SCH\_MINOR\_SYNCHRONIZED        1}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define SCH\_PENDING\_MAJOR\_SYNCH       2}}
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#define SCH\_MAJOR\_SYNCHRONIZED        4}}
+\DoxyCodeLine{76 \textcolor{comment}{/*}}
+\DoxyCodeLine{77 \textcolor{comment}{** Major Frame Signal Source Identifiers}}
+\DoxyCodeLine{78 \textcolor{comment}{*/}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define SCH\_MAJOR\_FS\_NONE               0}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define SCH\_MAJOR\_FS\_CFE\_TIME           1}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define SCH\_MAJOR\_FS\_MINOR\_FRAME\_TIMER  2}}
+\DoxyCodeLine{86 \textcolor{comment}{/*}}
+\DoxyCodeLine{87 \textcolor{comment}{** Schedule table group data field masks}}
+\DoxyCodeLine{88 \textcolor{comment}{*/}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define SCH\_GROUP\_NUMBER\_BIT\_MASK  0xFF000000}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define SCH\_MULTI\_GROUP\_BIT\_MASK   0x00FFFFFF}}
+\DoxyCodeLine{95 \textcolor{comment}{/*}}
+\DoxyCodeLine{96 \textcolor{comment}{** Message table definitions}}
+\DoxyCodeLine{97 \textcolor{comment}{*/}}
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#define SCH\_MIN\_MSG\_WORDS       (CFE\_SB\_CMD\_HDR\_SIZE / 2)}}
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#define SCH\_TABLE\_ENTRIES       (SCH\_TOTAL\_SLOTS * SCH\_ENTRIES\_PER\_SLOT)}}
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#define SCH\_NUM\_STATUS\_BYTES\_REQD    (((SCH\_TABLE\_ENTRIES+7)/8)*2)}}
+\DoxyCodeLine{108 \textcolor{comment}{/*}}
+\DoxyCodeLine{109 \textcolor{comment}{**  SCH command packet command codes }}
+\DoxyCodeLine{110 \textcolor{comment}{** (SCH\_GND\_CMD\_MID and SCH\_SC\_CMD\_MID)}}
+\DoxyCodeLine{111 \textcolor{comment}{*/}}
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#define SCH\_NOOP\_CC             0   }\textcolor{comment}{/* no-\/op command */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{195 \textcolor{preprocessor}{\#define SCH\_RESET\_CC            1   }\textcolor{comment}{/* Reset HK counters */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{231 \textcolor{preprocessor}{\#define SCH\_ENABLE\_CC           2   }\textcolor{comment}{/* Enable Schedule Table Entry */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{267 \textcolor{preprocessor}{\#define SCH\_DISABLE\_CC          3   }\textcolor{comment}{/* disable schedule table entry */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{303 \textcolor{preprocessor}{\#define SCH\_ENABLE\_GROUP\_CC     4   }\textcolor{comment}{/* enable group of entries */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{339 \textcolor{preprocessor}{\#define SCH\_DISABLE\_GROUP\_CC    5   }\textcolor{comment}{/* disable group of entries */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{373 \textcolor{preprocessor}{\#define SCH\_ENABLE\_SYNC\_CC      6   }\textcolor{comment}{/* enable major frame synchronization */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{374 }
+\DoxyCodeLine{405 \textcolor{preprocessor}{\#define SCH\_SEND\_DIAG\_TLM\_CC    7   }\textcolor{comment}{/* sends diagnostic message packet */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{409 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sch\_msgdefs\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{412 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{413 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{414 }
+
+\end{DoxyCode}

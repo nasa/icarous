@@ -1,0 +1,76 @@
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{sbnspwrevhist}{SBN SPW Module User\textquotesingle{}s Guide Revision History}}  
+\item \mbox{\hyperlink{sbnspwovr}{SBN SPW Module Overview}}  
+\item \mbox{\hyperlink{sbnspwopr}{SBN SPW Module Operation}}  
+\item \mbox{\hyperlink{sbnspwcfg}{SBN SPW Module Configuration}}  
+\item \mbox{\hyperlink{sbnspwcons}{SBN SPW Module Constraints}}  
+\end{DoxyItemize}\hypertarget{sbnspwrevhist}{}\doxysection{SBN SPW Module User\textquotesingle{}s Guide Revision History}\label{sbnspwrevhist}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+{\bfseries{Date}} &{\bfseries{Author}} &{\bfseries{Comments}} \\\cline{1-3}
+6/02/2014 &ejtimmon &Content template from similar module \\\cline{1-3}
+7/18/2014 &jurriste &Initial revision \\\cline{1-3}
+\end{longtabu}
+
+
+Next\+: \mbox{\hyperlink{sbnspwovr}{SBN SPW Module Overview}} \hypertarget{sbnspwovr}{}\doxysection{SBN SPW Module Overview}\label{sbnspwovr}
+The SPW plugin for the Software Bus Network (SBN) allows two CPUs running c\+FE to send software bus (SB) messages to each other through a Spacewire connection. This plugin is never used directly by a user c\+FE app; instead it is used by the SBN to make message passing across CPUs transparent to other apps.
+
+SBN uses this module by internally calling a set of functions\+: 
+\begin{DoxyItemize}
+\item \#\+SBN\+\_\+\+Parse\+SPWFile\+Entry (Reads module setup from SBN peer data file) 
+\item \#\+SBN\+\_\+\+Init\+SPWIF (Initializes SPW interface) 
+\item \#\+SBN\+\_\+\+Send\+SPWNet\+Msg (Sends SB or SBN messages to other CPU) 
+\item \#\+SBN\+\_\+\+Check\+For\+SPWNet\+Proto\+Msg (Checks for SBN protocol messages) 
+\item \#\+SBN\+\_\+\+SPWRcv\+Msg (Reads software bus messages from other CPU) 
+\item \#\+SPW\+\_\+\+Verify\+Peer\+Interface (Makes sure peer entry has matching host) 
+\item \#\+SPW\+\_\+\+Verify\+Host\+Interface (Makes sure host entry has matching peer) 
+\end{DoxyItemize}
+
+These functions then use SPW-\/specific read/write operations to pass messages.
+
+Next\+: \mbox{\hyperlink{sbnspwopr}{SBN SPW Module Operation}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnspwrevhist}{SBN SPW Module User\textquotesingle{}s Guide Revision History}} \hypertarget{sbnspwopr}{}\doxysection{SBN SPW Module Operation}\label{sbnspwopr}
+Next\+: \mbox{\hyperlink{sbnspwcfg}{SBN SPW Module Configuration}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnspwovr}{SBN SPW Module Overview}} \hypertarget{sbnspwcfg}{}\doxysection{SBN SPW Module Configuration}\label{sbnspwcfg}
+\doxysection*{SBN Peer Data File Entry}
+
+The file entry in Sbn\+Peer\+Data.\+dat for a SPW interface requires 6 fields. The first 4 fields are the fields required of all interface modules\+: 
+\begin{DoxyItemize}
+\item Peer Name 
+\item Processor ID 
+\item Protocol ID (? for SPW) 
+\item Spacecraft ID 
+\end{DoxyItemize}
+
+The remaining fields are the interface specific fields that are determined by the device driver\textquotesingle{}s behavior\+: 
+\begin{DoxyItemize}
+\item Device Class, as populated on the filesystem by the driver (e.\+g. \textquotesingle{}spw\textquotesingle{} in \textquotesingle{}/sys/class\textquotesingle{}) 
+\item Device Instance, as populated on the filesystem by the driver (e.\+g. \textquotesingle{}spw0\textquotesingle{} in \textquotesingle{}/dev\textquotesingle{}) 
+\end{DoxyItemize}
+
+The SPW interface does not require any kind of \char`\"{}matching\char`\"{} pairs. An example of SPW entries is below. The Spacewire Device Class and Device Instance values are defined by the device driver and are used by SBN as a description of how the driver initialized the interface on that particular spacecraft.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{6}{|X[-1]}|}
+\hline
+{\bfseries{Name}} &{\bfseries{Processor ID}} &{\bfseries{Protocol ID}} &{\bfseries{Spacecraft ID}} &{\bfseries{Device Class}} &{\bfseries{Device Instance}}  \\\cline{1-6}
+CPU1 &1 &? &0 &spw &spw0  \\\cline{1-6}
+CPU2 &2 &? &0 &spw &spw0  \\\cline{1-6}
+\end{longtabu}
+~\newline
+
+
+Next\+: \mbox{\hyperlink{sbnspwcons}{SBN SPW Module Constraints}} ~\newline
+ Prev\+: \mbox{\hyperlink{sbnspwopr}{SBN SPW Module Operation}} \hypertarget{sbnspwcons}{}\doxysection{SBN SPW Module Constraints}\label{sbnspwcons}
+
+\begin{DoxyItemize}
+\item This module is dependent on the Spacewire implementation of the FPGA core used at Goddard/587 and character device driver behavior of the CHREC/\+Gauvin kernel module. 
+\item Data transfers have error conditions that currently only check whether the Spacewire link is down, or if the data copies to the buffer were unsuccessful.
+
+
+\end{DoxyItemize}
+
+Prev\+: \mbox{\hyperlink{sbnspwcfg}{SBN SPW Module Configuration}} 

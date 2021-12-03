@@ -1,0 +1,179 @@
+\hypertarget{sch__test__utils_8h_source}{}\doxysection{sch\+\_\+test\+\_\+utils.\+h}
+\label{sch__test__utils_8h_source}\index{apps/scheduler/fsw/unit\_test/sch\_test\_utils.h@{apps/scheduler/fsw/unit\_test/sch\_test\_utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{ /*************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{ ** File:}}
+\DoxyCodeLine{3 \textcolor{comment}{ **   \$Id: sch\_test\_utils.h 1.2 2017/06/21 15:28:58EDT mdeschu Exp  \$}}
+\DoxyCodeLine{4 \textcolor{comment}{ **}}
+\DoxyCodeLine{5 \textcolor{comment}{ ** Purpose: }}
+\DoxyCodeLine{6 \textcolor{comment}{ **   This file contains the function prototypes and global variables for the unit test utilities for the SCH application.}}
+\DoxyCodeLine{7 \textcolor{comment}{ **}}
+\DoxyCodeLine{8 \textcolor{comment}{ ** References:}}
+\DoxyCodeLine{9 \textcolor{comment}{ **   Flight Software Branch C Coding Standard Version 1.2}}
+\DoxyCodeLine{10 \textcolor{comment}{ **   CFS Development Standards Document}}
+\DoxyCodeLine{11 \textcolor{comment}{ ** Notes:}}
+\DoxyCodeLine{12 \textcolor{comment}{ **}}
+\DoxyCodeLine{13 \textcolor{comment}{ *************************************************************************/}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{comment}{/*}}
+\DoxyCodeLine{16 \textcolor{comment}{ * Includes}}
+\DoxyCodeLine{17 \textcolor{comment}{ */}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}sch\_app.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}ut\_cfe\_evs\_hooks.h"{}}}
+\DoxyCodeLine{21 \textcolor{comment}{// FIXME: these need to be implemented/updated in UT-\/Assert (by copying from sch\_test\_utils.c/.h):}}
+\DoxyCodeLine{22 \textcolor{comment}{//\#include "{}ut\_cfe\_evs\_stubs.h"{}}}
+\DoxyCodeLine{23 \textcolor{comment}{//\#include "{}ut\_cfe\_time\_stubs.h"{}}}
+\DoxyCodeLine{24 \textcolor{comment}{//\#include "{}ut\_ostimer\_stubs.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}ut\_cfe\_sb\_stubs.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}ut\_cfe\_sb\_hooks.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}ut\_cfe\_time\_hooks.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}ut\_cfe\_psp\_memutils\_stubs.h"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}ut\_cfe\_tbl\_stubs.h"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}ut\_cfe\_tbl\_hooks.h"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}ut\_cfe\_fs\_stubs.h"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}ut\_osapi\_stubs.h"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}ut\_osfileapi\_stubs.h"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include "{}ut\_cfe\_es\_stubs.h"{}}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{comment}{/*}}
+\DoxyCodeLine{38 \textcolor{comment}{ * Function Definitions}}
+\DoxyCodeLine{39 \textcolor{comment}{ */}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keywordtype}{void} SCH\_Test\_Setup(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{42 \textcolor{keywordtype}{void} SCH\_Test\_TearDown(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{/*}}
+\DoxyCodeLine{45 \textcolor{comment}{ * Additional UT-\/Assert Stub Functions and Required Data Structures}}
+\DoxyCodeLine{46 \textcolor{comment}{ *}}
+\DoxyCodeLine{47 \textcolor{comment}{ * Note: This code needs to be moved into the UT-\/Assert library.  We are including it here for now because the }}
+\DoxyCodeLine{48 \textcolor{comment}{ * next release of the UT-\/Assert library is not expected to happen in the near future.}}
+\DoxyCodeLine{49 \textcolor{comment}{ */}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{comment}{/* ut\_osapi\_stubs */}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} }
+\DoxyCodeLine{54 \{}
+\DoxyCodeLine{55     UT\_CFE\_EVS\_REGISTER\_INDEX,}
+\DoxyCodeLine{56     UT\_CFE\_EVS\_SENDEVENT\_INDEX,}
+\DoxyCodeLine{57     UT\_CFE\_EVS\_SENDTIMEDEVENT\_INDEX,}
+\DoxyCodeLine{58     UT\_CFE\_EVS\_SENDEVENTWITHAPPID\_INDEX,}
+\DoxyCodeLine{59     UT\_CFE\_EVS\_CLEANUPAPP\_INDEX,}
+\DoxyCodeLine{60     UT\_CFE\_EVS\_RESETALLFILTERS\_INDEX,}
+\DoxyCodeLine{61     UT\_CFE\_EVS\_MAX\_INDEX}
+\DoxyCodeLine{62 \} Ut\_CFE\_EVS\_INDEX\_t;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{65 \{}
+\DoxyCodeLine{66     int32 (*CFE\_EVS\_Register)(\textcolor{keywordtype}{void} *Filters, uint16 NumEventFilters, uint16 FilterScheme);}
+\DoxyCodeLine{67     int32 (*CFE\_EVS\_SendEvent)(uint16 EventID, uint16 EventType, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *EventText);}
+\DoxyCodeLine{68     int32 (*CFE\_EVS\_SendTimedEvent)(CFE\_TIME\_SysTime\_t Time, uint16 EventID, uint16 EventType, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Spec, ... );}
+\DoxyCodeLine{69     int32 (*CFE\_EVS\_SendEventWithAppID)(uint16 EventID, uint16 EventType, uint32 AppID, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *Spec, ... );}
+\DoxyCodeLine{70     int32 (*CFE\_EVS\_CleanUpApp)(uint32 AppId);}
+\DoxyCodeLine{71     int32 (*CFE\_EVS\_ResetAllFilters)(void);}
+\DoxyCodeLine{72 \} \mbox{\hyperlink{struct_ut___c_f_e___e_v_s___hook_table__t}{Ut\_CFE\_EVS\_HookTable\_t}};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{75 \{}
+\DoxyCodeLine{76     int32   Value;}
+\DoxyCodeLine{77     uint32  Count;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{boolean} ContinueReturnCodeAfterCountZero;}
+\DoxyCodeLine{79 \} \mbox{\hyperlink{struct_ut___c_f_e___e_v_s___return_code_table__t}{Ut\_CFE\_EVS\_ReturnCodeTable\_t}};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keywordtype}{void} Ut\_CFE\_EVS\_Reset(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{82 \textcolor{keywordtype}{void} Ut\_CFE\_EVS\_SetFunctionHook(uint32 Index, \textcolor{keywordtype}{void} *FunPtr);}
+\DoxyCodeLine{83 \textcolor{keywordtype}{void} Ut\_CFE\_EVS\_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);}
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} Ut\_CFE\_EVS\_ContinueReturnCodeAfterCountZero(uint32 Index);}
+\DoxyCodeLine{85 int32 CFE\_EVS\_ResetAllFilters(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{comment}{/* end ut\_osapi\_stubs */}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{comment}{/* ut\_ostimer\_stubs */}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} }
+\DoxyCodeLine{92 \{}
+\DoxyCodeLine{93     UT\_OSTIMER\_CREATE\_INDEX,}
+\DoxyCodeLine{94     UT\_OSTIMER\_SET\_INDEX,}
+\DoxyCodeLine{95     UT\_OSTIMER\_MAX\_INDEX}
+\DoxyCodeLine{96 \} Ut\_OSTIMER\_INDEX\_t;}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{99 \{}
+\DoxyCodeLine{100     int32 (*OS\_TimerCreate)(uint32 *timer\_id, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *timer\_name, uint32 *clock\_accuracy, OS\_TimerCallback\_t  callback\_ptr);}
+\DoxyCodeLine{101     int32 (*OS\_TimerSet)(uint32 timer\_id, uint32 start\_time, uint32 interval\_time);}
+\DoxyCodeLine{102 \} \mbox{\hyperlink{struct_ut___o_s_t_i_m_e_r___hook_table__t}{Ut\_OSTIMER\_HookTable\_t}};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{105 \{}
+\DoxyCodeLine{106     int32   Value;}
+\DoxyCodeLine{107     uint32  Count;}
+\DoxyCodeLine{108     \textcolor{keywordtype}{boolean} ContinueReturnCodeAfterCountZero;}
+\DoxyCodeLine{109 \} \mbox{\hyperlink{struct_ut___o_s_t_i_m_e_r___return_code_table__t}{Ut\_OSTIMER\_ReturnCodeTable\_t}};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keywordtype}{void} Ut\_OSTIMER\_Reset(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{112 \textcolor{keywordtype}{void} Ut\_OSTIMER\_SetFunctionHook(uint32 Index, \textcolor{keywordtype}{void} *FunPtr);}
+\DoxyCodeLine{113 \textcolor{keywordtype}{void} Ut\_OSTIMER\_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);}
+\DoxyCodeLine{114 \textcolor{keywordtype}{void} Ut\_OSTIMER\_ContinueReturnCodeAfterCountZero(uint32 Index);}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{comment}{/* end ut\_ostimer\_stubs */}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{comment}{/* ut\_cfe\_time\_stubs */}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} }
+\DoxyCodeLine{121 \{}
+\DoxyCodeLine{122     UT\_CFE\_TIME\_GETUTC\_INDEX,}
+\DoxyCodeLine{123     UT\_CFE\_TIME\_GETTAI\_INDEX,}
+\DoxyCodeLine{124     UT\_CFE\_TIME\_GETTIME\_INDEX,}
+\DoxyCodeLine{125     UT\_CFE\_TIME\_SUB2MICROSECS\_INDEX,}
+\DoxyCodeLine{126     UT\_CFE\_TIME\_SUBTRACT\_INDEX,}
+\DoxyCodeLine{127     UT\_CFE\_TIME\_MICRO2SUBSECS\_INDEX,}
+\DoxyCodeLine{128     UT\_CFE\_TIME\_ADD\_INDEX,}
+\DoxyCodeLine{129     UT\_CFE\_TIME\_PRINT\_INDEX,}
+\DoxyCodeLine{130     UT\_CFE\_TIME\_COMPARE\_INDEX,}
+\DoxyCodeLine{131     UT\_CFE\_TIME\_FS2CFESECONDS\_INDEX,}
+\DoxyCodeLine{132     UT\_CFE\_TIME\_REGISTERSYNCHCALLBACK\_INDEX,}
+\DoxyCodeLine{133     UT\_CFE\_TIME\_UNREGISTERSYNCHCALLBACK\_INDEX,}
+\DoxyCodeLine{134     UT\_CFE\_TIME\_GETMETSUBSECS\_INDEX,}
+\DoxyCodeLine{135     UT\_CFE\_TIME\_GETCLOCKINFO\_INDEX,}
+\DoxyCodeLine{136     UT\_CFE\_TIME\_MAX\_INDEX}
+\DoxyCodeLine{137 \} Ut\_CFE\_TIME\_INDEX\_t;}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{140 \{}
+\DoxyCodeLine{141     CFE\_TIME\_SysTime\_t (*CFE\_TIME\_GetUTC)(void);}
+\DoxyCodeLine{142     CFE\_TIME\_SysTime\_t (*CFE\_TIME\_GetTAI)(void);}
+\DoxyCodeLine{143     CFE\_TIME\_SysTime\_t (*CFE\_TIME\_GetTime)(void);}
+\DoxyCodeLine{144     uint32 (*CFE\_TIME\_Micro2SubSecs)(uint32 MicroSeconds);}
+\DoxyCodeLine{145     uint32 (*CFE\_TIME\_Sub2MicroSecs)(uint32 SubSeconds);}
+\DoxyCodeLine{146     CFE\_TIME\_SysTime\_t (*CFE\_TIME\_Add)(CFE\_TIME\_SysTime\_t Time1, CFE\_TIME\_SysTime\_t Time2);}
+\DoxyCodeLine{147     CFE\_TIME\_SysTime\_t (*CFE\_TIME\_Subtract)(CFE\_TIME\_SysTime\_t Time1, CFE\_TIME\_SysTime\_t Time2);}
+\DoxyCodeLine{148     void (*CFE\_TIME\_Print)(\textcolor{keywordtype}{char} *PrintBuffer, CFE\_TIME\_SysTime\_t TimeToPrint);}
+\DoxyCodeLine{149     CFE\_TIME\_Compare\_t (*CFE\_TIME\_Compare)(CFE\_TIME\_SysTime\_t TimeA, CFE\_TIME\_SysTime\_t TimeB);}
+\DoxyCodeLine{150     uint32 (*CFE\_TIME\_FS2CFESeconds)(uint32 SecondsFS);}
+\DoxyCodeLine{151     int32  (*CFE\_TIME\_RegisterSynchCallback)(CFE\_TIME\_SynchCallbackPtr\_t CallbackFuncPtr);}
+\DoxyCodeLine{152     int32  (*CFE\_TIME\_UnregisterSynchCallback)(CFE\_TIME\_SynchCallbackPtr\_t CallbackFuncPtr);}
+\DoxyCodeLine{153     uint32 (*CFE\_TIME\_GetMETsubsecs)(void);}
+\DoxyCodeLine{154     uint16 (*CFE\_TIME\_GetClockInfo)(void);}
+\DoxyCodeLine{155 \} \mbox{\hyperlink{struct_ut___c_f_e___t_i_m_e___hook_table__t}{Ut\_CFE\_TIME\_HookTable\_t}};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{158 \{}
+\DoxyCodeLine{159     int32   Value;}
+\DoxyCodeLine{160     uint32  Count;}
+\DoxyCodeLine{161     \textcolor{keywordtype}{boolean} ContinueReturnCodeAfterCountZero;}
+\DoxyCodeLine{162 \} \mbox{\hyperlink{struct_ut___c_f_e___t_i_m_e___return_code_table__t}{Ut\_CFE\_TIME\_ReturnCodeTable\_t}};}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{keywordtype}{void} Ut\_CFE\_TIME\_Reset(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{165 \textcolor{keywordtype}{void} Ut\_CFE\_TIME\_SetFunctionHook(uint32 Index, \textcolor{keywordtype}{void} *FunPtr);}
+\DoxyCodeLine{166 \textcolor{keywordtype}{void} Ut\_CFE\_TIME\_SetReturnCode(uint32 Index, int32 RtnVal, uint32 CallCnt);}
+\DoxyCodeLine{167 \textcolor{keywordtype}{void} Ut\_CFE\_TIME\_ContinueReturnCodeAfterCountZero(uint32 Index);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 \textcolor{comment}{/* end ut\_cfe\_time\_stubs */}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{comment}{/************************/}}
+\DoxyCodeLine{172 \textcolor{comment}{/*  End of File Comment */}}
+\DoxyCodeLine{173 \textcolor{comment}{/************************/}}
+
+\end{DoxyCode}

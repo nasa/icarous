@@ -1,0 +1,78 @@
+\hypertarget{structgeofence__t}{}\doxysection{geofence\+\_\+t Struct Reference}
+\label{structgeofence__t}\index{geofence\_t@{geofence\_t}}
+
+
+message encoding geofence vertex information.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structgeofence__t_aed3b2961b0b566515a7b38cb2a32f683}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structgeofence__t_a499a3a4f301c982733bc8b259f02bb4c}{type}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structgeofence__t_a541408bac446d05761761e630f72d35f}{index}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structgeofence__t_ac5d191c4c7903f8887a8b86af36299d5}{totalvertices}}
+\item 
+double \mbox{\hyperlink{structgeofence__t_a6b59ed6ee30258ea5647e026966aa8b7}{vertices}} \mbox{[}MAX\+\_\+\+VERTICES\mbox{]}\mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{structgeofence__t_a706a2af12b0a974656dc0f55740d2cde}{floor}}
+\item 
+double \mbox{\hyperlink{structgeofence__t_a3079511908f9754a184d65822e148a17}{ceiling}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structgeofence__t_a3079511908f9754a184d65822e148a17}\label{structgeofence__t_a3079511908f9754a184d65822e148a17}} 
+\index{geofence\_t@{geofence\_t}!ceiling@{ceiling}}
+\index{ceiling@{ceiling}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{ceiling}{ceiling}}
+{\footnotesize\ttfamily double geofence\+\_\+t\+::ceiling}
+
+roof of geofence (m) \mbox{\Hypertarget{structgeofence__t_a706a2af12b0a974656dc0f55740d2cde}\label{structgeofence__t_a706a2af12b0a974656dc0f55740d2cde}} 
+\index{geofence\_t@{geofence\_t}!floor@{floor}}
+\index{floor@{floor}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{floor}{floor}}
+{\footnotesize\ttfamily double geofence\+\_\+t\+::floor}
+
+floor of geofence (m) \mbox{\Hypertarget{structgeofence__t_a541408bac446d05761761e630f72d35f}\label{structgeofence__t_a541408bac446d05761761e630f72d35f}} 
+\index{geofence\_t@{geofence\_t}!index@{index}}
+\index{index@{index}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{index}{index}}
+{\footnotesize\ttfamily uint16\+\_\+t geofence\+\_\+t\+::index}
+
+geofence index \mbox{\Hypertarget{structgeofence__t_aed3b2961b0b566515a7b38cb2a32f683}\label{structgeofence__t_aed3b2961b0b566515a7b38cb2a32f683}} 
+\index{geofence\_t@{geofence\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t geofence\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structgeofence__t_ac5d191c4c7903f8887a8b86af36299d5}\label{structgeofence__t_ac5d191c4c7903f8887a8b86af36299d5}} 
+\index{geofence\_t@{geofence\_t}!totalvertices@{totalvertices}}
+\index{totalvertices@{totalvertices}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{totalvertices}{totalvertices}}
+{\footnotesize\ttfamily uint16\+\_\+t geofence\+\_\+t\+::totalvertices}
+
+total vertices in this geofence \mbox{\Hypertarget{structgeofence__t_a499a3a4f301c982733bc8b259f02bb4c}\label{structgeofence__t_a499a3a4f301c982733bc8b259f02bb4c}} 
+\index{geofence\_t@{geofence\_t}!type@{type}}
+\index{type@{type}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily uint8\+\_\+t geofence\+\_\+t\+::type}
+
+geofence type\+: see geofence\+\_\+type\+\_\+t \mbox{\Hypertarget{structgeofence__t_a6b59ed6ee30258ea5647e026966aa8b7}\label{structgeofence__t_a6b59ed6ee30258ea5647e026966aa8b7}} 
+\index{geofence\_t@{geofence\_t}!vertices@{vertices}}
+\index{vertices@{vertices}!geofence\_t@{geofence\_t}}
+\doxysubsubsection{\texorpdfstring{vertices}{vertices}}
+{\footnotesize\ttfamily double geofence\+\_\+t\+::vertices\mbox{[}MAX\+\_\+\+VERTICES\mbox{]}\mbox{[}2\mbox{]}}
+
+lat,lon (deg,deg) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

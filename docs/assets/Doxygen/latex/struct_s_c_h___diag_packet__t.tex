@@ -1,0 +1,41 @@
+\hypertarget{struct_s_c_h___diag_packet__t}{}\doxysection{SCH\+\_\+\+Diag\+Packet\+\_\+t Struct Reference}
+\label{struct_s_c_h___diag_packet__t}\index{SCH\_DiagPacket\_t@{SCH\_DiagPacket\_t}}
+
+
+{\ttfamily \#include $<$sch\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_c_h___diag_packet__t_a3a2bacfee662c8d52108e0c77f20bb12}\label{struct_s_c_h___diag_packet__t_a3a2bacfee662c8d52108e0c77f20bb12}} 
+uint8 {\bfseries Tlm\+Header} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\begin{DoxyCompactList}\small\item\em c\+FE Software Bus Telemetry Message Header \end{DoxyCompactList}\item 
+uint16 \mbox{\hyperlink{struct_s_c_h___diag_packet__t_ae6df456ff6d74eb60796f022e14a8272}{Entry\+States}} \mbox{[}SCH\+\_\+\+NUM\+\_\+\+STATUS\+\_\+\+BYTES\+\_\+\+REQD/2\mbox{]}
+\begin{DoxyCompactList}\small\item\em States of each Schedule Entry. \end{DoxyCompactList}\item 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t \mbox{\hyperlink{struct_s_c_h___diag_packet__t_a93cb215dbeda7d00db3cc4871dd28621}{Msg\+IDs}} \mbox{[}SCH\+\_\+\+TABLE\+\_\+\+ENTRIES\mbox{]}
+\begin{DoxyCompactList}\small\item\em Message ID of msg associated with each entry. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\textbackslash{}schtlm Scheduler Diagnostic Telemetry format 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_c_h___diag_packet__t_ae6df456ff6d74eb60796f022e14a8272}\label{struct_s_c_h___diag_packet__t_ae6df456ff6d74eb60796f022e14a8272}} 
+\index{SCH\_DiagPacket\_t@{SCH\_DiagPacket\_t}!EntryStates@{EntryStates}}
+\index{EntryStates@{EntryStates}!SCH\_DiagPacket\_t@{SCH\_DiagPacket\_t}}
+\doxysubsubsection{\texorpdfstring{EntryStates}{EntryStates}}
+{\footnotesize\ttfamily uint16 SCH\+\_\+\+Diag\+Packet\+\_\+t\+::\+Entry\+States\mbox{[}SCH\+\_\+\+NUM\+\_\+\+STATUS\+\_\+\+BYTES\+\_\+\+REQD/2\mbox{]}}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+ENTRYSTATES
+
+Each two bits represents the state for a single entry in Schedule Definition Table. Unused=0, Enabled=1, Disabled=2 MSBs are the lowest numbered entry \mbox{\Hypertarget{struct_s_c_h___diag_packet__t_a93cb215dbeda7d00db3cc4871dd28621}\label{struct_s_c_h___diag_packet__t_a93cb215dbeda7d00db3cc4871dd28621}} 
+\index{SCH\_DiagPacket\_t@{SCH\_DiagPacket\_t}!MsgIDs@{MsgIDs}}
+\index{MsgIDs@{MsgIDs}!SCH\_DiagPacket\_t@{SCH\_DiagPacket\_t}}
+\doxysubsubsection{\texorpdfstring{MsgIDs}{MsgIDs}}
+{\footnotesize\ttfamily CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t SCH\+\_\+\+Diag\+Packet\+\_\+t\+::\+Msg\+IDs\mbox{[}SCH\+\_\+\+TABLE\+\_\+\+ENTRIES\mbox{]}}
+
+\textbackslash{}schtlmmnemonic \textbackslash{}\+SCH\+\_\+\+MSGIDS 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/scheduler/fsw/src/sch\+\_\+msg.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,93 @@
+\hypertarget{struct_s_b_n___filter_interface__t}{}\doxysection{SBN\+\_\+\+Filter\+Interface\+\_\+t Struct Reference}
+\label{struct_s_b_n___filter_interface__t}\index{SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+CFE\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___filter_interface__t_ad78be84194bc6b025a9436b3cae575c0}{Init\+Module}} )(int Filter\+Version, CFE\+\_\+\+EVS\+\_\+\+Event\+ID\+\_\+t Base\+EID)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___filter_interface__t_a060e10020b27a5a5ce1b2df5acb30a84}{Filter\+Recv}} )(void $\ast$Msg\+Buf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___filter_interface__t_a1b86e057a54512aa20e06a65fdbe49e3}{Filter\+Send}} )(void $\ast$Msg\+Buf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)
+\item 
+SBN\+\_\+\+Status\+\_\+t($\ast$ \mbox{\hyperlink{struct_s_b_n___filter_interface__t_a5df1422ee234d56ada11866baa335988}{Remap\+MID}} )(CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t $\ast$From\+To\+Mid\+Ptr, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_s_b_n___filter_interface__t_a060e10020b27a5a5ce1b2df5acb30a84}\label{struct_s_b_n___filter_interface__t_a060e10020b27a5a5ce1b2df5acb30a84}} 
+\index{SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}!FilterRecv@{FilterRecv}}
+\index{FilterRecv@{FilterRecv}!SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}}
+\doxysubsubsection{\texorpdfstring{FilterRecv}{FilterRecv}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+Filter\+Interface\+\_\+t\+::\+Filter\+Recv) (void $\ast$Msg\+Buf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)}
+
+Interface is called to apply a filter algorithm on an SB (CCSDS) message header and body.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Msg\+Buf\mbox{[}inout\mbox{]}} & The message buffer to alter in-\/place. \\
+\hline
+{\em Context\mbox{[}in\mbox{]}} & The context information for this message (particularly peer info.)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS when the filter feels it processed the message successfully (this doesn\textquotesingle{}t necessarily mean the message was altered.) SBN\+\_\+\+IF\+\_\+\+EMPTY if the filter believes the message should not be relayed. SBN\+\_\+\+ERROR for all other error conditions. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___filter_interface__t_a1b86e057a54512aa20e06a65fdbe49e3}\label{struct_s_b_n___filter_interface__t_a1b86e057a54512aa20e06a65fdbe49e3}} 
+\index{SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}!FilterSend@{FilterSend}}
+\index{FilterSend@{FilterSend}!SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}}
+\doxysubsubsection{\texorpdfstring{FilterSend}{FilterSend}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+Filter\+Interface\+\_\+t\+::\+Filter\+Send) (void $\ast$Msg\+Buf, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)}
+
+Interface is called to apply a filter algorithm on an SB (CCSDS) message header and body.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Msg\+Buf\mbox{[}inout\mbox{]}} & The message buffer to alter in-\/place. \\
+\hline
+{\em Context\mbox{[}in\mbox{]}} & The context information for this message (particularly peer info.)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS when the filter feels it processed the message successfully (this doesn\textquotesingle{}t necessarily mean the message was altered.) SBN\+\_\+\+IF\+\_\+\+EMPTY if the filter believes the message should not be relayed. SBN\+\_\+\+ERROR for all other error conditions. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___filter_interface__t_ad78be84194bc6b025a9436b3cae575c0}\label{struct_s_b_n___filter_interface__t_ad78be84194bc6b025a9436b3cae575c0}} 
+\index{SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}!InitModule@{InitModule}}
+\index{InitModule@{InitModule}!SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}}
+\doxysubsubsection{\texorpdfstring{InitModule}{InitModule}}
+{\footnotesize\ttfamily CFE\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+Filter\+Interface\+\_\+t\+::\+Init\+Module) (int Filter\+Version, CFE\+\_\+\+EVS\+\_\+\+Event\+ID\+\_\+t Base\+EID)}
+
+Initializes the filter module.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Filter\+Version\mbox{[}in\mbox{]}} & The version \# of the filter API. \\
+\hline
+{\em Base\+EID\mbox{[}in\mbox{]}} & The start of the Event ID\textquotesingle{}s for this module.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CFE\+\_\+\+SUCCESS on successful initialization, otherwise error specific to failure. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{struct_s_b_n___filter_interface__t_a5df1422ee234d56ada11866baa335988}\label{struct_s_b_n___filter_interface__t_a5df1422ee234d56ada11866baa335988}} 
+\index{SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}!RemapMID@{RemapMID}}
+\index{RemapMID@{RemapMID}!SBN\_FilterInterface\_t@{SBN\_FilterInterface\_t}}
+\doxysubsubsection{\texorpdfstring{RemapMID}{RemapMID}}
+{\footnotesize\ttfamily SBN\+\_\+\+Status\+\_\+t($\ast$ SBN\+\_\+\+Filter\+Interface\+\_\+t\+::\+Remap\+MID) (CFE\+\_\+\+SB\+\_\+\+Msg\+Id\+\_\+t $\ast$From\+To\+Mid\+Ptr, \mbox{\hyperlink{struct_s_b_n___filter___ctx__t}{SBN\+\_\+\+Filter\+\_\+\+Ctx\+\_\+t}} $\ast$Context)}
+
+Some filter interfaces may alter the message ID of the messages it processes. SBN needs to know this when it relays subscription information to peers.
+
+
+\begin{DoxyParams}{Parameters}
+{\em From\+To\+Mid\+Ptr\mbox{[}inout\mbox{]}} & A pointer to the message id to be altered, and the resulting message id when it has been altered. \\
+\hline
+{\em Context\mbox{[}in\mbox{]}} & The context information for this request (particularly peer info.)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+SBN\+\_\+\+SUCCESS when the function feels it processed the message remapping successfully (this doesn\textquotesingle{}t necessarily mean the id was altered.) SBN\+\_\+\+IF\+\_\+\+EMPTY if the filter believes the subscription should not be relayed. SBN\+\_\+\+ERROR for all other error conditions. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+interfaces.\+h\end{DoxyCompactItemize}

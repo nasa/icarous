@@ -1,0 +1,44 @@
+\hypertarget{zmq__iface_8h_source}{}\doxysection{zmq\+\_\+iface.\+h}
+\label{zmq__iface_8h_source}\index{apps/zmq\_iface/fsw/src/zmq\_iface.h@{apps/zmq\_iface/fsw/src/zmq\_iface.h}}
+\mbox{\hyperlink{zmq__iface_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_ZMQ\_IFACE\_H}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_ZMQ\_IFACE\_H}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}connection.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_STARTUP\_INF\_EID 0}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_COMMAND\_ERR\_EID 1}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_PIPE\_DEPTH 10}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_PIPE\_NAME "{}ZMQ\_IFACE\_PIPE"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_MAJOR\_VERSION 1}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define ZMQ\_IFACE\_MINOR\_VERSION 0}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{40 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{41     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___app_data__t_ac68cd78e7279f9e2fc93a4e45cb525cb}{pipe}};       }
+\DoxyCodeLine{42     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___app_data__t_a3cda6b350651893a4b9ef6435ff62fcf}{msgPtr}};     }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___connection__t}{ZMQ\_IFACE\_Connection\_t}} \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___app_data__t_adeb4c67a202a3a4b912c4193cda218c1}{connection}};    }
+\DoxyCodeLine{45     \textcolor{keywordtype}{char} msgBuffer[MAX\_ZMQ\_MESSAGE\_SIZE]; }
+\DoxyCodeLine{46 \} \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___app_data__t}{ZMQ\_IFACE\_AppData\_t}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{51 \textcolor{keywordtype}{void} \mbox{\hyperlink{zmq__iface_8h_a44f58b21c51847a82d32747106956abd}{ZMQ\_IFACE\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{56 \textcolor{keywordtype}{void} \mbox{\hyperlink{zmq__iface_8h_a07f966cf2207ee6999265965402c1a85}{ZMQ\_IFACE\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{61 \textcolor{keywordtype}{void} \mbox{\hyperlink{zmq__iface_8h_a79aa9daddb06f3a893d1805a8741b347}{ZMQ\_IFACE\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{66 \textcolor{keywordtype}{void} \mbox{\hyperlink{zmq__iface_8h_a72ef999899241fd7ce71876915667ca8}{ZMQ\_IFACE\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_ZMQ\_IFACE\_H}}
+
+\end{DoxyCode}

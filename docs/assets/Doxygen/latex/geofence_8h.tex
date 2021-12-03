@@ -1,0 +1,117 @@
+\hypertarget{geofence_8h}{}\doxysection{apps/geofence/fsw/src/geofence.h File Reference}
+\label{geofence_8h}\index{apps/geofence/fsw/src/geofence.h@{apps/geofence/fsw/src/geofence.h}}
+
+
+Definition of defines, structs and functions for geofence monitoring app.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+platform\+\_\+cfg.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Geofence\+Monitor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geofence\+\_\+tbl.\+c\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geofence\+\_\+msg.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geofence\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}trajectory\+\_\+msgids.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sch\+\_\+msgids.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structgeofence_app_data__t}{geofence\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Struct to hold geofence app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{geofence_8h_ae582eb8a9812575ac007bb737d83fffb}\label{geofence_8h_ae582eb8a9812575ac007bb737d83fffb}} 
+\#define {\bfseries GEOFENCE\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{geofence_8h_a525d55c36c50484d765d0c0e0847521c}\label{geofence_8h_a525d55c36c50484d765d0c0e0847521c}} 
+\#define {\bfseries GEOFENCE\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{geofence_8h_ac220f7e71f64dd48872a972c933b077f}\label{geofence_8h_ac220f7e71f64dd48872a972c933b077f}} 
+\#define {\bfseries GEOFENCE\+\_\+\+RECEIVED\+\_\+\+FENCE\+\_\+\+EID}~3
+\item 
+\mbox{\Hypertarget{geofence_8h_acfa472ca9117eb7debc64e61ca0487c2}\label{geofence_8h_acfa472ca9117eb7debc64e61ca0487c2}} 
+\#define {\bfseries GEOFENCE\+\_\+\+PIPE\+\_\+\+DEPTH}~100
+\item 
+\mbox{\Hypertarget{geofence_8h_a03c81a91ce4f48cede6344994eef2a1c}\label{geofence_8h_a03c81a91ce4f48cede6344994eef2a1c}} 
+\#define {\bfseries GEOFENCE\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}GEOFENCE\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{geofence_8h_a99821b4410649080129c7fe490893fc9}\label{geofence_8h_a99821b4410649080129c7fe490893fc9}} 
+\#define {\bfseries GEOFENCE\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{geofence_8h_a7cb63d47e8ad7e0308f8640a9e45735b}\label{geofence_8h_a7cb63d47e8ad7e0308f8640a9e45735b}} 
+\#define {\bfseries GEOFENCE\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{geofence_8h_a382acb2e83857a0fdcd2c6be47e75c62}{GEOFENCE\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{geofence_8h_a10d8d3896d07f8f93168abfe24c6c479}{GEOFENCE\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{geofence_8h_a045523b9b6ffb3f666062b43d3455148}{GEOFENCE\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{geofence_8h_a764f7c75cc33f532dfc06c4e6f146ca9}{GEOFENCE\+\_\+\+Process\+Packet}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{geofence_8h_a827dc2e94095ea54a3ff9ad61cfae7f6}{Geofence\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{geofence_8h_a16edc578b0a42b1b5e39450f47f3e16f}\label{geofence_8h_a16edc578b0a42b1b5e39450f47f3e16f}} 
+\mbox{\hyperlink{structgeofence_app_data__t}{geofence\+App\+Data\+\_\+t}} {\bfseries geofence\+App\+Data}
+\begin{DoxyCompactList}\small\item\em global variable to hold app data \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Swee Balachandran 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{geofence_8h_a045523b9b6ffb3f666062b43d3455148}\label{geofence_8h_a045523b9b6ffb3f666062b43d3455148}} 
+\index{geofence.h@{geofence.h}!GEOFENCE\_AppCleanUp@{GEOFENCE\_AppCleanUp}}
+\index{GEOFENCE\_AppCleanUp@{GEOFENCE\_AppCleanUp}!geofence.h@{geofence.h}}
+\doxysubsubsection{\texorpdfstring{GEOFENCE\_AppCleanUp()}{GEOFENCE\_AppCleanUp()}}
+{\footnotesize\ttfamily void GEOFENCE\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App clean up \mbox{\Hypertarget{geofence_8h_a10d8d3896d07f8f93168abfe24c6c479}\label{geofence_8h_a10d8d3896d07f8f93168abfe24c6c479}} 
+\index{geofence.h@{geofence.h}!GEOFENCE\_AppInit@{GEOFENCE\_AppInit}}
+\index{GEOFENCE\_AppInit@{GEOFENCE\_AppInit}!geofence.h@{geofence.h}}
+\doxysubsubsection{\texorpdfstring{GEOFENCE\_AppInit()}{GEOFENCE\_AppInit()}}
+{\footnotesize\ttfamily void GEOFENCE\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App initialization \mbox{\Hypertarget{geofence_8h_a382acb2e83857a0fdcd2c6be47e75c62}\label{geofence_8h_a382acb2e83857a0fdcd2c6be47e75c62}} 
+\index{geofence.h@{geofence.h}!GEOFENCE\_AppMain@{GEOFENCE\_AppMain}}
+\index{GEOFENCE\_AppMain@{GEOFENCE\_AppMain}!geofence.h@{geofence.h}}
+\doxysubsubsection{\texorpdfstring{GEOFENCE\_AppMain()}{GEOFENCE\_AppMain()}}
+{\footnotesize\ttfamily void GEOFENCE\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App\textquotesingle{}s main entry point \mbox{\Hypertarget{geofence_8h_a764f7c75cc33f532dfc06c4e6f146ca9}\label{geofence_8h_a764f7c75cc33f532dfc06c4e6f146ca9}} 
+\index{geofence.h@{geofence.h}!GEOFENCE\_ProcessPacket@{GEOFENCE\_ProcessPacket}}
+\index{GEOFENCE\_ProcessPacket@{GEOFENCE\_ProcessPacket}!geofence.h@{geofence.h}}
+\doxysubsubsection{\texorpdfstring{GEOFENCE\_ProcessPacket()}{GEOFENCE\_ProcessPacket()}}
+{\footnotesize\ttfamily void GEOFENCE\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Function to process received packets \mbox{\Hypertarget{geofence_8h_a827dc2e94095ea54a3ff9ad61cfae7f6}\label{geofence_8h_a827dc2e94095ea54a3ff9ad61cfae7f6}} 
+\index{geofence.h@{geofence.h}!GeofenceTableValidationFunc@{GeofenceTableValidationFunc}}
+\index{GeofenceTableValidationFunc@{GeofenceTableValidationFunc}!geofence.h@{geofence.h}}
+\doxysubsubsection{\texorpdfstring{GeofenceTableValidationFunc()}{GeofenceTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t Geofence\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Function to validate table parameters 
+\begin{DoxyParams}{Parameters}
+{\em Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if success 
+\end{DoxyReturn}

@@ -1,0 +1,70 @@
+\hypertarget{raft__msg_8h}{}\doxysection{apps/raft/fsw/platform\+\_\+inc/raft\+\_\+msg.h File Reference}
+\label{raft__msg_8h}\index{apps/raft/fsw/platform\_inc/raft\_msg.h@{apps/raft/fsw/platform\_inc/raft\_msg.h}}
+
+
+Defintion of messages used by \mbox{\hyperlink{raft__msg_8h}{raft\+\_\+msg.\+h}}.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}merger\+\_\+msg.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structraft_hbeat__t}{raft\+Hbeat\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em raft heartbeat sent to followers from the leader node \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structraft_hbeat_ack__t}{raft\+Hbeat\+Ack\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em acknowledgement data from follower nodes \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structraft_vote_request__t}{raft\+Vote\+Request\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message leader uses to request votes from followers \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structraft_vote_response__t}{raft\+Vote\+Response\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em followers respond to vote reqeuests with this message \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{raft__msg_8h_abd2aacdca9cb2a1a30f3392256b96ea3}\label{raft__msg_8h_abd2aacdca9cb2a1a30f3392256b96ea3}} 
+\#define {\bfseries MAX\+\_\+\+NODES}~5
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{raft__msg_8h_ad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{raft__msg_8h_aef184f6632fca2f51c24b0808fcee0a6}\label{raft__msg_8h_aef184f6632fca2f51c24b0808fcee0a6}} 
+{\bfseries report\+\_\+t}
+\item 
+\mbox{\Hypertarget{raft__msg_8h_aa0f2d9420b2caa8b3fec729bd0c05eec}\label{raft__msg_8h_aa0f2d9420b2caa8b3fec729bd0c05eec}} 
+{\bfseries c\+Data\+Log\+\_\+t}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{raft__msg_8h_ad09246453a4dabd919c7541484046a87}\label{raft__msg_8h_ad09246453a4dabd919c7541484046a87}} 
+\index{raft\_msg.h@{raft\_msg.h}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!raft\_msg.h@{raft\_msg.h}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily struct \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+packed\+\_\+\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} Aircraft ID
+
+\texorpdfstring{$<$}{<} Current intersection for which scheduling is required
+
+\texorpdfstring{$<$}{<} Earliest a/c can reach the intersection (using max speed)
+
+\texorpdfstring{$<$}{<} Current arrival time (using current speed)
+
+\texorpdfstring{$<$}{<} Late arrival time (using slowest speed + allowed deviations)
+
+\texorpdfstring{$<$}{<} Number of times scheduler has been run
+
+\texorpdfstring{$<$}{<} zone status
+
+\texorpdfstring{$<$}{<} c\+FS header information
+
+\texorpdfstring{$<$}{<} Intersection ID for the current raft network
+
+\texorpdfstring{$<$}{<} Raft node status of current vehicle
+
+\texorpdfstring{$<$}{<} Total number of nodes in the network

@@ -1,0 +1,164 @@
+\hypertarget{gs_interface_8h_source}{}\doxysection{gs\+Interface.\+h}
+\label{gs_interface_8h_source}\index{apps/gsInterface/fsw/src/gsInterface.h@{apps/gsInterface/fsw/src/gsInterface.h}}
+\mbox{\hyperlink{gs_interface_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef \_gsInterface\_h\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define \_gsInterface\_h\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}cfe\_error.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}cfe\_evs.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}cfe\_es.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <stdio.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <unistd.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <network\_includes.h>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <time.h>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}Icarous.h"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}sch\_msgids.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}gsInterface\_table.h"{}}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#ifdef APPDEF\_TRAFFIC}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msg_8h}{traffic\_msg.h}}"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{traffic__msgids_8h}{traffic\_msgids.h}}"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#ifdef APPDEF\_TRACKING}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include "{}tracking\_msg.h"{}}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include "{}tracking\_msgids.h"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif }}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#ifdef APPDEF\_TRAJECTORY}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msg_8h}{trajectory\_msg.h}}"{}}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{trajectory__msgids_8h}{trajectory\_msgids.h}}"{}}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif }}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#ifdef APPDEF\_GEOFENCE}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{geofence__msg_8h}{geofence\_msg.h}}"{}}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{geofence__msgids_8h}{geofence\_msgids.h}}"{}}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#ifdef APPDEF\_ROTORSIM}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{rotorsim__msg_8h}{rotorsim\_msg.h}}"{}}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{rotorsim__msgids_8h}{rotorsim\_msgids.h}}"{}}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#ifdef APPDEF\_MERGER}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msg_8h}{merger\_msg.h}}"{}}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{merger__msgids_8h}{merger\_msgids.h}}"{}}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#include "{}mavlink/ardupilotmega/mavlink.h"{}}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{port__lib_8h}{port\_lib.h}}"{}}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define BUFFER\_LENGTH 1000  }}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define GSINTERFACE\_PIPE\_NAME "{}GSINTF\_PIPE"{}}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define GSINTERFACE\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define GSINT\_TRAJ\_PIPE\_NAME "{}GSTRAJ\_PIPE"{}}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define SCH\_GSINTERFACE\_PIPE1\_NAME "{}SCH\_GSINTERFACE"{}}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{94 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{95     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a4d49211a4f1cbc1abda30032e7781a56}{INTERFACE\_Pipe}};      }
+\DoxyCodeLine{96     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a23e774c6cbc69b108cbdc2b8bc4db624}{Traffic\_Pipe}};        }
+\DoxyCodeLine{97     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_ae8d10237a143fbf07ea9808a3fa3672f}{Traj\_Pipe}};           }
+\DoxyCodeLine{98     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a2287069d2d9924da497905ed64653884}{Band\_Pipe}};           }
+\DoxyCodeLine{99     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a4cc788d1ac8fc50013df93f6986065e9}{Command\_Pipe}};        }
+\DoxyCodeLine{100     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a9758687599674f121deb99289e6a0392}{SchInterface\_Pipe}};   }
+\DoxyCodeLine{101     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_int_g_s__t_aca4eb6115c2d80ac16a59bb343291bcf}{INTERFACEMsgPtr}};     }
+\DoxyCodeLine{102     CFE\_SB\_MsgPtr\_t    \mbox{\hyperlink{structappdata_int_g_s__t_a9ff095071033f7764f912aa9dc692863}{Sch\_MsgPtr}};          }
+\DoxyCodeLine{103     CFE\_TBL\_Handle\_t   \mbox{\hyperlink{structappdata_int_g_s__t_a12a40fda949db3cbd91c85d3e49b86bc}{INTERFACE\_tblHandle}}; }
+\DoxyCodeLine{104     \mbox{\hyperlink{structgs_interface_table__t}{gsInterfaceTable\_t}} \mbox{\hyperlink{structappdata_int_g_s__t_ab7b1d50fe27f5fed39d522c88e7b0bb0}{Tbl}};                 }
+\DoxyCodeLine{105     \mbox{\hyperlink{structport__t}{port\_t}} \mbox{\hyperlink{structappdata_int_g_s__t_aaa2629484d4f5b013079353e77a2bf58}{gs}};                              }
+\DoxyCodeLine{106     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_aaa415e2e86d983f5c9fcccfa6a5f8ad3}{receivingWP}};                        }
+\DoxyCodeLine{107     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_ac2cb99194b43c00eac908decf8ce02bb}{numWaypoints}};                       }
+\DoxyCodeLine{108     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_a5cef42e17d095d672c8a27dffeca5805}{numGeofences}};                       }
+\DoxyCodeLine{109     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_a5a31c77e872c036794327d4f808f1e66}{recvGeofIndex}};                      }
+\DoxyCodeLine{110     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_a8e23d9bc0d58372a3fa049746f14748a}{waypointSeq}};                        }
+\DoxyCodeLine{111     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_a8ba77387bac9913f7a22f9f9e4416bd1}{nextWaypointIndex}};                  }
+\DoxyCodeLine{112     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int_g_s__t_a6523e92f79521038f5793c895d36141a}{hbeatFreqCount}};                     }
+\DoxyCodeLine{113     mavlink\_mission\_item\_t ReceivedMissionItems[MAX\_WAYPOINTS];}
+\DoxyCodeLine{114     mavlink\_mission\_item\_int\_t ReceivedMissionItemsInt[MAX\_WAYPOINTS];}
+\DoxyCodeLine{115     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} fpData;}
+\DoxyCodeLine{116     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} mgData;}
+\DoxyCodeLine{117     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} trajectory;}
+\DoxyCodeLine{118     \mbox{\hyperlink{structargs_cmd__t}{argsCmd\_t}} \mbox{\hyperlink{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}{startMission}};}
+\DoxyCodeLine{119     \mbox{\hyperlink{structgeofence__t}{geofence\_t}} gfData[MAX\_GEOFENCES];}
+\DoxyCodeLine{120     uint16\_t fenceVertices[MAX\_GEOFENCES];}
+\DoxyCodeLine{121     \mbox{\hyperlink{structobject__t}{object\_t}} \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}};}
+\DoxyCodeLine{122     \mbox{\hyperlink{structno_args_cmd__t}{noArgsCmd\_t}} \mbox{\hyperlink{arducopter_8h_af7be49f01a35ee0616919e72e71942cb}{resetIcarous}};}
+\DoxyCodeLine{123     uint8\_t currentApMode;}
+\DoxyCodeLine{124     uint8\_t currentIcarousMode;}
+\DoxyCodeLine{125     \mbox{\hyperlink{structparam__t}{param\_t}} storedparams[PARAM\_COUNT];}
+\DoxyCodeLine{126     uint32\_t wptimer;}
+\DoxyCodeLine{127     uint32\_t gftimer;}
+\DoxyCodeLine{128     uint32\_t pmtimer;}
+\DoxyCodeLine{129     uint32\_t tjtimer;}
+\DoxyCodeLine{130     uint32\_t rcv\_wp\_seq;}
+\DoxyCodeLine{131     uint32\_t rcv\_gf\_seq;}
+\DoxyCodeLine{132     \textcolor{keywordtype}{bool} fenceSent;}
+\DoxyCodeLine{133     \textcolor{keywordtype}{bool} paramSent;}
+\DoxyCodeLine{134     \textcolor{keywordtype}{bool} publishDefaultParams;}
+\DoxyCodeLine{135     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{136 \}\mbox{\hyperlink{structappdata_int_g_s__t}{appdataIntGS\_t}};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{141 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_ad495247c47717c7f85a0ff08866bb417}{gsInterface\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{146 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_ac6bcc28207b0fbb44c5661fa144018d9}{gsInterface\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{151 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_aec965e88879532ff1a4ea4d59db7b982}{gsInterface\_InitializeAppData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{156 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_a4f9121d9e5eb614a26e9b979205551ab}{gsInterface\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{161 \textcolor{keywordtype}{int} \mbox{\hyperlink{gs_interface_8h_a57d79e3762527fd3fe3b19f23969e525}{GetMAVLinkMsgFromGS}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{167 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_af52d9ce6e6df928b76c0217f9e8f3156}{ProcessGSMessage}}(mavlink\_message\_t message);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{172 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_a68c1c68c420875acc713a04894a9e8fc}{gsInterface\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{177 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_a9193aa57473697502b2f72b31c07bea7}{gsSendHeartbeat}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{182 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_a44ceacdcde727ef6a99686ee94ca9018}{gsSendCallsign}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 }
+\DoxyCodeLine{189 int32\_t \mbox{\hyperlink{gs_interface_8h_a92a3a9e464122400dddd3a14184330f3}{gsInterfaceTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{195 \textcolor{keywordtype}{void} \mbox{\hyperlink{gs_interface_8h_ac03cf33f22cc11ff42f58b61e302ae46}{gsInterface\_PublishParams}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 \textcolor{keywordtype}{void} gsConvertMissionItemsToPlan(uint16\_t  size, mavlink\_mission\_item\_t items[],\mbox{\hyperlink{structflightplan__t}{flightplan\_t}}* fp);}
+\DoxyCodeLine{198 \textcolor{keywordtype}{void} gsConvertMissionItemsIntToPlan(uint16\_t  size, mavlink\_mission\_item\_int\_t items[],\mbox{\hyperlink{structflightplan__t}{flightplan\_t}}* fp);}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 uint16\_t gsConvertPlanToMissionItems(\mbox{\hyperlink{structflightplan__t}{flightplan\_t}}* fp);}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{keywordtype}{void} gs\_wpCallback(uint32\_t timer);}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{keywordtype}{void} gs\_gfCallback(uint32\_t timer);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 \textcolor{keywordtype}{void} gs\_pmCallback(uint32\_t timerId);}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 \textcolor{keywordtype}{void} gs\_tjCallback(uint32\_t timerId);}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{keywordtype}{void} gs\_startTimer(uint32\_t *timerID,\textcolor{keywordtype}{void} (*f)(uint32\_t),\textcolor{keywordtype}{char}* name,uint32\_t startTime,uint32\_t intvl);}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{keywordtype}{void} gs\_stopTimer(uint32\_t *timerID);}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \textcolor{keywordtype}{void} gsFragmentBands(bands\_t *bands,uint8\_t bandtype);}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{preprocessor}{\#define SendGSMsg(arg) writeMavlinkData(\&appdataIntGS.gs,\&arg)}}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

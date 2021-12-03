@@ -1,0 +1,122 @@
+\hypertarget{cognition_8c}{}\doxysection{apps/cognition/fsw/src/cognition.c File Reference}
+\label{cognition_8c}\index{apps/cognition/fsw/src/cognition.c@{apps/cognition/fsw/src/cognition.c}}
+
+
+function definitions for cognition app  
+
+
+{\ttfamily \#include \char`\"{}cognition.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cognition\+\_\+version.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cog\+\_\+tbl.\+c\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cognition_8c_a63db52418dddb45ecd468860ff8bdcbf}{COGNITION\+\_\+\+App\+Main}} (void)
+\begin{DoxyCompactList}\small\item\em This is the main entry point for your application that will be used by c\+FS. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cognition_8c_a26665cd5ac59e9a1c846ef0486f91c8c}{COGNITION\+\_\+\+App\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize app data\+: set up pipes, subscribe to messages, read table, initialize data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cognition_8c_a8bedf49a38dab1e3aeb7338c5dd391e2}{COGNITION\+\_\+\+App\+Init\+Data}} (void)
+\item 
+void \mbox{\hyperlink{cognition_8c_ae275e63a127ad1ef82b86cc31bb2494f}{COGNITION\+\_\+\+Process\+SBData}} (void)
+\begin{DoxyCompactList}\small\item\em Read data from software bus and send data to autopilot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cognition_8c_a30aa0dfbb20151792b76ef970bf35de7}{COGNITION\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+int32\+\_\+t \mbox{\hyperlink{cognition_8c_ab01e0a70a2a54ca2594614579d1963aa}{cognition\+Table\+Validation\+Func}} (void $\ast$Tbl\+Ptr)
+\item 
+\mbox{\Hypertarget{cognition_8c_a449c9f9c04a3f0727a4a7cfe802dfffa}\label{cognition_8c_a449c9f9c04a3f0727a4a7cfe802dfffa}} 
+void {\bfseries COGNITION\+\_\+\+Decision\+Process} (void)
+\item 
+\mbox{\Hypertarget{cognition_8c_a807caf694695f73d63295f5099572ae7}\label{cognition_8c_a807caf694695f73d63295f5099572ae7}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+Vel\+Cmd} (\mbox{\hyperlink{struct_velocity_command}{Velocity\+Command}} velocity\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_aa5d51a1b232e453b26c8283b24fdc613}\label{cognition_8c_aa5d51a1b232e453b26c8283b24fdc613}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+Flight\+Plan} (\mbox{\hyperlink{struct_fp_change}{Fp\+Change}} fp\+\_\+change\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_ace5ee9e1bdd8ff27001eb1439c6aed40}\label{cognition_8c_ace5ee9e1bdd8ff27001eb1439c6aed40}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Guidance\+P2P} (\mbox{\hyperlink{struct_p2_p_command}{P2\+PCommand}} p2p\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_a732b2d045bd1c754871e9a60c8a3456c}\label{cognition_8c_a732b2d045bd1c754871e9a60c8a3456c}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Speed\+Change} (\mbox{\hyperlink{struct_speed_change}{Speed\+Change}} speed\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_a978b716350f0318ff4cc1ba99e789e14}\label{cognition_8c_a978b716350f0318ff4cc1ba99e789e14}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Alt\+Change} (\mbox{\hyperlink{struct_alt_change}{Alt\+Change}} alt\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_a203c5e0b2b200739291d5587b60ff589}\label{cognition_8c_a203c5e0b2b200739291d5587b60ff589}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Takeoff} (\mbox{\hyperlink{struct_takeoff_command}{Takeoff\+Command}} takeoff\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_acedb6d991975fd2ebb61743cc3b604d9}\label{cognition_8c_acedb6d991975fd2ebb61743cc3b604d9}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Land} (\mbox{\hyperlink{struct_land_command}{Land\+Command}} land\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_a0b3eb23a39ebc579cf951a5f4108030b}\label{cognition_8c_a0b3eb23a39ebc579cf951a5f4108030b}} 
+void {\bfseries COGNITION\+\_\+\+Find\+New\+Path} (\mbox{\hyperlink{struct_fp_request}{Fp\+Request}} fp\+\_\+request\+\_\+command)
+\item 
+\mbox{\Hypertarget{cognition_8c_af6754a8230c1aa4c11c5de3b7789d87b}\label{cognition_8c_af6754a8230c1aa4c11c5de3b7789d87b}} 
+void {\bfseries COGNITION\+\_\+\+Send\+Ditch\+Request} (\mbox{\hyperlink{struct_ditch_command}{Ditch\+Command}} ditch\+\_\+command)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t \mbox{\hyperlink{cognition_8c_a2c2f1d2d7aa1a8b8527d5dc818b4a5a2}{Cognition\+\_\+\+Event\+Filters}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Event filter definition for ardupilot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{cognition_8c_a30aa0dfbb20151792b76ef970bf35de7}\label{cognition_8c_a30aa0dfbb20151792b76ef970bf35de7}} 
+\index{cognition.c@{cognition.c}!COGNITION\_AppCleanUp@{COGNITION\_AppCleanUp}}
+\index{COGNITION\_AppCleanUp@{COGNITION\_AppCleanUp}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppCleanUp()}{COGNITION\_AppCleanUp()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Clean up variables \mbox{\Hypertarget{cognition_8c_a26665cd5ac59e9a1c846ef0486f91c8c}\label{cognition_8c_a26665cd5ac59e9a1c846ef0486f91c8c}} 
+\index{cognition.c@{cognition.c}!COGNITION\_AppInit@{COGNITION\_AppInit}}
+\index{COGNITION\_AppInit@{COGNITION\_AppInit}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppInit()}{COGNITION\_AppInit()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app properties \mbox{\Hypertarget{cognition_8c_a8bedf49a38dab1e3aeb7338c5dd391e2}\label{cognition_8c_a8bedf49a38dab1e3aeb7338c5dd391e2}} 
+\index{cognition.c@{cognition.c}!COGNITION\_AppInitData@{COGNITION\_AppInitData}}
+\index{COGNITION\_AppInitData@{COGNITION\_AppInitData}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppInitData()}{COGNITION\_AppInitData()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Init\+Data (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initialize app specific data \mbox{\Hypertarget{cognition_8c_a63db52418dddb45ecd468860ff8bdcbf}\label{cognition_8c_a63db52418dddb45ecd468860ff8bdcbf}} 
+\index{cognition.c@{cognition.c}!COGNITION\_AppMain@{COGNITION\_AppMain}}
+\index{COGNITION\_AppMain@{COGNITION\_AppMain}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_AppMain()}{COGNITION\_AppMain()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Entry point for app \mbox{\Hypertarget{cognition_8c_ae275e63a127ad1ef82b86cc31bb2494f}\label{cognition_8c_ae275e63a127ad1ef82b86cc31bb2494f}} 
+\index{cognition.c@{cognition.c}!COGNITION\_ProcessSBData@{COGNITION\_ProcessSBData}}
+\index{COGNITION\_ProcessSBData@{COGNITION\_ProcessSBData}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{COGNITION\_ProcessSBData()}{COGNITION\_ProcessSBData()}}
+{\footnotesize\ttfamily void COGNITION\+\_\+\+Process\+SBData (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Process data from the SB message \mbox{\Hypertarget{cognition_8c_ab01e0a70a2a54ca2594614579d1963aa}\label{cognition_8c_ab01e0a70a2a54ca2594614579d1963aa}} 
+\index{cognition.c@{cognition.c}!cognitionTableValidationFunc@{cognitionTableValidationFunc}}
+\index{cognitionTableValidationFunc@{cognitionTableValidationFunc}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{cognitionTableValidationFunc()}{cognitionTableValidationFunc()}}
+{\footnotesize\ttfamily int32\+\_\+t cognition\+Table\+Validation\+Func (\begin{DoxyParamCaption}\item[{void $\ast$}]{Tbl\+Ptr }\end{DoxyParamCaption})}
+
+Validate table data 
+\begin{DoxyParams}{Parameters}
+{\em $\ast$\+Tbl\+Ptr} & pointer to table \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{cognition_8c_a2c2f1d2d7aa1a8b8527d5dc818b4a5a2}\label{cognition_8c_a2c2f1d2d7aa1a8b8527d5dc818b4a5a2}} 
+\index{cognition.c@{cognition.c}!Cognition\_EventFilters@{Cognition\_EventFilters}}
+\index{Cognition\_EventFilters@{Cognition\_EventFilters}!cognition.c@{cognition.c}}
+\doxysubsubsection{\texorpdfstring{Cognition\_EventFilters}{Cognition\_EventFilters}}
+{\footnotesize\ttfamily CFE\+\_\+\+EVS\+\_\+\+Bin\+Filter\+\_\+t Cognition\+\_\+\+Event\+Filters\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\{  }
+\DoxyCodeLine{        \{COGNITION\_STARTUP\_INF\_EID,       0x0000\},}
+\DoxyCodeLine{        \{COGNITION\_COMMAND\_ERR\_EID,       0x0000\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

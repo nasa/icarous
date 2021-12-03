@@ -1,0 +1,76 @@
+\hypertarget{_merger_8h_source}{}\doxysection{Merger.\+h}
+\label{_merger_8h_source}\index{Modules/Core/Merger/Merger.h@{Modules/Core/Merger/Merger.h}}
+\mbox{\hyperlink{_merger_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef MERGER\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define MERGER\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{5 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define MAX\_NODES 10 }}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define INTERSECTION\_MAX 5}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define MERGER\_MAXAIRCRAFT MAX\_NODES}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{13     \_MERGER\_NOOP\_,}
+\DoxyCodeLine{14     \_MERGER\_IDLE\_,}
+\DoxyCodeLine{15     \_MERGER\_VECTOR\_CONTROL\_,}
+\DoxyCodeLine{16     \_MERGER\_GIVECONTROL\_}
+\DoxyCodeLine{17 \}localMergerNavStates\_e;}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{20    NULL\_ZONE,}
+\DoxyCodeLine{21    COORD\_ZONE,}
+\DoxyCodeLine{22    SCHED\_ZONE,}
+\DoxyCodeLine{23    ENTRY\_ZONE}
+\DoxyCodeLine{24 \}zoneType\_e;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{27    MERGING\_INACTIVE,}
+\DoxyCodeLine{28    MERGING\_ACTIVE,}
+\DoxyCodeLine{29    MERGING\_GUIDANCE\_INACTIVE,}
+\DoxyCodeLine{30    MERGING\_GUIDANCE\_ACTIVE}
+\DoxyCodeLine{31 \}mergeStatus\_e;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{38 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{_merger_8h_ad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{39    int8\_t aircraftID;           }
+\DoxyCodeLine{40    int8\_t intersectionID;       }
+\DoxyCodeLine{41    \textcolor{keywordtype}{double} earlyArrivalTime;     }
+\DoxyCodeLine{42    \textcolor{keywordtype}{double} currentArrivalTime;   }
+\DoxyCodeLine{43    \textcolor{keywordtype}{double} lateArrivalTime;      }
+\DoxyCodeLine{44    int32\_t numSchedulesComputed;}
+\DoxyCodeLine{45    uint8\_t zoneStatus;          }
+\DoxyCodeLine{46 \}\mbox{\hyperlink{structmerging_data__t}{mergingData\_t}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{_merger_8h_ad09246453a4dabd919c7541484046a87}{\_\_attribute\_\_}}((\_\_packed\_\_))\{}
+\DoxyCodeLine{49    int32\_t intersectionID;                  }
+\DoxyCodeLine{50    uint8\_t nodeRole;                        }
+\DoxyCodeLine{51    uint32\_t totalNodes;                     }
+\DoxyCodeLine{52    \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} log[MAX\_NODES];}
+\DoxyCodeLine{53 \}\mbox{\hyperlink{structdata_log__t}{dataLog\_t}};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keywordtype}{void}* MergerInit(\textcolor{keywordtype}{char} \mbox{\hyperlink{structcallsign}{callsign}}[],\textcolor{keywordtype}{char} config[],\textcolor{keywordtype}{int} vehicleID);}
+\DoxyCodeLine{57 \textcolor{keywordtype}{void} MergerReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{58 \textcolor{keywordtype}{void}  MergerDeinit(\textcolor{keywordtype}{void} *obj);}
+\DoxyCodeLine{59 \textcolor{keywordtype}{void}  MergerSetAircraftState(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{double} pos[],\textcolor{keywordtype}{double} vel[]);}
+\DoxyCodeLine{60 \textcolor{keywordtype}{void}  MergerSetVehicleConstraints(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{double} minVel, \textcolor{keywordtype}{double} maxVel, \textcolor{keywordtype}{double} turnRadius);}
+\DoxyCodeLine{61 \textcolor{keywordtype}{void}  MergerSetFixParams(\textcolor{keywordtype}{void} *obj, \textcolor{keywordtype}{double} separationTime,\textcolor{keywordtype}{double} coordzone,\textcolor{keywordtype}{double} schzone,\textcolor{keywordtype}{double} entryzone,\textcolor{keywordtype}{double} corridorWidth);}
+\DoxyCodeLine{62 \textcolor{keywordtype}{void}  MergerSetIntersectionData(\textcolor{keywordtype}{void} *obj, \textcolor{keywordtype}{int} i,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[]);}
+\DoxyCodeLine{63 \textcolor{keywordtype}{void}  MergerSetNodeLog(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{structdata_log__t}{dataLog\_t}}* mgData);}
+\DoxyCodeLine{64 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}  MergerRun(\textcolor{keywordtype}{void} *obj,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{65 \textcolor{keywordtype}{void}  MergerOutputVelocity(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double}* trk,\textcolor{keywordtype}{double}* gs,\textcolor{keywordtype}{double}* vs);}
+\DoxyCodeLine{66 \textcolor{keywordtype}{int}   MergerOutputTrajectory(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} wp[4]);}
+\DoxyCodeLine{67 \textcolor{keywordtype}{bool} MergerGetArrivalTimes(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{structmerging_data__t}{mergingData\_t}}* mgData);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{71 \}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

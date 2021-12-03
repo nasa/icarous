@@ -1,0 +1,31 @@
+\hypertarget{struct_s_b_n___peer___entry__t}{}\doxysection{SBN\+\_\+\+Peer\+\_\+\+Entry\+\_\+t Struct Reference}
+\label{struct_s_b_n___peer___entry__t}\index{SBN\_Peer\_Entry\_t@{SBN\_Peer\_Entry\_t}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_aa159a5861883cdb923f1468454a0db79}\label{struct_s_b_n___peer___entry__t_aa159a5861883cdb923f1468454a0db79}} 
+CFE\+\_\+\+Processor\+ID\+\_\+t {\bfseries Processor\+ID}
+\begin{DoxyCompactList}\small\item\em Needs to match the Processor\+ID of the peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a5afa6ddc479e73e7e9288b63fbf0e4b5}\label{struct_s_b_n___peer___entry__t_a5afa6ddc479e73e7e9288b63fbf0e4b5}} 
+CFE\+\_\+\+Spacecraft\+ID\+\_\+t {\bfseries Spacecraft\+ID}
+\begin{DoxyCompactList}\small\item\em Needs to match the Spacecraft\+ID of the peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a0b01acee76d6606aa81a1b989ef9af0c}\label{struct_s_b_n___peer___entry__t_a0b01acee76d6606aa81a1b989ef9af0c}} 
+SBN\+\_\+\+Net\+Idx\+\_\+t {\bfseries Net\+Num}
+\begin{DoxyCompactList}\small\item\em Network number indicating peers that inter-\/communicate using a common protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a190a0c596b1bffb8ec31bfd7583af2b6}\label{struct_s_b_n___peer___entry__t_a190a0c596b1bffb8ec31bfd7583af2b6}} 
+const char {\bfseries Protocol\+Name} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+NAME\+\_\+\+LEN\mbox{]}
+\begin{DoxyCompactList}\small\item\em The name of the protocol module for which to use for this peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a046de7e63ef761c939ff453b33dfa62f}\label{struct_s_b_n___peer___entry__t_a046de7e63ef761c939ff453b33dfa62f}} 
+const char {\bfseries Filters} \mbox{[}SBN\+\_\+\+MAX\+\_\+\+FILTERS\+\_\+\+PER\+\_\+\+PEER\mbox{]}\mbox{[}SBN\+\_\+\+MAX\+\_\+\+MOD\+\_\+\+NAME\+\_\+\+LEN\mbox{]}
+\begin{DoxyCompactList}\small\item\em The modules name for the filter interface for this peer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a06f932138b60f76d2f0029c6fc6020dd}\label{struct_s_b_n___peer___entry__t_a06f932138b60f76d2f0029c6fc6020dd}} 
+uint8 {\bfseries Address} \mbox{[}SBN\+\_\+\+ADDR\+\_\+\+SZ\mbox{]}
+\begin{DoxyCompactList}\small\item\em Protocol-\/specific address, such as \char`\"{}127.\+0.\+0.\+1\+:1234\char`\"{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{struct_s_b_n___peer___entry__t_a209f3072b038c0f26cf186428e909af7}\label{struct_s_b_n___peer___entry__t_a209f3072b038c0f26cf186428e909af7}} 
+SBN\+\_\+\+Task\+\_\+\+Flag\+\_\+t {\bfseries Task\+Flags}
+\begin{DoxyCompactList}\small\item\em Indicates whether to spawn tasks for send/recv; for a given netnum, probably wise to use the same Task\+Flags setting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+SBN/fsw/platform\+\_\+inc/sbn\+\_\+tbl.\+h\end{DoxyCompactItemize}

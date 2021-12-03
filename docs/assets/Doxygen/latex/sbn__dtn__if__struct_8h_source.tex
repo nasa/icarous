@@ -1,0 +1,30 @@
+\hypertarget{sbn__dtn__if__struct_8h_source}{}\doxysection{sbn\+\_\+dtn\+\_\+if\+\_\+struct.\+h}
+\label{sbn__dtn__if__struct_8h_source}\index{apps/SBN/modules/protocol/dtn/fsw/src/sbn\_dtn\_if\_struct.h@{apps/SBN/modules/protocol/dtn/fsw/src/sbn\_dtn\_if\_struct.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_dtn\_if\_struct\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_dtn\_if\_struct\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}sbn\_constants.h"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <bp.h>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     \textcolor{keywordtype}{char} EIN[32];}
+\DoxyCodeLine{13     \textcolor{keywordtype}{boolean} SubsSent;}
+\DoxyCodeLine{14 \} \mbox{\hyperlink{struct_s_b_n___d_t_n___peer__t}{SBN\_DTN\_Peer\_t}};}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18     \textcolor{keywordtype}{char} EIN[32];}
+\DoxyCodeLine{19     BpSAP SAP;}
+\DoxyCodeLine{20     Sdr SendSDR, RecvSDR;}
+\DoxyCodeLine{21     ReqAttendant Attendant;}
+\DoxyCodeLine{22 \} \mbox{\hyperlink{struct_s_b_n___d_t_n___net__t}{SBN\_DTN\_Net\_t}};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_dtn\_if\_struct\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

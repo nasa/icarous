@@ -1,0 +1,153 @@
+\hypertarget{sbn__pack_8h_source}{}\doxysection{sbn\+\_\+pack.\+h}
+\label{sbn__pack_8h_source}\index{apps/SBN/fsw/src/sbn\_pack.h@{apps/SBN/fsw/src/sbn\_pack.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef \_sbn\_pack\_h\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define \_sbn\_pack\_h\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <stdlib.h>} \textcolor{comment}{/* size\_t */}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string.h>} \textcolor{comment}{/* memcpy */}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}osconfig.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifdef SOFTWARE\_BIG\_BIT\_ORDER}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{    \#define CFE\_MAKE\_BIG32(n) (n)}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#else }\textcolor{comment}{/* !SOFTWARE\_BIG\_BIT\_ORDER */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{    \#define CFE\_MAKE\_BIG32(n) ( (((n) << 24) \& 0xFF000000) | (((n) << 8) \& 0x00FF0000) | (((n) >> 8) \& 0x0000FF00) | (((n) >> 24) \& 0x000000FF) )}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SOFTWARE\_BIG\_BIT\_ORDER */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{16 \{   }
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} *Buf;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{size\_t} BufSz, BufUsed;}
+\DoxyCodeLine{19 \} \mbox{\hyperlink{struct_pack__t}{Pack\_t}};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_Init(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, \textcolor{keywordtype}{void} *Buf, \textcolor{keywordtype}{size\_t} BufSz, \textcolor{keywordtype}{int} ClearFlag)}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23     PackPtr-\/>Buf = Buf;}
+\DoxyCodeLine{24     PackPtr-\/>BufSz = BufSz;}
+\DoxyCodeLine{25     PackPtr-\/>BufUsed = 0;}
+\DoxyCodeLine{26     \textcolor{keywordflow}{if}(ClearFlag)}
+\DoxyCodeLine{27     \{}
+\DoxyCodeLine{28         memset(Buf, 0, BufSz);}
+\DoxyCodeLine{29     \}\textcolor{comment}{/* end if */}}
+\DoxyCodeLine{30     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{31 \}\textcolor{comment}{/* end Pack\_Init() */}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_Data(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, \textcolor{keywordtype}{void} *DataBuf, \textcolor{keywordtype}{size\_t} DataBufSz)}
+\DoxyCodeLine{34 \{}
+\DoxyCodeLine{35     \textcolor{keywordflow}{if}(PackPtr-\/>BufUsed + DataBufSz > PackPtr-\/>BufSz)}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37         \textcolor{comment}{/* print an error? */}}
+\DoxyCodeLine{38         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{39     \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     memcpy((uint8 *)PackPtr-\/>Buf + PackPtr-\/>BufUsed, DataBuf, DataBufSz);}
+\DoxyCodeLine{42     PackPtr-\/>BufUsed += DataBufSz;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_UInt8(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, uint8 Data)}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49     \textcolor{keywordflow}{return} Pack\_Data(PackPtr, \&Data, \textcolor{keyword}{sizeof}(Data));}
+\DoxyCodeLine{50 \}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_UInt16(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, uint16 Data)}
+\DoxyCodeLine{53 \{}
+\DoxyCodeLine{54     uint16 D = CFE\_MAKE\_BIG16(Data);}
+\DoxyCodeLine{55     \textcolor{keywordflow}{return} Pack\_Data(PackPtr, \&D, \textcolor{keyword}{sizeof}(D));}
+\DoxyCodeLine{56 \}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_UInt32(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, uint32 Data)}
+\DoxyCodeLine{59 \{}
+\DoxyCodeLine{60     uint32 D = CFE\_MAKE\_BIG32(Data);}
+\DoxyCodeLine{61     \textcolor{keywordflow}{return} Pack\_Data(PackPtr, \&D, \textcolor{keyword}{sizeof}(D));}
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_Time(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, OS\_time\_t Data)}
+\DoxyCodeLine{65 \{}
+\DoxyCodeLine{66     OS\_time\_t D;}
+\DoxyCodeLine{67     D.seconds = CFE\_MAKE\_BIG32(Data.seconds);}
+\DoxyCodeLine{68     D.microsecs = CFE\_MAKE\_BIG32(Data.microsecs);}
+\DoxyCodeLine{69     \textcolor{keywordflow}{return} Pack\_Data(PackPtr, \&D, \textcolor{keyword}{sizeof}(D));}
+\DoxyCodeLine{70 \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Pack\_MsgID(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr, CFE\_SB\_MsgId\_t Data)}
+\DoxyCodeLine{73 \{}
+\DoxyCodeLine{74     CFE\_SB\_MsgId\_t D;}
+\DoxyCodeLine{75     D = CFE\_MAKE\_BIG16(Data);}
+\DoxyCodeLine{76     \textcolor{keywordflow}{return} Pack\_Data(PackPtr, \&D, \textcolor{keyword}{sizeof}(D));}
+\DoxyCodeLine{77 \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void} *Pack\_Get(\mbox{\hyperlink{struct_pack__t}{Pack\_t}} *PackPtr)}
+\DoxyCodeLine{80 \{}
+\DoxyCodeLine{81     \textcolor{keywordflow}{return} PackPtr-\/>Buf;}
+\DoxyCodeLine{82 \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{85 \{}
+\DoxyCodeLine{86     \textcolor{keywordtype}{void} *Buf;}
+\DoxyCodeLine{87     \textcolor{keywordtype}{size\_t} Sz, Curr;}
+\DoxyCodeLine{88 \} \mbox{\hyperlink{struct_unpack__t}{Unpack\_t}};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{static} \textcolor{keyword}{inline} \textcolor{keywordtype}{void} Unpack\_Init(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, \textcolor{keywordtype}{void} *Buf, \textcolor{keywordtype}{size\_t} Sz)}
+\DoxyCodeLine{91 \{}
+\DoxyCodeLine{92     Unpack-\/>Buf = Buf; Unpack-\/>Sz = Sz; Unpack-\/>Curr = 0;}
+\DoxyCodeLine{93 \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Unpack\_Data(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, \textcolor{keywordtype}{void} *DataBuf, \textcolor{keywordtype}{size\_t} Sz)}
+\DoxyCodeLine{96 \{}
+\DoxyCodeLine{97     \textcolor{keywordflow}{if}(Unpack-\/>Curr + Sz > Unpack-\/>Sz)}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     memcpy(DataBuf, (uint8 *)Unpack-\/>Buf + Unpack-\/>Curr, Sz);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     Unpack-\/>Curr += Sz;}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{107 \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Unpack\_UInt8(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, uint8 *DataBuf)}
+\DoxyCodeLine{110 \{}
+\DoxyCodeLine{111     \textcolor{keywordflow}{return} Unpack\_Data(Unpack, DataBuf, \textcolor{keyword}{sizeof}(*DataBuf));}
+\DoxyCodeLine{112 \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Unpack\_UInt16(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, uint16 *DataBuf)}
+\DoxyCodeLine{115 \{}
+\DoxyCodeLine{116     uint16 D;}
+\DoxyCodeLine{117     \textcolor{keywordflow}{if} (!Unpack\_Data(Unpack, \&D, \textcolor{keyword}{sizeof}(D)))}
+\DoxyCodeLine{118     \{}
+\DoxyCodeLine{119         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{120     \}}
+\DoxyCodeLine{121     *DataBuf = CFE\_MAKE\_BIG16(D);}
+\DoxyCodeLine{122     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{123 \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Unpack\_UInt32(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, uint32 *DataBuf)}
+\DoxyCodeLine{126 \{}
+\DoxyCodeLine{127     uint32 D;}
+\DoxyCodeLine{128     \textcolor{keywordflow}{if} (!Unpack\_Data(Unpack, \&D, \textcolor{keyword}{sizeof}(D)))}
+\DoxyCodeLine{129     \{}
+\DoxyCodeLine{130         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132     *DataBuf = CFE\_MAKE\_BIG32(D);}
+\DoxyCodeLine{133     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{134 \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{keyword}{static} \textcolor{keyword}{inline} uint32 Unpack\_MsgID(\mbox{\hyperlink{struct_unpack__t}{Unpack\_t}} *Unpack, CFE\_SB\_MsgId\_t *DataBuf)}
+\DoxyCodeLine{137 \{}
+\DoxyCodeLine{138     CFE\_SB\_MsgId\_t D;}
+\DoxyCodeLine{139     \textcolor{keywordflow}{if} (!Unpack\_Data(Unpack, \&D, \textcolor{keyword}{sizeof}(D)))}
+\DoxyCodeLine{140     \{}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{142     \}}
+\DoxyCodeLine{143     *DataBuf = CFE\_MAKE\_BIG16(D);}
+\DoxyCodeLine{144     \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{145 \}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_pack\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

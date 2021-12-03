@@ -1,0 +1,107 @@
+\hypertarget{_guidance_8hpp_source}{}\doxysection{Guidance.\+hpp}
+\label{_guidance_8hpp_source}\index{Modules/Core/Guidance/Guidance.hpp@{Modules/Core/Guidance/Guidance.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef GUIDANCE\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define GUIDANCE\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <Plan.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <Position.h>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <Velocity.h>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <TrajGen.h>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Guidance.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{class_guidance}{Guidance}}\{}
+\DoxyCodeLine{18 \textcolor{keyword}{private}:}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     std::list<larcfm::Plan> planList; }
+\DoxyCodeLine{21     std::map<std::string,int> nextWpId;                    }
+\DoxyCodeLine{22     std::string activePlanId;}
+\DoxyCodeLine{23     std::string prevPlan;}
+\DoxyCodeLine{24     larcfm::Plan* currentPlan;}
+\DoxyCodeLine{25     larcfm::Position currentPos;}
+\DoxyCodeLine{26     larcfm::Velocity currentAirspeed;}
+\DoxyCodeLine{27     larcfm::Velocity currentGroundSpeed;}
+\DoxyCodeLine{28     larcfm::Velocity outputCmd;}
+\DoxyCodeLine{29     GuidanceMode mode;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double} currTime;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{bool} wpReached;}
+\DoxyCodeLine{32     \textcolor{keywordtype}{bool} etaControl;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{bool} inTurn;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double} distH2nextWP;}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double} distV2nextWP;}
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} xtrackDist;}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} prevTrackControllerTime;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} prevTrackControllerTarget;}
+\DoxyCodeLine{39     larcfm::Velocity wind;}
+\DoxyCodeLine{40     }
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{comment}{// Guidance parameters}}
+\DoxyCodeLine{44     \mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}} params;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keywordtype}{double} ComputeOffSetPositionOnPlan(larcfm::Plan* fp,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{double} guidance\_radius,larcfm::Position \&pos);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{comment}{/* }}
+\DoxyCodeLine{49 \textcolor{comment}{     * GetCorrectIntersectionPoint }}
+\DoxyCodeLine{50 \textcolor{comment}{     * Returns the intersection point between a circle of radius r and the line between wpA and wpB }}
+\DoxyCodeLine{51 \textcolor{comment}{     * Assume current position as the origin.}}
+\DoxyCodeLine{52 \textcolor{comment}{     * wpA and wpB are defined with respect to the current position.}}
+\DoxyCodeLine{53 \textcolor{comment}{    */}}
+\DoxyCodeLine{54     larcfm::Vect3 GetCorrectIntersectionPoint(\textcolor{keyword}{const} larcfm::Vect3 \&wpA,\textcolor{keyword}{const} larcfm::Vect3 \&wpB,\textcolor{keyword}{const} \textcolor{keywordtype}{double} r);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{double} distance(\textcolor{keywordtype}{double} x1,\textcolor{keywordtype}{double} y1,\textcolor{keywordtype}{double} x2,\textcolor{keywordtype}{double} y2);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{keywordtype}{double} ComputeSpeed();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{double} ComputeClimbRate(\textcolor{keywordtype}{double} speedRef);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{double} ComputeNewHeading(\textcolor{keywordtype}{double}\& speedRef);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \textcolor{keywordtype}{double} ConstrainTurnRate(\textcolor{keywordtype}{double} targetHeading,\textcolor{keywordtype}{double} maxTurnRate);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     \textcolor{keywordtype}{double} GetApproachPrecision(\textcolor{keyword}{const} larcfm::Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}},\textcolor{keyword}{const} larcfm::Velocity \&velocity, \textcolor{keyword}{const} larcfm::Position \&waypoint);}
+\DoxyCodeLine{67     larcfm::Plan* GetPlan(\textcolor{keyword}{const} std::string \&plan\_id);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \textcolor{keywordtype}{void} FilterCommand(\textcolor{keywordtype}{double} \&refHeading, \textcolor{keywordtype}{double} \&refSpeed, \textcolor{keywordtype}{double} \&refVS);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{void} ComputePlanGuidance();}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keywordtype}{void} CheckWaypointArrival();}
+\DoxyCodeLine{74 \textcolor{keyword}{public}:}
+\DoxyCodeLine{75     \mbox{\hyperlink{class_guidance}{Guidance}}(\textcolor{keyword}{const} std::string config);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{void} ReadParamFromFile(std::string config);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keywordtype}{void} SetGuidanceParams(\textcolor{keyword}{const} \mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}* params);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{void} SetAircraftState(\textcolor{keyword}{const} larcfm::Position \&pos,\textcolor{keyword}{const} larcfm::Velocity \&groundSpeed);}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     \textcolor{keywordtype}{void} SetWindData(\textcolor{keyword}{const} \textcolor{keywordtype}{double} windFrom,\textcolor{keyword}{const} \textcolor{keywordtype}{double} windSpeed);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{keywordtype}{void} InputFlightplanData(\textcolor{keyword}{const} std::string \&plan\_id,\textcolor{keyword}{const} std::list<waypoint\_t> \&waypoints,}
+\DoxyCodeLine{86                             \textcolor{keyword}{const} \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} repair,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{keywordtype}{int} RunGuidance(\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{89     }
+\DoxyCodeLine{90     \textcolor{keywordtype}{void} SetGuidanceMode(\textcolor{keyword}{const} GuidanceMode mode,\textcolor{keyword}{const} std::string planID,\textcolor{keyword}{const} \textcolor{keywordtype}{int} nextWP,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} eta);}
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} ChangeWaypointAlt(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} wpID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} value,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} ChangeWaypointSpeed(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} wpID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{93     \textcolor{keywordtype}{void} ChangeWaypointETA(\textcolor{keyword}{const} std::string planID,\textcolor{keyword}{const} \textcolor{keywordtype}{int} wpID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} value,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} SetVelocityCommands(\textcolor{keyword}{const} larcfm::Velocity \&inputs);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} GetOutput(\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}}\& output);}
+\DoxyCodeLine{97     \textcolor{keywordtype}{int} GetWaypoint(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id},\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} \&wp);}
+\DoxyCodeLine{98 \};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

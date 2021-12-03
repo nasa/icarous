@@ -1,0 +1,59 @@
+\hypertarget{_traffic_monitor_8hpp_source}{}\doxysection{Traffic\+Monitor.\+hpp}
+\label{_traffic_monitor_8hpp_source}\index{Modules/Core/TrafficMonitor/TrafficMonitor.hpp@{Modules/Core/TrafficMonitor/TrafficMonitor.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{//}}
+\DoxyCodeLine{2 \textcolor{comment}{// Created by Swee Balachandran on 12/15/17.}}
+\DoxyCodeLine{3 \textcolor{comment}{//}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifndef TRAFFICMONITOR\_H}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#define TRAFFICMONITOR\_H}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <Position.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <Velocity.h>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <Core/Interfaces/Interfaces.h>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{15     std::string \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{16     \textcolor{keywordtype}{int} source;}
+\DoxyCodeLine{17     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{double} time;}
+\DoxyCodeLine{19     larcfm::Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};}
+\DoxyCodeLine{20     larcfm::Velocity velocity;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{double} posSigma[6];}
+\DoxyCodeLine{22     \textcolor{keywordtype}{double} velSigma[6];}
+\DoxyCodeLine{23 \}\mbox{\hyperlink{structobject}{object}};}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{class_traffic_monitor}{TrafficMonitor}}\{}
+\DoxyCodeLine{26   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{27     std::map<std::string,object> trafficList;}
+\DoxyCodeLine{28     larcfm::Position position;}
+\DoxyCodeLine{29     larcfm::Velocity velocity;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double} elapsedTime;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double} posSigma[6];}
+\DoxyCodeLine{32     \textcolor{keywordtype}{double} velSigma[6];}
+\DoxyCodeLine{33   \textcolor{keyword}{public}:}
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} InputIntruderData(\textcolor{keyword}{const} \textcolor{keywordtype}{object} obj)\{trafficList[obj.callsign] = obj; \textcolor{keywordflow}{return} trafficList.size();\}}
+\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} InputOwnshipData(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} larcfm::Velocity vel,\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} sigPos[6],\textcolor{keywordtype}{double} sigVel[6])\{}
+\DoxyCodeLine{36         \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}} = pos; velocity = vel; elapsedTime = time; }
+\DoxyCodeLine{37         std::memcpy(posSigma,sigPos,\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*6);}
+\DoxyCodeLine{38         std::memcpy(velSigma,sigVel,\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*6);}
+\DoxyCodeLine{39     \}}
+\DoxyCodeLine{40     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} MonitorTraffic(larcfm::Velocity windfrom)=0;}
+\DoxyCodeLine{41     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed) = 0;}
+\DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} UpdateParameters(std::string params) = 0;}
+\DoxyCodeLine{43     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} GetTrafficAlerts(\textcolor{keywordtype}{int} index,std::string\& trafficID,\textcolor{keywordtype}{int}\& alertLevel)=0;}
+\DoxyCodeLine{44     \textcolor{keyword}{virtual} bands\_t GetTrackBands(\textcolor{keywordtype}{void}) = 0;}
+\DoxyCodeLine{45     \textcolor{keyword}{virtual} bands\_t GetSpeedBands(\textcolor{keywordtype}{void}) = 0;}
+\DoxyCodeLine{46     \textcolor{keyword}{virtual} bands\_t GetAltBands(\textcolor{keywordtype}{void}) = 0;}
+\DoxyCodeLine{47     \textcolor{keyword}{virtual} bands\_t GetVerticalSpeedBands(\textcolor{keywordtype}{void}) = 0;}
+\DoxyCodeLine{48 \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//TRAFFICMONITOR\_H}}
+
+\end{DoxyCode}

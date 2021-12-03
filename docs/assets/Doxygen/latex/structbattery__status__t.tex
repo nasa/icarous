@@ -1,0 +1,102 @@
+\hypertarget{structbattery__status__t}{}\doxysection{battery\+\_\+status\+\_\+t Struct Reference}
+\label{structbattery__status__t}\index{battery\_status\_t@{battery\_status\_t}}
+
+
+Message containing battery status.  
+
+
+
+
+{\ttfamily \#include $<$Icarous\+\_\+msg.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structbattery__status__t_aac7e2fa7c18694e2fff2c10b42805521}{Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structbattery__status__t_a5e6bbf2dbe3df596083d7816aec3c7fb}{id}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structbattery__status__t_a7478afa3c1f06d74ce7b66da0822d452}{battery\+\_\+function}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structbattery__status__t_a44120f3b658f74c2b74d7b12f36715b1}{type}}
+\item 
+int16\+\_\+t \mbox{\hyperlink{structbattery__status__t_aee8d0a49c89678c3572fbcedf9b6377d}{temperature}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structbattery__status__t_a935eee219cd70caf37da8a521b5ce2a0}{voltages}} \mbox{[}10\mbox{]}
+\item 
+int16\+\_\+t \mbox{\hyperlink{structbattery__status__t_aa0d64ad67969d247cfdc948d889f2e11}{current\+\_\+battery}}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structbattery__status__t_a22b9ff97460844b94104a47b925ca933}{current\+\_\+consumed}}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structbattery__status__t_aae303188e983f15b65b05a8af2cac6d9}{energy\+\_\+consumed}}
+\item 
+int8\+\_\+t \mbox{\hyperlink{structbattery__status__t_aca0e791da5afbaf7248077d36120b2ff}{battery\+\_\+remaining}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structbattery__status__t_a7478afa3c1f06d74ce7b66da0822d452}\label{structbattery__status__t_a7478afa3c1f06d74ce7b66da0822d452}} 
+\index{battery\_status\_t@{battery\_status\_t}!battery\_function@{battery\_function}}
+\index{battery\_function@{battery\_function}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{battery\_function}{battery\_function}}
+{\footnotesize\ttfamily uint8\+\_\+t battery\+\_\+status\+\_\+t\+::battery\+\_\+function}
+
+function of the battery \mbox{\Hypertarget{structbattery__status__t_aca0e791da5afbaf7248077d36120b2ff}\label{structbattery__status__t_aca0e791da5afbaf7248077d36120b2ff}} 
+\index{battery\_status\_t@{battery\_status\_t}!battery\_remaining@{battery\_remaining}}
+\index{battery\_remaining@{battery\_remaining}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{battery\_remaining}{battery\_remaining}}
+{\footnotesize\ttfamily int8\+\_\+t battery\+\_\+status\+\_\+t\+::battery\+\_\+remaining}
+
+remaining energy, \mbox{[}0-\/100\mbox{]}\%, -\/1 means autopilot does not provide \mbox{\Hypertarget{structbattery__status__t_aa0d64ad67969d247cfdc948d889f2e11}\label{structbattery__status__t_aa0d64ad67969d247cfdc948d889f2e11}} 
+\index{battery\_status\_t@{battery\_status\_t}!current\_battery@{current\_battery}}
+\index{current\_battery@{current\_battery}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{current\_battery}{current\_battery}}
+{\footnotesize\ttfamily int16\+\_\+t battery\+\_\+status\+\_\+t\+::current\+\_\+battery}
+
+battery current in cA, -\/1 means autopilot does not measure current \mbox{\Hypertarget{structbattery__status__t_a22b9ff97460844b94104a47b925ca933}\label{structbattery__status__t_a22b9ff97460844b94104a47b925ca933}} 
+\index{battery\_status\_t@{battery\_status\_t}!current\_consumed@{current\_consumed}}
+\index{current\_consumed@{current\_consumed}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{current\_consumed}{current\_consumed}}
+{\footnotesize\ttfamily int32\+\_\+t battery\+\_\+status\+\_\+t\+::current\+\_\+consumed}
+
+consumed charge in m\+Ah, -\/1 means autopilot does not provide \mbox{\Hypertarget{structbattery__status__t_aae303188e983f15b65b05a8af2cac6d9}\label{structbattery__status__t_aae303188e983f15b65b05a8af2cac6d9}} 
+\index{battery\_status\_t@{battery\_status\_t}!energy\_consumed@{energy\_consumed}}
+\index{energy\_consumed@{energy\_consumed}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{energy\_consumed}{energy\_consumed}}
+{\footnotesize\ttfamily int32\+\_\+t battery\+\_\+status\+\_\+t\+::energy\+\_\+consumed}
+
+consumed energy in hJ, -\/1 means autopilot does not provide \mbox{\Hypertarget{structbattery__status__t_a5e6bbf2dbe3df596083d7816aec3c7fb}\label{structbattery__status__t_a5e6bbf2dbe3df596083d7816aec3c7fb}} 
+\index{battery\_status\_t@{battery\_status\_t}!id@{id}}
+\index{id@{id}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily uint8\+\_\+t battery\+\_\+status\+\_\+t\+::id}
+
+battery id \mbox{\Hypertarget{structbattery__status__t_aee8d0a49c89678c3572fbcedf9b6377d}\label{structbattery__status__t_aee8d0a49c89678c3572fbcedf9b6377d}} 
+\index{battery\_status\_t@{battery\_status\_t}!temperature@{temperature}}
+\index{temperature@{temperature}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{temperature}{temperature}}
+{\footnotesize\ttfamily int16\+\_\+t battery\+\_\+status\+\_\+t\+::temperature}
+
+Temperature of the battery in deg C, INT16\+\_\+\+MAX for unknown \mbox{\Hypertarget{structbattery__status__t_aac7e2fa7c18694e2fff2c10b42805521}\label{structbattery__status__t_aac7e2fa7c18694e2fff2c10b42805521}} 
+\index{battery\_status\_t@{battery\_status\_t}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}}
+{\footnotesize\ttfamily uint8\+\_\+t battery\+\_\+status\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{structbattery__status__t_a44120f3b658f74c2b74d7b12f36715b1}\label{structbattery__status__t_a44120f3b658f74c2b74d7b12f36715b1}} 
+\index{battery\_status\_t@{battery\_status\_t}!type@{type}}
+\index{type@{type}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily uint8\+\_\+t battery\+\_\+status\+\_\+t\+::type}
+
+type (chemistry) of battery \mbox{\Hypertarget{structbattery__status__t_a935eee219cd70caf37da8a521b5ce2a0}\label{structbattery__status__t_a935eee219cd70caf37da8a521b5ce2a0}} 
+\index{battery\_status\_t@{battery\_status\_t}!voltages@{voltages}}
+\index{voltages@{voltages}!battery\_status\_t@{battery\_status\_t}}
+\doxysubsubsection{\texorpdfstring{voltages}{voltages}}
+{\footnotesize\ttfamily uint16\+\_\+t battery\+\_\+status\+\_\+t\+::voltages\mbox{[}10\mbox{]}}
+
+voltage of battery cells in mV, cells above cell count = UINT16\+\_\+\+MAX 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/\+Icarouslib/fsw/platform\+\_\+inc/\mbox{\hyperlink{_icarous__msg_8h}{Icarous\+\_\+msg.\+h}}\end{DoxyCompactItemize}

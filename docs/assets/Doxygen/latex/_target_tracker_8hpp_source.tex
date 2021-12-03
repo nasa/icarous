@@ -1,0 +1,73 @@
+\hypertarget{_target_tracker_8hpp_source}{}\doxysection{Target\+Tracker.\+hpp}
+\label{_target_tracker_8hpp_source}\index{Modules/Core/TargetTracker/TargetTracker.hpp@{Modules/Core/TargetTracker/TargetTracker.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef SENSOR\_FUSION\_HPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define SENSOR\_FUSION\_HPP}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <cstring>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <Projection.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <EuclideanProjection.h>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <Position.h>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <Core/Interfaces/Interfaces.h>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} std::array<std::array<double,3>,3> matrix3x3;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{18     std::string \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{19     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{20     \textcolor{keywordtype}{double} time;}
+\DoxyCodeLine{21     \textcolor{keywordtype}{double} lastUpdate;}
+\DoxyCodeLine{22     larcfm::Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};}
+\DoxyCodeLine{23     larcfm::Velocity velocity;}
+\DoxyCodeLine{24     larcfm::Vect3 locPos;}
+\DoxyCodeLine{25     \textcolor{keywordtype}{double} sigmaP[6];}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double} sigmaV[6];}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} sigma[36];}
+\DoxyCodeLine{28 \}\mbox{\hyperlink{structmeasurement}{measurement}};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{class }\mbox{\hyperlink{class_target_tracker}{TargetTracker}}\{}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keyword}{private}:}
+\DoxyCodeLine{34        std::string \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{35        std::ofstream logFile;}
+\DoxyCodeLine{36        \textcolor{keywordtype}{bool} log;}
+\DoxyCodeLine{37        \textcolor{keywordtype}{double} timeout;}
+\DoxyCodeLine{38        \textcolor{keywordtype}{double} modelUncertaintyP[6];}
+\DoxyCodeLine{39        \textcolor{keywordtype}{double} modelUncertaintyV[6];}
+\DoxyCodeLine{40        \textcolor{keywordtype}{double} pThreshold;}
+\DoxyCodeLine{41        \textcolor{keywordtype}{double} vThreshold;}
+\DoxyCodeLine{42        larcfm::Position homePos;}
+\DoxyCodeLine{43        \mbox{\hyperlink{structmeasurement}{measurement}} currentState;}
+\DoxyCodeLine{44        std::vector<measurement> tracks;        }
+\DoxyCodeLine{45        larcfm::EuclideanProjection proj;}
+\DoxyCodeLine{46        \textcolor{keywordtype}{int} CheckValidationGate(\mbox{\hyperlink{structmeasurement}{measurement}}\& data);}
+\DoxyCodeLine{47        \textcolor{keywordtype}{void} UpdateEstimate(\mbox{\hyperlink{structmeasurement}{measurement}}\& prediction,\mbox{\hyperlink{structmeasurement}{measurement}}\& value,\textcolor{keywordtype}{double} time=0);}
+\DoxyCodeLine{48        \textcolor{keywordtype}{int} totalTracks;}
+\DoxyCodeLine{49        \textcolor{keywordtype}{double} prevLogTime;}
+\DoxyCodeLine{50     \textcolor{keyword}{public}:}
+\DoxyCodeLine{51         }
+\DoxyCodeLine{52        \mbox{\hyperlink{class_target_tracker}{TargetTracker}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string configFile);}
+\DoxyCodeLine{53        \textcolor{keywordtype}{void} ReadParamFromFile(std::string configFile);}
+\DoxyCodeLine{54        \textcolor{keywordtype}{void} SetHomePosition(larcfm::Position\& home);}
+\DoxyCodeLine{55        \textcolor{keywordtype}{void} SetGateThresholds(\textcolor{keywordtype}{double} p, \textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{56        \textcolor{keywordtype}{void} UpdatePredictions(\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{57        \textcolor{keywordtype}{void} SetModelUncertainty(\textcolor{keywordtype}{double} sigmaP[6],\textcolor{keywordtype}{double} sigmaV[6]);}
+\DoxyCodeLine{58        \textcolor{keywordtype}{void} InputCurrentState(\textcolor{keywordtype}{double} time,larcfm::Position\& pos,larcfm::Velocity\& vel,\textcolor{keywordtype}{double} sigmaP[6],\textcolor{keywordtype}{double} sigmaV[6]);}
+\DoxyCodeLine{59        \textcolor{keywordtype}{void} InputMeasurement(\mbox{\hyperlink{structmeasurement}{measurement}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{60        \textcolor{keywordtype}{int} GetTotalTraffic();}
+\DoxyCodeLine{61        \mbox{\hyperlink{structmeasurement}{measurement}} GetIntruderData(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{62        \mbox{\hyperlink{structmeasurement}{measurement}} GetData(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

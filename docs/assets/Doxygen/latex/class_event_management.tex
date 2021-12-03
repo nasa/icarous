@@ -1,0 +1,98 @@
+\hypertarget{class_event_management}{}\doxysection{Event\+Management\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{class_event_management}\index{EventManagement$<$ T $>$@{EventManagement$<$ T $>$}}
+
+
+Event Management class.  
+
+
+
+
+{\ttfamily \#include $<$Event\+Manager.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}{Add\+Event\+Handler}} (std\+::string event\+Name, int priority, std\+::function$<$ bool(T $\ast$)$>$ monitor\+Func, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$ event\+Handler=nullptr)
+\begin{DoxyCompactList}\small\item\em Add a trigger and attach a corresponding event handler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_event_management_a9f12284c53782acdc62b784d4188f055}{Run\+Event\+Monitors}} (T $\ast$)
+\begin{DoxyCompactList}\small\item\em Check all the trigger functions fo active triggers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_event_management_aabb3f062c47e9eb5f81c66ee847083de}{Run\+Event\+Handlers}} (T $\ast$)
+\begin{DoxyCompactList}\small\item\em Execute active handlers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_management_a96286032040430816ae68d68b1235abb}\label{class_event_management_a96286032040430816ae68d68b1235abb}} 
+void {\bfseries Run} (T $\ast$)
+\begin{DoxyCompactList}\small\item\em Run event management. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}{Reset}} ()
+\begin{DoxyCompactList}\small\item\em Reset all triggers and handlers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Event\+Management$<$ T $>$}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}\label{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}} 
+\index{EventManagement$<$ T $>$@{EventManagement$<$ T $>$}!AddEventHandler@{AddEventHandler}}
+\index{AddEventHandler@{AddEventHandler}!EventManagement$<$ T $>$@{EventManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AddEventHandler()}{AddEventHandler()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_event_management}{Event\+Management}}$<$ T $>$\+::Add\+Event\+Handler (\begin{DoxyParamCaption}\item[{std\+::string}]{event\+Name,  }\item[{int}]{priority,  }\item[{std\+::function$<$ bool(T $\ast$)$>$}]{monitor\+Func,  }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$}]{event\+Handler = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Name} & name of event \\
+\hline
+{\em priority} & priorit associated with event \\
+\hline
+{\em monitor\+Func} & trigger function \\
+\hline
+{\em event\+Handler} & handler to be fired when trigger is activated \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}\label{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}} 
+\index{EventManagement$<$ T $>$@{EventManagement$<$ T $>$}!Reset@{Reset}}
+\index{Reset@{Reset}!EventManagement$<$ T $>$@{EventManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Reset()}{Reset()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_event_management}{Event\+Management}}$<$ T $>$\+::Reset}
+
+clear all handlers from priority queue\mbox{\Hypertarget{class_event_management_aabb3f062c47e9eb5f81c66ee847083de}\label{class_event_management_aabb3f062c47e9eb5f81c66ee847083de}} 
+\index{EventManagement$<$ T $>$@{EventManagement$<$ T $>$}!RunEventHandlers@{RunEventHandlers}}
+\index{RunEventHandlers@{RunEventHandlers}!EventManagement$<$ T $>$@{EventManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{RunEventHandlers()}{RunEventHandlers()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_event_management}{Event\+Management}}$<$ T $>$\+::Run\+Event\+Handlers (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})}
+
+If this handler is just starting, make sure the trigger is still true. If trigger is false, remove handler
+
+Elevate priority to ensure this handler continues to execute on the next cycle in case there is another equal priority handler
+
+Upon termination, restore priority
+
+Add any children spawned by the current handler to the queue\mbox{\Hypertarget{class_event_management_a9f12284c53782acdc62b784d4188f055}\label{class_event_management_a9f12284c53782acdc62b784d4188f055}} 
+\index{EventManagement$<$ T $>$@{EventManagement$<$ T $>$}!RunEventMonitors@{RunEventMonitors}}
+\index{RunEventMonitors@{RunEventMonitors}!EventManagement$<$ T $>$@{EventManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{RunEventMonitors()}{RunEventMonitors()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_event_management}{Event\+Management}}$<$ T $>$\+::Run\+Event\+Monitors (\begin{DoxyParamCaption}\item[{T $\ast$}]{state }\end{DoxyParamCaption})}
+
+Run the event monitor
+
+If the event is true
+
+Check if the event handler for this event is currently being executed
+
+If the event handler is not part of active handlers, add to active handlers
+
+Get currently executing handler
+
+If the newly added handler takes more priority, stop the previous handler
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+Core/\+Event\+Manager/\mbox{\hyperlink{_event_manager_8hpp}{Event\+Manager.\+hpp}}\end{DoxyCompactItemize}

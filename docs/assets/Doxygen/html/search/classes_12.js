@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vfrhud_5ft',['vfrhud_t',['../structvfrhud__t.html',1,'vfrhud_t'],['../structvfrHud__t.html',1,'vfrHud_t']]]
+  ['waypoint_5ft_0',['waypoint_t',['../structwaypoint__t.html',1,'']]]
 ];

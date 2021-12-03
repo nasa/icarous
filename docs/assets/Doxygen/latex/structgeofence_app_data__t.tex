@@ -1,0 +1,70 @@
+\hypertarget{structgeofence_app_data__t}{}\doxysection{geofence\+App\+Data\+\_\+t Struct Reference}
+\label{structgeofence_app_data__t}\index{geofenceAppData\_t@{geofenceAppData\_t}}
+
+
+Struct to hold geofence app data.  
+
+
+
+
+{\ttfamily \#include $<$geofence.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a2f0885b92fa1cbabe347dad44e81ce53}\label{structgeofence_app_data__t_a2f0885b92fa1cbabe347dad44e81ce53}} 
+CFE\+\_\+\+SB\+\_\+\+Pipe\+Id\+\_\+t {\bfseries Geofence\+\_\+\+Pipe}
+\begin{DoxyCompactList}\small\item\em Pipe variable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a79f7ef9d94ec6a0e1095ced52609becb}\label{structgeofence_app_data__t_a79f7ef9d94ec6a0e1095ced52609becb}} 
+CFE\+\_\+\+SB\+\_\+\+Msg\+Ptr\+\_\+t {\bfseries Geofence\+\_\+\+Msg\+Ptr}
+\begin{DoxyCompactList}\small\item\em Pointer to SB message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a1c9c82096ebe0027f31930282dc27510}\label{structgeofence_app_data__t_a1c9c82096ebe0027f31930282dc27510}} 
+CFE\+\_\+\+TBL\+\_\+\+Handle\+\_\+t {\bfseries Geofence\+\_\+tbl\+Handle}
+\begin{DoxyCompactList}\small\item\em Table handle. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a8eb448835258c7a7ed47cf27835e50c4}\label{structgeofence_app_data__t_a8eb448835258c7a7ed47cf27835e50c4}} 
+void $\ast$ {\bfseries gf\+Monitor}
+\begin{DoxyCompactList}\small\item\em Opaque pointer to \mbox{\hyperlink{class_geofence_monitor}{Geofence\+Monitor}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a937ebee8b16adaf0ae3e24fd5edf88c7}\label{structgeofence_app_data__t_a937ebee8b16adaf0ae3e24fd5edf88c7}} 
+double {\bfseries position} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Current lat\mbox{[}deg\mbox{]}, lon\mbox{[}deg\mbox{]}, alt\mbox{[}m\mbox{]} position. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a94aa045d428cef3b4c9c82ac61d7d5f2}\label{structgeofence_app_data__t_a94aa045d428cef3b4c9c82ac61d7d5f2}} 
+double {\bfseries velocity} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Current velocity\+: trk (deg), ground speed (m/s) and vertical speed (m/s) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_aeac0b3c2abc888f7b8e7c4a58caece3c}\label{structgeofence_app_data__t_aeac0b3c2abc888f7b8e7c4a58caece3c}} 
+geofence\+Conflict\+\_\+t {\bfseries gf\+Conflict\+Data}
+\begin{DoxyCompactList}\small\item\em Geofence conflict. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_acfccd1411fe765fb78f93e9265b167cd}\label{structgeofence_app_data__t_acfccd1411fe765fb78f93e9265b167cd}} 
+\mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} {\bfseries flightplan1}
+\begin{DoxyCompactList}\small\item\em Primary Flight plan to monitor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a66c2519044e26c0b7f7ed5f3bf71b7a3}\label{structgeofence_app_data__t_a66c2519044e26c0b7f7ed5f3bf71b7a3}} 
+\mbox{\hyperlink{structflightplan__t}{flightplan\+\_\+t}} {\bfseries flightplan2}
+\begin{DoxyCompactList}\small\item\em Secondary Flight plan to monitor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a1c3be2a94524af2b5e5802ad06141313}\label{structgeofence_app_data__t_a1c3be2a94524af2b5e5802ad06141313}} 
+uint16\+\_\+t {\bfseries num\+Fences}
+\begin{DoxyCompactList}\small\item\em Number of fnces. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a1b3bfa70e87990a46b473ca50ab1d030}\label{structgeofence_app_data__t_a1b3bfa70e87990a46b473ca50ab1d030}} 
+bool {\bfseries received\+FP1}
+\begin{DoxyCompactList}\small\item\em Monitor flag for flight plan 1. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a151af8ea882e169cd3e68b60b5435ece}\label{structgeofence_app_data__t_a151af8ea882e169cd3e68b60b5435ece}} 
+bool {\bfseries received\+FP2}
+\begin{DoxyCompactList}\small\item\em Monitor flag for flight plan 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a3a8bfe9115b4b1936416f36269cd20ca}\label{structgeofence_app_data__t_a3a8bfe9115b4b1936416f36269cd20ca}} 
+bool {\bfseries received\+Fence}
+\begin{DoxyCompactList}\small\item\em Flag indicating fence received. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a1531d00f50bde0f2d34e782d629479de}\label{structgeofence_app_data__t_a1531d00f50bde0f2d34e782d629479de}} 
+bool {\bfseries waypoint\+Conflict1} \mbox{[}50\mbox{]}
+\begin{DoxyCompactList}\small\item\em Geofence conflict for each waypoint in mission flight plan. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a4605f13013813389f03f75225263cf75}\label{structgeofence_app_data__t_a4605f13013813389f03f75225263cf75}} 
+bool {\bfseries direct\+Path\+To\+WP1} \mbox{[}50\mbox{]}
+\begin{DoxyCompactList}\small\item\em Flag indicating if direct path to waypoint exists. Array index identifies the waypoint index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_adbc892a79d751c2682f56a00f8b5da52}\label{structgeofence_app_data__t_adbc892a79d751c2682f56a00f8b5da52}} 
+bool {\bfseries waypoint\+Conflict2} \mbox{[}50\mbox{]}
+\begin{DoxyCompactList}\small\item\em Geofence conflict for each waypoint in mission flight plan. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structgeofence_app_data__t_a47ecb7db6d53d4c3b9b7c1e34edd43f0}\label{structgeofence_app_data__t_a47ecb7db6d53d4c3b9b7c1e34edd43f0}} 
+bool {\bfseries direct\+Path\+To\+WP2} \mbox{[}50\mbox{]}
+\begin{DoxyCompactList}\small\item\em Flag indicating if direct path to waypoint exists. Array index identifies the waypoint index. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/geofence/fsw/src/\mbox{\hyperlink{geofence_8h}{geofence.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,52 @@
+\hypertarget{traffic__msg_8h}{}\doxysection{apps/traffic/fsw/platform\+\_\+inc/traffic\+\_\+msg.h File Reference}
+\label{traffic__msg_8h}\index{apps/traffic/fsw/platform\_inc/traffic\_msg.h@{apps/traffic/fsw/platform\_inc/traffic\_msg.h}}
+
+
+Traffic message definition.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stdbool.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Icarous\+\_\+msg.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structband__report__t}{band\+\_\+report\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em kinematics bands report \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtraffic__alerts__t}{traffic\+\_\+alerts\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structcheck_turn_safety__t}{check\+Turn\+Safety\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Message used to request/respond to check if a turn from heading A to heading B is safe. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtraffic__parameters__t}{traffic\+\_\+parameters\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em parameters used by the traffic application \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{traffic__msg_8h_ac36e9c4511198992b8a93fe52819a9f9}\label{traffic__msg_8h_ac36e9c4511198992b8a93fe52819a9f9}} 
+\#define {\bfseries MAX\+\_\+\+TRAFFIC\+\_\+\+ALERTS}~10
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}{Region}} \{ \newline
+{\bfseries UNKNOWN}
+, {\bfseries NONE}
+, {\bfseries FAR}
+, {\bfseries MID}
+, \newline
+{\bfseries NEAR}
+, {\bfseries RECOVERY}
+, {\bfseries END\+\_\+\+OF\+\_\+\+REGION}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}\label{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}} 
+\index{traffic\_msg.h@{traffic\_msg.h}!Region@{Region}}
+\index{Region@{Region}!traffic\_msg.h@{traffic\_msg.h}}
+\doxysubsubsection{\texorpdfstring{Region}{Region}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}{Region}}}
+
+Defines the band types 

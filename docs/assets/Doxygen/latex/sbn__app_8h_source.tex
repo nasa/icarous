@@ -1,0 +1,119 @@
+\hypertarget{sbn__app_8h_source}{}\doxysection{sbn\+\_\+app.\+h}
+\label{sbn__app_8h_source}\index{apps/SBN/fsw/src/sbn\_app.h@{apps/SBN/fsw/src/sbn\_app.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: sbn\_app.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**      Copyright (c) 2004-\/2006, United States government as represented by the}}
+\DoxyCodeLine{5 \textcolor{comment}{**      administrator of the National Aeronautics Space Administration.}}
+\DoxyCodeLine{6 \textcolor{comment}{**      All rights reserved. This software(cFE) was created at NASA's Goddard}}
+\DoxyCodeLine{7 \textcolor{comment}{**      Space Flight Center pursuant to government contracts.}}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{**      This software may be used only pursuant to a United States government}}
+\DoxyCodeLine{10 \textcolor{comment}{**      sponsored project and the United States government may not be charged}}
+\DoxyCodeLine{11 \textcolor{comment}{**      for use thereof.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{14 \textcolor{comment}{**      This header file contains prototypes for private functions and type}}
+\DoxyCodeLine{15 \textcolor{comment}{**      definitions for the Software Bus Network Application.}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Authors:   J. Wilmot/GSFC Code582}}
+\DoxyCodeLine{18 \textcolor{comment}{**            R. McGraw/SSI}}
+\DoxyCodeLine{19 \textcolor{comment}{**            C. Knight/ARC Code TI}}
+\DoxyCodeLine{20 \textcolor{comment}{**}}
+\DoxyCodeLine{21 \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#ifndef \_sbn\_app\_}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define \_sbn\_app\_}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <network\_includes.h>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <errno.h>}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}osconfig.h"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}sbn\_version.h"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}sbn\_interfaces.h"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include "{}sbn\_msg.h"{}}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include "{}sbn\_platform\_cfg.h"{}}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include "{}sbn\_tbl.h"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include "{}cfe\_sb\_msg.h"{}}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include "{}cfe\_sb.h"{}}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include "{}sbn\_msgids.h"{}}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include "{}sbn\_cmds.h"{}}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include "{}sbn\_subs.h"{}}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include "{}sbn\_main\_events.h"{}}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include "{}sbn\_perfids.h"{}}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include "{}sbn\_types.h"{}}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#include "{}cfe\_platform\_cfg.h"{}}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#ifndef SBN\_TLM\_MID}}
+\DoxyCodeLine{49 \textcolor{comment}{/* backwards compatability in case you're using a MID generator */}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define SBN\_TLM\_MID SBN\_HK\_TLM\_MID}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SBN\_TLM\_MID */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */}}
+\DoxyCodeLine{54 \textcolor{comment}{/*                                                                 */}}
+\DoxyCodeLine{55 \textcolor{comment}{/* SBN application data structures                                 */}}
+\DoxyCodeLine{56 \textcolor{comment}{/*                                                                 */}}
+\DoxyCodeLine{57 \textcolor{comment}{/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keywordtype}{void} SBN\_ShowPeerData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{60 int32 SBN\_GetPeerFileData(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{void} SBN\_RecvNetMsgs(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keywordtype}{void} SBN\_CheckPeerPipes(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{70 \{}
+\DoxyCodeLine{71     SBN\_NetIdx\_t NetCnt;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74     \mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} Nets[SBN\_MAX\_NETS];}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{77     CFE\_ES\_AppID\_t \mbox{\hyperlink{struct_s_b_n___app__t_ab3b84870a2379fcd39e87a9d4e5eb9ca}{AppID}};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{80     \textcolor{keywordtype}{char} App\_FullName[(OS\_MAX\_API\_NAME * 2)];}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{85     CFE\_SB\_PipeId\_t \mbox{\hyperlink{struct_s_b_n___app__t_a9acca7a96402db89c94ce08b934c3165}{SubPipe}};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90     CFE\_SB\_PipeId\_t \mbox{\hyperlink{struct_s_b_n___app__t_a7fa877f3eafa5df20302a6e29c3ad01c}{CmdPipe}};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95     SBN\_SubCnt\_t \mbox{\hyperlink{struct_s_b_n___app__t_ac7a4d1119d6b1129d90bdf666ede5c51}{SubCnt}};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{104     \mbox{\hyperlink{struct_s_b_n___subs__t}{SBN\_Subs\_t}} Subs[SBN\_MAX\_SUBS\_PER\_PEER + 1];}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{107     CFE\_SB\_PipeId\_t \mbox{\hyperlink{struct_s_b_n___app__t_a43c8cd26346e6c51dff9724f2d55e249}{SchPipe}};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{113     \mbox{\hyperlink{struct_s_b_n___if_ops__s}{SBN\_IfOps\_t}} *IfOps[SBN\_MAX\_MOD\_CNT];}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{116     CFE\_ES\_ModuleID\_t ProtocolModules[SBN\_MAX\_MOD\_CNT];}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{119     CFE\_ES\_ModuleID\_t FilterModules[SBN\_MAX\_MOD\_CNT];}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121     \mbox{\hyperlink{struct_s_b_n___conf_tbl__t}{SBN\_ConfTbl\_t}} *ConfTbl;}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{124     CFE\_ES\_MutexID\_t \mbox{\hyperlink{struct_s_b_n___app__t_a6882bfbe23442831612fcba13c153f23}{SendMutex}};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     SBN\_HKTlm\_t CmdCnt, CmdErrCnt;}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     CFE\_TBL\_Handle\_t ConfTblHandle;}
+\DoxyCodeLine{129 \} \mbox{\hyperlink{struct_s_b_n___app__t}{SBN\_App\_t}};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{134 \textcolor{keyword}{extern} \mbox{\hyperlink{struct_s_b_n___app__t}{SBN\_App\_t}} SBN;}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{/*}}
+\DoxyCodeLine{137 \textcolor{comment}{** Prototypes}}
+\DoxyCodeLine{138 \textcolor{comment}{*/}}
+\DoxyCodeLine{139 \textcolor{keywordtype}{void} SBN\_AppMain(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{140 \textcolor{keywordtype}{void} SBN\_ProcessNetMsg(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, SBN\_MsgType\_t MsgType,}
+\DoxyCodeLine{141     CFE\_ProcessorID\_t ProcessorID, SBN\_MsgSz\_t MsgSz, \textcolor{keywordtype}{void} *Msg);}
+\DoxyCodeLine{142 \mbox{\hyperlink{struct_s_b_n___peer_interface__t}{SBN\_PeerInterface\_t}} *SBN\_GetPeer(\mbox{\hyperlink{struct_s_b_n___net_interface__s}{SBN\_NetInterface\_t}} *Net, CFE\_ProcessorID\_t ProcessorID);}
+\DoxyCodeLine{143 uint32 SBN\_ReloadConfTbl(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_app\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{146 \textcolor{comment}{/*****************************************************************************/}}
+
+\end{DoxyCode}

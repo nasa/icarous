@@ -1,0 +1,38 @@
+\hypertarget{trajectory__msg_8h_source}{}\doxysection{trajectory\+\_\+msg.\+h}
+\label{trajectory__msg_8h_source}\index{apps/trajectory/fsw/platform\_inc/trajectory\_msg.h@{apps/trajectory/fsw/platform\_inc/trajectory\_msg.h}}
+\mbox{\hyperlink{trajectory__msg_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ICAROUS\_CFS\_TRAJECTORY\_MSG\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ICAROUS\_CFS\_TRAJECTORY\_MSG\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}DubinsParams.h"{}}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{15 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{16     \mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47a59aa3ca6d675f5fe2dd9513e78eb2d5e}{\_GRID}},              }
+\DoxyCodeLine{17     \mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47a9452a667ff95c50409d99e6f8c073a67}{\_ASTAR}},             }
+\DoxyCodeLine{18     \mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47aee0264174d7c5892786c376776c2e5b0}{\_RRT}},               }
+\DoxyCodeLine{19     \mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47af4b301e82d26ae488f8456bd9ee3f02f}{\_SPLINES}}            }
+\DoxyCodeLine{20 \}\mbox{\hyperlink{trajectory__msg_8h_a91a137242da7f276e5a2bfb0e4685e47}{algorithm\_e}};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{26 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{27    CCSDS\_PriHdr\_t hdr;}
+\DoxyCodeLine{28    \textcolor{keywordtype}{char} planID[25];                        }
+\DoxyCodeLine{29    \textcolor{keywordtype}{double} initialPosition[3];              }
+\DoxyCodeLine{30    \textcolor{keywordtype}{double} initialVelocity[3];              }
+\DoxyCodeLine{31    \textcolor{keywordtype}{double} finalPosition[3];                }
+\DoxyCodeLine{32    \textcolor{keywordtype}{double} finalVelocity[3];                }
+\DoxyCodeLine{33 \}\mbox{\hyperlink{structtrajectory__request__t}{trajectory\_request\_t}};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{40  \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{41     CCSDS\_PriHdr\_t hdr;}
+\DoxyCodeLine{42     \mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}} dbparams; }
+\DoxyCodeLine{43     \textcolor{keywordtype}{int} return2nextWP;}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double} crossTrackDeviation;}
+\DoxyCodeLine{45  \}\mbox{\hyperlink{structtrajectory__parameters__t}{trajectory\_parameters\_t}};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//ICAROUS\_CFS\_TRAJECTORY\_MSG\_H}}
+
+\end{DoxyCode}

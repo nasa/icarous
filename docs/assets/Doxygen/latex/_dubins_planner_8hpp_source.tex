@@ -1,0 +1,142 @@
+\hypertarget{_dubins_planner_8hpp_source}{}\doxysection{Dubins\+Planner.\+hpp}
+\label{_dubins_planner_8hpp_source}\index{Modules/Core/TrajectoryManager/DubinsPlanner/DubinsPlanner.hpp@{Modules/Core/TrajectoryManager/DubinsPlanner/DubinsPlanner.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{//}}
+\DoxyCodeLine{2 \textcolor{comment}{// Created by Swee Balachandran on 12/7/17.}}
+\DoxyCodeLine{3 \textcolor{comment}{//}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef RRTPLANNER\_H}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define RRTPLANNER\_H}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}CDPolycarp.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Daidalus.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}PolycarpResolution.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}DubinsParams.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{typedef} std::vector<std::pair<larcfm::NavPoint,larcfm::TcpData>> tcpData\_t;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{struct }\mbox{\hyperlink{structnode}{node}}\{}
+\DoxyCodeLine{28     \textcolor{keywordtype}{int} id;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} time;}
+\DoxyCodeLine{30     larcfm::Vect3 pos;}
+\DoxyCodeLine{31     larcfm::Velocity vel;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keywordtype}{bool} goal;}
+\DoxyCodeLine{34     \textcolor{keywordtype}{double} g,h;}
+\DoxyCodeLine{35     \textcolor{keywordtype}{double} dist2goal;}
+\DoxyCodeLine{36     tcpData\_t TCPdata;}
+\DoxyCodeLine{37     \mbox{\hyperlink{structnode}{node}}* source;}
+\DoxyCodeLine{38     std::list<node*> parents;}
+\DoxyCodeLine{39     std::list<node*> children;}
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 \textcolor{keyword}{typedef} \mbox{\hyperlink{structnode}{node}} \mbox{\hyperlink{structnode}{node\_t}};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{class }\mbox{\hyperlink{class_dubins_planner}{DubinsPlanner}} \{}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keyword}{private}:}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     \textcolor{comment}{/* min,max values for the 3D coordinates to restrict search */}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{double} xmax,xmin;}
+\DoxyCodeLine{49     \textcolor{keywordtype}{double} ymax,ymin;}
+\DoxyCodeLine{50     \textcolor{keywordtype}{double} zmax,zmin;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{comment}{/* boundingBox defines the extent of the search space */}}
+\DoxyCodeLine{53     larcfm::Poly3D boundingBox;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{comment}{/* Contracted vertices of bounding box */}}
+\DoxyCodeLine{56     std::vector<larcfm::Vect2> shrunkbbox;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{/* List of obstacles */}}
+\DoxyCodeLine{59     std::list<larcfm::Poly3D> obstacleList;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{comment}{/* Feasible nodes */}}
+\DoxyCodeLine{63     std::vector<node\_t> potentialFixes;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{comment}{/* Total node explored*/}}
+\DoxyCodeLine{68     \textcolor{keywordtype}{int} nodeCount;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \textcolor{comment}{/* Root position */}}
+\DoxyCodeLine{71     larcfm::Vect3 rootFix;}
+\DoxyCodeLine{72     larcfm::Velocity rootVel;}
+\DoxyCodeLine{73     }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{comment}{/* Goal position */}}
+\DoxyCodeLine{76     larcfm::Vect3 goalFix;}
+\DoxyCodeLine{77     larcfm::Velocity goalVel;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     std::vector<larcfm::Vect3> trafficPosition;}
+\DoxyCodeLine{80     std::vector<larcfm::Velocity> trafficVelocity;}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     std::list<larcfm::Plan> trafficPlans;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84     \mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}} params;}
+\DoxyCodeLine{85    }
+\DoxyCodeLine{86 \textcolor{keyword}{public}:}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     std::vector<node\_t> path;}
+\DoxyCodeLine{89     \mbox{\hyperlink{class_dubins_planner}{DubinsPlanner}}()\{\};}
+\DoxyCodeLine{90     \textcolor{keywordtype}{void} Reset();}
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} ShrinkTrafficVolume(\textcolor{keywordtype}{double} factor);}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} SetParameters(\mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}}\& prms);}
+\DoxyCodeLine{93     \textcolor{keywordtype}{void} SetVehicleInitialConditions(larcfm::Vect3\& pos, larcfm::Velocity\& vel);}
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} SetTraffic(std::vector<larcfm::Vect3>\& tfpos,std::vector<larcfm::Velocity>\& tfvel);}
+\DoxyCodeLine{95     \textcolor{keywordtype}{void} SetTraffic(larcfm::Plan \&tf);}
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} SetBoundary(larcfm::Poly3D\& boundingBox);}
+\DoxyCodeLine{97     \textcolor{keywordtype}{void} SetZBoundary(\textcolor{keywordtype}{double} zmin,\textcolor{keywordtype}{double} zmax);}
+\DoxyCodeLine{98     \textcolor{keywordtype}{void} SetObstacles(std::list<larcfm::Poly3D> \&obstacleList);}
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} SetGoal(larcfm::Vect3\& goal,larcfm::Velocity finalVel);}
+\DoxyCodeLine{100     \textcolor{keywordtype}{bool} ComputePath(\textcolor{keywordtype}{double} startTime);}
+\DoxyCodeLine{101     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}{GetPlan}}(larcfm::EuclideanProjection\& proj,larcfm::Plan\& plan);}
+\DoxyCodeLine{102     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}{LinePlanIntersection}}(larcfm::Vect2\& A,larcfm::Vect2\& B,\textcolor{keywordtype}{double} floor,\textcolor{keywordtype}{double} ceiling,larcfm::Vect3\& currentPos,larcfm::Vect3\& nextPos);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{private}:}
+\DoxyCodeLine{105     \mbox{\hyperlink{structnode}{node\_t}}* FindNearest(\mbox{\hyperlink{structnode}{node\_t}}\& query);}
+\DoxyCodeLine{106     \textcolor{keywordtype}{void} GetPotentialFixes();}
+\DoxyCodeLine{107     \textcolor{keywordtype}{bool} CheckConflictCircleCircle(larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1,larcfm::Velocity startVel1,larcfm::Vect2 timeInterval1, \textcolor{keywordtype}{double} radius1,}
+\DoxyCodeLine{108                                    larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2,larcfm::Velocity startVel2,larcfm::Vect2 timeInterval2, \textcolor{keywordtype}{double} radius2 );}
+\DoxyCodeLine{109     \textcolor{keywordtype}{bool} CheckConflictLineCircle(larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1,\textcolor{keywordtype}{double} turnRate,larcfm::Vect2 timeInterval1, \textcolor{keywordtype}{double} radius1,}
+\DoxyCodeLine{110                                  larcfm::Vect3 start2, larcfm::Vect3 startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
+\DoxyCodeLine{111     std::pair<double,double> GetLineCircleIntersection(larcfm::Vect2 start,larcfm::Vect2 direction,\textcolor{keywordtype}{double} t0,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{112     std::pair<double,double> GetLineLineIntersection(larcfm::Vect3 start1,larcfm::Vect3 direction1,\textcolor{keywordtype}{double} t1,larcfm::Vect3 start2,larcfm::Vect3 direction2,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{113     \textcolor{keywordtype}{bool} CheckConflictLineLine(larcfm::Vect3 start1, larcfm::Velocity startVel1,\textcolor{keywordtype}{double} t1,larcfm::Vect2 timeInterval1,}
+\DoxyCodeLine{114                                larcfm::Vect3 start2, larcfm::Velocity startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} BuildTree(\mbox{\hyperlink{structnode}{node\_t}}* nd);}
+\DoxyCodeLine{116     \textcolor{keywordtype}{bool} DijkstraSearch(\mbox{\hyperlink{structnode}{node\_t}}* root,\mbox{\hyperlink{structnode}{node\_t}}* goal);}
+\DoxyCodeLine{117     \textcolor{keywordtype}{bool} AstarSearch(\mbox{\hyperlink{structnode}{node\_t}}* root,\mbox{\hyperlink{structnode}{node\_t}}* goal);}
+\DoxyCodeLine{118     \textcolor{keywordtype}{bool} GetNextTrkVs(\mbox{\hyperlink{structnode}{node\_t}}\& \mbox{\hyperlink{structnode}{node}},\textcolor{keywordtype}{double} \&trk, \textcolor{keywordtype}{double} \&vs);}
+\DoxyCodeLine{119     \textcolor{keywordtype}{bool} GreedyDepthFirst(\mbox{\hyperlink{structnode}{node\_t}} q,\mbox{\hyperlink{structnode}{node\_t}}* g);}
+\DoxyCodeLine{120     \textcolor{keywordtype}{double} NodeDistance(\mbox{\hyperlink{structnode}{node\_t}}\& A,\mbox{\hyperlink{structnode}{node\_t}}\& B);}
+\DoxyCodeLine{121     \textcolor{keywordtype}{bool} CheckGoal();}
+\DoxyCodeLine{122     \textcolor{keywordtype}{bool} CheckProjectedFenceConflict(\mbox{\hyperlink{structnode}{node\_t}}* qnode,\mbox{\hyperlink{structnode}{node\_t}}* goal);}
+\DoxyCodeLine{123     \textcolor{keywordtype}{bool} GetDubinsParams(\mbox{\hyperlink{structnode}{node\_t}}* start,\mbox{\hyperlink{structnode}{node\_t}}* end);}
+\DoxyCodeLine{124     \textcolor{keywordtype}{bool} CheckAltFeasibility(\textcolor{keywordtype}{double} startz,\textcolor{keywordtype}{double} endz,\textcolor{keywordtype}{double} dist,\textcolor{keywordtype}{double} gs1,\textcolor{keywordtype}{double} gs2);}
+\DoxyCodeLine{125     tcpData\_t ComputeAltTcp(tcpData\_t \&TCPdata,\textcolor{keywordtype}{double} startgs,\textcolor{keywordtype}{double} stopgs);}
+\DoxyCodeLine{126     tcpData\_t ComputeSpeedTcp(tcpData\_t \&TCPdata,\textcolor{keywordtype}{double} startgs,\textcolor{keywordtype}{double} stopgs);}
+\DoxyCodeLine{127     \textcolor{keywordtype}{bool} CheckFenceConflict(tcpData\_t trajectory);}
+\DoxyCodeLine{128     \textcolor{keywordtype}{bool} CheckTrafficConflict(tcpData\_t trajectory);}
+\DoxyCodeLine{129     \textcolor{keywordtype}{bool} CheckTrafficConflict(\textcolor{keywordtype}{double} startTime,larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1,}
+\DoxyCodeLine{130                                                larcfm::Vect3 center2, larcfm::Vect3 tcp2, larcfm::Vect3 endPos,\textcolor{keywordtype}{double} r,\textcolor{keywordtype}{double} t1,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} t3,\textcolor{keywordtype}{double} gs,\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{131     std::list<node\_t>* GetNodeList();}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//RRT\_RRTPLANNER\_H}}
+
+\end{DoxyCode}

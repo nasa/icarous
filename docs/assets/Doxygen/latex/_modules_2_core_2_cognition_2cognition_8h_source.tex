@@ -1,0 +1,43 @@
+\hypertarget{_modules_2_core_2_cognition_2cognition_8h_source}{}\doxysection{Cognition.\+h}
+\label{_modules_2_core_2_cognition_2cognition_8h_source}\index{Modules/Core/Cognition/Cognition.h@{Modules/Core/Cognition/Cognition.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#include "{}Commands.hpp"{}}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifndef COGNITION\_H}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#define COGNITION\_H}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{8 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keywordtype}{void}* CognitionInit(\textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{structcallsign}{callsign}}[],\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{12 \textcolor{keywordtype}{void} ReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{13 \textcolor{keywordtype}{void} Reset(\textcolor{keywordtype}{void} *obj);}
+\DoxyCodeLine{14 \textcolor{keywordtype}{void} InputVehicleState(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \textcolor{keywordtype}{double} pos[3],\textcolor{keyword}{const} \textcolor{keywordtype}{double} vel[3],\textcolor{keyword}{const} \textcolor{keywordtype}{double} heading);}
+\DoxyCodeLine{15 \textcolor{keywordtype}{void} InputFlightPlanData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} wpts[],\textcolor{keywordtype}{int} totalWP,}
+\DoxyCodeLine{16                          \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} kinematize,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{17 \textcolor{keywordtype}{void} InputTrajectoryMonitorData(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} trajectoryMonitorData\_t* tjMonData);}
+\DoxyCodeLine{18 \textcolor{keywordtype}{void} InputParameters(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}} *new\_params);}
+\DoxyCodeLine{19 \textcolor{keywordtype}{void} InputDitchStatus(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \textcolor{keywordtype}{double} ditch\_pos[3],\textcolor{keyword}{const} \textcolor{keywordtype}{double} todAltitude,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} ditch\_requested);}
+\DoxyCodeLine{20 \textcolor{keywordtype}{void} InputMergeStatus(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \textcolor{keywordtype}{int} merge\_status);}
+\DoxyCodeLine{21 \textcolor{keywordtype}{void} InputTrafficAlert(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} \mbox{\hyperlink{structcallsign}{callsign}}[20],\textcolor{keyword}{const} \textcolor{keywordtype}{int} alertid);}
+\DoxyCodeLine{22 \textcolor{keywordtype}{void} InputTrackBands(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} bands\_t *track\_bands);}
+\DoxyCodeLine{23 \textcolor{keywordtype}{void} InputSpeedBands(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} bands\_t *speed\_bands);}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void} InputAltBands(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} bands\_t *alt\_bands);}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void} InputVSBands(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} bands\_t *vs\_bands);}
+\DoxyCodeLine{26 \textcolor{keywordtype}{void} InputGeofenceConflictData(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} geofenceConflict\_t *gf\_conflict);}
+\DoxyCodeLine{27 \textcolor{keywordtype}{void} ReachedWaypoint(\textcolor{keywordtype}{void} *obj, \textcolor{keyword}{const} \textcolor{keywordtype}{char} plan\_id[], \textcolor{keyword}{const} \textcolor{keywordtype}{int} wp\_reached\_id);}
+\DoxyCodeLine{28 \textcolor{keywordtype}{int} GetCognitionOutput(\textcolor{keywordtype}{void} *obj,\mbox{\hyperlink{struct_command}{Command}} *command);}
+\DoxyCodeLine{29 \textcolor{keywordtype}{void} \mbox{\hyperlink{_cognition_8hpp_a28a7dc5cd7b4c916d24adeaa16802a0d}{GetResolutionType}}(\textcolor{keywordtype}{void} *obj);}
+\DoxyCodeLine{30 \textcolor{keywordtype}{void} StartMission(\textcolor{keywordtype}{void} *obj,\textcolor{keyword}{const} \textcolor{keywordtype}{int} mission\_start\_value,\textcolor{keyword}{const} \textcolor{keywordtype}{double} delay);}
+\DoxyCodeLine{31 \textcolor{keywordtype}{int} RunCognition(\textcolor{keywordtype}{void} *obj,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{34 \}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,84 @@
+\hypertarget{zmq__iface_8h}{}\doxysection{apps/zmq\+\_\+iface/fsw/src/zmq\+\_\+iface.h File Reference}
+\label{zmq__iface_8h}\index{apps/zmq\_iface/fsw/src/zmq\_iface.h@{apps/zmq\_iface/fsw/src/zmq\_iface.h}}
+
+
+Function declaration, MACRO and data structure definitions for the zmq\+\_\+iface application.  
+
+
+{\ttfamily \#include \char`\"{}cfe.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+evs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+sb.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cfe\+\_\+es.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}connection.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_z_m_q___i_f_a_c_e___app_data__t}{ZMQ\+\_\+\+IFACE\+\_\+\+App\+Data\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold app data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_ad2c6df52a796f896b1ad1f02baf20578}\label{zmq__iface_8h_ad2c6df52a796f896b1ad1f02baf20578}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+STARTUP\+\_\+\+INF\+\_\+\+EID}~0
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_ac15eb6527af2b64ba1c67eb66dd7b38f}\label{zmq__iface_8h_ac15eb6527af2b64ba1c67eb66dd7b38f}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+COMMAND\+\_\+\+ERR\+\_\+\+EID}~1
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_ad1d8f61cecb557244c674328e1199a9d}\label{zmq__iface_8h_ad1d8f61cecb557244c674328e1199a9d}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+PIPE\+\_\+\+DEPTH}~10
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_a7738000be6c94af5646598f635442ca2}\label{zmq__iface_8h_a7738000be6c94af5646598f635442ca2}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+PIPE\+\_\+\+NAME}~\char`\"{}ZMQ\+\_\+\+IFACE\+\_\+\+PIPE\char`\"{}
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_ad0a7eec9a723d37c13458a6627e7e9e1}\label{zmq__iface_8h_ad0a7eec9a723d37c13458a6627e7e9e1}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+MAJOR\+\_\+\+VERSION}~1
+\item 
+\mbox{\Hypertarget{zmq__iface_8h_a1652271e3b8eeebe0c914ee549979637}\label{zmq__iface_8h_a1652271e3b8eeebe0c914ee549979637}} 
+\#define {\bfseries ZMQ\+\_\+\+IFACE\+\_\+\+MINOR\+\_\+\+VERSION}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{zmq__iface_8h_a44f58b21c51847a82d32747106956abd}{ZMQ\+\_\+\+IFACE\+\_\+\+App\+Main}} (void)
+\item 
+void \mbox{\hyperlink{zmq__iface_8h_a07f966cf2207ee6999265965402c1a85}{ZMQ\+\_\+\+IFACE\+\_\+\+App\+Init}} (void)
+\item 
+void \mbox{\hyperlink{zmq__iface_8h_a79aa9daddb06f3a893d1805a8741b347}{ZMQ\+\_\+\+IFACE\+\_\+\+App\+Clean\+Up}} (void)
+\item 
+void \mbox{\hyperlink{zmq__iface_8h_a72ef999899241fd7ce71876915667ca8}{ZMQ\+\_\+\+IFACE\+\_\+\+Process\+Packet}} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Function declaration, MACRO and data structure definitions for the zmq\+\_\+iface application. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{zmq__iface_8h_a79aa9daddb06f3a893d1805a8741b347}\label{zmq__iface_8h_a79aa9daddb06f3a893d1805a8741b347}} 
+\index{zmq\_iface.h@{zmq\_iface.h}!ZMQ\_IFACE\_AppCleanUp@{ZMQ\_IFACE\_AppCleanUp}}
+\index{ZMQ\_IFACE\_AppCleanUp@{ZMQ\_IFACE\_AppCleanUp}!zmq\_iface.h@{zmq\_iface.h}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_IFACE\_AppCleanUp()}{ZMQ\_IFACE\_AppCleanUp()}}
+{\footnotesize\ttfamily void ZMQ\+\_\+\+IFACE\+\_\+\+App\+Clean\+Up (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Deallocates memory \mbox{\Hypertarget{zmq__iface_8h_a07f966cf2207ee6999265965402c1a85}\label{zmq__iface_8h_a07f966cf2207ee6999265965402c1a85}} 
+\index{zmq\_iface.h@{zmq\_iface.h}!ZMQ\_IFACE\_AppInit@{ZMQ\_IFACE\_AppInit}}
+\index{ZMQ\_IFACE\_AppInit@{ZMQ\_IFACE\_AppInit}!zmq\_iface.h@{zmq\_iface.h}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_IFACE\_AppInit()}{ZMQ\_IFACE\_AppInit()}}
+{\footnotesize\ttfamily void ZMQ\+\_\+\+IFACE\+\_\+\+App\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initializes data structures and cfs related entities. \mbox{\Hypertarget{zmq__iface_8h_a44f58b21c51847a82d32747106956abd}\label{zmq__iface_8h_a44f58b21c51847a82d32747106956abd}} 
+\index{zmq\_iface.h@{zmq\_iface.h}!ZMQ\_IFACE\_AppMain@{ZMQ\_IFACE\_AppMain}}
+\index{ZMQ\_IFACE\_AppMain@{ZMQ\_IFACE\_AppMain}!zmq\_iface.h@{zmq\_iface.h}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_IFACE\_AppMain()}{ZMQ\_IFACE\_AppMain()}}
+{\footnotesize\ttfamily void ZMQ\+\_\+\+IFACE\+\_\+\+App\+Main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+App entry point \mbox{\Hypertarget{zmq__iface_8h_a72ef999899241fd7ce71876915667ca8}\label{zmq__iface_8h_a72ef999899241fd7ce71876915667ca8}} 
+\index{zmq\_iface.h@{zmq\_iface.h}!ZMQ\_IFACE\_ProcessPacket@{ZMQ\_IFACE\_ProcessPacket}}
+\index{ZMQ\_IFACE\_ProcessPacket@{ZMQ\_IFACE\_ProcessPacket}!zmq\_iface.h@{zmq\_iface.h}}
+\doxysubsubsection{\texorpdfstring{ZMQ\_IFACE\_ProcessPacket()}{ZMQ\_IFACE\_ProcessPacket()}}
+{\footnotesize\ttfamily void ZMQ\+\_\+\+IFACE\+\_\+\+Process\+Packet (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Processes incoming software bus messages 

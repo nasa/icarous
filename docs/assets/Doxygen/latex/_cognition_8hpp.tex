@@ -1,0 +1,538 @@
+\hypertarget{_cognition_8hpp}{}\doxysection{Modules/\+Core/\+Cognition/\+Cognition.hpp File Reference}
+\label{_cognition_8hpp}\index{Modules/Core/Cognition/Cognition.hpp@{Modules/Core/Cognition/Cognition.hpp}}
+
+
+\mbox{\hyperlink{class_cognition}{Cognition}} module definitions.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include \char`\"{}Interfaces.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Position.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Velocity.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Projection.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Euclidean\+Projection.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Units.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Plan.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Commands.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Event\+Manager.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Event\+Handler.\+hpp\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em state containing all data required for decision making \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_cognition}{Cognition}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ad}{command\+\_\+mode\+\_\+e}} \{ \newline
+\mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada0d3873d80b55a81e78260f9c69679715}{c\+PRIMARY\+\_\+\+FLIGHTPLAN}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada871d55bf0e72fd0dfcdcb7c1798e826d}{c\+SECONDARY\+\_\+\+FLIGHTPLAN}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adab28528c17259bb243084aff6ad57bca6}{c\+VECTOR}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adaf1e1071e3ee567b52a353195d06f44ac}{c\+POINT2\+POINT}}
+, \newline
+\mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada79b5a3167a0f3ec042305940300b51e4}{c\+ORBIT}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada6e64ba1f26d1afb5b180ccd8a7218432}{c\+HELIX}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4bab122df300a8b3940f925084aafdf5}{c\+TAKEOFF}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adac15b6063c7ca2bd24a0d58bd6c332e90}{c\+LAND}}
+, \newline
+\mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada9e59fd5975d2d6e1cfd386c3b71f8812}{c\+SPEED\+\_\+\+CHANGE}}
+, \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4cdb2f60b210d0b225331f9a7aaf6dbc}{c\+NOOP}}
+ \}
+\begin{DoxyCompactList}\small\item\em command types \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}\label{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}} 
+enum \mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolution\+Type\+\_\+e}} \{ \newline
+{\bfseries SPEED\+\_\+\+RESOLUTION}
+, {\bfseries ALTITUDE\+\_\+\+RESOLUTION}
+, {\bfseries TRACK\+\_\+\+RESOLUTION}
+, {\bfseries VERTICALSPEED\+\_\+\+RESOLUTION}
+, \newline
+{\bfseries SEARCH\+\_\+\+RESOLUTION}
+, {\bfseries DITCH\+\_\+\+RESOLUTION}
+, {\bfseries TRACK\+\_\+\+SPEED\+\_\+\+VS\+\_\+\+RESOLUTION}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of resolution types. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}\label{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}} 
+enum \mbox{\hyperlink{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}{request\+\_\+e}} \{ {\bfseries REQUEST\+\_\+\+NIL}
+, {\bfseries REQUEST\+\_\+\+PROCESSING}
+, {\bfseries REQUEST\+\_\+\+RESPONDED}
+ \}
+\begin{DoxyCompactList}\small\item\em Enuemration of flightplan request states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}\label{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}} 
+enum \mbox{\hyperlink{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}{takeoff\+\_\+status\+\_\+e}} \{ {\bfseries TAKEOFF\+\_\+\+COMPLETE}
+, {\bfseries TAKEOFF\+\_\+\+INPROGESS}
+, {\bfseries TAKEOFF\+\_\+\+INACTIVE}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of takeoff status. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+larcfm\+::\+Plan $\ast$ \mbox{\hyperlink{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}{Get\+Plan}} (std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Get the pointer for given plan id from a list of plans. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}{Get\+Total\+Waypoints}} (std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Get total Waypoints. \end{DoxyCompactList}\item 
+larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}{Get\+Next\+WP}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\begin{DoxyCompactList}\small\item\em Get next waypoint in given plan. \end{DoxyCompactList}\item 
+larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}{Get\+Prev\+WP}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\begin{DoxyCompactList}\small\item\em Get prev waypoint in given plan. \end{DoxyCompactList}\item 
+larcfm\+::\+Velocity \mbox{\hyperlink{_cognition_8hpp_a5759c49855c795a61af13d3022998648}{Get\+Next\+WPVelocity}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\begin{DoxyCompactList}\small\item\em Get velocity of next waypoint. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}{Check\+Projected\+Traffic\+Conflict}} (larcfm\+::\+Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm\+::\+Velocity velocity, larcfm\+::\+Position prev\+WP, larcfm\+::\+Position next\+WP, double time\+To\+Violation, double DTHR, double ZTHR)
+\begin{DoxyCompactList}\small\item\em check projected traffic conflict given lookahead, current position and velocity \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}{Compute\+Target\+Feasibility}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, larcfm\+::\+Position target)
+\begin{DoxyCompactList}\small\item\em Compute feasibility of a given target position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a82a273c9caea71bcb6499a088e5fedbc}{Set\+Guidance\+Vel\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const double track, const double gs, const double vs)
+\begin{DoxyCompactList}\small\item\em Create an output velocity command on the output cognition\+Commands list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_af8f799fe4a19a728cdc0aae64339c52f}{Set\+Guidance\+Speed\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const double speed, const int hold=0)
+\begin{DoxyCompactList}\small\item\em Create an output speed command on the output cognition\+Commands list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a77e2300517939fc20123c2e329f5cf89}{Set\+Guidance\+Alt\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const double alt, const int hold=0)
+\begin{DoxyCompactList}\small\item\em Set the \mbox{\hyperlink{class_guidance}{Guidance}} Alt for given plan on the output cognition\+Commands list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_ae75ba7b8dfad50bc6bec31ba5f665301}{Set\+Guidance\+Flight\+Plan}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+\_\+id, const int wp\+\_\+index)
+\begin{DoxyCompactList}\small\item\em enqueue the Flight Plan to be flown by guidance \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a880da76735a82c8f114e5f4e76a0230d}{Set\+Land\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em enqueue the land command \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}{Set\+Ditch\+Site\+Request\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em enqueue the ditch site request command \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}{Find\+New\+Path}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const larcfm\+::\+Position \&positionA, const larcfm\+::\+Velocity \&velocityA, const larcfm\+::\+Position \&positionB, const larcfm\+::\+Velocity \&velocityB)
+\begin{DoxyCompactList}\small\item\em enqueue a request to compute a new flightplan \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}{Set\+Guidance\+P2P}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const larcfm\+::\+Position \&point, const double speed)
+\begin{DoxyCompactList}\small\item\em enqueue the point 2 point guidance command \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}{Send\+Status}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const char buffer\mbox{[}$\,$\mbox{]}, const uint8\+\_\+t severity)
+\begin{DoxyCompactList}\small\item\em enqueue a status message in the output \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolution\+Type\+\_\+e}} \mbox{\hyperlink{_cognition_8hpp_a28a7dc5cd7b4c916d24adeaa16802a0d}{Get\+Resolution\+Type}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em Get the Resolution Type object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_ad8559541fb7ac99c310ac951b7199b86}{Log\+Message}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, std\+::string message)
+\item 
+double \mbox{\hyperlink{_cognition_8hpp_a664684cec884944bca77b95e848337c7}{Compute\+Xtrack\+Distance}} (const larcfm\+::\+Position \&prev\+\_\+wp, const larcfm\+::\+Position \&next\+\_\+wp, const larcfm\+::\+Position \&pos, double offset\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em compute perpendicular deviation from a flightplan segement \end{DoxyCompactList}\item 
+larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}{Get\+Nearest\+Position\+On\+Plan}} (const larcfm\+::\+Plan $\ast$fp, const larcfm\+::\+Position \&current\+\_\+pos, int \&next\+WP)
+\begin{DoxyCompactList}\small\item\em Get the nearest position on plan. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_cognition_8hpp_a096d2497cf50812d5bc2032fbfe714ed}{Check\+Turn\+Conflict}} (const double low, const double high, const double new\+\_\+heading, const double old\+\_\+heading, bool \&right\+Turn\+Conflict, bool \&left\+Turn\+Conflict)
+\begin{DoxyCompactList}\small\item\em Check if turning from old heading to new heading is conflict free. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, int $>$ \mbox{\hyperlink{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}{Get\+Priority\+Values}} (\mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} $\ast$params)
+\begin{DoxyCompactList}\small\item\em Get the priority values from parameter object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ad}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ad}} 
+\index{Cognition.hpp@{Cognition.hpp}!command\_mode\_e@{command\_mode\_e}}
+\index{command\_mode\_e@{command\_mode\_e}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{command\_mode\_e}{command\_mode\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ad}{command\+\_\+mode\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cPRIMARY\_FLIGHTPLAN@{cPRIMARY\_FLIGHTPLAN}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cPRIMARY\_FLIGHTPLAN@{cPRIMARY\_FLIGHTPLAN}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada0d3873d80b55a81e78260f9c69679715}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada0d3873d80b55a81e78260f9c69679715}} 
+c\+PRIMARY\+\_\+\+FLIGHTPLAN&Follow the primary mission flight plan. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cSECONDARY\_FLIGHTPLAN@{cSECONDARY\_FLIGHTPLAN}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cSECONDARY\_FLIGHTPLAN@{cSECONDARY\_FLIGHTPLAN}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada871d55bf0e72fd0dfcdcb7c1798e826d}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada871d55bf0e72fd0dfcdcb7c1798e826d}} 
+c\+SECONDARY\+\_\+\+FLIGHTPLAN&Follow the secondary flight plan (for detours/reroutes) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cVECTOR@{cVECTOR}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cVECTOR@{cVECTOR}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adab28528c17259bb243084aff6ad57bca6}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adab28528c17259bb243084aff6ad57bca6}} 
+c\+VECTOR&Follow the given velocity vector. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cPOINT2POINT@{cPOINT2POINT}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cPOINT2POINT@{cPOINT2POINT}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adaf1e1071e3ee567b52a353195d06f44ac}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adaf1e1071e3ee567b52a353195d06f44ac}} 
+c\+POINT2\+POINT&Fly to a specific position. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cORBIT@{cORBIT}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cORBIT@{cORBIT}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada79b5a3167a0f3ec042305940300b51e4}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada79b5a3167a0f3ec042305940300b51e4}} 
+c\+ORBIT&Orbit around a given point. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cHELIX@{cHELIX}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cHELIX@{cHELIX}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada6e64ba1f26d1afb5b180ccd8a7218432}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada6e64ba1f26d1afb5b180ccd8a7218432}} 
+c\+HELIX&A helical orbit. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cTAKEOFF@{cTAKEOFF}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cTAKEOFF@{cTAKEOFF}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4bab122df300a8b3940f925084aafdf5}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4bab122df300a8b3940f925084aafdf5}} 
+c\+TAKEOFF&Takeoff mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cLAND@{cLAND}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cLAND@{cLAND}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adac15b6063c7ca2bd24a0d58bd6c332e90}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7adac15b6063c7ca2bd24a0d58bd6c332e90}} 
+c\+LAND&Landing mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cSPEED\_CHANGE@{cSPEED\_CHANGE}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cSPEED\_CHANGE@{cSPEED\_CHANGE}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada9e59fd5975d2d6e1cfd386c3b71f8812}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada9e59fd5975d2d6e1cfd386c3b71f8812}} 
+c\+SPEED\+\_\+\+CHANGE&Speed change command. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cNOOP@{cNOOP}!Cognition.hpp@{Cognition.hpp}}\index{Cognition.hpp@{Cognition.hpp}!cNOOP@{cNOOP}}}\mbox{\Hypertarget{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4cdb2f60b210d0b225331f9a7aaf6dbc}\label{_cognition_8hpp_a1d1186b106ee659920a56a3de0b2f7ada4cdb2f60b210d0b225331f9a7aaf6dbc}} 
+c\+NOOP&No operations. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}\label{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}} 
+\index{Cognition.hpp@{Cognition.hpp}!CheckProjectedTrafficConflict@{CheckProjectedTrafficConflict}}
+\index{CheckProjectedTrafficConflict@{CheckProjectedTrafficConflict}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{CheckProjectedTrafficConflict()}{CheckProjectedTrafficConflict()}}
+{\footnotesize\ttfamily bool Check\+Projected\+Traffic\+Conflict (\begin{DoxyParamCaption}\item[{larcfm\+::\+Position}]{position,  }\item[{larcfm\+::\+Velocity}]{velocity,  }\item[{larcfm\+::\+Position}]{prev\+WP,  }\item[{larcfm\+::\+Position}]{next\+WP,  }\item[{double}]{time\+To\+Violation,  }\item[{double}]{DTHR,  }\item[{double}]{ZTHR }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & current position \\
+\hline
+{\em velocity} & current velocity \\
+\hline
+{\em prev\+WP} & previous waypoint position \\
+\hline
+{\em next\+WP} & next waypoint position \\
+\hline
+{\em time\+To\+Violation} & lookahead time \\
+\hline
+{\em DTHR} & well clear radius \\
+\hline
+{\em ZTHR} & well clear height \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a096d2497cf50812d5bc2032fbfe714ed}\label{_cognition_8hpp_a096d2497cf50812d5bc2032fbfe714ed}} 
+\index{Cognition.hpp@{Cognition.hpp}!CheckTurnConflict@{CheckTurnConflict}}
+\index{CheckTurnConflict@{CheckTurnConflict}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{CheckTurnConflict()}{CheckTurnConflict()}}
+{\footnotesize\ttfamily bool Check\+Turn\+Conflict (\begin{DoxyParamCaption}\item[{const double}]{low,  }\item[{const double}]{high,  }\item[{const double}]{new\+\_\+heading,  }\item[{const double}]{old\+\_\+heading,  }\item[{bool \&}]{right\+Turn\+Conflict,  }\item[{bool \&}]{left\+Turn\+Conflict }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em low} & min value of conflict band \\
+\hline
+{\em high} & max value of conflict band \\
+\hline
+{\em new\+\_\+heading} & new heading \\
+\hline
+{\em old\+\_\+heading} & old heading \\
+\hline
+{\em right\+Turn\+Conflict} & \mbox{[}out\mbox{]} true if right turn feasible \\
+\hline
+{\em left\+Turn\+Conflict} & \mbox{[}out\mbox{]} true if left turn feasible \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if both turns are safe 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}\label{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}} 
+\index{Cognition.hpp@{Cognition.hpp}!ComputeTargetFeasibility@{ComputeTargetFeasibility}}
+\index{ComputeTargetFeasibility@{ComputeTargetFeasibility}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{ComputeTargetFeasibility()}{ComputeTargetFeasibility()}}
+{\footnotesize\ttfamily bool Compute\+Target\+Feasibility (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{larcfm\+::\+Position}]{target }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making data \\
+\hline
+{\em target} & target position \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a664684cec884944bca77b95e848337c7}\label{_cognition_8hpp_a664684cec884944bca77b95e848337c7}} 
+\index{Cognition.hpp@{Cognition.hpp}!ComputeXtrackDistance@{ComputeXtrackDistance}}
+\index{ComputeXtrackDistance@{ComputeXtrackDistance}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{ComputeXtrackDistance()}{ComputeXtrackDistance()}}
+{\footnotesize\ttfamily double Compute\+Xtrack\+Distance (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{prev\+\_\+wp,  }\item[{const larcfm\+::\+Position \&}]{next\+\_\+wp,  }\item[{const larcfm\+::\+Position \&}]{pos,  }\item[{double}]{offset\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em prev\+\_\+wp} & starting waypoint of segment \\
+\hline
+{\em next\+\_\+wp} & ending waypoint of segment \\
+\hline
+{\em pos} & current position \\
+\hline
+{\em offset} & \mbox{[}output\mbox{]} longitudinal and lateral offset \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}\label{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}} 
+\index{Cognition.hpp@{Cognition.hpp}!FindNewPath@{FindNewPath}}
+\index{FindNewPath@{FindNewPath}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{FindNewPath()}{FindNewPath()}}
+{\footnotesize\ttfamily void Find\+New\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+ID,  }\item[{const larcfm\+::\+Position \&}]{positionA,  }\item[{const larcfm\+::\+Velocity \&}]{velocityA,  }\item[{const larcfm\+::\+Position \&}]{positionB,  }\item[{const larcfm\+::\+Velocity \&}]{velocityB }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+{\em plan\+ID} & name of plan \\
+\hline
+{\em positionA} & starting position \\
+\hline
+{\em velocityA} & starting velocity \\
+\hline
+{\em positionB} & goal position \\
+\hline
+{\em velocityB} & goal velocity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}\label{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetNearestPositionOnPlan@{GetNearestPositionOnPlan}}
+\index{GetNearestPositionOnPlan@{GetNearestPositionOnPlan}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetNearestPositionOnPlan()}{GetNearestPositionOnPlan()}}
+{\footnotesize\ttfamily larcfm\+::\+Position Get\+Nearest\+Position\+On\+Plan (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Plan $\ast$}]{fp,  }\item[{const larcfm\+::\+Position \&}]{current\+\_\+pos,  }\item[{int \&}]{next\+WP }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & pointer to flightplan \\
+\hline
+{\em current\+\_\+pos} & current position \\
+\hline
+{\em next\+WP} & next waypoint \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+larcfm\+::\+Position closest point on flightplan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}\label{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetNextWP@{GetNextWP}}
+\index{GetNextWP@{GetNextWP}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetNextWP()}{GetNextWP()}}
+{\footnotesize\ttfamily larcfm\+::\+Position Get\+Next\+WP (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+{\em next\+WP} & next waypoint index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+larcfm\+::\+Position waypoint position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a5759c49855c795a61af13d3022998648}\label{_cognition_8hpp_a5759c49855c795a61af13d3022998648}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetNextWPVelocity@{GetNextWPVelocity}}
+\index{GetNextWPVelocity@{GetNextWPVelocity}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetNextWPVelocity()}{GetNextWPVelocity()}}
+{\footnotesize\ttfamily larcfm\+::\+Velocity Get\+Next\+WPVelocity (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+{\em next\+WP} & waypoint index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+larcfm\+::\+Velocity velocity at given waypoint index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}\label{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetPlan@{GetPlan}}
+\index{GetPlan@{GetPlan}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
+{\footnotesize\ttfamily larcfm\+::\+Plan $\ast$ Get\+Plan (\begin{DoxyParamCaption}\item[{std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan\+List} & list of plans \\
+\hline
+{\em plan\+\_\+id} & query plan id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+larcfm\+::\+Plan$\ast$ pointer to queried plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}\label{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetPrevWP@{GetPrevWP}}
+\index{GetPrevWP@{GetPrevWP}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetPrevWP()}{GetPrevWP()}}
+{\footnotesize\ttfamily larcfm\+::\+Position Get\+Prev\+WP (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+{\em prev\+WP} & previous waypoint index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+larcfm\+::\+Position previous waypoint position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}\label{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetPriorityValues@{GetPriorityValues}}
+\index{GetPriorityValues@{GetPriorityValues}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetPriorityValues()}{GetPriorityValues()}}
+{\footnotesize\ttfamily std\+::map$<$ std\+::string, int $>$ Get\+Priority\+Values (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} $\ast$}]{params }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em params} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::map$<$std\+::string,int$>$ mapping between event names and priority values 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a28a7dc5cd7b4c916d24adeaa16802a0d}\label{_cognition_8hpp_a28a7dc5cd7b4c916d24adeaa16802a0d}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetResolutionType@{GetResolutionType}}
+\index{GetResolutionType@{GetResolutionType}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetResolutionType()}{GetResolutionType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolution\+Type\+\_\+e}} Get\+Resolution\+Type (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+resolution\+Type\+\_\+e 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}\label{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}} 
+\index{Cognition.hpp@{Cognition.hpp}!GetTotalWaypoints@{GetTotalWaypoints}}
+\index{GetTotalWaypoints@{GetTotalWaypoints}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{GetTotalWaypoints()}{GetTotalWaypoints()}}
+{\footnotesize\ttfamily int Get\+Total\+Waypoints (\begin{DoxyParamCaption}\item[{std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan\+List} & list of plans \\
+\hline
+{\em plan\+\_\+id} & query plan id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int total waypoints in queried plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{_cognition_8hpp_ad8559541fb7ac99c310ac951b7199b86}\label{_cognition_8hpp_ad8559541fb7ac99c310ac951b7199b86}} 
+\index{Cognition.hpp@{Cognition.hpp}!LogMessage@{LogMessage}}
+\index{LogMessage@{LogMessage}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{LogMessage()}{LogMessage()}}
+{\footnotesize\ttfamily void Log\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{std\+::string}]{message }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+{\em message} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}\label{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}} 
+\index{Cognition.hpp@{Cognition.hpp}!SendStatus@{SendStatus}}
+\index{SendStatus@{SendStatus}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SendStatus()}{SendStatus()}}
+{\footnotesize\ttfamily void Send\+Status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const char}]{buffer\mbox{[}$\,$\mbox{]},  }\item[{const uint8\+\_\+t}]{severity }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+{\em buffer} & string buffer \\
+\hline
+{\em severity} & severity of message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}\label{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetDitchSiteRequestCmd@{SetDitchSiteRequestCmd}}
+\index{SetDitchSiteRequestCmd@{SetDitchSiteRequestCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetDitchSiteRequestCmd()}{SetDitchSiteRequestCmd()}}
+{\footnotesize\ttfamily void Set\+Ditch\+Site\+Request\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a77e2300517939fc20123c2e329f5cf89}\label{_cognition_8hpp_a77e2300517939fc20123c2e329f5cf89}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetGuidanceAltCmd@{SetGuidanceAltCmd}}
+\index{SetGuidanceAltCmd@{SetGuidanceAltCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetGuidanceAltCmd()}{SetGuidanceAltCmd()}}
+{\footnotesize\ttfamily void Set\+Guidance\+Alt\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+ID,  }\item[{const double}]{alt,  }\item[{const int}]{hold = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making information \\
+\hline
+{\em plan\+ID} & id of plan on which alt change is done \\
+\hline
+{\em alt} & value of altitude \\
+\hline
+{\em hold} & true if alt change is to apply to entire flightplan, false if only for current leg \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_ae75ba7b8dfad50bc6bec31ba5f665301}\label{_cognition_8hpp_ae75ba7b8dfad50bc6bec31ba5f665301}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetGuidanceFlightPlan@{SetGuidanceFlightPlan}}
+\index{SetGuidanceFlightPlan@{SetGuidanceFlightPlan}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetGuidanceFlightPlan()}{SetGuidanceFlightPlan()}}
+{\footnotesize\ttfamily void Set\+Guidance\+Flight\+Plan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+\_\+id,  }\item[{const int}]{wp\+\_\+index }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making information \\
+\hline
+{\em plan\+\_\+id} & id of plan \\
+\hline
+{\em wp\+\_\+index} & index of waypoint to which guidance should be started \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}\label{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetGuidanceP2P@{SetGuidanceP2P}}
+\index{SetGuidanceP2P@{SetGuidanceP2P}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetGuidanceP2P()}{SetGuidanceP2P()}}
+{\footnotesize\ttfamily void Set\+Guidance\+P2P (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const larcfm\+::\+Position \&}]{point,  }\item[{const double}]{speed }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+{\em point} & position of final point \\
+\hline
+{\em speed} & speed during the point2point segment \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_af8f799fe4a19a728cdc0aae64339c52f}\label{_cognition_8hpp_af8f799fe4a19a728cdc0aae64339c52f}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetGuidanceSpeedCmd@{SetGuidanceSpeedCmd}}
+\index{SetGuidanceSpeedCmd@{SetGuidanceSpeedCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetGuidanceSpeedCmd()}{SetGuidanceSpeedCmd()}}
+{\footnotesize\ttfamily void Set\+Guidance\+Speed\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+ID,  }\item[{const double}]{speed,  }\item[{const int}]{hold = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making information \\
+\hline
+{\em plan\+ID} & id of plan on which speed change is done \\
+\hline
+{\em speed} & value of speed \\
+\hline
+{\em hold} & true if speed change is to apply to entire flightplan, false if only for current leg \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a82a273c9caea71bcb6499a088e5fedbc}\label{_cognition_8hpp_a82a273c9caea71bcb6499a088e5fedbc}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetGuidanceVelCmd@{SetGuidanceVelCmd}}
+\index{SetGuidanceVelCmd@{SetGuidanceVelCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetGuidanceVelCmd()}{SetGuidanceVelCmd()}}
+{\footnotesize\ttfamily void Set\+Guidance\+Vel\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const double}]{track,  }\item[{const double}]{gs,  }\item[{const double}]{vs }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making information \\
+\hline
+{\em track} & heading \\
+\hline
+{\em gs} & ground speed \\
+\hline
+{\em vs} & vertical speed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_a880da76735a82c8f114e5f4e76a0230d}\label{_cognition_8hpp_a880da76735a82c8f114e5f4e76a0230d}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetLandCmd@{SetLandCmd}}
+\index{SetLandCmd@{SetLandCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetLandCmd()}{SetLandCmd()}}
+{\footnotesize\ttfamily void Set\+Land\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making state \\
+\hline
+\end{DoxyParams}

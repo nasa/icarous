@@ -1,0 +1,72 @@
+\hypertarget{sbn__platform__cfg_8h_source}{}\doxysection{sbn\+\_\+platform\+\_\+cfg.\+h}
+\label{sbn__platform__cfg_8h_source}\index{apps/SBN/fsw/platform\_inc/sbn\_platform\_cfg.h@{apps/SBN/fsw/platform\_inc/sbn\_platform\_cfg.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/******************************************************************************}}
+\DoxyCodeLine{2 \textcolor{comment}{** File: sbn\_platform\_cfg.h}}
+\DoxyCodeLine{3 \textcolor{comment}{**}}
+\DoxyCodeLine{4 \textcolor{comment}{**      Copyright (c) 2004-\/2016, United States government as represented by the}}
+\DoxyCodeLine{5 \textcolor{comment}{**      administrator of the National Aeronautics Space Administration.}}
+\DoxyCodeLine{6 \textcolor{comment}{**      All rights reserved. This software(cFE) was created at NASA's Goddard}}
+\DoxyCodeLine{7 \textcolor{comment}{**      Space Flight Center pursuant to government contracts.}}
+\DoxyCodeLine{8 \textcolor{comment}{**}}
+\DoxyCodeLine{9 \textcolor{comment}{**      This software may be used only pursuant to a United States government}}
+\DoxyCodeLine{10 \textcolor{comment}{**      sponsored project and the United States government may not be charged}}
+\DoxyCodeLine{11 \textcolor{comment}{**      for use thereof.}}
+\DoxyCodeLine{12 \textcolor{comment}{**}}
+\DoxyCodeLine{13 \textcolor{comment}{** Purpose:}}
+\DoxyCodeLine{14 \textcolor{comment}{**      This header file contains prototypes for private functions and type}}
+\DoxyCodeLine{15 \textcolor{comment}{**      definitions for the Software Bus Network Application.}}
+\DoxyCodeLine{16 \textcolor{comment}{**}}
+\DoxyCodeLine{17 \textcolor{comment}{** Authors:   J. Wilmot/GSFC Code582}}
+\DoxyCodeLine{18 \textcolor{comment}{**            R. McGraw/SSI}}
+\DoxyCodeLine{19 \textcolor{comment}{**            C. Knight/ARC Code TI}}
+\DoxyCodeLine{20 \textcolor{comment}{******************************************************************************/}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}cfe.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#ifndef \_sbn\_platform\_cfg\_h}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define \_sbn\_platform\_cfg\_h}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define SBN\_MAX\_NETS                16}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define SBN\_MAX\_SUBS\_PER\_PEER       256 }}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define SBN\_MAX\_FILTERS 16}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define SBN\_MAX\_FILTERS\_PER\_PEER    8}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define SBN\_MAX\_MSG\_PER\_WAKEUP        32}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define SBN\_MAIN\_LOOP\_DELAY           200}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define SBN\_POLL\_TIME        5}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define SBN\_PEER\_PIPE\_DEPTH           32}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define SBN\_DEFAULT\_MSG\_LIM           8}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define SBN\_SUB\_PIPE\_DEPTH            32}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define SBN\_MAX\_ONESUB\_PKTS\_ON\_PIPE   16}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#define SBN\_MAX\_ALLSUBS\_PKTS\_ON\_PIPE  64}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#define SBN\_MAX\_MOD\_NAME\_LEN         16}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define SBN\_MAX\_MOD\_CNT          8}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#define SBN\_MAX\_PEER\_CNT             16}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{107 \textcolor{preprocessor}{\#define SBN\_MOD\_STATUS\_MSG\_SZ         128}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#define SBN\_ADDR\_SZ                 48}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{119 \textcolor{preprocessor}{\#define SBN\_REMAP\_ENABLED}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#define SBN\_REMAP\_TBL\_FILENAME "{}/cf/sbn\_remap\_tbl.tbl"{}}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{preprocessor}{\#define SBN\_CONF\_TBL\_FILENAME "{}/cf/sbn\_conf\_tbl.tbl"{}}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_sbn\_platform\_cfg\_h\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

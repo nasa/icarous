@@ -1,0 +1,28 @@
+\hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t}{}\doxysection{Ut\+\_\+\+CFE\+\_\+\+EVS\+\_\+\+Hook\+Table\+\_\+t Struct Reference}
+\label{struct_ut___c_f_e___e_v_s___hook_table__t}\index{Ut\_CFE\_EVS\_HookTable\_t@{Ut\_CFE\_EVS\_HookTable\_t}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_ad71ef50317da88d8d6b1dd108377babf}\label{struct_ut___c_f_e___e_v_s___hook_table__t_ad71ef50317da88d8d6b1dd108377babf}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Register} )(void $\ast$Filters, uint16 Num\+Event\+Filters, uint16 Filter\+Scheme)
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_a11c619edba34443b77bb6e3ca430eb97}\label{struct_ut___c_f_e___e_v_s___hook_table__t_a11c619edba34443b77bb6e3ca430eb97}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Send\+Event} )(uint16 Event\+ID, uint16 Event\+Type, const char $\ast$Event\+Text)
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_ac7a8373eac1bb86133325e763307b993}\label{struct_ut___c_f_e___e_v_s___hook_table__t_ac7a8373eac1bb86133325e763307b993}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Send\+Timed\+Event} )(CFE\+\_\+\+TIME\+\_\+\+Sys\+Time\+\_\+t Time, uint16 Event\+ID, uint16 Event\+Type, const char $\ast$Spec,...)
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_a3fb7800831e8b4d223b41438d5e464ce}\label{struct_ut___c_f_e___e_v_s___hook_table__t_a3fb7800831e8b4d223b41438d5e464ce}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Send\+Event\+With\+App\+ID} )(uint16 Event\+ID, uint16 Event\+Type, uint32 App\+ID, const char $\ast$Spec,...)
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_aada0d0af61526e14a8ff2250043dda4f}\label{struct_ut___c_f_e___e_v_s___hook_table__t_aada0d0af61526e14a8ff2250043dda4f}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Clean\+Up\+App} )(uint32 App\+Id)
+\item 
+\mbox{\Hypertarget{struct_ut___c_f_e___e_v_s___hook_table__t_a525f66d1cc7c0091d86459fc99eb75c4}\label{struct_ut___c_f_e___e_v_s___hook_table__t_a525f66d1cc7c0091d86459fc99eb75c4}} 
+int32($\ast$ {\bfseries CFE\+\_\+\+EVS\+\_\+\+Reset\+All\+Filters} )(void)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+apps/scheduler/fsw/unit\+\_\+test/sch\+\_\+test\+\_\+utils.\+h\end{DoxyCompactItemize}
