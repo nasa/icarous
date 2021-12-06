@@ -93,6 +93,7 @@ typedef struct{
     std::string timeString;              ///< Formatted time string
     std::string callSign;                ///< Vehicle's callsign string
     std::string missionPlan;             ///< Mission plan id (should be "Plan0")
+    larcfm::Position launchPoint;        ///< Position for RTL
     cognition_params_t parameters;       ///< Configurable parameters used by Cognition
     bool icReady;                        ///< True if icarous is ready
 

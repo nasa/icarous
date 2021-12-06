@@ -65,7 +65,8 @@ void Cognition::InitializeEventHandlers(){
    eventMng.AddEventHandler("FenceConflict",
                              inputPriorities["FenceConflict"],
                              FenceConflictTrigger,
-                             MAKE_HANDLER(ReturnToNextFeasibleWP));
+                             MAKE_HANDLER(ReturnToLaunch));
+                             //MAKE_HANDLER(ReturnToNextFeasibleWP));
 
    eventMng.AddEventHandler("TrafficConflict1",
                              inputPriorities["TrafficConflict1"],

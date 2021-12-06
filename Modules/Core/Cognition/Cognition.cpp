@@ -78,6 +78,7 @@ void Cognition::InitializeState(){
     cogState.primaryFPReceived = false;
     cogState.mergingActive = 0;
     cogState.ditchSite = larcfm::Position::makeLatLonAlt(0,"deg",0,"deg",0,"m");
+    cogState.launchPoint = larcfm::Position::makeLatLonAlt(0,"deg",0,"deg",0,"m");
     cogState.activePlan = nullptr;
     cogState.numSecPaths = 0;
     cogState.scenarioTime = 0;
@@ -334,6 +335,7 @@ void Cognition::StartMission(const int mission_start_value,const double delay){
     cogState.nextWpId["Plan0"] = cogState.missionStart;
     cogState.scenarioTime += delay;
     cogState.activePlan = GetPlan(&cogState.flightPlans,"Plan0");
+    cogState.launchPoint = cogState.position;
     if (cogState.activePlan != nullptr)
     {
         if (delay > 0)

@@ -704,3 +704,47 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    }
 
 };
+
+// Handler to return to launch point
+class ReturnToLaunch: public EventHandler<CognitionState_t>{
+    retVal_e Initialize(CognitionState_t* state){
+        LogMessage(state,"[STATUS] | Returning to launch point");
+        // Find a path to launch point
+        larcfm::Position positionA = state->position;
+        double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
+        larcfm::Position positionB = state->launchPoint.mkAlt(state->position.alt());
+        double trkGoal = positionA.track(positionB)*180/M_PI;
+        larcfm::Velocity velocityA = state->velocity;
+        larcfm::Velocity velocityB = larcfm::Velocity::makeTrkGsVs(trkGoal,"degree",3,"m/s",0,"m/s");
+        FindNewPath(state,"RtlPath",positionA, velocityA, positionB, velocityB);
+        SendStatus(state,(char*)"IC:Computing RTL path",6);
+        state->pathRequest = REQUEST_PROCESSING;
+        return SUCCESS;
+    }
+
+    retVal_e Execute(CognitionState_t* state){
+        if(state->pathRequest == REQUEST_RESPONDED){
+            state->pathRequest = REQUEST_NIL;
+            SetGuidanceFlightPlan(state,"RtlPath",1);
+            state->missionPlan = "RtlPath";
+            return SUCCESS;
+        }else{
+            larcfm::Plan *fp = GetPlan(&state->flightPlans,"RtlPath");
+            if(fp != nullptr){
+                state->pathRequest = REQUEST_RESPONDED;
+            }
+            return INPROGRESS;
+        }
+    }
+
+    retVal_e Terminate(CognitionState_t* state){
+        double dist = state->position.distanceH(state->launchPoint);
+        if(dist>5){
+            return INPROGRESS;
+        }else{
+            LogMessage(state,"[STATUS] | Landing at RTL");
+            ExecuteHandler(MAKE_HANDLER(LandPhaseHandler),"PostRtlLand");
+            return SUCCESS;
+        }
+    }
+};
