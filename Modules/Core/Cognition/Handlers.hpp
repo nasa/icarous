@@ -31,6 +31,7 @@ class TakeoffPhaseHandler: public EventHandler<CognitionState_t>{
    double takeoffStartTime; ///< Keep track of time since we sent the takeoff command
    
    retVal_e Initialize(CognitionState_t* state){
+       LogMessage(state,"[HANDLER] | Takeoff Phase");
        /// Enqueue the takeoff command
        TakeoffCommand takeoff_command;
        Command cmd = {.commandType=CommandType_e::TAKEOFF_COMMAND};
@@ -73,6 +74,7 @@ class Vector2Mission: public EventHandler<CognitionState_t>{
    larcfm::Position target; ///< target position we are currently vectoring to
    double gs;               ///< ground speed
    retVal_e Initialize(CognitionState_t* state){
+       LogMessage(state,"[HANDLER] | Vector to mission");
        LogMessage(state, "[STATUS] | " + eventName + " | Vectoring to mission");
        /// Extract current ground speed at initialization and maintain this speed
        gs = state->velocity.gs(); 
@@ -164,6 +166,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
              return SHUTDOWN;
         }
   
+        LogMessage(state,"[HANDLER] | Return to mission");
         LogMessage(state, "[STATUS] | " + eventName + " | Return to mission");
         state->numSecPaths++;
         std::string pathName = "Plan" + std::to_string(state->numSecPaths);
@@ -226,6 +229,7 @@ class ReturnToMission: public EventHandler<CognitionState_t>{
  */
 class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
+        LogMessage(state,"[HANDLER] | Return to next feasible WP");
         if(PrimaryPlanCompletionTrigger(state)){
             return SHUTDOWN;
         }
@@ -286,6 +290,11 @@ class ReturnToNextFeasibleWP:public EventHandler<CognitionState_t>{
  * 
  */
 class LandPhaseHandler: public EventHandler<CognitionState_t>{
+   retVal_e Initialize(CognitionState_t* state){
+       LogMessage(state,"[HANDLER] | Land phase");
+       return SUCCESS;
+   }
+
    retVal_e Execute(CognitionState_t* state){
        /// Enqueue the land command
        SendStatus(state, (char *)"IC: Landing", 6);
@@ -309,6 +318,7 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
     double startTime;
 
     retVal_e Initialize(CognitionState_t* state){
+         LogMessage(state,"[HANDLER] | Traffic Conflict");
          /// Initialize required variables
          state->resolutionStartSpeed = state->velocity.gs();
          state->prevResSpeed  = state->resolutionStartSpeed;
@@ -594,6 +604,11 @@ class TrafficConflictHandler: public EventHandler<CognitionState_t>{
 class MergingHandler: public EventHandler<CognitionState_t>{
     public:
     bool mergingSpeedChange = false;
+    retVal_e Initialize(CognitionState_t* state){
+         LogMessage(state,"[HANDLER] | Merging");
+         return SUCCESS;
+    }
+
     retVal_e Execute(CognitionState_t* state){
         /// We just keep track of merging. This ensures we don't execute unnecessary handlers during merging.
         if(state->mergingActive == 2 || state->mergingActive == 0){
@@ -623,6 +638,11 @@ class MergingHandler: public EventHandler<CognitionState_t>{
  */
 class RequestDitchSite: public EventHandler<CognitionState_t>{
     public:
+    retVal_e Initialize(CognitionState_t* state){
+         LogMessage(state,"[HANDLER] | Request ditch site");
+         return SUCCESS;
+    }
+
     retVal_e Execute(CognitionState_t* state){
         /// Send ditch request
         SetDitchSiteRequestCmd(state);
@@ -639,6 +659,7 @@ class ProceedToDitchSite: public EventHandler<CognitionState_t>{
     public:
     retVal_e Initialize(CognitionState_t* state){
         /// Find a path to TOD
+        LogMessage(state,"[HANDLER] | Proceed to ditch site");
         larcfm::Position positionA = state->position.mkAlt(state->todAltitude);
         double trk = std::fmod(2*M_PI + state->ditchSite.track(positionA),2*M_PI);
         larcfm::Position positionB = state->ditchSite.linearDist2D(trk,state->todAltitude).mkAlt(state->todAltitude);
@@ -679,6 +700,7 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
    public:
    retVal_e Initialize(CognitionState_t* state){
        /// Upon reaching TOD, proceed to landing site
+       LogMessage(state,"[HANDLER] | Proceed from TOD to land");
        LogMessage(state,"[STATUS] | Reached TOD, proceeding to land");
        SetGuidanceP2P(state,state->ditchSite,1.5);
        return SUCCESS;
@@ -708,8 +730,7 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 // Handler to return to launch point
 class ReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
-        LogMessage(state,"[STATUS] | Returning to launch point");
-        // Find a path to launch point
+        LogMessage(state,"[HANDLER] | Return to launch");
         larcfm::Position positionA = state->position;
         double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
         larcfm::Position positionB = state->launchPoint.mkAlt(state->position.alt());
