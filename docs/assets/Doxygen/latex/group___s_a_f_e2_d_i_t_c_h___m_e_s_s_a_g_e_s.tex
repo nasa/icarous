@@ -5,5 +5,116 @@
 safe2ditch message definitions  
 
 
-safe2ditch message definitions 
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsafe2ditch_status__t}{safe2ditch\+Status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message contaning status information about safe2ditch \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsafe2ditch_intruders__t}{safe2ditch\+Intruders\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em message contaning information about intruders reported by safe2ditch \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaa2895d17fa51979373e4243335ce177d}{safe2ditch\+Status\+\_\+t\+::\+Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+double \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga99b9642711be9a1a2763a2f4338ac3e5}{safe2ditch\+Status\+\_\+t\+::ditchsite}} \mbox{[}3\mbox{]}
+\item 
+double \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga7e716cf2c78d6fcf12a8510731e8caa2}{safe2ditch\+Status\+\_\+t\+::tod\+Altitude}}
+\item 
+bool \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gac537f000e3f1030c27d7d9693d9c70fc}{safe2ditch\+Status\+\_\+t\+::reset\+Ditch}}
+\item 
+bool \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaaf5ed85e5e488c184ef5618af62e5975}{safe2ditch\+Status\+\_\+t\+::end\+Ditch}}
+\item 
+bool \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga90385cba520828b86844521a9119fd96}{safe2ditch\+Status\+\_\+t\+::ditch\+Guidance\+Required}}
+\item 
+bool \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaecb89739afb0394f5aa90c3dc080096b}{safe2ditch\+Status\+\_\+t\+::ditch\+Requested}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga55153a1622260c068a8801489b931338}{safe2ditch\+Intruders\+\_\+t\+::\+Tlm\+Header}} \mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad82e8e255eb1a39e027172cdcd9b9152}{safe2ditch\+Intruders\+\_\+t\+::intruder\+ID}} \mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}
+\item 
+double \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gabb34841d72b6ab21ab816fb25d3b4509}{safe2ditch\+Intruders\+\_\+t\+::intruder\+Lat}} \mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}
+\item 
+double \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad07df67a6781a184dc19e6786aee8395}{safe2ditch\+Intruders\+\_\+t\+::intruder\+Lon}} \mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga5b536edd060316a977239fa2a4484c4c}{safe2ditch\+Intruders\+\_\+t\+::num\+Of\+Intruders}}
+\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga90385cba520828b86844521a9119fd96}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga90385cba520828b86844521a9119fd96}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!ditchGuidanceRequired@{ditchGuidanceRequired}}
+\index{ditchGuidanceRequired@{ditchGuidanceRequired}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{ditchGuidanceRequired}{ditchGuidanceRequired}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::ditch\+Guidance\+Required}
+
+Ditch guidance required \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaecb89739afb0394f5aa90c3dc080096b}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaecb89739afb0394f5aa90c3dc080096b}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!ditchRequested@{ditchRequested}}
+\index{ditchRequested@{ditchRequested}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{ditchRequested}{ditchRequested}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::ditch\+Requested}
+
+Ditching requested \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga99b9642711be9a1a2763a2f4338ac3e5}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga99b9642711be9a1a2763a2f4338ac3e5}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!ditchsite@{ditchsite}}
+\index{ditchsite@{ditchsite}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{ditchsite}{ditchsite}}
+{\footnotesize\ttfamily double safe2ditch\+Status\+\_\+t\+::ditchsite\mbox{[}3\mbox{]}}
+
+Ditch site selected by safe2ditch \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaaf5ed85e5e488c184ef5618af62e5975}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaaf5ed85e5e488c184ef5618af62e5975}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!endDitch@{endDitch}}
+\index{endDitch@{endDitch}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{endDitch}{endDitch}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::end\+Ditch}
+
+End ditching \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad82e8e255eb1a39e027172cdcd9b9152}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad82e8e255eb1a39e027172cdcd9b9152}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!intruderID@{intruderID}}
+\index{intruderID@{intruderID}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{intruderID}{intruderID}}
+{\footnotesize\ttfamily uint8\+\_\+t safe2ditch\+Intruders\+\_\+t\+::intruder\+ID\mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}}
+
+ID of the intruders \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gabb34841d72b6ab21ab816fb25d3b4509}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gabb34841d72b6ab21ab816fb25d3b4509}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!intruderLat@{intruderLat}}
+\index{intruderLat@{intruderLat}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{intruderLat}{intruderLat}}
+{\footnotesize\ttfamily double safe2ditch\+Intruders\+\_\+t\+::intruder\+Lat\mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}}
+
+Latitude of intruders \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad07df67a6781a184dc19e6786aee8395}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gad07df67a6781a184dc19e6786aee8395}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!intruderLon@{intruderLon}}
+\index{intruderLon@{intruderLon}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{intruderLon}{intruderLon}}
+{\footnotesize\ttfamily double safe2ditch\+Intruders\+\_\+t\+::intruder\+Lon\mbox{[}S2\+D\+\_\+\+MAX\+\_\+\+INTRUDERS\mbox{]}}
+
+Longitude of intruders \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga5b536edd060316a977239fa2a4484c4c}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga5b536edd060316a977239fa2a4484c4c}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!numOfIntruders@{numOfIntruders}}
+\index{numOfIntruders@{numOfIntruders}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{numOfIntruders}{numOfIntruders}}
+{\footnotesize\ttfamily uint8\+\_\+t safe2ditch\+Intruders\+\_\+t\+::num\+Of\+Intruders}
+
+Total number of intruders \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gac537f000e3f1030c27d7d9693d9c70fc}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gac537f000e3f1030c27d7d9693d9c70fc}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!resetDitch@{resetDitch}}
+\index{resetDitch@{resetDitch}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{resetDitch}{resetDitch}}
+{\footnotesize\ttfamily bool safe2ditch\+Status\+\_\+t\+::reset\+Ditch}
+
+Reset ditching \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaa2895d17fa51979373e4243335ce177d}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_gaa2895d17fa51979373e4243335ce177d}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily uint8\+\_\+t safe2ditch\+Status\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga55153a1622260c068a8801489b931338}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga55153a1622260c068a8801489b931338}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!TlmHeader@{TlmHeader}}
+\index{TlmHeader@{TlmHeader}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{TlmHeader}{TlmHeader}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint8\+\_\+t safe2ditch\+Intruders\+\_\+t\+::\+Tlm\+Header\mbox{[}CFE\+\_\+\+SB\+\_\+\+TLM\+\_\+\+HDR\+\_\+\+SIZE\mbox{]}}
+
+c\+FS header information \mbox{\Hypertarget{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga7e716cf2c78d6fcf12a8510731e8caa2}\label{group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s_ga7e716cf2c78d6fcf12a8510731e8caa2}} 
+\index{SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}!todAltitude@{todAltitude}}
+\index{todAltitude@{todAltitude}!SAFE2DITCH\_MESSAGES@{SAFE2DITCH\_MESSAGES}}
+\doxysubsubsection{\texorpdfstring{todAltitude}{todAltitude}}
+{\footnotesize\ttfamily double safe2ditch\+Status\+\_\+t\+::tod\+Altitude}
+
+Altitude at TOD 

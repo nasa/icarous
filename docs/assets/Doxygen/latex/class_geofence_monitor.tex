@@ -33,6 +33,60 @@ void {\bfseries Get\+Closest\+Recovery\+Point} (double current\+Position\mbox{[}
 \mbox{\Hypertarget{class_geofence_monitor_a71c3a45127b47d90f9a1651e4169be61}\label{class_geofence_monitor_a71c3a45127b47d90f9a1651e4169be61}} 
 void {\bfseries Clear\+Fences} ()
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_afdc74ef0be4061b4f8028f647ddd7846}\label{class_geofence_monitor_afdc74ef0be4061b4f8028f647ddd7846}} 
+bool {\bfseries Collision\+Detection} (fence $\ast$gf, larcfm\+::\+Position $\ast$pos, larcfm\+::\+Vect2 $\ast$v, double start\+Time, double stop\+Time)
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_ad505763df7fb0c4042ea333bc09659f6}\label{class_geofence_monitor_ad505763df7fb0c4042ea333bc09659f6}} 
+fence $\ast$ {\bfseries Get\+Geofence} (int id)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_abc34849f4772a3a7bcd8e4ce7eb68820}\label{class_geofence_monitor_abc34849f4772a3a7bcd8e4ce7eb68820}} 
+double {\bfseries BUFF} = 0.\+1
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a0e80c449693afa92dbbc0ab7a2a90c97}\label{class_geofence_monitor_a0e80c449693afa92dbbc0ab7a2a90c97}} 
+double {\bfseries lookahead}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_aedd3be49faaf43c0c7d35d9f81b599ed}\label{class_geofence_monitor_aedd3be49faaf43c0c7d35d9f81b599ed}} 
+double {\bfseries hthreshold}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a6471e83bb792eedf41166772d6a9a031}\label{class_geofence_monitor_a6471e83bb792eedf41166772d6a9a031}} 
+double {\bfseries vthreshold}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_adea91a156b107a55059e2f420d43d9c5}\label{class_geofence_monitor_adea91a156b107a55059e2f420d43d9c5}} 
+double {\bfseries hstepback}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_af6ed14a55c1c5eb7a101f407823c772c}\label{class_geofence_monitor_af6ed14a55c1c5eb7a101f407823c772c}} 
+double {\bfseries vstepback}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a5274d4984166af0e7766e952226fa046}\label{class_geofence_monitor_a5274d4984166af0e7766e952226fa046}} 
+std\+::list$<$ fence $>$ {\bfseries fence\+List}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a1165bc8181329829da248a1a4bcd7997}\label{class_geofence_monitor_a1165bc8181329829da248a1a4bcd7997}} 
+std\+::list$<$ fence $>$\+::iterator {\bfseries fence\+List\+It}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a4077e533c7ccc2870a46720c06651226}\label{class_geofence_monitor_a4077e533c7ccc2870a46720c06651226}} 
+larcfm\+::\+CDPolycarp {\bfseries geo\+Poly\+Carp}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_acf4213db25c3c4b86f1870235095ff66}\label{class_geofence_monitor_acf4213db25c3c4b86f1870235095ff66}} 
+larcfm\+::\+Polycarp\+Resolution {\bfseries geo\+Poly\+Resolution}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a5866e715c77c0624348312427faaa9f2}\label{class_geofence_monitor_a5866e715c77c0624348312427faaa9f2}} 
+larcfm\+::\+Polycarp\+Detection {\bfseries geo\+Poly\+Detect}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a3ace4d4c6ec4431443206582f3d08e17}\label{class_geofence_monitor_a3ace4d4c6ec4431443206582f3d08e17}} 
+larcfm\+::\+Poly\+Path {\bfseries geo\+Poly\+Path}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a11b4f42bf77da1eb1a6a0845e5229558}\label{class_geofence_monitor_a11b4f42bf77da1eb1a6a0845e5229558}} 
+larcfm\+::\+CDIIPolygon {\bfseries geo\+CDIIPolygon}
+\item 
+\mbox{\Hypertarget{class_geofence_monitor_a610f531d576be11ae793eaae8c8ff220}\label{class_geofence_monitor_a610f531d576be11ae793eaae8c8ff220}} 
+std\+::list$<$ \mbox{\hyperlink{struct_geofence_conflict}{Geofence\+Conflict}} $>$ {\bfseries conflict\+List}
+\end{DoxyCompactItemize}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

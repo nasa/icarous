@@ -64,6 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_target_tracker-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TargetTracker Class Reference</div></div>
 </div><!--header-->
@@ -104,6 +106,60 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTotalTraffic</b> ()
 <tr class="memitem:abda1015569581c3ca1538a028199ff91"><td class="memItemLeft" align="right" valign="top"><a id="abda1015569581c3ca1538a028199ff91" name="abda1015569581c3ca1538a028199ff91"></a>
 <a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> (int i)</td></tr>
 <tr class="separator:abda1015569581c3ca1538a028199ff91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a02e1de75185dd918cab71a4df6c677f1"><td class="memItemLeft" align="right" valign="top"><a id="a02e1de75185dd918cab71a4df6c677f1" name="a02e1de75185dd918cab71a4df6c677f1"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CheckValidationGate</b> (<a class="el" href="structmeasurement.html">measurement</a> &amp;data)</td></tr>
+<tr class="separator:a02e1de75185dd918cab71a4df6c677f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb68aafc078f6814ede523b2944d51cb"><td class="memItemLeft" align="right" valign="top"><a id="acb68aafc078f6814ede523b2944d51cb" name="acb68aafc078f6814ede523b2944d51cb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateEstimate</b> (<a class="el" href="structmeasurement.html">measurement</a> &amp;prediction, <a class="el" href="structmeasurement.html">measurement</a> &amp;value, double time=0)</td></tr>
+<tr class="separator:acb68aafc078f6814ede523b2944d51cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a4de804c0884092f9fcf4f8b50721388c"><td class="memItemLeft" align="right" valign="top"><a id="a4de804c0884092f9fcf4f8b50721388c" name="a4de804c0884092f9fcf4f8b50721388c"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>callsign</b></td></tr>
+<tr class="separator:a4de804c0884092f9fcf4f8b50721388c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8656f10d0e9e95165e39c17130d73b0f"><td class="memItemLeft" align="right" valign="top"><a id="a8656f10d0e9e95165e39c17130d73b0f" name="a8656f10d0e9e95165e39c17130d73b0f"></a>
+std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>logFile</b></td></tr>
+<tr class="separator:a8656f10d0e9e95165e39c17130d73b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad697ba36e5bb552baee35100fe1c9624"><td class="memItemLeft" align="right" valign="top"><a id="ad697ba36e5bb552baee35100fe1c9624" name="ad697ba36e5bb552baee35100fe1c9624"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>log</b></td></tr>
+<tr class="separator:ad697ba36e5bb552baee35100fe1c9624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e087163332f7aa234b8149e723ee103"><td class="memItemLeft" align="right" valign="top"><a id="a8e087163332f7aa234b8149e723ee103" name="a8e087163332f7aa234b8149e723ee103"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>timeout</b></td></tr>
+<tr class="separator:a8e087163332f7aa234b8149e723ee103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e532f0a6b1eecf99238dbe684d832e5"><td class="memItemLeft" align="right" valign="top"><a id="a2e532f0a6b1eecf99238dbe684d832e5" name="a2e532f0a6b1eecf99238dbe684d832e5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>modelUncertaintyP</b> [6]</td></tr>
+<tr class="separator:a2e532f0a6b1eecf99238dbe684d832e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60803e3c826c1d32d9685fa0b44aa90e"><td class="memItemLeft" align="right" valign="top"><a id="a60803e3c826c1d32d9685fa0b44aa90e" name="a60803e3c826c1d32d9685fa0b44aa90e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>modelUncertaintyV</b> [6]</td></tr>
+<tr class="separator:a60803e3c826c1d32d9685fa0b44aa90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d79f1668c85e4ac38dc0bd5e43d3a17"><td class="memItemLeft" align="right" valign="top"><a id="a8d79f1668c85e4ac38dc0bd5e43d3a17" name="a8d79f1668c85e4ac38dc0bd5e43d3a17"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>pThreshold</b></td></tr>
+<tr class="separator:a8d79f1668c85e4ac38dc0bd5e43d3a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959ba09db8db4ef38b7e04238d6e1724"><td class="memItemLeft" align="right" valign="top"><a id="a959ba09db8db4ef38b7e04238d6e1724" name="a959ba09db8db4ef38b7e04238d6e1724"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>vThreshold</b></td></tr>
+<tr class="separator:a959ba09db8db4ef38b7e04238d6e1724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac298a903710c3327ef24eacc83e0b375"><td class="memItemLeft" align="right" valign="top"><a id="ac298a903710c3327ef24eacc83e0b375" name="ac298a903710c3327ef24eacc83e0b375"></a>
+larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>homePos</b></td></tr>
+<tr class="separator:ac298a903710c3327ef24eacc83e0b375"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3dfb9abb31cb4d6b06ad029a191903a"><td class="memItemLeft" align="right" valign="top"><a id="af3dfb9abb31cb4d6b06ad029a191903a" name="af3dfb9abb31cb4d6b06ad029a191903a"></a>
+<a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>currentState</b></td></tr>
+<tr class="separator:af3dfb9abb31cb4d6b06ad029a191903a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25d64b8d0044cd0e519f5bb5a5df1db"><td class="memItemLeft" align="right" valign="top"><a id="ad25d64b8d0044cd0e519f5bb5a5df1db" name="ad25d64b8d0044cd0e519f5bb5a5df1db"></a>
+std::vector&lt; <a class="el" href="structmeasurement.html">measurement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tracks</b></td></tr>
+<tr class="separator:ad25d64b8d0044cd0e519f5bb5a5df1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d3c43affbdaabbf5b441355628f76a6"><td class="memItemLeft" align="right" valign="top"><a id="a9d3c43affbdaabbf5b441355628f76a6" name="a9d3c43affbdaabbf5b441355628f76a6"></a>
+larcfm::EuclideanProjection&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b></td></tr>
+<tr class="separator:a9d3c43affbdaabbf5b441355628f76a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7413fcd10b65554976845b89c8c50a7"><td class="memItemLeft" align="right" valign="top"><a id="aa7413fcd10b65554976845b89c8c50a7" name="aa7413fcd10b65554976845b89c8c50a7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>totalTracks</b></td></tr>
+<tr class="separator:aa7413fcd10b65554976845b89c8c50a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe28bcb4d94593f9f7b6449d3686e53b"><td class="memItemLeft" align="right" valign="top"><a id="abe28bcb4d94593f9f7b6449d3686e53b" name="abe28bcb4d94593f9f7b6449d3686e53b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>prevLogTime</b></td></tr>
+<tr class="separator:abe28bcb4d94593f9f7b6449d3686e53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/TargetTracker/<a class="el" href="_target_tracker_8hpp_source.html">TargetTracker.hpp</a></li>

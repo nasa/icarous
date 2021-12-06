@@ -64,6 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_geofence_monitor-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GeofenceMonitor Class Reference</div></div>
 </div><!--header-->
@@ -101,6 +103,60 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestRecoveryPoi
 <tr class="memitem:a71c3a45127b47d90f9a1651e4169be61"><td class="memItemLeft" align="right" valign="top"><a id="a71c3a45127b47d90f9a1651e4169be61" name="a71c3a45127b47d90f9a1651e4169be61"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFences</b> ()</td></tr>
 <tr class="separator:a71c3a45127b47d90f9a1651e4169be61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:afdc74ef0be4061b4f8028f647ddd7846"><td class="memItemLeft" align="right" valign="top"><a id="afdc74ef0be4061b4f8028f647ddd7846" name="afdc74ef0be4061b4f8028f647ddd7846"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CollisionDetection</b> (fence *gf, larcfm::Position *pos, larcfm::Vect2 *v, double startTime, double stopTime)</td></tr>
+<tr class="separator:afdc74ef0be4061b4f8028f647ddd7846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad505763df7fb0c4042ea333bc09659f6"><td class="memItemLeft" align="right" valign="top"><a id="ad505763df7fb0c4042ea333bc09659f6" name="ad505763df7fb0c4042ea333bc09659f6"></a>
+fence *&#160;</td><td class="memItemRight" valign="bottom"><b>GetGeofence</b> (int id)</td></tr>
+<tr class="separator:ad505763df7fb0c4042ea333bc09659f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:abc34849f4772a3a7bcd8e4ce7eb68820"><td class="memItemLeft" align="right" valign="top"><a id="abc34849f4772a3a7bcd8e4ce7eb68820" name="abc34849f4772a3a7bcd8e4ce7eb68820"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>BUFF</b> = 0.1</td></tr>
+<tr class="separator:abc34849f4772a3a7bcd8e4ce7eb68820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e80c449693afa92dbbc0ab7a2a90c97"><td class="memItemLeft" align="right" valign="top"><a id="a0e80c449693afa92dbbc0ab7a2a90c97" name="a0e80c449693afa92dbbc0ab7a2a90c97"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>lookahead</b></td></tr>
+<tr class="separator:a0e80c449693afa92dbbc0ab7a2a90c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedd3be49faaf43c0c7d35d9f81b599ed"><td class="memItemLeft" align="right" valign="top"><a id="aedd3be49faaf43c0c7d35d9f81b599ed" name="aedd3be49faaf43c0c7d35d9f81b599ed"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>hthreshold</b></td></tr>
+<tr class="separator:aedd3be49faaf43c0c7d35d9f81b599ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6471e83bb792eedf41166772d6a9a031"><td class="memItemLeft" align="right" valign="top"><a id="a6471e83bb792eedf41166772d6a9a031" name="a6471e83bb792eedf41166772d6a9a031"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>vthreshold</b></td></tr>
+<tr class="separator:a6471e83bb792eedf41166772d6a9a031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea91a156b107a55059e2f420d43d9c5"><td class="memItemLeft" align="right" valign="top"><a id="adea91a156b107a55059e2f420d43d9c5" name="adea91a156b107a55059e2f420d43d9c5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>hstepback</b></td></tr>
+<tr class="separator:adea91a156b107a55059e2f420d43d9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ed14a55c1c5eb7a101f407823c772c"><td class="memItemLeft" align="right" valign="top"><a id="af6ed14a55c1c5eb7a101f407823c772c" name="af6ed14a55c1c5eb7a101f407823c772c"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>vstepback</b></td></tr>
+<tr class="separator:af6ed14a55c1c5eb7a101f407823c772c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5274d4984166af0e7766e952226fa046"><td class="memItemLeft" align="right" valign="top"><a id="a5274d4984166af0e7766e952226fa046" name="a5274d4984166af0e7766e952226fa046"></a>
+std::list&lt; fence &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>fenceList</b></td></tr>
+<tr class="separator:a5274d4984166af0e7766e952226fa046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1165bc8181329829da248a1a4bcd7997"><td class="memItemLeft" align="right" valign="top"><a id="a1165bc8181329829da248a1a4bcd7997" name="a1165bc8181329829da248a1a4bcd7997"></a>
+std::list&lt; fence &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>fenceListIt</b></td></tr>
+<tr class="separator:a1165bc8181329829da248a1a4bcd7997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4077e533c7ccc2870a46720c06651226"><td class="memItemLeft" align="right" valign="top"><a id="a4077e533c7ccc2870a46720c06651226" name="a4077e533c7ccc2870a46720c06651226"></a>
+larcfm::CDPolycarp&#160;</td><td class="memItemRight" valign="bottom"><b>geoPolyCarp</b></td></tr>
+<tr class="separator:a4077e533c7ccc2870a46720c06651226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf4213db25c3c4b86f1870235095ff66"><td class="memItemLeft" align="right" valign="top"><a id="acf4213db25c3c4b86f1870235095ff66" name="acf4213db25c3c4b86f1870235095ff66"></a>
+larcfm::PolycarpResolution&#160;</td><td class="memItemRight" valign="bottom"><b>geoPolyResolution</b></td></tr>
+<tr class="separator:acf4213db25c3c4b86f1870235095ff66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5866e715c77c0624348312427faaa9f2"><td class="memItemLeft" align="right" valign="top"><a id="a5866e715c77c0624348312427faaa9f2" name="a5866e715c77c0624348312427faaa9f2"></a>
+larcfm::PolycarpDetection&#160;</td><td class="memItemRight" valign="bottom"><b>geoPolyDetect</b></td></tr>
+<tr class="separator:a5866e715c77c0624348312427faaa9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ace4d4c6ec4431443206582f3d08e17"><td class="memItemLeft" align="right" valign="top"><a id="a3ace4d4c6ec4431443206582f3d08e17" name="a3ace4d4c6ec4431443206582f3d08e17"></a>
+larcfm::PolyPath&#160;</td><td class="memItemRight" valign="bottom"><b>geoPolyPath</b></td></tr>
+<tr class="separator:a3ace4d4c6ec4431443206582f3d08e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b4f42bf77da1eb1a6a0845e5229558"><td class="memItemLeft" align="right" valign="top"><a id="a11b4f42bf77da1eb1a6a0845e5229558" name="a11b4f42bf77da1eb1a6a0845e5229558"></a>
+larcfm::CDIIPolygon&#160;</td><td class="memItemRight" valign="bottom"><b>geoCDIIPolygon</b></td></tr>
+<tr class="separator:a11b4f42bf77da1eb1a6a0845e5229558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a610f531d576be11ae793eaae8c8ff220"><td class="memItemLeft" align="right" valign="top"><a id="a610f531d576be11ae793eaae8c8ff220" name="a610f531d576be11ae793eaae8c8ff220"></a>
+std::list&lt; <a class="el" href="struct_geofence_conflict.html">GeofenceConflict</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>conflictList</b></td></tr>
+<tr class="separator:a610f531d576be11ae793eaae8c8ff220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/GeofenceMonitor/<a class="el" href="_geofence_monitor_8hpp_source.html">GeofenceMonitor.hpp</a></li>

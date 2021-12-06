@@ -5,22 +5,22 @@
 #include <functional>
 #include "DubinsPlanner.hpp"
 
-bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
-    auto cmp = [] (std::shared_ptr<node_t> A, std::shared_ptr<node_t> B) { 
+bool DubinsPlanner::AstarSearch(node* root,node* goal){
+    auto cmp = [] (std::shared_ptr<node> A, std::shared_ptr<node> B) { 
         return (A->g+A->h) > (B->g+B->h);
     };
     root->source = nullptr;
     root->g = 0;
     root->h = 0;
-    std::priority_queue<std::shared_ptr<node_t>,std::vector<std::shared_ptr<node_t>>,decltype(cmp)> frontier(cmp);
-    std::set<std::shared_ptr<node_t>> visited;
-    std::shared_ptr<node_t> q = std::make_shared<node_t>();
+    std::priority_queue<std::shared_ptr<node>,std::vector<std::shared_ptr<node>>,decltype(cmp)> frontier(cmp);
+    std::set<std::shared_ptr<node>> visited;
+    std::shared_ptr<node> q = std::make_shared<node>();
     *q = *root;
     visited.insert(q);
     while(!q->goal){
         bool visitedAlready = true;
         for(auto child: q->children){
-            std::shared_ptr<node_t> next = std::make_shared<node_t>();
+            std::shared_ptr<node> next = std::make_shared<node>();
             *(next) = *child;
             bool status = GetDubinsParams(q.get(),next.get());
             if(status){
@@ -48,8 +48,8 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
             break;
         }
     }
-    std::list<node_t> astarPath;
-    node_t* p = q.get();
+    std::list<node> astarPath;
+    node* p = q.get();
     if(q->goal){
         while (p->source != nullptr)
         {
@@ -58,7 +58,7 @@ bool DubinsPlanner::AstarSearch(node_t* root,node_t* goal){
         }
     }
     astarPath.push_front(*root);
-    path = std::vector<node_t>(astarPath.begin(),astarPath.end());
+    path = std::vector<node>(astarPath.begin(),astarPath.end());
 
 
     if(path.size() > 1){

@@ -65,86 +65,1088 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_traj_manager-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TrajManager Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Trajectory Management object.  
+</p>
+
+<p><code>#include &lt;<a class="el" href="_traj_manager_8hpp_source.html">TrajManager.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac4cc8d2fcd4b6085545e5b602054280a"><td class="memItemLeft" align="right" valign="top"><a id="ac4cc8d2fcd4b6085545e5b602054280a" name="ac4cc8d2fcd4b6085545e5b602054280a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TrajManager</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string config)</td></tr>
+<tr class="memitem:ac4cc8d2fcd4b6085545e5b602054280a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#ac4cc8d2fcd4b6085545e5b602054280a">TrajManager</a> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string config)</td></tr>
+<tr class="memdesc:ac4cc8d2fcd4b6085545e5b602054280a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Traj Manager object.  <a href="class_traj_manager.html#ac4cc8d2fcd4b6085545e5b602054280a">More...</a><br /></td></tr>
 <tr class="separator:ac4cc8d2fcd4b6085545e5b602054280a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45e6c05ae8fdc9178c78fed132912764"><td class="memItemLeft" align="right" valign="top"><a id="a45e6c05ae8fdc9178c78fed132912764" name="a45e6c05ae8fdc9178c78fed132912764"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadParamFromFile</b> (std::string config)</td></tr>
+<tr class="memitem:a45e6c05ae8fdc9178c78fed132912764"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a45e6c05ae8fdc9178c78fed132912764">ReadParamFromFile</a> (std::string config)</td></tr>
+<tr class="memdesc:a45e6c05ae8fdc9178c78fed132912764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read parameters from file.  <a href="class_traj_manager.html#a45e6c05ae8fdc9178c78fed132912764">More...</a><br /></td></tr>
 <tr class="separator:a45e6c05ae8fdc9178c78fed132912764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfefed23cbe0ae49f2b1a046c41a2347"><td class="memItemLeft" align="right" valign="top"><a id="acfefed23cbe0ae49f2b1a046c41a2347" name="acfefed23cbe0ae49f2b1a046c41a2347"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateDubinsPlannerParameters</b> (<a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;params)</td></tr>
+<tr class="memitem:acfefed23cbe0ae49f2b1a046c41a2347"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#acfefed23cbe0ae49f2b1a046c41a2347">UpdateDubinsPlannerParameters</a> (<a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;params)</td></tr>
+<tr class="memdesc:acfefed23cbe0ae49f2b1a046c41a2347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update dubins planner parameters.  <a href="class_traj_manager.html#acfefed23cbe0ae49f2b1a046c41a2347">More...</a><br /></td></tr>
 <tr class="separator:acfefed23cbe0ae49f2b1a046c41a2347"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68314e436ffb89b0f6541dcfb446fab1"><td class="memItemLeft" align="right" valign="top"><a id="a68314e436ffb89b0f6541dcfb446fab1" name="a68314e436ffb89b0f6541dcfb446fab1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>FindPath</b> (std::string planID, larcfm::Position fromPosition, larcfm::Position toPosition, larcfm::Velocity fromVelocity, larcfm::Velocity toVelocity)</td></tr>
+<tr class="memitem:a68314e436ffb89b0f6541dcfb446fab1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a68314e436ffb89b0f6541dcfb446fab1">FindPath</a> (std::string planID, larcfm::Position fromPosition, larcfm::Position toPosition, larcfm::Velocity fromVelocity, larcfm::Velocity toVelocity)</td></tr>
+<tr class="memdesc:a68314e436ffb89b0f6541dcfb446fab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute path.  <a href="class_traj_manager.html#a68314e436ffb89b0f6541dcfb446fab1">More...</a><br /></td></tr>
 <tr class="separator:a68314e436ffb89b0f6541dcfb446fab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f0477999fcb00a7f8b64227772bb51f"><td class="memItemLeft" align="right" valign="top"><a id="a1f0477999fcb00a7f8b64227772bb51f" name="a1f0477999fcb00a7f8b64227772bb51f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTotalWaypoints</b> (std::string planID)</td></tr>
+<tr class="memitem:a1f0477999fcb00a7f8b64227772bb51f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a1f0477999fcb00a7f8b64227772bb51f">GetTotalWaypoints</a> (std::string planID)</td></tr>
+<tr class="memdesc:a1f0477999fcb00a7f8b64227772bb51f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Total Waypoints.  <a href="class_traj_manager.html#a1f0477999fcb00a7f8b64227772bb51f">More...</a><br /></td></tr>
 <tr class="separator:a1f0477999fcb00a7f8b64227772bb51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bce4c6c916027d7149fa3757158a893"><td class="memItemLeft" align="right" valign="top"><a id="a7bce4c6c916027d7149fa3757158a893" name="a7bce4c6c916027d7149fa3757158a893"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWaypoint</b> (std::string planID, int wpid, <a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;wp)</td></tr>
+<tr class="memitem:a7bce4c6c916027d7149fa3757158a893"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a7bce4c6c916027d7149fa3757158a893">GetWaypoint</a> (std::string planID, int wpid, <a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;wp)</td></tr>
+<tr class="memdesc:a7bce4c6c916027d7149fa3757158a893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Waypoint object.  <a href="class_traj_manager.html#a7bce4c6c916027d7149fa3757158a893">More...</a><br /></td></tr>
 <tr class="separator:a7bce4c6c916027d7149fa3757158a893"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2873a4044713f90051474b43ec324383"><td class="memItemLeft" align="right" valign="top"><a id="a2873a4044713f90051474b43ec324383" name="a2873a4044713f90051474b43ec324383"></a>
-larcfm::Plan *&#160;</td><td class="memItemRight" valign="bottom"><b>GetPlan</b> (std::string planID)</td></tr>
+<tr class="memitem:a2873a4044713f90051474b43ec324383"><td class="memItemLeft" align="right" valign="top">larcfm::Plan *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a2873a4044713f90051474b43ec324383">GetPlan</a> (std::string planID)</td></tr>
+<tr class="memdesc:a2873a4044713f90051474b43ec324383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get pointer to Plan object.  <a href="class_traj_manager.html#a2873a4044713f90051474b43ec324383">More...</a><br /></td></tr>
 <tr class="separator:a2873a4044713f90051474b43ec324383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98320dba7d693e779f4e2a9f0cdcbb92"><td class="memItemLeft" align="right" valign="top"><a id="a98320dba7d693e779f4e2a9f0cdcbb92" name="a98320dba7d693e779f4e2a9f0cdcbb92"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearAllPlans</b> ()</td></tr>
+<tr class="memdesc:a98320dba7d693e779f4e2a9f0cdcbb92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all plans. <br /></td></tr>
 <tr class="separator:a98320dba7d693e779f4e2a9f0cdcbb92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6188205a6074aa795fa7cdd92f57f2e1"><td class="memItemLeft" align="right" valign="top"><a id="a6188205a6074aa795fa7cdd92f57f2e1" name="a6188205a6074aa795fa7cdd92f57f2e1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFences</b> ()</td></tr>
+<tr class="memdesc:a6188205a6074aa795fa7cdd92f57f2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear fences. <br /></td></tr>
 <tr class="separator:a6188205a6074aa795fa7cdd92f57f2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab09a1d7f560de06fbf93e3730af6fb76"><td class="memItemLeft" align="right" valign="top"><a id="ab09a1d7f560de06fbf93e3730af6fb76" name="ab09a1d7f560de06fbf93e3730af6fb76"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputGeofenceData</b> (int type, int index, int totalVertices, double floor, double ceiling, double pos[][2])</td></tr>
+<tr class="memitem:ab09a1d7f560de06fbf93e3730af6fb76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#ab09a1d7f560de06fbf93e3730af6fb76">InputGeofenceData</a> (int type, int index, int totalVertices, double floor, double ceiling, double pos[][2])</td></tr>
+<tr class="memdesc:ab09a1d7f560de06fbf93e3730af6fb76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input geofence.  <a href="class_traj_manager.html#ab09a1d7f560de06fbf93e3730af6fb76">More...</a><br /></td></tr>
 <tr class="separator:ab09a1d7f560de06fbf93e3730af6fb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4878a4a9cf29f8cec2015b56c6891153"><td class="memItemLeft" align="right" valign="top"><a id="a4878a4a9cf29f8cec2015b56c6891153" name="a4878a4a9cf29f8cec2015b56c6891153"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputGeofenceData</b> (int type, int index, int totalVertices, double floor, double ceiling, std::vector&lt; larcfm::Position &gt; &amp;vertices)</td></tr>
+<tr class="memitem:a4878a4a9cf29f8cec2015b56c6891153"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a4878a4a9cf29f8cec2015b56c6891153">InputGeofenceData</a> (int type, int index, int totalVertices, double floor, double ceiling, std::vector&lt; larcfm::Position &gt; &amp;vertices)</td></tr>
+<tr class="memdesc:a4878a4a9cf29f8cec2015b56c6891153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input geofence.  <a href="class_traj_manager.html#a4878a4a9cf29f8cec2015b56c6891153">More...</a><br /></td></tr>
 <tr class="separator:a4878a4a9cf29f8cec2015b56c6891153"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad029102a4fb513146d4b4bf396f464ae"><td class="memItemLeft" align="right" valign="top"><a id="ad029102a4fb513146d4b4bf396f464ae" name="ad029102a4fb513146d4b4bf396f464ae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputFlightPlan</b> (const std::string &amp;plan_id, const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;waypoints, const double initHeading, bool repair, double repairTurnRate)</td></tr>
+<tr class="memitem:ad029102a4fb513146d4b4bf396f464ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#ad029102a4fb513146d4b4bf396f464ae">InputFlightPlan</a> (const std::string &amp;plan_id, const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;waypoints, const double initHeading, bool repair, double repairTurnRate)</td></tr>
+<tr class="memdesc:ad029102a4fb513146d4b4bf396f464ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input a flightplan.  <a href="class_traj_manager.html#ad029102a4fb513146d4b4bf396f464ae">More...</a><br /></td></tr>
 <tr class="separator:ad029102a4fb513146d4b4bf396f464ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbc4d6a5b372500d7582acc2c532163a"><td class="memItemLeft" align="right" valign="top"><a id="afbc4d6a5b372500d7582acc2c532163a" name="afbc4d6a5b372500d7582acc2c532163a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>InputTraffic</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, larcfm::Position &amp;<a class="el" href="arducopter_8h.html#a97f6f07d9b99c3e3d789183a9064a7da">position</a>, larcfm::Velocity &amp;velocity, double time)</td></tr>
+<tr class="memitem:afbc4d6a5b372500d7582acc2c532163a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#afbc4d6a5b372500d7582acc2c532163a">InputTraffic</a> (std::string <a class="el" href="structcallsign.html">callsign</a>, larcfm::Position &amp;<a class="el" href="arducopter_8h.html#a97f6f07d9b99c3e3d789183a9064a7da">position</a>, larcfm::Velocity &amp;velocity, double time)</td></tr>
+<tr class="memdesc:afbc4d6a5b372500d7582acc2c532163a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input traffic data.  <a href="class_traj_manager.html#afbc4d6a5b372500d7582acc2c532163a">More...</a><br /></td></tr>
 <tr class="separator:afbc4d6a5b372500d7582acc2c532163a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a023ebd8ba7069b48add51d9a0c6910d2"><td class="memItemLeft" align="right" valign="top"><a id="a023ebd8ba7069b48add51d9a0c6910d2" name="a023ebd8ba7069b48add51d9a0c6910d2"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>PlanToString</b> (std::string planID)</td></tr>
+<tr class="memitem:a023ebd8ba7069b48add51d9a0c6910d2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a023ebd8ba7069b48add51d9a0c6910d2">PlanToString</a> (std::string planID)</td></tr>
+<tr class="memdesc:a023ebd8ba7069b48add51d9a0c6910d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert plan to string.  <a href="class_traj_manager.html#a023ebd8ba7069b48add51d9a0c6910d2">More...</a><br /></td></tr>
 <tr class="separator:a023ebd8ba7069b48add51d9a0c6910d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dc900acd178b0235221876d4df34306"><td class="memItemLeft" align="right" valign="top"><a id="a5dc900acd178b0235221876d4df34306" name="a5dc900acd178b0235221876d4df34306"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>StringToPlan</b> (std::string planID, std::string inputString)</td></tr>
+<tr class="memitem:a5dc900acd178b0235221876d4df34306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a5dc900acd178b0235221876d4df34306">StringToPlan</a> (std::string planID, std::string inputString)</td></tr>
+<tr class="memdesc:a5dc900acd178b0235221876d4df34306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert string to plan.  <a href="class_traj_manager.html#a5dc900acd178b0235221876d4df34306">More...</a><br /></td></tr>
 <tr class="separator:a5dc900acd178b0235221876d4df34306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a146a0c73232ee8b9bc156834b13ae1ef"><td class="memItemLeft" align="right" valign="top"><a id="a146a0c73232ee8b9bc156834b13ae1ef" name="a146a0c73232ee8b9bc156834b13ae1ef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CombinePlan</b> (std::string planA, std::string planB, int index)</td></tr>
+<tr class="memitem:a146a0c73232ee8b9bc156834b13ae1ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a146a0c73232ee8b9bc156834b13ae1ef">CombinePlan</a> (std::string planA, std::string planB, int index)</td></tr>
+<tr class="memdesc:a146a0c73232ee8b9bc156834b13ae1ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combine planA with planB from given index.  <a href="class_traj_manager.html#a146a0c73232ee8b9bc156834b13ae1ef">More...</a><br /></td></tr>
 <tr class="separator:a146a0c73232ee8b9bc156834b13ae1ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0afdb2cba65f1e7bfea706753f82c73"><td class="memItemLeft" align="right" valign="top"><a id="ae0afdb2cba65f1e7bfea706753f82c73" name="ae0afdb2cba65f1e7bfea706753f82c73"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPlanOffset</b> (std::string planID, int n, double offset)</td></tr>
+<tr class="memitem:ae0afdb2cba65f1e7bfea706753f82c73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#ae0afdb2cba65f1e7bfea706753f82c73">SetPlanOffset</a> (std::string planID, int n, double offset)</td></tr>
+<tr class="memdesc:ae0afdb2cba65f1e7bfea706753f82c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the time Offset for given plan.  <a href="class_traj_manager.html#ae0afdb2cba65f1e7bfea706753f82c73">More...</a><br /></td></tr>
 <tr class="separator:ae0afdb2cba65f1e7bfea706753f82c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e93c7e3883b4735ddf28b56383f8a98"><td class="memItemLeft" align="right" valign="top"><a id="a2e93c7e3883b4735ddf28b56383f8a98" name="a2e93c7e3883b4735ddf28b56383f8a98"></a>
-larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>GetPlanPosition</b> (std::string planID, double t)</td></tr>
+<tr class="memitem:a2e93c7e3883b4735ddf28b56383f8a98"><td class="memItemLeft" align="right" valign="top">larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a2e93c7e3883b4735ddf28b56383f8a98">GetPlanPosition</a> (std::string planID, double t)</td></tr>
+<tr class="memdesc:a2e93c7e3883b4735ddf28b56383f8a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position on plan at given t.  <a href="class_traj_manager.html#a2e93c7e3883b4735ddf28b56383f8a98">More...</a><br /></td></tr>
 <tr class="separator:a2e93c7e3883b4735ddf28b56383f8a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a110b698f40430e8cba4507d73e141155"><td class="memItemLeft" align="right" valign="top"><a id="a110b698f40430e8cba4507d73e141155" name="a110b698f40430e8cba4507d73e141155"></a>
-trajectoryMonitorData_t&#160;</td><td class="memItemRight" valign="bottom"><b>MonitorTrajectory</b> (double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1, int nextWP2)</td></tr>
+<tr class="memitem:a110b698f40430e8cba4507d73e141155"><td class="memItemLeft" align="right" valign="top">trajectoryMonitorData_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a110b698f40430e8cba4507d73e141155">MonitorTrajectory</a> (double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1, int nextWP2)</td></tr>
+<tr class="memdesc:a110b698f40430e8cba4507d73e141155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monitor trajectory.  <a href="class_traj_manager.html#a110b698f40430e8cba4507d73e141155">More...</a><br /></td></tr>
 <tr class="separator:a110b698f40430e8cba4507d73e141155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aed928f616c72752436415104756cd49d"><td class="memItemLeft" align="right" valign="top"><a id="aed928f616c72752436415104756cd49d" name="aed928f616c72752436415104756cd49d"></a>
 larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>startPos</b></td></tr>
+<tr class="memdesc:aed928f616c72752436415104756cd49d"><td class="mdescLeft">&#160;</td><td class="mdescRight">start position for planning <br /></td></tr>
 <tr class="separator:aed928f616c72752436415104756cd49d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3451e801481ae9f4de8eb3dcb7f481a"><td class="memItemLeft" align="right" valign="top"><a id="af3451e801481ae9f4de8eb3dcb7f481a" name="af3451e801481ae9f4de8eb3dcb7f481a"></a>
 larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>endPos</b></td></tr>
+<tr class="memdesc:af3451e801481ae9f4de8eb3dcb7f481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">goal position for planning <br /></td></tr>
 <tr class="separator:af3451e801481ae9f4de8eb3dcb7f481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59cc793d864e494b58fe835b09e52036"><td class="memItemLeft" align="right" valign="top"><a id="a59cc793d864e494b58fe835b09e52036" name="a59cc793d864e494b58fe835b09e52036"></a>
 larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>startVel</b></td></tr>
+<tr class="memdesc:a59cc793d864e494b58fe835b09e52036"><td class="mdescLeft">&#160;</td><td class="mdescRight">start velocity for planning <br /></td></tr>
 <tr class="separator:a59cc793d864e494b58fe835b09e52036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbe2faad7d0585c91791f655bdd3327d"><td class="memItemLeft" align="right" valign="top"><a id="abbe2faad7d0585c91791f655bdd3327d" name="abbe2faad7d0585c91791f655bdd3327d"></a>
 larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>endVel</b></td></tr>
+<tr class="memdesc:abbe2faad7d0585c91791f655bdd3327d"><td class="mdescLeft">&#160;</td><td class="mdescRight">goal velocity for planning <br /></td></tr>
 <tr class="separator:abbe2faad7d0585c91791f655bdd3327d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a166ccb9b94627ec79dcf91aa5171bc7f"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a166ccb9b94627ec79dcf91aa5171bc7f">FindDubinsPath</a> (std::string planID)</td></tr>
+<tr class="memdesc:a166ccb9b94627ec79dcf91aa5171bc7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute new path.  <a href="class_traj_manager.html#a166ccb9b94627ec79dcf91aa5171bc7f">More...</a><br /></td></tr>
+<tr class="separator:a166ccb9b94627ec79dcf91aa5171bc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb22fbc67e8ce8417064541e043a8c8a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#aeb22fbc67e8ce8417064541e043a8c8a">FindTimeToFenceViolation</a> (larcfm::Poly3D polygon, larcfm::Vect3 so, larcfm::Velocity vel)</td></tr>
+<tr class="memdesc:aeb22fbc67e8ce8417064541e043a8c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to compute projected time to violation to all fence edges.  <a href="class_traj_manager.html#aeb22fbc67e8ce8417064541e043a8c8a">More...</a><br /></td></tr>
+<tr class="separator:aeb22fbc67e8ce8417064541e043a8c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a726097bdf7594aa0d94bcf4aaa9930ac"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a726097bdf7594aa0d94bcf4aaa9930ac">ComputePlanOffsets</a> (const std::string planID, int nextWP, larcfm::Position currentPos, larcfm::Velocity currentVel, double timeAtPos)</td></tr>
+<tr class="memdesc:a726097bdf7594aa0d94bcf4aaa9930ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cross track (perpendicular deviation), along track (longitudinal deviations) and time delays.  <a href="class_traj_manager.html#a726097bdf7594aa0d94bcf4aaa9930ac">More...</a><br /></td></tr>
+<tr class="separator:a726097bdf7594aa0d94bcf4aaa9930ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583b8515d76d2ae07628a78e3726a44c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_traj_manager.html#a583b8515d76d2ae07628a78e3726a44c">CheckLineOfSightconflict</a> (larcfm::Position start, larcfm::Position end)</td></tr>
+<tr class="memdesc:a583b8515d76d2ae07628a78e3726a44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check line of sight conflict.  <a href="class_traj_manager.html#a583b8515d76d2ae07628a78e3726a44c">More...</a><br /></td></tr>
+<tr class="separator:a583b8515d76d2ae07628a78e3726a44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257756133fde7a93afe1a324b78fc15f"><td class="memItemLeft" align="right" valign="top"><a id="a257756133fde7a93afe1a324b78fc15f" name="a257756133fde7a93afe1a324b78fc15f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>LogInput</b> ()</td></tr>
+<tr class="memdesc:a257756133fde7a93afe1a324b78fc15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log inputs to planning. <br /></td></tr>
+<tr class="separator:a257756133fde7a93afe1a324b78fc15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2f9b4ade1a11fb05acbf2af948b3a930"><td class="memItemLeft" align="right" valign="top"><a id="a2f9b4ade1a11fb05acbf2af948b3a930" name="a2f9b4ade1a11fb05acbf2af948b3a930"></a>
+<a class="el" href="class_dubins_planner.html">DubinsPlanner</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dbPlanner</b></td></tr>
+<tr class="memdesc:a2f9b4ade1a11fb05acbf2af948b3a930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dubins planner object. <br /></td></tr>
+<tr class="separator:a2f9b4ade1a11fb05acbf2af948b3a930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a59fd551ffa809a5574116ba6a9109e"><td class="memItemLeft" align="right" valign="top"><a id="a8a59fd551ffa809a5574116ba6a9109e" name="a8a59fd551ffa809a5574116ba6a9109e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>wellClearDistH</b></td></tr>
+<tr class="memdesc:a8a59fd551ffa809a5574116ba6a9109e"><td class="mdescLeft">&#160;</td><td class="mdescRight">well clear radius for planning <br /></td></tr>
+<tr class="separator:a8a59fd551ffa809a5574116ba6a9109e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d144f50c9b14946e4447d31ca964617"><td class="memItemLeft" align="right" valign="top"><a id="a0d144f50c9b14946e4447d31ca964617" name="a0d144f50c9b14946e4447d31ca964617"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>wellClearDistV</b></td></tr>
+<tr class="memdesc:a0d144f50c9b14946e4447d31ca964617"><td class="mdescLeft">&#160;</td><td class="mdescRight">well clear height for planning <br /></td></tr>
+<tr class="separator:a0d144f50c9b14946e4447d31ca964617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab37c675079d0da2baf940c17728d928e"><td class="memItemLeft" align="right" valign="top"><a id="ab37c675079d0da2baf940c17728d928e" name="ab37c675079d0da2baf940c17728d928e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numPlans</b></td></tr>
+<tr class="memdesc:ab37c675079d0da2baf940c17728d928e"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of plans <br /></td></tr>
+<tr class="separator:ab37c675079d0da2baf940c17728d928e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee0e071553b2c6ca2793b30f8bc57ce"><td class="memItemLeft" align="right" valign="top"><a id="afee0e071553b2c6ca2793b30f8bc57ce" name="afee0e071553b2c6ca2793b30f8bc57ce"></a>
+std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>log</b></td></tr>
+<tr class="memdesc:afee0e071553b2c6ca2793b30f8bc57ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">log holder <br /></td></tr>
+<tr class="separator:afee0e071553b2c6ca2793b30f8bc57ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad78426499dd4317635b7b5dfd1cd9b44"><td class="memItemLeft" align="right" valign="top"><a id="ad78426499dd4317635b7b5dfd1cd9b44" name="ad78426499dd4317635b7b5dfd1cd9b44"></a>
+std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>flightPlans</b></td></tr>
+<tr class="memdesc:ad78426499dd4317635b7b5dfd1cd9b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of plans <br /></td></tr>
+<tr class="separator:ad78426499dd4317635b7b5dfd1cd9b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17106374cd0ee1f04f300623f983c377"><td class="memItemLeft" align="right" valign="top"><a id="a17106374cd0ee1f04f300623f983c377" name="a17106374cd0ee1f04f300623f983c377"></a>
+std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficPlans</b></td></tr>
+<tr class="memdesc:a17106374cd0ee1f04f300623f983c377"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of plans for traffic vehicles (intent information) <br /></td></tr>
+<tr class="separator:a17106374cd0ee1f04f300623f983c377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cac578371392e0b5c3be7f1cb612855"><td class="memItemLeft" align="right" valign="top"><a id="a0cac578371392e0b5c3be7f1cb612855" name="a0cac578371392e0b5c3be7f1cb612855"></a>
+std::list&lt; <a class="el" href="structfence_object.html">fenceObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>fenceList</b></td></tr>
+<tr class="memdesc:a0cac578371392e0b5c3be7f1cb612855"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of fences <br /></td></tr>
+<tr class="separator:a0cac578371392e0b5c3be7f1cb612855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a8a6e833eb50186e893cfe30afce3bb"><td class="memItemLeft" align="right" valign="top"><a id="a1a8a6e833eb50186e893cfe30afce3bb" name="a1a8a6e833eb50186e893cfe30afce3bb"></a>
+std::map&lt; std::string, <a class="el" href="structp_object.html">pObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficList</b></td></tr>
+<tr class="memdesc:a1a8a6e833eb50186e893cfe30afce3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of traffic <br /></td></tr>
+<tr class="separator:a1a8a6e833eb50186e893cfe30afce3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac4cc8d2fcd4b6085545e5b602054280a" name="ac4cc8d2fcd4b6085545e5b602054280a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4cc8d2fcd4b6085545e5b602054280a">&#9670;&nbsp;</a></span>TrajManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TrajManager::TrajManager </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>callsign</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callsign</td><td>callsign string </td></tr>
+    <tr><td class="paramname">config</td><td>configuration file </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a583b8515d76d2ae07628a78e3726a44c" name="a583b8515d76d2ae07628a78e3726a44c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a583b8515d76d2ae07628a78e3726a44c">&#9670;&nbsp;</a></span>CheckLineOfSightconflict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TrajManager::CheckLineOfSightconflict </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>start position </td></tr>
+    <tr><td class="paramname">end</td><td>end position </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a146a0c73232ee8b9bc156834b13ae1ef" name="a146a0c73232ee8b9bc156834b13ae1ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a146a0c73232ee8b9bc156834b13ae1ef">&#9670;&nbsp;</a></span>CombinePlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::CombinePlan </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planA</td><td></td></tr>
+    <tr><td class="paramname">planB</td><td></td></tr>
+    <tr><td class="paramname">index</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a726097bdf7594aa0d94bcf4aaa9930ac" name="a726097bdf7594aa0d94bcf4aaa9930ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a726097bdf7594aa0d94bcf4aaa9930ac">&#9670;&nbsp;</a></span>ComputePlanOffsets()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; TrajManager::ComputePlanOffsets </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nextWP</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>currentPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>currentVel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timeAtPos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id of plan to compute metrics </td></tr>
+    <tr><td class="paramname">nextWP</td><td>next waypoint index </td></tr>
+    <tr><td class="paramname">currentPos</td><td>current position </td></tr>
+    <tr><td class="paramname">currentVel</td><td>current velocity </td></tr>
+    <tr><td class="paramname">timeAtPos</td><td>current time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::vector&lt;double&gt; cross track offset, longitudinal offset, time offset </dd></dl>
+
+</div>
+</div>
+<a id="a166ccb9b94627ec79dcf91aa5171bc7f" name="a166ccb9b94627ec79dcf91aa5171bc7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a166ccb9b94627ec79dcf91aa5171bc7f">&#9670;&nbsp;</a></span>FindDubinsPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t TrajManager::FindDubinsPath </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id to assign to plan </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int64_t total number of waypoints computed </dd></dl>
+
+</div>
+</div>
+<a id="a68314e436ffb89b0f6541dcfb446fab1" name="a68314e436ffb89b0f6541dcfb446fab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68314e436ffb89b0f6541dcfb446fab1">&#9670;&nbsp;</a></span>FindPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TrajManager::FindPath </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>fromPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>toPosition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>fromVelocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>toVelocity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>plan id to assign to this plan </td></tr>
+    <tr><td class="paramname">fromPosition</td><td>start position </td></tr>
+    <tr><td class="paramname">toPosition</td><td>end position </td></tr>
+    <tr><td class="paramname">fromVelocity</td><td>start velocity </td></tr>
+    <tr><td class="paramname">toVelocity</td><td>end velocity </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int total number of waypoints </dd></dl>
+
+</div>
+</div>
+<a id="aeb22fbc67e8ce8417064541e043a8c8a" name="aeb22fbc67e8ce8417064541e043a8c8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb22fbc67e8ce8417064541e043a8c8a">&#9670;&nbsp;</a></span>FindTimeToFenceViolation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double TrajManager::FindTimeToFenceViolation </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Poly3D&#160;</td>
+          <td class="paramname"><em>polygon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>so</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">polygon</td><td>fence object </td></tr>
+    <tr><td class="paramname">so</td><td>current position </td></tr>
+    <tr><td class="paramname">vel</td><td>current velocity </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double time to violation </dd></dl>
+
+</div>
+</div>
+<a id="a2873a4044713f90051474b43ec324383" name="a2873a4044713f90051474b43ec324383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2873a4044713f90051474b43ec324383">&#9670;&nbsp;</a></span>GetPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">larcfm::Plan * TrajManager::GetPlan </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>larcfm::Plan* </dd></dl>
+
+</div>
+</div>
+<a id="a2e93c7e3883b4735ddf28b56383f8a98" name="a2e93c7e3883b4735ddf28b56383f8a98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e93c7e3883b4735ddf28b56383f8a98">&#9670;&nbsp;</a></span>GetPlanPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">larcfm::Position TrajManager::GetPlanPosition </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id of plan </td></tr>
+    <tr><td class="paramname">t</td><td>query time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>larcfm::Position </dd></dl>
+
+</div>
+</div>
+<a id="a1f0477999fcb00a7f8b64227772bb51f" name="a1f0477999fcb00a7f8b64227772bb51f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f0477999fcb00a7f8b64227772bb51f">&#9670;&nbsp;</a></span>GetTotalWaypoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TrajManager::GetTotalWaypoints </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="a7bce4c6c916027d7149fa3757158a893" name="a7bce4c6c916027d7149fa3757158a893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bce4c6c916027d7149fa3757158a893">&#9670;&nbsp;</a></span>GetWaypoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TrajManager::GetWaypoint </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wpid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>wp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>flight plan id </td></tr>
+    <tr><td class="paramname">wpid</td><td>waypoint index </td></tr>
+    <tr><td class="paramname">wp</td><td>[out] waypoint </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="ad029102a4fb513146d4b4bf396f464ae" name="ad029102a4fb513146d4b4bf396f464ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad029102a4fb513146d4b4bf396f464ae">&#9670;&nbsp;</a></span>InputFlightPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::InputFlightPlan </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>plan_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>waypoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>initHeading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>repair</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>repairTurnRate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">plan_id</td><td>id of plan </td></tr>
+    <tr><td class="paramname">waypoints</td><td>list of waypoints in plan </td></tr>
+    <tr><td class="paramname">initHeading</td><td>initial heading </td></tr>
+    <tr><td class="paramname">repair</td><td>convert linear plan to kinematic plan </td></tr>
+    <tr><td class="paramname">repairTurnRate</td><td>turn rate used for repairing </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab09a1d7f560de06fbf93e3730af6fb76" name="ab09a1d7f560de06fbf93e3730af6fb76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab09a1d7f560de06fbf93e3730af6fb76">&#9670;&nbsp;</a></span>InputGeofenceData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::InputGeofenceData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>totalVertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>floor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ceiling</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>pos</em>[][2]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>fence type (keep in or keep out) </td></tr>
+    <tr><td class="paramname">index</td><td>index of fence </td></tr>
+    <tr><td class="paramname">totalVertices</td><td>total vertices in fences </td></tr>
+    <tr><td class="paramname">floor</td><td>floor altitude </td></tr>
+    <tr><td class="paramname">ceiling</td><td>ceiling altitude </td></tr>
+    <tr><td class="paramname">pos</td><td>array of positions </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4878a4a9cf29f8cec2015b56c6891153" name="a4878a4a9cf29f8cec2015b56c6891153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4878a4a9cf29f8cec2015b56c6891153">&#9670;&nbsp;</a></span>InputGeofenceData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::InputGeofenceData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>totalVertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>floor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ceiling</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; larcfm::Position &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vertices</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>fence type (keep in or keep out) </td></tr>
+    <tr><td class="paramname">index</td><td>index of fence </td></tr>
+    <tr><td class="paramname">totalVertices</td><td>total vertices in fences </td></tr>
+    <tr><td class="paramname">floor</td><td>floor altitude </td></tr>
+    <tr><td class="paramname">ceiling</td><td>ceiling altitude </td></tr>
+    <tr><td class="paramname">vertices</td><td>list of all vertices </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afbc4d6a5b372500d7582acc2c532163a" name="afbc4d6a5b372500d7582acc2c532163a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbc4d6a5b372500d7582acc2c532163a">&#9670;&nbsp;</a></span>InputTraffic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TrajManager::InputTraffic </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>callsign</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callsign</td><td></td></tr>
+    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">velocity</td><td></td></tr>
+    <tr><td class="paramname">time</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="a110b698f40430e8cba4507d73e141155" name="a110b698f40430e8cba4507d73e141155"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a110b698f40430e8cba4507d73e141155">&#9670;&nbsp;</a></span>MonitorTrajectory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">trajectoryMonitorData_t TrajManager::MonitorTrajectory </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>vel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nextWP1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nextWP2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>current time </td></tr>
+    <tr><td class="paramname">planID</td><td>id of plan </td></tr>
+    <tr><td class="paramname">pos</td><td>current position </td></tr>
+    <tr><td class="paramname">vel</td><td>current velocity </td></tr>
+    <tr><td class="paramname">nextWP1</td><td>next wp on primary plan (Plan0) </td></tr>
+    <tr><td class="paramname">nextWP2</td><td>next wp on second plan </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>trajectoryMonitorData_t </dd></dl>
+<p >Consider the combined plan if planid not Plan0 or doesn't contain the "Plan" prefix</p>
+<p >Initialize the output struct</p>
+<p >Extract the plan that is being monitored</p>
+<p >Create projections based on current position</p>
+<p >Compute offsets with respect to given planID and primary plan</p>
+<p >Correct for any time delay (-ve offsets[2] indicate a delay)</p>
+<p >Keep in fence checks</p>
+<ul>
+<li>Check fence conflict with current position</li>
+<li>Check for projected fence conflict based on flightplan</li>
+<li>Get position on plan for detected time to violation</li>
+<li>If projected point on plan is outside fence, we have a real problem.</li>
+</ul>
+<p >Keep out fence conflict</p><ul>
+<li>Check conflict based on current position</li>
+<li>Check for projected fence conflict based on flightplan</li>
+</ul>
+<p >Check for projected traffic conflict based on traffic flightplans</p>
+<p >Check for projected traffic conflicts for state based traffic</p>
+<p >Check for next feasible waypoint in the main plan</p>
+<ul>
+<li>Check if next wp is before the conflict time</li>
+<li>Skip BOT and MOT</li>
+<li>Skip other tcps in a turn segment</li>
+<li>The next segment should be sufficient long to facilitate plan capture</li>
+<li>Check fence feasibility</li>
+<li>Check line of sight to goal</li>
+</ul>
+
+</div>
+</div>
+<a id="a023ebd8ba7069b48add51d9a0c6910d2" name="a023ebd8ba7069b48add51d9a0c6910d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a023ebd8ba7069b48add51d9a0c6910d2">&#9670;&nbsp;</a></span>PlanToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string TrajManager::PlanToString </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
+
+</div>
+</div>
+<a id="a45e6c05ae8fdc9178c78fed132912764" name="a45e6c05ae8fdc9178c78fed132912764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e6c05ae8fdc9178c78fed132912764">&#9670;&nbsp;</a></span>ReadParamFromFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::ReadParamFromFile </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>configuration file name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae0afdb2cba65f1e7bfea706753f82c73" name="ae0afdb2cba65f1e7bfea706753f82c73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0afdb2cba65f1e7bfea706753f82c73">&#9670;&nbsp;</a></span>SetPlanOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::SetPlanOffset </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id of plan </td></tr>
+    <tr><td class="paramname">n</td><td>index of waypoint from which timeshift should be applied </td></tr>
+    <tr><td class="paramname">offset</td><td>time offset </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5dc900acd178b0235221876d4df34306" name="a5dc900acd178b0235221876d4df34306"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dc900acd178b0235221876d4df34306">&#9670;&nbsp;</a></span>StringToPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::StringToPlan </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>inputString</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td></td></tr>
+    <tr><td class="paramname">inputString</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acfefed23cbe0ae49f2b1a046c41a2347" name="acfefed23cbe0ae49f2b1a046c41a2347"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfefed23cbe0ae49f2b1a046c41a2347">&#9670;&nbsp;</a></span>UpdateDubinsPlannerParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TrajManager::UpdateDubinsPlannerParameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/TrajectoryManager/<a class="el" href="_traj_manager_8hpp_source.html">TrajManager.hpp</a></li>
 <li>Modules/Core/TrajectoryManager/TrajManager.cpp</li>

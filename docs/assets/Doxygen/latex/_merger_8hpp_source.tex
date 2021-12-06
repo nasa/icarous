@@ -18,17 +18,17 @@
 \DoxyCodeLine{14 }
 \DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{class_merger}{Merger}}\{}
 \DoxyCodeLine{16    \textcolor{keyword}{public}:}
-\DoxyCodeLine{17         \mbox{\hyperlink{class_merger}{Merger}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string config,\textcolor{keywordtype}{int} vehicleID);}
+\DoxyCodeLine{17         \mbox{\hyperlink{class_merger}{Merger}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string config,\textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a1f4eefa352b6d8893ccaf3587965206f}{vehicleID}});}
 \DoxyCodeLine{18 }
 \DoxyCodeLine{19         \textcolor{keywordtype}{void} ReadParamFromFile(std::string config);}
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21         \textcolor{keywordtype}{void} SetVehicleConstraints(\textcolor{keywordtype}{double} minVel, \textcolor{keywordtype}{double} maxVel, \textcolor{keywordtype}{double} turnRadius);}
 \DoxyCodeLine{22 }
-\DoxyCodeLine{23         \textcolor{keywordtype}{void} SetMergefixParams(\textcolor{keywordtype}{double} separationTime,\textcolor{keywordtype}{double} coordzone,\textcolor{keywordtype}{double} schzone,\textcolor{keywordtype}{double} entryzone,\textcolor{keywordtype}{double} corridorWidth);}
+\DoxyCodeLine{23         \textcolor{keywordtype}{void} SetMergefixParams(\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_ad8259eaabb1d1ed875bfe95d977d1dd4}{separationTime}},\textcolor{keywordtype}{double} coordzone,\textcolor{keywordtype}{double} schzone,\textcolor{keywordtype}{double} entryzone,\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_afaae84438add1c4bfec445fe43b24f90}{corridorWidth}});}
 \DoxyCodeLine{24 }
-\DoxyCodeLine{25         \textcolor{keywordtype}{void} SetVehicleState(\textcolor{keywordtype}{double} position[],\textcolor{keywordtype}{double} velocity[]);}
+\DoxyCodeLine{25         \textcolor{keywordtype}{void} SetVehicleState(\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}[],\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}{velocity}}[]);}
 \DoxyCodeLine{26 }
-\DoxyCodeLine{27         \textcolor{keywordtype}{void} SetIntersectionData(\textcolor{keywordtype}{int} i,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[]);}
+\DoxyCodeLine{27         \textcolor{keywordtype}{void} SetIntersectionData(\textcolor{keywordtype}{int} i,\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}[]);}
 \DoxyCodeLine{28 }
 \DoxyCodeLine{29         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} RunMergingOperation(\textcolor{keywordtype}{double} time);}
 \DoxyCodeLine{30 }
@@ -41,7 +41,7 @@
 \DoxyCodeLine{37         \textcolor{keywordtype}{bool} GetArrivalTimes(\mbox{\hyperlink{structmerging_data__t}{mergingData\_t}}* arrData);}
 \DoxyCodeLine{38 }
 \DoxyCodeLine{39    \textcolor{keyword}{private}:}
-\DoxyCodeLine{40         \textcolor{keywordtype}{double} GetApproachPrecision(\textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[], \textcolor{keywordtype}{double} intersection[]);}
+\DoxyCodeLine{40         \textcolor{keywordtype}{double} GetApproachPrecision(\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}[],\textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}{velocity}}[], \textcolor{keywordtype}{double} intersection[]);}
 \DoxyCodeLine{41 }
 \DoxyCodeLine{42         \textcolor{keywordtype}{void} ComputeArrivalData(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{43 }
@@ -73,37 +73,37 @@
 \DoxyCodeLine{69 }
 \DoxyCodeLine{70 }
 \DoxyCodeLine{71    \textcolor{keyword}{private}:}
-\DoxyCodeLine{72         FILE* logFile1;                                       }
-\DoxyCodeLine{73         FILE* logFile2;                                       }
+\DoxyCodeLine{72         FILE* \mbox{\hyperlink{class_merger_a5bcba60e14940d21e878d893e414952d}{logFile1}};                                       }
+\DoxyCodeLine{73         FILE* \mbox{\hyperlink{class_merger_a5ff8018083d21eddc528df61ff57feb1}{logFile2}};                                       }
 \DoxyCodeLine{74 }
-\DoxyCodeLine{75         std::string callSign;                                 }
-\DoxyCodeLine{76         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} vehicleID;                               }
-\DoxyCodeLine{77         \textcolor{keywordtype}{double} mergeFixes[INTERSECTION\_MAX][3];               }
-\DoxyCodeLine{78         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} mergeFixId[INTERSECTION\_MAX];            }
-\DoxyCodeLine{79         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} currentFixIndex;                         }
-\DoxyCodeLine{80         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} totalFixes;                              }
-\DoxyCodeLine{81         \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[3];                                   }
-\DoxyCodeLine{82         \textcolor{keywordtype}{double} velocity[3];                                   }
-\DoxyCodeLine{83         \textcolor{keywordtype}{double} currentSpeed;                                  }
-\DoxyCodeLine{84         \textcolor{keywordtype}{double} currentIntersection[3];                        }
-\DoxyCodeLine{85         \textcolor{keywordtype}{double} dist2Int;                                      }
-\DoxyCodeLine{86         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} raftRole;                                }
+\DoxyCodeLine{75         std::string \mbox{\hyperlink{class_merger_a49243cdfca150876e1fc855e7d19404a}{callSign}};                                 }
+\DoxyCodeLine{76         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a1f4eefa352b6d8893ccaf3587965206f}{vehicleID}};                               }
+\DoxyCodeLine{77         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_ae7ad62555f4617d270301bacd6eaa9ac}{mergeFixes}}[INTERSECTION\_MAX][3];               }
+\DoxyCodeLine{78         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a747cc50c132772b897655f867851423a}{mergeFixId}}[INTERSECTION\_MAX];            }
+\DoxyCodeLine{79         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a75d58c8b7d2e8b5019e0e8e59758b74e}{currentFixIndex}};                         }
+\DoxyCodeLine{80         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a30270a188f894f1cf5b191bdbdeb2f2b}{totalFixes}};                              }
+\DoxyCodeLine{81         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}[3];                                   }
+\DoxyCodeLine{82         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}{velocity}}[3];                                   }
+\DoxyCodeLine{83         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_aed08e3220c4c3727639a62fad5e2f315}{currentSpeed}};                                  }
+\DoxyCodeLine{84         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_ae83b364806891ea177dbc100085c805b}{currentIntersection}}[3];                        }
+\DoxyCodeLine{85         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a45e8e5895e467aeb01863be49076876b}{dist2Int}};                                      }
+\DoxyCodeLine{86         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a2a9aabe3a513926e2b089887918c8115}{raftRole}};                                }
 \DoxyCodeLine{87         \textcolor{keywordtype}{double} currentLocalTime;}
 \DoxyCodeLine{88 }
-\DoxyCodeLine{89         \textcolor{keywordtype}{double} coordZone;                                     }
-\DoxyCodeLine{90         \textcolor{keywordtype}{double} schedZone;                                     }
-\DoxyCodeLine{91         \textcolor{keywordtype}{double} entryZone;                                     }
-\DoxyCodeLine{92         \textcolor{keywordtype}{double} corridorWidth;                                 }
-\DoxyCodeLine{93         \textcolor{keywordtype}{double} separationTime;                                }
-\DoxyCodeLine{94         zoneType\_e currentZone;                               }
+\DoxyCodeLine{89         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a84ea62a45bd55c032c77f2ceda6ac702}{coordZone}};                                     }
+\DoxyCodeLine{90         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_ac49b1323db61e6ef967f070a1324c2e1}{schedZone}};                                     }
+\DoxyCodeLine{91         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a6e3520240ac19491ff5d3d0d827f31b4}{entryZone}};                                     }
+\DoxyCodeLine{92         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_afaae84438add1c4bfec445fe43b24f90}{corridorWidth}};                                 }
+\DoxyCodeLine{93         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_ad8259eaabb1d1ed875bfe95d977d1dd4}{separationTime}};                                }
+\DoxyCodeLine{94         zoneType\_e \mbox{\hyperlink{class_merger_ae93ad994aed7596cdbcf9a872b51c75f}{currentZone}};                               }
 \DoxyCodeLine{95 }
 \DoxyCodeLine{96         \textcolor{keywordtype}{double} turnRadius;}
 \DoxyCodeLine{97         \textcolor{keywordtype}{double} maxSpeed;}
 \DoxyCodeLine{98         \textcolor{keywordtype}{double} minSpeed;}
 \DoxyCodeLine{99 }
 \DoxyCodeLine{100 }
-\DoxyCodeLine{101         \textcolor{keywordtype}{bool} publishMergingStatus;                            }
-\DoxyCodeLine{102         \textcolor{keywordtype}{bool} arrivalDataUpdated;                              }
+\DoxyCodeLine{101         \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_merger_adc7f8cfcdf793be4eb27d4b18e0f3607}{publishMergingStatus}};                            }
+\DoxyCodeLine{102         \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_merger_a8d0669bea76a70259b6862285693ceeb}{arrivalDataUpdated}};                              }
 \DoxyCodeLine{103         \textcolor{keywordtype}{bool} defaultEntryPlan;}
 \DoxyCodeLine{104         \textcolor{keywordtype}{bool} entryPointComputed;}
 \DoxyCodeLine{105         \textcolor{keywordtype}{bool} executePath;}
@@ -111,17 +111,17 @@
 \DoxyCodeLine{107         \textcolor{keywordtype}{bool} approaching;}
 \DoxyCodeLine{108         \textcolor{keywordtype}{bool} mergeConflict;}
 \DoxyCodeLine{109 }
-\DoxyCodeLine{110         \textcolor{keywordtype}{int} numSchedulesComputed;                              }
+\DoxyCodeLine{110         \textcolor{keywordtype}{int} \mbox{\hyperlink{class_merger_a17430036121a486337ee545d29e2a790}{numSchedulesComputed}};                              }
 \DoxyCodeLine{111         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} waypointIndex;}
 \DoxyCodeLine{112         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} mergingStatus;}
 \DoxyCodeLine{113         \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} nodeRole;}
 \DoxyCodeLine{114         \textcolor{keywordtype}{bool} passive;}
 \DoxyCodeLine{115 }
-\DoxyCodeLine{116         \textcolor{keywordtype}{double} dist2ZoneEntry;                                 }
-\DoxyCodeLine{117         \textcolor{keywordtype}{double} time2ZoneEntry;                                 }
-\DoxyCodeLine{118         \textcolor{keywordtype}{double} entryPoint[3];                                  }
-\DoxyCodeLine{119         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} ownshipArrivalData;                      }
-\DoxyCodeLine{120         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} globalArrivalData[MERGER\_MAXAIRCRAFT];   }
+\DoxyCodeLine{116         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_af30bb5a79d8bf077d272a7fe2cfc25b9}{dist2ZoneEntry}};                                 }
+\DoxyCodeLine{117         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a62432979bed5ae3e77e2ba44b48e9cc3}{time2ZoneEntry}};                                 }
+\DoxyCodeLine{118         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a78a7f2c847a30b139540f74881c316e6}{entryPoint}}[3];                                  }
+\DoxyCodeLine{119         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} \mbox{\hyperlink{class_merger_a1f545e617247e505f0d775553bc4ba32}{ownshipArrivalData}};                      }
+\DoxyCodeLine{120         \mbox{\hyperlink{structmerging_data__t}{mergingData\_t}} \mbox{\hyperlink{class_merger_a373da78eb95a0ae9fe0fbf1f6f8335bf}{globalArrivalData}}[MERGER\_MAXAIRCRAFT];   }
 \DoxyCodeLine{121         std::queue<mergingData\_t> outputArrData;}
 \DoxyCodeLine{122 }
 \DoxyCodeLine{123         \textcolor{keywordtype}{double} Release[MERGER\_MAXAIRCRAFT];}
@@ -129,7 +129,7 @@
 \DoxyCodeLine{125         \textcolor{keywordtype}{double} arrivalTime[MERGER\_MAXAIRCRAFT];}
 \DoxyCodeLine{126 }
 \DoxyCodeLine{127         \textcolor{keywordtype}{int} numNodesInt;}
-\DoxyCodeLine{128         \textcolor{keywordtype}{double} newWaypoint[3];                                  }
+\DoxyCodeLine{128         \textcolor{keywordtype}{double} \mbox{\hyperlink{class_merger_a1b66e123aa91eeabce8b7343639825e3}{newWaypoint}}[3];                                  }
 \DoxyCodeLine{129         \textcolor{keywordtype}{double} mergingSpeed;}
 \DoxyCodeLine{130         \textcolor{keywordtype}{double} detourDist;}
 \DoxyCodeLine{131         \textcolor{keywordtype}{double} XtrkDev;}

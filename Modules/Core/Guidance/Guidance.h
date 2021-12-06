@@ -1,3 +1,7 @@
+/**
+ * @file Guidance.h
+ */
+
 #ifndef GUIDANCE_H
 #define GUIDANCE_H
 
@@ -9,7 +13,7 @@ extern "C" {
 #include <Interfaces.h>
 
 /**
- * @enum guidance_mode_e
+ * @enum GuidanceMode
  * @brief various guidance modes
  */
 typedef enum{
@@ -28,35 +32,39 @@ typedef enum{
  * @brief Structure to hold parameters required for guidance
  */
 typedef struct{
-    double defaultWpSpeed;
-    double captureRadiusScaling;
-    double guidanceRadiusScaling;
-    double turnRateGain;
-    double climbFpAngle;
-    double climbAngleVRange;
-    double climbAngleHRange;
-    double climbRateGain;
-    double maxClimbRate;
-    double minClimbRate;
-    double maxCap;
-    double minCap;
-    double maxSpeed;
-    double minSpeed;
-    bool yawForward;
-    bool maintainEta;
+    double defaultWpSpeed;         ///< default waypoint speed
+    double captureRadiusScaling;   ///< capture radius scaling
+    double guidanceRadiusScaling;  ///< guidance radius scaling
+    double turnRateGain;           ///< turn rate gain
+    double climbFpAngle;           ///< climb flight path angle
+    double climbAngleVRange;       ///< vertical altitude climb threhsold
+    double climbRateGain;          ///< climb rate gain
+    double maxClimbRate;           ///< max climb rate limit
+    double minClimbRate;           ///< min climb rate limit
+    double maxCap;                 ///< max capture radius
+    double minCap;                 ///< min capture radius
+    double maxSpeed;               ///< max ground speed limit
+    double minSpeed;               ///< min ground speed limit
+    bool yawForward;               ///< yaw forward 
+    bool maintainEta;              ///< maintain ETA constraints
 }GuidanceParams_t;
 
+/**
+ * @struct GuidanceOutput_t
+ * @brief Guidance output object
+ * 
+ */
 typedef struct{
-    char activePlan[25];
-    int guidanceMode;
-    int nextWP;
-    double distH2WP;
-    double distV2WP;
-    double xtrackDev;
-    double velCmd[3];
-    double target[3];
-    bool wpReached;
-    bool yawForward;
+    char activePlan[25]; ///< active plan id
+    int guidanceMode;    ///< current guidance mode
+    int nextWP;          ///< next waypoint index
+    double distH2WP;     ///< horizontal distance to next waypoint
+    double distV2WP;     ///< vertical distance to next waypoint
+    double xtrackDev;    ///< cross track deviation
+    double velCmd[3];    ///< output velocity command
+    double target[3];    ///< target position
+    bool wpReached;      ///< waypoint arrival status
+    bool yawForward;     ///< yaw forward status
 }GuidanceOutput_t;
 
 void* InitGuidance(const char config[]);

@@ -64,6 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_merger-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Merger Class Reference</div></div>
 </div><!--header-->
@@ -72,7 +74,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4523afe44d0c0df1dfc9e244358922d"><td class="memItemLeft" align="right" valign="top"><a id="ae4523afe44d0c0df1dfc9e244358922d" name="ae4523afe44d0c0df1dfc9e244358922d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Merger</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string config, int vehicleID)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Merger</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string config, int <a class="el" href="class_merger.html#a1f4eefa352b6d8893ccaf3587965206f">vehicleID</a>)</td></tr>
 <tr class="separator:ae4523afe44d0c0df1dfc9e244358922d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d1b3705bb886220fb8707f1ab56eb76"><td class="memItemLeft" align="right" valign="top"><a id="a3d1b3705bb886220fb8707f1ab56eb76" name="a3d1b3705bb886220fb8707f1ab56eb76"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadParamFromFile</b> (std::string config)</td></tr>
@@ -81,13 +83,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadParamFromFile</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVehicleConstraints</b> (double minVel, double maxVel, double turnRadius)</td></tr>
 <tr class="separator:a6e94b336543cb78c3aaf48935ad7cc29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adca035243e311683a6963591dc136314"><td class="memItemLeft" align="right" valign="top"><a id="adca035243e311683a6963591dc136314" name="adca035243e311683a6963591dc136314"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMergefixParams</b> (double separationTime, double coordzone, double schzone, double entryzone, double corridorWidth)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMergefixParams</b> (double <a class="el" href="class_merger.html#ad8259eaabb1d1ed875bfe95d977d1dd4">separationTime</a>, double coordzone, double schzone, double entryzone, double <a class="el" href="class_merger.html#afaae84438add1c4bfec445fe43b24f90">corridorWidth</a>)</td></tr>
 <tr class="separator:adca035243e311683a6963591dc136314"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a982c16de9fa672d084096dfa7dfb5639"><td class="memItemLeft" align="right" valign="top"><a id="a982c16de9fa672d084096dfa7dfb5639" name="a982c16de9fa672d084096dfa7dfb5639"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVehicleState</b> (double position[], double velocity[])</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVehicleState</b> (double <a class="el" href="class_merger.html#a781c1b03cc73397fb257168b07b3199a">position</a>[], double <a class="el" href="class_merger.html#a05b93e20f8f7e8bdc014deab2f10bc2c">velocity</a>[])</td></tr>
 <tr class="separator:a982c16de9fa672d084096dfa7dfb5639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8653bd2e78090e5a6add10e52f89aa8d"><td class="memItemLeft" align="right" valign="top"><a id="a8653bd2e78090e5a6add10e52f89aa8d" name="a8653bd2e78090e5a6add10e52f89aa8d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetIntersectionData</b> (int i, int id, double position[])</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetIntersectionData</b> (int i, int id, double <a class="el" href="class_merger.html#a781c1b03cc73397fb257168b07b3199a">position</a>[])</td></tr>
 <tr class="separator:a8653bd2e78090e5a6add10e52f89aa8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66bc6e67d8c0d9f7d3f41669cc0da1c8"><td class="memItemLeft" align="right" valign="top"><a id="a66bc6e67d8c0d9f7d3f41669cc0da1c8" name="a66bc6e67d8c0d9f7d3f41669cc0da1c8"></a>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>RunMergingOperation</b> (double time)</td></tr>
@@ -104,6 +106,260 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputVelocity</b>
 <tr class="memitem:a24e43cec953760a0cf65e7d4d0496bc6"><td class="memItemLeft" align="right" valign="top"><a id="a24e43cec953760a0cf65e7d4d0496bc6" name="a24e43cec953760a0cf65e7d4d0496bc6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetArrivalTimes</b> (<a class="el" href="structmerging_data__t.html">mergingData_t</a> *arrData)</td></tr>
 <tr class="separator:a24e43cec953760a0cf65e7d4d0496bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a0f65c7270725065d53bb67a08efe044d"><td class="memItemLeft" align="right" valign="top"><a id="a0f65c7270725065d53bb67a08efe044d" name="a0f65c7270725065d53bb67a08efe044d"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>GetApproachPrecision</b> (double <a class="el" href="class_merger.html#a781c1b03cc73397fb257168b07b3199a">position</a>[], double <a class="el" href="class_merger.html#a05b93e20f8f7e8bdc014deab2f10bc2c">velocity</a>[], double intersection[])</td></tr>
+<tr class="separator:a0f65c7270725065d53bb67a08efe044d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac306f89166ac723ba501b4ebf4059f72"><td class="memItemLeft" align="right" valign="top"><a id="ac306f89166ac723ba501b4ebf4059f72" name="ac306f89166ac723ba501b4ebf4059f72"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeArrivalData</b> (void)</td></tr>
+<tr class="separator:ac306f89166ac723ba501b4ebf4059f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96fdf62850e7b28c0e7a0e37f74df304"><td class="memItemLeft" align="right" valign="top"><a id="a96fdf62850e7b28c0e7a0e37f74df304" name="a96fdf62850e7b28c0e7a0e37f74df304"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>ComputePathLength</b> (void)</td></tr>
+<tr class="separator:a96fdf62850e7b28c0e7a0e37f74df304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff4ca2b8fffcdf44c9615f1dacdf18b"><td class="memItemLeft" align="right" valign="top"><a id="a8ff4ca2b8fffcdf44c9615f1dacdf18b" name="a8ff4ca2b8fffcdf44c9615f1dacdf18b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckIntersectionConflict</b> (void)</td></tr>
+<tr class="separator:a8ff4ca2b8fffcdf44c9615f1dacdf18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f6259f92f4f7714eca5d1a039f82e2f"><td class="memItemLeft" align="right" valign="top"><a id="a3f6259f92f4f7714eca5d1a039f82e2f" name="a3f6259f92f4f7714eca5d1a039f82e2f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckIntersectionExit</b> (void)</td></tr>
+<tr class="separator:a3f6259f92f4f7714eca5d1a039f82e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad686371e768912986cf222b967759758"><td class="memItemLeft" align="right" valign="top"><a id="ad686371e768912986cf222b967759758" name="ad686371e768912986cf222b967759758"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeSchedule</b> ()</td></tr>
+<tr class="separator:ad686371e768912986cf222b967759758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a6ced3540f55fb2139e2646f317d8b"><td class="memItemLeft" align="right" valign="top"><a id="a61a6ced3540f55fb2139e2646f317d8b" name="a61a6ced3540f55fb2139e2646f317d8b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeMergingSpeed</b> (uint32_t arrivalTime)</td></tr>
+<tr class="separator:a61a6ced3540f55fb2139e2646f317d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8f10f26e248857eca0d46ef4910f5f1"><td class="memItemLeft" align="right" valign="top"><a id="ad8f10f26e248857eca0d46ef4910f5f1" name="ad8f10f26e248857eca0d46ef4910f5f1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeTrajectory</b> (double xc1, double xc2)</td></tr>
+<tr class="separator:ad8f10f26e248857eca0d46ef4910f5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af548945c09f29dda2bd884657341d5c7"><td class="memItemLeft" align="right" valign="top"><a id="af548945c09f29dda2bd884657341d5c7" name="af548945c09f29dda2bd884657341d5c7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ExecuteNewPath</b> (void)</td></tr>
+<tr class="separator:af548945c09f29dda2bd884657341d5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85c6ce02138892896aa32817b7d906a"><td class="memItemLeft" align="right" valign="top"><a id="ad85c6ce02138892896aa32817b7d906a" name="ad85c6ce02138892896aa32817b7d906a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ExchangeArrivalTimes</b> (void)</td></tr>
+<tr class="separator:ad85c6ce02138892896aa32817b7d906a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b08e303e9a783a4d9e7558bdbe832fa"><td class="memItemLeft" align="right" valign="top"><a id="a0b08e303e9a783a4d9e7558bdbe832fa" name="a0b08e303e9a783a4d9e7558bdbe832fa"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>FindCurrentIntersection</b> (void)</td></tr>
+<tr class="separator:a0b08e303e9a783a4d9e7558bdbe832fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70268af0a9ff352b0f862de7a62e9d5d"><td class="memItemLeft" align="right" valign="top"><a id="a70268af0a9ff352b0f862de7a62e9d5d" name="a70268af0a9ff352b0f862de7a62e9d5d"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ReviseEarlyArrTimeInEntryZone</b> (void)</td></tr>
+<tr class="separator:a70268af0a9ff352b0f862de7a62e9d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8712764788b98cca669fb7453ea30a4"><td class="memItemLeft" align="right" valign="top"><a id="ad8712764788b98cca669fb7453ea30a4" name="ad8712764788b98cca669fb7453ea30a4"></a>
+zoneType_e&#160;</td><td class="memItemRight" valign="bottom"><b>IdentifyCurrentZone</b> ()</td></tr>
+<tr class="separator:ad8712764788b98cca669fb7453ea30a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e045f972157437e7de12a98ed90706d"><td class="memItemLeft" align="right" valign="top"><a id="a4e045f972157437e7de12a98ed90706d" name="a4e045f972157437e7de12a98ed90706d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLogEntry</b> ()</td></tr>
+<tr class="separator:a4e045f972157437e7de12a98ed90706d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03c462dacf4303d9dd8009096e0395b3"><td class="memItemLeft" align="right" valign="top"><a id="a03c462dacf4303d9dd8009096e0395b3" name="a03c462dacf4303d9dd8009096e0395b3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetData</b> ()</td></tr>
+<tr class="separator:a03c462dacf4303d9dd8009096e0395b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5bcba60e14940d21e878d893e414952d"><td class="memItemLeft" align="right" valign="top"><a id="a5bcba60e14940d21e878d893e414952d" name="a5bcba60e14940d21e878d893e414952d"></a>
+FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>logFile1</b></td></tr>
+<tr class="memdesc:a5bcba60e14940d21e878d893e414952d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file descriptor. <br /></td></tr>
+<tr class="separator:a5bcba60e14940d21e878d893e414952d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ff8018083d21eddc528df61ff57feb1"><td class="memItemLeft" align="right" valign="top"><a id="a5ff8018083d21eddc528df61ff57feb1" name="a5ff8018083d21eddc528df61ff57feb1"></a>
+FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>logFile2</b></td></tr>
+<tr class="memdesc:a5ff8018083d21eddc528df61ff57feb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log file descriptor. <br /></td></tr>
+<tr class="separator:a5ff8018083d21eddc528df61ff57feb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49243cdfca150876e1fc855e7d19404a"><td class="memItemLeft" align="right" valign="top"><a id="a49243cdfca150876e1fc855e7d19404a" name="a49243cdfca150876e1fc855e7d19404a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>callSign</b></td></tr>
+<tr class="memdesc:a49243cdfca150876e1fc855e7d19404a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vehicle call sign string. <br /></td></tr>
+<tr class="separator:a49243cdfca150876e1fc855e7d19404a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f4eefa352b6d8893ccaf3587965206f"><td class="memItemLeft" align="right" valign="top"><a id="a1f4eefa352b6d8893ccaf3587965206f" name="a1f4eefa352b6d8893ccaf3587965206f"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>vehicleID</b></td></tr>
+<tr class="memdesc:a1f4eefa352b6d8893ccaf3587965206f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numerial identifier. <br /></td></tr>
+<tr class="separator:a1f4eefa352b6d8893ccaf3587965206f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7ad62555f4617d270301bacd6eaa9ac"><td class="memItemLeft" align="right" valign="top"><a id="ae7ad62555f4617d270301bacd6eaa9ac" name="ae7ad62555f4617d270301bacd6eaa9ac"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>mergeFixes</b> [INTERSECTION_MAX][3]</td></tr>
+<tr class="memdesc:ae7ad62555f4617d270301bacd6eaa9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">merge fixes <br /></td></tr>
+<tr class="separator:ae7ad62555f4617d270301bacd6eaa9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747cc50c132772b897655f867851423a"><td class="memItemLeft" align="right" valign="top"><a id="a747cc50c132772b897655f867851423a" name="a747cc50c132772b897655f867851423a"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>mergeFixId</b> [INTERSECTION_MAX]</td></tr>
+<tr class="memdesc:a747cc50c132772b897655f867851423a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifiers of merge fixes. <br /></td></tr>
+<tr class="separator:a747cc50c132772b897655f867851423a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75d58c8b7d2e8b5019e0e8e59758b74e"><td class="memItemLeft" align="right" valign="top"><a id="a75d58c8b7d2e8b5019e0e8e59758b74e" name="a75d58c8b7d2e8b5019e0e8e59758b74e"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>currentFixIndex</b></td></tr>
+<tr class="memdesc:a75d58c8b7d2e8b5019e0e8e59758b74e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current fix index. <br /></td></tr>
+<tr class="separator:a75d58c8b7d2e8b5019e0e8e59758b74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30270a188f894f1cf5b191bdbdeb2f2b"><td class="memItemLeft" align="right" valign="top"><a id="a30270a188f894f1cf5b191bdbdeb2f2b" name="a30270a188f894f1cf5b191bdbdeb2f2b"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>totalFixes</b></td></tr>
+<tr class="memdesc:a30270a188f894f1cf5b191bdbdeb2f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of merge fixes. <br /></td></tr>
+<tr class="separator:a30270a188f894f1cf5b191bdbdeb2f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a781c1b03cc73397fb257168b07b3199a"><td class="memItemLeft" align="right" valign="top"><a id="a781c1b03cc73397fb257168b07b3199a" name="a781c1b03cc73397fb257168b07b3199a"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>position</b> [3]</td></tr>
+<tr class="memdesc:a781c1b03cc73397fb257168b07b3199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position. <br /></td></tr>
+<tr class="separator:a781c1b03cc73397fb257168b07b3199a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05b93e20f8f7e8bdc014deab2f10bc2c"><td class="memItemLeft" align="right" valign="top"><a id="a05b93e20f8f7e8bdc014deab2f10bc2c" name="a05b93e20f8f7e8bdc014deab2f10bc2c"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b> [3]</td></tr>
+<tr class="memdesc:a05b93e20f8f7e8bdc014deab2f10bc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current velocity. <br /></td></tr>
+<tr class="separator:a05b93e20f8f7e8bdc014deab2f10bc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed08e3220c4c3727639a62fad5e2f315"><td class="memItemLeft" align="right" valign="top"><a id="aed08e3220c4c3727639a62fad5e2f315" name="aed08e3220c4c3727639a62fad5e2f315"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>currentSpeed</b></td></tr>
+<tr class="memdesc:aed08e3220c4c3727639a62fad5e2f315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current speed. <br /></td></tr>
+<tr class="separator:aed08e3220c4c3727639a62fad5e2f315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae83b364806891ea177dbc100085c805b"><td class="memItemLeft" align="right" valign="top"><a id="ae83b364806891ea177dbc100085c805b" name="ae83b364806891ea177dbc100085c805b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>currentIntersection</b> [3]</td></tr>
+<tr class="memdesc:ae83b364806891ea177dbc100085c805b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current intersection. <br /></td></tr>
+<tr class="separator:ae83b364806891ea177dbc100085c805b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e8e5895e467aeb01863be49076876b"><td class="memItemLeft" align="right" valign="top"><a id="a45e8e5895e467aeb01863be49076876b" name="a45e8e5895e467aeb01863be49076876b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>dist2Int</b></td></tr>
+<tr class="memdesc:a45e8e5895e467aeb01863be49076876b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to intersection. <br /></td></tr>
+<tr class="separator:a45e8e5895e467aeb01863be49076876b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a9aabe3a513926e2b089887918c8115"><td class="memItemLeft" align="right" valign="top"><a id="a2a9aabe3a513926e2b089887918c8115" name="a2a9aabe3a513926e2b089887918c8115"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>raftRole</b></td></tr>
+<tr class="memdesc:a2a9aabe3a513926e2b089887918c8115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raft node role. <br /></td></tr>
+<tr class="separator:a2a9aabe3a513926e2b089887918c8115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5091342922159d8bf440f13c270727ab"><td class="memItemLeft" align="right" valign="top"><a id="a5091342922159d8bf440f13c270727ab" name="a5091342922159d8bf440f13c270727ab"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>currentLocalTime</b></td></tr>
+<tr class="separator:a5091342922159d8bf440f13c270727ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ea62a45bd55c032c77f2ceda6ac702"><td class="memItemLeft" align="right" valign="top"><a id="a84ea62a45bd55c032c77f2ceda6ac702" name="a84ea62a45bd55c032c77f2ceda6ac702"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>coordZone</b></td></tr>
+<tr class="memdesc:a84ea62a45bd55c032c77f2ceda6ac702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordination zone size. <br /></td></tr>
+<tr class="separator:a84ea62a45bd55c032c77f2ceda6ac702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac49b1323db61e6ef967f070a1324c2e1"><td class="memItemLeft" align="right" valign="top"><a id="ac49b1323db61e6ef967f070a1324c2e1" name="ac49b1323db61e6ef967f070a1324c2e1"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>schedZone</b></td></tr>
+<tr class="memdesc:ac49b1323db61e6ef967f070a1324c2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Schedule zone size. <br /></td></tr>
+<tr class="separator:ac49b1323db61e6ef967f070a1324c2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e3520240ac19491ff5d3d0d827f31b4"><td class="memItemLeft" align="right" valign="top"><a id="a6e3520240ac19491ff5d3d0d827f31b4" name="a6e3520240ac19491ff5d3d0d827f31b4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>entryZone</b></td></tr>
+<tr class="memdesc:a6e3520240ac19491ff5d3d0d827f31b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entry zone size. <br /></td></tr>
+<tr class="separator:a6e3520240ac19491ff5d3d0d827f31b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaae84438add1c4bfec445fe43b24f90"><td class="memItemLeft" align="right" valign="top"><a id="afaae84438add1c4bfec445fe43b24f90" name="afaae84438add1c4bfec445fe43b24f90"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>corridorWidth</b></td></tr>
+<tr class="memdesc:afaae84438add1c4bfec445fe43b24f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corridor width at the intersection. <br /></td></tr>
+<tr class="separator:afaae84438add1c4bfec445fe43b24f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8259eaabb1d1ed875bfe95d977d1dd4"><td class="memItemLeft" align="right" valign="top"><a id="ad8259eaabb1d1ed875bfe95d977d1dd4" name="ad8259eaabb1d1ed875bfe95d977d1dd4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>separationTime</b></td></tr>
+<tr class="memdesc:ad8259eaabb1d1ed875bfe95d977d1dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum separation time. <br /></td></tr>
+<tr class="separator:ad8259eaabb1d1ed875bfe95d977d1dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93ad994aed7596cdbcf9a872b51c75f"><td class="memItemLeft" align="right" valign="top"><a id="ae93ad994aed7596cdbcf9a872b51c75f" name="ae93ad994aed7596cdbcf9a872b51c75f"></a>
+zoneType_e&#160;</td><td class="memItemRight" valign="bottom"><b>currentZone</b></td></tr>
+<tr class="memdesc:ae93ad994aed7596cdbcf9a872b51c75f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current zone. <br /></td></tr>
+<tr class="separator:ae93ad994aed7596cdbcf9a872b51c75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acacd1f27f89d77cda49cc2952b5f4087"><td class="memItemLeft" align="right" valign="top"><a id="acacd1f27f89d77cda49cc2952b5f4087" name="acacd1f27f89d77cda49cc2952b5f4087"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>turnRadius</b></td></tr>
+<tr class="separator:acacd1f27f89d77cda49cc2952b5f4087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a380133ee991e7cc519cba308fc666115"><td class="memItemLeft" align="right" valign="top"><a id="a380133ee991e7cc519cba308fc666115" name="a380133ee991e7cc519cba308fc666115"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>maxSpeed</b></td></tr>
+<tr class="separator:a380133ee991e7cc519cba308fc666115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aab5b262fbb17c3ae1422c03f30fcaf"><td class="memItemLeft" align="right" valign="top"><a id="a5aab5b262fbb17c3ae1422c03f30fcaf" name="a5aab5b262fbb17c3ae1422c03f30fcaf"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>minSpeed</b></td></tr>
+<tr class="separator:a5aab5b262fbb17c3ae1422c03f30fcaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc7f8cfcdf793be4eb27d4b18e0f3607"><td class="memItemLeft" align="right" valign="top"><a id="adc7f8cfcdf793be4eb27d4b18e0f3607" name="adc7f8cfcdf793be4eb27d4b18e0f3607"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>publishMergingStatus</b></td></tr>
+<tr class="memdesc:adc7f8cfcdf793be4eb27d4b18e0f3607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merging status publish notification. <br /></td></tr>
+<tr class="separator:adc7f8cfcdf793be4eb27d4b18e0f3607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0669bea76a70259b6862285693ceeb"><td class="memItemLeft" align="right" valign="top"><a id="a8d0669bea76a70259b6862285693ceeb" name="a8d0669bea76a70259b6862285693ceeb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>arrivalDataUpdated</b></td></tr>
+<tr class="memdesc:a8d0669bea76a70259b6862285693ceeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">true if new arrival data exists <br /></td></tr>
+<tr class="separator:a8d0669bea76a70259b6862285693ceeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5428ba31ca1b6be39d23e881cde999"><td class="memItemLeft" align="right" valign="top"><a id="a8b5428ba31ca1b6be39d23e881cde999" name="a8b5428ba31ca1b6be39d23e881cde999"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>defaultEntryPlan</b></td></tr>
+<tr class="separator:a8b5428ba31ca1b6be39d23e881cde999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7bb503cb5dce9288d8b28c289537c41"><td class="memItemLeft" align="right" valign="top"><a id="ac7bb503cb5dce9288d8b28c289537c41" name="ac7bb503cb5dce9288d8b28c289537c41"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>entryPointComputed</b></td></tr>
+<tr class="separator:ac7bb503cb5dce9288d8b28c289537c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0505ccc6ea4e3a349638833b96e7c809"><td class="memItemLeft" align="right" valign="top"><a id="a0505ccc6ea4e3a349638833b96e7c809" name="a0505ccc6ea4e3a349638833b96e7c809"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>executePath</b></td></tr>
+<tr class="separator:a0505ccc6ea4e3a349638833b96e7c809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1446233f488bcc63ce274ad4fc7e309d"><td class="memItemLeft" align="right" valign="top"><a id="a1446233f488bcc63ce274ad4fc7e309d" name="a1446233f488bcc63ce274ad4fc7e309d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>inComputeZone</b></td></tr>
+<tr class="separator:a1446233f488bcc63ce274ad4fc7e309d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44370aed304d830372952a20dda2b2b3"><td class="memItemLeft" align="right" valign="top"><a id="a44370aed304d830372952a20dda2b2b3" name="a44370aed304d830372952a20dda2b2b3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>approaching</b></td></tr>
+<tr class="separator:a44370aed304d830372952a20dda2b2b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab455063cde42704c5d006af98d67e903"><td class="memItemLeft" align="right" valign="top"><a id="ab455063cde42704c5d006af98d67e903" name="ab455063cde42704c5d006af98d67e903"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>mergeConflict</b></td></tr>
+<tr class="separator:ab455063cde42704c5d006af98d67e903"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17430036121a486337ee545d29e2a790"><td class="memItemLeft" align="right" valign="top"><a id="a17430036121a486337ee545d29e2a790" name="a17430036121a486337ee545d29e2a790"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numSchedulesComputed</b></td></tr>
+<tr class="memdesc:a17430036121a486337ee545d29e2a790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of times schedule has been run. <br /></td></tr>
+<tr class="separator:a17430036121a486337ee545d29e2a790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af48185e282b2db3577d1205ea3e2aeaf"><td class="memItemLeft" align="right" valign="top"><a id="af48185e282b2db3577d1205ea3e2aeaf" name="af48185e282b2db3577d1205ea3e2aeaf"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>waypointIndex</b></td></tr>
+<tr class="separator:af48185e282b2db3577d1205ea3e2aeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7b39059fb226d11dcf2747e88ef0688"><td class="memItemLeft" align="right" valign="top"><a id="ad7b39059fb226d11dcf2747e88ef0688" name="ad7b39059fb226d11dcf2747e88ef0688"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>mergingStatus</b></td></tr>
+<tr class="separator:ad7b39059fb226d11dcf2747e88ef0688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a404caff25c85f96f16c87fbc9cb768"><td class="memItemLeft" align="right" valign="top"><a id="a4a404caff25c85f96f16c87fbc9cb768" name="a4a404caff25c85f96f16c87fbc9cb768"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><b>nodeRole</b></td></tr>
+<tr class="separator:a4a404caff25c85f96f16c87fbc9cb768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87dd9eb822216545da74922e70e4d45b"><td class="memItemLeft" align="right" valign="top"><a id="a87dd9eb822216545da74922e70e4d45b" name="a87dd9eb822216545da74922e70e4d45b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>passive</b></td></tr>
+<tr class="separator:a87dd9eb822216545da74922e70e4d45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30bb5a79d8bf077d272a7fe2cfc25b9"><td class="memItemLeft" align="right" valign="top"><a id="af30bb5a79d8bf077d272a7fe2cfc25b9" name="af30bb5a79d8bf077d272a7fe2cfc25b9"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>dist2ZoneEntry</b></td></tr>
+<tr class="memdesc:af30bb5a79d8bf077d272a7fe2cfc25b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance to entry point. <br /></td></tr>
+<tr class="separator:af30bb5a79d8bf077d272a7fe2cfc25b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62432979bed5ae3e77e2ba44b48e9cc3"><td class="memItemLeft" align="right" valign="top"><a id="a62432979bed5ae3e77e2ba44b48e9cc3" name="a62432979bed5ae3e77e2ba44b48e9cc3"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>time2ZoneEntry</b></td></tr>
+<tr class="memdesc:a62432979bed5ae3e77e2ba44b48e9cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time to entry. <br /></td></tr>
+<tr class="separator:a62432979bed5ae3e77e2ba44b48e9cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78a7f2c847a30b139540f74881c316e6"><td class="memItemLeft" align="right" valign="top"><a id="a78a7f2c847a30b139540f74881c316e6" name="a78a7f2c847a30b139540f74881c316e6"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>entryPoint</b> [3]</td></tr>
+<tr class="memdesc:a78a7f2c847a30b139540f74881c316e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entry point. <br /></td></tr>
+<tr class="separator:a78a7f2c847a30b139540f74881c316e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f545e617247e505f0d775553bc4ba32"><td class="memItemLeft" align="right" valign="top"><a id="a1f545e617247e505f0d775553bc4ba32" name="a1f545e617247e505f0d775553bc4ba32"></a>
+<a class="el" href="structmerging_data__t.html">mergingData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ownshipArrivalData</b></td></tr>
+<tr class="memdesc:a1f545e617247e505f0d775553bc4ba32"><td class="mdescLeft">&#160;</td><td class="mdescRight">arrival data <br /></td></tr>
+<tr class="separator:a1f545e617247e505f0d775553bc4ba32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373da78eb95a0ae9fe0fbf1f6f8335bf"><td class="memItemLeft" align="right" valign="top"><a id="a373da78eb95a0ae9fe0fbf1f6f8335bf" name="a373da78eb95a0ae9fe0fbf1f6f8335bf"></a>
+<a class="el" href="structmerging_data__t.html">mergingData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>globalArrivalData</b> [MERGER_MAXAIRCRAFT]</td></tr>
+<tr class="memdesc:a373da78eb95a0ae9fe0fbf1f6f8335bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intersection entry data. <br /></td></tr>
+<tr class="separator:a373da78eb95a0ae9fe0fbf1f6f8335bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb0f9bdb9cc1b18382861b7b1188942d"><td class="memItemLeft" align="right" valign="top"><a id="adb0f9bdb9cc1b18382861b7b1188942d" name="adb0f9bdb9cc1b18382861b7b1188942d"></a>
+std::queue&lt; <a class="el" href="structmerging_data__t.html">mergingData_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>outputArrData</b></td></tr>
+<tr class="separator:adb0f9bdb9cc1b18382861b7b1188942d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a701d83364dafd4c64b17b395fa9a2bbe"><td class="memItemLeft" align="right" valign="top"><a id="a701d83364dafd4c64b17b395fa9a2bbe" name="a701d83364dafd4c64b17b395fa9a2bbe"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>Release</b> [MERGER_MAXAIRCRAFT]</td></tr>
+<tr class="separator:a701d83364dafd4c64b17b395fa9a2bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eee74b1b43165f188ac00af1f07119f"><td class="memItemLeft" align="right" valign="top"><a id="a1eee74b1b43165f188ac00af1f07119f" name="a1eee74b1b43165f188ac00af1f07119f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>Deadline</b> [MERGER_MAXAIRCRAFT]</td></tr>
+<tr class="separator:a1eee74b1b43165f188ac00af1f07119f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcaf437376684baf9db7c6b6fb8e48c4"><td class="memItemLeft" align="right" valign="top"><a id="adcaf437376684baf9db7c6b6fb8e48c4" name="adcaf437376684baf9db7c6b6fb8e48c4"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>arrivalTime</b> [MERGER_MAXAIRCRAFT]</td></tr>
+<tr class="separator:adcaf437376684baf9db7c6b6fb8e48c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56033921f65f37db53d7f464aa7c33aa"><td class="memItemLeft" align="right" valign="top"><a id="a56033921f65f37db53d7f464aa7c33aa" name="a56033921f65f37db53d7f464aa7c33aa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numNodesInt</b></td></tr>
+<tr class="separator:a56033921f65f37db53d7f464aa7c33aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b66e123aa91eeabce8b7343639825e3"><td class="memItemLeft" align="right" valign="top"><a id="a1b66e123aa91eeabce8b7343639825e3" name="a1b66e123aa91eeabce8b7343639825e3"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>newWaypoint</b> [3]</td></tr>
+<tr class="memdesc:a1b66e123aa91eeabce8b7343639825e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">New detour waypoint. <br /></td></tr>
+<tr class="separator:a1b66e123aa91eeabce8b7343639825e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177a420ea778a8735247b9e6b9e0bbdc"><td class="memItemLeft" align="right" valign="top"><a id="a177a420ea778a8735247b9e6b9e0bbdc" name="a177a420ea778a8735247b9e6b9e0bbdc"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>mergingSpeed</b></td></tr>
+<tr class="separator:a177a420ea778a8735247b9e6b9e0bbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a550c56b47f35b4ef554ef9f0e7b57d4e"><td class="memItemLeft" align="right" valign="top"><a id="a550c56b47f35b4ef554ef9f0e7b57d4e" name="a550c56b47f35b4ef554ef9f0e7b57d4e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>detourDist</b></td></tr>
+<tr class="separator:a550c56b47f35b4ef554ef9f0e7b57d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94301f9a54306c829fe8dbfa3334587b"><td class="memItemLeft" align="right" valign="top"><a id="a94301f9a54306c829fe8dbfa3334587b" name="a94301f9a54306c829fe8dbfa3334587b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>XtrkDev</b></td></tr>
+<tr class="separator:a94301f9a54306c829fe8dbfa3334587b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8104469b2373b5bf7f6f81e49b189d"><td class="memItemLeft" align="right" valign="top"><a id="a6a8104469b2373b5bf7f6f81e49b189d" name="a6a8104469b2373b5bf7f6f81e49b189d"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>nextNavWaypoint</b> [3]</td></tr>
+<tr class="separator:a6a8104469b2373b5bf7f6f81e49b189d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafac5f427628fbe5ae5593e3dd639334"><td class="memItemLeft" align="right" valign="top"><a id="aafac5f427628fbe5ae5593e3dd639334" name="aafac5f427628fbe5ae5593e3dd639334"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>dist2NextWaypoint</b></td></tr>
+<tr class="separator:aafac5f427628fbe5ae5593e3dd639334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d21b95e78cc7e9146ff7f2f8364eada"><td class="memItemLeft" align="right" valign="top"><a id="a1d21b95e78cc7e9146ff7f2f8364eada" name="a1d21b95e78cc7e9146ff7f2f8364eada"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>speed2NextWaypoint</b></td></tr>
+<tr class="separator:a1d21b95e78cc7e9146ff7f2f8364eada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae915ea5b6742b9d274aa0e1db3ae63aa"><td class="memItemLeft" align="right" valign="top"><a id="ae915ea5b6742b9d274aa0e1db3ae63aa" name="ae915ea5b6742b9d274aa0e1db3ae63aa"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>refSpeed</b></td></tr>
+<tr class="separator:ae915ea5b6742b9d274aa0e1db3ae63aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599c29b5144861c1b5421c96f3d20465"><td class="memItemLeft" align="right" valign="top"><a id="a599c29b5144861c1b5421c96f3d20465" name="a599c29b5144861c1b5421c96f3d20465"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>flightplan</b> [3][4]</td></tr>
+<tr class="separator:a599c29b5144861c1b5421c96f3d20465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a518680a9b219ca6fb7d92454f3a0b076"><td class="memItemLeft" align="right" valign="top"><a id="a518680a9b219ca6fb7d92454f3a0b076" name="a518680a9b219ca6fb7d92454f3a0b076"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>cmdOutput</b> [3]</td></tr>
+<tr class="separator:a518680a9b219ca6fb7d92454f3a0b076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7246fecd0a36ad735e43911b530c03f0"><td class="memItemLeft" align="right" valign="top"><a id="a7246fecd0a36ad735e43911b530c03f0" name="a7246fecd0a36ad735e43911b530c03f0"></a>
+localMergerNavStates_e&#160;</td><td class="memItemRight" valign="bottom"><b>navState</b></td></tr>
+<tr class="separator:a7246fecd0a36ad735e43911b530c03f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/Merger/<a class="el" href="_merger_8hpp_source.html">Merger.hpp</a></li>

@@ -24,56 +24,55 @@
 \DoxyCodeLine{24 \}GuidanceMode;}
 \DoxyCodeLine{25 }
 \DoxyCodeLine{30 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
-\DoxyCodeLine{31     \textcolor{keywordtype}{double} defaultWpSpeed;}
-\DoxyCodeLine{32     \textcolor{keywordtype}{double} captureRadiusScaling;}
-\DoxyCodeLine{33     \textcolor{keywordtype}{double} guidanceRadiusScaling;}
-\DoxyCodeLine{34     \textcolor{keywordtype}{double} turnRateGain;}
-\DoxyCodeLine{35     \textcolor{keywordtype}{double} climbFpAngle;}
-\DoxyCodeLine{36     \textcolor{keywordtype}{double} climbAngleVRange;}
-\DoxyCodeLine{37     \textcolor{keywordtype}{double} climbAngleHRange;}
-\DoxyCodeLine{38     \textcolor{keywordtype}{double} climbRateGain;}
-\DoxyCodeLine{39     \textcolor{keywordtype}{double} maxClimbRate;}
-\DoxyCodeLine{40     \textcolor{keywordtype}{double} minClimbRate;}
-\DoxyCodeLine{41     \textcolor{keywordtype}{double} maxCap;}
-\DoxyCodeLine{42     \textcolor{keywordtype}{double} minCap;}
-\DoxyCodeLine{43     \textcolor{keywordtype}{double} maxSpeed;}
-\DoxyCodeLine{44     \textcolor{keywordtype}{double} minSpeed;}
-\DoxyCodeLine{45     \textcolor{keywordtype}{bool} yawForward;}
-\DoxyCodeLine{46     \textcolor{keywordtype}{bool} maintainEta;}
-\DoxyCodeLine{47 \}\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}};}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{49 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
-\DoxyCodeLine{50     \textcolor{keywordtype}{char} activePlan[25];}
-\DoxyCodeLine{51     \textcolor{keywordtype}{int} guidanceMode;}
-\DoxyCodeLine{52     \textcolor{keywordtype}{int} nextWP;}
-\DoxyCodeLine{53     \textcolor{keywordtype}{double} distH2WP;}
-\DoxyCodeLine{54     \textcolor{keywordtype}{double} distV2WP;}
-\DoxyCodeLine{55     \textcolor{keywordtype}{double} xtrackDev;}
-\DoxyCodeLine{56     \textcolor{keywordtype}{double} velCmd[3];}
-\DoxyCodeLine{57     \textcolor{keywordtype}{double} target[3];}
-\DoxyCodeLine{58     \textcolor{keywordtype}{bool} wpReached;}
-\DoxyCodeLine{59     \textcolor{keywordtype}{bool} yawForward;}
-\DoxyCodeLine{60 \}\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}};}
-\DoxyCodeLine{61 }
-\DoxyCodeLine{62 \textcolor{keywordtype}{void}* InitGuidance(\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
-\DoxyCodeLine{63 \textcolor{keywordtype}{void} guidReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
-\DoxyCodeLine{64 \textcolor{keywordtype}{void} guidSetParams(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}* params);}
-\DoxyCodeLine{65 \textcolor{keywordtype}{void} guidSetAircraftState(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[]);}
-\DoxyCodeLine{66 \textcolor{keywordtype}{void} guidSetWindData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} windFrom,\textcolor{keywordtype}{double} windSpeed);}
-\DoxyCodeLine{67 \textcolor{keywordtype}{void} guidInputFlightplanData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} wpts[],\textcolor{keywordtype}{int} totalWP,\textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} kinematize,\textcolor{keywordtype}{double} repairTurnRate);}
-\DoxyCodeLine{68 \textcolor{keywordtype}{void} RunGuidance(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time);}
-\DoxyCodeLine{69 \textcolor{keywordtype}{void} guidInputVelocityCmd(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} velcmd[]);}
-\DoxyCodeLine{70 \textcolor{keywordtype}{void} SetGuidanceMode(\textcolor{keywordtype}{void}* obj,GuidanceMode mode,\textcolor{keyword}{const} \textcolor{keywordtype}{char}* planID,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{bool} eta);}
-\DoxyCodeLine{71 \textcolor{keywordtype}{void} ChangeWaypointSpeed(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
-\DoxyCodeLine{72 \textcolor{keywordtype}{void} ChangeWaypointAlt(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
-\DoxyCodeLine{73 \textcolor{keywordtype}{void} ChangeWaypointETA(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
-\DoxyCodeLine{74 \textcolor{keywordtype}{void} guidGetOutput(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}}* output);}
-\DoxyCodeLine{75 \textcolor{keywordtype}{int} guidGetWaypoint(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} *wp);}
-\DoxyCodeLine{76 }
-\DoxyCodeLine{77 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
-\DoxyCodeLine{78 \}}
-\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a1cd55d9fad1f05d8e18817de672e3c55}{defaultWpSpeed}};         }
+\DoxyCodeLine{32     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a5d5fe2d02fef96bd5e93d64d47ed36ae}{captureRadiusScaling}};   }
+\DoxyCodeLine{33     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a8e783e06fcacd05d3a21ab7a4a81f730}{guidanceRadiusScaling}};  }
+\DoxyCodeLine{34     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_aac7e9f69ea5f88bef3dc4f9d5d4d2566}{turnRateGain}};           }
+\DoxyCodeLine{35     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_ac408e7e1a919e0b5ac2eee9c84afd119}{climbFpAngle}};           }
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_ab3a6638423077eafec7830e7af48eb01}{climbAngleVRange}};       }
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a71fbdd03ffc6e17ad12d53e2d0a6c060}{climbRateGain}};          }
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_ab978a86de92753c8e6e8ccde74c1c50b}{maxClimbRate}};           }
+\DoxyCodeLine{39     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a406c47e1a96369f775ed3989c6639d01}{minClimbRate}};           }
+\DoxyCodeLine{40     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_abe21aeeb5ef3ef1e8ecad97c8c8859b0}{maxCap}};                 }
+\DoxyCodeLine{41     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a8a83642bfee8a035839ce04977dee24d}{minCap}};                 }
+\DoxyCodeLine{42     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a2d8cf30e1df2061a06861bc8c3a37b88}{maxSpeed}};               }
+\DoxyCodeLine{43     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_params__t_a367eb2f49caad1d8366c09f98886f63f}{minSpeed}};               }
+\DoxyCodeLine{44     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_guidance_params__t_a98782ba895f8ddd28c60a948c8a1c9af}{yawForward}};               }
+\DoxyCodeLine{45     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_guidance_params__t_a5367cc1ca7959442406a8182928fbeda}{maintainEta}};              }
+\DoxyCodeLine{46 \}\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{53 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{54     \textcolor{keywordtype}{char} activePlan[25]; }
+\DoxyCodeLine{55     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_guidance_output__t_a3d17ead575a130b3b94dc990c56484be}{guidanceMode}};    }
+\DoxyCodeLine{56     \textcolor{keywordtype}{int} \mbox{\hyperlink{struct_guidance_output__t_ab3ebc620a2e97eb1a1651dcc65bf4754}{nextWP}};          }
+\DoxyCodeLine{57     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_output__t_aa4a4aff5bd934aaee86da11974e61e43}{distH2WP}};     }
+\DoxyCodeLine{58     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_output__t_a562c391220b0e25cdd648eec18ced08c}{distV2WP}};     }
+\DoxyCodeLine{59     \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_guidance_output__t_ab7eae9cc97a90f777471cca8cb371040}{xtrackDev}};    }
+\DoxyCodeLine{60     \textcolor{keywordtype}{double} velCmd[3];    }
+\DoxyCodeLine{61     \textcolor{keywordtype}{double} target[3];    }
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_guidance_output__t_a37004bcaaa26814ecff2f4d0e4d80324}{wpReached}};      }
+\DoxyCodeLine{63     \textcolor{keywordtype}{bool} \mbox{\hyperlink{struct_guidance_output__t_afa633f7caf62156dd6cbb918e63ba41f}{yawForward}};     }
+\DoxyCodeLine{64 \}\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keywordtype}{void}* InitGuidance(\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{67 \textcolor{keywordtype}{void} guidReadParamFromFile(\textcolor{keywordtype}{void}* obj,\textcolor{keyword}{const} \textcolor{keywordtype}{char} config[]);}
+\DoxyCodeLine{68 \textcolor{keywordtype}{void} guidSetParams(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}* params);}
+\DoxyCodeLine{69 \textcolor{keywordtype}{void} guidSetAircraftState(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{double} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}[],\textcolor{keywordtype}{double} velocity[]);}
+\DoxyCodeLine{70 \textcolor{keywordtype}{void} guidSetWindData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} windFrom,\textcolor{keywordtype}{double} windSpeed);}
+\DoxyCodeLine{71 \textcolor{keywordtype}{void} guidInputFlightplanData(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} wpts[],\textcolor{keywordtype}{int} totalWP,\textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} kinematize,\textcolor{keywordtype}{double} repairTurnRate);}
+\DoxyCodeLine{72 \textcolor{keywordtype}{void} RunGuidance(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{73 \textcolor{keywordtype}{void} guidInputVelocityCmd(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{double} velcmd[]);}
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} SetGuidanceMode(\textcolor{keywordtype}{void}* obj,GuidanceMode mode,\textcolor{keyword}{const} \textcolor{keywordtype}{char}* planID,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{bool} eta);}
+\DoxyCodeLine{75 \textcolor{keywordtype}{void} ChangeWaypointSpeed(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{76 \textcolor{keywordtype}{void} ChangeWaypointAlt(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} ChangeWaypointETA(\textcolor{keywordtype}{void}* obj,\textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} wpID,\textcolor{keywordtype}{double} val,\textcolor{keywordtype}{bool} updateAll);}
+\DoxyCodeLine{78 \textcolor{keywordtype}{void} guidGetOutput(\textcolor{keywordtype}{void}* obj,\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}}* output);}
+\DoxyCodeLine{79 \textcolor{keywordtype}{int} guidGetWaypoint(\textcolor{keywordtype}{void}* obj, \textcolor{keywordtype}{char} planID[],\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \mbox{\hyperlink{structwaypoint__t}{waypoint\_t}} *wp);}
 \DoxyCodeLine{80 }
-\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{82 \}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

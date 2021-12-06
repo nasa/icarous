@@ -31,6 +31,138 @@ bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_a3374cd6b7c87632ed5b32466c4
 \item 
 bands\+\_\+t \mbox{\hyperlink{class_daidalus_monitor_ae494d2198ad36c68fbc797c465b28d0a}{Get\+Vertical\+Speed\+Bands}} (void)
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a6a4eb62b013a8e3c3a35d15b150b73a1}\label{class_daidalus_monitor_a6a4eb62b013a8e3c3a35d15b150b73a1}} 
+bool {\bfseries Check\+Safe\+To\+Turn} (double position\mbox{[}$\,$\mbox{]}, double velocity\mbox{[}$\,$\mbox{]}, double from\+Heading, double to\+Heading)
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a04015e267503cea854c0d976fe1f93bc}\label{class_daidalus_monitor_a04015e267503cea854c0d976fe1f93bc}} 
+bool {\bfseries Check\+Turn\+Conflict} (double low, double high, double new\+Heading, double old\+Heading)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ac6a86fda7722dc2ce83d91dab55c9968}\label{class_daidalus_monitor_ac6a86fda7722dc2ce83d91dab55c9968}} 
+bool {\bfseries log}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a95a5962675235332911063c0411ebcb9}\label{class_daidalus_monitor_a95a5962675235332911063c0411ebcb9}} 
+std\+::string {\bfseries callsign}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a85ff531bc88f8ca59b4d9e5eba8ae589}\label{class_daidalus_monitor_a85ff531bc88f8ca59b4d9e5eba8ae589}} 
+double {\bfseries conflict\+Time\+Elapsed}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a0f9c26c4754baf8cc7c8c04276648c61}\label{class_daidalus_monitor_a0f9c26c4754baf8cc7c8c04276648c61}} 
+double {\bfseries alerting\+Time}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a626b2a5dc2d072f10b088a41238828a1}\label{class_daidalus_monitor_a626b2a5dc2d072f10b088a41238828a1}} 
+bool {\bfseries conflict\+Track}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_aea4941f9c6cabac75d4f66d5011b0181}\label{class_daidalus_monitor_aea4941f9c6cabac75d4f66d5011b0181}} 
+bool {\bfseries conflict\+Speed}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a3ef5e114b26627fe906e256229de9ab1}\label{class_daidalus_monitor_a3ef5e114b26627fe906e256229de9ab1}} 
+bool {\bfseries conflict\+Vertical\+Speed}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_afdaaad5f6b6f181a447c5aefc1d1d61e}\label{class_daidalus_monitor_afdaaad5f6b6f181a447c5aefc1d1d61e}} 
+bool {\bfseries daa\+Violation\+Track}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_aa81eaa8064c863164b737c99955f5ff7}\label{class_daidalus_monitor_aa81eaa8064c863164b737c99955f5ff7}} 
+bool {\bfseries daa\+Violation\+Speed}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a1e54178766b62c51b2219b3d0189e6ca}\label{class_daidalus_monitor_a1e54178766b62c51b2219b3d0189e6ca}} 
+bool {\bfseries daa\+Violation\+VS}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a715b781dd1deed9eec2ca48d8fd61c5d}\label{class_daidalus_monitor_a715b781dd1deed9eec2ca48d8fd61c5d}} 
+bool {\bfseries daa\+Violation\+Alt}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_abb2f04334e3287f8660c4b1f4c90873d}\label{class_daidalus_monitor_abb2f04334e3287f8660c4b1f4c90873d}} 
+double {\bfseries conflict\+Start\+Time}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a6926a19794c9d522b8bd7bff9c4d4991}\label{class_daidalus_monitor_a6926a19794c9d522b8bd7bff9c4d4991}} 
+double {\bfseries start\+Time}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a4bb67030854958cf6f2e973cffc11360}\label{class_daidalus_monitor_a4bb67030854958cf6f2e973cffc11360}} 
+std\+::ofstream {\bfseries logfile\+In}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a878b9063696972cd4e9f8fd870cd0a1f}\label{class_daidalus_monitor_a878b9063696972cd4e9f8fd870cd0a1f}} 
+std\+::ofstream {\bfseries logfile\+Out}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a0afedb92e01a8bd3c2a1142838adcf5d}\label{class_daidalus_monitor_a0afedb92e01a8bd3c2a1142838adcf5d}} 
+int {\bfseries num\+Track\+Bands}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_aec0af0516362e5288325bcfb56ead085}\label{class_daidalus_monitor_aec0af0516362e5288325bcfb56ead085}} 
+int {\bfseries num\+Speed\+Bands}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a107f1b46a3609de2458a1226251915d7}\label{class_daidalus_monitor_a107f1b46a3609de2458a1226251915d7}} 
+int {\bfseries num\+Vertical\+Speed\+Bands}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a6d044afd3768ac2b40970272a5672fab}\label{class_daidalus_monitor_a6d044afd3768ac2b40970272a5672fab}} 
+int {\bfseries num\+Altitude\+Bands}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ad7270e3bc61d09f03c87210be17f3123}\label{class_daidalus_monitor_ad7270e3bc61d09f03c87210be17f3123}} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ {\bfseries track\+Interval}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a5f5b10d1f6a0b0091f3644b5891c6ccb}\label{class_daidalus_monitor_a5f5b10d1f6a0b0091f3644b5891c6ccb}} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ {\bfseries speed\+Interval}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a2d875adb8d5197116512e6946823b8b8}\label{class_daidalus_monitor_a2d875adb8d5197116512e6946823b8b8}} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ {\bfseries vs\+Interval}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a964c22322b53ad979ed5460f21fb67d2}\label{class_daidalus_monitor_a964c22322b53ad979ed5460f21fb67d2}} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ {\bfseries alt\+Interval}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ab254c68ab69b389b21d231b793c542bb}\label{class_daidalus_monitor_ab254c68ab69b389b21d231b793c542bb}} 
+std\+::vector$<$ int $>$ {\bfseries track\+Int\+Types}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a98a99035ecdddab837d34886353307dc}\label{class_daidalus_monitor_a98a99035ecdddab837d34886353307dc}} 
+std\+::vector$<$ int $>$ {\bfseries speed\+Int\+Types}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a420b9b4dd247cda16a5814c38aa83eae}\label{class_daidalus_monitor_a420b9b4dd247cda16a5814c38aa83eae}} 
+std\+::vector$<$ int $>$ {\bfseries vs\+Int\+Types}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a9e7ec2edb7fb68d00fafe64f588ba68e}\label{class_daidalus_monitor_a9e7ec2edb7fb68d00fafe64f588ba68e}} 
+std\+::vector$<$ int $>$ {\bfseries alt\+Int\+Types}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ac4c5f9c60fae3b1882e1419275871df8}\label{class_daidalus_monitor_ac4c5f9c60fae3b1882e1419275871df8}} 
+double {\bfseries prev\+Log\+Time}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a2cd1ca414056821836a88c5be14d4de1}\label{class_daidalus_monitor_a2cd1ca414056821836a88c5be14d4de1}} 
+double {\bfseries stale\+Threshold}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_adad0c0b2447ba06e70c33dee8d8fca00}\label{class_daidalus_monitor_adad0c0b2447ba06e70c33dee8d8fca00}} 
+std\+::map$<$ std\+::string, int $>$ {\bfseries traffic\+Alerts}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a8c4209963b11553136cace03e4717a17}\label{class_daidalus_monitor_a8c4209963b11553136cace03e4717a17}} 
+larcfm\+::\+Daidalus {\bfseries DAA1}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ac8bd6f3b02fd61beb2a0a898f133ce6c}\label{class_daidalus_monitor_ac8bd6f3b02fd61beb2a0a898f133ce6c}} 
+larcfm\+::\+Daidalus {\bfseries DAA2}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a1c92338ba79fc6982cc7ad884bd1adc4}\label{class_daidalus_monitor_a1c92338ba79fc6982cc7ad884bd1adc4}} 
+int {\bfseries data\+Source}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_aef8bf8f4ff5dbae2099c2e64911c7d5e}\label{class_daidalus_monitor_aef8bf8f4ff5dbae2099c2e64911c7d5e}} 
+bool {\bfseries sensor\+Mapping}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a9fb074f4fb331b1758fe9dccae636c76}\label{class_daidalus_monitor_a9fb074f4fb331b1758fe9dccae636c76}} 
+double {\bfseries max\+VS}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a527b26af0405a76a11fa2e8a8f801e52}\label{class_daidalus_monitor_a527b26af0405a76a11fa2e8a8f801e52}} 
+double {\bfseries min\+VS}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a24f246f8191ada5bc8858d588532fd8e}\label{class_daidalus_monitor_a24f246f8191ada5bc8858d588532fd8e}} 
+double {\bfseries ZTHR}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a588a07fe7259f006db5ac45b461945a2}\label{class_daidalus_monitor_a588a07fe7259f006db5ac45b461945a2}} 
+double {\bfseries DTHR}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_a9ffe69ccfd3789c1891f012fa8a7ec48}\label{class_daidalus_monitor_a9ffe69ccfd3789c1891f012fa8a7ec48}} 
+double {\bfseries time\+Interval\+Of\+Conflict\+Low}
+\item 
+\mbox{\Hypertarget{class_daidalus_monitor_ae9bab27032d37be3d5b866476b1841ed}\label{class_daidalus_monitor_ae9bab27032d37be3d5b866476b1841ed}} 
+double {\bfseries time\+Interval\+Of\+Conflict\+High}
+\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 

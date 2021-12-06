@@ -16,13 +16,16 @@ var searchData=
   ['lineplanintersection_13',['LinePlanIntersection',['../class_dubins_planner.html#a0a67f8803f0581b35920af29077b6d47',1,'DubinsPlanner']]],
   ['local_5fposition_14',['local_position',['../arducopter_8h.html#aaecb13171b86a9ed3a749885fb37e546',1,'arducopter.h']]],
   ['local_5fposition_5ft_15',['local_position_t',['../structlocal__position__t.html',1,'']]],
-  ['log_16',['log',['../struct_traffic_app_data__t.html#ac655b563c2dd27caa6770ca54ed4bc12',1,'TrafficAppData_t::log()'],['../struct_traffic_table__t.html#a1e2a44657ec8c54d948f4534ee488be6',1,'TrafficTable_t::log()'],['../struct_cognition_state__t.html#a6b2653f62c7df11855d3829e575f9637',1,'CognitionState_t::log()']]],
+  ['log_16',['log',['../struct_traffic_table__t.html#a1e2a44657ec8c54d948f4534ee488be6',1,'TrafficTable_t::log()'],['../struct_cognition_state__t.html#a6b2653f62c7df11855d3829e575f9637',1,'CognitionState_t::log()'],['../class_traj_manager.html#afee0e071553b2c6ca2793b30f8bc57ce',1,'TrajManager::log()'],['../struct_traffic_app_data__t.html#ac655b563c2dd27caa6770ca54ed4bc12',1,'TrafficAppData_t::log()']]],
   ['logdataindex_17',['logDataIndex',['../structraft_app_data__t.html#aabff6a4b5bf9311117ed936c61f08f65',1,'raftAppData_t']]],
   ['logfile_18',['logFile',['../structraft_app_data__t.html#a641f9b754fc5e6bd252e15384e656d2a',1,'raftAppData_t']]],
-  ['logindex_19',['logIndex',['../structraft_hbeat__t.html#aa6436c895f5c9c8163921b438bc795a0',1,'raftHbeat_t::logIndex()'],['../structraft_hbeat_ack__t.html#a405aa5aedc15b2f9ffed5fa0074f6521',1,'raftHbeatAck_t::logIndex()']]],
-  ['logmessage_20',['LogMessage',['../_cognition_8hpp.html#ad8559541fb7ac99c310ac951b7199b86',1,'CognitionUtil.cpp']]],
-  ['logsentence_21',['logSentence',['../flarm_8c.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c'],['../flarm_8h.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c']]],
-  ['loiter_22',['LOITER',['../arducopter_8h.html#a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1',1,'arducopter.h']]],
-  ['longitude_23',['longitude',['../structobject__t.html#a698b9c7b6cd852e8da12c43f9d9544f8',1,'object_t::longitude()'],['../structposition__t.html#aaaca1450b1335112bb591de7fe0c4b8c',1,'position_t::longitude()'],['../structhome__position__t.html#a682f37c8bed425799eb14d6c3adfe678',1,'home_position_t::longitude()']]],
-  ['lookahead_24',['lookahead',['../struct_geofence_table__t.html#a0d2183c02e317383bd6707a5fac62279',1,'GeofenceTable_t']]]
+  ['logfile1_19',['logFile1',['../class_merger.html#a5bcba60e14940d21e878d893e414952d',1,'Merger']]],
+  ['logfile2_20',['logFile2',['../class_merger.html#a5ff8018083d21eddc528df61ff57feb1',1,'Merger']]],
+  ['logindex_21',['logIndex',['../structraft_hbeat__t.html#aa6436c895f5c9c8163921b438bc795a0',1,'raftHbeat_t::logIndex()'],['../structraft_hbeat_ack__t.html#a405aa5aedc15b2f9ffed5fa0074f6521',1,'raftHbeatAck_t::logIndex()']]],
+  ['loginput_22',['LogInput',['../class_traj_manager.html#a257756133fde7a93afe1a324b78fc15f',1,'TrajManager']]],
+  ['logmessage_23',['LogMessage',['../_cognition_8hpp.html#ad8559541fb7ac99c310ac951b7199b86',1,'CognitionUtil.cpp']]],
+  ['logsentence_24',['logSentence',['../flarm_8c.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c'],['../flarm_8h.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c']]],
+  ['loiter_25',['LOITER',['../arducopter_8h.html#a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1',1,'arducopter.h']]],
+  ['longitude_26',['longitude',['../structobject__t.html#a698b9c7b6cd852e8da12c43f9d9544f8',1,'object_t::longitude()'],['../structposition__t.html#aaaca1450b1335112bb591de7fe0c4b8c',1,'position_t::longitude()'],['../structhome__position__t.html#a682f37c8bed425799eb14d6c3adfe678',1,'home_position_t::longitude()']]],
+  ['lookahead_27',['lookahead',['../struct_geofence_table__t.html#a0d2183c02e317383bd6707a5fac62279',1,'GeofenceTable_t']]]
 ];

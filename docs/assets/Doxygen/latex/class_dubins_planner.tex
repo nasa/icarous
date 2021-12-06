@@ -49,10 +49,158 @@ static bool \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6
 \mbox{\Hypertarget{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}\label{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}} 
 std\+::vector$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ {\bfseries path}
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a03e4342608872b43944ca28ffeec65a7}\label{class_dubins_planner_a03e4342608872b43944ca28ffeec65a7}} 
+\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$ {\bfseries Find\+Nearest} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&query)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}\label{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}} 
+void {\bfseries Get\+Potential\+Fixes} ()
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}\label{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}} 
+bool {\bfseries Check\+Conflict\+Circle\+Circle} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, larcfm\+::\+Velocity start\+Vel1, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 stop2, larcfm\+::\+Velocity start\+Vel2, larcfm\+::\+Vect2 time\+Interval2, double radius2)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}\label{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}} 
+bool {\bfseries Check\+Conflict\+Line\+Circle} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, double turn\+Rate, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
+\item 
+std\+::pair$<$ double, double $>$ \mbox{\hyperlink{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}{Get\+Line\+Circle\+Intersection}} (larcfm\+::\+Vect2 start, larcfm\+::\+Vect2 direction, double t0, double R)
+\item 
+std\+::pair$<$ double, double $>$ \mbox{\hyperlink{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}{Get\+Line\+Line\+Intersection}} (larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 direction1, double t1, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 direction2, double t2, double R)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a519360a48df40b77704a55983e2e298f}\label{class_dubins_planner_a519360a48df40b77704a55983e2e298f}} 
+bool {\bfseries Check\+Conflict\+Line\+Line} (larcfm\+::\+Vect3 start1, larcfm\+::\+Velocity start\+Vel1, double t1, larcfm\+::\+Vect2 time\+Interval1, larcfm\+::\+Vect3 start2, larcfm\+::\+Velocity start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_aa778ad3311524a77d21f1d8d49d1bf0f}\label{class_dubins_planner_aa778ad3311524a77d21f1d8d49d1bf0f}} 
+void {\bfseries Build\+Tree} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$nd)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a77e9051293313b33dc88cd88d1f19b4e}\label{class_dubins_planner_a77e9051293313b33dc88cd88d1f19b4e}} 
+bool {\bfseries Dijkstra\+Search} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$root, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a460db0d90bbf052b7501299e8910eef5}\label{class_dubins_planner_a460db0d90bbf052b7501299e8910eef5}} 
+bool {\bfseries Astar\+Search} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$root, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a62d90d0da0afb28395a97d0bbaaafda2}\label{class_dubins_planner_a62d90d0da0afb28395a97d0bbaaafda2}} 
+bool {\bfseries Get\+Next\+Trk\+Vs} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&\mbox{\hyperlink{structnode}{node}}, double \&trk, double \&vs)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_aca0c2b562069092058e78b1744fccf5a}\label{class_dubins_planner_aca0c2b562069092058e78b1744fccf5a}} 
+bool {\bfseries Greedy\+Depth\+First} (\mbox{\hyperlink{structnode}{node\+\_\+t}} q, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$g)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a22f9acaae3cf4f2abf0c054ca4df07c8}\label{class_dubins_planner_a22f9acaae3cf4f2abf0c054ca4df07c8}} 
+double {\bfseries Node\+Distance} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&A, \mbox{\hyperlink{structnode}{node\+\_\+t}} \&B)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}\label{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}} 
+bool {\bfseries Check\+Goal} ()
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a60e849281666d1104891b6664544a76c}\label{class_dubins_planner_a60e849281666d1104891b6664544a76c}} 
+bool {\bfseries Check\+Projected\+Fence\+Conflict} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$qnode, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a920699e9fa26e61df853114a89f16670}\label{class_dubins_planner_a920699e9fa26e61df853114a89f16670}} 
+bool {\bfseries Get\+Dubins\+Params} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$start, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$end)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}\label{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}} 
+bool {\bfseries Check\+Alt\+Feasibility} (double startz, double endz, double dist, double gs1, double gs2)
+\item 
+tcp\+Data\+\_\+t \mbox{\hyperlink{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}{Compute\+Alt\+Tcp}} (tcp\+Data\+\_\+t \&TCPdata, double startgs, double stopgs)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}\label{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}} 
+tcp\+Data\+\_\+t {\bfseries Compute\+Speed\+Tcp} (tcp\+Data\+\_\+t \&TCPdata, double startgs, double stopgs)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}\label{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}} 
+bool {\bfseries Check\+Fence\+Conflict} (tcp\+Data\+\_\+t trajectory)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}\label{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}} 
+bool {\bfseries Check\+Traffic\+Conflict} (tcp\+Data\+\_\+t trajectory)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}\label{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}} 
+bool {\bfseries Check\+Traffic\+Conflict} (double start\+Time, larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start\+Pos, larcfm\+::\+Vect3 tcp1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 tcp2, larcfm\+::\+Vect3 end\+Pos, double r, double t1, double t2, double t3, double gs, double vs)
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a94b479b6f2b8ce7b844ee3c85ee48370}\label{class_dubins_planner_a94b479b6f2b8ce7b844ee3c85ee48370}} 
+std\+::list$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ $\ast$ {\bfseries Get\+Node\+List} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a8ac6b0682e119b6a40d9893cc5fedc8e}\label{class_dubins_planner_a8ac6b0682e119b6a40d9893cc5fedc8e}} 
+double {\bfseries xmax}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a4d0a43c995b474381c47a9fba96aa10e}\label{class_dubins_planner_a4d0a43c995b474381c47a9fba96aa10e}} 
+double {\bfseries xmin}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_adaf48212aceb9ddcd612687b25dc00f9}\label{class_dubins_planner_adaf48212aceb9ddcd612687b25dc00f9}} 
+double {\bfseries ymax}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a78ad46351e52918ffc9952a899281df5}\label{class_dubins_planner_a78ad46351e52918ffc9952a899281df5}} 
+double {\bfseries ymin}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_abbc6eaec242a85ba7258b1caa85d6860}\label{class_dubins_planner_abbc6eaec242a85ba7258b1caa85d6860}} 
+double {\bfseries zmax}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a890d523f23d4388b512ea919cdf3cbff}\label{class_dubins_planner_a890d523f23d4388b512ea919cdf3cbff}} 
+double {\bfseries zmin}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}\label{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}} 
+larcfm\+::\+Poly3D {\bfseries bounding\+Box}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a54e32946cfc5abf90f5d7ea7019a3bbb}\label{class_dubins_planner_a54e32946cfc5abf90f5d7ea7019a3bbb}} 
+std\+::vector$<$ larcfm\+::\+Vect2 $>$ {\bfseries shrunkbbox}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}\label{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}} 
+std\+::list$<$ larcfm\+::\+Poly3D $>$ {\bfseries obstacle\+List}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a382821ec6ac690baec69d5354dde79b4}\label{class_dubins_planner_a382821ec6ac690baec69d5354dde79b4}} 
+std\+::vector$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ {\bfseries potential\+Fixes}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a1e1e844a75b968a52cd43f7e71b22aa5}\label{class_dubins_planner_a1e1e844a75b968a52cd43f7e71b22aa5}} 
+int {\bfseries node\+Count}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}\label{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}} 
+larcfm\+::\+Vect3 {\bfseries root\+Fix}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}\label{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}} 
+larcfm\+::\+Velocity {\bfseries root\+Vel}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}\label{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}} 
+larcfm\+::\+Vect3 {\bfseries goal\+Fix}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}\label{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}} 
+larcfm\+::\+Velocity {\bfseries goal\+Vel}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_afd823df431577710e305752b9ad8fe47}\label{class_dubins_planner_afd823df431577710e305752b9ad8fe47}} 
+std\+::vector$<$ larcfm\+::\+Vect3 $>$ {\bfseries traffic\+Position}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a7f55fe8a4346354f5d261a31aba09e16}\label{class_dubins_planner_a7f55fe8a4346354f5d261a31aba09e16}} 
+std\+::vector$<$ larcfm\+::\+Velocity $>$ {\bfseries traffic\+Velocity}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_aaa29add026a6bb61c940441ee8008815}\label{class_dubins_planner_aaa29add026a6bb61c940441ee8008815}} 
+std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries traffic\+Plans}
+\item 
+\mbox{\Hypertarget{class_dubins_planner_a03012db8d5b9260d5e100c988f1f216f}\label{class_dubins_planner_a03012db8d5b9260d5e100c988f1f216f}} 
+\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} {\bfseries params}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}\label{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}} 
+\mbox{\Hypertarget{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}\label{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}} 
+\index{DubinsPlanner@{DubinsPlanner}!ComputeAltTcp@{ComputeAltTcp}}
+\index{ComputeAltTcp@{ComputeAltTcp}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{ComputeAltTcp()}{ComputeAltTcp()}}
+{\footnotesize\ttfamily tcp\+Data\+\_\+t Dubins\+Planner\+::\+Compute\+Alt\+Tcp (\begin{DoxyParamCaption}\item[{tcp\+Data\+\_\+t \&}]{TCPdata,  }\item[{double}]{startgs,  }\item[{double}]{stopgs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+The formulation here assumes the vc \texorpdfstring{$<$}{<} v0 and h5 \texorpdfstring{$>$}{>} h0. ~\newline
+ If the above assumption is not true, then hdot,az,daz,ax,dax signs must be chosen appropriately.\mbox{\Hypertarget{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}\label{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetLineCircleIntersection@{GetLineCircleIntersection}}
+\index{GetLineCircleIntersection@{GetLineCircleIntersection}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetLineCircleIntersection()}{GetLineCircleIntersection()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, double $>$ Dubins\+Planner\+::\+Get\+Line\+Circle\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect2}]{start,  }\item[{larcfm\+::\+Vect2}]{direction,  }\item[{double}]{t0,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Find intersection between a line and circle of radius r centered at (0,0) Assume a line is parameterized as follows. where start \textbackslash{}in R2, direction \textbackslash{}in R2, t,t0 \textbackslash{}in R line = start + (t-\/t0)$\ast$direction.\mbox{\Hypertarget{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}\label{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetLineLineIntersection@{GetLineLineIntersection}}
+\index{GetLineLineIntersection@{GetLineLineIntersection}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetLineLineIntersection()}{GetLineLineIntersection()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, double $>$ Dubins\+Planner\+::\+Get\+Line\+Line\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3}]{start1,  }\item[{larcfm\+::\+Vect3}]{direction1,  }\item[{double}]{t1,  }\item[{larcfm\+::\+Vect3}]{start2,  }\item[{larcfm\+::\+Vect3}]{direction2,  }\item[{double}]{t2,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Check if two vehicles travelling in a straight line come within D distance apart of each other. Xa = \mbox{[}xa,ya,za\mbox{]} -\/ starting position of vehicle A Va = \mbox{[}vxa,vya,vza\mbox{]} -\/ starting velocity of vehicle A Xb = \mbox{[}xb,yb,zb\mbox{]} -\/ starting position of vehicle B Vb = \mbox{[}vxb,vyb,vzb\mbox{]} -\/ starting velocity of vehicle B Xa(t) = Xa(t01) + Va x (t -\/ t01) Xb(t) = Xb(t01) + Vb x (t -\/ t02) Xr(t) = Xb(t) -\/ Xa(t) Check \textbackslash{}\+Forall t \textbackslash{}in \mbox{[}t0,tf\mbox{]}, $\vert$$\vert$\+Xr(t)$\vert$$\vert$ \texorpdfstring{$>$}{>} D Ensured by checking for the roots of quadratic equation $\vert$$\vert$\+Xr(t)$\vert$$\vert$$^\wedge$2 -\/ D$^\wedge$2 = 0\mbox{\Hypertarget{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}\label{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}} 
 \index{DubinsPlanner@{DubinsPlanner}!GetPlan@{GetPlan}}
 \index{GetPlan@{GetPlan}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}

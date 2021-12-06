@@ -179,30 +179,6 @@ void GUIDANCE_ProcessPacket(void){
 
         case GUIDANCE_PARAMETERS_MID:{
             guidance_parameters_t* msg = (guidance_parameters_t*) guidanceAppData.guidance_MsgPtr;
-
-            double climbAngle = msg->climbAngle;
-            if (climbAngle >= 75){
-                climbAngle = 75;
-            } else if (climbAngle <= 30){
-                climbAngle = 30;
-            }
-
-            guidanceAppData.guidance_params.defaultWpSpeed = msg->defaultWpSpeed;
-            guidanceAppData.guidance_params.captureRadiusScaling = msg->captureRadiusScaling;
-            guidanceAppData.guidance_params.guidanceRadiusScaling = msg->guidanceRadiusScaling;
-            guidanceAppData.guidance_params.climbFpAngle = climbAngle;
-            guidanceAppData.guidance_params.climbAngleVRange = msg->climbAngleVRange;
-            guidanceAppData.guidance_params.climbAngleHRange = msg->climbAngleHRange;
-            guidanceAppData.guidance_params.climbRateGain = msg->climbRateGain;
-            guidanceAppData.guidance_params.maxClimbRate = msg->maxClimbRate;
-            guidanceAppData.guidance_params.minClimbRate = msg->minClimbRate;
-            guidanceAppData.guidance_params.maxCap = msg->maxCap;
-            guidanceAppData.guidance_params.minCap = msg->minCap;
-            guidanceAppData.guidance_params.maxSpeed = msg->maxSpeed;
-            guidanceAppData.guidance_params.minSpeed = msg->minSpeed;
-            guidanceAppData.guidance_params.yawForward = msg->yawForward;
-            guidanceAppData.guidance_params.turnRateGain = msg->turnRateGain;
-            //guidSetParams(guidanceAppData.Guidance,&guidanceAppData.guidance_params);
             break;
         }
     }

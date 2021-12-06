@@ -64,56 +64,1265 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_guidance-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guidance Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Core class for performing guidance computations.  
+</p>
+
+<p><code>#include &lt;<a class="el" href="_guidance_8hpp_source.html">Guidance.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a15c663113709dbf7c63c6fccf82c6e5b"><td class="memItemLeft" align="right" valign="top"><a id="a15c663113709dbf7c63c6fccf82c6e5b" name="a15c663113709dbf7c63c6fccf82c6e5b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Guidance</b> (const std::string config)</td></tr>
+<tr class="memitem:a15c663113709dbf7c63c6fccf82c6e5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a15c663113709dbf7c63c6fccf82c6e5b">Guidance</a> (const std::string config)</td></tr>
+<tr class="memdesc:a15c663113709dbf7c63c6fccf82c6e5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_guidance.html" title="Core class for performing guidance computations.">Guidance</a> object.  <a href="class_guidance.html#a15c663113709dbf7c63c6fccf82c6e5b">More...</a><br /></td></tr>
 <tr class="separator:a15c663113709dbf7c63c6fccf82c6e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdc131e75d3d551c1c60db0245329f07"><td class="memItemLeft" align="right" valign="top"><a id="afdc131e75d3d551c1c60db0245329f07" name="afdc131e75d3d551c1c60db0245329f07"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadParamFromFile</b> (std::string config)</td></tr>
+<tr class="memitem:afdc131e75d3d551c1c60db0245329f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#afdc131e75d3d551c1c60db0245329f07">ReadParamFromFile</a> (std::string config)</td></tr>
+<tr class="memdesc:afdc131e75d3d551c1c60db0245329f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read parameters from file.  <a href="class_guidance.html#afdc131e75d3d551c1c60db0245329f07">More...</a><br /></td></tr>
 <tr class="separator:afdc131e75d3d551c1c60db0245329f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59574093df3c470814eab4130a3f05a0"><td class="memItemLeft" align="right" valign="top"><a id="a59574093df3c470814eab4130a3f05a0" name="a59574093df3c470814eab4130a3f05a0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGuidanceParams</b> (const <a class="el" href="struct_guidance_params__t.html">GuidanceParams_t</a> *params)</td></tr>
+<tr class="memitem:a59574093df3c470814eab4130a3f05a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a59574093df3c470814eab4130a3f05a0">SetGuidanceParams</a> (const <a class="el" href="struct_guidance_params__t.html">GuidanceParams_t</a> *<a class="el" href="class_guidance.html#a408c2efa5f9e118e6336559651f23f02">params</a>)</td></tr>
+<tr class="memdesc:a59574093df3c470814eab4130a3f05a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="class_guidance.html" title="Core class for performing guidance computations.">Guidance</a> Params object.  <a href="class_guidance.html#a59574093df3c470814eab4130a3f05a0">More...</a><br /></td></tr>
 <tr class="separator:a59574093df3c470814eab4130a3f05a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e367c673156c2b0dcbf74306e01d38"><td class="memItemLeft" align="right" valign="top"><a id="a80e367c673156c2b0dcbf74306e01d38" name="a80e367c673156c2b0dcbf74306e01d38"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAircraftState</b> (const larcfm::Position &amp;pos, const larcfm::Velocity &amp;groundSpeed)</td></tr>
+<tr class="memitem:a80e367c673156c2b0dcbf74306e01d38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a80e367c673156c2b0dcbf74306e01d38">SetAircraftState</a> (const larcfm::Position &amp;pos, const larcfm::Velocity &amp;groundSpeed)</td></tr>
+<tr class="memdesc:a80e367c673156c2b0dcbf74306e01d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Aircraft State.  <a href="class_guidance.html#a80e367c673156c2b0dcbf74306e01d38">More...</a><br /></td></tr>
 <tr class="separator:a80e367c673156c2b0dcbf74306e01d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fc86c190cb04814294e5c461291d8bd"><td class="memItemLeft" align="right" valign="top"><a id="a2fc86c190cb04814294e5c461291d8bd" name="a2fc86c190cb04814294e5c461291d8bd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWindData</b> (const double windFrom, const double windSpeed)</td></tr>
+<tr class="memitem:a2fc86c190cb04814294e5c461291d8bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a2fc86c190cb04814294e5c461291d8bd">SetWindData</a> (const double windFrom, const double windSpeed)</td></tr>
+<tr class="memdesc:a2fc86c190cb04814294e5c461291d8bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Wind Data.  <a href="class_guidance.html#a2fc86c190cb04814294e5c461291d8bd">More...</a><br /></td></tr>
 <tr class="separator:a2fc86c190cb04814294e5c461291d8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29eaeed053de650677f7a42ee393f36f"><td class="memItemLeft" align="right" valign="top"><a id="a29eaeed053de650677f7a42ee393f36f" name="a29eaeed053de650677f7a42ee393f36f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputFlightplanData</b> (const std::string &amp;plan_id, const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;waypoints, const double initHeading, bool repair, double repairTurnRate)</td></tr>
+<tr class="memitem:a29eaeed053de650677f7a42ee393f36f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a29eaeed053de650677f7a42ee393f36f">InputFlightplanData</a> (const std::string &amp;plan_id, const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;waypoints, const double initHeading, bool repair, double repairTurnRate)</td></tr>
+<tr class="memdesc:a29eaeed053de650677f7a42ee393f36f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input flightplan.  <a href="class_guidance.html#a29eaeed053de650677f7a42ee393f36f">More...</a><br /></td></tr>
 <tr class="separator:a29eaeed053de650677f7a42ee393f36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8ec5b739ece761c793f86210dbd6376"><td class="memItemLeft" align="right" valign="top"><a id="aa8ec5b739ece761c793f86210dbd6376" name="aa8ec5b739ece761c793f86210dbd6376"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>RunGuidance</b> (double time)</td></tr>
+<tr class="memitem:aa8ec5b739ece761c793f86210dbd6376"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#aa8ec5b739ece761c793f86210dbd6376">RunGuidance</a> (double time)</td></tr>
+<tr class="memdesc:aa8ec5b739ece761c793f86210dbd6376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform guidance computations for given time.  <a href="class_guidance.html#aa8ec5b739ece761c793f86210dbd6376">More...</a><br /></td></tr>
 <tr class="separator:aa8ec5b739ece761c793f86210dbd6376"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95bce920021a29d2b3c9dbe94e32fa95"><td class="memItemLeft" align="right" valign="top"><a id="a95bce920021a29d2b3c9dbe94e32fa95" name="a95bce920021a29d2b3c9dbe94e32fa95"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGuidanceMode</b> (const GuidanceMode mode, const std::string planID, const int nextWP, const bool eta)</td></tr>
+<tr class="memitem:a95bce920021a29d2b3c9dbe94e32fa95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a95bce920021a29d2b3c9dbe94e32fa95">SetGuidanceMode</a> (const GuidanceMode <a class="el" href="class_guidance.html#a50024fbe5c70caa58cc683a98e2f3d37">mode</a>, const std::string planID, const int nextWP, const bool eta)</td></tr>
+<tr class="memdesc:a95bce920021a29d2b3c9dbe94e32fa95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="class_guidance.html" title="Core class for performing guidance computations.">Guidance</a> Mode.  <a href="class_guidance.html#a95bce920021a29d2b3c9dbe94e32fa95">More...</a><br /></td></tr>
 <tr class="separator:a95bce920021a29d2b3c9dbe94e32fa95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8c08a2721f8a210697b500db46b5646"><td class="memItemLeft" align="right" valign="top"><a id="ac8c08a2721f8a210697b500db46b5646" name="ac8c08a2721f8a210697b500db46b5646"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeWaypointAlt</b> (const std::string planID, int wpID, const double value, const bool updateAll)</td></tr>
+<tr class="memitem:ac8c08a2721f8a210697b500db46b5646"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#ac8c08a2721f8a210697b500db46b5646">ChangeWaypointAlt</a> (const std::string planID, int wpID, const double value, const bool updateAll)</td></tr>
+<tr class="memdesc:ac8c08a2721f8a210697b500db46b5646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change altitude in flightplan segment.  <a href="class_guidance.html#ac8c08a2721f8a210697b500db46b5646">More...</a><br /></td></tr>
 <tr class="separator:ac8c08a2721f8a210697b500db46b5646"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90cc0d4c68148a6aa6b902843be6fb70"><td class="memItemLeft" align="right" valign="top"><a id="a90cc0d4c68148a6aa6b902843be6fb70" name="a90cc0d4c68148a6aa6b902843be6fb70"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeWaypointSpeed</b> (const std::string planID, int wpID, const double value)</td></tr>
+<tr class="memitem:a90cc0d4c68148a6aa6b902843be6fb70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a90cc0d4c68148a6aa6b902843be6fb70">ChangeWaypointSpeed</a> (const std::string planID, int wpID, const double value)</td></tr>
+<tr class="memdesc:a90cc0d4c68148a6aa6b902843be6fb70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change speed in flightplan segement.  <a href="class_guidance.html#a90cc0d4c68148a6aa6b902843be6fb70">More...</a><br /></td></tr>
 <tr class="separator:a90cc0d4c68148a6aa6b902843be6fb70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a425dd495bb750034b8f823affe3735c5"><td class="memItemLeft" align="right" valign="top"><a id="a425dd495bb750034b8f823affe3735c5" name="a425dd495bb750034b8f823affe3735c5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeWaypointETA</b> (const std::string planID, const int wpID, const double value, const bool updateAll)</td></tr>
+<tr class="memitem:a425dd495bb750034b8f823affe3735c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a425dd495bb750034b8f823affe3735c5">ChangeWaypointETA</a> (const std::string planID, const int wpID, const double value, const bool updateAll)</td></tr>
+<tr class="memdesc:a425dd495bb750034b8f823affe3735c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change eta constraints in flightplan.  <a href="class_guidance.html#a425dd495bb750034b8f823affe3735c5">More...</a><br /></td></tr>
 <tr class="separator:a425dd495bb750034b8f823affe3735c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a052f2143feaaca24a511cf5f7a30cdf1"><td class="memItemLeft" align="right" valign="top"><a id="a052f2143feaaca24a511cf5f7a30cdf1" name="a052f2143feaaca24a511cf5f7a30cdf1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVelocityCommands</b> (const larcfm::Velocity &amp;inputs)</td></tr>
+<tr class="memitem:a052f2143feaaca24a511cf5f7a30cdf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a052f2143feaaca24a511cf5f7a30cdf1">SetVelocityCommands</a> (const larcfm::Velocity &amp;inputs)</td></tr>
+<tr class="memdesc:a052f2143feaaca24a511cf5f7a30cdf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Velocity Commands (used when an external modules is computing guidance commands)  <a href="class_guidance.html#a052f2143feaaca24a511cf5f7a30cdf1">More...</a><br /></td></tr>
 <tr class="separator:a052f2143feaaca24a511cf5f7a30cdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d309f7a536bc055e2f3bd349059c44"><td class="memItemLeft" align="right" valign="top"><a id="ac5d309f7a536bc055e2f3bd349059c44" name="ac5d309f7a536bc055e2f3bd349059c44"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutput</b> (<a class="el" href="struct_guidance_output__t.html">GuidanceOutput_t</a> &amp;output)</td></tr>
+<tr class="memitem:ac5d309f7a536bc055e2f3bd349059c44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#ac5d309f7a536bc055e2f3bd349059c44">GetOutput</a> (<a class="el" href="struct_guidance_output__t.html">GuidanceOutput_t</a> &amp;output)</td></tr>
+<tr class="memdesc:ac5d309f7a536bc055e2f3bd349059c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Output object.  <a href="class_guidance.html#ac5d309f7a536bc055e2f3bd349059c44">More...</a><br /></td></tr>
 <tr class="separator:ac5d309f7a536bc055e2f3bd349059c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a625e0e9f260b4a4548fefc9f1cbcd6e4"><td class="memItemLeft" align="right" valign="top"><a id="a625e0e9f260b4a4548fefc9f1cbcd6e4" name="a625e0e9f260b4a4548fefc9f1cbcd6e4"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWaypoint</b> (const std::string planID, int id, <a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;wp)</td></tr>
+<tr class="memitem:a625e0e9f260b4a4548fefc9f1cbcd6e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a625e0e9f260b4a4548fefc9f1cbcd6e4">GetWaypoint</a> (const std::string planID, int id, <a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;wp)</td></tr>
+<tr class="memdesc:a625e0e9f260b4a4548fefc9f1cbcd6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Waypoint.  <a href="class_guidance.html#a625e0e9f260b4a4548fefc9f1cbcd6e4">More...</a><br /></td></tr>
 <tr class="separator:a625e0e9f260b4a4548fefc9f1cbcd6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a09cde1ef1e07435eb9b51cef679e7e72"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a09cde1ef1e07435eb9b51cef679e7e72">ComputeOffSetPositionOnPlan</a> (larcfm::Plan *fp, int nextWP, double guidance_radius, larcfm::Position &amp;pos)</td></tr>
+<tr class="memdesc:a09cde1ef1e07435eb9b51cef679e7e72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to compute the intersection of the line of sight circle with current plan segment.  <a href="class_guidance.html#a09cde1ef1e07435eb9b51cef679e7e72">More...</a><br /></td></tr>
+<tr class="separator:a09cde1ef1e07435eb9b51cef679e7e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf0febbd3b74f90045eca72c3ac466e"><td class="memItemLeft" align="right" valign="top">larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#acaf0febbd3b74f90045eca72c3ac466e">GetCorrectIntersectionPoint</a> (const larcfm::Vect3 &amp;wpA, const larcfm::Vect3 &amp;wpB, const double r)</td></tr>
+<tr class="memdesc:acaf0febbd3b74f90045eca72c3ac466e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the intersection point between a circle of radius r and the line between wpA and wpB. current position is the origin and wpA and wpB are defined with respect to origin.  <a href="class_guidance.html#acaf0febbd3b74f90045eca72c3ac466e">More...</a><br /></td></tr>
+<tr class="separator:acaf0febbd3b74f90045eca72c3ac466e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5f0b2939acbd54aeb1d0394d292e48"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a7d5f0b2939acbd54aeb1d0394d292e48">distance</a> (double x1, double y1, double x2, double y2)</td></tr>
+<tr class="memdesc:a7d5f0b2939acbd54aeb1d0394d292e48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute distance given two points.  <a href="class_guidance.html#a7d5f0b2939acbd54aeb1d0394d292e48">More...</a><br /></td></tr>
+<tr class="separator:a7d5f0b2939acbd54aeb1d0394d292e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c03cc85792d0d25ba9fa55bbb58285d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a2c03cc85792d0d25ba9fa55bbb58285d">ComputeSpeed</a> ()</td></tr>
+<tr class="memdesc:a2c03cc85792d0d25ba9fa55bbb58285d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute current speed that should be used for output command.  <a href="class_guidance.html#a2c03cc85792d0d25ba9fa55bbb58285d">More...</a><br /></td></tr>
+<tr class="separator:a2c03cc85792d0d25ba9fa55bbb58285d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c21f0a86beb2e02a67b44d6c39a91b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#ab3c21f0a86beb2e02a67b44d6c39a91b">ComputeClimbRate</a> (double speedRef)</td></tr>
+<tr class="memdesc:ab3c21f0a86beb2e02a67b44d6c39a91b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute current climb rate for the output.  <a href="class_guidance.html#ab3c21f0a86beb2e02a67b44d6c39a91b">More...</a><br /></td></tr>
+<tr class="separator:ab3c21f0a86beb2e02a67b44d6c39a91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b54e794e2ce943f60c85e52f2e5f95"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#aa2b54e794e2ce943f60c85e52f2e5f95">ComputeNewHeading</a> (double &amp;speedRef)</td></tr>
+<tr class="memdesc:aa2b54e794e2ce943f60c85e52f2e5f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute new heading.  <a href="class_guidance.html#aa2b54e794e2ce943f60c85e52f2e5f95">More...</a><br /></td></tr>
+<tr class="separator:aa2b54e794e2ce943f60c85e52f2e5f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb0f998b75786d65b6c009b99ce709c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a6eb0f998b75786d65b6c009b99ce709c">GetApproachPrecision</a> (const larcfm::Position &amp;<a class="el" href="arducopter_8h.html#a97f6f07d9b99c3e3d789183a9064a7da">position</a>, const larcfm::Velocity &amp;velocity, const larcfm::Position &amp;waypoint)</td></tr>
+<tr class="memdesc:a6eb0f998b75786d65b6c009b99ce709c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A dot product computation to check if vehicle has crossed the waypoint. &lt; 0 if crossed. &gt;= 0 if not crossed.  <a href="class_guidance.html#a6eb0f998b75786d65b6c009b99ce709c">More...</a><br /></td></tr>
+<tr class="separator:a6eb0f998b75786d65b6c009b99ce709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1adb5833bec5563805c903343a4a76"><td class="memItemLeft" align="right" valign="top">larcfm::Plan *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#a6a1adb5833bec5563805c903343a4a76">GetPlan</a> (const std::string &amp;plan_id)</td></tr>
+<tr class="memdesc:a6a1adb5833bec5563805c903343a4a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Plan object.  <a href="class_guidance.html#a6a1adb5833bec5563805c903343a4a76">More...</a><br /></td></tr>
+<tr class="separator:a6a1adb5833bec5563805c903343a4a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5fe2f4655823439df58f6e13695f784"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#ac5fe2f4655823439df58f6e13695f784">FilterCommand</a> (double &amp;refHeading, double &amp;refSpeed, double &amp;refVS)</td></tr>
+<tr class="memdesc:ac5fe2f4655823439df58f6e13695f784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter command (rate limits and saturations)  <a href="class_guidance.html#ac5fe2f4655823439df58f6e13695f784">More...</a><br /></td></tr>
+<tr class="separator:ac5fe2f4655823439df58f6e13695f784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa312d8e704852ae34d8984f5767490e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#aa312d8e704852ae34d8984f5767490e9">ComputePlanGuidance</a> ()</td></tr>
+<tr class="memdesc:aa312d8e704852ae34d8984f5767490e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform guidance computation.  <a href="class_guidance.html#aa312d8e704852ae34d8984f5767490e9">More...</a><br /></td></tr>
+<tr class="separator:aa312d8e704852ae34d8984f5767490e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb21bdc8546f5f4e5f0243d9341440de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_guidance.html#abb21bdc8546f5f4e5f0243d9341440de">CheckWaypointArrival</a> ()</td></tr>
+<tr class="memdesc:abb21bdc8546f5f4e5f0243d9341440de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check waypoint arrival.  <a href="class_guidance.html#abb21bdc8546f5f4e5f0243d9341440de">More...</a><br /></td></tr>
+<tr class="separator:abb21bdc8546f5f4e5f0243d9341440de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5facd495f812b7b0bde3e02cf6d4a750"><td class="memItemLeft" align="right" valign="top"><a id="a5facd495f812b7b0bde3e02cf6d4a750" name="a5facd495f812b7b0bde3e02cf6d4a750"></a>
+std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>planList</b></td></tr>
+<tr class="memdesc:a5facd495f812b7b0bde3e02cf6d4a750"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all plans received by guidance. <br /></td></tr>
+<tr class="separator:a5facd495f812b7b0bde3e02cf6d4a750"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87378fb2c5414eaaaa22005745a81079"><td class="memItemLeft" align="right" valign="top"><a id="a87378fb2c5414eaaaa22005745a81079" name="a87378fb2c5414eaaaa22005745a81079"></a>
+std::map&lt; std::string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>nextWpId</b></td></tr>
+<tr class="memdesc:a87378fb2c5414eaaaa22005745a81079"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map from flight plan id to next waypoint id. <br /></td></tr>
+<tr class="separator:a87378fb2c5414eaaaa22005745a81079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a392887ef5cb0a67063ebb6d8b5caa9cc"><td class="memItemLeft" align="right" valign="top"><a id="a392887ef5cb0a67063ebb6d8b5caa9cc" name="a392887ef5cb0a67063ebb6d8b5caa9cc"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>activePlanId</b></td></tr>
+<tr class="memdesc:a392887ef5cb0a67063ebb6d8b5caa9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plan ID for active plan. <br /></td></tr>
+<tr class="separator:a392887ef5cb0a67063ebb6d8b5caa9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec677ab96bcdd5432d24a57994c4af2a"><td class="memItemLeft" align="right" valign="top"><a id="aec677ab96bcdd5432d24a57994c4af2a" name="aec677ab96bcdd5432d24a57994c4af2a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>prevPlan</b></td></tr>
+<tr class="memdesc:aec677ab96bcdd5432d24a57994c4af2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plan ID for previous plan. <br /></td></tr>
+<tr class="separator:aec677ab96bcdd5432d24a57994c4af2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747324c9ea535bbdc0b0b05eb50be855"><td class="memItemLeft" align="right" valign="top"><a id="a747324c9ea535bbdc0b0b05eb50be855" name="a747324c9ea535bbdc0b0b05eb50be855"></a>
+larcfm::Plan *&#160;</td><td class="memItemRight" valign="bottom"><b>currentPlan</b></td></tr>
+<tr class="memdesc:a747324c9ea535bbdc0b0b05eb50be855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to current plan data structure. <br /></td></tr>
+<tr class="separator:a747324c9ea535bbdc0b0b05eb50be855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50450dacd698e9da0be6b593858bcef2"><td class="memItemLeft" align="right" valign="top"><a id="a50450dacd698e9da0be6b593858bcef2" name="a50450dacd698e9da0be6b593858bcef2"></a>
+larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>currentPos</b></td></tr>
+<tr class="memdesc:a50450dacd698e9da0be6b593858bcef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position. <br /></td></tr>
+<tr class="separator:a50450dacd698e9da0be6b593858bcef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b993d81fec5384ad4f12944b459bfec"><td class="memItemLeft" align="right" valign="top"><a id="a8b993d81fec5384ad4f12944b459bfec" name="a8b993d81fec5384ad4f12944b459bfec"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>currentAirspeed</b></td></tr>
+<tr class="memdesc:a8b993d81fec5384ad4f12944b459bfec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current velocity (airspeed) <br /></td></tr>
+<tr class="separator:a8b993d81fec5384ad4f12944b459bfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118ce9bd01ef62ba59b3f8208e43e2cc"><td class="memItemLeft" align="right" valign="top"><a id="a118ce9bd01ef62ba59b3f8208e43e2cc" name="a118ce9bd01ef62ba59b3f8208e43e2cc"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>currentGroundSpeed</b></td></tr>
+<tr class="memdesc:a118ce9bd01ef62ba59b3f8208e43e2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current velocity (ground speed) <br /></td></tr>
+<tr class="separator:a118ce9bd01ef62ba59b3f8208e43e2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5524351858d155338c1e0c7cdb608980"><td class="memItemLeft" align="right" valign="top"><a id="a5524351858d155338c1e0c7cdb608980" name="a5524351858d155338c1e0c7cdb608980"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>outputCmd</b></td></tr>
+<tr class="memdesc:a5524351858d155338c1e0c7cdb608980"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output command computed by guidance. <br /></td></tr>
+<tr class="separator:a5524351858d155338c1e0c7cdb608980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50024fbe5c70caa58cc683a98e2f3d37"><td class="memItemLeft" align="right" valign="top"><a id="a50024fbe5c70caa58cc683a98e2f3d37" name="a50024fbe5c70caa58cc683a98e2f3d37"></a>
+GuidanceMode&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
+<tr class="memdesc:a50024fbe5c70caa58cc683a98e2f3d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current guidance mode. <br /></td></tr>
+<tr class="separator:a50024fbe5c70caa58cc683a98e2f3d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfa772a0dd17f1a3c07e63f535a7663e"><td class="memItemLeft" align="right" valign="top"><a id="abfa772a0dd17f1a3c07e63f535a7663e" name="abfa772a0dd17f1a3c07e63f535a7663e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>currTime</b></td></tr>
+<tr class="memdesc:abfa772a0dd17f1a3c07e63f535a7663e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current time. <br /></td></tr>
+<tr class="separator:abfa772a0dd17f1a3c07e63f535a7663e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ae6cc43e93ec637a300f3611cae5559"><td class="memItemLeft" align="right" valign="top"><a id="a4ae6cc43e93ec637a300f3611cae5559" name="a4ae6cc43e93ec637a300f3611cae5559"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>wpReached</b></td></tr>
+<tr class="memdesc:a4ae6cc43e93ec637a300f3611cae5559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag indicating waypoint arrival. <br /></td></tr>
+<tr class="separator:a4ae6cc43e93ec637a300f3611cae5559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31abc81c8110d033b7cacdd07c2e3fdf"><td class="memItemLeft" align="right" valign="top"><a id="a31abc81c8110d033b7cacdd07c2e3fdf" name="a31abc81c8110d033b7cacdd07c2e3fdf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>etaControl</b></td></tr>
+<tr class="memdesc:a31abc81c8110d033b7cacdd07c2e3fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag indicating eta control. <br /></td></tr>
+<tr class="separator:a31abc81c8110d033b7cacdd07c2e3fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a797687bab50019f3265e08827241f649"><td class="memItemLeft" align="right" valign="top"><a id="a797687bab50019f3265e08827241f649" name="a797687bab50019f3265e08827241f649"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>inTurn</b></td></tr>
+<tr class="memdesc:a797687bab50019f3265e08827241f649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag indicating aircraft is in a turn. <br /></td></tr>
+<tr class="separator:a797687bab50019f3265e08827241f649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0275015985ec99889e6546422a48ba6b"><td class="memItemLeft" align="right" valign="top"><a id="a0275015985ec99889e6546422a48ba6b" name="a0275015985ec99889e6546422a48ba6b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>distH2nextWP</b></td></tr>
+<tr class="memdesc:a0275015985ec99889e6546422a48ba6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal distance to next waypoint. <br /></td></tr>
+<tr class="separator:a0275015985ec99889e6546422a48ba6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa084b38d2770966f49e02ab867211281"><td class="memItemLeft" align="right" valign="top"><a id="aa084b38d2770966f49e02ab867211281" name="aa084b38d2770966f49e02ab867211281"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>distV2nextWP</b></td></tr>
+<tr class="memdesc:aa084b38d2770966f49e02ab867211281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertical distance to next waypoint. <br /></td></tr>
+<tr class="separator:aa084b38d2770966f49e02ab867211281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092ba8b68be90cb8f690d14e9ee1a640"><td class="memItemLeft" align="right" valign="top"><a id="a092ba8b68be90cb8f690d14e9ee1a640" name="a092ba8b68be90cb8f690d14e9ee1a640"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>xtrackDist</b></td></tr>
+<tr class="memdesc:a092ba8b68be90cb8f690d14e9ee1a640"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cross track deviation. <br /></td></tr>
+<tr class="separator:a092ba8b68be90cb8f690d14e9ee1a640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e9c7af4a8512565d9e81cbacd1cc74"><td class="memItemLeft" align="right" valign="top"><a id="a27e9c7af4a8512565d9e81cbacd1cc74" name="a27e9c7af4a8512565d9e81cbacd1cc74"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>prevTrackControllerTime</b></td></tr>
+<tr class="memdesc:a27e9c7af4a8512565d9e81cbacd1cc74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time at which last cycle of the controller was run. <br /></td></tr>
+<tr class="separator:a27e9c7af4a8512565d9e81cbacd1cc74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed1fecd9865fe9331db26d2bb7d01513"><td class="memItemLeft" align="right" valign="top"><a id="aed1fecd9865fe9331db26d2bb7d01513" name="aed1fecd9865fe9331db26d2bb7d01513"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>prevTrackControllerTarget</b></td></tr>
+<tr class="memdesc:aed1fecd9865fe9331db26d2bb7d01513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Previous target command for the controller. <br /></td></tr>
+<tr class="separator:aed1fecd9865fe9331db26d2bb7d01513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1942a98a0e540bac5732463566562098"><td class="memItemLeft" align="right" valign="top"><a id="a1942a98a0e540bac5732463566562098" name="a1942a98a0e540bac5732463566562098"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>wind</b></td></tr>
+<tr class="memdesc:a1942a98a0e540bac5732463566562098"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wind velocity (to) <br /></td></tr>
+<tr class="separator:a1942a98a0e540bac5732463566562098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408c2efa5f9e118e6336559651f23f02"><td class="memItemLeft" align="right" valign="top"><a id="a408c2efa5f9e118e6336559651f23f02" name="a408c2efa5f9e118e6336559651f23f02"></a>
+<a class="el" href="struct_guidance_params__t.html">GuidanceParams_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>params</b></td></tr>
+<tr class="memdesc:a408c2efa5f9e118e6336559651f23f02"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_guidance.html" title="Core class for performing guidance computations.">Guidance</a> parameters. <br /></td></tr>
+<tr class="separator:a408c2efa5f9e118e6336559651f23f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a15c663113709dbf7c63c6fccf82c6e5b" name="a15c663113709dbf7c63c6fccf82c6e5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c663113709dbf7c63c6fccf82c6e5b">&#9670;&nbsp;</a></span>Guidance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guidance::Guidance </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>configuration filename </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac8c08a2721f8a210697b500db46b5646" name="ac8c08a2721f8a210697b500db46b5646"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8c08a2721f8a210697b500db46b5646">&#9670;&nbsp;</a></span>ChangeWaypointAlt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::ChangeWaypointAlt </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wpID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>updateAll</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id of plan </td></tr>
+    <tr><td class="paramname">wpID</td><td>index of waypoint for which altitude must be changed </td></tr>
+    <tr><td class="paramname">value</td><td>value of new altitude </td></tr>
+    <tr><td class="paramname">updateAll</td><td>update altitude for entire plan from wpID </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >For altitude changes, create a copy of the original plan and modify altitudes in the copy.</p>
+<p >New Plan</p>
+<p >Reuse existing PlanAltChange if available</p>
+<p >Find diff altitude so that all remaining waypoints can be shifted by the diff altitude</p>
+<p >If no altitude difference, revert back to using nominal plan</p>
+<p >Shift altitudes in plan copy</p>
+<p >Add new plan to list if not already available</p>
+<p >Set pointers to the new plan</p>
+
+</div>
+</div>
+<a id="a425dd495bb750034b8f823affe3735c5" name="a425dd495bb750034b8f823affe3735c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a425dd495bb750034b8f823affe3735c5">&#9670;&nbsp;</a></span>ChangeWaypointETA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::ChangeWaypointETA </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>wpID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>updateAll</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>ID of plan </td></tr>
+    <tr><td class="paramname">wpID</td><td>index of waypoint at which eta should change </td></tr>
+    <tr><td class="paramname">value</td><td>value of new eta </td></tr>
+    <tr><td class="paramname">updateAll</td><td>update eta for rest of flightplan </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a90cc0d4c68148a6aa6b902843be6fb70" name="a90cc0d4c68148a6aa6b902843be6fb70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90cc0d4c68148a6aa6b902843be6fb70">&#9670;&nbsp;</a></span>ChangeWaypointSpeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::ChangeWaypointSpeed </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>wpID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>if of plan </td></tr>
+    <tr><td class="paramname">wpID</td><td>index of waypoint for which speed must be changed </td></tr>
+    <tr><td class="paramname">value</td><td>value of new speed </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >Request a speed change on flightplan leg between wpid-1 and wpid.</p><ul>
+<li>If wpid is -1, then use the next waypoint index (the waypoint we are currently flying towards) <br  />
+</li>
+</ul>
+<p >Speed change is between leg wpidprev and newInd</p>
+<p >If the speed change is the same as the speed defined in the original flightplan, no new flight plan is required.</p>
+<p >Create a new copy of nominal plan so that we can change change the speed in this new flightplan</p>
+<p >Shift the time based on the leg length and new speed <br  />
+ Note, we only shift from the wpid that is requested.</p>
+<p >Check to see if there was a previous plan for speed change</p>
+<p >Use this plan if no previous plans.</p>
+<p >Clear previous speed change plan and use new speed change plan.</p>
+
+</div>
+</div>
+<a id="abb21bdc8546f5f4e5f0243d9341440de" name="abb21bdc8546f5f4e5f0243d9341440de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb21bdc8546f5f4e5f0243d9341440de">&#9670;&nbsp;</a></span>CheckWaypointArrival()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::CheckWaypointArrival </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<ul>
+<li>Get horizontal distance to next waypoint</li>
+<li>Get vertical distance to next waypoint</li>
+<li>Scale capture radius based on current speed of vehicle</li>
+<li>Impose user defined limits on capture radius</li>
+<li>Compute approach precision value</li>
+<li>Aritificially constrain precision approach to -1 for linear plans. i.e Don't use precision checks for linear plans</li>
+<li>If distance to next waypoint is &lt; captureRadius, switch to next waypoint</li>
+</ul>
+
+</div>
+</div>
+<a id="ab3c21f0a86beb2e02a67b44d6c39a91b" name="ab3c21f0a86beb2e02a67b44d6c39a91b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3c21f0a86beb2e02a67b44d6c39a91b">&#9670;&nbsp;</a></span>ComputeClimbRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::ComputeClimbRate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>speedRef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">speedRef</td><td>computed speed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double output climb rate </dd></dl>
+<p >Computing flightpath angle</p>
+<p >Check if this is a climb segment</p>
+<p >Over large altitude changes outside the climbAngleVRange params, use bangbang control</p>
+<p >Use extremal values for climb rate</p>
+<p >For eta, use the required climb rate based on arrival constraint</p>
+<p >Not eta, pull climb rate from flightplan</p>
+<p >In linear case, calculate climb rate based on flightpath angle</p>
+<p >Climb rate determined by the trig relation: speedRef is adjacent, climbrate is opposite</p>
+<p >In kinematic case, use prescribed climb rate</p>
+<p >Use simple proportional control scheme when not in bangbang mode</p>
+<p >Impose saturation limits</p>
+
+</div>
+</div>
+<a id="aa2b54e794e2ce943f60c85e52f2e5f95" name="aa2b54e794e2ce943f60c85e52f2e5f95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2b54e794e2ce943f60c85e52f2e5f95">&#9670;&nbsp;</a></span>ComputeNewHeading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::ComputeNewHeading </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>speedRef</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">speedRef</td><td>computed speed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double output heading </dd></dl>
+<p >Check to determine if the aircraft is currently in a turn segment If prev waypoint is a Track TCP (i.e. BOT or MOT), compute new heading based on heading delta in segment</p>
+<ul>
+<li>Get prev track tcp waypoint index</li>
+<li>Get center of turn for track tcp</li>
+<li>Heading of vector from center to prev waypoint (NOTE: prev waypoint could be BOT or MOT because we are current in a turn)</li>
+<li>Heading of vector from center to next waypoint</li>
+<li>Heading of vector from center to current position</li>
+<li>Output heading once the vehicle finishes the turn. i.e. Heading at EOT</li>
+<li>Radius of turn</li>
+<li>Turn direction</li>
+<li>The ideal heading the vehicle should be having at it's current position</li>
+<li>The actual heading of the vehicle</li>
+<li>Total heading change from trk1 to trk2</li>
+<li>Heading change from trk1 to ideal heading at current position</li>
+<li>Assume that that angle between BOT and EOT is no more than 180 degrees</li>
+</ul>
+<p >ETA control in a turn</p>
+<ul>
+<li>Compute turn rate from flightplan</li>
+<li>Compute remaining time in turn according to plan</li>
+<li>Compute actual remaining time</li>
+<li>Increase turn rate if actual time remaining is less than planned time remaining</li>
+<li>Decrease turn rate if actual time remaining is more than planned time remaining</li>
+<li>Compute reference speed from turn rate and radius (v = r x \omega)</li>
+</ul>
+<p >Compute offset from center. This is 0 if vehicle is exactly on the turn, &lt; 0 if inside the turn and &gt; 0 if outside the turn</p>
+<p >Compute heading change based on offset</p>
+<p >Compute new heading</p>
+<p >If prev waypoint is not Track TCP or is EOT, use the line of sight circle method to compute heading</p>
+
+</div>
+</div>
+<a id="a09cde1ef1e07435eb9b51cef679e7e72" name="a09cde1ef1e07435eb9b51cef679e7e72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09cde1ef1e07435eb9b51cef679e7e72">&#9670;&nbsp;</a></span>ComputeOffSetPositionOnPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::ComputeOffSetPositionOnPlan </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Plan *&#160;</td>
+          <td class="paramname"><em>fp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nextWP</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>guidance_radius</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fp</td><td>Pointer to flightplan </td></tr>
+    <tr><td class="paramname">nextWP</td><td>next waypoint index (waypoint index the aircraft is currently flying to) </td></tr>
+    <tr><td class="paramname">guidance_radius</td><td>radius of the line of sight circle </td></tr>
+    <tr><td class="paramname">pos</td><td>[out] offset position on plan </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double cross track deviation from nominal path </dd></dl>
+<p >Treat the previous waypoint as the origin</p>
+<p >Create vectors for wpA-&gt;wpB and wpA-&gt;ownship_position</p>
+<p >Get distance of flightplan segment (AB)</p>
+<p >Get distance from waypoint to current position (AP)</p>
+<p >Get distance from current position to next waypoint (PB)</p>
+<p >Compute projection of AP onto AB</p>
+<p >Compute closest point to P on flightplan</p>
+<p >Get perpendicular deviation from projection and AP</p>
+<p >Convert waypoints to local frame (with ownship position as origin)</p>
+<ul>
+<li>If within guidance radius from wpB, track to wpB</li>
+<li>If within guidance radius from wpA, use guidance circle method</li>
+</ul>
+<p >Otherwise, check projection of position onto flight plan</p>
+<p >If behind wpA, track to wpA</p>
+<p >If past wpB, track to wpB</p>
+<p >If between wpA and wpB</p>
+<ul>
+<li>If close enough to flight plan, use guidance circle method</li>
+<li>If far from flight plan, track to closest point on flight plan</li>
+</ul>
+
+</div>
+</div>
+<a id="aa312d8e704852ae34d8984f5767490e9" name="aa312d8e704852ae34d8984f5767490e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa312d8e704852ae34d8984f5767490e9">&#9670;&nbsp;</a></span>ComputePlanGuidance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::ComputePlanGuidance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Get next waypoint index</p>
+<p >Return with 0 velocity if the flightplan was completed</p>
+<p >Compute to new speed to track</p>
+<p >Compute new heading to track</p>
+<p >Compute climb rate to track</p>
+<p >Filter output commands</p>
+<p >Construct output velocity object</p>
+<p >Check if the waypoint was reached</p>
+
+</div>
+</div>
+<a id="a2c03cc85792d0d25ba9fa55bbb58285d" name="a2c03cc85792d0d25ba9fa55bbb58285d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c03cc85792d0d25ba9fa55bbb58285d">&#9670;&nbsp;</a></span>ComputeSpeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::ComputeSpeed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+<p >Don't perform ETA controls during Speed change, Alt change or during ditching</p>
+<ul>
+<li>Get intended speed stored in the flightplan when no eta control is required</li>
+<li>If eta control is required, compute speed based on eta constraints</li>
+</ul>
+<p >if timediff is negative, we are running late</p>
+
+</div>
+</div>
+<a id="a7d5f0b2939acbd54aeb1d0394d292e48" name="a7d5f0b2939acbd54aeb1d0394d292e48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5f0b2939acbd54aeb1d0394d292e48">&#9670;&nbsp;</a></span>distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::distance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>y2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x1</td><td>x coordinate </td></tr>
+    <tr><td class="paramname">y1</td><td>y coordinate </td></tr>
+    <tr><td class="paramname">x2</td><td>x coordinate </td></tr>
+    <tr><td class="paramname">y2</td><td>y coordinate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double distance </dd></dl>
+
+</div>
+</div>
+<a id="ac5fe2f4655823439df58f6e13695f784" name="ac5fe2f4655823439df58f6e13695f784"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5fe2f4655823439df58f6e13695f784">&#9670;&nbsp;</a></span>FilterCommand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::FilterCommand </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>refHeading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>refSpeed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>refVS</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">refHeading</td><td>output heading </td></tr>
+    <tr><td class="paramname">refSpeed</td><td>output speed </td></tr>
+    <tr><td class="paramname">refVS</td><td>output climb rate </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >Reduce speed if approaching final waypoint or if turning sharply</p>
+<p >Low pass filter for speed and vertical speed commands n factor determines when low pass filter is being applied.</p>
+
+</div>
+</div>
+<a id="a6eb0f998b75786d65b6c009b99ce709c" name="a6eb0f998b75786d65b6c009b99ce709c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eb0f998b75786d65b6c009b99ce709c">&#9670;&nbsp;</a></span>GetApproachPrecision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Guidance::GetApproachPrecision </td>
+          <td>(</td>
+          <td class="paramtype">const larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>waypoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>current position </td></tr>
+    <tr><td class="paramname">velocity</td><td>current velocity </td></tr>
+    <tr><td class="paramname">waypoint</td><td>waypoint flying towards </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double dot product value </dd></dl>
+<p >Look at the dot product of current velocity with the position of the waypoint in relative NED coordinates dot product &gt;= 0 IMPLIES we are approaching the waypoint, dot procuct &lt; 0 IMPLIES we are moving away.</p>
+
+</div>
+</div>
+<a id="acaf0febbd3b74f90045eca72c3ac466e" name="acaf0febbd3b74f90045eca72c3ac466e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaf0febbd3b74f90045eca72c3ac466e">&#9670;&nbsp;</a></span>GetCorrectIntersectionPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">larcfm::Vect3 Guidance::GetCorrectIntersectionPoint </td>
+          <td>(</td>
+          <td class="paramtype">const larcfm::Vect3 &amp;&#160;</td>
+          <td class="paramname"><em>wpA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const larcfm::Vect3 &amp;&#160;</td>
+          <td class="paramname"><em>wpB</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>r</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wpA</td><td>starting waypoint of segment </td></tr>
+    <tr><td class="paramname">wpB</td><td>ending waypoint of segment </td></tr>
+    <tr><td class="paramname">r</td><td>radius of line of sight circle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>larcfm::Vect3 Intersection of circle with plan segment </dd></dl>
+<p >Compute intersection of circle of radius r and line joining point A and point B</p>
+<ul>
+<li>No solution when complex roots</li>
+</ul>
+<p >There can be at most 2 intersections. Return intersection which is closest to waypoint B</p>
+
+</div>
+</div>
+<a id="ac5d309f7a536bc055e2f3bd349059c44" name="ac5d309f7a536bc055e2f3bd349059c44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5d309f7a536bc055e2f3bd349059c44">&#9670;&nbsp;</a></span>GetOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::GetOutput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_guidance_output__t.html">GuidanceOutput_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>output</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">output</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >If we are doing a speed change or altitude change, we are still on the the original flighttrack (over the ground). So use the previous plan id This is required because the cognition module doesn't know about these internal speedchange or alt change plans and hence won't be able to keep track of waypoint progress if you don't use the old id in the output. <br  />
+</p>
+
+</div>
+</div>
+<a id="a6a1adb5833bec5563805c903343a4a76" name="a6a1adb5833bec5563805c903343a4a76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a1adb5833bec5563805c903343a4a76">&#9670;&nbsp;</a></span>GetPlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">larcfm::Plan * Guidance::GetPlan </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>plan_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">plan_id</td><td>id of plan </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>larcfm::Plan* pointer to plan </dd></dl>
+
+</div>
+</div>
+<a id="a625e0e9f260b4a4548fefc9f1cbcd6e4" name="a625e0e9f260b4a4548fefc9f1cbcd6e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a625e0e9f260b4a4548fefc9f1cbcd6e4">&#9670;&nbsp;</a></span>GetWaypoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guidance::GetWaypoint </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwaypoint__t.html">waypoint_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>wp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">planID</td><td>id of plan </td></tr>
+    <tr><td class="paramname">id</td><td>waypoint index </td></tr>
+    <tr><td class="paramname">wp</td><td>[out] waypoint object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="a29eaeed053de650677f7a42ee393f36f" name="a29eaeed053de650677f7a42ee393f36f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29eaeed053de650677f7a42ee393f36f">&#9670;&nbsp;</a></span>InputFlightplanData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::InputFlightplanData </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>plan_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>waypoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>initHeading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>repair</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>repairTurnRate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">plan_id</td><td>flightplan id </td></tr>
+    <tr><td class="paramname">waypoints</td><td>list of waypoints </td></tr>
+    <tr><td class="paramname">initHeading</td><td>initial path heading (only needed for repairing) </td></tr>
+    <tr><td class="paramname">repair</td><td>set to true to convert linear plan to kinematic plan using given turn rate for repair </td></tr>
+    <tr><td class="paramname">repairTurnRate</td><td>turn rate to use for repairing </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afdc131e75d3d551c1c60db0245329f07" name="afdc131e75d3d551c1c60db0245329f07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc131e75d3d551c1c60db0245329f07">&#9670;&nbsp;</a></span>ReadParamFromFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::ReadParamFromFile </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">config</td><td>configuration filename </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa8ec5b739ece761c793f86210dbd6376" name="aa8ec5b739ece761c793f86210dbd6376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8ec5b739ece761c793f86210dbd6376">&#9670;&nbsp;</a></span>RunGuidance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guidance::RunGuidance </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+<ul>
+<li>FLIGHTPLAN and POINT2POINT modes are implemented identically</li>
+<li>VECTOR mode receives velocity commands from external sources</li>
+<li>Currently TAKEOFF mode does nothing</li>
+<li>LAND mode controls the rate of descent</li>
+<li>SPEED_CHANGE/ALT_CHANGE are implemented by FLIGHTPLAN by changing speed/alt in flight plan</li>
+<li><a class="el" href="class_guidance.html" title="Core class for performing guidance computations.">Guidance</a> NOOP mode</li>
+</ul>
+
+</div>
+</div>
+<a id="a80e367c673156c2b0dcbf74306e01d38" name="a80e367c673156c2b0dcbf74306e01d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80e367c673156c2b0dcbf74306e01d38">&#9670;&nbsp;</a></span>SetAircraftState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::SetAircraftState </td>
+          <td>(</td>
+          <td class="paramtype">const larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>groundSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>current position </td></tr>
+    <tr><td class="paramname">groundSpeed</td><td>current ground speed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a95bce920021a29d2b3c9dbe94e32fa95" name="a95bce920021a29d2b3c9dbe94e32fa95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95bce920021a29d2b3c9dbe94e32fa95">&#9670;&nbsp;</a></span>SetGuidanceMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::SetGuidanceMode </td>
+          <td>(</td>
+          <td class="paramtype">const GuidanceMode&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>planID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>nextWP</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>eta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>guidance mode </td></tr>
+    <tr><td class="paramname">planID</td><td>plan id </td></tr>
+    <tr><td class="paramname">nextWP</td><td>waypoint to which aircraft should start flying to </td></tr>
+    <tr><td class="paramname">eta</td><td>enable eta constraints </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >VECTOR/LAND modes don't use any plans.</p>
+<p >Check if the requested plan for the mode is available</p>
+<ul>
+<li>If nextWP is 0, this means we are starting this plan</li>
+<li>Shift the times based on the current time.</li>
+<li>Time shifting is necessary if we are going to maintain ETA.</li>
+<li>Ensure this function is always called with nextWP = 0 if ETA maintenance is required.</li>
+</ul>
+<p >Set initial conditions for nextwp</p>
+
+</div>
+</div>
+<a id="a59574093df3c470814eab4130a3f05a0" name="a59574093df3c470814eab4130a3f05a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59574093df3c470814eab4130a3f05a0">&#9670;&nbsp;</a></span>SetGuidanceParams()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::SetGuidanceParams </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_guidance_params__t.html">GuidanceParams_t</a> *&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a052f2143feaaca24a511cf5f7a30cdf1" name="a052f2143feaaca24a511cf5f7a30cdf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052f2143feaaca24a511cf5f7a30cdf1">&#9670;&nbsp;</a></span>SetVelocityCommands()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::SetVelocityCommands </td>
+          <td>(</td>
+          <td class="paramtype">const larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>inputs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inputs</td><td>input velocity commands </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2fc86c190cb04814294e5c461291d8bd" name="a2fc86c190cb04814294e5c461291d8bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fc86c190cb04814294e5c461291d8bd">&#9670;&nbsp;</a></span>SetWindData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guidance::SetWindData </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>windFrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>windSpeed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">windFrom</td><td>wind from direction </td></tr>
+    <tr><td class="paramname">windSpeed</td><td>wind speed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/Guidance/<a class="el" href="_guidance_8hpp_source.html">Guidance.hpp</a></li>
 <li>Modules/Core/Guidance/Guidance.cpp</li>

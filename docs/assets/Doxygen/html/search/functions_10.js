@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['writedata_0',['writeData',['../port__lib_8h.html#a5422fa17fc6bf125dc315c24ee0fbaab',1,'port_lib.c']]],
-  ['writemavlinkdata_1',['writeMavlinkData',['../port__lib_8h.html#afb6fc10453a780fd7a17b91468316ddc',1,'port_lib.c']]]
+  ['updatedubinsplannerparameters_0',['UpdateDubinsPlannerParameters',['../class_traj_manager.html#acfefed23cbe0ae49f2b1a046c41a2347',1,'TrajManager']]]
 ];

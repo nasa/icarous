@@ -462,40 +462,51 @@ bool TrajManager::CheckLineOfSightconflict(larcfm::Position start, larcfm::Posit
 trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
 {
 
+    /// Consider the combined plan if planid not Plan0 or doesn't contain the "Plan" prefix
     if(planID != "Plan0" && planID.substr(0,4) == "Plan"){
              planID = "Plan+";
     }
 
+    /// Initialize the output struct
     trajectoryMonitorData_t data;
     std::memset(&data,0,sizeof(trajectoryMonitorData_t));
+
+    /// Extract the plan that is being monitored
     larcfm::Plan *fp = GetPlan(planID);
     if(fp == nullptr){
         data.lineOfSight2goal = true;
         return data;
     }
+
+    /// Create projections based on current position
     larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(fp->getPos(0));
     bool fenceConflict = false;
     bool trafficConflict = false;
     std::list<double> gfTimes, tfTimes;
     auto cmp = [](double x, double y) { return x < y; };
+
+    /// Compute offsets with respect to given planID and primary plan
     std::vector<double> offsets1 = ComputePlanOffsets(planID,nextWP2,pos,vel,time);
     std::vector<double> offsets2 = ComputePlanOffsets("Plan0",nextWP1,pos,vel,time);
-    double toffset = offsets1[2]; // Correct for any time delay (-ve offsets[2] indicate a delay)
+
+    /// Correct for any time delay (-ve offsets[2] indicate a delay)
+    double toffset = offsets1[2]; 
     double correctedtime = time + toffset;
     if(offsets1[0] < 50){
         for (auto &gf : fenceList)
         {
+            /// Keep in fence checks
             larcfm::Vect3 locpos = projection.project(pos);
             larcfm::CDPolycarp geoPolycarp(0.01, 0.001, false);
 
-            // Check fence conflict with current position
+            /// - Check fence conflict with current position
             if (gf.fenceType == fenceObject::FENCE_TYPE::KEEP_IN)
             {
                 larcfm::Poly3D localPoly = gf.polygon.poly3D(projection);
                 bool conflict = geoPolycarp.definitelyOutside(locpos, localPoly);
                 if (conflict)
                     gfTimes.push_back(0.0);
-                // Check for projected fence conflict based on flightplan
+                /// - Check for projected fence conflict based on flightplan
                 double eps = 0.5; // a small additional delta to add to the output. 
                 double t = FindTimeToFenceViolation(localPoly, locpos, vel) + eps;
                 int seg = fp->getSegment(correctedtime + t);
@@ -503,10 +514,10 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
                 {
                     continue;
                 }
-                // Get position on plan for detected time to violation
+                /// - Get position on plan for detected time to violation
                 larcfm::Position posOnPlan = fp->posVelWithinSeg(seg, t + correctedtime, fp->isLinear(), fp->gsOut(seg)).first;
                 larcfm::Vect3 qPos = projection.project(posOnPlan);
-                // If projected point on plan is outside fence, we have a real problem.
+                /// - If projected point on plan is outside fence, we have a real problem.
                 bool projConflict = geoPolycarp.definitelyOutside(qPos, localPoly);
                 projConflict |= geoPolycarp.nearEdge(qPos, localPoly, 2, 2);
                 if (projConflict)
@@ -518,10 +529,12 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             }
             else
             {
+                /// Keep out fence conflict
+                /// - Check conflict based on current position
                 bool conflict = geoPolycarp.definitelyInside(locpos, gf.polygon.poly3D(projection));
                 if (conflict)
                     gfTimes.push_back(0.0);
-                // Check for projected fence conflict based on flightplan
+                /// - Check for projected fence conflict based on flightplan
                 larcfm::CDIIPolygon cdiipolygon;
                 larcfm::PolyPath objpath(std::to_string(gf.id), gf.polygon);
                 bool pathConflict = cdiipolygon.detection(*fp, objpath, correctedtime, fp->getLastTime());
@@ -542,7 +555,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             }
         }
 
-        // Check for projected traffic conflict based on flightplan
+        /// Check for projected traffic conflict based on traffic flightplans
         for (auto &tp : trafficPlans)
         {
             larcfm::CDII cdii = larcfm::CDII::make(wellClearDistH, "m", wellClearDistV, "m");
@@ -555,7 +568,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             }
         }
 
-        // Check for projected traffic conflicts for state based traffic
+        /// Check for projected traffic conflicts for state based traffic
         for (auto &tf : trafficList)
         {
             larcfm::Position posA = tf.second.position;
@@ -581,7 +594,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         gfTimes.sort(cmp);
     }
 
-    // Check for next feasible waypoint in the main plan
+    /// Check for next feasible waypoint in the main plan
     fp = GetPlan("Plan0");
     int findex = nextWP1;
     auto CheckWPFeasibility = [&](int index) {
@@ -605,7 +618,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
     int maxwp = fp->size();
     for (; findex < maxwp; ++findex)
     {
-        // Check if next wp is before the conflict time
+        /// - Check if next wp is before the conflict time
         if(tfTimes.size() > 0){
             if (fp->time(findex) < correctedtime + tfTimes.front() && offsets1[0] < 50) {
                 continue;
@@ -613,13 +626,13 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         }
 
         
-        // Avoid BOT and MOT
+        /// - Skip BOT and MOT
         if (fp->isBOT(findex) || fp->isMOT(findex))
         {
             continue;
         }
 
-        // Avoid other tcps in a turn segment
+        /// - Skip other tcps in a turn segment
         if (!fp->isEOT(findex)) {
             int prevTurnTCP = fp->prevTrkTCP(findex);
             if (fp->getTcpData(prevTurnTCP).isBOT() && !fp->getTcpData(prevTurnTCP).isEOT())
@@ -628,14 +641,14 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
             }
         }
 
-        // The next segment should be sufficient long to facilitate plan capture
+        /// - The next segment should be sufficient long to facilitate plan capture
         double segdist = fp->pathDistance(findex,findex+1);
 
         if(segdist < vel.gs()*3){
             continue;
         }
 
-        // Check fence feasibility
+        /// - Check fence feasibility
         bool conflict = CheckWPFeasibility(findex);
         if (!conflict)
         {
@@ -647,6 +660,7 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
         findex = maxwp-1;
     }
 
+    /// - Check line of sight to goal
     bool lineOfSight2goal = true; 
     if(flightPlans.size() > 0){
         if (planID == "Plan+" || planID == "Plan0"){

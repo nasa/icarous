@@ -36,6 +36,60 @@ int {\bfseries Get\+Total\+Traffic} ()
 \mbox{\Hypertarget{class_target_tracker_abda1015569581c3ca1538a028199ff91}\label{class_target_tracker_abda1015569581c3ca1538a028199ff91}} 
 \mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries Get\+Data} (int i)
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}\label{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}} 
+int {\bfseries Check\+Validation\+Gate} (\mbox{\hyperlink{structmeasurement}{measurement}} \&data)
+\item 
+\mbox{\Hypertarget{class_target_tracker_acb68aafc078f6814ede523b2944d51cb}\label{class_target_tracker_acb68aafc078f6814ede523b2944d51cb}} 
+void {\bfseries Update\+Estimate} (\mbox{\hyperlink{structmeasurement}{measurement}} \&prediction, \mbox{\hyperlink{structmeasurement}{measurement}} \&value, double time=0)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a4de804c0884092f9fcf4f8b50721388c}\label{class_target_tracker_a4de804c0884092f9fcf4f8b50721388c}} 
+std\+::string {\bfseries callsign}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a8656f10d0e9e95165e39c17130d73b0f}\label{class_target_tracker_a8656f10d0e9e95165e39c17130d73b0f}} 
+std\+::ofstream {\bfseries log\+File}
+\item 
+\mbox{\Hypertarget{class_target_tracker_ad697ba36e5bb552baee35100fe1c9624}\label{class_target_tracker_ad697ba36e5bb552baee35100fe1c9624}} 
+bool {\bfseries log}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a8e087163332f7aa234b8149e723ee103}\label{class_target_tracker_a8e087163332f7aa234b8149e723ee103}} 
+double {\bfseries timeout}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a2e532f0a6b1eecf99238dbe684d832e5}\label{class_target_tracker_a2e532f0a6b1eecf99238dbe684d832e5}} 
+double {\bfseries model\+UncertaintyP} \mbox{[}6\mbox{]}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a60803e3c826c1d32d9685fa0b44aa90e}\label{class_target_tracker_a60803e3c826c1d32d9685fa0b44aa90e}} 
+double {\bfseries model\+UncertaintyV} \mbox{[}6\mbox{]}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a8d79f1668c85e4ac38dc0bd5e43d3a17}\label{class_target_tracker_a8d79f1668c85e4ac38dc0bd5e43d3a17}} 
+double {\bfseries p\+Threshold}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a959ba09db8db4ef38b7e04238d6e1724}\label{class_target_tracker_a959ba09db8db4ef38b7e04238d6e1724}} 
+double {\bfseries v\+Threshold}
+\item 
+\mbox{\Hypertarget{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}\label{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}} 
+larcfm\+::\+Position {\bfseries home\+Pos}
+\item 
+\mbox{\Hypertarget{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}\label{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}} 
+\mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries current\+State}
+\item 
+\mbox{\Hypertarget{class_target_tracker_ad25d64b8d0044cd0e519f5bb5a5df1db}\label{class_target_tracker_ad25d64b8d0044cd0e519f5bb5a5df1db}} 
+std\+::vector$<$ \mbox{\hyperlink{structmeasurement}{measurement}} $>$ {\bfseries tracks}
+\item 
+\mbox{\Hypertarget{class_target_tracker_a9d3c43affbdaabbf5b441355628f76a6}\label{class_target_tracker_a9d3c43affbdaabbf5b441355628f76a6}} 
+larcfm\+::\+Euclidean\+Projection {\bfseries proj}
+\item 
+\mbox{\Hypertarget{class_target_tracker_aa7413fcd10b65554976845b89c8c50a7}\label{class_target_tracker_aa7413fcd10b65554976845b89c8c50a7}} 
+int {\bfseries total\+Tracks}
+\item 
+\mbox{\Hypertarget{class_target_tracker_abe28bcb4d94593f9f7b6449d3686e53b}\label{class_target_tracker_abe28bcb4d94593f9f7b6449d3686e53b}} 
+double {\bfseries prev\+Log\+Time}
+\end{DoxyCompactItemize}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

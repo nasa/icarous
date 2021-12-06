@@ -12,10 +12,12 @@ var searchData=
   ['lineofsight2goal_9',['lineOfSight2Goal',['../struct_cognition_state__t.html#aeace19241991feca3b15592cb9c8c542',1,'CognitionState_t']]],
   ['lineofsight2goalprev_10',['lineOfSight2GoalPrev',['../struct_cognition_state__t.html#a999a702044a528e4c0e63e4d46c268fc',1,'CognitionState_t']]],
   ['local_5fposition_11',['local_position',['../arducopter_8h.html#aaecb13171b86a9ed3a749885fb37e546',1,'arducopter.h']]],
-  ['log_12',['log',['../struct_traffic_app_data__t.html#ac655b563c2dd27caa6770ca54ed4bc12',1,'TrafficAppData_t::log()'],['../struct_traffic_table__t.html#a1e2a44657ec8c54d948f4534ee488be6',1,'TrafficTable_t::log()'],['../struct_cognition_state__t.html#a6b2653f62c7df11855d3829e575f9637',1,'CognitionState_t::log()']]],
+  ['log_12',['log',['../struct_traffic_app_data__t.html#ac655b563c2dd27caa6770ca54ed4bc12',1,'TrafficAppData_t::log()'],['../struct_traffic_table__t.html#a1e2a44657ec8c54d948f4534ee488be6',1,'TrafficTable_t::log()'],['../struct_cognition_state__t.html#a6b2653f62c7df11855d3829e575f9637',1,'CognitionState_t::log()'],['../class_traj_manager.html#afee0e071553b2c6ca2793b30f8bc57ce',1,'TrajManager::log()']]],
   ['logdataindex_13',['logDataIndex',['../structraft_app_data__t.html#aabff6a4b5bf9311117ed936c61f08f65',1,'raftAppData_t']]],
   ['logfile_14',['logFile',['../structraft_app_data__t.html#a641f9b754fc5e6bd252e15384e656d2a',1,'raftAppData_t']]],
-  ['logindex_15',['logIndex',['../structraft_hbeat__t.html#aa6436c895f5c9c8163921b438bc795a0',1,'raftHbeat_t::logIndex()'],['../structraft_hbeat_ack__t.html#a405aa5aedc15b2f9ffed5fa0074f6521',1,'raftHbeatAck_t::logIndex()']]],
-  ['longitude_16',['longitude',['../structobject__t.html#a698b9c7b6cd852e8da12c43f9d9544f8',1,'object_t::longitude()'],['../structposition__t.html#aaaca1450b1335112bb591de7fe0c4b8c',1,'position_t::longitude()'],['../structhome__position__t.html#a682f37c8bed425799eb14d6c3adfe678',1,'home_position_t::longitude()']]],
-  ['lookahead_17',['lookahead',['../struct_geofence_table__t.html#a0d2183c02e317383bd6707a5fac62279',1,'GeofenceTable_t']]]
+  ['logfile1_15',['logFile1',['../class_merger.html#a5bcba60e14940d21e878d893e414952d',1,'Merger']]],
+  ['logfile2_16',['logFile2',['../class_merger.html#a5ff8018083d21eddc528df61ff57feb1',1,'Merger']]],
+  ['logindex_17',['logIndex',['../structraft_hbeat__t.html#aa6436c895f5c9c8163921b438bc795a0',1,'raftHbeat_t::logIndex()'],['../structraft_hbeat_ack__t.html#a405aa5aedc15b2f9ffed5fa0074f6521',1,'raftHbeatAck_t::logIndex()']]],
+  ['longitude_18',['longitude',['../structobject__t.html#a698b9c7b6cd852e8da12c43f9d9544f8',1,'object_t::longitude()'],['../structposition__t.html#aaaca1450b1335112bb591de7fe0c4b8c',1,'position_t::longitude()'],['../structhome__position__t.html#a682f37c8bed425799eb14d6c3adfe678',1,'home_position_t::longitude()']]],
+  ['lookahead_19',['lookahead',['../struct_geofence_table__t.html#a0d2183c02e317383bd6707a5fac62279',1,'GeofenceTable_t']]]
 ];

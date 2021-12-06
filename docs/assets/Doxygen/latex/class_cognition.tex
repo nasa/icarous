@@ -48,6 +48,23 @@ void \mbox{\hyperlink{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}{Input\+
 \mbox{\Hypertarget{class_cognition_a61b6eb88dadf805e8b35fd6d0cc42f95}\label{class_cognition_a61b6eb88dadf805e8b35fd6d0cc42f95}} 
 \mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} {\bfseries cog\+State}
 \begin{DoxyCompactList}\small\item\em internal state \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_cognition_ac74e9cf40517479d4d84ab1d67a61f7a}\label{class_cognition_ac74e9cf40517479d4d84ab1d67a61f7a}} 
+void {\bfseries Initialize\+State} ()
+\item 
+\mbox{\Hypertarget{class_cognition_a3c9aa54e952a5861a0240b741d9c5c97}\label{class_cognition_a3c9aa54e952a5861a0240b741d9c5c97}} 
+void {\bfseries Initialize\+Events} ()
+\item 
+void \mbox{\hyperlink{class_cognition_a7e723e3fc2a6a3a4e30e83b92dab9b8f}{Initialize\+Event\+Handlers}} ()
+\begin{DoxyCompactList}\small\item\em Initialize event handlers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_cognition_a3ed973f0a5b19d197fa692b1f0bacf61}\label{class_cognition_a3ed973f0a5b19d197fa692b1f0bacf61}} 
+\mbox{\hyperlink{class_event_management}{Event\+Management}}$<$ \mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $>$ {\bfseries event\+Mng}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -81,7 +98,20 @@ void \mbox{\hyperlink{class_cognition_a8e90c4c99174c94337de7ad9fe4fde5f}{Input\+
 \begin{DoxyReturn}{Returns}
 int remaining commands 
 \end{DoxyReturn}
-\mbox{\Hypertarget{class_cognition_a33120ca09d581c337b966b0116f41be7}\label{class_cognition_a33120ca09d581c337b966b0116f41be7}} 
+\mbox{\Hypertarget{class_cognition_a7e723e3fc2a6a3a4e30e83b92dab9b8f}\label{class_cognition_a7e723e3fc2a6a3a4e30e83b92dab9b8f}} 
+\index{Cognition@{Cognition}!InitializeEventHandlers@{InitializeEventHandlers}}
+\index{InitializeEventHandlers@{InitializeEventHandlers}!Cognition@{Cognition}}
+\doxysubsubsection{\texorpdfstring{InitializeEventHandlers()}{InitializeEventHandlers()}}
+{\footnotesize\ttfamily void Cognition\+::\+Initialize\+Event\+Handlers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Get input priorities ~\newline
+
+
+Nominal mission related triggers
+
+Conflict related triggers
+
+Ditching related triggers\mbox{\Hypertarget{class_cognition_a33120ca09d581c337b966b0116f41be7}\label{class_cognition_a33120ca09d581c337b966b0116f41be7}} 
 \index{Cognition@{Cognition}!InputAltBands@{InputAltBands}}
 \index{InputAltBands@{InputAltBands}!Cognition@{Cognition}}
 \doxysubsubsection{\texorpdfstring{InputAltBands()}{InputAltBands()}}

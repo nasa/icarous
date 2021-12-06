@@ -23,6 +23,21 @@ void {\bfseries Run} (T $\ast$)
 \begin{DoxyCompactList}\small\item\em Run event management. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_event_management_aaae8271ef6528137dc23d47553ab5c0b}{Reset}} ()
 \begin{DoxyCompactList}\small\item\em Reset all triggers and handlers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_event_management_a3750ccbf4466f7d689bade8a06909096}\label{class_event_management_a3750ccbf4466f7d689bade8a06909096}} 
+\mbox{\hyperlink{struct_handler_comp}{Handler\+Comp}}$<$ T $>$ {\bfseries handler\+Comp}
+\begin{DoxyCompactList}\small\item\em List of monitor functions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_event_management_ae06caf3cfc32a4fa74d33a8e5d43686c}\label{class_event_management_ae06caf3cfc32a4fa74d33a8e5d43686c}} 
+std\+::map$<$ std\+::string, std\+::function$<$ bool(T $\ast$)$>$ $>$ {\bfseries events}
+\item 
+\mbox{\Hypertarget{class_event_management_a5ab157bd22fad8e0b9b352ec64a2d026}\label{class_event_management_a5ab157bd22fad8e0b9b352ec64a2d026}} 
+std\+::map$<$ std\+::string, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$ $>$ {\bfseries handlers}
+\item 
+\mbox{\Hypertarget{class_event_management_ae24bb44d53238103fb32f1b689624fd7}\label{class_event_management_ae24bb44d53238103fb32f1b689624fd7}} 
+\mbox{\hyperlink{classheapset}{heapset}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_event_handler}{Event\+Handler}}$<$ T $>$ $>$, \mbox{\hyperlink{struct_handler_comp}{Handler\+Comp}}$<$ T $>$ $>$ {\bfseries active\+Event\+Handlers}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

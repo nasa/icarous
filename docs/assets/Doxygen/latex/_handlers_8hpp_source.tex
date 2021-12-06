@@ -178,7 +178,7 @@
 \DoxyCodeLine{221 \}; }
 \DoxyCodeLine{222 }
 \DoxyCodeLine{227 \textcolor{keyword}{class }\mbox{\hyperlink{class_return_to_next_feasible_w_p}{ReturnToNextFeasibleWP}}:\textcolor{keyword}{public} \mbox{\hyperlink{class_event_handler}{EventHandler}}<CognitionState\_t>\{}
-\DoxyCodeLine{228     \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} Initialize(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
+\DoxyCodeLine{228     \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_return_to_next_feasible_w_p_a424456de30512918479da6b9dbde5f24}{Initialize}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
 \DoxyCodeLine{229         \textcolor{keywordflow}{if}(\mbox{\hyperlink{_triggers_8hpp_a5a693b233a0e1e8ccf22f118f783765c}{PrimaryPlanCompletionTrigger}}(state))\{}
 \DoxyCodeLine{230             \textcolor{keywordflow}{return} SHUTDOWN;}
 \DoxyCodeLine{231         \}}
@@ -209,7 +209,7 @@
 \DoxyCodeLine{260         \textcolor{keywordflow}{return} SUCCESS;}
 \DoxyCodeLine{261     \}}
 \DoxyCodeLine{262 }
-\DoxyCodeLine{263     \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} Execute(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
+\DoxyCodeLine{263     \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_return_to_next_feasible_w_p_a70c0a383ede625e6a649a3c9275ee866}{Execute}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
 \DoxyCodeLine{265         \textcolor{keywordflow}{if}(state-\/>\mbox{\hyperlink{struct_cognition_state__t_a80493c05d09cfbe3b3e54e3d1a3ef2fa}{pathRequest}} == REQUEST\_RESPONDED)\{}
 \DoxyCodeLine{266             state-\/>\mbox{\hyperlink{struct_cognition_state__t_a80493c05d09cfbe3b3e54e3d1a3ef2fa}{pathRequest}} = REQUEST\_NIL;}
 \DoxyCodeLine{267             std::string pathName = \textcolor{stringliteral}{"{}Plan"{}} + std::to\_string(state-\/>\mbox{\hyperlink{struct_cognition_state__t_a844919bb4e454a78fdd8cf3f8fbcf5f7}{numSecPaths}});}
@@ -228,7 +228,7 @@
 \DoxyCodeLine{282 \};}
 \DoxyCodeLine{283 }
 \DoxyCodeLine{288 \textcolor{keyword}{class }\mbox{\hyperlink{class_land_phase_handler}{LandPhaseHandler}}: \textcolor{keyword}{public} \mbox{\hyperlink{class_event_handler}{EventHandler}}<CognitionState\_t>\{}
-\DoxyCodeLine{289    \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} Execute(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
+\DoxyCodeLine{289    \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{retVal\_e}} \mbox{\hyperlink{class_land_phase_handler_ac078a28e1b005bdc92af699aaa8640a8}{Execute}}(\mbox{\hyperlink{struct_cognition_state__t}{CognitionState\_t}}* state)\{}
 \DoxyCodeLine{291        \mbox{\hyperlink{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}{SendStatus}}(state, (\textcolor{keywordtype}{char} *)\textcolor{stringliteral}{"{}IC: Landing"{}}, 6);}
 \DoxyCodeLine{292        \mbox{\hyperlink{struct_land_command}{LandCommand}} land\_command;}
 \DoxyCodeLine{293        \mbox{\hyperlink{struct_command}{Command}} cmd = \{.commandType = CommandType\_e::LAND\_COMMAND\};}

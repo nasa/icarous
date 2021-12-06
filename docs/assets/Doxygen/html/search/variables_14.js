@@ -6,7 +6,10 @@ var searchData=
   ['waypointconflict2_3',['waypointConflict2',['../structgeofence_app_data__t.html#adbc892a79d751c2682f56a00f8b5da52',1,'geofenceAppData_t']]],
   ['waypointcurrent_4',['waypointCurrent',['../structvfrhud__t.html#aaca597bb9d18f8955cc9bededa406166',1,'vfrhud_t']]],
   ['waypointseq_5',['waypointSeq',['../structappdata_int__t.html#aedcdaff4449c412264a4a04289a34565',1,'appdataInt_t::waypointSeq()'],['../structappdata_int_g_s__t.html#a8e23d9bc0d58372a3fa049746f14748a',1,'appdataIntGS_t::waypointSeq()']]],
-  ['worstcaseslotsperminorframe_6',['WorstCaseSlotsPerMinorFrame',['../struct_s_c_h___app_data__t.html#ab6daf7fd8b91cf3922f8f9c38792e592',1,'SCH_AppData_t']]],
-  ['wpreached_7',['wpReached',['../structappdata_int__t.html#ae3693b8fb67eea585c8b96e93f169fe1',1,'appdataInt_t::wpReached()'],['../struct_flarm_app_data__t.html#a34850360b57d9757edfcfa0c9d1c08cd',1,'FlarmAppData_t::wpReached()']]],
-  ['wpreached_8',['wpreached',['../arducopter_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'arducopter.h']]]
+  ['wellcleardisth_6',['wellClearDistH',['../class_traj_manager.html#a8a59fd551ffa809a5574116ba6a9109e',1,'TrajManager']]],
+  ['wellcleardistv_7',['wellClearDistV',['../class_traj_manager.html#a0d144f50c9b14946e4447d31ca964617',1,'TrajManager']]],
+  ['wind_8',['wind',['../class_guidance.html#a1942a98a0e540bac5732463566562098',1,'Guidance']]],
+  ['worstcaseslotsperminorframe_9',['WorstCaseSlotsPerMinorFrame',['../struct_s_c_h___app_data__t.html#ab6daf7fd8b91cf3922f8f9c38792e592',1,'SCH_AppData_t']]],
+  ['wpreached_10',['wpReached',['../structappdata_int__t.html#ae3693b8fb67eea585c8b96e93f169fe1',1,'appdataInt_t::wpReached()'],['../struct_flarm_app_data__t.html#a34850360b57d9757edfcfa0c9d1c08cd',1,'FlarmAppData_t::wpReached()'],['../struct_guidance_output__t.html#a37004bcaaa26814ecff2f4d0e4d80324',1,'GuidanceOutput_t::wpReached()'],['../class_guidance.html#a4ae6cc43e93ec637a300f3611cae5559',1,'Guidance::wpReached()']]],
+  ['wpreached_11',['wpreached',['../arducopter_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'arducopter.h']]]
 ];

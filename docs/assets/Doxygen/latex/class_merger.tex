@@ -4,7 +4,7 @@
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_merger_ae4523afe44d0c0df1dfc9e244358922d}\label{class_merger_ae4523afe44d0c0df1dfc9e244358922d}} 
-{\bfseries Merger} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config, int vehicle\+ID)
+{\bfseries Merger} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config, int \mbox{\hyperlink{class_merger_a1f4eefa352b6d8893ccaf3587965206f}{vehicle\+ID}})
 \item 
 \mbox{\Hypertarget{class_merger_a3d1b3705bb886220fb8707f1ab56eb76}\label{class_merger_a3d1b3705bb886220fb8707f1ab56eb76}} 
 void {\bfseries Read\+Param\+From\+File} (std\+::string config)
@@ -13,13 +13,13 @@ void {\bfseries Read\+Param\+From\+File} (std\+::string config)
 void {\bfseries Set\+Vehicle\+Constraints} (double min\+Vel, double max\+Vel, double turn\+Radius)
 \item 
 \mbox{\Hypertarget{class_merger_adca035243e311683a6963591dc136314}\label{class_merger_adca035243e311683a6963591dc136314}} 
-void {\bfseries Set\+Mergefix\+Params} (double separation\+Time, double coordzone, double schzone, double entryzone, double corridor\+Width)
+void {\bfseries Set\+Mergefix\+Params} (double \mbox{\hyperlink{class_merger_ad8259eaabb1d1ed875bfe95d977d1dd4}{separation\+Time}}, double coordzone, double schzone, double entryzone, double \mbox{\hyperlink{class_merger_afaae84438add1c4bfec445fe43b24f90}{corridor\+Width}})
 \item 
 \mbox{\Hypertarget{class_merger_a982c16de9fa672d084096dfa7dfb5639}\label{class_merger_a982c16de9fa672d084096dfa7dfb5639}} 
-void {\bfseries Set\+Vehicle\+State} (double position\mbox{[}$\,$\mbox{]}, double velocity\mbox{[}$\,$\mbox{]})
+void {\bfseries Set\+Vehicle\+State} (double \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}\mbox{[}$\,$\mbox{]}, double \mbox{\hyperlink{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}{velocity}}\mbox{[}$\,$\mbox{]})
 \item 
 \mbox{\Hypertarget{class_merger_a8653bd2e78090e5a6add10e52f89aa8d}\label{class_merger_a8653bd2e78090e5a6add10e52f89aa8d}} 
-void {\bfseries Set\+Intersection\+Data} (int i, int id, double position\mbox{[}$\,$\mbox{]})
+void {\bfseries Set\+Intersection\+Data} (int i, int id, double \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}\mbox{[}$\,$\mbox{]})
 \item 
 \mbox{\Hypertarget{class_merger_a66bc6e67d8c0d9f7d3f41669cc0da1c8}\label{class_merger_a66bc6e67d8c0d9f7d3f41669cc0da1c8}} 
 unsigned char {\bfseries Run\+Merging\+Operation} (double time)
@@ -35,6 +35,231 @@ void {\bfseries Get\+Output\+Velocity} (double $\ast$trk, double $\ast$gs, doubl
 \item 
 \mbox{\Hypertarget{class_merger_a24e43cec953760a0cf65e7d4d0496bc6}\label{class_merger_a24e43cec953760a0cf65e7d4d0496bc6}} 
 bool {\bfseries Get\+Arrival\+Times} (\mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} $\ast$arr\+Data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_merger_a0f65c7270725065d53bb67a08efe044d}\label{class_merger_a0f65c7270725065d53bb67a08efe044d}} 
+double {\bfseries Get\+Approach\+Precision} (double \mbox{\hyperlink{class_merger_a781c1b03cc73397fb257168b07b3199a}{position}}\mbox{[}$\,$\mbox{]}, double \mbox{\hyperlink{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}{velocity}}\mbox{[}$\,$\mbox{]}, double intersection\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{class_merger_ac306f89166ac723ba501b4ebf4059f72}\label{class_merger_ac306f89166ac723ba501b4ebf4059f72}} 
+void {\bfseries Compute\+Arrival\+Data} (void)
+\item 
+\mbox{\Hypertarget{class_merger_a96fdf62850e7b28c0e7a0e37f74df304}\label{class_merger_a96fdf62850e7b28c0e7a0e37f74df304}} 
+double {\bfseries Compute\+Path\+Length} (void)
+\item 
+\mbox{\Hypertarget{class_merger_a8ff4ca2b8fffcdf44c9615f1dacdf18b}\label{class_merger_a8ff4ca2b8fffcdf44c9615f1dacdf18b}} 
+bool {\bfseries Check\+Intersection\+Conflict} (void)
+\item 
+\mbox{\Hypertarget{class_merger_a3f6259f92f4f7714eca5d1a039f82e2f}\label{class_merger_a3f6259f92f4f7714eca5d1a039f82e2f}} 
+void {\bfseries Check\+Intersection\+Exit} (void)
+\item 
+\mbox{\Hypertarget{class_merger_ad686371e768912986cf222b967759758}\label{class_merger_ad686371e768912986cf222b967759758}} 
+void {\bfseries Compute\+Schedule} ()
+\item 
+\mbox{\Hypertarget{class_merger_a61a6ced3540f55fb2139e2646f317d8b}\label{class_merger_a61a6ced3540f55fb2139e2646f317d8b}} 
+bool {\bfseries Compute\+Merging\+Speed} (uint32\+\_\+t arrival\+Time)
+\item 
+\mbox{\Hypertarget{class_merger_ad8f10f26e248857eca0d46ef4910f5f1}\label{class_merger_ad8f10f26e248857eca0d46ef4910f5f1}} 
+void {\bfseries Compute\+Trajectory} (double xc1, double xc2)
+\item 
+\mbox{\Hypertarget{class_merger_af548945c09f29dda2bd884657341d5c7}\label{class_merger_af548945c09f29dda2bd884657341d5c7}} 
+void {\bfseries Execute\+New\+Path} (void)
+\item 
+\mbox{\Hypertarget{class_merger_ad85c6ce02138892896aa32817b7d906a}\label{class_merger_ad85c6ce02138892896aa32817b7d906a}} 
+void {\bfseries Exchange\+Arrival\+Times} (void)
+\item 
+\mbox{\Hypertarget{class_merger_a0b08e303e9a783a4d9e7558bdbe832fa}\label{class_merger_a0b08e303e9a783a4d9e7558bdbe832fa}} 
+int32\+\_\+t {\bfseries Find\+Current\+Intersection} (void)
+\item 
+\mbox{\Hypertarget{class_merger_a70268af0a9ff352b0f862de7a62e9d5d}\label{class_merger_a70268af0a9ff352b0f862de7a62e9d5d}} 
+uint32\+\_\+t {\bfseries Revise\+Early\+Arr\+Time\+In\+Entry\+Zone} (void)
+\item 
+\mbox{\Hypertarget{class_merger_ad8712764788b98cca669fb7453ea30a4}\label{class_merger_ad8712764788b98cca669fb7453ea30a4}} 
+zone\+Type\+\_\+e {\bfseries Identify\+Current\+Zone} ()
+\item 
+\mbox{\Hypertarget{class_merger_a4e045f972157437e7de12a98ed90706d}\label{class_merger_a4e045f972157437e7de12a98ed90706d}} 
+void {\bfseries Add\+Log\+Entry} ()
+\item 
+\mbox{\Hypertarget{class_merger_a03c462dacf4303d9dd8009096e0395b3}\label{class_merger_a03c462dacf4303d9dd8009096e0395b3}} 
+void {\bfseries Reset\+Data} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_merger_a5bcba60e14940d21e878d893e414952d}\label{class_merger_a5bcba60e14940d21e878d893e414952d}} 
+FILE $\ast$ {\bfseries log\+File1}
+\begin{DoxyCompactList}\small\item\em Log file descriptor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a5ff8018083d21eddc528df61ff57feb1}\label{class_merger_a5ff8018083d21eddc528df61ff57feb1}} 
+FILE $\ast$ {\bfseries log\+File2}
+\begin{DoxyCompactList}\small\item\em Log file descriptor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a49243cdfca150876e1fc855e7d19404a}\label{class_merger_a49243cdfca150876e1fc855e7d19404a}} 
+std\+::string {\bfseries call\+Sign}
+\begin{DoxyCompactList}\small\item\em Vehicle call sign string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a1f4eefa352b6d8893ccaf3587965206f}\label{class_merger_a1f4eefa352b6d8893ccaf3587965206f}} 
+unsigned int {\bfseries vehicle\+ID}
+\begin{DoxyCompactList}\small\item\em Numerial identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_ae7ad62555f4617d270301bacd6eaa9ac}\label{class_merger_ae7ad62555f4617d270301bacd6eaa9ac}} 
+double {\bfseries merge\+Fixes} \mbox{[}INTERSECTION\+\_\+\+MAX\mbox{]}\mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em merge fixes \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a747cc50c132772b897655f867851423a}\label{class_merger_a747cc50c132772b897655f867851423a}} 
+unsigned int {\bfseries merge\+Fix\+Id} \mbox{[}INTERSECTION\+\_\+\+MAX\mbox{]}
+\begin{DoxyCompactList}\small\item\em Identifiers of merge fixes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a75d58c8b7d2e8b5019e0e8e59758b74e}\label{class_merger_a75d58c8b7d2e8b5019e0e8e59758b74e}} 
+unsigned int {\bfseries current\+Fix\+Index}
+\begin{DoxyCompactList}\small\item\em Current fix index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a30270a188f894f1cf5b191bdbdeb2f2b}\label{class_merger_a30270a188f894f1cf5b191bdbdeb2f2b}} 
+unsigned int {\bfseries total\+Fixes}
+\begin{DoxyCompactList}\small\item\em Total number of merge fixes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a781c1b03cc73397fb257168b07b3199a}\label{class_merger_a781c1b03cc73397fb257168b07b3199a}} 
+double {\bfseries position} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Current position. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}\label{class_merger_a05b93e20f8f7e8bdc014deab2f10bc2c}} 
+double {\bfseries velocity} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Current velocity. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_aed08e3220c4c3727639a62fad5e2f315}\label{class_merger_aed08e3220c4c3727639a62fad5e2f315}} 
+double {\bfseries current\+Speed}
+\begin{DoxyCompactList}\small\item\em Current speed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_ae83b364806891ea177dbc100085c805b}\label{class_merger_ae83b364806891ea177dbc100085c805b}} 
+double {\bfseries current\+Intersection} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Current intersection. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a45e8e5895e467aeb01863be49076876b}\label{class_merger_a45e8e5895e467aeb01863be49076876b}} 
+double {\bfseries dist2\+Int}
+\begin{DoxyCompactList}\small\item\em Distance to intersection. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a2a9aabe3a513926e2b089887918c8115}\label{class_merger_a2a9aabe3a513926e2b089887918c8115}} 
+unsigned int {\bfseries raft\+Role}
+\begin{DoxyCompactList}\small\item\em Raft node role. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a5091342922159d8bf440f13c270727ab}\label{class_merger_a5091342922159d8bf440f13c270727ab}} 
+double {\bfseries current\+Local\+Time}
+\item 
+\mbox{\Hypertarget{class_merger_a84ea62a45bd55c032c77f2ceda6ac702}\label{class_merger_a84ea62a45bd55c032c77f2ceda6ac702}} 
+double {\bfseries coord\+Zone}
+\begin{DoxyCompactList}\small\item\em Coordination zone size. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_ac49b1323db61e6ef967f070a1324c2e1}\label{class_merger_ac49b1323db61e6ef967f070a1324c2e1}} 
+double {\bfseries sched\+Zone}
+\begin{DoxyCompactList}\small\item\em Schedule zone size. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a6e3520240ac19491ff5d3d0d827f31b4}\label{class_merger_a6e3520240ac19491ff5d3d0d827f31b4}} 
+double {\bfseries entry\+Zone}
+\begin{DoxyCompactList}\small\item\em Entry zone size. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_afaae84438add1c4bfec445fe43b24f90}\label{class_merger_afaae84438add1c4bfec445fe43b24f90}} 
+double {\bfseries corridor\+Width}
+\begin{DoxyCompactList}\small\item\em Corridor width at the intersection. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_ad8259eaabb1d1ed875bfe95d977d1dd4}\label{class_merger_ad8259eaabb1d1ed875bfe95d977d1dd4}} 
+double {\bfseries separation\+Time}
+\begin{DoxyCompactList}\small\item\em Minimum separation time. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_ae93ad994aed7596cdbcf9a872b51c75f}\label{class_merger_ae93ad994aed7596cdbcf9a872b51c75f}} 
+zone\+Type\+\_\+e {\bfseries current\+Zone}
+\begin{DoxyCompactList}\small\item\em Current zone. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_acacd1f27f89d77cda49cc2952b5f4087}\label{class_merger_acacd1f27f89d77cda49cc2952b5f4087}} 
+double {\bfseries turn\+Radius}
+\item 
+\mbox{\Hypertarget{class_merger_a380133ee991e7cc519cba308fc666115}\label{class_merger_a380133ee991e7cc519cba308fc666115}} 
+double {\bfseries max\+Speed}
+\item 
+\mbox{\Hypertarget{class_merger_a5aab5b262fbb17c3ae1422c03f30fcaf}\label{class_merger_a5aab5b262fbb17c3ae1422c03f30fcaf}} 
+double {\bfseries min\+Speed}
+\item 
+\mbox{\Hypertarget{class_merger_adc7f8cfcdf793be4eb27d4b18e0f3607}\label{class_merger_adc7f8cfcdf793be4eb27d4b18e0f3607}} 
+bool {\bfseries publish\+Merging\+Status}
+\begin{DoxyCompactList}\small\item\em Merging status publish notification. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a8d0669bea76a70259b6862285693ceeb}\label{class_merger_a8d0669bea76a70259b6862285693ceeb}} 
+bool {\bfseries arrival\+Data\+Updated}
+\begin{DoxyCompactList}\small\item\em true if new arrival data exists \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a8b5428ba31ca1b6be39d23e881cde999}\label{class_merger_a8b5428ba31ca1b6be39d23e881cde999}} 
+bool {\bfseries default\+Entry\+Plan}
+\item 
+\mbox{\Hypertarget{class_merger_ac7bb503cb5dce9288d8b28c289537c41}\label{class_merger_ac7bb503cb5dce9288d8b28c289537c41}} 
+bool {\bfseries entry\+Point\+Computed}
+\item 
+\mbox{\Hypertarget{class_merger_a0505ccc6ea4e3a349638833b96e7c809}\label{class_merger_a0505ccc6ea4e3a349638833b96e7c809}} 
+bool {\bfseries execute\+Path}
+\item 
+\mbox{\Hypertarget{class_merger_a1446233f488bcc63ce274ad4fc7e309d}\label{class_merger_a1446233f488bcc63ce274ad4fc7e309d}} 
+bool {\bfseries in\+Compute\+Zone}
+\item 
+\mbox{\Hypertarget{class_merger_a44370aed304d830372952a20dda2b2b3}\label{class_merger_a44370aed304d830372952a20dda2b2b3}} 
+bool {\bfseries approaching}
+\item 
+\mbox{\Hypertarget{class_merger_ab455063cde42704c5d006af98d67e903}\label{class_merger_ab455063cde42704c5d006af98d67e903}} 
+bool {\bfseries merge\+Conflict}
+\item 
+\mbox{\Hypertarget{class_merger_a17430036121a486337ee545d29e2a790}\label{class_merger_a17430036121a486337ee545d29e2a790}} 
+int {\bfseries num\+Schedules\+Computed}
+\begin{DoxyCompactList}\small\item\em Number of times schedule has been run. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_af48185e282b2db3577d1205ea3e2aeaf}\label{class_merger_af48185e282b2db3577d1205ea3e2aeaf}} 
+unsigned char {\bfseries waypoint\+Index}
+\item 
+\mbox{\Hypertarget{class_merger_ad7b39059fb226d11dcf2747e88ef0688}\label{class_merger_ad7b39059fb226d11dcf2747e88ef0688}} 
+unsigned char {\bfseries merging\+Status}
+\item 
+\mbox{\Hypertarget{class_merger_a4a404caff25c85f96f16c87fbc9cb768}\label{class_merger_a4a404caff25c85f96f16c87fbc9cb768}} 
+unsigned char {\bfseries node\+Role}
+\item 
+\mbox{\Hypertarget{class_merger_a87dd9eb822216545da74922e70e4d45b}\label{class_merger_a87dd9eb822216545da74922e70e4d45b}} 
+bool {\bfseries passive}
+\item 
+\mbox{\Hypertarget{class_merger_af30bb5a79d8bf077d272a7fe2cfc25b9}\label{class_merger_af30bb5a79d8bf077d272a7fe2cfc25b9}} 
+double {\bfseries dist2\+Zone\+Entry}
+\begin{DoxyCompactList}\small\item\em Distance to entry point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a62432979bed5ae3e77e2ba44b48e9cc3}\label{class_merger_a62432979bed5ae3e77e2ba44b48e9cc3}} 
+double {\bfseries time2\+Zone\+Entry}
+\begin{DoxyCompactList}\small\item\em Time to entry. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a78a7f2c847a30b139540f74881c316e6}\label{class_merger_a78a7f2c847a30b139540f74881c316e6}} 
+double {\bfseries entry\+Point} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Entry point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a1f545e617247e505f0d775553bc4ba32}\label{class_merger_a1f545e617247e505f0d775553bc4ba32}} 
+\mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} {\bfseries ownship\+Arrival\+Data}
+\begin{DoxyCompactList}\small\item\em arrival data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a373da78eb95a0ae9fe0fbf1f6f8335bf}\label{class_merger_a373da78eb95a0ae9fe0fbf1f6f8335bf}} 
+\mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} {\bfseries global\+Arrival\+Data} \mbox{[}MERGER\+\_\+\+MAXAIRCRAFT\mbox{]}
+\begin{DoxyCompactList}\small\item\em Intersection entry data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_adb0f9bdb9cc1b18382861b7b1188942d}\label{class_merger_adb0f9bdb9cc1b18382861b7b1188942d}} 
+std\+::queue$<$ \mbox{\hyperlink{structmerging_data__t}{merging\+Data\+\_\+t}} $>$ {\bfseries output\+Arr\+Data}
+\item 
+\mbox{\Hypertarget{class_merger_a701d83364dafd4c64b17b395fa9a2bbe}\label{class_merger_a701d83364dafd4c64b17b395fa9a2bbe}} 
+double {\bfseries Release} \mbox{[}MERGER\+\_\+\+MAXAIRCRAFT\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_a1eee74b1b43165f188ac00af1f07119f}\label{class_merger_a1eee74b1b43165f188ac00af1f07119f}} 
+double {\bfseries Deadline} \mbox{[}MERGER\+\_\+\+MAXAIRCRAFT\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_adcaf437376684baf9db7c6b6fb8e48c4}\label{class_merger_adcaf437376684baf9db7c6b6fb8e48c4}} 
+double {\bfseries arrival\+Time} \mbox{[}MERGER\+\_\+\+MAXAIRCRAFT\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_a56033921f65f37db53d7f464aa7c33aa}\label{class_merger_a56033921f65f37db53d7f464aa7c33aa}} 
+int {\bfseries num\+Nodes\+Int}
+\item 
+\mbox{\Hypertarget{class_merger_a1b66e123aa91eeabce8b7343639825e3}\label{class_merger_a1b66e123aa91eeabce8b7343639825e3}} 
+double {\bfseries new\+Waypoint} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em New detour waypoint. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_merger_a177a420ea778a8735247b9e6b9e0bbdc}\label{class_merger_a177a420ea778a8735247b9e6b9e0bbdc}} 
+double {\bfseries merging\+Speed}
+\item 
+\mbox{\Hypertarget{class_merger_a550c56b47f35b4ef554ef9f0e7b57d4e}\label{class_merger_a550c56b47f35b4ef554ef9f0e7b57d4e}} 
+double {\bfseries detour\+Dist}
+\item 
+\mbox{\Hypertarget{class_merger_a94301f9a54306c829fe8dbfa3334587b}\label{class_merger_a94301f9a54306c829fe8dbfa3334587b}} 
+double {\bfseries Xtrk\+Dev}
+\item 
+\mbox{\Hypertarget{class_merger_a6a8104469b2373b5bf7f6f81e49b189d}\label{class_merger_a6a8104469b2373b5bf7f6f81e49b189d}} 
+double {\bfseries next\+Nav\+Waypoint} \mbox{[}3\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_aafac5f427628fbe5ae5593e3dd639334}\label{class_merger_aafac5f427628fbe5ae5593e3dd639334}} 
+double {\bfseries dist2\+Next\+Waypoint}
+\item 
+\mbox{\Hypertarget{class_merger_a1d21b95e78cc7e9146ff7f2f8364eada}\label{class_merger_a1d21b95e78cc7e9146ff7f2f8364eada}} 
+double {\bfseries speed2\+Next\+Waypoint}
+\item 
+\mbox{\Hypertarget{class_merger_ae915ea5b6742b9d274aa0e1db3ae63aa}\label{class_merger_ae915ea5b6742b9d274aa0e1db3ae63aa}} 
+double {\bfseries ref\+Speed}
+\item 
+\mbox{\Hypertarget{class_merger_a599c29b5144861c1b5421c96f3d20465}\label{class_merger_a599c29b5144861c1b5421c96f3d20465}} 
+double {\bfseries flightplan} \mbox{[}3\mbox{]}\mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_a518680a9b219ca6fb7d92454f3a0b076}\label{class_merger_a518680a9b219ca6fb7d92454f3a0b076}} 
+double {\bfseries cmd\+Output} \mbox{[}3\mbox{]}
+\item 
+\mbox{\Hypertarget{class_merger_a7246fecd0a36ad735e43911b530c03f0}\label{class_merger_a7246fecd0a36ad735e43911b530c03f0}} 
+local\+Merger\+Nav\+States\+\_\+e {\bfseries nav\+State}
 \end{DoxyCompactItemize}
 
 

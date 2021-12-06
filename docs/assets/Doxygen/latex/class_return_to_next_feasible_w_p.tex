@@ -15,7 +15,66 @@ Inheritance diagram for Return\+To\+Next\+Feasible\+WP\+:\begin{figure}[H]
 \includegraphics[height=2.000000cm]{class_return_to_next_feasible_w_p}
 \end{center}
 \end{figure}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_return_to_next_feasible_w_p_a424456de30512918479da6b9dbde5f24}{Initialize}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_return_to_next_feasible_w_p_a70c0a383ede625e6a649a3c9275ee866}{Execute}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_return_to_next_feasible_w_p_a70c0a383ede625e6a649a3c9275ee866}\label{class_return_to_next_feasible_w_p_a70c0a383ede625e6a649a3c9275ee866}} 
+\index{ReturnToNextFeasibleWP@{ReturnToNextFeasibleWP}!Execute@{Execute}}
+\index{Execute@{Execute}!ReturnToNextFeasibleWP@{ReturnToNextFeasibleWP}}
+\doxysubsubsection{\texorpdfstring{Execute()}{Execute()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Return\+To\+Next\+Feasible\+WP\+::\+Execute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e 
+\end{DoxyReturn}
+Check if the path request was resoponded
+
+
+\begin{DoxyItemize}
+\item Activate new plan when received
+\item Reset previous line of sight status. This will be updated by data from trajectory monitoring
+\end{DoxyItemize}
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_return_to_next_feasible_w_p_a424456de30512918479da6b9dbde5f24}\label{class_return_to_next_feasible_w_p_a424456de30512918479da6b9dbde5f24}} 
+\index{ReturnToNextFeasibleWP@{ReturnToNextFeasibleWP}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!ReturnToNextFeasibleWP@{ReturnToNextFeasibleWP}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Return\+To\+Next\+Feasible\+WP\+::\+Initialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+Only execute when cognition is active
+
+Extract the next feasible waypoint and velocity at next feasible waypoit in the nominal path
+
+Extract current position and velocity
+
+Send a path request
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

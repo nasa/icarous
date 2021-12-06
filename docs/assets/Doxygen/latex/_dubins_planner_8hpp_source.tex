@@ -112,8 +112,8 @@
 \DoxyCodeLine{108                                    larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2,larcfm::Velocity startVel2,larcfm::Vect2 timeInterval2, \textcolor{keywordtype}{double} radius2 );}
 \DoxyCodeLine{109     \textcolor{keywordtype}{bool} CheckConflictLineCircle(larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1,\textcolor{keywordtype}{double} turnRate,larcfm::Vect2 timeInterval1, \textcolor{keywordtype}{double} radius1,}
 \DoxyCodeLine{110                                  larcfm::Vect3 start2, larcfm::Vect3 startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
-\DoxyCodeLine{111     std::pair<double,double> GetLineCircleIntersection(larcfm::Vect2 start,larcfm::Vect2 direction,\textcolor{keywordtype}{double} t0,\textcolor{keywordtype}{double} R);}
-\DoxyCodeLine{112     std::pair<double,double> GetLineLineIntersection(larcfm::Vect3 start1,larcfm::Vect3 direction1,\textcolor{keywordtype}{double} t1,larcfm::Vect3 start2,larcfm::Vect3 direction2,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{111     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}{GetLineCircleIntersection}}(larcfm::Vect2 start,larcfm::Vect2 direction,\textcolor{keywordtype}{double} t0,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{112     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}{GetLineLineIntersection}}(larcfm::Vect3 start1,larcfm::Vect3 direction1,\textcolor{keywordtype}{double} t1,larcfm::Vect3 start2,larcfm::Vect3 direction2,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} R);}
 \DoxyCodeLine{113     \textcolor{keywordtype}{bool} CheckConflictLineLine(larcfm::Vect3 start1, larcfm::Velocity startVel1,\textcolor{keywordtype}{double} t1,larcfm::Vect2 timeInterval1,}
 \DoxyCodeLine{114                                larcfm::Vect3 start2, larcfm::Velocity startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
 \DoxyCodeLine{115     \textcolor{keywordtype}{void} BuildTree(\mbox{\hyperlink{structnode}{node\_t}}* nd);}
@@ -126,7 +126,7 @@
 \DoxyCodeLine{122     \textcolor{keywordtype}{bool} CheckProjectedFenceConflict(\mbox{\hyperlink{structnode}{node\_t}}* qnode,\mbox{\hyperlink{structnode}{node\_t}}* goal);}
 \DoxyCodeLine{123     \textcolor{keywordtype}{bool} GetDubinsParams(\mbox{\hyperlink{structnode}{node\_t}}* start,\mbox{\hyperlink{structnode}{node\_t}}* end);}
 \DoxyCodeLine{124     \textcolor{keywordtype}{bool} CheckAltFeasibility(\textcolor{keywordtype}{double} startz,\textcolor{keywordtype}{double} endz,\textcolor{keywordtype}{double} dist,\textcolor{keywordtype}{double} gs1,\textcolor{keywordtype}{double} gs2);}
-\DoxyCodeLine{125     tcpData\_t ComputeAltTcp(tcpData\_t \&TCPdata,\textcolor{keywordtype}{double} startgs,\textcolor{keywordtype}{double} stopgs);}
+\DoxyCodeLine{125     tcpData\_t \mbox{\hyperlink{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}{ComputeAltTcp}}(tcpData\_t \&TCPdata,\textcolor{keywordtype}{double} startgs,\textcolor{keywordtype}{double} stopgs);}
 \DoxyCodeLine{126     tcpData\_t ComputeSpeedTcp(tcpData\_t \&TCPdata,\textcolor{keywordtype}{double} startgs,\textcolor{keywordtype}{double} stopgs);}
 \DoxyCodeLine{127     \textcolor{keywordtype}{bool} CheckFenceConflict(tcpData\_t trajectory);}
 \DoxyCodeLine{128     \textcolor{keywordtype}{bool} CheckTrafficConflict(tcpData\_t trajectory);}

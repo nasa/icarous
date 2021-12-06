@@ -66,6 +66,8 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_dubins_planner-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">DubinsPlanner Class Reference</div></div>
 </div><!--header-->
@@ -119,8 +121,297 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a05efa9b3172a2bf6b63580b26ec0872e"><td class="memItemLeft" align="right" valign="top"><a id="a05efa9b3172a2bf6b63580b26ec0872e" name="a05efa9b3172a2bf6b63580b26ec0872e"></a>
 std::vector&lt; <a class="el" href="structnode.html">node_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path</b></td></tr>
 <tr class="separator:a05efa9b3172a2bf6b63580b26ec0872e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a03e4342608872b43944ca28ffeec65a7"><td class="memItemLeft" align="right" valign="top"><a id="a03e4342608872b43944ca28ffeec65a7" name="a03e4342608872b43944ca28ffeec65a7"></a>
+<a class="el" href="structnode.html">node_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>FindNearest</b> (<a class="el" href="structnode.html">node_t</a> &amp;query)</td></tr>
+<tr class="separator:a03e4342608872b43944ca28ffeec65a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c52f474b4f482e5cf054a8b53db0807"><td class="memItemLeft" align="right" valign="top"><a id="a6c52f474b4f482e5cf054a8b53db0807" name="a6c52f474b4f482e5cf054a8b53db0807"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetPotentialFixes</b> ()</td></tr>
+<tr class="separator:a6c52f474b4f482e5cf054a8b53db0807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f01e9478c1b2697aa91d56927bd509e"><td class="memItemLeft" align="right" valign="top"><a id="a5f01e9478c1b2697aa91d56927bd509e" name="a5f01e9478c1b2697aa91d56927bd509e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictCircleCircle</b> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, larcfm::Velocity startVel1, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2, larcfm::Velocity startVel2, larcfm::Vect2 timeInterval2, double radius2)</td></tr>
+<tr class="separator:a5f01e9478c1b2697aa91d56927bd509e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0c1dde9cc87b3456b5c6437229f901"><td class="memItemLeft" align="right" valign="top"><a id="a8d0c1dde9cc87b3456b5c6437229f901" name="a8d0c1dde9cc87b3456b5c6437229f901"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictLineCircle</b> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, double turnRate, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 start2, larcfm::Vect3 startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="separator:a8d0c1dde9cc87b3456b5c6437229f901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8696fad703550f4dbe2a7d9b71f94668"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a8696fad703550f4dbe2a7d9b71f94668">GetLineCircleIntersection</a> (larcfm::Vect2 start, larcfm::Vect2 direction, double t0, double R)</td></tr>
+<tr class="separator:a8696fad703550f4dbe2a7d9b71f94668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1adb9787cab9bd7ab7d0e148395e9e2b"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a1adb9787cab9bd7ab7d0e148395e9e2b">GetLineLineIntersection</a> (larcfm::Vect3 start1, larcfm::Vect3 direction1, double t1, larcfm::Vect3 start2, larcfm::Vect3 direction2, double t2, double R)</td></tr>
+<tr class="separator:a1adb9787cab9bd7ab7d0e148395e9e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a519360a48df40b77704a55983e2e298f"><td class="memItemLeft" align="right" valign="top"><a id="a519360a48df40b77704a55983e2e298f" name="a519360a48df40b77704a55983e2e298f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictLineLine</b> (larcfm::Vect3 start1, larcfm::Velocity startVel1, double t1, larcfm::Vect2 timeInterval1, larcfm::Vect3 start2, larcfm::Velocity startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="separator:a519360a48df40b77704a55983e2e298f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa778ad3311524a77d21f1d8d49d1bf0f"><td class="memItemLeft" align="right" valign="top"><a id="aa778ad3311524a77d21f1d8d49d1bf0f" name="aa778ad3311524a77d21f1d8d49d1bf0f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildTree</b> (<a class="el" href="structnode.html">node_t</a> *nd)</td></tr>
+<tr class="separator:aa778ad3311524a77d21f1d8d49d1bf0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77e9051293313b33dc88cd88d1f19b4e"><td class="memItemLeft" align="right" valign="top"><a id="a77e9051293313b33dc88cd88d1f19b4e" name="a77e9051293313b33dc88cd88d1f19b4e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>DijkstraSearch</b> (<a class="el" href="structnode.html">node_t</a> *root, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
+<tr class="separator:a77e9051293313b33dc88cd88d1f19b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a460db0d90bbf052b7501299e8910eef5"><td class="memItemLeft" align="right" valign="top"><a id="a460db0d90bbf052b7501299e8910eef5" name="a460db0d90bbf052b7501299e8910eef5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AstarSearch</b> (<a class="el" href="structnode.html">node_t</a> *root, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
+<tr class="separator:a460db0d90bbf052b7501299e8910eef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d90d0da0afb28395a97d0bbaaafda2"><td class="memItemLeft" align="right" valign="top"><a id="a62d90d0da0afb28395a97d0bbaaafda2" name="a62d90d0da0afb28395a97d0bbaaafda2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextTrkVs</b> (<a class="el" href="structnode.html">node_t</a> &amp;<a class="el" href="structnode.html">node</a>, double &amp;trk, double &amp;vs)</td></tr>
+<tr class="separator:a62d90d0da0afb28395a97d0bbaaafda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca0c2b562069092058e78b1744fccf5a"><td class="memItemLeft" align="right" valign="top"><a id="aca0c2b562069092058e78b1744fccf5a" name="aca0c2b562069092058e78b1744fccf5a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GreedyDepthFirst</b> (<a class="el" href="structnode.html">node_t</a> q, <a class="el" href="structnode.html">node_t</a> *g)</td></tr>
+<tr class="separator:aca0c2b562069092058e78b1744fccf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22f9acaae3cf4f2abf0c054ca4df07c8"><td class="memItemLeft" align="right" valign="top"><a id="a22f9acaae3cf4f2abf0c054ca4df07c8" name="a22f9acaae3cf4f2abf0c054ca4df07c8"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>NodeDistance</b> (<a class="el" href="structnode.html">node_t</a> &amp;A, <a class="el" href="structnode.html">node_t</a> &amp;B)</td></tr>
+<tr class="separator:a22f9acaae3cf4f2abf0c054ca4df07c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="memItemLeft" align="right" valign="top"><a id="a27d6a44c8fdad9cf4e983b251ae79a41" name="a27d6a44c8fdad9cf4e983b251ae79a41"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckGoal</b> ()</td></tr>
+<tr class="separator:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60e849281666d1104891b6664544a76c"><td class="memItemLeft" align="right" valign="top"><a id="a60e849281666d1104891b6664544a76c" name="a60e849281666d1104891b6664544a76c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckProjectedFenceConflict</b> (<a class="el" href="structnode.html">node_t</a> *qnode, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
+<tr class="separator:a60e849281666d1104891b6664544a76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a920699e9fa26e61df853114a89f16670"><td class="memItemLeft" align="right" valign="top"><a id="a920699e9fa26e61df853114a89f16670" name="a920699e9fa26e61df853114a89f16670"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetDubinsParams</b> (<a class="el" href="structnode.html">node_t</a> *start, <a class="el" href="structnode.html">node_t</a> *end)</td></tr>
+<tr class="separator:a920699e9fa26e61df853114a89f16670"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c9613ccdddbca272df7e54073dce08"><td class="memItemLeft" align="right" valign="top"><a id="a41c9613ccdddbca272df7e54073dce08" name="a41c9613ccdddbca272df7e54073dce08"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckAltFeasibility</b> (double startz, double endz, double dist, double gs1, double gs2)</td></tr>
+<tr class="separator:a41c9613ccdddbca272df7e54073dce08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f362947e58f0f35fc9bf2fd2072a1dd"><td class="memItemLeft" align="right" valign="top">tcpData_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a7f362947e58f0f35fc9bf2fd2072a1dd">ComputeAltTcp</a> (tcpData_t &amp;TCPdata, double startgs, double stopgs)</td></tr>
+<tr class="separator:a7f362947e58f0f35fc9bf2fd2072a1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="memItemLeft" align="right" valign="top"><a id="a406fbe995ebfa3cf3c1e69885259b6e0" name="a406fbe995ebfa3cf3c1e69885259b6e0"></a>
+tcpData_t&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeSpeedTcp</b> (tcpData_t &amp;TCPdata, double startgs, double stopgs)</td></tr>
+<tr class="separator:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="memItemLeft" align="right" valign="top"><a id="a91aa628c2ec7df1ab395fb4b25ce0f68" name="a91aa628c2ec7df1ab395fb4b25ce0f68"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckFenceConflict</b> (tcpData_t trajectory)</td></tr>
+<tr class="separator:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a390c2b3e77d392b1c0a97c29a0a11816"><td class="memItemLeft" align="right" valign="top"><a id="a390c2b3e77d392b1c0a97c29a0a11816" name="a390c2b3e77d392b1c0a97c29a0a11816"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTrafficConflict</b> (tcpData_t trajectory)</td></tr>
+<tr class="separator:a390c2b3e77d392b1c0a97c29a0a11816"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76083bb140f71918c818fd405d71ed1a"><td class="memItemLeft" align="right" valign="top"><a id="a76083bb140f71918c818fd405d71ed1a" name="a76083bb140f71918c818fd405d71ed1a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTrafficConflict</b> (double startTime, larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1, larcfm::Vect3 center2, larcfm::Vect3 tcp2, larcfm::Vect3 endPos, double r, double t1, double t2, double t3, double gs, double vs)</td></tr>
+<tr class="separator:a76083bb140f71918c818fd405d71ed1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94b479b6f2b8ce7b844ee3c85ee48370"><td class="memItemLeft" align="right" valign="top"><a id="a94b479b6f2b8ce7b844ee3c85ee48370" name="a94b479b6f2b8ce7b844ee3c85ee48370"></a>
+std::list&lt; <a class="el" href="structnode.html">node_t</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeList</b> ()</td></tr>
+<tr class="separator:a94b479b6f2b8ce7b844ee3c85ee48370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8ac6b0682e119b6a40d9893cc5fedc8e"><td class="memItemLeft" align="right" valign="top"><a id="a8ac6b0682e119b6a40d9893cc5fedc8e" name="a8ac6b0682e119b6a40d9893cc5fedc8e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>xmax</b></td></tr>
+<tr class="separator:a8ac6b0682e119b6a40d9893cc5fedc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d0a43c995b474381c47a9fba96aa10e"><td class="memItemLeft" align="right" valign="top"><a id="a4d0a43c995b474381c47a9fba96aa10e" name="a4d0a43c995b474381c47a9fba96aa10e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>xmin</b></td></tr>
+<tr class="separator:a4d0a43c995b474381c47a9fba96aa10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaf48212aceb9ddcd612687b25dc00f9"><td class="memItemLeft" align="right" valign="top"><a id="adaf48212aceb9ddcd612687b25dc00f9" name="adaf48212aceb9ddcd612687b25dc00f9"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>ymax</b></td></tr>
+<tr class="separator:adaf48212aceb9ddcd612687b25dc00f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ad46351e52918ffc9952a899281df5"><td class="memItemLeft" align="right" valign="top"><a id="a78ad46351e52918ffc9952a899281df5" name="a78ad46351e52918ffc9952a899281df5"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>ymin</b></td></tr>
+<tr class="separator:a78ad46351e52918ffc9952a899281df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc6eaec242a85ba7258b1caa85d6860"><td class="memItemLeft" align="right" valign="top"><a id="abbc6eaec242a85ba7258b1caa85d6860" name="abbc6eaec242a85ba7258b1caa85d6860"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>zmax</b></td></tr>
+<tr class="separator:abbc6eaec242a85ba7258b1caa85d6860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a890d523f23d4388b512ea919cdf3cbff"><td class="memItemLeft" align="right" valign="top"><a id="a890d523f23d4388b512ea919cdf3cbff" name="a890d523f23d4388b512ea919cdf3cbff"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>zmin</b></td></tr>
+<tr class="separator:a890d523f23d4388b512ea919cdf3cbff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb138e28c3ff32089e9623bbf658d039"><td class="memItemLeft" align="right" valign="top"><a id="aeb138e28c3ff32089e9623bbf658d039" name="aeb138e28c3ff32089e9623bbf658d039"></a>
+larcfm::Poly3D&#160;</td><td class="memItemRight" valign="bottom"><b>boundingBox</b></td></tr>
+<tr class="separator:aeb138e28c3ff32089e9623bbf658d039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e32946cfc5abf90f5d7ea7019a3bbb"><td class="memItemLeft" align="right" valign="top"><a id="a54e32946cfc5abf90f5d7ea7019a3bbb" name="a54e32946cfc5abf90f5d7ea7019a3bbb"></a>
+std::vector&lt; larcfm::Vect2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>shrunkbbox</b></td></tr>
+<tr class="separator:a54e32946cfc5abf90f5d7ea7019a3bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6c5b25c6a8bc33056dc56e93c30d7c3"><td class="memItemLeft" align="right" valign="top"><a id="af6c5b25c6a8bc33056dc56e93c30d7c3" name="af6c5b25c6a8bc33056dc56e93c30d7c3"></a>
+std::list&lt; larcfm::Poly3D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>obstacleList</b></td></tr>
+<tr class="separator:af6c5b25c6a8bc33056dc56e93c30d7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382821ec6ac690baec69d5354dde79b4"><td class="memItemLeft" align="right" valign="top"><a id="a382821ec6ac690baec69d5354dde79b4" name="a382821ec6ac690baec69d5354dde79b4"></a>
+std::vector&lt; <a class="el" href="structnode.html">node_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>potentialFixes</b></td></tr>
+<tr class="separator:a382821ec6ac690baec69d5354dde79b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e1e844a75b968a52cd43f7e71b22aa5"><td class="memItemLeft" align="right" valign="top"><a id="a1e1e844a75b968a52cd43f7e71b22aa5" name="a1e1e844a75b968a52cd43f7e71b22aa5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nodeCount</b></td></tr>
+<tr class="separator:a1e1e844a75b968a52cd43f7e71b22aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e6c201fd49bcfc2af30ba4b54ba9ae1"><td class="memItemLeft" align="right" valign="top"><a id="a0e6c201fd49bcfc2af30ba4b54ba9ae1" name="a0e6c201fd49bcfc2af30ba4b54ba9ae1"></a>
+larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><b>rootFix</b></td></tr>
+<tr class="separator:a0e6c201fd49bcfc2af30ba4b54ba9ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020b92c82ac3d11e9897c1ba34e672b7"><td class="memItemLeft" align="right" valign="top"><a id="a020b92c82ac3d11e9897c1ba34e672b7" name="a020b92c82ac3d11e9897c1ba34e672b7"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>rootVel</b></td></tr>
+<tr class="separator:a020b92c82ac3d11e9897c1ba34e672b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7132aea9eb58ae624cb63fb6546459e6"><td class="memItemLeft" align="right" valign="top"><a id="a7132aea9eb58ae624cb63fb6546459e6" name="a7132aea9eb58ae624cb63fb6546459e6"></a>
+larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><b>goalFix</b></td></tr>
+<tr class="separator:a7132aea9eb58ae624cb63fb6546459e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad72c26152e61d24a0833c503578f3750"><td class="memItemLeft" align="right" valign="top"><a id="ad72c26152e61d24a0833c503578f3750" name="ad72c26152e61d24a0833c503578f3750"></a>
+larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>goalVel</b></td></tr>
+<tr class="separator:ad72c26152e61d24a0833c503578f3750"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd823df431577710e305752b9ad8fe47"><td class="memItemLeft" align="right" valign="top"><a id="afd823df431577710e305752b9ad8fe47" name="afd823df431577710e305752b9ad8fe47"></a>
+std::vector&lt; larcfm::Vect3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficPosition</b></td></tr>
+<tr class="separator:afd823df431577710e305752b9ad8fe47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f55fe8a4346354f5d261a31aba09e16"><td class="memItemLeft" align="right" valign="top"><a id="a7f55fe8a4346354f5d261a31aba09e16" name="a7f55fe8a4346354f5d261a31aba09e16"></a>
+std::vector&lt; larcfm::Velocity &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficVelocity</b></td></tr>
+<tr class="separator:a7f55fe8a4346354f5d261a31aba09e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa29add026a6bb61c940441ee8008815"><td class="memItemLeft" align="right" valign="top"><a id="aaa29add026a6bb61c940441ee8008815" name="aaa29add026a6bb61c940441ee8008815"></a>
+std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficPlans</b></td></tr>
+<tr class="separator:aaa29add026a6bb61c940441ee8008815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03012db8d5b9260d5e100c988f1f216f"><td class="memItemLeft" align="right" valign="top"><a id="a03012db8d5b9260d5e100c988f1f216f" name="a03012db8d5b9260d5e100c988f1f216f"></a>
+<a class="el" href="struct_dubins_params.html">DubinsParams_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>params</b></td></tr>
+<tr class="separator:a03012db8d5b9260d5e100c988f1f216f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7f362947e58f0f35fc9bf2fd2072a1dd" name="a7f362947e58f0f35fc9bf2fd2072a1dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f362947e58f0f35fc9bf2fd2072a1dd">&#9670;&nbsp;</a></span>ComputeAltTcp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tcpData_t DubinsPlanner::ComputeAltTcp </td>
+          <td>(</td>
+          <td class="paramtype">tcpData_t &amp;&#160;</td>
+          <td class="paramname"><em>TCPdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>stopgs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >The formulation here assumes the vc &lt; v0 and h5 &gt; h0. <br  />
+ If the above assumption is not true, then hdot,az,daz,ax,dax signs must be chosen appropriately.</p>
+
+</div>
+</div>
+<a id="a8696fad703550f4dbe2a7d9b71f94668" name="a8696fad703550f4dbe2a7d9b71f94668"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8696fad703550f4dbe2a7d9b71f94668">&#9670;&nbsp;</a></span>GetLineCircleIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; double, double &gt; DubinsPlanner::GetLineCircleIntersection </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>R</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Find intersection between a line and circle of radius r centered at (0,0) Assume a line is parameterized as follows. where start \in R2, direction \in R2, t,t0 \in R line = start + (t-t0)*direction.</p>
+
+</div>
+</div>
+<a id="a1adb9787cab9bd7ab7d0e148395e9e2b" name="a1adb9787cab9bd7ab7d0e148395e9e2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1adb9787cab9bd7ab7d0e148395e9e2b">&#9670;&nbsp;</a></span>GetLineLineIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; double, double &gt; DubinsPlanner::GetLineLineIntersection </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>direction1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>direction2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>R</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Check if two vehicles travelling in a straight line come within D distance apart of each other. Xa = [xa,ya,za] - starting position of vehicle A Va = [vxa,vya,vza] - starting velocity of vehicle A Xb = [xb,yb,zb] - starting position of vehicle B Vb = [vxb,vyb,vzb] - starting velocity of vehicle B Xa(t) = Xa(t01) + Va x (t - t01) Xb(t) = Xb(t01) + Vb x (t - t02) Xr(t) = Xb(t) - Xa(t) Check \Forall t \in [t0,tf], ||Xr(t)|| &gt; D Ensured by checking for the roots of quadratic equation ||Xr(t)||^2 - D^2 = 0</p>
+
+</div>
+</div>
 <a id="a051b99a331874a22ee7c83825c04823b" name="a051b99a331874a22ee7c83825c04823b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a051b99a331874a22ee7c83825c04823b">&#9670;&nbsp;</a></span>GetPlan()</h2>
 

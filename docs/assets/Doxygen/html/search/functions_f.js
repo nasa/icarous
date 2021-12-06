@@ -23,5 +23,6 @@ var searchData=
   ['trajectory_5fappmain_20',['TRAJECTORY_AppMain',['../trajectory_8h.html#adaba662c1aaa621741ecb4fd035c628f',1,'trajectory.c']]],
   ['trajectory_5fmonitor_21',['TRAJECTORY_Monitor',['../trajectory_8h.html#a1640130e551a840c86a07d2ea2dcea75',1,'trajectory.c']]],
   ['trajectory_5fprocesspacket_22',['TRAJECTORY_ProcessPacket',['../trajectory_8h.html#a9df58c5853502dffbe46d6eee44f8d12',1,'trajectory.c']]],
-  ['trajectorytablevalidationfunc_23',['TrajectoryTableValidationFunc',['../trajectory_8h.html#a29d6d3a5a8db1f0b53b33039d060aeb6',1,'trajectory.c']]]
+  ['trajectorytablevalidationfunc_23',['TrajectoryTableValidationFunc',['../trajectory_8h.html#a29d6d3a5a8db1f0b53b33039d060aeb6',1,'trajectory.c']]],
+  ['trajmanager_24',['TrajManager',['../class_traj_manager.html#ac4cc8d2fcd4b6085545e5b602054280a',1,'TrajManager']]]
 ];

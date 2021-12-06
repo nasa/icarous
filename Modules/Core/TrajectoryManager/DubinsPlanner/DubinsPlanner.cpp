@@ -31,8 +31,7 @@ void DubinsPlanner::SetBoundary(larcfm::Poly3D& bBox){
 }
 
 void DubinsPlanner::SetZBoundary(double zMin,double zMax){
-    zmin = zMin;
-    zmax = zMax;
+    return;
 }
 
 void DubinsPlanner::SetTraffic(std::vector<larcfm::Vect3> &tfPos, std::vector<larcfm::Velocity>& tfVel){
@@ -64,8 +63,8 @@ void DubinsPlanner::SetGoal(larcfm::Vect3& goal,larcfm::Velocity vel){
 }
 
 void DubinsPlanner::GetPotentialFixes(){
-    // Root and Goal nodes are always assumed feasible locations
-    node_t root,goal;
+    /// Root and Goal nodes are always assumed feasible locations
+    node root,goal;
     root.pos = rootFix;
     root.vel = rootVel;
     root.goal = false;
@@ -80,20 +79,20 @@ void DubinsPlanner::GetPotentialFixes(){
     potentialFixes.push_back(goal);
     int count =2; 
 
-    // POLYCarp class for detecting obstacle violations
+    /// Use POLYCarp class for detecting obstacle violations
     larcfm::CDPolycarp geoPolycarp;
 
-    // Get positons close to each obstacle vertex as a potential fix
+    /// Get positons close to each obstacle vertex as a potential fix
     double turnRadius = rootVel.gs()/(params.turnRate);
     for(auto &obs: obstacleList){
-        // Expand each obstacle 
+        /// Expand each obstacle by 2.1 times the turn radius
         double exp = std::max(params.vertexBuffer,2.1*turnRadius);
         auto origVertices = obs.getVerticesRef();
         std::vector<larcfm::Vect2> expVert = larcfm::PolycarpResolution::expand_polygon_2D(0.1,exp,origVertices);
         double floor = obs.getBottom();
         double roof  = obs.getTop();
         double dH = (roof - floor)/params.zSections; 
-        // Add each expanded vertex to potential fixes
+        /// Add each expanded vertex to potential fixes
         int n = expVert.size();
         for(int k=0;k<n; ++k){
             larcfm::Vect2 vertA = expVert[k%n];
@@ -110,10 +109,10 @@ void DubinsPlanner::GetPotentialFixes(){
                 for (int i = 1; i <= params.zSections; ++i)
                 {
                     double zh = floor + dH * i;
-                    // add points dH above floor and root points
+                    /// add points dH above floor and root points
                     if (zh < params.maxH)
                     {
-                        node_t fix;
+                        node fix;
                         fix.pos = larcfm::Vect3(vert, zh);
                         fix.goal = false;
                         fix.id = count;
@@ -121,8 +120,8 @@ void DubinsPlanner::GetPotentialFixes(){
                         count++;
                     }
 
-                    // add points at goal altitude (after checking to see if free from obstacle conflict)
-                    node_t gfix;
+                    /// add points at goal altitude (after checking to see if free from obstacle conflict)
+                    node gfix;
                     double gzh = goal.pos.z;
                     gfix.pos = larcfm::Vect3(vert, gzh);
                     gfix.goal = false;
@@ -133,8 +132,8 @@ void DubinsPlanner::GetPotentialFixes(){
                         count++;
                     }
 
-                    // add points at current altitude
-                    node_t sfix;
+                    /// add points at current altitude
+                    node sfix;
                     double szh = root.pos.z;
                     sfix.goal = false;
                     sfix.id = count;
@@ -152,12 +151,12 @@ void DubinsPlanner::GetPotentialFixes(){
         }
     }
 
-    // Shrink bounding box and it's vertices to potential fixes
+    /// Shrink bounding box and it's vertices to potential fixes. Shrink by 2.1 x turn radius
     double con = std::max(params.vertexBuffer,2.1*turnRadius);
     auto origVertices = boundingBox.getVerticesRef();
     std::vector<larcfm::Vect2> conVert = larcfm::PolycarpResolution::contract_polygon_2D(0.1,con,origVertices);
     for(auto &vert: conVert){
-        node_t fix;
+        node fix;
         fix.pos = larcfm::Vect3(vert, root.pos.z);
         fix.goal = false;
         fix.id = count;
@@ -165,12 +164,12 @@ void DubinsPlanner::GetPotentialFixes(){
         potentialFixes.push_back(fix);
     }
 
-    // Characteristic length
+    /// Characteristic length used to radially sample points around root and goal nodes
     double l = root.vel.gs()*10;
     double trk = root.vel.angle();
     
-    // Generate points radially from the root position
-    // N defines the number of paritions of [0,360]
+    /// Generate points radially from the root position
+    /// N defines the number of paritions of [0,360]
     int N = 10;
     for(int i=0; i<N; ++i){
         for(int j=2;j<=5;++j){
@@ -180,7 +179,7 @@ void DubinsPlanner::GetPotentialFixes(){
             double x2 = goal.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
             double y2 = goal.pos.y + j*l * sin(trk + i * M_PI * 2/ N);
             double z2 = goal.pos.z;
-            node_t fix1, fix2;
+            node fix1, fix2;
             fix1.pos = larcfm::Vect3(larcfm::Vect2(x1, y1), z1);
             fix2.pos = larcfm::Vect3(larcfm::Vect2(x2, y2), z2);
             fix1.goal = false;
@@ -197,25 +196,25 @@ void DubinsPlanner::GetPotentialFixes(){
     }
 }
 
-void DubinsPlanner::BuildTree(node_t* rd){
-   // Build a directed graph by connecting fixes
-   // based on line of sight constraints
+void DubinsPlanner::BuildTree(node* rd){
+   /// Build a directed graph by connecting fixes
+   /// based on line of sight constraints
    for(auto &fix: potentialFixes){
        if(rd->id == fix.id){
-            // Can ignore or include reflexive transition if needed
+            /// Can ignore or include reflexive transition if needed
             //fix.parents.push_back(rd);
             //rd->children.push_back(&fix);
             continue;
        } 
 
-       // Add fix as a child only if line of sight is available 
+       /// Add fix as a child only if line of sight is available 
        if(!CheckProjectedFenceConflict(rd,&fix)){
            fix.parents.push_back(rd);
            rd->children.push_back(&fix);
        }
    }
 
-   // Recursively find suitlable child fixes
+   /// Recursively find suitlable child fixes
    for(auto nd: rd->children){
        if(!nd->goal && nd->children.size() == 0 && (rd->id != nd->id)){
          BuildTree(nd);
@@ -224,33 +223,33 @@ void DubinsPlanner::BuildTree(node_t* rd){
 
 }
 
-bool DubinsPlanner::GetNextTrkVs(node_t& node,double &trk,double &vs){
+bool DubinsPlanner::GetNextTrkVs(node& qnode,double &trk,double &vs){
     double totalDist = MAXDOUBLE;
     double r;
-    node_t* target = nullptr;
-    for(auto child: node.children){
-        r = node.pos.distanceH(child->pos);
-        double dist = r + child->dist2goal < totalDist;
+    node* target = nullptr;
+    for(auto child: qnode.children){
+        r = qnode.pos.distanceH(child->pos);
+        double dist = r + child->dist2goal;
         if(dist < totalDist){
             totalDist = dist;
             target = child;
         }
     }
     if(target != nullptr){
-        larcfm::Vect3 vel = (target->pos - node.pos).Hat();
+        larcfm::Vect3 vel = (target->pos - qnode.pos).Hat();
         trk = vel.vect2().trk() * 180/M_PI;
         vs = vel.z*params.maxVS; 
         return true;
     }else{
-        trk = node.vel.vect2().trk() * 180/M_PI;
-        vs  = node.vel.vs();
+        trk = qnode.vel.vect2().trk() * 180/M_PI;
+        vs  = qnode.vel.vs();
         return true;
     }
     return false;
 }
 
-bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
-
+bool DubinsPlanner::GetDubinsParams(node* start,node* end){
+    /// Dubins parameter computation based on: Small Unmanned Aircraft: Theory and Practice. Randal W. Beard and Timothy W. McLain
     auto rotateZ = [] (larcfm::Vect2 vec,double angle){
         double x = vec.x*cos(angle) - vec.y*sin(angle);
         double y = vec.x*sin(angle) + vec.y*cos(angle);
@@ -361,7 +360,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         segmentLength[pathType].push_back(length);
     };
 
-    // RSR
+    /// Parameters for RSR curve
     larcfm::Vect2 rsrSE = cre - crs;
     vnu = rsrSE.angle();
     sl = rsrSE.norm();
@@ -379,7 +378,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         }
     }
 
-    // RSL
+    /// Parameters for RSL curve
     larcfm::Vect2 rslSE   = cle - crs;
     sl = rslSE.norm();
     if(sl > 2*R){
@@ -392,7 +391,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         PackTCPdata("RSL",crs,cle,z1,z2,1,-1,rslL);
     } 
 
-    // LSR
+    /// Parameters for LSR curve
     larcfm::Vect2 lsrSE = cre - cls; 
     sl = lsrSE.norm();
     if(sl > 2*R){
@@ -405,7 +404,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         PackTCPdata("LSR",cls,cre,z1,z2,-1,1,lsrL); 
     }
 
-    // LSL
+    /// Parameters for LSL curve
     larcfm::Vect2 lslSE   = cle - cls; 
     vnu  = lslSE.angle();
     sl   = lslSE.norm();
@@ -438,7 +437,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         return x < y;
     };
 
-    // Sort the paths based on segment lengths
+    /// Sort the paths based on segment lengths
     std::sort(pathlens.begin(),pathlens.end(),comp);
 
 
@@ -446,7 +445,7 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
         std::string pathType = elem.first;
         
         
-        // Compute tcps for altitude changes
+        /// Compute tcps for altitude changes
         tcpData_t finalTCPdata = ComputeAltTcp(tcp[pathType],startVel.gs(),endVel.gs());
 
         
@@ -454,13 +453,13 @@ bool DubinsPlanner::GetDubinsParams(node_t* start,node_t* end){
              finalTCPdata = ComputeSpeedTcp(tcp[pathType],startVel.gs(),endVel.gs());
         }
 
-        // Check for fence conflicts
+        /// Check for fence conflicts
           
         bool gfConflict = CheckFenceConflict(finalTCPdata);
         if (gfConflict) continue;
         
 
-        // Check traffic conflicts on the path
+        /// Check traffic conflicts on the path
         bool tfConflict = CheckTrafficConflict(finalTCPdata);
 
         if (tfConflict) continue;
@@ -486,11 +485,11 @@ bool DubinsPlanner::CheckAltFeasibility(double startZ,double endZ,double dist,do
     double ax = params.hAccel;
     double dax = params.hDaccel;
     double hdot = params.maxVS;
-    // Initial deceleration/acceleration to vc from v0
+    /// Get initial deceleration/acceleration to vc from v0
     double dt_01 = (vc-v0)/dax;
     double dx_01 = v0*dt_01 + 1/2*(dax)*dt_01*dt_01;
 
-    // Time to reach v1 from vc with accelration ax: (ax is deceleration if vc > v1)
+    /// Get time to reach v1 from vc with accelration ax: (ax is deceleration if vc > v1)
     double dt_45 = (v1 - vc)/(ax);
     double dx_45 = vc*dt_45 + 1/2*(ax)*pow(dt_45,2);
 
@@ -529,13 +528,13 @@ tcpData_t DubinsPlanner::ComputeSpeedTcp(tcpData_t &TCPdata,double startgs,doubl
     }else{
         a = ax;
     }
-    // Time to reach new speed based on acceleration profile
+    /// Get time to reach new speed based on acceleration profile
     t = fabs((v1-v0)/a);
-    // Distance to complete acceleration to new new speed
+    /// Get distance to complete acceleration to new new speed
     s = fabs(v0*t + 0.5*a*t*t);
-    // Segment distance before staring acceleration
+    /// Get segment distance before staring acceleration
     double dist = len - s;
-    // Intermediate point for BGS (assume EGS is colocated with BOT)
+    /// Compute intermediate point for BGS (assume EGS is colocated with BOT)
     double tintermediate = TCPdata[1].first.time() + dist/v0;
     double tdiff = (TCPdata[2].first.time() - (tintermediate + t));
     TCPdata[2].first = TCPdata[2].first.makeTime(TCPdata[2].first.time() - tdiff);
@@ -601,20 +600,20 @@ tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double 
         ax = params.hDaccel;
     }
 
-    // Initial deceleration/acceleration to vc from v0
+    /// Get initial deceleration/acceleration to vc from v0
     double dt_01 = (vc-v0)/dax;
     double dx_01 = v0*dt_01 + 1/2*(dax)*dt_01*dt_01;
     double x1 = x0 + dx_01;
     double h1 = h0;
     double t1 = t0 + dt_01;
 
-    // Expression for x,h after initial vertical acceleration/deceleration from  0 to hdot
+    /// Expression for x,h after initial vertical acceleration/deceleration from  0 to hdot
     double dt_12 = fabs(hdot/az);
     double t2 = t1 + dt_12;
     double h2 = h0 + hdot0*(t2-t1) + 0.5*az*pow(t2-t1,2);
     double x2 = x1 + vc*(t2-t1);
 
-    // Expression for x,h after steady climb 
+    /// Expression for x,h after steady climb 
     double dt_34 = fabs(hdot/daz);
 
     double h3 = h4 - (hdot*(dt_34) + 0.5*daz*pow(dt_34,2));
@@ -624,7 +623,7 @@ tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double 
     double t4 = t3 + dt_34; 
     double x4 = x3 + vc*(t4-t3);
 
-    // Time to reach v1 from vc with accelration ax: (ax is deceleration if vc > v1)
+    /// Time to reach v1 from vc with accelration ax: (ax is deceleration if vc > v1)
     double dt_45 = fabs((v1 - vc)/(ax));
 
     double dx_45 = vc*dt_45 + 1/2*(ax)*pow(dt_45,2);
@@ -640,48 +639,48 @@ tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double 
 
     tcpData_t newTcp;
     if(valid){
-        // Use the BOT from original TCP
+        /// Use the BOT from original TCP
         newTcp.push_back(TCPdata[0]);
         larcfm::Vect3 basePoint = TCPdata[1].first.position().vect3();
 
-        // Set EOT to also be BGS
+        /// Set EOT to also be BGS
         TCPdata[1].second.setBGS(dax);
         newTcp.push_back(TCPdata[1]);
 
-        // Set EGS & BVS at x1 distance from prev EOT
+        /// Set EGS & BVS at x1 distance from prev EOT
         larcfm::Vect3 egs = basePoint.linearByDist2D(trkAB,x1).mkZ(h1);
         larcfm::NavPoint navpt1(larcfm::Position(egs),t1);
         larcfm::TcpData egstcp = larcfm::TcpData().setEGS();
         egstcp.setBVS(az);
         newTcp.push_back(std::make_pair(navpt1,egstcp));
 
-        // Set EVS at x2 distance from prev EOT
+        /// Set EVS at x2 distance from prev EOT
         larcfm::Vect3 evs = basePoint.linearByDist2D(trkAB,x2).mkZ(h2);
         larcfm::NavPoint navpt2(larcfm::Position(evs),t2);
         larcfm::TcpData evstcp = larcfm::TcpData().setEVS();
         newTcp.push_back(std::make_pair(navpt2,evstcp));
 
-        // Set BVS at x3 from prev EOT
+        /// Set BVS at x3 from prev EOT
         larcfm::Vect3 bvs = basePoint.linearByDist2D(trkAB,x3).mkZ(h3);
         larcfm::NavPoint navpt3(larcfm::Position(bvs),t3);
         larcfm::TcpData bvstcp = larcfm::TcpData().setBVS(daz);
         newTcp.push_back(std::make_pair(navpt3,bvstcp));
 
-        // Set EVS/BGS at x4 from prev EOT
+        /// Set EVS/BGS at x4 from prev EOT
         larcfm::Vect3 bgs = basePoint.linearByDist2D(trkAB,x4).mkZ(h4);
         larcfm::NavPoint navpt4(larcfm::Position(bgs),t4);
         larcfm::TcpData bgstcp = larcfm::TcpData().setEVS();
         bgstcp.setBGS(ax);
         newTcp.push_back(std::make_pair(navpt4,bgstcp));
 
-        // Set EGS at x5 from prev EOT
+        /// Set EGS at x5 from prev EOT
         larcfm::Vect3 egs2 = basePoint.linearByDist2D(trkAB,x5).mkZ(h5);
         larcfm::NavPoint navpt5(larcfm::Position(egs2),t5);
         larcfm::TcpData egs2tcp = larcfm::TcpData().setEGS();
         newTcp.push_back(std::make_pair(navpt5,egs2tcp));
 
-        // Add remaining TCPs from original data
-        // distance to BOT from x5
+        /// Add remaining TCPs from original data
+        /// distance to BOT from x5
         double x56 = egs2.distanceH(TCPdata[2].first.position().vect3());
         double t6 = t5 + x56/v1;
         larcfm::NavPoint navpt6(TCPdata[2].first.position(),t6);
@@ -703,24 +702,24 @@ tcpData_t DubinsPlanner::ComputeAltTcp(tcpData_t &TCPdata,double startgs,double 
 
 bool DubinsPlanner::ComputePath(double startTime){
    potentialFixes.clear();
-   // Compute potential fix points
+   /// Compute potential fix points
    GetPotentialFixes();
-   node_t* root = &potentialFixes[0];
-   node_t* goal = &potentialFixes[1];
+   node* root = &potentialFixes[0];
+   node* goal = &potentialFixes[1];
    root->time  = startTime;
 
-   // Build graph
+   /// Build graph
    BuildTree(root);
 
-   // search path using Astar algorithm
+   /// search path using Astar algorithm
    bool status = AstarSearch(root,goal);
 
    return status;
 }
 
 bool DubinsPlanner::CheckTrafficConflict(tcpData_t trajectory){
-    // Currently only handles trajectories with no overlapping TCP types
-    // Assumes traffic plans are linear
+    /// Currently only handles trajectories with no overlapping TCP types
+    /// Assumes traffic plans are linear
     int trajSize = trajectory.size();
     bool conflict = false;
     for (auto &tfplan: trafficPlans){
@@ -809,7 +808,7 @@ bool DubinsPlanner::CheckTrafficConflict(double startTime,larcfm::Vect3 center1,
 
             larcfm::Vect2 tfTimeInterval = larcfm::Vect2(tfStartTime,tfStopTime);
 
-            // Check for conflict with the first turn segment
+            /// Check for conflict with the first turn segment
             if (dt1 > 1e-3) {
                 larcfm::Velocity startVel1; // Not currently used.
                 larcfm::Vect2 timeInterval1(startTime, startTime + dt1);
@@ -818,7 +817,7 @@ bool DubinsPlanner::CheckTrafficConflict(double startTime,larcfm::Vect3 center1,
                     return true;
             }
 
-            // Check for conflict with level flight segment 
+            /// Check for conflict with level flight segment 
             if (dt2 > 1e-3){
                 larcfm::Vect2 timeInterval2(startTime + dt1, startTime + dt1 + dt2);
                 larcfm::Velocity startVel2 = larcfm::Velocity::makeTrkGsVs((tcp2 - tcp1).vect2().trk() * 180 / M_PI, "degree", gs, "m/s", vs, "m/s");
@@ -827,7 +826,7 @@ bool DubinsPlanner::CheckTrafficConflict(double startTime,larcfm::Vect3 center1,
                     return true;
             }
 
-            // Check for conflict with last turn segment
+            /// Check for conflict with last turn segment
             if (dt3 > 1e-3){
                 larcfm::Velocity startVel3;// Not currently used.
                 larcfm::Vect2 timeInterval3(startTime + dt1 + dt2, startTime + dt1 + dt2 + dt3);
@@ -858,11 +857,11 @@ bool DubinsPlanner::CheckFenceConflict(tcpData_t trajectory){
             larcfm::Vect3 posA = trajpt1.first.position().vect3();
             larcfm::Vect3 posB = trajpt2.first.position().vect3();
 
-            // Check for fence conflict between point A and point B
+            /// Check for fence conflict between point A and point B
             if (trajpt1.second.isBOT())
             {
-                // For a BOT, find intersection of complete turn circle
-                // with fence vertices. Note: This is overly conservative
+                /// For a BOT, find intersection of complete turn circle
+                /// with fence vertices. Note: This is overly conservative
                 larcfm::Vect3 center = trajpt1.second.turnCenter().vect3();
                 double R = fabs(trajpt1.second.getRadiusSigned());
                 if (center.z >= floor && center.z <= roof)
@@ -889,7 +888,7 @@ bool DubinsPlanner::CheckFenceConflict(tcpData_t trajectory){
             }
             else
             {
-                //For all other types of TCPs, find linear intersection
+                /// For all other types of TCPs, find linear intersection
                 for (int j = 0; j < totalVertices; ++j)
                 {
                     larcfm::Vect2 vA = vertices[j];
@@ -907,7 +906,7 @@ bool DubinsPlanner::CheckFenceConflict(tcpData_t trajectory){
     return conflict;
 }
 
-bool DubinsPlanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
+bool DubinsPlanner::CheckProjectedFenceConflict(node* qnode,node* goal){
     for(auto &obs: obstacleList){
         int sizePoly = obs.size();
         for(int i=0;i<sizePoly;i++){
@@ -1015,16 +1014,16 @@ bool DubinsPlanner::LinePlanIntersection(larcfm::Vect2& A,larcfm::Vect2& B,doubl
 
 void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newRoute){
 
-    // The first node in the plan is produced externally
+    /// The first node in the plan is produced externally
     double ETA;
-    node_t* prevNode = nullptr;
+    node* prevNode = nullptr;
     double initSpeed = rootVel.gs();
     double radius = initSpeed/(params.turnRate);
     int count = 1;
     for (auto node : path) {
         for (int i = 0; i < node.TCPdata.size(); ++i) {
             larcfm::Position wp(proj.inverse(node.TCPdata[i].first.position().vect3()));
-            // Convert TCP center from NED frame to Geodetetic reference frame
+            /// Convert TCP center from NED frame to Geodetetic reference frame
             if(node.TCPdata[i].second.isBOT()){
                 larcfm::Position center(proj.inverse(node.TCPdata[i].second.turnCenter().vect3()));
                 node.TCPdata[i].second.setTurnCenter(center);
@@ -1044,7 +1043,7 @@ void DubinsPlanner::GetPlan(larcfm::EuclideanProjection& proj,larcfm::Plan& newR
                 count++;
             }
 
-            // Add MOT TCP data if making a turn > 180 degree
+            /// Add MOT TCP data if making a turn > 180 degree
             if(node.TCPdata[i].second.isEOT()){
                 int iBOT = newRoute.prevTrkTCP(count-1);
                 int dir = newRoute.turnDir(iBOT);

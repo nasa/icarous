@@ -59,20 +59,21 @@ void Guidance::SetGuidanceMode(const GuidanceMode gmode,const std::string planID
     etaControl = eta;
     inTurn = false;
     if(gmode == VECTOR || gmode == LAND){
-        // These modes don't use any plans. Guidance module doesn't use plans for these modes.
+        /// VECTOR/LAND modes don't use any plans. 
         return;
     }
-    // Check if we have the requested plan for the mode
+    /// Check if the requested plan for the mode is available
     larcfm::Plan* fp = GetPlan(planID);
     if(fp != nullptr){
         if(nextWP == 0){
-            // If nextWP is 0, this means we are starting this plan
-            // Shift the times based on the current time.
-            // Time shifting is necessary if we are going to maintain ETA.
+            /// - If nextWP is 0, this means we are starting this plan
+            /// - Shift the times based on the current time.
+            /// - Time shifting is necessary if we are going to maintain ETA.
+            /// - Ensure this function is always called with nextWP = 0 if ETA maintenance is required.
             double diff = currTime - fp->getFirstTime();
             fp->timeShiftPlan(0,diff);
         }else{
-            // Set initial conditions for nextwp
+            /// Set initial conditions for nextwp
             currentPlan = fp;
             nextWpId[planID] = nextWP;
             activePlanId = planID;
@@ -97,18 +98,18 @@ int Guidance::GetWaypoint(std::string planID,int id, waypoint_t& wp){
 }
 
 void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const double val){
-   // Request a speed change on flightplan leg between wpid-1 and wpid.
-   // If wpid is -1, then use the next waypoint index (the waypoint we are currently flying towards) 
+   /// Request a speed change on flightplan leg between wpid-1 and wpid.
+   /// - If wpid is -1, then use the next waypoint index (the waypoint we are currently flying towards) 
    prevPlan = planID;
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
 
-   // Speed change is between leg wpidprev and newInd
+   /// Speed change is between leg wpidprev and newInd
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
 
-   // If the speed change is the same as the speed defined in the 
-   // original flightplan, no new flight plan is required.
+   /// If the speed change is the same as the speed defined in the 
+   /// original flightplan, no new flight plan is required.
    if(fabs(val - fp->gsIn(newInd)) < 1e-3){
        activePlanId = planID;
        currentPlan = fp;
@@ -116,16 +117,16 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
        return;
    }
 
-   // Create a new copy of nominal plan 
-   // so that we change change the speed
+   /// Create a new copy of nominal plan 
+   /// so that we can change change the speed in this new flightplan
    std::string speedChange("PlanSpeedChange");
    larcfm::Plan fp2 = fp->copy();
    fp2.setID(speedChange);
 
    double speed = val;
 
-   // Shift the time based on the leg length and new speed   
-   // Note, we only shift from the wpid that is requested.
+   /// Shift the time based on the leg length and new speed   
+   /// Note, we only shift from the wpid that is requested.
    int size = fp2.size();
    double prevTime = fp->time(newInd-1);
    for(int i=newInd;i<size;++i){
@@ -137,13 +138,13 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
        prevTime = new_time;
    }
 
-   // Check to see if there was a previous plan for speed change
+   /// Check to see if there was a previous plan for speed change
    fp = GetPlan(speedChange);
    if(fp == nullptr){
-       // No previous plans.
+       /// Use this plan if no previous plans.
        planList.push_back(fp2);
    }else{
-       // Clear previous speed change plan and use new speed change plan.
+       /// Clear previous speed change plan and use new speed change plan.
        fp->clear();
        *fp = fp2;
    }
@@ -153,18 +154,18 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
 }
 
 void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const double val,const bool updateAll){
-   // For altitude changes, create a copy of the original plan
-   // and modify altitudes in the copy.
+   /// For altitude changes, create a copy of the original plan
+   /// and modify altitudes in the copy.
    prevPlan = planID;
    larcfm::Plan* fp = GetPlan(planID);
    if (fp == nullptr) return;
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
 
-   // New Plan
+   /// New Plan
    std::string newPlanID("PlanAltChange");
 
-   // Reuse existing PlanAltChange if available
+   /// Reuse existing PlanAltChange if available
    larcfm::Plan *oldPlan = GetPlan(newPlanID);
    if (oldPlan != nullptr) oldPlan->clear();
 
@@ -172,12 +173,12 @@ void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const d
    fp2.setID("PlanAltChange");
    
 
-   // Find diff altitude so that all remaining waypoints
-   // can be shifted by the diff altitude
+   /// Find diff altitude so that all remaining waypoints
+   /// can be shifted by the diff altitude
    double currentRefAlt = fp->getPos(newInd).alt();
    double diffAlt = val - currentRefAlt;
 
-   // If no altitude difference, revert back to using nominal plan
+   /// If no altitude difference, revert back to using nominal plan
    if(fabs(diffAlt) < 1e-4){
        activePlanId = planID;
        currentPlan = GetPlan(activePlanId);
@@ -185,7 +186,7 @@ void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const d
        return;
    }
    
-   // Shift altitudes in plan copy
+   /// Shift altitudes in plan copy
    for(int i=newInd;i<fp2.size();++i){
         larcfm::NavPoint point = fp2.point(i);
         fp2.remove(i);
@@ -197,14 +198,14 @@ void Guidance::ChangeWaypointAlt(const std::string planID,const int wpid,const d
         }
    }
 
-   // Add new plan to list if not already available
+   /// Add new plan to list if not already available
    if(oldPlan == nullptr){
        planList.push_back(fp2);
    }else{
        *oldPlan = fp2;
    }
 
-   // Set pointers to the new plan
+   /// Set pointers to the new plan
    activePlanId = newPlanID;
    currentPlan = GetPlan(activePlanId);
    nextWpId[newPlanID] = newInd;
@@ -248,11 +249,11 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
    output.nextWP = -1;
    output.yawForward = params.yawForward;
    if(currentPlan != nullptr){
-        // If we are doing a speed change or altitude change, we are still on the 
-        // the original flighttrack (over the ground). So use the previous plan id 
-        // This is required because the cognition module doesn't know about these internal
-        // speedchange or alt change plans and hence won't be able to keep track of 
-        // waypoint progress if you don't use the old id in the output. 
+        /// If we are doing a speed change or altitude change, we are still on the 
+        /// the original flighttrack (over the ground). So use the previous plan id 
+        /// This is required because the cognition module doesn't know about these internal
+        /// speedchange or alt change plans and hence won't be able to keep track of 
+        /// waypoint progress if you don't use the old id in the output. 
         if(activePlanId == "PlanAltChange" || activePlanId == "PlanSpeedChange"){
             strcpy(output.activePlan,prevPlan.c_str());
         }else{
@@ -307,10 +308,10 @@ void Guidance::InputFlightplanData(const std::string &plan_id, const std::list<w
 }
 
 double Guidance::GetApproachPrecision(const larcfm::Position &position,const larcfm::Velocity &velocity, const larcfm::Position &waypoint){
-    // Look at the dot product of current velocity
-    // with the position of the waypoint in relative NED coordinates
-    // dot product >= 0 IMPLIES we are approaching the waypoint,
-    // dot procuct < 0 IMPLIES we are moving away.
+    /// Look at the dot product of current velocity
+    /// with the position of the waypoint in relative NED coordinates
+    /// dot product >= 0 IMPLIES we are approaching the waypoint,
+    /// dot procuct < 0 IMPLIES we are moving away.
     const larcfm::EuclideanProjection proj = larcfm::Projection::createProjection(position);
     const larcfm::Vect3 pos_wp = proj.project(waypoint) - larcfm::Vect3::makeXYZ(0,"m",0,"m",position.alt(),"m") ;
     const larcfm::Vect2 vhat  = velocity.vect2().Hat(); 
@@ -325,14 +326,14 @@ double Guidance::ComputeSpeed(){
    double refSpeed;
    etaControl = params.maintainEta;
 
-   // We don't perform ETA controls under these paths.
+   /// Don't perform ETA controls during Speed change, Alt change or during ditching
    if(activePlanId == "PlanSpeedChange" || activePlanId == "PlanAltChange" || activePlanId == "DitchPath"){
        etaControl = false;
    }
 
    double windSpeed = wind.gs();
    if (!etaControl) {
-       // Intended speed stored in the flightplan
+       /// - Get intended speed stored in the flightplan when no eta control is required
        refSpeed = currentPlan->gsIn(nextWP);
        if (refSpeed <= params.minSpeed + windSpeed) {
            double distH = currentPos.distanceH(nextPos.position());
@@ -347,6 +348,7 @@ double Guidance::ComputeSpeed(){
            return refSpeed;
        }
    } else {
+       /// - If eta control is required, compute speed based on eta constraints
        double distH = currentPos.distanceH(nextPos.position());
        double nextWP_STA = nextPos.time();
        double maxSpeed = params.maxSpeed + windSpeed;
@@ -357,7 +359,7 @@ double Guidance::ComputeSpeed(){
        if (distH > 0.5 && timediff > 0.001){
            newSpeed = distH / timediff;
        }else{
-           // timediff is negative, we are late
+           /// if timediff is negative, we are running late
            newSpeed = maxSpeed;
        }
 
@@ -380,8 +382,10 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
     const double deltaAltref = nextWaypoint.alt() - prevWaypoint.alt();
     const double deltaDistRef = prevWaypoint.distanceH(nextWaypoint);
-    const double fpAngle = atan2(deltaAltref,deltaDistRef); 
     const double deltaH = nextWaypoint.alt() - position.alt();
+
+    /// Computing flightpath angle
+    const double fpAngle = atan2(deltaAltref,deltaDistRef); 
     double climbrate = 0;
     bool climbSegment = false;
     bool bangbang = false;
@@ -390,38 +394,42 @@ double Guidance::ComputeClimbRate(double speedRef){
        climbSegment = true;
     }
 
-   // Over large altitude changes outside the climbAngleVRange params, use bangbang control
+   /// Over large altitude changes outside the climbAngleVRange params, use bangbang control
    if (fabs(deltaH) > params.climbAngleVRange) {
        bangbang = true;
    } 
 
    if(bangbang){
+       /// Use extremal values for climb rate
        climbrate = deltaH > 0? params.maxClimbRate : params.minClimbRate;
-       // For eta, use the required climb rate based on arrival constraint
+       /// For eta, use the required climb rate based on arrival constraint
        if(params.maintainEta){
            larcfm::Position planPos = currentPlan->position(currTime);
            double deltaH = planPos.alt() - currentPos.alt();
            climbrate = deltaH * params.climbRateGain;
        }else{
-           // Not eta, pull climb rate from flightplan
+           /// Not eta, pull climb rate from flightplan
            if(currentPlan->isLinear()){
-               // In linear case, calculate climb rate based on flightpath angle
+               /// In linear case, calculate climb rate based on flightpath angle
                if ((fpAngle < M_PI / 2 || fpAngle > -M_PI / 2) && speedRef > 1e-3 && climbSegment) {
                    const double cfactor = tan(fpAngle);
                    if (speedRef > 1e-3) {
-                       // Climb rate determined by the trig relation
-                       // speedRef is adjacent, climbrate is opposite
+                       /// Climb rate determined by the trig relation:
+                       /// speedRef is adjacent, climbrate is opposite
                        climbrate = cfactor * speedRef;
                    }
                }
            }else{
-               // In kinematic case, use prescribed climb rate
+               /// In kinematic case, use prescribed climb rate
                climbrate = currentPlan->vsIn(nextWP);
            }
        }
    }else{
+       /// Use simple proportional control scheme when not in bangbang mode
        climbrate = deltaH * params.climbRateGain;
    }
+
+   /// Impose saturation limits
    if (climbrate > params.maxClimbRate) {
        climbrate = params.maxClimbRate;
    }
@@ -429,50 +437,6 @@ double Guidance::ComputeClimbRate(double speedRef){
        climbrate = params.minClimbRate;
    }
    return climbrate;
-}
-
-double Guidance::ConstrainTurnRate(double targetHeading,double reqTurnRate){
-    // Controller time step
-    double dt = currTime - prevTrackControllerTime;
-    double currHeading = currentGroundSpeed.compassAngle() * RAD2DEG; 
-
-    // If the controller has been on pause, reset the prev target
-    if(dt > 1){
-       prevTrackControllerTarget = currHeading;
-       prevTrackControllerTime = currTime;
-       return currHeading;
-    }
-
-
-    // Find shortest turn direction
-    double err = larcfm::Util::turnDelta(currentGroundSpeed.compassAngle(),targetHeading*DEG2RAD,reqTurnRate>0?true:false) * RAD2DEG;
-    double turnRate;
-    //double rightTurn = std::fmod(360 + (targetHeading - currHeading),360);
-    //double leftTurn  = std::fmod(360 + (currHeading - targetHeading),360);
-    /*
-    double sign;
-
-    // Left turn '-'ve, right turn '+'ve
-    if (leftTurn <= rightTurn){
-       sign = -1; 
-       err = leftTurn;
-    }else{
-       sign = 1;
-       err = rightTurn;
-    }*/
-
-    // Smooth turn rate to 0 as error decreases to 0
-    if (err > 5){
-        turnRate = reqTurnRate;
-    }else{
-        turnRate = err;
-    }
-
-    // Integrate tun rate to get reference heading
-    double output = std::fmod(360 + (prevTrackControllerTarget + turnRate*dt),360);
-    prevTrackControllerTarget = output;
-    prevTrackControllerTime = currTime;
-    return output;
 }
 
 double Guidance::ComputeNewHeading(double& speedRef){
@@ -483,11 +447,9 @@ double Guidance::ComputeNewHeading(double& speedRef){
     const double guidance_radius = fmax(1,currentGroundSpeed.gs()*params.guidanceRadiusScaling);
 
     
-    /* Compute target heading */
-
-    /* If prev waypoint is a Track TCP (i.e. BOT or MOT),
-     * Compute new heading based on heading delta in segment
-     */
+    /// Check to determine if the aircraft is currently in a turn segment
+    /// If prev waypoint is a Track TCP (i.e. BOT or MOT),
+    /// compute new heading based on heading delta in segment
     if (nextWP > 1) {
         if (currentPlan->isBOT(nextWP - 1) || currentPlan->isBOT(nextWP - 1) && currentPlan->isEOT(nextWP - 1)) {
             inTurn = true;
@@ -504,50 +466,66 @@ double Guidance::ComputeNewHeading(double& speedRef){
     }
 
     if(inTurn){
-
+        /// - Get prev track tcp waypoint index
         int id = currentPlan->prevTRK(nextWP);
+        /// - Get center of turn for track tcp
         larcfm::Position center = currentPlan->getTcpData(id).turnCenter();
-        //larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(center);
+        /// - Heading of vector from center to prev waypoint (NOTE: prev waypoint could be BOT or MOT because we are current in a turn)
         double trk1 = (currentPlan->getPos(nextWP-1).vect2() - center.vect2()).trk();
+        /// - Heading of vector from center to next waypoint
         double trk2 = (currentPlan->getPos(nextWP).vect2() - center.vect2()).trk();
+        /// - Heading of vector from center to current position
         double trk3 = (currentPos.vect2() - center.vect2()).trk();
+        /// - Output heading once the vehicle finishes the turn. i.e. Heading at EOT
         double turnHeading = std::fmod(2*M_PI + currentPlan->trkOut(nextWP),2*M_PI)*RAD2DEG;
+        /// - Radius of turn
         double turnRadius  = currentPlan->getTcpData(id).getRadiusSigned();
+        /// - Turn direction
         int turnDirection = (turnRadius>0?+1:-1);
+        /// - The ideal heading the vehicle should be having at it's current position
         double currentIdealTrk = (trk3 + (turnDirection > 0? M_PI/2: - M_PI/2));
+        /// - The actual heading of the vehicle 
         double currentActualTrk = currentGroundSpeed.trk();
+        /// - Total heading change from trk1 to trk2
         double turnTargetDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk2,turnDirection),2*M_PI);
+        /// - Heading change from trk1 to ideal heading at current position
         double turnCurrentDelta = std::fmod(larcfm::Util::turnDelta(trk1,trk3,turnDirection),2*M_PI);
-        // If the turn still hasn't begun
         if(turnCurrentDelta >= M_PI*3/2){
-            // This assumes that that angle between BOT and EOT is no more than 180 degrees
+            /// - Assume that that angle between BOT and EOT is no more than 180 degrees
             turnCurrentDelta = 0.0;
         }
         if(etaControl){
+            /// ETA control in a turn
             double targetTime = currentPlan->time(nextWP);
+            /// - Compute turn rate from flightplan
             double turnRate = std::fmod((currentPlan->gsIn(nextWP) / fabs(turnRadius)) * RAD2DEG, 360) * turnDirection;
+            /// - Compute remaining time in turn according to plan
             double timeRemainingTurn = fabs((turnTargetDelta - turnCurrentDelta) / (turnRate * DEG2RAD));
+            /// - Compute actual remaining time
             double actualTimeRemaining = currentPlan->time(nextWP) - currTime;
             if (actualTimeRemaining < timeRemainingTurn) {
+                /// - Increase turn rate if actual time remaining is less than planned time remaining
                 turnRate *= 1.3;
             }
             else {
+                /// - Decrease turn rate if actual time remaining is more than planned time remaining
                 turnRate *= 0.9;
             }
-
+            /// - Compute reference speed from turn rate and radius (v = r x \omega)
             speedRef = std::min(params.maxSpeed, turnRadius * (turnRate * DEG2RAD));
         }
         double actualRadius = currentPlan->getPos(id).distanceH(center);
         double dist2center = currentPos.distanceH(center);
+        /// Compute offset from center. This is 0 if vehicle is exactly on the turn, < 0 if inside the turn and > 0 if outside the turn
         double offset = dist2center/fabs(turnRadius) - 1;
         double k = params.turnRateGain;
+        /// Compute heading change based on offset
         double addTurn = offset*k;
         if(addTurn > M_PI/4){
             addTurn = M_PI/4;
         }
 
-        int trkErrorSign = larcfm::Util::turnDir(currentActualTrk,currentIdealTrk);
-        double trkError = larcfm::Util::turnDelta(currentActualTrk,currentIdealTrk);
+        /// Compute new heading 
         if(turnRadius > 0){
             outputHeading = currentIdealTrk + addTurn;
         }else{
@@ -555,9 +533,8 @@ double Guidance::ComputeNewHeading(double& speedRef){
         }
         outputHeading = std::fmod(2*M_PI + outputHeading,2*M_PI)*180/M_PI; 
     }else{
-        /* If prev waypoint is not Track TCP or is EOT, 
-         * use  offset position on plan to get heading.
-         */
+        /// If prev waypoint is not Track TCP or is EOT, 
+        /// use  the line of sight circle method to compute heading
         larcfm::Position newPositionToTrack;
         double xdev = ComputeOffSetPositionOnPlan(currentPlan, nextWP, guidance_radius, newPositionToTrack);
         double targetHeading = currentPos.track(newPositionToTrack) * RAD2DEG;
@@ -579,7 +556,7 @@ void Guidance::FilterCommand(double &refHeading, double &refSpeed, double &refVS
     double gs_range = params.maxSpeed - params.minSpeed;
 
 
-    // Reduce speed if approaching final waypoint or if turning sharply
+    /// Reduce speed if approaching final waypoint or if turning sharply
     if (currentPlan->isLinear()) {
        const double ownship_heading = currentGroundSpeed.compassAngle();
        const double turn_angle =larcfm::Util::turnDelta(ownship_heading,refHeading * M_PI/180) * 180/M_PI;
@@ -595,6 +572,8 @@ void Guidance::FilterCommand(double &refHeading, double &refSpeed, double &refVS
         refSpeed = 0.0;
     }
 
+    /// Low pass filter for speed and vertical speed commands
+    /// n factor determines when low pass filter is being applied.
     if (fabs(refSpeed - ownship_gs) > gs_range / 2)
         n_gs = 0.3;
     else
@@ -615,21 +594,31 @@ void Guidance::CheckWaypointArrival(){
     const larcfm::Position waypoint = currentPlan->getPos(nextWP);
 
     const double currSpeed = currentGroundSpeed.norm2D();
+    /// - Get horizontal distance to next waypoint
     distH2nextWP = currentPos.distanceH(waypoint);
+    /// - Get vertical distance to next waypoint
     distV2nextWP = fabs(currentPos.distanceV(waypoint));
 
-    // Scale capture radius based on current speed of vehicle
+    /// - Scale capture radius based on current speed of vehicle
     double capture_radius = currSpeed * params.captureRadiusScaling;
+
+    /// - Impose user defined limits on capture radius
     if (params.minCap >= capture_radius){
         capture_radius = params.minCap;
     }else if(capture_radius > params.maxCap){
         capture_radius = params.maxCap;
     }
+
+    /// - Compute approach precision value
     double approachPrec = GetApproachPrecision(currentPos,currentGroundSpeed,waypoint);
+
+    /// - Aritificially constrain precision approach to -1 for linear plans. i.e Don't use
+    /// precision checks for linear plans
     if(currentPlan->isLinear()){
        approachPrec = -1;
     }
-    // If distance to next waypoint is < captureRadius, switch to next waypoint
+
+    /// - If distance to next waypoint is < captureRadius, switch to next waypoint
     bool altReached = distV2nextWP <= params.climbAngleVRange;
     altReached = true;
     if (distH2nextWP <= capture_radius && altReached
@@ -645,13 +634,17 @@ void Guidance::CheckWaypointArrival(){
 double Guidance::ComputeOffSetPositionOnPlan(larcfm::Plan* fp,int nextWP,double guidance_radius,larcfm::Position &offsetPos){
     double xtrkDev = guidance_radius;
 
-    // Create vectors for wpA->wpB and wpA->ownship_position
+    /// Treat the previous waypoint as the origin
     const larcfm::EuclideanProjection projAtWPA = larcfm::Projection::createProjection(currentPlan->getPos(nextWP-1));
+    /// Create vectors for wpA->wpB and wpA->ownship_position
     const larcfm::Vect3 AB = projAtWPA.project(currentPlan->getPos(nextWP));
     const larcfm::Vect3 AP = projAtWPA.project(currentPos);
 
+    /// Get distance of flightplan segment (AB)
     const double distAB = AB.norm2D();
+    /// Get distance from waypoint to current position (AP)
     const double distAP = AP.norm2D();
+    /// Get distance from current position to next waypoint (PB)
     const double distPB = AB.Sub(AP).norm2D();
 
     if(distAB < 1e-3){
@@ -659,14 +652,16 @@ double Guidance::ComputeOffSetPositionOnPlan(larcfm::Plan* fp,int nextWP,double 
         return 0.0;
     }
 
-    // Projection of AP onto AB
+    /// Compute projection of AP onto AB
     const double projection = (AP.dot2D(AB))/pow(AB.norm2D(),2);
+    /// Compute closest point to P on flightplan 
     const larcfm::Vect3 closestPoint = larcfm::Velocity::makeXYZ(AB.x*projection,"m",
                                                                  AB.y*projection,"m", 
                                                                  AB.z*projection,"m");
+    /// Get perpendicular deviation from projection and AP
     const double deviation = closestPoint.Sub(AP).norm2D();
 
-    //Convert waypoints to local frame (with ownship position as origin)
+    /// Convert waypoints to local frame (with ownship position as origin)
     const larcfm::EuclideanProjection projAtPos = larcfm::Projection::createProjection(currentPos);
     const larcfm::Vect3 _wpA = projAtPos.project(currentPlan->getPos(nextWP-1));
     const larcfm::Vect3 _wpB = projAtPos.project(currentPlan->getPos(nextWP));
@@ -674,30 +669,30 @@ double Guidance::ComputeOffSetPositionOnPlan(larcfm::Plan* fp,int nextWP,double 
     double outputEND[3] = {0.0,0.0,0.0};
 
     if(distPB <= guidance_radius){
-        //If within guidance radius from wpB, track to wpB
+        /// - If within guidance radius from wpB, track to wpB
         offsetPos = fp->getPos(nextWP);
     } else if(distAP <= guidance_radius){
-        // If within guidance radius from wpA, use guidance circle method
+        /// - If within guidance radius from wpA, use guidance circle method
         const larcfm::Vect3 outputVec = GetCorrectIntersectionPoint(_wpA,_wpB,guidance_radius);
         larcfm::Position outputPos(projAtPos.inverse(outputVec));
         offsetPos = outputPos;
     } else {
-        // Otherwise, check projection of position onto flight plan
+        /// Otherwise, check projection of position onto flight plan
         if(projection <= 0){
-            // If behind wpA, track to wpA
+            /// If behind wpA, track to wpA
             offsetPos =  fp->getPos(nextWP-1);
         } else if(projection >= 1){
-            // If past wpB, track to wpB
+            /// If past wpB, track to wpB
             offsetPos =  fp->getPos(nextWP);
         } else {
-            // If between wpA and wpB
+            /// If between wpA and wpB
             if(deviation < xtrkDev){
-                // If close enough to flight plan, use guidance circle method
+                /// - If close enough to flight plan, use guidance circle method
                 const larcfm::Vect3 outputVec = GetCorrectIntersectionPoint(_wpA,_wpB,guidance_radius);
                 larcfm::Position outputPos(projAtPos.inverse(outputVec));
                 offsetPos = outputPos;
             } else {
-                // If far from flight plan, track to closest point on flight plan
+                /// - If far from flight plan, track to closest point on flight plan
                 const larcfm::Position outputPos(projAtWPA.inverse(closestPoint));
                 offsetPos = outputPos;
             }
@@ -708,6 +703,7 @@ double Guidance::ComputeOffSetPositionOnPlan(larcfm::Plan* fp,int nextWP,double 
 }
 
 larcfm::Vect3 Guidance::GetCorrectIntersectionPoint(const larcfm::Vect3 &wpA,const larcfm::Vect3 &wpB,const double r){
+    /// Compute intersection of circle of radius r and line joining point A and point B
     double x1,x2,y1,y2;    
     if( fabs(wpB.x - wpA.x) > 1e-2 ){
         const double m = (wpB.y - wpA.y)/(wpB.x - wpA.x);
@@ -720,7 +716,7 @@ larcfm::Vect3 Guidance::GetCorrectIntersectionPoint(const larcfm::Vect3 &wpA,con
         const double discr_sqrt = sqrt(discr);
 
         if(discr < 0){
-           // Complex roots
+           /// - No solution when complex roots
            larcfm::Vect3 output = wpB;
            return output;
         }
@@ -740,16 +736,15 @@ larcfm::Vect3 Guidance::GetCorrectIntersectionPoint(const larcfm::Vect3 &wpA,con
         }
     }
 
-    // Check which point is closest to waypoint B
+    /// There can be at most 2 intersections.
+    /// Return intersection which is closest to waypoint B
     const larcfm::Vect3 p1 = larcfm::Vect3::makeXYZ(x1,"m", y1, "m", 0, "m");
     const larcfm::Vect3 p2 = larcfm::Vect3::makeXYZ(x2,"m", y2, "m", 0, "m");
     double dist1 = p1.distanceH(wpB);
     double dist2 = p2.distanceH(wpB);
     if(dist1 < dist2){
-        // Use (x1,y1)
         return p1;
     }else{
-        // Use (x2,y2)
         return p2;
     }
 }
@@ -757,34 +752,34 @@ larcfm::Vect3 Guidance::GetCorrectIntersectionPoint(const larcfm::Vect3 &wpA,con
 
 void Guidance::ComputePlanGuidance(){
 
-    // Get next waypoint index
+    /// Get next waypoint index
     int nextWP = nextWpId[activePlanId];
 
     if(nextWP >= currentPlan->size()){
-        // Return with 0 velocity if the flightplan was completed
+        /// Return with 0 velocity if the flightplan was completed
         wpReached = true;
         outputCmd = larcfm::Velocity::makeTrkGsVs(0.0,"degree",0.0,"m/s",0.0,"m/s");
         return;
     }
 
-    // Compute to new speed to track
+    /// Compute to new speed to track
     double speedRef = ComputeSpeed();
 
-    // Compute new heading to track
+    /// Compute new heading to track
     double newheading = ComputeNewHeading(speedRef);
 
 
-    // Compute climb rate to track
+    /// Compute climb rate to track
     double climbrate = ComputeClimbRate(speedRef);
 
-    // Filter output commands
+    /// Filter output commands
     FilterCommand(newheading,speedRef,climbrate);
 
 
-    // Construct output velocity object
+    /// Construct output velocity object
     outputCmd = larcfm::Velocity::makeTrkGsVs(newheading,"degree",speedRef,"m/s",climbrate,"m/s");
 
-    // Check if the waypoint was reached
+    /// Check if the waypoint was reached
     CheckWaypointArrival();
 }
 
@@ -793,6 +788,7 @@ int Guidance::RunGuidance(double time){
     currTime = time;
 
     switch(mode){
+        /// - FLIGHTPLAN and POINT2POINT modes are implemented identically
         case FLIGHTPLAN:
         case POINT2POINT:
         {
@@ -807,15 +803,17 @@ int Guidance::RunGuidance(double time){
             }
             break;
         }
-
+        /// - VECTOR mode receives velocity commands from external sources
         case VECTOR:{
             break;
         }
 
+        /// - Currently TAKEOFF mode does nothing
         case TAKEOFF:{
             break;
         }
 
+        /// - LAND mode controls the rate of descent
         case LAND:{
             if (currentPlan != nullptr) {
                 larcfm::Position lastPos = currentPlan->getLastPoint().position();
@@ -831,9 +829,12 @@ int Guidance::RunGuidance(double time){
             break;
         }
 
-        case GUIDE_NOOP:break;
+        /// - SPEED_CHANGE/ALT_CHANGE are implemented by FLIGHTPLAN by changing speed/alt in flight plan
         case SPEED_CHANGE: break;
         case ALT_CHANGE: break;
+
+        /// - Guidance NOOP mode
+        case GUIDE_NOOP:break;
 
     }
 

@@ -31,157 +31,155 @@
 \DoxyCodeLine{30 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{geofence__msgids_8h}{geofence\_msgids.h}}>}}
 \DoxyCodeLine{31 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{trajectory__msg_8h}{trajectory\_msg.h}}>}}
 \DoxyCodeLine{32 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{trajectory__msgids_8h}{trajectory\_msgids.h}}>}}
-\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <tracking\_msg.h>}}
-\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <tracking\_msgids.h>}}
-\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <sch\_msgids.h>}}
-\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <mavlink/ardupilotmega/mavlink.h>}}
-\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{port__lib_8h}{port\_lib.h}}>}}
-\DoxyCodeLine{38 }
-\DoxyCodeLine{39 \textcolor{preprocessor}{\#define ARDUCOPTER\_PIPE\_NAME "{}FLIGHTPLAN"{}}}
-\DoxyCodeLine{40 \textcolor{preprocessor}{\#define ARDUCOPTER\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <sch\_msgids.h>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <mavlink/ardupilotmega/mavlink.h>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <\mbox{\hyperlink{port__lib_8h}{port\_lib.h}}>}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define ARDUCOPTER\_PIPE\_NAME "{}FLIGHTPLAN"{}}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define ARDUCOPTER\_PIPE\_DEPTH 100}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define SCH\_ARDUCOPTER\_PIPE1\_NAME "{}SCH\_ARDUCOPTER"{}}}
 \DoxyCodeLine{41 }
-\DoxyCodeLine{42 \textcolor{preprocessor}{\#define SCH\_ARDUCOPTER\_PIPE1\_NAME "{}SCH\_ARDUCOPTER"{}}}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{63 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
-\DoxyCodeLine{64     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9}{STABILIZE}} =     0,  }
-\DoxyCodeLine{65     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549ae0a0490702d97acb639917fd526e2333}{ACRO}} =          1,  }
-\DoxyCodeLine{66     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef}{ALT\_HOLD}} =      2,  }
-\DoxyCodeLine{67     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aeef9468d1b98bca652a04bf5063fd9d6}{AUTO}} =          3,  }
-\DoxyCodeLine{68     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2781c142ec876dad824cf164eb9c8c23}{GUIDED}} =        4,  }
-\DoxyCodeLine{69     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1}{LOITER}} =        5,  }
-\DoxyCodeLine{70     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a19cd99444b6f1588876b490ab1198d73}{RTL}} =           6,  }
-\DoxyCodeLine{71     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aa79c827759ea48f0735386c4b1188911}{CIRCLE}} =        7,  }
-\DoxyCodeLine{72     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d}{DRIFT}} =        11,  }
-\DoxyCodeLine{73     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a956b9eef94661d496f43e5e155353408}{SPORT}} =        13,  }
-\DoxyCodeLine{74     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a97744c5570e743b377f5fb63b9aa3587}{FLIP}} =         14,  }
-\DoxyCodeLine{75     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8345a967452584c722cca8ee80d5c4a5}{AUTOTUNE}} =     15,  }
-\DoxyCodeLine{76     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9}{POSHOLD}} =      16,  }
-\DoxyCodeLine{77     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8b23c50cc938e0b366df8d8eeeb1bf9f}{BRAKE}} =        17,  }
-\DoxyCodeLine{78     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549abc5a79c786d2b239440dd3b92c402ef4}{THROW}} =        18,  }
-\DoxyCodeLine{79     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2f6891f13a38daa173fe0dc2d66aa561}{AVOID\_ADSB}} =   19,  }
-\DoxyCodeLine{80     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a4957a999adfbd682a93d13bf054c4ee3}{GUIDED\_NOGPS}} = 20,  }
-\DoxyCodeLine{81 \}\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{controlMode\_e}};}
-\DoxyCodeLine{82 }
-\DoxyCodeLine{87 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
-\DoxyCodeLine{88     CFE\_SB\_PipeId\_t    INTERFACE\_Pipe;      }
-\DoxyCodeLine{89     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_abee1360d8f070c8add233f86501bf82d}{Command\_Pipe}};        }
-\DoxyCodeLine{90     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a4eab71c9b6bf0eb56cb673757fbe8df3}{Traffic\_Pipe}};        }
-\DoxyCodeLine{91     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a1b9360a20c90cf07df2d0d4346011c67}{Band\_Pipe}};           }
-\DoxyCodeLine{92     CFE\_SB\_PipeId\_t    SchInterface\_Pipe;   }
-\DoxyCodeLine{93     CFE\_SB\_MsgPtr\_t    INTERFACEMsgPtr;     }
-\DoxyCodeLine{94     CFE\_SB\_MsgPtr\_t    Sch\_MsgPtr;          }
-\DoxyCodeLine{95     CFE\_TBL\_Handle\_t   INTERFACE\_tblHandle; }
-\DoxyCodeLine{96     \mbox{\hyperlink{struct_arducopter_table__t}{ArducopterTable\_t}}  Table;}
-\DoxyCodeLine{97     \mbox{\hyperlink{structport__t}{port\_t}} ap;                              }
-\DoxyCodeLine{98     uint8\_t \mbox{\hyperlink{structappdata_int__t_a1b757d3da00367d902821059021fcab0}{runThreads}};                     }
-\DoxyCodeLine{99     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a83f3cd45e1aaebbb24b4c4849d13352c}{numWaypoints}};                       }
-\DoxyCodeLine{100     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_aedcdaff4449c412264a4a04289a34565}{waypointSeq}};                        }
-\DoxyCodeLine{101     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a9693af1e3d1288b48e703cb1aa44acb1}{nextWaypointIndex}};                  }
-\DoxyCodeLine{102     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a6ce7d1eb8c25397ace1e5d941a96ee0f}{numGeofences}};                       }
-\DoxyCodeLine{103     \textcolor{keywordtype}{int}* \mbox{\hyperlink{structappdata_int__t_aa724d7c4977a4a654bbb62f96dac73f8}{waypoint\_type}};                     }
-\DoxyCodeLine{104     \textcolor{keywordtype}{int} waypoint\_index[MAX\_WAYPOINTS];      }
-\DoxyCodeLine{105     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_abe368432095b2da0e7e290e846c73ef2}{foundUAV}};                           }
-\DoxyCodeLine{106     uint32\_t \mbox{\hyperlink{structappdata_int__t_a6d5d3ff8d691aea6666e5f00f4620544}{mutex\_read}};                    }
-\DoxyCodeLine{107     uint32\_t \mbox{\hyperlink{structappdata_int__t_a98446c07f07531063e9fbbfeeb84105c}{mutex\_write}};                   }
-\DoxyCodeLine{108     \textcolor{keywordtype}{bool} startWPUplink;}
-\DoxyCodeLine{109     \textcolor{keywordtype}{bool} startWPDownlink;}
-\DoxyCodeLine{110     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a25e64a2efae22da7c63aa92e656c2070}{recvGeofIndex}};                      }
-\DoxyCodeLine{111     \mbox{\hyperlink{structgeofence__t}{geofence\_t}} gfData[MAX\_GEOFENCES];}
-\DoxyCodeLine{112     uint16\_t fenceVertices[MAX\_GEOFENCES];}
-\DoxyCodeLine{113     uint16\_t  numUplinkWaypoints;}
-\DoxyCodeLine{114     uint16\_t  numDownlinkWaypoints;}
-\DoxyCodeLine{115     uint16\_t  downlinkRequestIndex;}
-\DoxyCodeLine{116     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{controlMode\_e}} currentAPMode;}
-\DoxyCodeLine{117     uint8\_t icarousMode;}
-\DoxyCodeLine{118     mavlink\_mission\_item\_t UplinkMissionItems[MAX\_WAYPOINTS];}
-\DoxyCodeLine{119     mavlink\_mission\_item\_t DownlinkMissionItems[MAX\_WAYPOINTS];}
-\DoxyCodeLine{120     \textcolor{keywordtype}{bool} \mbox{\hyperlink{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}{startMission}};}
-\DoxyCodeLine{121     \textcolor{keywordtype}{bool} restartMission;}
-\DoxyCodeLine{122     \textcolor{keywordtype}{bool} fpread;}
-\DoxyCodeLine{123     mavlink\_mission\_item\_t ReceivedMissionItems[MAX\_WAYPOINTS];}
-\DoxyCodeLine{124     \textcolor{keywordtype}{bool} takeoff;}
-\DoxyCodeLine{125 }
-\DoxyCodeLine{126     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a30f8586c629f5f4f83b94a489b8126e4}{receivingWP}};                        }
-\DoxyCodeLine{127     \mbox{\hyperlink{structparam__t}{param\_t}} storedparams[PARAM\_COUNT];}
-\DoxyCodeLine{128     uint32\_t wptimer;}
-\DoxyCodeLine{129     uint32\_t gftimer;}
-\DoxyCodeLine{130     uint32\_t pmtimer;}
-\DoxyCodeLine{131     uint32\_t tjtimer;}
-\DoxyCodeLine{132     uint32\_t rcv\_wp\_seq;}
-\DoxyCodeLine{133     uint32\_t rcv\_gf\_seq;}
-\DoxyCodeLine{134     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} trajectory;}
-\DoxyCodeLine{135     \textcolor{keywordtype}{bool} fenceSent;}
-\DoxyCodeLine{136     \textcolor{keywordtype}{bool} paramSent;}
-\DoxyCodeLine{137     \textcolor{keywordtype}{bool} sentDefaultParams;}
-\DoxyCodeLine{138 }
-\DoxyCodeLine{139 }
-\DoxyCodeLine{140     uint8\_t icRcChannel;}
-\DoxyCodeLine{141     uint32\_t pwmStart;}
-\DoxyCodeLine{142     uint32\_t pwmReset;}
-\DoxyCodeLine{143     \textcolor{keywordtype}{bool} useVectors;}
-\DoxyCodeLine{144     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structcallsign}{callsign}};}
-\DoxyCodeLine{145 \}\mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}};}
-\DoxyCodeLine{146 }
-\DoxyCodeLine{147 }
-\DoxyCodeLine{151 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a62f0d473eaf67561e9271712dfb178ab}{ARDUCOPTER\_AppMain}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{152 }
-\DoxyCodeLine{156 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_af4d85ff1bfe8049adf765b3a2637159f}{ARDUCOPTER\_AppInit}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{157 }
-\DoxyCodeLine{161 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_ae0b80fdc7d9dccb9ef77049831430f54}{ARDUCOPTER\_AppInitializeData}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{162 }
-\DoxyCodeLine{166 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a6c45eef12d5ba0b385f293ef397fb690}{ARDUCOPTER\_AppCleanUp}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{167 }
-\DoxyCodeLine{172 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a19f1aafabbad250c13d64ea4e563e683}{Task1}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{173 }
-\DoxyCodeLine{177 \textcolor{keywordtype}{int} \mbox{\hyperlink{arducopter_8h_ab1c228faf9d583ac61284a7b20d3b058}{GetMAVLinkMsgFromAP}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{178 }
-\DoxyCodeLine{183 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a8b56d89d18a7b18c8cbeaf32feea0f18}{ProcessAPMessage}}(mavlink\_message\_t message);}
-\DoxyCodeLine{184 }
-\DoxyCodeLine{188 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_ade5227c437a85b05b5f943024b3cd11e}{ARDUCOPTER\_ProcessPacket}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{189 }
+\DoxyCodeLine{61 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{62     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9}{STABILIZE}} =     0,  }
+\DoxyCodeLine{63     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549ae0a0490702d97acb639917fd526e2333}{ACRO}} =          1,  }
+\DoxyCodeLine{64     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef}{ALT\_HOLD}} =      2,  }
+\DoxyCodeLine{65     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aeef9468d1b98bca652a04bf5063fd9d6}{AUTO}} =          3,  }
+\DoxyCodeLine{66     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2781c142ec876dad824cf164eb9c8c23}{GUIDED}} =        4,  }
+\DoxyCodeLine{67     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a27c8a6252930823f9ed57d36593e9bb1}{LOITER}} =        5,  }
+\DoxyCodeLine{68     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a19cd99444b6f1588876b490ab1198d73}{RTL}} =           6,  }
+\DoxyCodeLine{69     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549aa79c827759ea48f0735386c4b1188911}{CIRCLE}} =        7,  }
+\DoxyCodeLine{70     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d}{DRIFT}} =        11,  }
+\DoxyCodeLine{71     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a956b9eef94661d496f43e5e155353408}{SPORT}} =        13,  }
+\DoxyCodeLine{72     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a97744c5570e743b377f5fb63b9aa3587}{FLIP}} =         14,  }
+\DoxyCodeLine{73     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8345a967452584c722cca8ee80d5c4a5}{AUTOTUNE}} =     15,  }
+\DoxyCodeLine{74     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9}{POSHOLD}} =      16,  }
+\DoxyCodeLine{75     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a8b23c50cc938e0b366df8d8eeeb1bf9f}{BRAKE}} =        17,  }
+\DoxyCodeLine{76     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549abc5a79c786d2b239440dd3b92c402ef4}{THROW}} =        18,  }
+\DoxyCodeLine{77     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a2f6891f13a38daa173fe0dc2d66aa561}{AVOID\_ADSB}} =   19,  }
+\DoxyCodeLine{78     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549a4957a999adfbd682a93d13bf054c4ee3}{GUIDED\_NOGPS}} = 20,  }
+\DoxyCodeLine{79 \}\mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{controlMode\_e}};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{85 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{86     CFE\_SB\_PipeId\_t    INTERFACE\_Pipe;      }
+\DoxyCodeLine{87     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_abee1360d8f070c8add233f86501bf82d}{Command\_Pipe}};        }
+\DoxyCodeLine{88     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a4eab71c9b6bf0eb56cb673757fbe8df3}{Traffic\_Pipe}};        }
+\DoxyCodeLine{89     CFE\_SB\_PipeId\_t    \mbox{\hyperlink{structappdata_int__t_a1b9360a20c90cf07df2d0d4346011c67}{Band\_Pipe}};           }
+\DoxyCodeLine{90     CFE\_SB\_PipeId\_t    SchInterface\_Pipe;   }
+\DoxyCodeLine{91     CFE\_SB\_MsgPtr\_t    INTERFACEMsgPtr;     }
+\DoxyCodeLine{92     CFE\_SB\_MsgPtr\_t    Sch\_MsgPtr;          }
+\DoxyCodeLine{93     CFE\_TBL\_Handle\_t   INTERFACE\_tblHandle; }
+\DoxyCodeLine{94     \mbox{\hyperlink{struct_arducopter_table__t}{ArducopterTable\_t}}  Table;}
+\DoxyCodeLine{95     \mbox{\hyperlink{structport__t}{port\_t}} ap;                              }
+\DoxyCodeLine{96     uint8\_t \mbox{\hyperlink{structappdata_int__t_a1b757d3da00367d902821059021fcab0}{runThreads}};                     }
+\DoxyCodeLine{97     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a83f3cd45e1aaebbb24b4c4849d13352c}{numWaypoints}};                       }
+\DoxyCodeLine{98     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_aedcdaff4449c412264a4a04289a34565}{waypointSeq}};                        }
+\DoxyCodeLine{99     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a9693af1e3d1288b48e703cb1aa44acb1}{nextWaypointIndex}};                  }
+\DoxyCodeLine{100     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a6ce7d1eb8c25397ace1e5d941a96ee0f}{numGeofences}};                       }
+\DoxyCodeLine{101     \textcolor{keywordtype}{int}* \mbox{\hyperlink{structappdata_int__t_aa724d7c4977a4a654bbb62f96dac73f8}{waypoint\_type}};                     }
+\DoxyCodeLine{102     \textcolor{keywordtype}{int} waypoint\_index[MAX\_WAYPOINTS];      }
+\DoxyCodeLine{103     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_abe368432095b2da0e7e290e846c73ef2}{foundUAV}};                           }
+\DoxyCodeLine{104     uint32\_t \mbox{\hyperlink{structappdata_int__t_a6d5d3ff8d691aea6666e5f00f4620544}{mutex\_read}};                    }
+\DoxyCodeLine{105     uint32\_t \mbox{\hyperlink{structappdata_int__t_a98446c07f07531063e9fbbfeeb84105c}{mutex\_write}};                   }
+\DoxyCodeLine{106     \textcolor{keywordtype}{bool} startWPUplink;}
+\DoxyCodeLine{107     \textcolor{keywordtype}{bool} startWPDownlink;}
+\DoxyCodeLine{108     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a25e64a2efae22da7c63aa92e656c2070}{recvGeofIndex}};                      }
+\DoxyCodeLine{109     \mbox{\hyperlink{structgeofence__t}{geofence\_t}} gfData[MAX\_GEOFENCES];}
+\DoxyCodeLine{110     uint16\_t fenceVertices[MAX\_GEOFENCES];}
+\DoxyCodeLine{111     uint16\_t  numUplinkWaypoints;}
+\DoxyCodeLine{112     uint16\_t  numDownlinkWaypoints;}
+\DoxyCodeLine{113     uint16\_t  downlinkRequestIndex;}
+\DoxyCodeLine{114     \mbox{\hyperlink{arducopter_8h_a7e009e7dbc0dd7be939d03455c972549}{controlMode\_e}} currentAPMode;}
+\DoxyCodeLine{115     uint8\_t icarousMode;}
+\DoxyCodeLine{116     mavlink\_mission\_item\_t UplinkMissionItems[MAX\_WAYPOINTS];}
+\DoxyCodeLine{117     mavlink\_mission\_item\_t DownlinkMissionItems[MAX\_WAYPOINTS];}
+\DoxyCodeLine{118     \textcolor{keywordtype}{bool} \mbox{\hyperlink{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}{startMission}};}
+\DoxyCodeLine{119     \textcolor{keywordtype}{bool} restartMission;}
+\DoxyCodeLine{120     \textcolor{keywordtype}{bool} fpread;}
+\DoxyCodeLine{121     mavlink\_mission\_item\_t ReceivedMissionItems[MAX\_WAYPOINTS];}
+\DoxyCodeLine{122     \textcolor{keywordtype}{bool} takeoff;}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124     \textcolor{keywordtype}{int} \mbox{\hyperlink{structappdata_int__t_a30f8586c629f5f4f83b94a489b8126e4}{receivingWP}};                        }
+\DoxyCodeLine{125     \mbox{\hyperlink{structparam__t}{param\_t}} storedparams[PARAM\_COUNT];}
+\DoxyCodeLine{126     uint32\_t wptimer;}
+\DoxyCodeLine{127     uint32\_t gftimer;}
+\DoxyCodeLine{128     uint32\_t pmtimer;}
+\DoxyCodeLine{129     uint32\_t tjtimer;}
+\DoxyCodeLine{130     uint32\_t rcv\_wp\_seq;}
+\DoxyCodeLine{131     uint32\_t rcv\_gf\_seq;}
+\DoxyCodeLine{132     \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} trajectory;}
+\DoxyCodeLine{133     \textcolor{keywordtype}{bool} fenceSent;}
+\DoxyCodeLine{134     \textcolor{keywordtype}{bool} paramSent;}
+\DoxyCodeLine{135     \textcolor{keywordtype}{bool} sentDefaultParams;}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138     uint8\_t icRcChannel;}
+\DoxyCodeLine{139     uint32\_t pwmStart;}
+\DoxyCodeLine{140     uint32\_t pwmReset;}
+\DoxyCodeLine{141     \textcolor{keywordtype}{bool} useVectors;}
+\DoxyCodeLine{142     \mbox{\hyperlink{structcallsign__t}{callsign\_t}} \mbox{\hyperlink{structcallsign}{callsign}};}
+\DoxyCodeLine{143 \}\mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{149 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a62f0d473eaf67561e9271712dfb178ab}{ARDUCOPTER\_AppMain}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{154 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_af4d85ff1bfe8049adf765b3a2637159f}{ARDUCOPTER\_AppInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{159 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_ae0b80fdc7d9dccb9ef77049831430f54}{ARDUCOPTER\_AppInitializeData}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{164 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a6c45eef12d5ba0b385f293ef397fb690}{ARDUCOPTER\_AppCleanUp}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{170 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a19f1aafabbad250c13d64ea4e563e683}{Task1}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{175 \textcolor{keywordtype}{int} \mbox{\hyperlink{arducopter_8h_ab1c228faf9d583ac61284a7b20d3b058}{GetMAVLinkMsgFromAP}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{181 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_a8b56d89d18a7b18c8cbeaf32feea0f18}{ProcessAPMessage}}(mavlink\_message\_t message);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{186 \textcolor{keywordtype}{void} \mbox{\hyperlink{arducopter_8h_ade5227c437a85b05b5f943024b3cd11e}{ARDUCOPTER\_ProcessPacket}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keywordtype}{void} apSendHeartbeat(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{190 }
-\DoxyCodeLine{191 \textcolor{keywordtype}{void} apSendHeartbeat(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{191 \textcolor{keywordtype}{void} apSendCallsign(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{192 }
-\DoxyCodeLine{193 \textcolor{keywordtype}{void} apSendCallsign(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{193 \textcolor{keywordtype}{void} ap\_gfCallback(uint32\_t timer);}
 \DoxyCodeLine{194 }
-\DoxyCodeLine{195 \textcolor{keywordtype}{void} ap\_gfCallback(uint32\_t timer);}
+\DoxyCodeLine{195 \textcolor{keywordtype}{void} ap\_pmCallback(uint32\_t timerId);}
 \DoxyCodeLine{196 }
-\DoxyCodeLine{197 \textcolor{keywordtype}{void} ap\_pmCallback(uint32\_t timerId);}
+\DoxyCodeLine{197 \textcolor{keywordtype}{void} ap\_tjCallback(uint32\_t timerId);}
 \DoxyCodeLine{198 }
-\DoxyCodeLine{199 \textcolor{keywordtype}{void} ap\_tjCallback(uint32\_t timerId);}
-\DoxyCodeLine{200 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{keywordtype}{void} ap\_startTimer(uint32\_t *timerID,\textcolor{keywordtype}{void} (*f)(uint32\_t),\textcolor{keywordtype}{char}* name,uint32\_t startTime,uint32\_t intvl);}
 \DoxyCodeLine{201 }
-\DoxyCodeLine{202 \textcolor{keywordtype}{void} ap\_startTimer(uint32\_t *timerID,\textcolor{keywordtype}{void} (*f)(uint32\_t),\textcolor{keywordtype}{char}* name,uint32\_t startTime,uint32\_t intvl);}
+\DoxyCodeLine{202 \textcolor{keywordtype}{void} ap\_stopTimer(uint32\_t *timerID);}
 \DoxyCodeLine{203 }
-\DoxyCodeLine{204 \textcolor{keywordtype}{void} ap\_stopTimer(uint32\_t *timerID);}
+\DoxyCodeLine{204 \textcolor{keywordtype}{void} apInterface\_PublishParams(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{205 }
-\DoxyCodeLine{206 \textcolor{keywordtype}{void} apInterface\_PublishParams(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{207 }
-\DoxyCodeLine{212 int32\_t \mbox{\hyperlink{arducopter_8h_a73843075a22329bae03451ae0fad6de8}{ArducopterTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{210 int32\_t \mbox{\hyperlink{arducopter_8h_a73843075a22329bae03451ae0fad6de8}{ArducopterTableValidationFunc}}(\textcolor{keywordtype}{void} *TblPtr);}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 uint16\_t apConvertPlanToMissionItems(\mbox{\hyperlink{structflightplan__t}{flightplan\_t}}* fp);}
 \DoxyCodeLine{213 }
-\DoxyCodeLine{214 uint16\_t apConvertPlanToMissionItems(\mbox{\hyperlink{structflightplan__t}{flightplan\_t}}* fp);}
+\DoxyCodeLine{214 \textcolor{keywordtype}{void} apConvertMissionItemsToPlan(uint16\_t size,mavlink\_mission\_item\_t items[],\mbox{\hyperlink{structflightplan__t}{flightplan\_t}} *fp);}
 \DoxyCodeLine{215 }
-\DoxyCodeLine{216 \textcolor{keywordtype}{void} apConvertMissionItemsToPlan(uint16\_t size,mavlink\_mission\_item\_t items[],\mbox{\hyperlink{structflightplan__t}{flightplan\_t}} *fp);}
+\DoxyCodeLine{216 \textcolor{keywordtype}{bool} IntfServiceHandler(mavlink\_message\_t *message);}
 \DoxyCodeLine{217 }
-\DoxyCodeLine{218 \textcolor{keywordtype}{bool} IntfServiceHandler(mavlink\_message\_t *message);}
-\DoxyCodeLine{219 }
-\DoxyCodeLine{220 EXTERN \mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}} \mbox{\hyperlink{arducopter_8h_a9a518bea551679e20e268267d1576422}{appdataInt}};                }
-\DoxyCodeLine{221 EXTERN \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{arducopter_8h_a21f737488b4924a267edc0a2fa97fff6}{fpdata}};                    }
-\DoxyCodeLine{222 EXTERN \mbox{\hyperlink{structmission_item_reached__t}{missionItemReached\_t}} \mbox{\hyperlink{arducopter_8h_acbfc4fce6a74a1110667bee17869ec31}{wpreached}};         }
-\DoxyCodeLine{223 EXTERN \mbox{\hyperlink{structgeofence__t}{geofence\_t}} \mbox{\hyperlink{arducopter_8h_aaccd061993dfdeef88a2dbce71c6f68e}{gfdata}};                      }
-\DoxyCodeLine{224 EXTERN \mbox{\hyperlink{structargs_cmd__t}{argsCmd\_t}} \mbox{\hyperlink{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}{startMission}};                 }
-\DoxyCodeLine{225 EXTERN \mbox{\hyperlink{structno_args_cmd__t}{noArgsCmd\_t}} \mbox{\hyperlink{arducopter_8h_af7be49f01a35ee0616919e72e71942cb}{resetIcarous}};               }
-\DoxyCodeLine{226 EXTERN \mbox{\hyperlink{structobject__t}{object\_t}} \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}};                       }
-\DoxyCodeLine{227 EXTERN \mbox{\hyperlink{structposition__t}{position\_t}} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};                    }
-\DoxyCodeLine{228 EXTERN \mbox{\hyperlink{structlocal__position__t}{local\_position\_t}} \mbox{\hyperlink{arducopter_8h_aaecb13171b86a9ed3a749885fb37e546}{local\_position}};        }
-\DoxyCodeLine{229 EXTERN \mbox{\hyperlink{structattitude__t}{attitude\_t}} \mbox{\hyperlink{arducopter_8h_aaa1b88357ed34d226cf21356516d8e99}{attitude}};                    }
-\DoxyCodeLine{230 EXTERN \mbox{\hyperlink{structbattery__status__t}{battery\_status\_t}} \mbox{\hyperlink{arducopter_8h_ac0db5fe4b83e9c1224ff1e1b356d33bf}{battery\_status}};        }
-\DoxyCodeLine{231 EXTERN \mbox{\hyperlink{structcmd_ack__t}{cmdAck\_t}} \mbox{\hyperlink{arducopter_8h_a55ca571edd787c2e969fb5bd28ddb078}{ack}};                           }
-\DoxyCodeLine{232 EXTERN \mbox{\hyperlink{structvfrhud__t}{vfrhud\_t}} \mbox{\hyperlink{arducopter_8h_a78c5f559492e1e13434fe9765a18ee04}{vfrhud}};                        }
-\DoxyCodeLine{233 EXTERN \mbox{\hyperlink{structrc__channels__t}{rc\_channels\_t}} \mbox{\hyperlink{arducopter_8h_a8268e81a9f5c2f008b312dc9070fa158}{rc\_channels}};              }
-\DoxyCodeLine{234 EXTERN \mbox{\hyperlink{structhome__position__t}{home\_position\_t}} \mbox{\hyperlink{arducopter_8h_a3c0439ee6bd688f62b610185cec16ba6}{home\_position}};          }
-\DoxyCodeLine{235 }
-\DoxyCodeLine{236 }
-\DoxyCodeLine{237 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_arducopter\_h\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{218 EXTERN \mbox{\hyperlink{structappdata_int__t}{appdataInt\_t}} \mbox{\hyperlink{arducopter_8h_a9a518bea551679e20e268267d1576422}{appdataInt}};                }
+\DoxyCodeLine{219 EXTERN \mbox{\hyperlink{structflightplan__t}{flightplan\_t}} \mbox{\hyperlink{arducopter_8h_a21f737488b4924a267edc0a2fa97fff6}{fpdata}};                    }
+\DoxyCodeLine{220 EXTERN \mbox{\hyperlink{structmission_item_reached__t}{missionItemReached\_t}} \mbox{\hyperlink{arducopter_8h_acbfc4fce6a74a1110667bee17869ec31}{wpreached}};         }
+\DoxyCodeLine{221 EXTERN \mbox{\hyperlink{structgeofence__t}{geofence\_t}} \mbox{\hyperlink{arducopter_8h_aaccd061993dfdeef88a2dbce71c6f68e}{gfdata}};                      }
+\DoxyCodeLine{222 EXTERN \mbox{\hyperlink{structargs_cmd__t}{argsCmd\_t}} \mbox{\hyperlink{arducopter_8h_a3fff3567b90515dc216dd41ee385266d}{startMission}};                 }
+\DoxyCodeLine{223 EXTERN \mbox{\hyperlink{structno_args_cmd__t}{noArgsCmd\_t}} \mbox{\hyperlink{arducopter_8h_af7be49f01a35ee0616919e72e71942cb}{resetIcarous}};               }
+\DoxyCodeLine{224 EXTERN \mbox{\hyperlink{structobject__t}{object\_t}} \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}};                       }
+\DoxyCodeLine{225 EXTERN \mbox{\hyperlink{structposition__t}{position\_t}} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};                    }
+\DoxyCodeLine{226 EXTERN \mbox{\hyperlink{structlocal__position__t}{local\_position\_t}} \mbox{\hyperlink{arducopter_8h_aaecb13171b86a9ed3a749885fb37e546}{local\_position}};        }
+\DoxyCodeLine{227 EXTERN \mbox{\hyperlink{structattitude__t}{attitude\_t}} \mbox{\hyperlink{arducopter_8h_aaa1b88357ed34d226cf21356516d8e99}{attitude}};                    }
+\DoxyCodeLine{228 EXTERN \mbox{\hyperlink{structbattery__status__t}{battery\_status\_t}} \mbox{\hyperlink{arducopter_8h_ac0db5fe4b83e9c1224ff1e1b356d33bf}{battery\_status}};        }
+\DoxyCodeLine{229 EXTERN \mbox{\hyperlink{structcmd_ack__t}{cmdAck\_t}} \mbox{\hyperlink{arducopter_8h_a55ca571edd787c2e969fb5bd28ddb078}{ack}};                           }
+\DoxyCodeLine{230 EXTERN \mbox{\hyperlink{structvfrhud__t}{vfrhud\_t}} \mbox{\hyperlink{arducopter_8h_a78c5f559492e1e13434fe9765a18ee04}{vfrhud}};                        }
+\DoxyCodeLine{231 EXTERN \mbox{\hyperlink{structrc__channels__t}{rc\_channels\_t}} \mbox{\hyperlink{arducopter_8h_a8268e81a9f5c2f008b312dc9070fa158}{rc\_channels}};              }
+\DoxyCodeLine{232 EXTERN \mbox{\hyperlink{structhome__position__t}{home\_position\_t}} \mbox{\hyperlink{arducopter_8h_a3c0439ee6bd688f62b610185cec16ba6}{home\_position}};          }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* \_arducopter\_h\_ */}\textcolor{preprocessor}{}}
 
 \end{DoxyCode}

@@ -66,7 +66,7 @@
 \DoxyCodeLine{104 \textcolor{keyword}{class }\mbox{\hyperlink{class_event_management}{EventManagement}}\{}
 \DoxyCodeLine{105 }
 \DoxyCodeLine{106   \textcolor{keyword}{public}:}
-\DoxyCodeLine{107      \mbox{\hyperlink{class_event_management}{EventManagement}}():activeEventHandlers(handlerComp)\{\};}
+\DoxyCodeLine{107      \mbox{\hyperlink{class_event_management}{EventManagement}}():activeEventHandlers(\mbox{\hyperlink{class_event_management_a3750ccbf4466f7d689bade8a06909096}{handlerComp}})\{\};}
 \DoxyCodeLine{116      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_ac1ffc78e2d609a14941b1c53336ccf5f}{AddEventHandler}}(std::string eventName,\textcolor{keywordtype}{int} priority,std::function<\textcolor{keywordtype}{bool}(T*)> monitorFunc, std::shared\_ptr<\mbox{\hyperlink{class_event_handler}{EventHandler<T>}}> eventHandler=\textcolor{keyword}{nullptr});}
 \DoxyCodeLine{117 }
 \DoxyCodeLine{121      \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a9f12284c53782acdc62b784d4188f055}{RunEventMonitors}}(T*);}
@@ -79,7 +79,7 @@
 \DoxyCodeLine{138      }
 \DoxyCodeLine{139   \textcolor{keyword}{private}:}
 \DoxyCodeLine{140 }
-\DoxyCodeLine{142      \mbox{\hyperlink{struct_handler_comp}{HandlerComp<T>}} handlerComp;}
+\DoxyCodeLine{142      \mbox{\hyperlink{struct_handler_comp}{HandlerComp<T>}} \mbox{\hyperlink{class_event_management_a3750ccbf4466f7d689bade8a06909096}{handlerComp}};}
 \DoxyCodeLine{143      std::map<std::string,std::function<bool(T*)>> events;}
 \DoxyCodeLine{144      std::map<std::string,std::shared\_ptr<EventHandler<T>>> handlers;}
 \DoxyCodeLine{145      \mbox{\hyperlink{classheapset}{heapset<std::shared\_ptr<EventHandler<T>}}>,\mbox{\hyperlink{struct_handler_comp}{HandlerComp<T>}}> activeEventHandlers;}
