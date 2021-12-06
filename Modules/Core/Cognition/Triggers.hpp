@@ -46,6 +46,7 @@ bool SecondaryPlanCompletionTrigger(CognitionState_t* state){
         std::string planID = state->activePlan->getID();
         return (planID != "Plan0" &&
                 planID != "DitchPath" &&
+                planID != "RtlPath" &&
                 state->nextWpId[planID] >= state->activePlan->size()) && state->icReady;
     }else{
         return false;
@@ -60,6 +61,19 @@ bool PrimaryPlanCompletionTrigger(CognitionState_t* state){
     if(state->activePlan != nullptr){
         std::string planID = state->activePlan->getID();
         return (planID == "Plan0" && state->nextWpId[planID] >= state->activePlan->size());
+    } else {
+        return false;
+    }
+}
+
+/**
+ * - Check for completion of return to launch path
+ */
+bool RtlPlanCompletionTrigger(CognitionState_t* state){
+    
+    if(state->activePlan != nullptr){
+        std::string planID = state->activePlan->getID();
+        return (planID == "RtlPath" && state->nextWpId[planID] >= state->activePlan->size());
     } else {
         return false;
     }

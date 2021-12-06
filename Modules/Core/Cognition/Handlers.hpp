@@ -736,15 +736,4 @@ class ReturnToLaunch: public EventHandler<CognitionState_t>{
             return INPROGRESS;
         }
     }
-
-    retVal_e Terminate(CognitionState_t* state){
-        double dist = state->position.distanceH(state->launchPoint);
-        if(dist>5){
-            return INPROGRESS;
-        }else{
-            LogMessage(state,"[STATUS] | Landing at RTL");
-            ExecuteHandler(MAKE_HANDLER(LandPhaseHandler),"PostRtlLand");
-            return SUCCESS;
-        }
-    }
 };
