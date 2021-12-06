@@ -462,10 +462,15 @@ bool TrajManager::CheckLineOfSightconflict(larcfm::Position start, larcfm::Posit
 trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
 {
 
+    if(planID != "Plan0" && planID.substr(0,4) == "Plan"){
+             planID = "Plan+";
+    }
+
     trajectoryMonitorData_t data;
     std::memset(&data,0,sizeof(trajectoryMonitorData_t));
     larcfm::Plan *fp = GetPlan(planID);
     if(fp == nullptr){
+        data.lineOfSight2goal = true;
         return data;
     }
     larcfm::EuclideanProjection projection = larcfm::Projection::createProjection(fp->getPos(0));
@@ -644,7 +649,11 @@ trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string 
 
     bool lineOfSight2goal = true; 
     if(flightPlans.size() > 0){
-        lineOfSight2goal = CheckLineOfSightconflict(pos,flightPlans.front().getPos(findex)); 
+        if (planID == "Plan+" || planID == "Plan0"){
+            lineOfSight2goal = CheckLineOfSightconflict(pos,flightPlans.front().getPos(findex)); 
+        }else{
+            lineOfSight2goal = CheckLineOfSightconflict(pos,fp->getLastPoint().position()); 
+        }
     }
 
     data.fenceConflict = fenceConflict;
