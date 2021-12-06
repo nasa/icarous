@@ -221,26 +221,25 @@ class Icarous(IcarousInterface):
         self.core.InputParams(paramFile)
         os.remove(paramFile)
 
-
     def RunOwnship(self):
         self.controlInput = self.core.GetOutput()
         self.ownship.InputCommand(*self.controlInput)
         status = self.ownship.Run(windFrom=self.windFrom,windSpeed=self.windSpeed)
-
         if status:
-            opos = self.ownship.GetOutputPositionNED()
-            ovel = self.ownship.GetOutputVelocityNED()
-
-            self.localPos = opos
-            (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
-       
-            self.position = [ogx, ogy, -opos[2]]
-            self.velocity = ovel
-            self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
+            self.InputOwnshipState()
             self.RecordOwnship()
-            sigmaPos,sigmaVel = self.ownship.GetCovariances()
-            self.core.InputOwnshipState(self.currTime,self.position,self.trkgsvs,sigmaPos,sigmaVel)
-        
+
+    def InputOwnshipState(self):
+        opos = self.ownship.GetOutputPositionNED()
+        ovel = self.ownship.GetOutputVelocityNED()
+        self.localPos = opos
+        (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[1], opos[0])
+        self.position = [ogx, ogy, -opos[2]]
+        self.velocity = ovel
+        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
+        sigmaPos,sigmaVel = self.ownship.GetCovariances()
+        self.core.InputOwnshipState(self.currTime,self.position,self.trkgsvs,sigmaPos,sigmaVel)
+
     def InputMergeData(self,data):
         if data['intersectionID'] == self.intersectionID:
             self.mergeLogs[data['aircraftID']] = data
@@ -289,6 +288,7 @@ class Icarous(IcarousInterface):
         self.loopcount += 1
 
         if not self.missionStarted:
+            self.InputOwnshipState()
             return True
 
         self.RunOwnship()

@@ -288,6 +288,9 @@ class SimEnvironment:
             for i, ic in enumerate(self.icInstances):
                 ic.InputWind(self.windFrom, self.windSpeed)
 
+                # Run Icarous
+                status |= ic.Run()
+
                 # Send mission start command
                 if len(ic.plans) > 0:
                     if not ic.missionStarted and duration >= self.icStartDelay[i] and duration >= self.icInstances[i].plans[0][0].time:
@@ -295,9 +298,6 @@ class SimEnvironment:
                         if self.verbose > 0:
                             print("%s : Start command sent at %f" %
                                   (ic.callsign, self.current_time))
-
-                # Run Icarous
-                status |= ic.Run()
 
                 # Check if time limit has been met
                 if ic.missionStarted and not ic.missionComplete:
