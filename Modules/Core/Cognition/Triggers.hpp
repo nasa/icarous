@@ -104,7 +104,9 @@ bool FlightReplanTrigger(CognitionState_t* state){
     if(state->activePlan == nullptr){
         return false;
     }
-    if(state->activePlan->getID() != "Plan0"){
+    if(state->activePlan->getID() != "Plan0" &&
+       state->activePlan->getID() != "RtlPath" &&
+       state->activePlan->getID() != "DitchPath"){
         if(!state->lineOfSight2GoalPrev && state->lineOfSight2Goal){
             return true;
         }
