@@ -128,6 +128,7 @@ void ARDUCOPTER_AppInit(void){
     //Subscribe to command messages and kinematic band messages from the SB
     CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, appdataInt.Command_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.Command_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_RTL_MID, appdataInt.Command_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STATUS_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);

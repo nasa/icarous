@@ -20,6 +20,7 @@
 #define ICAROUS_RESETFP_MID 0x081D        ///< Clear flight plan
 #define ICAROUS_STATUS_MID 0x081E         ///< Icarous status message. message type:status_t
 #define ICAROUS_DITCH_MID 0x081F          ///< Ditching signal: noArgsCmd_t
+#define ICAROUS_RTL_MID 0x0820            ///< Return to launch: noArgsCmd_t
 #ifdef APPDEF_TRACKER
     #define ICAROUS_RAWTRAFFIC_MID 0x0820   ///< Raw traffic message message type: object_t
 #else

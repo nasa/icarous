@@ -479,6 +479,13 @@ void SetGuidanceFlightPlan(CognitionState_t *state,const std::string &plan_id,co
 void SetLandCmd(CognitionState_t* state);
 
 /**
+ * @brief enqueue the RTL command
+ *
+ * @param state decision making state
+ */
+void SetRtlCmd(CognitionState_t* state);
+
+/**
  * @brief enqueue the ditch site request command
  * 
  * @param state 

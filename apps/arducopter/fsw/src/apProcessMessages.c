@@ -993,6 +993,14 @@ void ARDUCOPTER_ProcessPacket(void) {
             break;
         }
 
+        case ICAROUS_RTL_MID:
+        {
+            mavlink_message_t msg;
+            mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_NAV_RETURN_TO_LAUNCH,0,1,0,0,0,0,0,0);
+            writeMavlinkData(&appdataInt.ap, &msg);
+            break;
+        }
+
         case ICAROUS_COMMANDS_MID:
         {
             argsCmd_t *cmd = (argsCmd_t*) appdataInt.INTERFACEMsgPtr;

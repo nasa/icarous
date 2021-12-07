@@ -340,6 +340,11 @@ void COGNITION_DecisionProcess(void){
                     break;
                 }
 
+                case RTL_COMMAND:{
+                    COGNITION_SendRtlRequest(command.rtlCommand);
+                    break;
+                }
+
                 case FP_CHANGE:{
                     COGNITION_SendGuidanceFlightPlan(command.fpChange);
                     break;
@@ -451,5 +456,11 @@ void COGNITION_SendDitchRequest(DitchCommand ditch_command){
    noArgsCmd_t cmd;
    CFE_SB_InitMsg(&cmd,ICAROUS_DITCH_MID,sizeof(noArgsCmd_t),TRUE);
    cmd.name = _DITCH_;
+   SendSBMsg(cmd);
+}
+
+void COGNITION_SendRtlRequest(RtlCommand rtl_command){
+   noArgsCmd_t cmd;
+   CFE_SB_InitMsg(&cmd,ICAROUS_RTL_MID,sizeof(noArgsCmd_t),TRUE);
    SendSBMsg(cmd);
 }

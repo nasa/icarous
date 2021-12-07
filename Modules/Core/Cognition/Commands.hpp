@@ -42,6 +42,11 @@ typedef struct{
     char temp;
 }DitchCommand;
 
+// Command structure containing data for RTL commands
+typedef struct{
+    char temp;
+}RtlCommand;
+
 // Command structure containing data for flightplan changes
 typedef struct{
     char name[25];
@@ -72,6 +77,7 @@ typedef enum{
         TAKEOFF_COMMAND,
         LAND_COMMAND,
         DITCH_COMMAND,
+        RTL_COMMAND,
         FP_CHANGE,
         FP_REQUEST,
         STATUS_MESSAGE
@@ -89,6 +95,7 @@ typedef struct{
         TakeoffCommand takeoffCommand;
         LandCommand landCommand;
         DitchCommand ditchCommand;
+        RtlCommand rtlCommand;
         FpChange fpChange;
         FpRequest fpRequest;
         StatusMessage statusMessage;

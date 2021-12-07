@@ -385,6 +385,16 @@ void SetLandCmd(CognitionState_t* state){
     state->cognitionCommands.push_back(cmd);
 }
 
+void SetRtlCmd(CognitionState_t* state){
+    if(!state->parameters.active){
+        return;
+    }
+    RtlCommand RTL_command;
+    Command cmd = {.commandType=CommandType_e::RTL_COMMAND};
+    cmd.rtlCommand = RTL_command;
+    state->cognitionCommands.push_back(cmd);
+}
+
 void FindNewPath(CognitionState_t *state,const std::string &planID,const larcfm::Position &positionA,
                 const larcfm::Velocity &velocityA,
                 const larcfm::Position &positionB,

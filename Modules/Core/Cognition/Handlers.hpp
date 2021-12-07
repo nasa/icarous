@@ -731,6 +731,10 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 class ReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
         LogMessage(state,"[HANDLER] | Return to launch");
+        if(true){
+            SetRtlCmd(state);
+            return SUCCESS;
+        }
         larcfm::Position positionA = state->position;
         double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
         larcfm::Position positionB = state->launchPoint.mkAlt(state->position.alt());
@@ -744,6 +748,9 @@ class ReturnToLaunch: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Execute(CognitionState_t* state){
+        if(true){
+            return INPROGRESS;
+        }
         if(state->pathRequest == REQUEST_RESPONDED){
             state->pathRequest = REQUEST_NIL;
             SetGuidanceFlightPlan(state,"RtlPath",1);
