@@ -727,14 +727,14 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 
 };
 
-// Handler to return to launch point
-class ReturnToLaunch: public EventHandler<CognitionState_t>{
+// Handler to return to launch point, continuing to monitor triggers
+class IcarousReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
-        LogMessage(state,"[HANDLER] | Return to launch");
-        if(true){
-            SetRtlCmd(state);
-            return SUCCESS;
+        /// Only execute if cognition is active
+        if(!state->parameters.active){
+             return SHUTDOWN;
         }
+        LogMessage(state,"[HANDLER] | Return to launch (ICAROUS)");
         larcfm::Position positionA = state->position;
         double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
         larcfm::Position positionB = state->launchPoint.mkAlt(state->position.alt());
@@ -748,9 +748,6 @@ class ReturnToLaunch: public EventHandler<CognitionState_t>{
     }
 
     retVal_e Execute(CognitionState_t* state){
-        if(true){
-            return INPROGRESS;
-        }
         if(state->pathRequest == REQUEST_RESPONDED){
             state->pathRequest = REQUEST_NIL;
             SetGuidanceFlightPlan(state,"RtlPath",1);
@@ -763,5 +760,20 @@ class ReturnToLaunch: public EventHandler<CognitionState_t>{
             }
             return INPROGRESS;
         }
+    }
+};
+
+// Handler to return to launch point by sending RTL command
+class CommandReturnToLaunch: public EventHandler<CognitionState_t>{
+    retVal_e Initialize(CognitionState_t* state){
+        /// Only execute if cognition is active
+        if(!state->parameters.active){
+             return SHUTDOWN;
+        }
+        LogMessage(state,"[HANDLER] | Return to launch (Command)");
+        SetRtlCmd(state);
+        // Set passive mode
+        state->parameters.active = false;
+        return SUCCESS;
     }
 };

@@ -65,6 +65,16 @@ typedef enum{
 }resolutionType_e;
 
 /**
+ * @enum fenceAction_e
+ * @brief Enumeration of actions to take on geofence conflict
+ */
+typedef enum{
+    NEXT_WP,
+    ICAROUS_RTL,
+    COMMAND_RTL
+}fenceAction_e;
+
+/**
  * @enum request_e 
  * @brief Enuemration of flightplan request states
  */

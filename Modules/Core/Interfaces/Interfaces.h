@@ -117,6 +117,7 @@ typedef struct{
     double planLookaheadTime;       // lookahead time for traffic and fence conflicts
     double persistenceTime;         // traffic conflict persistence time
     bool return2NextWP;             // Return to path behavior. 0 return to nearest point. 1. next WP
+    int fenceAction;                // Action to take on geofence conflict. 0 next feasible WP. 1 Icarous-controlled RTL. 2 RTL command
     bool active;                    // Make cognition active                   
     bool returnVector;              // Use vectors to command the vehicle to return to mission
     bool verifyPlanConflict;        // Verify if imminent conflict is a real conflicty by comparing it with current plan

@@ -31,6 +31,7 @@ void Cognition::ReadParamsFromFile(const std::string config){
     cogState.parameters.persistenceTime = parameters.getValue("persistence_time");
     cogState.parameters.return2NextWP =parameters.getBool("return_nextwp");
     cogState.parameters.returnVector = parameters.getBool("return_vector");
+    cogState.parameters.fenceAction = parameters.getInt("fence_action");
     cogState.parameters.verifyPlanConflict = parameters.getValue("verify_conflict_with_plan");
     cogState.parameters.planLookaheadTime = parameters.getValue("plan_lookahead");
     cogState.parameters.PriorityTakeoff = parameters.getInt("Priority_Takeoff");;

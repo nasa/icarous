@@ -62,16 +62,27 @@ void Cognition::InitializeEventHandlers(){
                              MAKE_HANDLER(EngageNominalPlan));
 
    eventMng.AddEventHandler("RtlPlanComplete",
-                             inputPriorities["RtlPlanComplete"],
+                             inputPriorities["PrimaryPlanComplete"],
                              RtlPlanCompletionTrigger,
                              MAKE_HANDLER(LandPhaseHandler));
 
    /// Conflict related triggers
-   eventMng.AddEventHandler("FenceConflict",
-                             inputPriorities["FenceConflict"],
-                             FenceConflictTrigger,
-                             MAKE_HANDLER(ReturnToLaunch));
-                             //MAKE_HANDLER(ReturnToNextFeasibleWP));
+   if(cogState.parameters.fenceAction == ICAROUS_RTL){
+      eventMng.AddEventHandler("FenceConflict",
+                              inputPriorities["FenceConflict"],
+                              FenceConflictTrigger,
+                              MAKE_HANDLER(IcarousReturnToLaunch));
+   }else if(cogState.parameters.fenceAction == COMMAND_RTL){
+      eventMng.AddEventHandler("FenceConflict",
+                              inputPriorities["FenceConflict"],
+                              FenceConflictTrigger,
+                              MAKE_HANDLER(CommandReturnToLaunch));
+   }else{
+      eventMng.AddEventHandler("FenceConflict",
+                              inputPriorities["FenceConflict"],
+                              FenceConflictTrigger,
+                              MAKE_HANDLER(ReturnToNextFeasibleWP));
+   }
 
    eventMng.AddEventHandler("TrafficConflict1",
                              inputPriorities["TrafficConflict1"],

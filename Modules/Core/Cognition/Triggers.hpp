@@ -73,6 +73,9 @@ bool RtlPlanCompletionTrigger(CognitionState_t* state){
     
     if(state->activePlan != nullptr){
         std::string planID = state->activePlan->getID();
+        if (planID == "RtlPath" && state->nextWpId[planID] >= state->activePlan->size()){
+            SendStatus(state,(char*)"IC: RTL Path Complete",6);
+        }
         return (planID == "RtlPath" && state->nextWpId[planID] >= state->activePlan->size());
     } else {
         return false;
