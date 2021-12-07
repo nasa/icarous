@@ -378,15 +378,15 @@ double Guidance::ComputeClimbRate(double speedRef){
     const larcfm::Position position = currentPos;
     const larcfm::Position prevWaypoint = currentPlan->getPos(nextWP-1);
     const larcfm::Position nextWaypoint = currentPlan->getPos(nextWP);
-    const double deltaAltref = prevWaypoint.distanceV(nextWaypoint);
+    const double deltaAltref = nextWaypoint.alt() - prevWaypoint.alt();
     const double deltaDistRef = prevWaypoint.distanceH(nextWaypoint);
     const double fpAngle = atan2(deltaAltref,deltaDistRef); 
     const double deltaH = nextWaypoint.alt() - position.alt();
     double climbrate = 0;
     bool climbSegment = false;
     bool bangbang = false;
-    // Check if this is a climb segment
-    if(fabs(fpAngle) < 1e-5){
+    /// Check if this is a climb segment
+    if(fabs(fpAngle) > 1e-5){
        climbSegment = true;
     }
 
