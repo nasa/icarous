@@ -10,7 +10,7 @@ var searchData=
   ['ceiling_7',['ceiling',['../structgeofence__t.html#a3079511908f9754a184d65822e148a17',1,'geofence_t']]],
   ['chan_8',['chan',['../structrc__channels__t.html#a139489b8967ab5192863b716fb6fc1f9',1,'rc_channels_t']]],
   ['chancount_9',['chancount',['../structrc__channels__t.html#a1609e3d08f55963f33033ed7536e5813',1,'rc_channels_t']]],
-  ['children_10',['children',['../class_event_handler.html#ae7ada3b91d9a2c29f8e9441733aa425d',1,'EventHandler']]],
+  ['children_10',['children',['../class_event_handler.html#ae7ada3b91d9a2c29f8e9441733aa425d',1,'EventHandler::children()'],['../structnode.html#a6c7729b29cc4dd53f1e0f2a556258315',1,'node::children()']]],
   ['climb_11',['climb',['../structvfrhud__t.html#aac46376811d3bcc9733a9b122dc8fc2a',1,'vfrhud_t']]],
   ['climbangle_12',['climbAngle',['../structguidance__parameters__t.html#a396e5aa7732256b6e78bd81a2bb0d540',1,'guidance_parameters_t']]],
   ['climbanglehrange_13',['climbAngleHRange',['../structguidance__parameters__t.html#aae1970ef09037dfd12e1bcba63015865',1,'guidance_parameters_t']]],

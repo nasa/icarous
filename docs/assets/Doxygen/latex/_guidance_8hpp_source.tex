@@ -16,7 +16,7 @@
 \DoxyCodeLine{16 \textcolor{preprocessor}{\#include <Velocity.h>}}
 \DoxyCodeLine{17 \textcolor{preprocessor}{\#include <TrajGen.h>}}
 \DoxyCodeLine{18 }
-\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Guidance.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h}{Guidance.h}}"{}}}
 \DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Interfaces.h"{}}}
 \DoxyCodeLine{21 }
 \DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{class_guidance}{Guidance}}\{}
@@ -31,7 +31,7 @@
 \DoxyCodeLine{35     larcfm::Velocity \mbox{\hyperlink{class_guidance_a8b993d81fec5384ad4f12944b459bfec}{currentAirspeed}};                 }
 \DoxyCodeLine{36     larcfm::Velocity \mbox{\hyperlink{class_guidance_a118ce9bd01ef62ba59b3f8208e43e2cc}{currentGroundSpeed}};              }
 \DoxyCodeLine{37     larcfm::Velocity \mbox{\hyperlink{class_guidance_a5524351858d155338c1e0c7cdb608980}{outputCmd}};                       }
-\DoxyCodeLine{38     GuidanceMode \mbox{\hyperlink{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}{mode}};                                }
+\DoxyCodeLine{38     \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{GuidanceMode}} \mbox{\hyperlink{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}{mode}};                                }
 \DoxyCodeLine{39     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_abfa772a0dd17f1a3c07e63f535a7663e}{currTime}};                                  }
 \DoxyCodeLine{40     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_guidance_a4ae6cc43e93ec637a300f3611cae5559}{wpReached}};                                   }
 \DoxyCodeLine{41     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_guidance_a31abc81c8110d033b7cacdd07c2e3fdf}{etaControl}};                                  }
@@ -83,7 +83,7 @@
 \DoxyCodeLine{196 }
 \DoxyCodeLine{203     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_guidance_aa8ec5b739ece761c793f86210dbd6376}{RunGuidance}}(\textcolor{keywordtype}{double} time);}
 \DoxyCodeLine{204 }
-\DoxyCodeLine{213     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a95bce920021a29d2b3c9dbe94e32fa95}{SetGuidanceMode}}(\textcolor{keyword}{const} GuidanceMode \mbox{\hyperlink{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}{mode}},\textcolor{keyword}{const} std::string planID,\textcolor{keyword}{const} \textcolor{keywordtype}{int} nextWP,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} eta);}
+\DoxyCodeLine{213     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a95bce920021a29d2b3c9dbe94e32fa95}{SetGuidanceMode}}(\textcolor{keyword}{const} \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{GuidanceMode}} \mbox{\hyperlink{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}{mode}},\textcolor{keyword}{const} std::string planID,\textcolor{keyword}{const} \textcolor{keywordtype}{int} nextWP,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} eta);}
 \DoxyCodeLine{214 }
 \DoxyCodeLine{223     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_ac8c08a2721f8a210697b500db46b5646}{ChangeWaypointAlt}}(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} wpID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} value,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} updateAll);}
 \DoxyCodeLine{224 }

@@ -1,0 +1,36 @@
+\hypertarget{_dubins_planner_8hpp}{}\doxysection{Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/\+Dubins\+Planner.hpp File Reference}
+\label{_dubins_planner_8hpp}\index{Modules/Core/TrajectoryManager/DubinsPlanner/DubinsPlanner.hpp@{Modules/Core/TrajectoryManager/DubinsPlanner/DubinsPlanner.hpp}}
+
+
+Dubins planner implementation.  
+
+
+{\ttfamily \#include \char`\"{}Vect3.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Poly3\+D.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Position.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Velocity.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}CDPolycarp.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Projection.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Euclidean\+Projection.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Plan.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Daidalus.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Polycarp\+Resolution.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Units.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Dubins\+Params.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnode}{node}}
+\begin{DoxyCompactList}\small\item\em node data structure used to build search tree \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_dubins_planner}{Dubins\+Planner}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_dubins_planner}{Dubins\+Planner}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_dubins_planner_8hpp_a7b25dc46f29dcd657be05fc79953455c}\label{_dubins_planner_8hpp_a7b25dc46f29dcd657be05fc79953455c}} 
+typedef std\+::vector$<$ std\+::pair$<$ larcfm\+::\+Nav\+Point, larcfm\+::\+Tcp\+Data $>$ $>$ {\bfseries tcp\+Data\+\_\+t}
+\end{DoxyCompactItemize}

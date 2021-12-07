@@ -1,221 +1,816 @@
 \hypertarget{class_dubins_planner}{}\doxysection{Dubins\+Planner Class Reference}
 \label{class_dubins_planner}\index{DubinsPlanner@{DubinsPlanner}}
+
+
+\mbox{\hyperlink{class_dubins_planner}{Dubins\+Planner}} object.  
+
+
+
+
+{\ttfamily \#include $<$Dubins\+Planner.\+hpp$>$}
+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{class_dubins_planner_ac85653e6ea4856717d2afc41cc165332}\label{class_dubins_planner_ac85653e6ea4856717d2afc41cc165332}} 
+{\bfseries Dubins\+Planner} ()
+\begin{DoxyCompactList}\small\item\em Construct a new Dubins Planner object. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_afea2491670f6a0eccbe5b0ff68884b66}\label{class_dubins_planner_afea2491670f6a0eccbe5b0ff68884b66}} 
 void {\bfseries Reset} ()
-\item 
-\mbox{\Hypertarget{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}\label{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}} 
-void {\bfseries Shrink\+Traffic\+Volume} (double factor)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}\label{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}} 
-void {\bfseries Set\+Parameters} (\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&prms)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}\label{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}} 
-void {\bfseries Set\+Vehicle\+Initial\+Conditions} (larcfm\+::\+Vect3 \&pos, larcfm\+::\+Velocity \&vel)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}\label{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}} 
-void {\bfseries Set\+Traffic} (std\+::vector$<$ larcfm\+::\+Vect3 $>$ \&tfpos, std\+::vector$<$ larcfm\+::\+Velocity $>$ \&tfvel)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}\label{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}} 
-void {\bfseries Set\+Traffic} (larcfm\+::\+Plan \&tf)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}\label{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}} 
-void {\bfseries Set\+Boundary} (larcfm\+::\+Poly3D \&bounding\+Box)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}\label{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}} 
-void {\bfseries Set\+ZBoundary} (double zmin, double zmax)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}\label{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}} 
-void {\bfseries Set\+Obstacles} (std\+::list$<$ larcfm\+::\+Poly3D $>$ \&obstacle\+List)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}\label{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}} 
-void {\bfseries Set\+Goal} (larcfm\+::\+Vect3 \&goal, larcfm\+::\+Velocity final\+Vel)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}\label{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}} 
-bool {\bfseries Compute\+Path} (double start\+Time)
-\item 
+\begin{DoxyCompactList}\small\item\em Reset object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}{Shrink\+Traffic\+Volume}} (double factor)
+\begin{DoxyCompactList}\small\item\em Shrink traffic volume by given factor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}{Set\+Parameters}} (\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&prms)
+\begin{DoxyCompactList}\small\item\em Set the Parameters object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}{Set\+Vehicle\+Initial\+Conditions}} (larcfm\+::\+Vect3 \&pos, larcfm\+::\+Velocity \&vel)
+\begin{DoxyCompactList}\small\item\em Set the Vehicle Initial Conditions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}{Set\+Traffic}} (std\+::vector$<$ larcfm\+::\+Vect3 $>$ \&tfpos, std\+::vector$<$ larcfm\+::\+Velocity $>$ \&tfvel)
+\begin{DoxyCompactList}\small\item\em Set intruders. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}{Set\+Traffic}} (larcfm\+::\+Plan \&tf)
+\begin{DoxyCompactList}\small\item\em Set the Traffic plan if intent information is already known. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}{Set\+Boundary}} (larcfm\+::\+Poly3D \&\mbox{\hyperlink{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}{bounding\+Box}})
+\begin{DoxyCompactList}\small\item\em Set bounding box constraint. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}{Set\+ZBoundary}} (double zmin, double zmax)
+\begin{DoxyCompactList}\small\item\em Set vertical limits. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}{Set\+Obstacles}} (std\+::list$<$ larcfm\+::\+Poly3D $>$ \&\mbox{\hyperlink{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}{obstacle\+List}})
+\begin{DoxyCompactList}\small\item\em Input obstacles. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}{Set\+Goal}} (larcfm\+::\+Vect3 \&goal, larcfm\+::\+Velocity final\+Vel)
+\begin{DoxyCompactList}\small\item\em Set goal position and velocity. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}{Compute\+Path}} (double start\+Time)
+\begin{DoxyCompactList}\small\item\em Compute path. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}{Get\+Plan}} (larcfm\+::\+Euclidean\+Projection \&proj, larcfm\+::\+Plan \&plan)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get plan. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 static bool \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}{Line\+Plan\+Intersection}} (larcfm\+::\+Vect2 \&A, larcfm\+::\+Vect2 \&B, double floor, double ceiling, larcfm\+::\+Vect3 \&current\+Pos, larcfm\+::\+Vect3 \&next\+Pos)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Compute intersection between line and plane. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}\label{class_dubins_planner_a05efa9b3172a2bf6b63580b26ec0872e}} 
-std\+::vector$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ {\bfseries path}
-\end{DoxyCompactItemize}
+\mbox{\Hypertarget{class_dubins_planner_aef3d0c4a2ffd4b782116e40e2f9bd5e9}\label{class_dubins_planner_aef3d0c4a2ffd4b782116e40e2f9bd5e9}} 
+std\+::vector$<$ \mbox{\hyperlink{structnode}{node}} $>$ {\bfseries path}
+\begin{DoxyCompactList}\small\item\em final solution \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_dubins_planner_a03e4342608872b43944ca28ffeec65a7}\label{class_dubins_planner_a03e4342608872b43944ca28ffeec65a7}} 
-\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$ {\bfseries Find\+Nearest} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&query)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}\label{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}} 
-void {\bfseries Get\+Potential\+Fixes} ()
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}\label{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}} 
-bool {\bfseries Check\+Conflict\+Circle\+Circle} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, larcfm\+::\+Velocity start\+Vel1, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 stop2, larcfm\+::\+Velocity start\+Vel2, larcfm\+::\+Vect2 time\+Interval2, double radius2)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}\label{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}} 
-bool {\bfseries Check\+Conflict\+Line\+Circle} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, double turn\+Rate, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
-\item 
+\mbox{\hyperlink{structnode}{node}} $\ast$ \mbox{\hyperlink{class_dubins_planner_affddc1d474f877e38bd4f04b39d30bc0}{Find\+Nearest}} (\mbox{\hyperlink{structnode}{node}} \&query)
+\begin{DoxyCompactList}\small\item\em Find nearest node to a given query node. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}{Get\+Potential\+Fixes}} ()
+\begin{DoxyCompactList}\small\item\em Compute potential fixes used for planning. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}{Check\+Conflict\+Circle\+Circle}} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, larcfm\+::\+Velocity start\+Vel1, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 stop2, larcfm\+::\+Velocity start\+Vel2, larcfm\+::\+Vect2 time\+Interval2, double radius2)
+\begin{DoxyCompactList}\small\item\em Check if two circle arcs intersect. Each arc is occupied for a certain duration. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}{Check\+Conflict\+Line\+Circle}} (larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 stop1, double turn\+Rate, larcfm\+::\+Vect2 time\+Interval1, double radius1, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
+\begin{DoxyCompactList}\small\item\em Check intersection of line segment and arc segment. \end{DoxyCompactList}\item 
 std\+::pair$<$ double, double $>$ \mbox{\hyperlink{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}{Get\+Line\+Circle\+Intersection}} (larcfm\+::\+Vect2 start, larcfm\+::\+Vect2 direction, double t0, double R)
-\item 
+\begin{DoxyCompactList}\small\item\em Compute line circle intersection. circle centered at origin. \end{DoxyCompactList}\item 
 std\+::pair$<$ double, double $>$ \mbox{\hyperlink{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}{Get\+Line\+Line\+Intersection}} (larcfm\+::\+Vect3 start1, larcfm\+::\+Vect3 direction1, double t1, larcfm\+::\+Vect3 start2, larcfm\+::\+Vect3 direction2, double t2, double R)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a519360a48df40b77704a55983e2e298f}\label{class_dubins_planner_a519360a48df40b77704a55983e2e298f}} 
-bool {\bfseries Check\+Conflict\+Line\+Line} (larcfm\+::\+Vect3 start1, larcfm\+::\+Velocity start\+Vel1, double t1, larcfm\+::\+Vect2 time\+Interval1, larcfm\+::\+Vect3 start2, larcfm\+::\+Velocity start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_aa778ad3311524a77d21f1d8d49d1bf0f}\label{class_dubins_planner_aa778ad3311524a77d21f1d8d49d1bf0f}} 
-void {\bfseries Build\+Tree} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$nd)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a77e9051293313b33dc88cd88d1f19b4e}\label{class_dubins_planner_a77e9051293313b33dc88cd88d1f19b4e}} 
-bool {\bfseries Dijkstra\+Search} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$root, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a460db0d90bbf052b7501299e8910eef5}\label{class_dubins_planner_a460db0d90bbf052b7501299e8910eef5}} 
-bool {\bfseries Astar\+Search} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$root, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a62d90d0da0afb28395a97d0bbaaafda2}\label{class_dubins_planner_a62d90d0da0afb28395a97d0bbaaafda2}} 
-bool {\bfseries Get\+Next\+Trk\+Vs} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&\mbox{\hyperlink{structnode}{node}}, double \&trk, double \&vs)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_aca0c2b562069092058e78b1744fccf5a}\label{class_dubins_planner_aca0c2b562069092058e78b1744fccf5a}} 
-bool {\bfseries Greedy\+Depth\+First} (\mbox{\hyperlink{structnode}{node\+\_\+t}} q, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$g)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a22f9acaae3cf4f2abf0c054ca4df07c8}\label{class_dubins_planner_a22f9acaae3cf4f2abf0c054ca4df07c8}} 
-double {\bfseries Node\+Distance} (\mbox{\hyperlink{structnode}{node\+\_\+t}} \&A, \mbox{\hyperlink{structnode}{node\+\_\+t}} \&B)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}\label{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}} 
-bool {\bfseries Check\+Goal} ()
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a60e849281666d1104891b6664544a76c}\label{class_dubins_planner_a60e849281666d1104891b6664544a76c}} 
-bool {\bfseries Check\+Projected\+Fence\+Conflict} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$qnode, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$goal)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a920699e9fa26e61df853114a89f16670}\label{class_dubins_planner_a920699e9fa26e61df853114a89f16670}} 
-bool {\bfseries Get\+Dubins\+Params} (\mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$start, \mbox{\hyperlink{structnode}{node\+\_\+t}} $\ast$end)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}\label{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}} 
-bool {\bfseries Check\+Alt\+Feasibility} (double startz, double endz, double dist, double gs1, double gs2)
-\item 
+\begin{DoxyCompactList}\small\item\em Compute Line Line Intersection. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a519360a48df40b77704a55983e2e298f}{Check\+Conflict\+Line\+Line}} (larcfm\+::\+Vect3 start1, larcfm\+::\+Velocity start\+Vel1, double t1, larcfm\+::\+Vect2 time\+Interval1, larcfm\+::\+Vect3 start2, larcfm\+::\+Velocity start\+Vel2, double t2, larcfm\+::\+Vect2 time\+Interval2)
+\begin{DoxyCompactList}\small\item\em Check conflict between line-\/line segment. Line segments have durations associated with them. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_dubins_planner_aa89c38916f0d2d3f79dd45b669ae1449}{Build\+Tree}} (\mbox{\hyperlink{structnode}{node}} $\ast$nd)
+\begin{DoxyCompactList}\small\item\em Build tree by recursively expanding nodes. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_ab658ecb3f0110ee4eaa96ab337bf3751}{Astar\+Search}} (\mbox{\hyperlink{structnode}{node}} $\ast$root, \mbox{\hyperlink{structnode}{node}} $\ast$goal)
+\begin{DoxyCompactList}\small\item\em Perform Astar search from root to goal. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_afbfc1bea8dd218fb0c4e91ee080fe5d8}{Get\+Next\+Trk\+Vs}} (\mbox{\hyperlink{structnode}{node}} \&\mbox{\hyperlink{structnode}{node}}, double \&trk, double \&vs)
+\begin{DoxyCompactList}\small\item\em Get next trk and gs to use based on the smallest cost to go child. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_dubins_planner_a2abe418c473dcf0c3e4d16ff063a5bfa}{Node\+Distance}} (\mbox{\hyperlink{structnode}{node}} \&A, \mbox{\hyperlink{structnode}{node}} \&B)
+\begin{DoxyCompactList}\small\item\em Distance between two given nodes. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}{Check\+Goal}} ()
+\begin{DoxyCompactList}\small\item\em Check if goal was reached. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a31080b3976cf59dbeb6fcc7f5878bf55}{Check\+Projected\+Fence\+Conflict}} (\mbox{\hyperlink{structnode}{node}} $\ast$qnode, \mbox{\hyperlink{structnode}{node}} $\ast$goal)
+\begin{DoxyCompactList}\small\item\em Check if line connecting two nodes is conflicting with available fences. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a16c02c746aeae668740731580b8e41c7}{Get\+Dubins\+Params}} (\mbox{\hyperlink{structnode}{node}} $\ast$start, \mbox{\hyperlink{structnode}{node}} $\ast$end)
+\begin{DoxyCompactList}\small\item\em Get parameters describing dubins curves between two nodes. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}{Check\+Alt\+Feasibility}} (double startz, double endz, double dist, double gs1, double gs2)
+\begin{DoxyCompactList}\small\item\em Check if altitude can be reached within the given distance and speed constraints. \end{DoxyCompactList}\item 
 tcp\+Data\+\_\+t \mbox{\hyperlink{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}{Compute\+Alt\+Tcp}} (tcp\+Data\+\_\+t \&TCPdata, double startgs, double stopgs)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}\label{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}} 
-tcp\+Data\+\_\+t {\bfseries Compute\+Speed\+Tcp} (tcp\+Data\+\_\+t \&TCPdata, double startgs, double stopgs)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}\label{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}} 
-bool {\bfseries Check\+Fence\+Conflict} (tcp\+Data\+\_\+t trajectory)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}\label{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}} 
-bool {\bfseries Check\+Traffic\+Conflict} (tcp\+Data\+\_\+t trajectory)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}\label{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}} 
-bool {\bfseries Check\+Traffic\+Conflict} (double start\+Time, larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start\+Pos, larcfm\+::\+Vect3 tcp1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 tcp2, larcfm\+::\+Vect3 end\+Pos, double r, double t1, double t2, double t3, double gs, double vs)
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a94b479b6f2b8ce7b844ee3c85ee48370}\label{class_dubins_planner_a94b479b6f2b8ce7b844ee3c85ee48370}} 
-std\+::list$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ $\ast$ {\bfseries Get\+Node\+List} ()
+\begin{DoxyCompactList}\small\item\em Compute alittude trajectory change points. \end{DoxyCompactList}\item 
+tcp\+Data\+\_\+t \mbox{\hyperlink{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}{Compute\+Speed\+Tcp}} (tcp\+Data\+\_\+t \&TCPdata, double startgs, double stopgs)
+\begin{DoxyCompactList}\small\item\em Compute speed trajectory change points. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}{Check\+Fence\+Conflict}} (tcp\+Data\+\_\+t trajectory)
+\begin{DoxyCompactList}\small\item\em Check fence conflict for given dubins curve. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}{Check\+Traffic\+Conflict}} (tcp\+Data\+\_\+t trajectory)
+\begin{DoxyCompactList}\small\item\em Check traffic conflict for given dubins curve. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}{Check\+Traffic\+Conflict}} (double start\+Time, larcfm\+::\+Vect3 center1, larcfm\+::\+Vect3 start\+Pos, larcfm\+::\+Vect3 tcp1, larcfm\+::\+Vect3 center2, larcfm\+::\+Vect3 tcp2, larcfm\+::\+Vect3 end\+Pos, double r, double t1, double t2, double t3, double gs, double vs)
+\begin{DoxyCompactList}\small\item\em Check traffic conflict given a curve segment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_dubins_planner_aa48f4813ca29c259fd2f7f24f7d745a7}\label{class_dubins_planner_aa48f4813ca29c259fd2f7f24f7d745a7}} 
+std\+::list$<$ \mbox{\hyperlink{structnode}{node}} $>$ $\ast$ {\bfseries Get\+Node\+List} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_dubins_planner_a8ac6b0682e119b6a40d9893cc5fedc8e}\label{class_dubins_planner_a8ac6b0682e119b6a40d9893cc5fedc8e}} 
-double {\bfseries xmax}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a4d0a43c995b474381c47a9fba96aa10e}\label{class_dubins_planner_a4d0a43c995b474381c47a9fba96aa10e}} 
-double {\bfseries xmin}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_adaf48212aceb9ddcd612687b25dc00f9}\label{class_dubins_planner_adaf48212aceb9ddcd612687b25dc00f9}} 
-double {\bfseries ymax}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a78ad46351e52918ffc9952a899281df5}\label{class_dubins_planner_a78ad46351e52918ffc9952a899281df5}} 
-double {\bfseries ymin}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_abbc6eaec242a85ba7258b1caa85d6860}\label{class_dubins_planner_abbc6eaec242a85ba7258b1caa85d6860}} 
-double {\bfseries zmax}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a890d523f23d4388b512ea919cdf3cbff}\label{class_dubins_planner_a890d523f23d4388b512ea919cdf3cbff}} 
-double {\bfseries zmin}
-\item 
 \mbox{\Hypertarget{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}\label{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}} 
 larcfm\+::\+Poly3D {\bfseries bounding\+Box}
-\item 
+\begin{DoxyCompactList}\small\item\em bounding\+Box defines the extent of the search space \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a54e32946cfc5abf90f5d7ea7019a3bbb}\label{class_dubins_planner_a54e32946cfc5abf90f5d7ea7019a3bbb}} 
 std\+::vector$<$ larcfm\+::\+Vect2 $>$ {\bfseries shrunkbbox}
-\item 
+\begin{DoxyCompactList}\small\item\em contracted vertices of bounding box \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}\label{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}} 
 std\+::list$<$ larcfm\+::\+Poly3D $>$ {\bfseries obstacle\+List}
-\item 
-\mbox{\Hypertarget{class_dubins_planner_a382821ec6ac690baec69d5354dde79b4}\label{class_dubins_planner_a382821ec6ac690baec69d5354dde79b4}} 
-std\+::vector$<$ \mbox{\hyperlink{structnode}{node\+\_\+t}} $>$ {\bfseries potential\+Fixes}
-\item 
+\begin{DoxyCompactList}\small\item\em list of obstacles \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_dubins_planner_a435419b9461b60842cfa93e8b1772f56}\label{class_dubins_planner_a435419b9461b60842cfa93e8b1772f56}} 
+std\+::vector$<$ \mbox{\hyperlink{structnode}{node}} $>$ {\bfseries potential\+Fixes}
+\begin{DoxyCompactList}\small\item\em feasible nodes \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a1e1e844a75b968a52cd43f7e71b22aa5}\label{class_dubins_planner_a1e1e844a75b968a52cd43f7e71b22aa5}} 
 int {\bfseries node\+Count}
-\item 
+\begin{DoxyCompactList}\small\item\em Total node explored. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}\label{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}} 
 larcfm\+::\+Vect3 {\bfseries root\+Fix}
-\item 
+\begin{DoxyCompactList}\small\item\em root position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}\label{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}} 
 larcfm\+::\+Velocity {\bfseries root\+Vel}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity at root \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}\label{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}} 
 larcfm\+::\+Vect3 {\bfseries goal\+Fix}
-\item 
+\begin{DoxyCompactList}\small\item\em goal position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}\label{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}} 
 larcfm\+::\+Velocity {\bfseries goal\+Vel}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity at goal \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_afd823df431577710e305752b9ad8fe47}\label{class_dubins_planner_afd823df431577710e305752b9ad8fe47}} 
 std\+::vector$<$ larcfm\+::\+Vect3 $>$ {\bfseries traffic\+Position}
-\item 
+\begin{DoxyCompactList}\small\item\em positions of traffic \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a7f55fe8a4346354f5d261a31aba09e16}\label{class_dubins_planner_a7f55fe8a4346354f5d261a31aba09e16}} 
 std\+::vector$<$ larcfm\+::\+Velocity $>$ {\bfseries traffic\+Velocity}
-\item 
+\begin{DoxyCompactList}\small\item\em velocities of traffic \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_aaa29add026a6bb61c940441ee8008815}\label{class_dubins_planner_aaa29add026a6bb61c940441ee8008815}} 
 std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries traffic\+Plans}
-\item 
+\begin{DoxyCompactList}\small\item\em intent information of traffic \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_dubins_planner_a03012db8d5b9260d5e100c988f1f216f}\label{class_dubins_planner_a03012db8d5b9260d5e100c988f1f216f}} 
 \mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} {\bfseries params}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em parameters for dubins planner \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}\label{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}} 
+\mbox{\Hypertarget{class_dubins_planner_ab658ecb3f0110ee4eaa96ab337bf3751}\label{class_dubins_planner_ab658ecb3f0110ee4eaa96ab337bf3751}} 
+\index{DubinsPlanner@{DubinsPlanner}!AstarSearch@{AstarSearch}}
+\index{AstarSearch@{AstarSearch}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{AstarSearch()}{AstarSearch()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Astar\+Search (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{root,  }\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{goal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & \\
+\hline
+{\em goal} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_aa89c38916f0d2d3f79dd45b669ae1449}\label{class_dubins_planner_aa89c38916f0d2d3f79dd45b669ae1449}} 
+\index{DubinsPlanner@{DubinsPlanner}!BuildTree@{BuildTree}}
+\index{BuildTree@{BuildTree}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{BuildTree()}{BuildTree()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Build\+Tree (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{nd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em nd} & \\
+\hline
+\end{DoxyParams}
+Build a directed graph by connecting fixes based on line of sight constraints
+
+Can ignore or include reflexive transition if needed
+
+Add fix as a child only if line of sight is available
+
+Recursively find suitlable child fixes\mbox{\Hypertarget{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}\label{class_dubins_planner_a41c9613ccdddbca272df7e54073dce08}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckAltFeasibility@{CheckAltFeasibility}}
+\index{CheckAltFeasibility@{CheckAltFeasibility}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckAltFeasibility()}{CheckAltFeasibility()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Alt\+Feasibility (\begin{DoxyParamCaption}\item[{double}]{startz,  }\item[{double}]{endz,  }\item[{double}]{dist,  }\item[{double}]{gs1,  }\item[{double}]{gs2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em startz} & \\
+\hline
+{\em endz} & \\
+\hline
+{\em dist} & \\
+\hline
+{\em gs1} & \\
+\hline
+{\em gs2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Get initial deceleration/acceleration to vc from v0
+
+Get time to reach v1 from vc with accelration ax\+: (ax is deceleration if vc \texorpdfstring{$>$}{>} v1)\mbox{\Hypertarget{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}\label{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckConflictCircleCircle@{CheckConflictCircleCircle}}
+\index{CheckConflictCircleCircle@{CheckConflictCircleCircle}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckConflictCircleCircle()}{CheckConflictCircleCircle()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Conflict\+Circle\+Circle (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3}]{center1,  }\item[{larcfm\+::\+Vect3}]{start1,  }\item[{larcfm\+::\+Vect3}]{stop1,  }\item[{larcfm\+::\+Velocity}]{start\+Vel1,  }\item[{larcfm\+::\+Vect2}]{time\+Interval1,  }\item[{double}]{radius1,  }\item[{larcfm\+::\+Vect3}]{center2,  }\item[{larcfm\+::\+Vect3}]{start2,  }\item[{larcfm\+::\+Vect3}]{stop2,  }\item[{larcfm\+::\+Velocity}]{start\+Vel2,  }\item[{larcfm\+::\+Vect2}]{time\+Interval2,  }\item[{double}]{radius2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em center1} & center of arc1 \\
+\hline
+{\em start1} & start point on arc1 \\
+\hline
+{\em stop1} & stop point on arc1 \\
+\hline
+{\em start\+Vel1} & start velocity on arc1 \\
+\hline
+{\em time\+Interval1} & time interval on arc1 \\
+\hline
+{\em radius1} & radius of arc1 \\
+\hline
+{\em center2} & center of arc2 \\
+\hline
+{\em start2} & start point on arc2 \\
+\hline
+{\em stop2} & stop point on arc2 \\
+\hline
+{\em start\+Vel2} & start velocity on arc2 \\
+\hline
+{\em time\+Interval2} & time interval on arc2 \\
+\hline
+{\em radius2} & radius of arc2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}\label{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckConflictLineCircle@{CheckConflictLineCircle}}
+\index{CheckConflictLineCircle@{CheckConflictLineCircle}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckConflictLineCircle()}{CheckConflictLineCircle()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Conflict\+Line\+Circle (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3}]{center1,  }\item[{larcfm\+::\+Vect3}]{start1,  }\item[{larcfm\+::\+Vect3}]{stop1,  }\item[{double}]{turn\+Rate,  }\item[{larcfm\+::\+Vect2}]{time\+Interval1,  }\item[{double}]{radius1,  }\item[{larcfm\+::\+Vect3}]{start2,  }\item[{larcfm\+::\+Vect3}]{start\+Vel2,  }\item[{double}]{t2,  }\item[{larcfm\+::\+Vect2}]{time\+Interval2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em center1} & center of arc1 \\
+\hline
+{\em start1} & start point of arc1 \\
+\hline
+{\em stop1} & stop point of arc1 \\
+\hline
+{\em turn\+Rate} & turn rate on arc \\
+\hline
+{\em time\+Interval1} & time interval on arc1 \\
+\hline
+{\em radius1} & radius of arc1 \\
+\hline
+{\em start2} & start point on line \\
+\hline
+{\em start\+Vel2} & start velocity on line \\
+\hline
+{\em t2} & start time on line \\
+\hline
+{\em time\+Interval2} & time interval on line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a519360a48df40b77704a55983e2e298f}\label{class_dubins_planner_a519360a48df40b77704a55983e2e298f}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckConflictLineLine@{CheckConflictLineLine}}
+\index{CheckConflictLineLine@{CheckConflictLineLine}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckConflictLineLine()}{CheckConflictLineLine()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Conflict\+Line\+Line (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3}]{start1,  }\item[{larcfm\+::\+Velocity}]{start\+Vel1,  }\item[{double}]{t1,  }\item[{larcfm\+::\+Vect2}]{time\+Interval1,  }\item[{larcfm\+::\+Vect3}]{start2,  }\item[{larcfm\+::\+Velocity}]{start\+Vel2,  }\item[{double}]{t2,  }\item[{larcfm\+::\+Vect2}]{time\+Interval2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em start1} & \\
+\hline
+{\em start\+Vel1} & \\
+\hline
+{\em t1} & \\
+\hline
+{\em time\+Interval1} & \\
+\hline
+{\em start2} & \\
+\hline
+{\em start\+Vel2} & \\
+\hline
+{\em t2} & \\
+\hline
+{\em time\+Interval2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}\label{class_dubins_planner_a91aa628c2ec7df1ab395fb4b25ce0f68}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckFenceConflict@{CheckFenceConflict}}
+\index{CheckFenceConflict@{CheckFenceConflict}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckFenceConflict()}{CheckFenceConflict()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Fence\+Conflict (\begin{DoxyParamCaption}\item[{tcp\+Data\+\_\+t}]{trajectory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em trajectory} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Check for fence conflict between point A and point B
+
+For a BOT, find intersection of complete turn circle with fence vertices. Note\+: This is overly conservative
+
+For all other types of TCPs, find linear intersection\mbox{\Hypertarget{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}\label{class_dubins_planner_a27d6a44c8fdad9cf4e983b251ae79a41}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckGoal@{CheckGoal}}
+\index{CheckGoal@{CheckGoal}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckGoal()}{CheckGoal()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Goal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a31080b3976cf59dbeb6fcc7f5878bf55}\label{class_dubins_planner_a31080b3976cf59dbeb6fcc7f5878bf55}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckProjectedFenceConflict@{CheckProjectedFenceConflict}}
+\index{CheckProjectedFenceConflict@{CheckProjectedFenceConflict}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckProjectedFenceConflict()}{CheckProjectedFenceConflict()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Projected\+Fence\+Conflict (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{qnode,  }\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{goal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em qnode} & \\
+\hline
+{\em goal} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}\label{class_dubins_planner_a76083bb140f71918c818fd405d71ed1a}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckTrafficConflict@{CheckTrafficConflict}}
+\index{CheckTrafficConflict@{CheckTrafficConflict}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckTrafficConflict()}{CheckTrafficConflict()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Traffic\+Conflict (\begin{DoxyParamCaption}\item[{double}]{start\+Time,  }\item[{larcfm\+::\+Vect3}]{center1,  }\item[{larcfm\+::\+Vect3}]{start\+Pos,  }\item[{larcfm\+::\+Vect3}]{tcp1,  }\item[{larcfm\+::\+Vect3}]{center2,  }\item[{larcfm\+::\+Vect3}]{tcp2,  }\item[{larcfm\+::\+Vect3}]{end\+Pos,  }\item[{double}]{r,  }\item[{double}]{t1,  }\item[{double}]{t2,  }\item[{double}]{t3,  }\item[{double}]{gs,  }\item[{double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Time} & \\
+\hline
+{\em center1} & \\
+\hline
+{\em start\+Pos} & \\
+\hline
+{\em tcp1} & \\
+\hline
+{\em center2} & \\
+\hline
+{\em tcp2} & \\
+\hline
+{\em end\+Pos} & \\
+\hline
+{\em r} & \\
+\hline
+{\em t1} & \\
+\hline
+{\em t2} & \\
+\hline
+{\em t3} & \\
+\hline
+{\em gs} & \\
+\hline
+{\em vs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Check for conflict with the first turn segment
+
+Check for conflict with level flight segment
+
+Check for conflict with last turn segment\mbox{\Hypertarget{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}\label{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}} 
+\index{DubinsPlanner@{DubinsPlanner}!CheckTrafficConflict@{CheckTrafficConflict}}
+\index{CheckTrafficConflict@{CheckTrafficConflict}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{CheckTrafficConflict()}{CheckTrafficConflict()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Check\+Traffic\+Conflict (\begin{DoxyParamCaption}\item[{tcp\+Data\+\_\+t}]{trajectory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em trajectory} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Currently only handles trajectories with no overlapping TCP types Assumes traffic plans are linear\mbox{\Hypertarget{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}\label{class_dubins_planner_a7f362947e58f0f35fc9bf2fd2072a1dd}} 
 \index{DubinsPlanner@{DubinsPlanner}!ComputeAltTcp@{ComputeAltTcp}}
 \index{ComputeAltTcp@{ComputeAltTcp}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{ComputeAltTcp()}{ComputeAltTcp()}}
 {\footnotesize\ttfamily tcp\+Data\+\_\+t Dubins\+Planner\+::\+Compute\+Alt\+Tcp (\begin{DoxyParamCaption}\item[{tcp\+Data\+\_\+t \&}]{TCPdata,  }\item[{double}]{startgs,  }\item[{double}]{stopgs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+\begin{DoxyParams}{Parameters}
+{\em TCPdata} & \\
+\hline
+{\em startgs} & \\
+\hline
+{\em stopgs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tcp\+Data\+\_\+t 
+\end{DoxyReturn}
 The formulation here assumes the vc \texorpdfstring{$<$}{<} v0 and h5 \texorpdfstring{$>$}{>} h0. ~\newline
- If the above assumption is not true, then hdot,az,daz,ax,dax signs must be chosen appropriately.\mbox{\Hypertarget{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}\label{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}} 
+ If the above assumption is not true, then hdot,az,daz,ax,dax signs must be chosen appropriately.
+
+Get initial deceleration/acceleration to vc from v0
+
+Expression for x,h after initial vertical acceleration/deceleration from 0 to hdot
+
+Expression for x,h after steady climb
+
+Time to reach v1 from vc with accelration ax\+: (ax is deceleration if vc \texorpdfstring{$>$}{>} v1)
+
+Use the BOT from original TCP
+
+Set EOT to also be BGS
+
+Set EGS \& BVS at x1 distance from prev EOT
+
+Set EVS at x2 distance from prev EOT
+
+Set BVS at x3 from prev EOT
+
+Set EVS/\+BGS at x4 from prev EOT
+
+Set EGS at x5 from prev EOT
+
+Add remaining TCPs from original data distance to BOT from x5\mbox{\Hypertarget{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}\label{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}} 
+\index{DubinsPlanner@{DubinsPlanner}!ComputePath@{ComputePath}}
+\index{ComputePath@{ComputePath}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{ComputePath()}{ComputePath()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Compute\+Path (\begin{DoxyParamCaption}\item[{double}]{start\+Time }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Compute potential fix points
+
+Build graph
+
+search path using Astar algorithm\mbox{\Hypertarget{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}\label{class_dubins_planner_a406fbe995ebfa3cf3c1e69885259b6e0}} 
+\index{DubinsPlanner@{DubinsPlanner}!ComputeSpeedTcp@{ComputeSpeedTcp}}
+\index{ComputeSpeedTcp@{ComputeSpeedTcp}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{ComputeSpeedTcp()}{ComputeSpeedTcp()}}
+{\footnotesize\ttfamily tcp\+Data\+\_\+t Dubins\+Planner\+::\+Compute\+Speed\+Tcp (\begin{DoxyParamCaption}\item[{tcp\+Data\+\_\+t \&}]{TCPdata,  }\item[{double}]{startgs,  }\item[{double}]{stopgs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em TCPdata} & \\
+\hline
+{\em startgs} & \\
+\hline
+{\em stopgs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+tcp\+Data\+\_\+t 
+\end{DoxyReturn}
+Get time to reach new speed based on acceleration profile
+
+Get distance to complete acceleration to new new speed
+
+Get segment distance before staring acceleration
+
+Compute intermediate point for BGS (assume EGS is colocated with BOT)\mbox{\Hypertarget{class_dubins_planner_affddc1d474f877e38bd4f04b39d30bc0}\label{class_dubins_planner_affddc1d474f877e38bd4f04b39d30bc0}} 
+\index{DubinsPlanner@{DubinsPlanner}!FindNearest@{FindNearest}}
+\index{FindNearest@{FindNearest}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{FindNearest()}{FindNearest()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structnode}{node}} $\ast$ Dubins\+Planner\+::\+Find\+Nearest (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} \&}]{query }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em query} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+node$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a16c02c746aeae668740731580b8e41c7}\label{class_dubins_planner_a16c02c746aeae668740731580b8e41c7}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetDubinsParams@{GetDubinsParams}}
+\index{GetDubinsParams@{GetDubinsParams}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetDubinsParams()}{GetDubinsParams()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Get\+Dubins\+Params (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{start,  }\item[{\mbox{\hyperlink{structnode}{node}} $\ast$}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & \\
+\hline
+{\em end} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Dubins parameter computation based on\+: Small Unmanned Aircraft\+: Theory and Practice. Randal W. Beard and Timothy W. Mc\+Lain
+
+Parameters for RSR curve
+
+Parameters for RSL curve
+
+Parameters for LSR curve
+
+Parameters for LSL curve
+
+Sort the paths based on segment lengths
+
+Compute tcps for altitude changes
+
+Check for fence conflicts
+
+Check traffic conflicts on the path\mbox{\Hypertarget{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}\label{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}} 
 \index{DubinsPlanner@{DubinsPlanner}!GetLineCircleIntersection@{GetLineCircleIntersection}}
 \index{GetLineCircleIntersection@{GetLineCircleIntersection}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{GetLineCircleIntersection()}{GetLineCircleIntersection()}}
 {\footnotesize\ttfamily std\+::pair$<$ double, double $>$ Dubins\+Planner\+::\+Get\+Line\+Circle\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect2}]{start,  }\item[{larcfm\+::\+Vect2}]{direction,  }\item[{double}]{t0,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+\begin{DoxyParams}{Parameters}
+{\em start} & start point \\
+\hline
+{\em direction} & velocity \\
+\hline
+{\em t0} & start time \\
+\hline
+{\em R} & radius of circle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair$<$double,double$>$ 
+\end{DoxyReturn}
 Find intersection between a line and circle of radius r centered at (0,0) Assume a line is parameterized as follows. where start \textbackslash{}in R2, direction \textbackslash{}in R2, t,t0 \textbackslash{}in R line = start + (t-\/t0)$\ast$direction.\mbox{\Hypertarget{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}\label{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}} 
 \index{DubinsPlanner@{DubinsPlanner}!GetLineLineIntersection@{GetLineLineIntersection}}
 \index{GetLineLineIntersection@{GetLineLineIntersection}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{GetLineLineIntersection()}{GetLineLineIntersection()}}
 {\footnotesize\ttfamily std\+::pair$<$ double, double $>$ Dubins\+Planner\+::\+Get\+Line\+Line\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3}]{start1,  }\item[{larcfm\+::\+Vect3}]{direction1,  }\item[{double}]{t1,  }\item[{larcfm\+::\+Vect3}]{start2,  }\item[{larcfm\+::\+Vect3}]{direction2,  }\item[{double}]{t2,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Check if two vehicles travelling in a straight line come within D distance apart of each other. Xa = \mbox{[}xa,ya,za\mbox{]} -\/ starting position of vehicle A Va = \mbox{[}vxa,vya,vza\mbox{]} -\/ starting velocity of vehicle A Xb = \mbox{[}xb,yb,zb\mbox{]} -\/ starting position of vehicle B Vb = \mbox{[}vxb,vyb,vzb\mbox{]} -\/ starting velocity of vehicle B Xa(t) = Xa(t01) + Va x (t -\/ t01) Xb(t) = Xb(t01) + Vb x (t -\/ t02) Xr(t) = Xb(t) -\/ Xa(t) Check \textbackslash{}\+Forall t \textbackslash{}in \mbox{[}t0,tf\mbox{]}, $\vert$$\vert$\+Xr(t)$\vert$$\vert$ \texorpdfstring{$>$}{>} D Ensured by checking for the roots of quadratic equation $\vert$$\vert$\+Xr(t)$\vert$$\vert$$^\wedge$2 -\/ D$^\wedge$2 = 0\mbox{\Hypertarget{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}\label{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}} 
+
+\begin{DoxyParams}{Parameters}
+{\em start1} & start point on line1 \\
+\hline
+{\em direction1} & direction of line1 \\
+\hline
+{\em t1} & start time on line1 \\
+\hline
+{\em start2} & start point on line2 \\
+\hline
+{\em direction2} & direction on line2 \\
+\hline
+{\em t2} & start time on line3 \\
+\hline
+{\em R} & collision radius. Consider intersection if points are R distance from each other. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair$<$double,double$>$ 
+\end{DoxyReturn}
+Check if two vehicles travelling in a straight line come within D distance apart of each other. Xa = \mbox{[}xa,ya,za\mbox{]} -\/ starting position of vehicle A Va = \mbox{[}vxa,vya,vza\mbox{]} -\/ starting velocity of vehicle A Xb = \mbox{[}xb,yb,zb\mbox{]} -\/ starting position of vehicle B Vb = \mbox{[}vxb,vyb,vzb\mbox{]} -\/ starting velocity of vehicle B Xa(t) = Xa(t01) + Va x (t -\/ t01) Xb(t) = Xb(t01) + Vb x (t -\/ t02) Xr(t) = Xb(t) -\/ Xa(t) Check \textbackslash{}\+Forall t \textbackslash{}in \mbox{[}t0,tf\mbox{]}, $\vert$$\vert$\+Xr(t)$\vert$$\vert$ \texorpdfstring{$>$}{>} D Ensured by checking for the roots of quadratic equation $\vert$$\vert$\+Xr(t)$\vert$$\vert$$^\wedge$2 -\/ D$^\wedge$2 = 0\mbox{\Hypertarget{class_dubins_planner_afbfc1bea8dd218fb0c4e91ee080fe5d8}\label{class_dubins_planner_afbfc1bea8dd218fb0c4e91ee080fe5d8}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetNextTrkVs@{GetNextTrkVs}}
+\index{GetNextTrkVs@{GetNextTrkVs}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetNextTrkVs()}{GetNextTrkVs()}}
+{\footnotesize\ttfamily bool Dubins\+Planner\+::\+Get\+Next\+Trk\+Vs (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} \&}]{node,  }\item[{double \&}]{trk,  }\item[{double \&}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & \\
+\hline
+{\em trk} & \\
+\hline
+{\em vs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}\label{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}} 
 \index{DubinsPlanner@{DubinsPlanner}!GetPlan@{GetPlan}}
 \index{GetPlan@{GetPlan}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
 {\footnotesize\ttfamily void Dubins\+Planner\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{larcfm\+::\+Euclidean\+Projection \&}]{proj,  }\item[{larcfm\+::\+Plan \&}]{plan }\end{DoxyParamCaption})}
 
-Since the first TCP in this node is the same as the last TCP from the previous node, merge TCP data\mbox{\Hypertarget{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}\label{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}} 
+
+\begin{DoxyParams}{Parameters}
+{\em proj} & projection to compute gps coordinates from \\
+\hline
+{\em plan} & output \\
+\hline
+\end{DoxyParams}
+The first node in the plan is produced externally
+
+Convert TCP center from NED frame to Geodetetic reference frame
+
+Since the first TCP in this node is the same as the last TCP from the previous node, merge TCP data
+
+Add MOT TCP data if making a turn \texorpdfstring{$>$}{>} 180 degree\mbox{\Hypertarget{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}\label{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}} 
+\index{DubinsPlanner@{DubinsPlanner}!GetPotentialFixes@{GetPotentialFixes}}
+\index{GetPotentialFixes@{GetPotentialFixes}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{GetPotentialFixes()}{GetPotentialFixes()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Get\+Potential\+Fixes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Root and Goal nodes are always assumed feasible locations
+
+Use POLYCarp class for detecting obstacle violations
+
+Get positons close to each obstacle vertex as a potential fix
+
+Expand each obstacle by 2.\+1 times the turn radius
+
+Add each expanded vertex to potential fixes
+
+add points dH above floor and root points
+
+add points at goal altitude (after checking to see if free from obstacle conflict)
+
+add points at current altitude
+
+Shrink bounding box and it\textquotesingle{}s vertices to potential fixes. Shrink by 2.\+1 x turn radius
+
+Characteristic length used to radially sample points around root and goal nodes
+
+Generate points radially from the root position N defines the number of paritions of \mbox{[}0,360\mbox{]}\mbox{\Hypertarget{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}\label{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}} 
 \index{DubinsPlanner@{DubinsPlanner}!LinePlanIntersection@{LinePlanIntersection}}
 \index{LinePlanIntersection@{LinePlanIntersection}!DubinsPlanner@{DubinsPlanner}}
 \doxysubsubsection{\texorpdfstring{LinePlanIntersection()}{LinePlanIntersection()}}
 {\footnotesize\ttfamily bool Dubins\+Planner\+::\+Line\+Plan\+Intersection (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect2 \&}]{A,  }\item[{larcfm\+::\+Vect2 \&}]{B,  }\item[{double}]{floor,  }\item[{double}]{ceiling,  }\item[{larcfm\+::\+Vect3 \&}]{current\+Pos,  }\item[{larcfm\+::\+Vect3 \&}]{next\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-Equation of plan is given by\+: (p-\/p0).n = 0 ( \textquotesingle{}.\textquotesingle{} here is the dot product between vectors) where p0 is a point on the plane, n is the unit normal vector of the plane. Equation of line\+: p = l0 + d$\ast$l where l0 is a point on the line, d is a scalar, l is a vector in the line\textquotesingle{}s direction. Subsitute line equation into plan to find intersection. Solve for d\+: d = (p0 -\/ l0).n/(l.\+n) Use d in equation of line to get the point of intersection with the plane.
+
+\begin{DoxyParams}{Parameters}
+{\em A} & point A on plane \\
+\hline
+{\em B} & point B on plane \\
+\hline
+{\em floor} & plane floor \\
+\hline
+{\em ceiling} & plane ceiling \\
+\hline
+{\em current\+Pos} & start position of line \\
+\hline
+{\em next\+Pos} & end position of line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+Equation of plan is given by\+: (p-\/p0).n = 0 ( \textquotesingle{}.\textquotesingle{} here is the dot product between vectors) where p0 is a point on the plane, n is the unit normal vector of the plane. Equation of line\+: p = l0 + d$\ast$l where l0 is a point on the line, d is a scalar, l is a vector in the line\textquotesingle{}s direction. Subsitute line equation into plan to find intersection. Solve for d\+: d = (p0 -\/ l0).n/(l.\+n) Use d in equation of line to get the point of intersection with the plane.\mbox{\Hypertarget{class_dubins_planner_a2abe418c473dcf0c3e4d16ff063a5bfa}\label{class_dubins_planner_a2abe418c473dcf0c3e4d16ff063a5bfa}} 
+\index{DubinsPlanner@{DubinsPlanner}!NodeDistance@{NodeDistance}}
+\index{NodeDistance@{NodeDistance}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{NodeDistance()}{NodeDistance()}}
+{\footnotesize\ttfamily double Dubins\+Planner\+::\+Node\+Distance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structnode}{node}} \&}]{A,  }\item[{\mbox{\hyperlink{structnode}{node}} \&}]{B }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+{\em B} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}\label{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetBoundary@{SetBoundary}}
+\index{SetBoundary@{SetBoundary}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetBoundary()}{SetBoundary()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Boundary (\begin{DoxyParamCaption}\item[{larcfm\+::\+Poly3D \&}]{bounding\+Box }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em bounding\+Box} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}\label{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetGoal@{SetGoal}}
+\index{SetGoal@{SetGoal}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetGoal()}{SetGoal()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Goal (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3 \&}]{goal,  }\item[{larcfm\+::\+Velocity}]{final\+Vel }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em goal} & \\
+\hline
+{\em final\+Vel} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}\label{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetObstacles@{SetObstacles}}
+\index{SetObstacles@{SetObstacles}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetObstacles()}{SetObstacles()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Obstacles (\begin{DoxyParamCaption}\item[{std\+::list$<$ larcfm\+::\+Poly3D $>$ \&}]{obstacle\+List }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em obstacle\+List} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}\label{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetParameters@{SetParameters}}
+\index{SetParameters@{SetParameters}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetParameters()}{SetParameters()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Parameters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&}]{prms }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em prms} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}\label{class_dubins_planner_a83be369a9f729aeac086ebd38921af9f}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetTraffic@{SetTraffic}}
+\index{SetTraffic@{SetTraffic}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetTraffic()}{SetTraffic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Traffic (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan \&}]{tf }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em tf} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}\label{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetTraffic@{SetTraffic}}
+\index{SetTraffic@{SetTraffic}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetTraffic()}{SetTraffic()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Traffic (\begin{DoxyParamCaption}\item[{std\+::vector$<$ larcfm\+::\+Vect3 $>$ \&}]{tfpos,  }\item[{std\+::vector$<$ larcfm\+::\+Velocity $>$ \&}]{tfvel }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em tfpos} & list of traffic positions \\
+\hline
+{\em tfvel} & list of corresponding traffic velocities \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}\label{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetVehicleInitialConditions@{SetVehicleInitialConditions}}
+\index{SetVehicleInitialConditions@{SetVehicleInitialConditions}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetVehicleInitialConditions()}{SetVehicleInitialConditions()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+Vehicle\+Initial\+Conditions (\begin{DoxyParamCaption}\item[{larcfm\+::\+Vect3 \&}]{pos,  }\item[{larcfm\+::\+Velocity \&}]{vel }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & vehicle initial position \\
+\hline
+{\em vel} & vehicle initial velocity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}\label{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}} 
+\index{DubinsPlanner@{DubinsPlanner}!SetZBoundary@{SetZBoundary}}
+\index{SetZBoundary@{SetZBoundary}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{SetZBoundary()}{SetZBoundary()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Set\+ZBoundary (\begin{DoxyParamCaption}\item[{double}]{zmin,  }\item[{double}]{zmax }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em zmin} & \\
+\hline
+{\em zmax} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}\label{class_dubins_planner_ab70201e005e74cce6c7cf5ccafa40cd8}} 
+\index{DubinsPlanner@{DubinsPlanner}!ShrinkTrafficVolume@{ShrinkTrafficVolume}}
+\index{ShrinkTrafficVolume@{ShrinkTrafficVolume}!DubinsPlanner@{DubinsPlanner}}
+\doxysubsubsection{\texorpdfstring{ShrinkTrafficVolume()}{ShrinkTrafficVolume()}}
+{\footnotesize\ttfamily void Dubins\+Planner\+::\+Shrink\+Traffic\+Volume (\begin{DoxyParamCaption}\item[{double}]{factor }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em factor} & value \texorpdfstring{$<$}{<} 1 \\
+\hline
+\end{DoxyParams}
+
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Dubins\+Planner.\+hpp\item 
+Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/\mbox{\hyperlink{_dubins_planner_8hpp}{Dubins\+Planner.\+hpp}}\item 
 Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Dubins\+Planner.\+cpp\item 
 Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Search\+Algorithms.\+cpp\end{DoxyCompactItemize}

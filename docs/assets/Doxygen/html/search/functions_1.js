@@ -14,5 +14,6 @@ var searchData=
   ['arducopter_5fappinitializedata_11',['ARDUCOPTER_AppInitializeData',['../arducopter_8c.html#a7d57285f2538647fa6767139e52d1eba',1,'ARDUCOPTER_AppInitializeData():&#160;arducopter.c'],['../arducopter_8h.html#ae0b80fdc7d9dccb9ef77049831430f54',1,'ARDUCOPTER_AppInitializeData(void):&#160;arducopter.c']]],
   ['arducopter_5fappmain_12',['ARDUCOPTER_AppMain',['../arducopter_8c.html#a62f0d473eaf67561e9271712dfb178ab',1,'ARDUCOPTER_AppMain(void):&#160;arducopter.c'],['../arducopter_8h.html#a62f0d473eaf67561e9271712dfb178ab',1,'ARDUCOPTER_AppMain(void):&#160;arducopter.c']]],
   ['arducopter_5fprocesspacket_13',['ARDUCOPTER_ProcessPacket',['../arducopter_8h.html#ade5227c437a85b05b5f943024b3cd11e',1,'apProcessMessages.c']]],
-  ['arducoptertablevalidationfunc_14',['ArducopterTableValidationFunc',['../arducopter_8c.html#a73843075a22329bae03451ae0fad6de8',1,'ArducopterTableValidationFunc(void *TblPtr):&#160;arducopter.c'],['../arducopter_8h.html#a73843075a22329bae03451ae0fad6de8',1,'ArducopterTableValidationFunc(void *TblPtr):&#160;arducopter.c']]]
+  ['arducoptertablevalidationfunc_14',['ArducopterTableValidationFunc',['../arducopter_8c.html#a73843075a22329bae03451ae0fad6de8',1,'ArducopterTableValidationFunc(void *TblPtr):&#160;arducopter.c'],['../arducopter_8h.html#a73843075a22329bae03451ae0fad6de8',1,'ArducopterTableValidationFunc(void *TblPtr):&#160;arducopter.c']]],
+  ['astarsearch_15',['AstarSearch',['../class_dubins_planner.html#ab658ecb3f0110ee4eaa96ab337bf3751',1,'DubinsPlanner']]]
 ];

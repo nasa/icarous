@@ -72,186 +72,920 @@ $(function() {
   <div class="headertitle"><div class="title">DubinsPlanner Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_dubins_planner.html" title="DubinsPlanner object.">DubinsPlanner</a> object.  
+</p>
+
+<p><code>#include &lt;<a class="el" href="_dubins_planner_8hpp_source.html">DubinsPlanner.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ac85653e6ea4856717d2afc41cc165332"><td class="memItemLeft" align="right" valign="top"><a id="ac85653e6ea4856717d2afc41cc165332" name="ac85653e6ea4856717d2afc41cc165332"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DubinsPlanner</b> ()</td></tr>
+<tr class="memdesc:ac85653e6ea4856717d2afc41cc165332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Dubins Planner object. <br /></td></tr>
+<tr class="separator:ac85653e6ea4856717d2afc41cc165332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afea2491670f6a0eccbe5b0ff68884b66"><td class="memItemLeft" align="right" valign="top"><a id="afea2491670f6a0eccbe5b0ff68884b66" name="afea2491670f6a0eccbe5b0ff68884b66"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Reset</b> ()</td></tr>
+<tr class="memdesc:afea2491670f6a0eccbe5b0ff68884b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset object. <br /></td></tr>
 <tr class="separator:afea2491670f6a0eccbe5b0ff68884b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab70201e005e74cce6c7cf5ccafa40cd8"><td class="memItemLeft" align="right" valign="top"><a id="ab70201e005e74cce6c7cf5ccafa40cd8" name="ab70201e005e74cce6c7cf5ccafa40cd8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShrinkTrafficVolume</b> (double factor)</td></tr>
+<tr class="memitem:ab70201e005e74cce6c7cf5ccafa40cd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#ab70201e005e74cce6c7cf5ccafa40cd8">ShrinkTrafficVolume</a> (double factor)</td></tr>
+<tr class="memdesc:ab70201e005e74cce6c7cf5ccafa40cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shrink traffic volume by given factor.  <a href="class_dubins_planner.html#ab70201e005e74cce6c7cf5ccafa40cd8">More...</a><br /></td></tr>
 <tr class="separator:ab70201e005e74cce6c7cf5ccafa40cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc1b12f473fbfdfb91e0d1a005634020"><td class="memItemLeft" align="right" valign="top"><a id="afc1b12f473fbfdfb91e0d1a005634020" name="afc1b12f473fbfdfb91e0d1a005634020"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetParameters</b> (<a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;prms)</td></tr>
+<tr class="memitem:afc1b12f473fbfdfb91e0d1a005634020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#afc1b12f473fbfdfb91e0d1a005634020">SetParameters</a> (<a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;prms)</td></tr>
+<tr class="memdesc:afc1b12f473fbfdfb91e0d1a005634020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Parameters object.  <a href="class_dubins_planner.html#afc1b12f473fbfdfb91e0d1a005634020">More...</a><br /></td></tr>
 <tr class="separator:afc1b12f473fbfdfb91e0d1a005634020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a576b0f004f0174443ca8fe482d262317"><td class="memItemLeft" align="right" valign="top"><a id="a576b0f004f0174443ca8fe482d262317" name="a576b0f004f0174443ca8fe482d262317"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetVehicleInitialConditions</b> (larcfm::Vect3 &amp;pos, larcfm::Velocity &amp;vel)</td></tr>
+<tr class="memitem:a576b0f004f0174443ca8fe482d262317"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a576b0f004f0174443ca8fe482d262317">SetVehicleInitialConditions</a> (larcfm::Vect3 &amp;pos, larcfm::Velocity &amp;vel)</td></tr>
+<tr class="memdesc:a576b0f004f0174443ca8fe482d262317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Vehicle Initial Conditions.  <a href="class_dubins_planner.html#a576b0f004f0174443ca8fe482d262317">More...</a><br /></td></tr>
 <tr class="separator:a576b0f004f0174443ca8fe482d262317"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e0e220f4b3ecb30b98b99da14e0026"><td class="memItemLeft" align="right" valign="top"><a id="a71e0e220f4b3ecb30b98b99da14e0026" name="a71e0e220f4b3ecb30b98b99da14e0026"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTraffic</b> (std::vector&lt; larcfm::Vect3 &gt; &amp;tfpos, std::vector&lt; larcfm::Velocity &gt; &amp;tfvel)</td></tr>
+<tr class="memitem:a71e0e220f4b3ecb30b98b99da14e0026"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a71e0e220f4b3ecb30b98b99da14e0026">SetTraffic</a> (std::vector&lt; larcfm::Vect3 &gt; &amp;tfpos, std::vector&lt; larcfm::Velocity &gt; &amp;tfvel)</td></tr>
+<tr class="memdesc:a71e0e220f4b3ecb30b98b99da14e0026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set intruders.  <a href="class_dubins_planner.html#a71e0e220f4b3ecb30b98b99da14e0026">More...</a><br /></td></tr>
 <tr class="separator:a71e0e220f4b3ecb30b98b99da14e0026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83be369a9f729aeac086ebd38921af9f"><td class="memItemLeft" align="right" valign="top"><a id="a83be369a9f729aeac086ebd38921af9f" name="a83be369a9f729aeac086ebd38921af9f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTraffic</b> (larcfm::Plan &amp;tf)</td></tr>
+<tr class="memitem:a83be369a9f729aeac086ebd38921af9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a83be369a9f729aeac086ebd38921af9f">SetTraffic</a> (larcfm::Plan &amp;tf)</td></tr>
+<tr class="memdesc:a83be369a9f729aeac086ebd38921af9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Traffic plan if intent information is already known.  <a href="class_dubins_planner.html#a83be369a9f729aeac086ebd38921af9f">More...</a><br /></td></tr>
 <tr class="separator:a83be369a9f729aeac086ebd38921af9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7773404588cf99573cc050bfc1128bd8"><td class="memItemLeft" align="right" valign="top"><a id="a7773404588cf99573cc050bfc1128bd8" name="a7773404588cf99573cc050bfc1128bd8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBoundary</b> (larcfm::Poly3D &amp;boundingBox)</td></tr>
+<tr class="memitem:a7773404588cf99573cc050bfc1128bd8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a7773404588cf99573cc050bfc1128bd8">SetBoundary</a> (larcfm::Poly3D &amp;<a class="el" href="class_dubins_planner.html#aeb138e28c3ff32089e9623bbf658d039">boundingBox</a>)</td></tr>
+<tr class="memdesc:a7773404588cf99573cc050bfc1128bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set bounding box constraint.  <a href="class_dubins_planner.html#a7773404588cf99573cc050bfc1128bd8">More...</a><br /></td></tr>
 <tr class="separator:a7773404588cf99573cc050bfc1128bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ad9090422661aaf274c08c68298dcfc"><td class="memItemLeft" align="right" valign="top"><a id="a1ad9090422661aaf274c08c68298dcfc" name="a1ad9090422661aaf274c08c68298dcfc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetZBoundary</b> (double zmin, double zmax)</td></tr>
+<tr class="memitem:a1ad9090422661aaf274c08c68298dcfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a1ad9090422661aaf274c08c68298dcfc">SetZBoundary</a> (double zmin, double zmax)</td></tr>
+<tr class="memdesc:a1ad9090422661aaf274c08c68298dcfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set vertical limits.  <a href="class_dubins_planner.html#a1ad9090422661aaf274c08c68298dcfc">More...</a><br /></td></tr>
 <tr class="separator:a1ad9090422661aaf274c08c68298dcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538ba641f8e993f07b85e08ebd678ffb"><td class="memItemLeft" align="right" valign="top"><a id="a538ba641f8e993f07b85e08ebd678ffb" name="a538ba641f8e993f07b85e08ebd678ffb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetObstacles</b> (std::list&lt; larcfm::Poly3D &gt; &amp;obstacleList)</td></tr>
+<tr class="memitem:a538ba641f8e993f07b85e08ebd678ffb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a538ba641f8e993f07b85e08ebd678ffb">SetObstacles</a> (std::list&lt; larcfm::Poly3D &gt; &amp;<a class="el" href="class_dubins_planner.html#af6c5b25c6a8bc33056dc56e93c30d7c3">obstacleList</a>)</td></tr>
+<tr class="memdesc:a538ba641f8e993f07b85e08ebd678ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input obstacles.  <a href="class_dubins_planner.html#a538ba641f8e993f07b85e08ebd678ffb">More...</a><br /></td></tr>
 <tr class="separator:a538ba641f8e993f07b85e08ebd678ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab08872773c6a776c20cb6f1cd9840b64"><td class="memItemLeft" align="right" valign="top"><a id="ab08872773c6a776c20cb6f1cd9840b64" name="ab08872773c6a776c20cb6f1cd9840b64"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGoal</b> (larcfm::Vect3 &amp;goal, larcfm::Velocity finalVel)</td></tr>
+<tr class="memitem:ab08872773c6a776c20cb6f1cd9840b64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#ab08872773c6a776c20cb6f1cd9840b64">SetGoal</a> (larcfm::Vect3 &amp;goal, larcfm::Velocity finalVel)</td></tr>
+<tr class="memdesc:ab08872773c6a776c20cb6f1cd9840b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set goal position and velocity.  <a href="class_dubins_planner.html#ab08872773c6a776c20cb6f1cd9840b64">More...</a><br /></td></tr>
 <tr class="separator:ab08872773c6a776c20cb6f1cd9840b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78a0a2ff57273c00ca94ccb30a8da1e4"><td class="memItemLeft" align="right" valign="top"><a id="a78a0a2ff57273c00ca94ccb30a8da1e4" name="a78a0a2ff57273c00ca94ccb30a8da1e4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ComputePath</b> (double startTime)</td></tr>
+<tr class="memitem:a78a0a2ff57273c00ca94ccb30a8da1e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a78a0a2ff57273c00ca94ccb30a8da1e4">ComputePath</a> (double startTime)</td></tr>
+<tr class="memdesc:a78a0a2ff57273c00ca94ccb30a8da1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute path.  <a href="class_dubins_planner.html#a78a0a2ff57273c00ca94ccb30a8da1e4">More...</a><br /></td></tr>
 <tr class="separator:a78a0a2ff57273c00ca94ccb30a8da1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a051b99a331874a22ee7c83825c04823b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a051b99a331874a22ee7c83825c04823b">GetPlan</a> (larcfm::EuclideanProjection &amp;proj, larcfm::Plan &amp;plan)</td></tr>
+<tr class="memdesc:a051b99a331874a22ee7c83825c04823b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get plan.  <a href="class_dubins_planner.html#a051b99a331874a22ee7c83825c04823b">More...</a><br /></td></tr>
 <tr class="separator:a051b99a331874a22ee7c83825c04823b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a67f8803f0581b35920af29077b6d47"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a0a67f8803f0581b35920af29077b6d47">LinePlanIntersection</a> (larcfm::Vect2 &amp;A, larcfm::Vect2 &amp;B, double floor, double ceiling, larcfm::Vect3 &amp;currentPos, larcfm::Vect3 &amp;nextPos)</td></tr>
+<tr class="memdesc:a0a67f8803f0581b35920af29077b6d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute intersection between line and plane.  <a href="class_dubins_planner.html#a0a67f8803f0581b35920af29077b6d47">More...</a><br /></td></tr>
 <tr class="separator:a0a67f8803f0581b35920af29077b6d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a05efa9b3172a2bf6b63580b26ec0872e"><td class="memItemLeft" align="right" valign="top"><a id="a05efa9b3172a2bf6b63580b26ec0872e" name="a05efa9b3172a2bf6b63580b26ec0872e"></a>
-std::vector&lt; <a class="el" href="structnode.html">node_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path</b></td></tr>
-<tr class="separator:a05efa9b3172a2bf6b63580b26ec0872e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef3d0c4a2ffd4b782116e40e2f9bd5e9"><td class="memItemLeft" align="right" valign="top"><a id="aef3d0c4a2ffd4b782116e40e2f9bd5e9" name="aef3d0c4a2ffd4b782116e40e2f9bd5e9"></a>
+std::vector&lt; <a class="el" href="structnode.html">node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path</b></td></tr>
+<tr class="memdesc:aef3d0c4a2ffd4b782116e40e2f9bd5e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">final solution <br /></td></tr>
+<tr class="separator:aef3d0c4a2ffd4b782116e40e2f9bd5e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a03e4342608872b43944ca28ffeec65a7"><td class="memItemLeft" align="right" valign="top"><a id="a03e4342608872b43944ca28ffeec65a7" name="a03e4342608872b43944ca28ffeec65a7"></a>
-<a class="el" href="structnode.html">node_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>FindNearest</b> (<a class="el" href="structnode.html">node_t</a> &amp;query)</td></tr>
-<tr class="separator:a03e4342608872b43944ca28ffeec65a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c52f474b4f482e5cf054a8b53db0807"><td class="memItemLeft" align="right" valign="top"><a id="a6c52f474b4f482e5cf054a8b53db0807" name="a6c52f474b4f482e5cf054a8b53db0807"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetPotentialFixes</b> ()</td></tr>
+<tr class="memitem:affddc1d474f877e38bd4f04b39d30bc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnode.html">node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#affddc1d474f877e38bd4f04b39d30bc0">FindNearest</a> (<a class="el" href="structnode.html">node</a> &amp;query)</td></tr>
+<tr class="memdesc:affddc1d474f877e38bd4f04b39d30bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find nearest node to a given query node.  <a href="class_dubins_planner.html#affddc1d474f877e38bd4f04b39d30bc0">More...</a><br /></td></tr>
+<tr class="separator:affddc1d474f877e38bd4f04b39d30bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c52f474b4f482e5cf054a8b53db0807"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a6c52f474b4f482e5cf054a8b53db0807">GetPotentialFixes</a> ()</td></tr>
+<tr class="memdesc:a6c52f474b4f482e5cf054a8b53db0807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute potential fixes used for planning.  <a href="class_dubins_planner.html#a6c52f474b4f482e5cf054a8b53db0807">More...</a><br /></td></tr>
 <tr class="separator:a6c52f474b4f482e5cf054a8b53db0807"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f01e9478c1b2697aa91d56927bd509e"><td class="memItemLeft" align="right" valign="top"><a id="a5f01e9478c1b2697aa91d56927bd509e" name="a5f01e9478c1b2697aa91d56927bd509e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictCircleCircle</b> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, larcfm::Velocity startVel1, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2, larcfm::Velocity startVel2, larcfm::Vect2 timeInterval2, double radius2)</td></tr>
+<tr class="memitem:a5f01e9478c1b2697aa91d56927bd509e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a5f01e9478c1b2697aa91d56927bd509e">CheckConflictCircleCircle</a> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, larcfm::Velocity startVel1, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2, larcfm::Velocity startVel2, larcfm::Vect2 timeInterval2, double radius2)</td></tr>
+<tr class="memdesc:a5f01e9478c1b2697aa91d56927bd509e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if two circle arcs intersect. Each arc is occupied for a certain duration.  <a href="class_dubins_planner.html#a5f01e9478c1b2697aa91d56927bd509e">More...</a><br /></td></tr>
 <tr class="separator:a5f01e9478c1b2697aa91d56927bd509e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d0c1dde9cc87b3456b5c6437229f901"><td class="memItemLeft" align="right" valign="top"><a id="a8d0c1dde9cc87b3456b5c6437229f901" name="a8d0c1dde9cc87b3456b5c6437229f901"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictLineCircle</b> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, double turnRate, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 start2, larcfm::Vect3 startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="memitem:a8d0c1dde9cc87b3456b5c6437229f901"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a8d0c1dde9cc87b3456b5c6437229f901">CheckConflictLineCircle</a> (larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1, double turnRate, larcfm::Vect2 timeInterval1, double radius1, larcfm::Vect3 start2, larcfm::Vect3 startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="memdesc:a8d0c1dde9cc87b3456b5c6437229f901"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check intersection of line segment and arc segment.  <a href="class_dubins_planner.html#a8d0c1dde9cc87b3456b5c6437229f901">More...</a><br /></td></tr>
 <tr class="separator:a8d0c1dde9cc87b3456b5c6437229f901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8696fad703550f4dbe2a7d9b71f94668"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a8696fad703550f4dbe2a7d9b71f94668">GetLineCircleIntersection</a> (larcfm::Vect2 start, larcfm::Vect2 direction, double t0, double R)</td></tr>
+<tr class="memdesc:a8696fad703550f4dbe2a7d9b71f94668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute line circle intersection. circle centered at origin.  <a href="class_dubins_planner.html#a8696fad703550f4dbe2a7d9b71f94668">More...</a><br /></td></tr>
 <tr class="separator:a8696fad703550f4dbe2a7d9b71f94668"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1adb9787cab9bd7ab7d0e148395e9e2b"><td class="memItemLeft" align="right" valign="top">std::pair&lt; double, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a1adb9787cab9bd7ab7d0e148395e9e2b">GetLineLineIntersection</a> (larcfm::Vect3 start1, larcfm::Vect3 direction1, double t1, larcfm::Vect3 start2, larcfm::Vect3 direction2, double t2, double R)</td></tr>
+<tr class="memdesc:a1adb9787cab9bd7ab7d0e148395e9e2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute Line Line Intersection.  <a href="class_dubins_planner.html#a1adb9787cab9bd7ab7d0e148395e9e2b">More...</a><br /></td></tr>
 <tr class="separator:a1adb9787cab9bd7ab7d0e148395e9e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519360a48df40b77704a55983e2e298f"><td class="memItemLeft" align="right" valign="top"><a id="a519360a48df40b77704a55983e2e298f" name="a519360a48df40b77704a55983e2e298f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckConflictLineLine</b> (larcfm::Vect3 start1, larcfm::Velocity startVel1, double t1, larcfm::Vect2 timeInterval1, larcfm::Vect3 start2, larcfm::Velocity startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="memitem:a519360a48df40b77704a55983e2e298f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a519360a48df40b77704a55983e2e298f">CheckConflictLineLine</a> (larcfm::Vect3 start1, larcfm::Velocity startVel1, double t1, larcfm::Vect2 timeInterval1, larcfm::Vect3 start2, larcfm::Velocity startVel2, double t2, larcfm::Vect2 timeInterval2)</td></tr>
+<tr class="memdesc:a519360a48df40b77704a55983e2e298f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check conflict between line-line segment. Line segments have durations associated with them.  <a href="class_dubins_planner.html#a519360a48df40b77704a55983e2e298f">More...</a><br /></td></tr>
 <tr class="separator:a519360a48df40b77704a55983e2e298f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa778ad3311524a77d21f1d8d49d1bf0f"><td class="memItemLeft" align="right" valign="top"><a id="aa778ad3311524a77d21f1d8d49d1bf0f" name="aa778ad3311524a77d21f1d8d49d1bf0f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildTree</b> (<a class="el" href="structnode.html">node_t</a> *nd)</td></tr>
-<tr class="separator:aa778ad3311524a77d21f1d8d49d1bf0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77e9051293313b33dc88cd88d1f19b4e"><td class="memItemLeft" align="right" valign="top"><a id="a77e9051293313b33dc88cd88d1f19b4e" name="a77e9051293313b33dc88cd88d1f19b4e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>DijkstraSearch</b> (<a class="el" href="structnode.html">node_t</a> *root, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
-<tr class="separator:a77e9051293313b33dc88cd88d1f19b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a460db0d90bbf052b7501299e8910eef5"><td class="memItemLeft" align="right" valign="top"><a id="a460db0d90bbf052b7501299e8910eef5" name="a460db0d90bbf052b7501299e8910eef5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AstarSearch</b> (<a class="el" href="structnode.html">node_t</a> *root, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
-<tr class="separator:a460db0d90bbf052b7501299e8910eef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d90d0da0afb28395a97d0bbaaafda2"><td class="memItemLeft" align="right" valign="top"><a id="a62d90d0da0afb28395a97d0bbaaafda2" name="a62d90d0da0afb28395a97d0bbaaafda2"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetNextTrkVs</b> (<a class="el" href="structnode.html">node_t</a> &amp;<a class="el" href="structnode.html">node</a>, double &amp;trk, double &amp;vs)</td></tr>
-<tr class="separator:a62d90d0da0afb28395a97d0bbaaafda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca0c2b562069092058e78b1744fccf5a"><td class="memItemLeft" align="right" valign="top"><a id="aca0c2b562069092058e78b1744fccf5a" name="aca0c2b562069092058e78b1744fccf5a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GreedyDepthFirst</b> (<a class="el" href="structnode.html">node_t</a> q, <a class="el" href="structnode.html">node_t</a> *g)</td></tr>
-<tr class="separator:aca0c2b562069092058e78b1744fccf5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22f9acaae3cf4f2abf0c054ca4df07c8"><td class="memItemLeft" align="right" valign="top"><a id="a22f9acaae3cf4f2abf0c054ca4df07c8" name="a22f9acaae3cf4f2abf0c054ca4df07c8"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>NodeDistance</b> (<a class="el" href="structnode.html">node_t</a> &amp;A, <a class="el" href="structnode.html">node_t</a> &amp;B)</td></tr>
-<tr class="separator:a22f9acaae3cf4f2abf0c054ca4df07c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="memItemLeft" align="right" valign="top"><a id="a27d6a44c8fdad9cf4e983b251ae79a41" name="a27d6a44c8fdad9cf4e983b251ae79a41"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckGoal</b> ()</td></tr>
+<tr class="memitem:aa89c38916f0d2d3f79dd45b669ae1449"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#aa89c38916f0d2d3f79dd45b669ae1449">BuildTree</a> (<a class="el" href="structnode.html">node</a> *nd)</td></tr>
+<tr class="memdesc:aa89c38916f0d2d3f79dd45b669ae1449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build tree by recursively expanding nodes.  <a href="class_dubins_planner.html#aa89c38916f0d2d3f79dd45b669ae1449">More...</a><br /></td></tr>
+<tr class="separator:aa89c38916f0d2d3f79dd45b669ae1449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab658ecb3f0110ee4eaa96ab337bf3751"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#ab658ecb3f0110ee4eaa96ab337bf3751">AstarSearch</a> (<a class="el" href="structnode.html">node</a> *root, <a class="el" href="structnode.html">node</a> *goal)</td></tr>
+<tr class="memdesc:ab658ecb3f0110ee4eaa96ab337bf3751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Astar search from root to goal.  <a href="class_dubins_planner.html#ab658ecb3f0110ee4eaa96ab337bf3751">More...</a><br /></td></tr>
+<tr class="separator:ab658ecb3f0110ee4eaa96ab337bf3751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbfc1bea8dd218fb0c4e91ee080fe5d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#afbfc1bea8dd218fb0c4e91ee080fe5d8">GetNextTrkVs</a> (<a class="el" href="structnode.html">node</a> &amp;<a class="el" href="structnode.html">node</a>, double &amp;trk, double &amp;vs)</td></tr>
+<tr class="memdesc:afbfc1bea8dd218fb0c4e91ee080fe5d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get next trk and gs to use based on the smallest cost to go child.  <a href="class_dubins_planner.html#afbfc1bea8dd218fb0c4e91ee080fe5d8">More...</a><br /></td></tr>
+<tr class="separator:afbfc1bea8dd218fb0c4e91ee080fe5d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2abe418c473dcf0c3e4d16ff063a5bfa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a2abe418c473dcf0c3e4d16ff063a5bfa">NodeDistance</a> (<a class="el" href="structnode.html">node</a> &amp;A, <a class="el" href="structnode.html">node</a> &amp;B)</td></tr>
+<tr class="memdesc:a2abe418c473dcf0c3e4d16ff063a5bfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance between two given nodes.  <a href="class_dubins_planner.html#a2abe418c473dcf0c3e4d16ff063a5bfa">More...</a><br /></td></tr>
+<tr class="separator:a2abe418c473dcf0c3e4d16ff063a5bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a27d6a44c8fdad9cf4e983b251ae79a41">CheckGoal</a> ()</td></tr>
+<tr class="memdesc:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if goal was reached.  <a href="class_dubins_planner.html#a27d6a44c8fdad9cf4e983b251ae79a41">More...</a><br /></td></tr>
 <tr class="separator:a27d6a44c8fdad9cf4e983b251ae79a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60e849281666d1104891b6664544a76c"><td class="memItemLeft" align="right" valign="top"><a id="a60e849281666d1104891b6664544a76c" name="a60e849281666d1104891b6664544a76c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckProjectedFenceConflict</b> (<a class="el" href="structnode.html">node_t</a> *qnode, <a class="el" href="structnode.html">node_t</a> *goal)</td></tr>
-<tr class="separator:a60e849281666d1104891b6664544a76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a920699e9fa26e61df853114a89f16670"><td class="memItemLeft" align="right" valign="top"><a id="a920699e9fa26e61df853114a89f16670" name="a920699e9fa26e61df853114a89f16670"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetDubinsParams</b> (<a class="el" href="structnode.html">node_t</a> *start, <a class="el" href="structnode.html">node_t</a> *end)</td></tr>
-<tr class="separator:a920699e9fa26e61df853114a89f16670"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41c9613ccdddbca272df7e54073dce08"><td class="memItemLeft" align="right" valign="top"><a id="a41c9613ccdddbca272df7e54073dce08" name="a41c9613ccdddbca272df7e54073dce08"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckAltFeasibility</b> (double startz, double endz, double dist, double gs1, double gs2)</td></tr>
+<tr class="memitem:a31080b3976cf59dbeb6fcc7f5878bf55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a31080b3976cf59dbeb6fcc7f5878bf55">CheckProjectedFenceConflict</a> (<a class="el" href="structnode.html">node</a> *qnode, <a class="el" href="structnode.html">node</a> *goal)</td></tr>
+<tr class="memdesc:a31080b3976cf59dbeb6fcc7f5878bf55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if line connecting two nodes is conflicting with available fences.  <a href="class_dubins_planner.html#a31080b3976cf59dbeb6fcc7f5878bf55">More...</a><br /></td></tr>
+<tr class="separator:a31080b3976cf59dbeb6fcc7f5878bf55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c02c746aeae668740731580b8e41c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a16c02c746aeae668740731580b8e41c7">GetDubinsParams</a> (<a class="el" href="structnode.html">node</a> *start, <a class="el" href="structnode.html">node</a> *end)</td></tr>
+<tr class="memdesc:a16c02c746aeae668740731580b8e41c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get parameters describing dubins curves between two nodes.  <a href="class_dubins_planner.html#a16c02c746aeae668740731580b8e41c7">More...</a><br /></td></tr>
+<tr class="separator:a16c02c746aeae668740731580b8e41c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c9613ccdddbca272df7e54073dce08"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a41c9613ccdddbca272df7e54073dce08">CheckAltFeasibility</a> (double startz, double endz, double dist, double gs1, double gs2)</td></tr>
+<tr class="memdesc:a41c9613ccdddbca272df7e54073dce08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if altitude can be reached within the given distance and speed constraints.  <a href="class_dubins_planner.html#a41c9613ccdddbca272df7e54073dce08">More...</a><br /></td></tr>
 <tr class="separator:a41c9613ccdddbca272df7e54073dce08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f362947e58f0f35fc9bf2fd2072a1dd"><td class="memItemLeft" align="right" valign="top">tcpData_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a7f362947e58f0f35fc9bf2fd2072a1dd">ComputeAltTcp</a> (tcpData_t &amp;TCPdata, double startgs, double stopgs)</td></tr>
+<tr class="memdesc:a7f362947e58f0f35fc9bf2fd2072a1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute alittude trajectory change points.  <a href="class_dubins_planner.html#a7f362947e58f0f35fc9bf2fd2072a1dd">More...</a><br /></td></tr>
 <tr class="separator:a7f362947e58f0f35fc9bf2fd2072a1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="memItemLeft" align="right" valign="top"><a id="a406fbe995ebfa3cf3c1e69885259b6e0" name="a406fbe995ebfa3cf3c1e69885259b6e0"></a>
-tcpData_t&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeSpeedTcp</b> (tcpData_t &amp;TCPdata, double startgs, double stopgs)</td></tr>
+<tr class="memitem:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="memItemLeft" align="right" valign="top">tcpData_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a406fbe995ebfa3cf3c1e69885259b6e0">ComputeSpeedTcp</a> (tcpData_t &amp;TCPdata, double startgs, double stopgs)</td></tr>
+<tr class="memdesc:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute speed trajectory change points.  <a href="class_dubins_planner.html#a406fbe995ebfa3cf3c1e69885259b6e0">More...</a><br /></td></tr>
 <tr class="separator:a406fbe995ebfa3cf3c1e69885259b6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="memItemLeft" align="right" valign="top"><a id="a91aa628c2ec7df1ab395fb4b25ce0f68" name="a91aa628c2ec7df1ab395fb4b25ce0f68"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckFenceConflict</b> (tcpData_t trajectory)</td></tr>
+<tr class="memitem:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a91aa628c2ec7df1ab395fb4b25ce0f68">CheckFenceConflict</a> (tcpData_t trajectory)</td></tr>
+<tr class="memdesc:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check fence conflict for given dubins curve.  <a href="class_dubins_planner.html#a91aa628c2ec7df1ab395fb4b25ce0f68">More...</a><br /></td></tr>
 <tr class="separator:a91aa628c2ec7df1ab395fb4b25ce0f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390c2b3e77d392b1c0a97c29a0a11816"><td class="memItemLeft" align="right" valign="top"><a id="a390c2b3e77d392b1c0a97c29a0a11816" name="a390c2b3e77d392b1c0a97c29a0a11816"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTrafficConflict</b> (tcpData_t trajectory)</td></tr>
+<tr class="memitem:a390c2b3e77d392b1c0a97c29a0a11816"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a390c2b3e77d392b1c0a97c29a0a11816">CheckTrafficConflict</a> (tcpData_t trajectory)</td></tr>
+<tr class="memdesc:a390c2b3e77d392b1c0a97c29a0a11816"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check traffic conflict for given dubins curve.  <a href="class_dubins_planner.html#a390c2b3e77d392b1c0a97c29a0a11816">More...</a><br /></td></tr>
 <tr class="separator:a390c2b3e77d392b1c0a97c29a0a11816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76083bb140f71918c818fd405d71ed1a"><td class="memItemLeft" align="right" valign="top"><a id="a76083bb140f71918c818fd405d71ed1a" name="a76083bb140f71918c818fd405d71ed1a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTrafficConflict</b> (double startTime, larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1, larcfm::Vect3 center2, larcfm::Vect3 tcp2, larcfm::Vect3 endPos, double r, double t1, double t2, double t3, double gs, double vs)</td></tr>
+<tr class="memitem:a76083bb140f71918c818fd405d71ed1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dubins_planner.html#a76083bb140f71918c818fd405d71ed1a">CheckTrafficConflict</a> (double startTime, larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1, larcfm::Vect3 center2, larcfm::Vect3 tcp2, larcfm::Vect3 endPos, double r, double t1, double t2, double t3, double gs, double vs)</td></tr>
+<tr class="memdesc:a76083bb140f71918c818fd405d71ed1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check traffic conflict given a curve segment.  <a href="class_dubins_planner.html#a76083bb140f71918c818fd405d71ed1a">More...</a><br /></td></tr>
 <tr class="separator:a76083bb140f71918c818fd405d71ed1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94b479b6f2b8ce7b844ee3c85ee48370"><td class="memItemLeft" align="right" valign="top"><a id="a94b479b6f2b8ce7b844ee3c85ee48370" name="a94b479b6f2b8ce7b844ee3c85ee48370"></a>
-std::list&lt; <a class="el" href="structnode.html">node_t</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeList</b> ()</td></tr>
-<tr class="separator:a94b479b6f2b8ce7b844ee3c85ee48370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa48f4813ca29c259fd2f7f24f7d745a7"><td class="memItemLeft" align="right" valign="top"><a id="aa48f4813ca29c259fd2f7f24f7d745a7" name="aa48f4813ca29c259fd2f7f24f7d745a7"></a>
+std::list&lt; <a class="el" href="structnode.html">node</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeList</b> ()</td></tr>
+<tr class="separator:aa48f4813ca29c259fd2f7f24f7d745a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a8ac6b0682e119b6a40d9893cc5fedc8e"><td class="memItemLeft" align="right" valign="top"><a id="a8ac6b0682e119b6a40d9893cc5fedc8e" name="a8ac6b0682e119b6a40d9893cc5fedc8e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>xmax</b></td></tr>
-<tr class="separator:a8ac6b0682e119b6a40d9893cc5fedc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d0a43c995b474381c47a9fba96aa10e"><td class="memItemLeft" align="right" valign="top"><a id="a4d0a43c995b474381c47a9fba96aa10e" name="a4d0a43c995b474381c47a9fba96aa10e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>xmin</b></td></tr>
-<tr class="separator:a4d0a43c995b474381c47a9fba96aa10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaf48212aceb9ddcd612687b25dc00f9"><td class="memItemLeft" align="right" valign="top"><a id="adaf48212aceb9ddcd612687b25dc00f9" name="adaf48212aceb9ddcd612687b25dc00f9"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ymax</b></td></tr>
-<tr class="separator:adaf48212aceb9ddcd612687b25dc00f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ad46351e52918ffc9952a899281df5"><td class="memItemLeft" align="right" valign="top"><a id="a78ad46351e52918ffc9952a899281df5" name="a78ad46351e52918ffc9952a899281df5"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ymin</b></td></tr>
-<tr class="separator:a78ad46351e52918ffc9952a899281df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbc6eaec242a85ba7258b1caa85d6860"><td class="memItemLeft" align="right" valign="top"><a id="abbc6eaec242a85ba7258b1caa85d6860" name="abbc6eaec242a85ba7258b1caa85d6860"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>zmax</b></td></tr>
-<tr class="separator:abbc6eaec242a85ba7258b1caa85d6860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a890d523f23d4388b512ea919cdf3cbff"><td class="memItemLeft" align="right" valign="top"><a id="a890d523f23d4388b512ea919cdf3cbff" name="a890d523f23d4388b512ea919cdf3cbff"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>zmin</b></td></tr>
-<tr class="separator:a890d523f23d4388b512ea919cdf3cbff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb138e28c3ff32089e9623bbf658d039"><td class="memItemLeft" align="right" valign="top"><a id="aeb138e28c3ff32089e9623bbf658d039" name="aeb138e28c3ff32089e9623bbf658d039"></a>
 larcfm::Poly3D&#160;</td><td class="memItemRight" valign="bottom"><b>boundingBox</b></td></tr>
+<tr class="memdesc:aeb138e28c3ff32089e9623bbf658d039"><td class="mdescLeft">&#160;</td><td class="mdescRight">boundingBox defines the extent of the search space <br /></td></tr>
 <tr class="separator:aeb138e28c3ff32089e9623bbf658d039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e32946cfc5abf90f5d7ea7019a3bbb"><td class="memItemLeft" align="right" valign="top"><a id="a54e32946cfc5abf90f5d7ea7019a3bbb" name="a54e32946cfc5abf90f5d7ea7019a3bbb"></a>
 std::vector&lt; larcfm::Vect2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>shrunkbbox</b></td></tr>
+<tr class="memdesc:a54e32946cfc5abf90f5d7ea7019a3bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">contracted vertices of bounding box <br /></td></tr>
 <tr class="separator:a54e32946cfc5abf90f5d7ea7019a3bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c5b25c6a8bc33056dc56e93c30d7c3"><td class="memItemLeft" align="right" valign="top"><a id="af6c5b25c6a8bc33056dc56e93c30d7c3" name="af6c5b25c6a8bc33056dc56e93c30d7c3"></a>
 std::list&lt; larcfm::Poly3D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>obstacleList</b></td></tr>
+<tr class="memdesc:af6c5b25c6a8bc33056dc56e93c30d7c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">list of obstacles <br /></td></tr>
 <tr class="separator:af6c5b25c6a8bc33056dc56e93c30d7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a382821ec6ac690baec69d5354dde79b4"><td class="memItemLeft" align="right" valign="top"><a id="a382821ec6ac690baec69d5354dde79b4" name="a382821ec6ac690baec69d5354dde79b4"></a>
-std::vector&lt; <a class="el" href="structnode.html">node_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>potentialFixes</b></td></tr>
-<tr class="separator:a382821ec6ac690baec69d5354dde79b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a435419b9461b60842cfa93e8b1772f56"><td class="memItemLeft" align="right" valign="top"><a id="a435419b9461b60842cfa93e8b1772f56" name="a435419b9461b60842cfa93e8b1772f56"></a>
+std::vector&lt; <a class="el" href="structnode.html">node</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>potentialFixes</b></td></tr>
+<tr class="memdesc:a435419b9461b60842cfa93e8b1772f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">feasible nodes <br /></td></tr>
+<tr class="separator:a435419b9461b60842cfa93e8b1772f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e1e844a75b968a52cd43f7e71b22aa5"><td class="memItemLeft" align="right" valign="top"><a id="a1e1e844a75b968a52cd43f7e71b22aa5" name="a1e1e844a75b968a52cd43f7e71b22aa5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>nodeCount</b></td></tr>
+<tr class="memdesc:a1e1e844a75b968a52cd43f7e71b22aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total node explored. <br /></td></tr>
 <tr class="separator:a1e1e844a75b968a52cd43f7e71b22aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e6c201fd49bcfc2af30ba4b54ba9ae1"><td class="memItemLeft" align="right" valign="top"><a id="a0e6c201fd49bcfc2af30ba4b54ba9ae1" name="a0e6c201fd49bcfc2af30ba4b54ba9ae1"></a>
 larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><b>rootFix</b></td></tr>
+<tr class="memdesc:a0e6c201fd49bcfc2af30ba4b54ba9ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">root position <br /></td></tr>
 <tr class="separator:a0e6c201fd49bcfc2af30ba4b54ba9ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a020b92c82ac3d11e9897c1ba34e672b7"><td class="memItemLeft" align="right" valign="top"><a id="a020b92c82ac3d11e9897c1ba34e672b7" name="a020b92c82ac3d11e9897c1ba34e672b7"></a>
 larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>rootVel</b></td></tr>
+<tr class="memdesc:a020b92c82ac3d11e9897c1ba34e672b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocity at root <br /></td></tr>
 <tr class="separator:a020b92c82ac3d11e9897c1ba34e672b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7132aea9eb58ae624cb63fb6546459e6"><td class="memItemLeft" align="right" valign="top"><a id="a7132aea9eb58ae624cb63fb6546459e6" name="a7132aea9eb58ae624cb63fb6546459e6"></a>
 larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><b>goalFix</b></td></tr>
+<tr class="memdesc:a7132aea9eb58ae624cb63fb6546459e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">goal position <br /></td></tr>
 <tr class="separator:a7132aea9eb58ae624cb63fb6546459e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad72c26152e61d24a0833c503578f3750"><td class="memItemLeft" align="right" valign="top"><a id="ad72c26152e61d24a0833c503578f3750" name="ad72c26152e61d24a0833c503578f3750"></a>
 larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>goalVel</b></td></tr>
+<tr class="memdesc:ad72c26152e61d24a0833c503578f3750"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocity at goal <br /></td></tr>
 <tr class="separator:ad72c26152e61d24a0833c503578f3750"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd823df431577710e305752b9ad8fe47"><td class="memItemLeft" align="right" valign="top"><a id="afd823df431577710e305752b9ad8fe47" name="afd823df431577710e305752b9ad8fe47"></a>
 std::vector&lt; larcfm::Vect3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficPosition</b></td></tr>
+<tr class="memdesc:afd823df431577710e305752b9ad8fe47"><td class="mdescLeft">&#160;</td><td class="mdescRight">positions of traffic <br /></td></tr>
 <tr class="separator:afd823df431577710e305752b9ad8fe47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f55fe8a4346354f5d261a31aba09e16"><td class="memItemLeft" align="right" valign="top"><a id="a7f55fe8a4346354f5d261a31aba09e16" name="a7f55fe8a4346354f5d261a31aba09e16"></a>
 std::vector&lt; larcfm::Velocity &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficVelocity</b></td></tr>
+<tr class="memdesc:a7f55fe8a4346354f5d261a31aba09e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocities of traffic <br /></td></tr>
 <tr class="separator:a7f55fe8a4346354f5d261a31aba09e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa29add026a6bb61c940441ee8008815"><td class="memItemLeft" align="right" valign="top"><a id="aaa29add026a6bb61c940441ee8008815" name="aaa29add026a6bb61c940441ee8008815"></a>
 std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficPlans</b></td></tr>
+<tr class="memdesc:aaa29add026a6bb61c940441ee8008815"><td class="mdescLeft">&#160;</td><td class="mdescRight">intent information of traffic <br /></td></tr>
 <tr class="separator:aaa29add026a6bb61c940441ee8008815"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03012db8d5b9260d5e100c988f1f216f"><td class="memItemLeft" align="right" valign="top"><a id="a03012db8d5b9260d5e100c988f1f216f" name="a03012db8d5b9260d5e100c988f1f216f"></a>
 <a class="el" href="struct_dubins_params.html">DubinsParams_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>params</b></td></tr>
+<tr class="memdesc:a03012db8d5b9260d5e100c988f1f216f"><td class="mdescLeft">&#160;</td><td class="mdescRight">parameters for dubins planner <br /></td></tr>
 <tr class="separator:a03012db8d5b9260d5e100c988f1f216f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab658ecb3f0110ee4eaa96ab337bf3751" name="ab658ecb3f0110ee4eaa96ab337bf3751"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab658ecb3f0110ee4eaa96ab337bf3751">&#9670;&nbsp;</a></span>AstarSearch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::AstarSearch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>goal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root</td><td></td></tr>
+    <tr><td class="paramname">goal</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="aa89c38916f0d2d3f79dd45b669ae1449" name="aa89c38916f0d2d3f79dd45b669ae1449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa89c38916f0d2d3f79dd45b669ae1449">&#9670;&nbsp;</a></span>BuildTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::BuildTree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>nd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nd</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >Build a directed graph by connecting fixes based on line of sight constraints</p>
+<p >Can ignore or include reflexive transition if needed</p>
+<p >Add fix as a child only if line of sight is available</p>
+<p >Recursively find suitlable child fixes</p>
+
+</div>
+</div>
+<a id="a41c9613ccdddbca272df7e54073dce08" name="a41c9613ccdddbca272df7e54073dce08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41c9613ccdddbca272df7e54073dce08">&#9670;&nbsp;</a></span>CheckAltFeasibility()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckAltFeasibility </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>endz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>gs1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>gs2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startz</td><td></td></tr>
+    <tr><td class="paramname">endz</td><td></td></tr>
+    <tr><td class="paramname">dist</td><td></td></tr>
+    <tr><td class="paramname">gs1</td><td></td></tr>
+    <tr><td class="paramname">gs2</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Get initial deceleration/acceleration to vc from v0</p>
+<p >Get time to reach v1 from vc with accelration ax: (ax is deceleration if vc &gt; v1)</p>
+
+</div>
+</div>
+<a id="a5f01e9478c1b2697aa91d56927bd509e" name="a5f01e9478c1b2697aa91d56927bd509e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f01e9478c1b2697aa91d56927bd509e">&#9670;&nbsp;</a></span>CheckConflictCircleCircle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckConflictCircleCircle </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>center1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>stop1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>startVel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>center2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>stop2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>startVel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">center1</td><td>center of arc1 </td></tr>
+    <tr><td class="paramname">start1</td><td>start point on arc1 </td></tr>
+    <tr><td class="paramname">stop1</td><td>stop point on arc1 </td></tr>
+    <tr><td class="paramname">startVel1</td><td>start velocity on arc1 </td></tr>
+    <tr><td class="paramname">timeInterval1</td><td>time interval on arc1 </td></tr>
+    <tr><td class="paramname">radius1</td><td>radius of arc1 </td></tr>
+    <tr><td class="paramname">center2</td><td>center of arc2 </td></tr>
+    <tr><td class="paramname">start2</td><td>start point on arc2 </td></tr>
+    <tr><td class="paramname">stop2</td><td>stop point on arc2 </td></tr>
+    <tr><td class="paramname">startVel2</td><td>start velocity on arc2 </td></tr>
+    <tr><td class="paramname">timeInterval2</td><td>time interval on arc2 </td></tr>
+    <tr><td class="paramname">radius2</td><td>radius of arc2 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if there is a conflict </dd></dl>
+
+</div>
+</div>
+<a id="a8d0c1dde9cc87b3456b5c6437229f901" name="a8d0c1dde9cc87b3456b5c6437229f901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0c1dde9cc87b3456b5c6437229f901">&#9670;&nbsp;</a></span>CheckConflictLineCircle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckConflictLineCircle </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>center1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>stop1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>turnRate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>radius1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>startVel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">center1</td><td>center of arc1 </td></tr>
+    <tr><td class="paramname">start1</td><td>start point of arc1 </td></tr>
+    <tr><td class="paramname">stop1</td><td>stop point of arc1 </td></tr>
+    <tr><td class="paramname">turnRate</td><td>turn rate on arc </td></tr>
+    <tr><td class="paramname">timeInterval1</td><td>time interval on arc1 </td></tr>
+    <tr><td class="paramname">radius1</td><td>radius of arc1 </td></tr>
+    <tr><td class="paramname">start2</td><td>start point on line </td></tr>
+    <tr><td class="paramname">startVel2</td><td>start velocity on line </td></tr>
+    <tr><td class="paramname">t2</td><td>start time on line </td></tr>
+    <tr><td class="paramname">timeInterval2</td><td>time interval on line </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="a519360a48df40b77704a55983e2e298f" name="a519360a48df40b77704a55983e2e298f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a519360a48df40b77704a55983e2e298f">&#9670;&nbsp;</a></span>CheckConflictLineLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckConflictLineLine </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>startVel1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>start2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>startVel2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect2&#160;</td>
+          <td class="paramname"><em>timeInterval2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start1</td><td></td></tr>
+    <tr><td class="paramname">startVel1</td><td></td></tr>
+    <tr><td class="paramname">t1</td><td></td></tr>
+    <tr><td class="paramname">timeInterval1</td><td></td></tr>
+    <tr><td class="paramname">start2</td><td></td></tr>
+    <tr><td class="paramname">startVel2</td><td></td></tr>
+    <tr><td class="paramname">t2</td><td></td></tr>
+    <tr><td class="paramname">timeInterval2</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="a91aa628c2ec7df1ab395fb4b25ce0f68" name="a91aa628c2ec7df1ab395fb4b25ce0f68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91aa628c2ec7df1ab395fb4b25ce0f68">&#9670;&nbsp;</a></span>CheckFenceConflict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckFenceConflict </td>
+          <td>(</td>
+          <td class="paramtype">tcpData_t&#160;</td>
+          <td class="paramname"><em>trajectory</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">trajectory</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Check for fence conflict between point A and point B</p>
+<p >For a BOT, find intersection of complete turn circle with fence vertices. Note: This is overly conservative</p>
+<p >For all other types of TCPs, find linear intersection</p>
+
+</div>
+</div>
+<a id="a27d6a44c8fdad9cf4e983b251ae79a41" name="a27d6a44c8fdad9cf4e983b251ae79a41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27d6a44c8fdad9cf4e983b251ae79a41">&#9670;&nbsp;</a></span>CheckGoal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckGoal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="a31080b3976cf59dbeb6fcc7f5878bf55" name="a31080b3976cf59dbeb6fcc7f5878bf55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31080b3976cf59dbeb6fcc7f5878bf55">&#9670;&nbsp;</a></span>CheckProjectedFenceConflict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckProjectedFenceConflict </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>qnode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>goal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">qnode</td><td></td></tr>
+    <tr><td class="paramname">goal</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+
+</div>
+</div>
+<a id="a76083bb140f71918c818fd405d71ed1a" name="a76083bb140f71918c818fd405d71ed1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76083bb140f71918c818fd405d71ed1a">&#9670;&nbsp;</a></span>CheckTrafficConflict() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckTrafficConflict </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>center1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>startPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>tcp1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>center2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>tcp2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Vect3&#160;</td>
+          <td class="paramname"><em>endPos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>gs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>vs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startTime</td><td></td></tr>
+    <tr><td class="paramname">center1</td><td></td></tr>
+    <tr><td class="paramname">startPos</td><td></td></tr>
+    <tr><td class="paramname">tcp1</td><td></td></tr>
+    <tr><td class="paramname">center2</td><td></td></tr>
+    <tr><td class="paramname">tcp2</td><td></td></tr>
+    <tr><td class="paramname">endPos</td><td></td></tr>
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">t1</td><td></td></tr>
+    <tr><td class="paramname">t2</td><td></td></tr>
+    <tr><td class="paramname">t3</td><td></td></tr>
+    <tr><td class="paramname">gs</td><td></td></tr>
+    <tr><td class="paramname">vs</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Check for conflict with the first turn segment</p>
+<p >Check for conflict with level flight segment</p>
+<p >Check for conflict with last turn segment</p>
+
+</div>
+</div>
+<a id="a390c2b3e77d392b1c0a97c29a0a11816" name="a390c2b3e77d392b1c0a97c29a0a11816"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a390c2b3e77d392b1c0a97c29a0a11816">&#9670;&nbsp;</a></span>CheckTrafficConflict() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::CheckTrafficConflict </td>
+          <td>(</td>
+          <td class="paramtype">tcpData_t&#160;</td>
+          <td class="paramname"><em>trajectory</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">trajectory</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Currently only handles trajectories with no overlapping TCP types Assumes traffic plans are linear</p>
+
+</div>
+</div>
 <a id="a7f362947e58f0f35fc9bf2fd2072a1dd" name="a7f362947e58f0f35fc9bf2fd2072a1dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f362947e58f0f35fc9bf2fd2072a1dd">&#9670;&nbsp;</a></span>ComputeAltTcp()</h2>
 
@@ -291,8 +1025,202 @@ std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="botto
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">TCPdata</td><td></td></tr>
+    <tr><td class="paramname">startgs</td><td></td></tr>
+    <tr><td class="paramname">stopgs</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>tcpData_t </dd></dl>
 <p >The formulation here assumes the vc &lt; v0 and h5 &gt; h0. <br  />
  If the above assumption is not true, then hdot,az,daz,ax,dax signs must be chosen appropriately.</p>
+<p >Get initial deceleration/acceleration to vc from v0</p>
+<p >Expression for x,h after initial vertical acceleration/deceleration from 0 to hdot</p>
+<p >Expression for x,h after steady climb</p>
+<p >Time to reach v1 from vc with accelration ax: (ax is deceleration if vc &gt; v1)</p>
+<p >Use the BOT from original TCP</p>
+<p >Set EOT to also be BGS</p>
+<p >Set EGS &amp; BVS at x1 distance from prev EOT</p>
+<p >Set EVS at x2 distance from prev EOT</p>
+<p >Set BVS at x3 from prev EOT</p>
+<p >Set EVS/BGS at x4 from prev EOT</p>
+<p >Set EGS at x5 from prev EOT</p>
+<p >Add remaining TCPs from original data distance to BOT from x5</p>
+
+</div>
+</div>
+<a id="a78a0a2ff57273c00ca94ccb30a8da1e4" name="a78a0a2ff57273c00ca94ccb30a8da1e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78a0a2ff57273c00ca94ccb30a8da1e4">&#9670;&nbsp;</a></span>ComputePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::ComputePath </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startTime</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Compute potential fix points</p>
+<p >Build graph</p>
+<p >search path using Astar algorithm</p>
+
+</div>
+</div>
+<a id="a406fbe995ebfa3cf3c1e69885259b6e0" name="a406fbe995ebfa3cf3c1e69885259b6e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a406fbe995ebfa3cf3c1e69885259b6e0">&#9670;&nbsp;</a></span>ComputeSpeedTcp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">tcpData_t DubinsPlanner::ComputeSpeedTcp </td>
+          <td>(</td>
+          <td class="paramtype">tcpData_t &amp;&#160;</td>
+          <td class="paramname"><em>TCPdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startgs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>stopgs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">TCPdata</td><td></td></tr>
+    <tr><td class="paramname">startgs</td><td></td></tr>
+    <tr><td class="paramname">stopgs</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>tcpData_t </dd></dl>
+<p >Get time to reach new speed based on acceleration profile</p>
+<p >Get distance to complete acceleration to new new speed</p>
+<p >Get segment distance before staring acceleration</p>
+<p >Compute intermediate point for BGS (assume EGS is colocated with BOT)</p>
+
+</div>
+</div>
+<a id="affddc1d474f877e38bd4f04b39d30bc0" name="affddc1d474f877e38bd4f04b39d30bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affddc1d474f877e38bd4f04b39d30bc0">&#9670;&nbsp;</a></span>FindNearest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structnode.html">node</a> * DubinsPlanner::FindNearest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> &amp;&#160;</td>
+          <td class="paramname"><em>query</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">query</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>node* </dd></dl>
+
+</div>
+</div>
+<a id="a16c02c746aeae668740731580b8e41c7" name="a16c02c746aeae668740731580b8e41c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c02c746aeae668740731580b8e41c7">&#9670;&nbsp;</a></span>GetDubinsParams()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::GetDubinsParams </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> *&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td></td></tr>
+    <tr><td class="paramname">end</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
+<p >Dubins parameter computation based on: Small Unmanned Aircraft: Theory and Practice. Randal W. Beard and Timothy W. McLain</p>
+<p >Parameters for RSR curve</p>
+<p >Parameters for RSL curve</p>
+<p >Parameters for LSR curve</p>
+<p >Parameters for LSL curve</p>
+<p >Sort the paths based on segment lengths</p>
+<p >Compute tcps for altitude changes</p>
+<p >Check for fence conflicts</p>
+<p >Check traffic conflicts on the path</p>
 
 </div>
 </div>
@@ -341,6 +1269,16 @@ std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="botto
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>start point </td></tr>
+    <tr><td class="paramname">direction</td><td>velocity </td></tr>
+    <tr><td class="paramname">t0</td><td>start time </td></tr>
+    <tr><td class="paramname">R</td><td>radius of circle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::pair&lt;double,double&gt; </dd></dl>
 <p >Find intersection between a line and circle of radius r centered at (0,0) Assume a line is parameterized as follows. where start \in R2, direction \in R2, t,t0 \in R line = start + (t-t0)*direction.</p>
 
 </div>
@@ -408,7 +1346,73 @@ std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="botto
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start1</td><td>start point on line1 </td></tr>
+    <tr><td class="paramname">direction1</td><td>direction of line1 </td></tr>
+    <tr><td class="paramname">t1</td><td>start time on line1 </td></tr>
+    <tr><td class="paramname">start2</td><td>start point on line2 </td></tr>
+    <tr><td class="paramname">direction2</td><td>direction on line2 </td></tr>
+    <tr><td class="paramname">t2</td><td>start time on line3 </td></tr>
+    <tr><td class="paramname">R</td><td>collision radius. Consider intersection if points are R distance from each other. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::pair&lt;double,double&gt; </dd></dl>
 <p >Check if two vehicles travelling in a straight line come within D distance apart of each other. Xa = [xa,ya,za] - starting position of vehicle A Va = [vxa,vya,vza] - starting velocity of vehicle A Xb = [xb,yb,zb] - starting position of vehicle B Vb = [vxb,vyb,vzb] - starting velocity of vehicle B Xa(t) = Xa(t01) + Va x (t - t01) Xb(t) = Xb(t01) + Vb x (t - t02) Xr(t) = Xb(t) - Xa(t) Check \Forall t \in [t0,tf], ||Xr(t)|| &gt; D Ensured by checking for the roots of quadratic equation ||Xr(t)||^2 - D^2 = 0</p>
+
+</div>
+</div>
+<a id="afbfc1bea8dd218fb0c4e91ee080fe5d8" name="afbfc1bea8dd218fb0c4e91ee080fe5d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbfc1bea8dd218fb0c4e91ee080fe5d8">&#9670;&nbsp;</a></span>GetNextTrkVs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DubinsPlanner::GetNextTrkVs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>trk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>vs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td></td></tr>
+    <tr><td class="paramname">trk</td><td></td></tr>
+    <tr><td class="paramname">vs</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
 
 </div>
 </div>
@@ -437,7 +1441,53 @@ std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="botto
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proj</td><td>projection to compute gps coordinates from </td></tr>
+    <tr><td class="paramname">plan</td><td>output </td></tr>
+  </table>
+  </dd>
+</dl>
+<p >The first node in the plan is produced externally</p>
+<p >Convert TCP center from NED frame to Geodetetic reference frame</p>
 <p >Since the first TCP in this node is the same as the last TCP from the previous node, merge TCP data</p>
+<p >Add MOT TCP data if making a turn &gt; 180 degree</p>
+
+</div>
+</div>
+<a id="a6c52f474b4f482e5cf054a8b53db0807" name="a6c52f474b4f482e5cf054a8b53db0807"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c52f474b4f482e5cf054a8b53db0807">&#9670;&nbsp;</a></span>GetPotentialFixes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::GetPotentialFixes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Root and Goal nodes are always assumed feasible locations</p>
+<p >Use POLYCarp class for detecting obstacle violations</p>
+<p >Get positons close to each obstacle vertex as a potential fix</p>
+<p >Expand each obstacle by 2.1 times the turn radius</p>
+<p >Add each expanded vertex to potential fixes</p>
+<p >add points dH above floor and root points</p>
+<p >add points at goal altitude (after checking to see if free from obstacle conflict)</p>
+<p >add points at current altitude</p>
+<p >Shrink bounding box and it's vertices to potential fixes. Shrink by 2.1 x turn radius</p>
+<p >Characteristic length used to radially sample points around root and goal nodes</p>
+<p >Generate points radially from the root position N defines the number of paritions of [0,360]</p>
 
 </div>
 </div>
@@ -498,7 +1548,325 @@ std::list&lt; larcfm::Plan &gt;&#160;</td><td class="memItemRight" valign="botto
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>point A on plane </td></tr>
+    <tr><td class="paramname">B</td><td>point B on plane </td></tr>
+    <tr><td class="paramname">floor</td><td>plane floor </td></tr>
+    <tr><td class="paramname">ceiling</td><td>plane ceiling </td></tr>
+    <tr><td class="paramname">currentPos</td><td>start position of line </td></tr>
+    <tr><td class="paramname">nextPos</td><td>end position of line </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true </dd>
+<dd>
+false </dd></dl>
 <p >Equation of plan is given by: (p-p0).n = 0 ( '.' here is the dot product between vectors) where p0 is a point on the plane, n is the unit normal vector of the plane. Equation of line: p = l0 + d*l where l0 is a point on the line, d is a scalar, l is a vector in the line's direction. Subsitute line equation into plan to find intersection. Solve for d: d = (p0 - l0).n/(l.n) Use d in equation of line to get the point of intersection with the plane.</p>
+
+</div>
+</div>
+<a id="a2abe418c473dcf0c3e4d16ff063a5bfa" name="a2abe418c473dcf0c3e4d16ff063a5bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2abe418c473dcf0c3e4d16ff063a5bfa">&#9670;&nbsp;</a></span>NodeDistance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double DubinsPlanner::NodeDistance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnode.html">node</a> &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td></td></tr>
+    <tr><td class="paramname">B</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double </dd></dl>
+
+</div>
+</div>
+<a id="a7773404588cf99573cc050bfc1128bd8" name="a7773404588cf99573cc050bfc1128bd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7773404588cf99573cc050bfc1128bd8">&#9670;&nbsp;</a></span>SetBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetBoundary </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Poly3D &amp;&#160;</td>
+          <td class="paramname"><em>boundingBox</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">boundingBox</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab08872773c6a776c20cb6f1cd9840b64" name="ab08872773c6a776c20cb6f1cd9840b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab08872773c6a776c20cb6f1cd9840b64">&#9670;&nbsp;</a></span>SetGoal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetGoal </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3 &amp;&#160;</td>
+          <td class="paramname"><em>goal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramname"><em>finalVel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">goal</td><td></td></tr>
+    <tr><td class="paramname">finalVel</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a538ba641f8e993f07b85e08ebd678ffb" name="a538ba641f8e993f07b85e08ebd678ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538ba641f8e993f07b85e08ebd678ffb">&#9670;&nbsp;</a></span>SetObstacles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetObstacles </td>
+          <td>(</td>
+          <td class="paramtype">std::list&lt; larcfm::Poly3D &gt; &amp;&#160;</td>
+          <td class="paramname"><em>obstacleList</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">obstacleList</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afc1b12f473fbfdfb91e0d1a005634020" name="afc1b12f473fbfdfb91e0d1a005634020"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc1b12f473fbfdfb91e0d1a005634020">&#9670;&nbsp;</a></span>SetParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetParameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_dubins_params.html">DubinsParams_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>prms</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prms</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a83be369a9f729aeac086ebd38921af9f" name="a83be369a9f729aeac086ebd38921af9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83be369a9f729aeac086ebd38921af9f">&#9670;&nbsp;</a></span>SetTraffic() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetTraffic </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Plan &amp;&#160;</td>
+          <td class="paramname"><em>tf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tf</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a71e0e220f4b3ecb30b98b99da14e0026" name="a71e0e220f4b3ecb30b98b99da14e0026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71e0e220f4b3ecb30b98b99da14e0026">&#9670;&nbsp;</a></span>SetTraffic() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetTraffic </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; larcfm::Vect3 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tfpos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; larcfm::Velocity &gt; &amp;&#160;</td>
+          <td class="paramname"><em>tfvel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tfpos</td><td>list of traffic positions </td></tr>
+    <tr><td class="paramname">tfvel</td><td>list of corresponding traffic velocities </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a576b0f004f0174443ca8fe482d262317" name="a576b0f004f0174443ca8fe482d262317"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576b0f004f0174443ca8fe482d262317">&#9670;&nbsp;</a></span>SetVehicleInitialConditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetVehicleInitialConditions </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Vect3 &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>vehicle initial position </td></tr>
+    <tr><td class="paramname">vel</td><td>vehicle initial velocity </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1ad9090422661aaf274c08c68298dcfc" name="a1ad9090422661aaf274c08c68298dcfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ad9090422661aaf274c08c68298dcfc">&#9670;&nbsp;</a></span>SetZBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::SetZBoundary </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zmax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">zmin</td><td></td></tr>
+    <tr><td class="paramname">zmax</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab70201e005e74cce6c7cf5ccafa40cd8" name="ab70201e005e74cce6c7cf5ccafa40cd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab70201e005e74cce6c7cf5ccafa40cd8">&#9670;&nbsp;</a></span>ShrinkTrafficVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DubinsPlanner::ShrinkTrafficVolume </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>factor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">factor</td><td>value &lt; 1 </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

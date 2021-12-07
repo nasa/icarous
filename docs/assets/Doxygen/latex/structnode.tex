@@ -1,46 +1,55 @@
 \hypertarget{structnode}{}\doxysection{node Struct Reference}
 \label{structnode}\index{node@{node}}
+
+
+node data structure used to build search tree  
+
+
+
+
+{\ttfamily \#include $<$Dubins\+Planner.\+hpp$>$}
+
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{structnode_a8ceaa10e39f74fdfdae30c68a50074e2}\label{structnode_a8ceaa10e39f74fdfdae30c68a50074e2}} 
 int {\bfseries id}
-\item 
+\begin{DoxyCompactList}\small\item\em id of node \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a1796942a581e0dfafbc1246388e8df6d}\label{structnode_a1796942a581e0dfafbc1246388e8df6d}} 
 double {\bfseries time}
-\item 
+\begin{DoxyCompactList}\small\item\em time at node \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_af39b66878f2f8f161303d99606f459bd}\label{structnode_af39b66878f2f8f161303d99606f459bd}} 
 larcfm\+::\+Vect3 {\bfseries pos}
-\item 
+\begin{DoxyCompactList}\small\item\em position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_acb26a0111127858d1ae53e478504e77e}\label{structnode_acb26a0111127858d1ae53e478504e77e}} 
 larcfm\+::\+Velocity {\bfseries vel}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a2bb54dc5ca0779ec078ef17714dd9759}\label{structnode_a2bb54dc5ca0779ec078ef17714dd9759}} 
 bool {\bfseries goal}
-\item 
+\begin{DoxyCompactList}\small\item\em true if node is the goal position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a6076268917c40f09554d1da06a25cabd}\label{structnode_a6076268917c40f09554d1da06a25cabd}} 
 double {\bfseries g}
 \item 
 \mbox{\Hypertarget{structnode_ac4cf6a61a005dfc2cfd95f2650bafddc}\label{structnode_ac4cf6a61a005dfc2cfd95f2650bafddc}} 
 double {\bfseries h}
-\item 
+\begin{DoxyCompactList}\small\item\em cost incurred and heuristic \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a68cdde206c270d7dd9a6d7c6a4cbfc63}\label{structnode_a68cdde206c270d7dd9a6d7c6a4cbfc63}} 
 double {\bfseries dist2goal}
-\item 
+\begin{DoxyCompactList}\small\item\em distance to goal \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a295c1050b4f768babf3c6ffcd7e4af8d}\label{structnode_a295c1050b4f768babf3c6ffcd7e4af8d}} 
 tcp\+Data\+\_\+t {\bfseries TCPdata}
-\item 
+\begin{DoxyCompactList}\small\item\em trajectory change point data \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a5d14e7dda834ec9ab0d0e260dd015894}\label{structnode_a5d14e7dda834ec9ab0d0e260dd015894}} 
 \mbox{\hyperlink{structnode}{node}} $\ast$ {\bfseries source}
-\item 
+\begin{DoxyCompactList}\small\item\em pointer to parent node during search expansion \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a9e7b6ca1286e21b9f0ea51ea3fe63e3a}\label{structnode_a9e7b6ca1286e21b9f0ea51ea3fe63e3a}} 
 std\+::list$<$ \mbox{\hyperlink{structnode}{node}} $\ast$ $>$ {\bfseries parents}
-\item 
+\begin{DoxyCompactList}\small\item\em list of possible parents in the tree \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structnode_a6c7729b29cc4dd53f1e0f2a556258315}\label{structnode_a6c7729b29cc4dd53f1e0f2a556258315}} 
 std\+::list$<$ \mbox{\hyperlink{structnode}{node}} $\ast$ $>$ {\bfseries children}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em list of children nodes \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/Dubins\+Planner.\+hpp\end{DoxyCompactItemize}
+Modules/\+Core/\+Trajectory\+Manager/\+Dubins\+Planner/\mbox{\hyperlink{_dubins_planner_8hpp}{Dubins\+Planner.\+hpp}}\end{DoxyCompactItemize}

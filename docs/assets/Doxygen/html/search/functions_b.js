@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['nominaldeparturetrigger_0',['NominalDepartureTrigger',['../_triggers_8hpp.html#ae7910b4a30d9014a57c0f9a6b1abdd12',1,'Triggers.hpp']]]
+  ['mergingactivitytrigger_0',['MergingActivityTrigger',['../_triggers_8hpp.html#a3d317dfbaa6add4704a1fec25ded83f7',1,'Triggers.hpp']]],
+  ['monitortrajectory_1',['MonitorTrajectory',['../class_traj_manager.html#a110b698f40430e8cba4507d73e141155',1,'TrajManager']]]
 ];

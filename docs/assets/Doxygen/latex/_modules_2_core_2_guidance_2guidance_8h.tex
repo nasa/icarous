@@ -1,0 +1,110 @@
+\hypertarget{_modules_2_core_2_guidance_2guidance_8h}{}\doxysection{Modules/\+Core/\+Guidance/\+Guidance.h File Reference}
+\label{_modules_2_core_2_guidance_2guidance_8h}\index{Modules/Core/Guidance/Guidance.h@{Modules/Core/Guidance/Guidance.h}}
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$Interfaces.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_guidance_params__t}{Guidance\+Params\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure to hold parameters required for guidance. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_guidance_output__t}{Guidance\+Output\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_guidance}{Guidance}} output object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{Guidance\+Mode}} \{ \newline
+\mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ae6ead351c1ac338679b22554b4568c17}{FLIGHTPLAN}}
+, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a1a85ef13eaa80e8561743892f9dba958}{VECTOR}}
+, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aff1d41be33a2d2e1fc99fe98cb19c0e6}{POINT2\+POINT}}
+, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ab364c113ba85b72aa67856dceb444ef9}{TAKEOFF}}
+, \newline
+\mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a020389bbc8308bea419f7828d9b6d6eb}{LAND}}
+, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ac904d79614186d696098858907a26a63}{SPEED\+\_\+\+CHANGE}}
+, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aded997caae347d795601f3864e00cdb5}{ALT\+\_\+\+CHANGE}}
+, {\bfseries GUIDE\+\_\+\+NOOP}
+ \}
+\begin{DoxyCompactList}\small\item\em various guidance modes \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_ac228852aedc340c4fd5e92e1883feccc}\label{_modules_2_core_2_guidance_2guidance_8h_ac228852aedc340c4fd5e92e1883feccc}} 
+void $\ast$ {\bfseries Init\+Guidance} (const char config\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_ae5bbd6a3ffad943672e4e69ede2fb3a0}\label{_modules_2_core_2_guidance_2guidance_8h_ae5bbd6a3ffad943672e4e69ede2fb3a0}} 
+void {\bfseries guid\+Read\+Param\+From\+File} (void $\ast$obj, const char config\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a6d003984de98fb125dd4ae95f9e89f1e}\label{_modules_2_core_2_guidance_2guidance_8h_a6d003984de98fb125dd4ae95f9e89f1e}} 
+void {\bfseries guid\+Set\+Params} (void $\ast$obj, \mbox{\hyperlink{struct_guidance_params__t}{Guidance\+Params\+\_\+t}} $\ast$params)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_af40af885d3c1ca8b1fc61c696352a8f3}\label{_modules_2_core_2_guidance_2guidance_8h_af40af885d3c1ca8b1fc61c696352a8f3}} 
+void {\bfseries guid\+Set\+Aircraft\+State} (void $\ast$obj, double \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}\mbox{[}$\,$\mbox{]}, double velocity\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a033e0ac5a6a2614030fa14d45010ea0e}\label{_modules_2_core_2_guidance_2guidance_8h_a033e0ac5a6a2614030fa14d45010ea0e}} 
+void {\bfseries guid\+Set\+Wind\+Data} (void $\ast$obj, double wind\+From, double wind\+Speed)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a0052602272438f592b116252a65c33c0}\label{_modules_2_core_2_guidance_2guidance_8h_a0052602272438f592b116252a65c33c0}} 
+void {\bfseries guid\+Input\+Flightplan\+Data} (void $\ast$obj, char plan\+ID\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} wpts\mbox{[}$\,$\mbox{]}, int total\+WP, double init\+Heading, bool kinematize, double repair\+Turn\+Rate)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a82fbaac974943c8a3c78fda4f732e3c5}\label{_modules_2_core_2_guidance_2guidance_8h_a82fbaac974943c8a3c78fda4f732e3c5}} 
+void {\bfseries Run\+Guidance} (void $\ast$obj, double time)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a6500cb73a57ee6d4501237d8d5eedeab}\label{_modules_2_core_2_guidance_2guidance_8h_a6500cb73a57ee6d4501237d8d5eedeab}} 
+void {\bfseries guid\+Input\+Velocity\+Cmd} (void $\ast$obj, double velcmd\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a2680c1a86e6946cf385fdca78ef86a59}\label{_modules_2_core_2_guidance_2guidance_8h_a2680c1a86e6946cf385fdca78ef86a59}} 
+void {\bfseries Set\+Guidance\+Mode} (void $\ast$obj, \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{Guidance\+Mode}} mode, const char $\ast$plan\+ID, int next\+WP, bool eta)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_aab708520a40b3c16a5a60f7dadce4150}\label{_modules_2_core_2_guidance_2guidance_8h_aab708520a40b3c16a5a60f7dadce4150}} 
+void {\bfseries Change\+Waypoint\+Speed} (void $\ast$obj, char plan\+ID\mbox{[}$\,$\mbox{]}, int wp\+ID, double val, bool update\+All)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a5dc6f3fa09e30ccd953fd8d701b94db8}\label{_modules_2_core_2_guidance_2guidance_8h_a5dc6f3fa09e30ccd953fd8d701b94db8}} 
+void {\bfseries Change\+Waypoint\+Alt} (void $\ast$obj, char plan\+ID\mbox{[}$\,$\mbox{]}, int wp\+ID, double val, bool update\+All)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a36a440736eb7c19b2f42dabb768f8d26}\label{_modules_2_core_2_guidance_2guidance_8h_a36a440736eb7c19b2f42dabb768f8d26}} 
+void {\bfseries Change\+Waypoint\+ETA} (void $\ast$obj, char plan\+ID\mbox{[}$\,$\mbox{]}, int wp\+ID, double val, bool update\+All)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a536b22b60741b442b0108a132e2fe94f}\label{_modules_2_core_2_guidance_2guidance_8h_a536b22b60741b442b0108a132e2fe94f}} 
+void {\bfseries guid\+Get\+Output} (void $\ast$obj, \mbox{\hyperlink{struct_guidance_output__t}{Guidance\+Output\+\_\+t}} $\ast$output)
+\item 
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a1c3b3b2731b75c489e1e32d8abbb2322}\label{_modules_2_core_2_guidance_2guidance_8h_a1c3b3b2731b75c489e1e32d8abbb2322}} 
+int {\bfseries guid\+Get\+Waypoint} (void $\ast$obj, char plan\+ID\mbox{[}$\,$\mbox{]}, int id, \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $\ast$wp)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}} 
+\index{Guidance.h@{Guidance.h}!GuidanceMode@{GuidanceMode}}
+\index{GuidanceMode@{GuidanceMode}!Guidance.h@{Guidance.h}}
+\doxysubsubsection{\texorpdfstring{GuidanceMode}{GuidanceMode}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{Guidance\+Mode}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLIGHTPLAN@{FLIGHTPLAN}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!FLIGHTPLAN@{FLIGHTPLAN}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ae6ead351c1ac338679b22554b4568c17}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ae6ead351c1ac338679b22554b4568c17}} 
+FLIGHTPLAN&Follow a flight plan. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VECTOR@{VECTOR}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!VECTOR@{VECTOR}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a1a85ef13eaa80e8561743892f9dba958}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a1a85ef13eaa80e8561743892f9dba958}} 
+VECTOR&Follow the given velocity vector. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{POINT2POINT@{POINT2POINT}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!POINT2POINT@{POINT2POINT}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aff1d41be33a2d2e1fc99fe98cb19c0e6}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aff1d41be33a2d2e1fc99fe98cb19c0e6}} 
+POINT2\+POINT&Fly to a specific position. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TAKEOFF@{TAKEOFF}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!TAKEOFF@{TAKEOFF}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ab364c113ba85b72aa67856dceb444ef9}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ab364c113ba85b72aa67856dceb444ef9}} 
+TAKEOFF&Takeoff mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LAND@{LAND}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!LAND@{LAND}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a020389bbc8308bea419f7828d9b6d6eb}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01a020389bbc8308bea419f7828d9b6d6eb}} 
+LAND&Landing mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SPEED\_CHANGE@{SPEED\_CHANGE}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!SPEED\_CHANGE@{SPEED\_CHANGE}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ac904d79614186d696098858907a26a63}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01ac904d79614186d696098858907a26a63}} 
+SPEED\+\_\+\+CHANGE&Change speed. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALT\_CHANGE@{ALT\_CHANGE}!Guidance.h@{Guidance.h}}\index{Guidance.h@{Guidance.h}!ALT\_CHANGE@{ALT\_CHANGE}}}\mbox{\Hypertarget{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aded997caae347d795601f3864e00cdb5}\label{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01aded997caae347d795601f3864e00cdb5}} 
+ALT\+\_\+\+CHANGE&Change alt. \\
+\hline
+
+\end{DoxyEnumFields}

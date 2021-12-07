@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['mergingactivitytrigger_0',['MergingActivityTrigger',['../_triggers_8hpp.html#a3d317dfbaa6add4704a1fec25ded83f7',1,'Triggers.hpp']]],
-  ['monitortrajectory_1',['MonitorTrajectory',['../class_traj_manager.html#a110b698f40430e8cba4507d73e141155',1,'TrajManager']]]
+  ['lineplanintersection_0',['LinePlanIntersection',['../class_dubins_planner.html#a0a67f8803f0581b35920af29077b6d47',1,'DubinsPlanner']]],
+  ['loginput_1',['LogInput',['../class_traj_manager.html#a257756133fde7a93afe1a324b78fc15f',1,'TrajManager']]],
+  ['logmessage_2',['LogMessage',['../_cognition_8hpp.html#ad8559541fb7ac99c310ac951b7199b86',1,'CognitionUtil.cpp']]],
+  ['logsentence_3',['logSentence',['../flarm_8c.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c'],['../flarm_8h.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c']]]
 ];
