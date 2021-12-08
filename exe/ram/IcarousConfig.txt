@@ -141,6 +141,9 @@ verify_conflict_with_plan = false
 # Lookahead applied on the current plan for conflict
 plan_lookahead = 20 [s]
 
+# Action to take on a geofence conflict. 0: Next feasible wp. 1: Return to launch (active). 2: Send return to launch command
+fence_action = 0
+
 ## Guidance parameters
 # default waypoint speed if nothing is specified in the flightplan
 default_wp_speed = 1.0 [m/s]

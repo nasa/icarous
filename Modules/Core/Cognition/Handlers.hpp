@@ -730,10 +730,6 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 // Handler to return to launch point, continuing to monitor triggers
 class IcarousReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
-        /// Only execute if cognition is active
-        if(!state->parameters.active){
-             return SHUTDOWN;
-        }
         LogMessage(state,"[HANDLER] | Return to launch (ICAROUS)");
         larcfm::Position positionA = state->position;
         double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
@@ -766,14 +762,29 @@ class IcarousReturnToLaunch: public EventHandler<CognitionState_t>{
 // Handler to return to launch point by sending RTL command
 class CommandReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
-        /// Only execute if cognition is active
-        if(!state->parameters.active){
-             return SHUTDOWN;
-        }
         LogMessage(state,"[HANDLER] | Return to launch (Command)");
         SetRtlCmd(state);
         // Set passive mode
         state->parameters.active = false;
+        return SUCCESS;
+    }
+};
+
+// Handler for geofence conflicts
+class FenceConflictHandler: public EventHandler<CognitionState_t>{
+    retVal_e Terminate(CognitionState_t* state){
+        /// Only execute if cognition is active
+        if(!state->parameters.active){
+             return SHUTDOWN;
+        }
+        LogMessage(state,"[HANDLER] | Fence Conflict Handler");
+        if(state->parameters.fenceAction == ICAROUS_RTL){
+            ExecuteHandler(MAKE_HANDLER(IcarousReturnToLaunch),"FenceConflictIcarousRtl");
+        }else if(state->parameters.fenceAction == COMMAND_RTL){
+            ExecuteHandler(MAKE_HANDLER(CommandReturnToLaunch),"FenceConflictRtlCommand");
+        }else{
+            ExecuteHandler(MAKE_HANDLER(ReturnToNextFeasibleWP),"FenceConflictReplan");
+        }
         return SUCCESS;
     }
 };
