@@ -170,7 +170,7 @@ void DubinsPlanner::GetPotentialFixes(){
     
     /// Generate points radially from the root position
     /// N defines the number of paritions of [0,360]
-    int N = 10;
+    int N = 5;
     for(int i=0; i<N; ++i){
         for(int j=2;j<=5;++j){
             double x1 = root.pos.x + j*l * cos(trk + i * M_PI * 2/ N);
