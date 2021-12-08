@@ -455,8 +455,8 @@ bool DubinsPlanner::GetDubinsParams(node* start,node* end){
 
         /// Check for fence conflicts
           
-        bool gfConflict = CheckFenceConflict(finalTCPdata);
-        if (gfConflict) continue;
+        //bool gfConflict = CheckFenceConflict(finalTCPdata);
+        //if (gfConflict) continue;
         
 
         /// Check traffic conflicts on the path
