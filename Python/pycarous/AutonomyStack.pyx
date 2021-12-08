@@ -454,7 +454,7 @@ cdef class AutonomyStack:
         cdef string planID
         cdef trajectoryMonitorData_t tjMonData
         nextWP = self.nextWP1 if self.activePlan == b"Plan0" else self.nextWP2
-        tjMonData = TrajManager_MonitorTrajectory(self.TrajManager,time,<char*>planID.c_str(),self.position,self.trkgsvs,self.nextWP1,nextWP)
+        tjMonData = TrajManager_MonitorTrajectory(self.TrajManager,time,<char*>self.activePlan.c_str(),self.position,self.trkgsvs,self.nextWP1,nextWP)
         InputTrajectoryMonitorData(self.Cognition,&tjMonData)
         for i in range(3):
             self.planOffsets[i] = tjMonData.offsets1[i]
