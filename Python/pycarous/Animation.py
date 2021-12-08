@@ -229,11 +229,21 @@ class AgentAnimation():
     def Update(self,time,i):
         i = int(np.floor(i*self.speed))
         print("generating animation: %.1f%%" % (i/self.minlen*100), end="\r")
+
+        for key in self.plans:
+            tFuncPair = self.plans[key]
+            if tFuncPair is not None:
+                t = tFuncPair[0]
+                plotFunc = tFuncPair[1]
+                if time[i] >= t:
+                    plotFunc()
+                    self.plans[key] = None
+
         if i < len(time):
-            self.slider.eventson = False
-            self.slider.set_val(i)
+            #self.slider.eventson = False
+            #self.slider.set_val(i)
             #self.slider.valtext.set_text(self.slider.valfmt % int(time[i]))
-            self.slider.eventson = True
+            #self.slider.eventson = True
             for j, vehicle in enumerate(self.agents):
                 k = time[i]
                 id = self.agentNames[j]
@@ -292,14 +302,14 @@ class AgentAnimation():
         time = np.arange(self.tmin,self.tmax+self.dt,self.dt)
         self.animate = lambda x: self.Update(time,x)
         self.init = lambda:self.initanim()
-        slider_ax = self.fig.add_axes((0.15, 0.025, 0.5, 0.04))
-        slider_ax.set_xticks([])
-        slider_ax.set_yticks([])
-        pause_ax = self.fig.add_axes((0.8, 0.025, 0.1, 0.04))
-        pause_button = Button(pause_ax, 'pause', hovercolor='0.975')
-        pause_button.on_clicked(self.Pause)
-        self.slider = Slider(slider_ax,label='Time',valmin=0,valmax= len(time),valinit=0.0)
-        self.slider.on_changed(self.SetTime)
+        #slider_ax = self.fig.add_axes((0.15, 0.025, 0.5, 0.04))
+        #slider_ax.set_xticks([])
+        #slider_ax.set_yticks([])
+        #pause_ax = self.fig.add_axes((0.8, 0.025, 0.1, 0.04))
+        #pause_button = Button(pause_ax, 'pause', hovercolor='0.975')
+        #pause_button.on_clicked(self.Pause)
+        #self.slider = Slider(slider_ax,label='Time',valmin=0,valmax= len(time),valinit=0.0)
+        #self.slider.on_changed(self.SetTime)
         self.anim = animation.FuncAnimation(self.fig, self.animate,
                                        init_func=self.init,
                                        frames=np.max([self.minlen,int(self.minlen/self.speed)]),
