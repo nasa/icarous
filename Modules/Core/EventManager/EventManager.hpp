@@ -217,6 +217,9 @@ void EventManagement<T>::RunEventHandlers(T* state){
            /// on the next cycle in case there is another equal priority handler
            handler->priority = handler->defaultPriority + 0.5;
            val = handler->RunEvent(state);
+        }else{
+           handler->priority = handler->defaultPriority;
+           activeEventHandlers.pop();
         }
     }else{
         val = handler->RunEvent(state);
