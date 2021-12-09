@@ -730,30 +730,31 @@ class ProceedFromTODtoLand: public EventHandler<CognitionState_t>{
 // Handler to return to launch point, continuing to monitor triggers
 class IcarousReturnToLaunch: public EventHandler<CognitionState_t>{
     retVal_e Initialize(CognitionState_t* state){
-        LogMessage(state,"[HANDLER] | Return to launch (ICAROUS)");
-        larcfm::Position positionA = state->position;
-        double trk = std::fmod(2*M_PI + state->launchPoint.track(positionA),2*M_PI);
-        larcfm::Position positionB = state->launchPoint.mkAlt(state->position.alt());
-        double trkGoal = positionA.track(positionB)*180/M_PI;
-        larcfm::Velocity velocityA = state->velocity;
-        larcfm::Velocity velocityB = larcfm::Velocity::makeTrkGsVs(trkGoal,"degree",3,"m/s",0,"m/s");
-        FindNewPath(state,"RtlPath",positionA, velocityA, positionB, velocityB);
-        SendStatus(state,(char*)"IC:Computing RTL path",6);
-        state->pathRequest = REQUEST_PROCESSING;
+        larcfm::Position positionA = state->position.mkAlt(state->parameters.rtlAltitude);
+        state->p2pComplete = false;
+        SetGuidanceP2P(state,positionA,1.5);
+        SendStatus(state,(char*)"IC:Executing RTL",6);
         return SUCCESS;
     }
 
     retVal_e Execute(CognitionState_t* state){
-        if(state->pathRequest == REQUEST_RESPONDED){
-            state->pathRequest = REQUEST_NIL;
-            SetGuidanceFlightPlan(state,"RtlPath",1);
-            state->missionPlan = "RtlPath";
+        if(state->p2pComplete){
+            state->activePlan = nullptr;
+            state->p2pComplete = false;
+            larcfm::Position positionB = state->launchPoint.mkAlt(state->parameters.rtlAltitude);
+            SetGuidanceP2P(state,positionB,1.5);
             return SUCCESS;
         }else{
-            larcfm::Plan *fp = GetPlan(&state->flightPlans,"RtlPath");
-            if(fp != nullptr){
-                state->pathRequest = REQUEST_RESPONDED;
-            }
+            return INPROGRESS;
+        }
+    }
+
+    retVal_e Terminate(CognitionState_t* state){
+        if(state->p2pComplete){
+            state->activePlan = nullptr;
+            ExecuteHandler(MAKE_HANDLER(LandPhaseHandler),"PostRtlLand");
+            return SUCCESS;
+        }else{
             return INPROGRESS;
         }
     }

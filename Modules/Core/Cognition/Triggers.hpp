@@ -46,7 +46,6 @@ bool SecondaryPlanCompletionTrigger(CognitionState_t* state){
         std::string planID = state->activePlan->getID();
         return (planID != "Plan0" &&
                 planID != "DitchPath" &&
-                planID != "RtlPath" &&
                 state->nextWpId[planID] >= state->activePlan->size()) && state->icReady;
     }else{
         return false;
@@ -66,21 +65,6 @@ bool PrimaryPlanCompletionTrigger(CognitionState_t* state){
     }
 }
 
-/**
- * - Check for completion of return to launch path
- */
-bool RtlPlanCompletionTrigger(CognitionState_t* state){
-    
-    if(state->activePlan != nullptr){
-        std::string planID = state->activePlan->getID();
-        if (planID == "RtlPath" && state->nextWpId[planID] >= state->activePlan->size()){
-            SendStatus(state,(char*)"IC: RTL Path Complete",6);
-        }
-        return (planID == "RtlPath" && state->nextWpId[planID] >= state->activePlan->size());
-    } else {
-        return false;
-    }
-}
 
 /**
  * - Check for flight plan deviations greater than the defined threshold
@@ -108,7 +92,6 @@ bool FlightReplanTrigger(CognitionState_t* state){
         return false;
     }
     if(state->activePlan->getID() != "Plan0" &&
-       state->activePlan->getID() != "RtlPath" &&
        state->activePlan->getID() != "DitchPath"){
         if(!state->lineOfSight2GoalPrev && state->lineOfSight2Goal){
             return true;

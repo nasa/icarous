@@ -61,11 +61,6 @@ void Cognition::InitializeEventHandlers(){
                              SecondaryPlanCompletionTrigger,
                              MAKE_HANDLER(EngageNominalPlan));
 
-   eventMng.AddEventHandler("RtlPlanComplete",
-                             inputPriorities["PrimaryPlanComplete"],
-                             RtlPlanCompletionTrigger,
-                             MAKE_HANDLER(LandPhaseHandler));
-
    /// Conflict related triggers
    eventMng.AddEventHandler("FenceConflict",
                              inputPriorities["FenceConflict"],
