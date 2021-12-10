@@ -136,10 +136,12 @@ void TRACKER_ProcessPacket(void){
             position_t* msg = (position_t*)trackerAppData.tracker_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude_abs};
             double vel[3] = {msg->vn,msg->ve,msg->vd};
+            double trkgsvs[3] = {0.0,0.0,0.0};
+            ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
             double sigmaP[6] = {25.0,25.0,25.0,0.0,0.0,0.0};
             double sigmaV[6] = {10.0,10.0,10.0,0.0,0.0,0.0};
             if(trackerAppData.initialized){
-                TargetTracker_InputCurrentState(trackerAppData.TargetTracker,msg->time_gps,pos,vel,sigmaP,sigmaV);
+                TargetTracker_InputCurrentState(trackerAppData.TargetTracker,msg->time_gps,pos,trkgsvs,sigmaP,sigmaV);
             }else{
                 TargetTracker_SetHomePosition(trackerAppData.TargetTracker,pos);
                 trackerAppData.initialized = true;
@@ -150,9 +152,7 @@ void TRACKER_ProcessPacket(void){
         case ICAROUS_RAWTRAFFIC_MID:{
             object_t* msg = (object_t*)trackerAppData.tracker_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-            double vel[3] = {msg->vn,msg->ve,msg->vd};
-            double sigmaP[6];
-            double sigmaV[6];
+            double vel[3] = {msg->ve,msg->vn,-msg->vd};
             memcpy(sigmaP,msg->sigmaP,sizeof(double)*6);
             memcpy(sigmaV,msg->sigmaV,sizeof(double)*6);
             if(trackerAppData.initialized){
