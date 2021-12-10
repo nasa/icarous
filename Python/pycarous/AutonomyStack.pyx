@@ -204,7 +204,7 @@ cdef class AutonomyStack:
         
         velocity[0] = vel[1]
         velocity[1] = vel[0]
-        velocity[2] = vel[2]
+        velocity[2] = -vel[2]
 
         for i in range(6):
             sigmaP[i] = sumPos[i]
@@ -227,7 +227,7 @@ cdef class AutonomyStack:
         TargetTracker_GetIntruderData(self.Tracker,i,callsign,&querytime,position,velocity,sigmaP,sigmaV)
         velocityNED[0] = velocity[1]
         velocityNED[1] = velocity[0]
-        velocityNED[2] = velocity[2]
+        velocityNED[2] = -velocity[2]
         return [querytime,callsign,position,velocityNED,sigmaP,sigmaV]
 
 
