@@ -384,14 +384,18 @@ double Guidance::ComputeClimbRate(double speedRef){
     const double deltaDistRef = prevWaypoint.distanceH(nextWaypoint);
     const double deltaH = nextWaypoint.alt() - position.alt();
 
-    /// Computing flightpath angle
-    const double fpAngle = atan2(deltaAltref,deltaDistRef); 
+    double fpAngle = params.climbFpAngle;
     double climbrate = 0;
     bool climbSegment = false;
     bool bangbang = false;
+
     /// Check if this is a climb segment
-    if(fabs(fpAngle) > 1e-5){
+    if(fabs(deltaAltref) > 1e-5){
        climbSegment = true;
+    }
+
+    if(deltaH < 0){
+        fpAngle = -fpAngle;
     }
 
    /// Over large altitude changes outside the climbAngleVRange params, use bangbang control
