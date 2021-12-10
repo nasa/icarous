@@ -52,7 +52,7 @@ void TRACKER_AppInit(void) {
 		    TRACKER_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to output messages from the SB
-    CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,trackerAppData.tracker_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RAWTRAFFIC_MID,trackerAppData.tracker_Pipe);
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,trackerAppData.tracker_Pipe);
     CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,trackerAppData.tracker_Pipe);
     CFE_SB_Subscribe(FREQ_01_WAKEUP_MID,trackerAppData.tracker_Pipe);
@@ -147,12 +147,12 @@ void TRACKER_ProcessPacket(void){
             break;
         }
 
-        case ICAROUS_TRAFFIC_MID:{
+        case ICAROUS_RAWTRAFFIC_MID:{
             object_t* msg = (object_t*)trackerAppData.tracker_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double vel[3] = {msg->vn,msg->ve,msg->vd};
-            double sigmaP[6] = {25.0,25.0,25.0,0.0,0.0,0.0};
-            double sigmaV[6] = {10.0,10.0,10.0,0.0,0.0,0.0};
+            double sigmaP[6];
+            double sigmaV[6];
             memcpy(sigmaP,msg->sigmaP,sizeof(double)*6);
             memcpy(sigmaV,msg->sigmaV,sizeof(double)*6);
             if(trackerAppData.initialized){
