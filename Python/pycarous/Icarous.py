@@ -135,7 +135,7 @@ class Icarous(IcarousInterface):
             time,callsign,position,velocityNED,sigmaP,sigmaV = self.core.GetIntruder(i)
             trkgsvs = ConvertVnedToTrkGsVs(*velocityNED)
             localPos = self.ConvertToLocalCoordinates(position)
-            self.RecordTraffic(callsign.decode('utf-8'), position, velocityNED, localPos,[sigmaP[0],sigmaP[1],sigmaP[3]])
+            self.RecordTraffic(callsign.decode('utf-8'),"ADSB", position, velocityNED, localPos,[sigmaP[0],sigmaP[1],sigmaP[3]])
             self.core.InputIntruderState(time,"ADSB",callsign.decode('utf-8'),position,trkgsvs,sigmaP,sigmaV)
     
     def InputFlightplan(self,waypoints,eta=False,repair=False,setInitialPosition=True,setInitialVelocity=False):

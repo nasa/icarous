@@ -110,7 +110,7 @@ class SimEnvironment:
         gs.receiver = get_receiver(receiver, gs.id, self.comm_channel)
 
     def AddTraffic(self, idx, home, rng, brng, alt, speed, heading, crate,
-                   transmitter="GroundTruth",delay=0.0):
+                   transmitter="GroundTruth",delay=0.0,sigmaP=[],sigmaV=[]):
         """
         Add a simulated virtual traffic vehicle to the simulation environment
         :param idx: traffic vehicle id
@@ -131,6 +131,9 @@ class SimEnvironment:
         tvy = speed*np.cos(heading*np.pi/180)
         tvz = crate
         traffic = UamVtolSim(idx, home, tx, ty, tz, tvx, tvy, tvz)
+        if len(sigmaP) > 0:
+            traffic.SetPosUncertainty(*sigmaP)
+            traffic.SetVelUncertainty(*sigmaV)
         traffic.InputCommand(heading, speed, crate)
         traffic.delay = delay
         self.tfList.append(traffic)

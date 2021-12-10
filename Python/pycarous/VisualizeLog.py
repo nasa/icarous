@@ -61,7 +61,7 @@ def VisualizeSimData(icList,allplans=False,showpaths=True,showtrace=True,showtra
         for key in tfids:
             ellipse = False
             sview = False
-            if showtraffic or key[0:2] == 'tf':
+            if showtraffic:# or key[0:2] == 'tf':
                 if key[0:2] == 'tf':
                     c = 'b'
                 elif key[0:2] == 'kf':

@@ -42,6 +42,8 @@ parser.add_argument("--fasttime", dest="fasttime", action="store_true",
                    help='Run sim in fast time (not available for cFS simulations)')
 parser.add_argument("--cfs", action="store_true",
                    help='Run Icarous using cFS instead of pycarous')
+parser.add_argument("--fusion", action="store_true",
+                   help='Enable sensor fusion. Only enable this if you have redundant sensor data')
 parser.add_argument("-u", "--uncertainty", type=bool, default=False,
                    help='Enable uncertainty')
 parser.add_argument("-r", "--repair", action="store_true",
@@ -75,7 +77,10 @@ HomePos = GetHomePosition(args.flightplan)
 if args.traffic != '':
     tfinputs = ReadTrafficInput(args.traffic)
     for tf in tfinputs:
-        sim.AddTraffic(tf[0], HomePos, *tf[1:-2],delay=tf[-2],transmitter=tf[-1])
+        if len(tf) == 9:
+            sim.AddTraffic(tf[0], HomePos, *tf[1:7],delay=tf[7],transmitter=tf[8])
+        else:
+            sim.AddTraffic(tf[0], HomePos, *tf[1:7],delay=tf[7],transmitter=tf[8],sigmaP=tf[9:15],sigmaV=tf[15:])
 
 # Initialize Icarous class
 if args.cfs:
@@ -83,7 +88,7 @@ if args.cfs:
     ic = IcarousRunner(HomePos, verbose=args.verbosity)
 else:
     ic = Icarous(HomePos,simtype=args.simtype,monitor=args.daaType,verbose=args.verbosity,
-                 daaConfig=args.daaConfig, fasttime=args.fasttime,icConfig=args.params)
+                 daaConfig=args.daaConfig, fasttime=args.fasttime,icConfig=args.params,fusion=args.fusion)
 
 # Input flightplan
 ic.InputFlightplanFromFile(args.flightplan,eta=args.eta,repair=args.repair)
