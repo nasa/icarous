@@ -225,7 +225,8 @@ void TargetTracker::InputMeasurement(measurement& value){
 
 }
 
-void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double time){
+
+void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,bool onlyPrediction,double time){
    /* 
     * dt: prediction time step
     * States      (X)  = [x,vx,y,vy,z,vz]
@@ -253,12 +254,12 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
 
    // Define motion model matrix
    double dt;
-   if(time < 1e-3){
-       dt = update.time - prev.time;
-       prev.lastUpdate = update.time;
-   }else{
+   if(onlyPrediction){
        dt = time - prev.time;
        update.time = time;
+   }else{
+       dt = update.time - prev.time;
+       prev.lastUpdate = update.time;
    }
    
    Eigen::MatrixXf I6(6,6);
@@ -317,26 +318,28 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
    modelP(5,3) = modelUncertaintyV[5];
    
    measurementP.setZero();
-   measurementP(0,0) = update.sigmaP[0];
-   measurementP(1,1) = update.sigmaV[0];
-   measurementP(2,2) = update.sigmaP[1];
-   measurementP(3,3) = update.sigmaV[1];
-   measurementP(4,4) = update.sigmaP[2];
-   measurementP(5,5) = update.sigmaV[2];
-   measurementP(0,2) = update.sigmaP[3];
-   measurementP(2,0) = update.sigmaP[3];
-   measurementP(0,4) = update.sigmaP[4];
-   measurementP(4,0) = update.sigmaP[4];
-   measurementP(2,4) = update.sigmaP[5];
-   measurementP(4,2) = update.sigmaP[5];
-   measurementP(1,3) = update.sigmaV[3];
-   measurementP(3,1) = update.sigmaV[3];
-   measurementP(1,5) = update.sigmaV[4];
-   measurementP(5,1) = update.sigmaV[4];
-   measurementP(3,5) = update.sigmaV[5];
-   measurementP(5,3) = update.sigmaV[5];
+   if (!onlyPrediction)
+   {
+       measurementP(0, 0) = update.sigmaP[0];
+       measurementP(1, 1) = update.sigmaV[0];
+       measurementP(2, 2) = update.sigmaP[1];
+       measurementP(3, 3) = update.sigmaV[1];
+       measurementP(4, 4) = update.sigmaP[2];
+       measurementP(5, 5) = update.sigmaV[2];
+       measurementP(0, 2) = update.sigmaP[3];
+       measurementP(2, 0) = update.sigmaP[3];
+       measurementP(0, 4) = update.sigmaP[4];
+       measurementP(4, 0) = update.sigmaP[4];
+       measurementP(2, 4) = update.sigmaP[5];
+       measurementP(4, 2) = update.sigmaP[5];
+       measurementP(1, 3) = update.sigmaV[3];
+       measurementP(3, 1) = update.sigmaV[3];
+       measurementP(1, 5) = update.sigmaV[4];
+       measurementP(5, 1) = update.sigmaV[4];
+       measurementP(3, 5) = update.sigmaV[5];
+       measurementP(5, 3) = update.sigmaV[5];
+   }
 
-   
    xpred = motionModel*xprev;
    for(int i=0;i<6;++i){
        for(int j=0;j<6;++j){
@@ -347,19 +350,22 @@ void TargetTracker::UpdateEstimate(measurement& prev,measurement& update,double 
        covPred = motionModel*covPred*motionModel.transpose() + modelP;
    }
 
-   innovation(0,0) = update.locPos.x - xpred(0);
-   innovation(1,0) = update.velocity.x - xpred(1);
-   innovation(2,0) = update.locPos.y - xpred(2);
-   innovation(3,0) = update.velocity.y - xpred(3);
-   innovation(4,0) = update.locPos.z - xpred(4);
-   innovation(5,0) = update.velocity.z - xpred(5);
-
-   covInnov = covPred + measurementP;
-   if(innovation.norm() > 1e-5){
-       kalmanGain = covPred*covInnov.inverse();
-   }else{
+   if(onlyPrediction){
+       innovation.setZero();
        kalmanGain.setZero();
+   }else{
+       innovation(0, 0) = update.locPos.x - xpred(0);
+       innovation(1, 0) = update.velocity.x - xpred(1);
+       innovation(2, 0) = update.locPos.y - xpred(2);
+       innovation(3, 0) = update.velocity.y - xpred(3);
+       innovation(4, 0) = update.locPos.z - xpred(4);
+       innovation(5, 0) = update.velocity.z - xpred(5);
+       covInnov = covPred + measurementP;
+       kalmanGain = covPred*covInnov.inverse();
    }
+
+   
+  
    xcorr = xpred + kalmanGain*innovation;
    covCorr = (I6 - kalmanGain)*covPred;
 
@@ -418,7 +424,7 @@ void TargetTracker::UpdatePredictions(double time){
         //std::cout<<"Removing stale track"<<std::endl;
     }
     for(int i=0;i<tracks.size();++i){
-        UpdateEstimate(tracks[i],tracks[i],time);
+        UpdateEstimate(tracks[i],tracks[i],true,time);
     }
 }
 

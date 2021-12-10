@@ -44,7 +44,7 @@ class TargetTracker{
        std::vector<measurement> tracks;        
        larcfm::EuclideanProjection proj;
        int CheckValidationGate(measurement& data);
-       void UpdateEstimate(measurement& prediction,measurement& value,double time=0);
+       void UpdateEstimate(measurement& prediction,measurement& value,bool onlyPrediction=false,double time=0);
        int totalTracks;
        double prevLogTime;
     public:
