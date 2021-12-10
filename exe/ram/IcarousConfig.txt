@@ -167,6 +167,9 @@ guidance_radius_scaling =  2.0
 # Above climb angle is only used if the vertical distance to goal is beyond vertical delta 
 vertical_climb_delta = 10 [m]
 
+# flight path angle for climb/descend
+climb_angle = 45 [deg]
+
 # gain of proportial guidance control (used when capturing the final altitude)
 climb_rate_gain = 0.5
 
