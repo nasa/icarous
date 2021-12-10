@@ -118,7 +118,7 @@ class VehicleSimInterface(abc.ABC):
         pos_ned = self.GetOutputPositionNED()
         pos_gps = gps_offset(self.home_gps[0], self.home_gps[1],
                              pos_ned[1], pos_ned[0])
-        return pos_gps + (pos_ned[2],)
+        return pos_gps + (-pos_ned[2],)
 
     @abc.abstractmethod
     def GetOutputVelocityNED(self):

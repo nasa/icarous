@@ -29,7 +29,7 @@ class Icarous(IcarousInterface):
     """
     def __init__(self, home_pos, callsign="SPEEDBIRD", vehicleID=0, verbose=1,
                  logRateHz=5, fasttime=True, simtype="UAS_ROTOR",
-                 monitor="DAIDALUS", daaConfig="data/IcarousConfig.txt",icConfig="data/IcarousConfig.txt"):
+                 monitor="DAIDALUS", daaConfig="data/IcarousConfig.txt",icConfig="data/IcarousConfig.txt",fusion=False):
         """
         Initialize pycarous
         :param fasttime: when fasttime is True, simulation will run in fasttime
@@ -63,6 +63,7 @@ class Icarous(IcarousInterface):
         self.logLatency = 0
         self.prevLogUpdate = 0
         self.localMergeFixes = []
+        self.sensorFusion = fusion
 
         # Flight plan data
         self.flightplan1 = []
@@ -119,11 +120,14 @@ class Icarous(IcarousInterface):
 
     def InputTraffic(self,source,callsign,position,velocity,sigmaP=[1.0,1.0,1.0,0.0,0.0,0.0],sigmaV=[1.0,1.0,1.0,0.0,0.0,0.0]):
         if callsign != self.callsign and np.abs(np.sum(position)) > 0:
-            if callsign[:5] != "Truth":
-                self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
             localPos = self.ConvertToLocalCoordinates(position)
             sigma = [sigmaP[0],sigmaP[1],sigmaP[3]]
             self.RecordTraffic(callsign, source, position, velocity, localPos, sigma)
+            if self.sensorFusion:
+                self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
+            else:
+                trkgsvs = ConvertVnedToTrkGsVs(*velocity)
+                self.core.InputIntruderState(self.currTime,"ADSB",callsign,position,trkgsvs,sigmaP,sigmaV)
 
     def GetAcquiredTargets(self):
         n = self.core.GetTotalAcquiredTargets()
@@ -160,6 +164,7 @@ class Icarous(IcarousInterface):
             self.ownship.SetInitialConditions(z=waypoints[0].altitude,heading=hdg,speed=gs)
         elif setInitialPosition:
             self.ownship.SetInitialConditions(z=waypoints[0].altitude,heading=hdg,speed=0)
+
     def InputFlightplanFromFile(self,filename,eta=False,repair=False,startTimeShift=0,localPlan=False):
         import re
         eutlfile = re.search('\.eutl',filename)
@@ -292,7 +297,8 @@ class Icarous(IcarousInterface):
             return True
 
         self.RunOwnship()
-        self.GetAcquiredTargets()
+        if self.sensorFusion:
+            self.GetAcquiredTargets()
 
         self.core.Run(self.currTime)
 
