@@ -455,8 +455,8 @@ bool DubinsPlanner::GetDubinsParams(node* start,node* end){
 
         /// Check for fence conflicts
           
-        //bool gfConflict = CheckFenceConflict(finalTCPdata);
-        //if (gfConflict) continue;
+        bool gfConflict = CheckFenceConflict(finalTCPdata);
+        if (gfConflict) continue;
         
 
         /// Check traffic conflicts on the path
@@ -870,7 +870,7 @@ bool DubinsPlanner::CheckFenceConflict(tcpData_t trajectory){
                     {
                         larcfm::Vect2 vA = vertices[j] - center.vect2();
                         larcfm::Vect2 vB = vertices[(j + 1) % totalVertices] - center.vect2();
-                        auto roots = GetLineCircleIntersection(vA, vB - vA, 0, R+1);
+                        auto roots = GetLineCircleIntersection(vA, vB - vA, 0, R);
                         if (std::isnan(roots.first))
                         {
                             continue;
