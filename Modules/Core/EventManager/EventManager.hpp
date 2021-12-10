@@ -48,7 +48,7 @@ class heapset{
      * 
      */
     void pop(){
-        const T& val = priq.top();
+        const T val = priq.top();
         priq.pop();
         priset.erase(val);
     }
