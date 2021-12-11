@@ -327,7 +327,7 @@ class AgentAnimation():
             plt.show()
 
 
-def confidence_ellipse(x,y,cov, ax, ellipse, n_std=3.0, facecolor='none', **kwargs):
+def confidence_ellipse(x,y,cov, ax, ellipse, n_std=1.0, facecolor='none', **kwargs):
     """
     src: https://matplotlib.org/devdocs/gallery/statistics/confidence_ellipse.html
     Create a plot of the covariance confidence ellipse

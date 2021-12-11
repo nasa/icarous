@@ -132,8 +132,8 @@ class SimEnvironment:
         tvz = crate
         traffic = UamVtolSim(idx, home, tx, ty, tz, tvx, tvy, tvz)
         if len(sigmaP) > 0:
-            traffic.SetPosUncertainty(*sigmaP)
-            traffic.SetVelUncertainty(*sigmaV)
+            traffic.SetPosUncertainty(*sigmaP,coeff=0.97)
+            traffic.SetVelUncertainty(*sigmaV,coeff=0.97)
         traffic.InputCommand(heading, speed, crate)
         traffic.delay = delay
         self.tfList.append(traffic)

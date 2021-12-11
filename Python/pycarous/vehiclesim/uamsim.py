@@ -88,9 +88,9 @@ class UamVtolSim(VehicleSimInterface):
         n = np.zeros((1, 3))
         if self.noise:
             n = np.random.multivariate_normal(mean=np.array([0.0, 0.0, 0.0]), cov = self.sigma_vel, size=1)
-            self.vel[0] = self.vcoeff*self.vel[0] + (1 - self.vcoeff)*(self.vel[0] + n[0, 0])
-            self.vel[1] = self.vcoeff*self.vel[1] + (1 - self.vcoeff)*(self.vel[1] + n[0, 1])
-            self.vel[2] = self.vcoeff*self.vel[2] + (1 - self.vcoeff)*(self.vel[2] + n[0, 2])
+        self.vel[0] = self.vcoeff*self.vel[0] + (1 - self.vcoeff)*(self.vel0[0] + n[0, 0])
+        self.vel[1] = self.vcoeff*self.vel[1] + (1 - self.vcoeff)*(self.vel0[1] + n[0, 1])
+        self.vel[2] = self.vcoeff*self.vel[2] + (1 - self.vcoeff)*(self.vel0[2] + n[0, 2])
 
         if self.noise:
             n = np.random.multivariate_normal(mean=np.array([0.0, 0.0, 0.0]), cov = self.sigma_pos, size=1)
@@ -103,4 +103,4 @@ class UamVtolSim(VehicleSimInterface):
         return (self.pos[1], self.pos[0], -self.pos[2])
 
     def GetOutputVelocityNED(self):
-        return (self.vel0[1] + self.vw[1], self.vel0[0] + self.vw[0], -self.vel0[2] + self.vw[2])
+        return (self.vel[1] + self.vw[1], self.vel[0] + self.vw[0], -self.vel[2] + self.vw[2])
