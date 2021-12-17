@@ -34,7 +34,14 @@ void TargetTracker::ReadParamFromFile(std::string configFile){
    vThreshold           = parameters.getValue("vel_chi_threshold");
    log                  = parameters.getBool("tracker_log");
    if(log && !logFile.is_open()){
-       logFile.open("Tracker.log");
+       struct timespec  tv;
+       clock_gettime(CLOCK_REALTIME,&tv);
+       double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+
+       char fmt1[64];
+       sprintf(fmt1,"log/Tracker-%s-%f.log",callsign.c_str(),localT);
+
+       logFile.open(fmt1);
 
        logFile<<"time,callsign,x,y,z,lat,lon,alt,trk,gs,vs,sxx,syy,szz,sxy,syz,sxz,vxx,vyy,vzz,vxy,vyz,vxz"<<std::endl;
    }
