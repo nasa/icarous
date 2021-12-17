@@ -462,7 +462,7 @@ bool TrajManager::CheckLineOfSightconflict(larcfm::Position start, larcfm::Posit
 trajectoryMonitorData_t TrajManager::MonitorTrajectory(double time, std::string planID, larcfm::Position pos, larcfm::Velocity vel, int nextWP1,int nextWP2)
 {
 
-    /// Consider the combined plan if planid not Plan0 or doesn't contain the "Plan" prefix
+    /// Consider the combined plan if planid not Plan0 and contain the "Plan" prefix
     if(planID != "Plan0" && planID.substr(0,4) == "Plan"){
              planID = "Plan+";
     }
