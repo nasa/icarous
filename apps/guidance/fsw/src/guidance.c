@@ -178,7 +178,7 @@ void GUIDANCE_ProcessPacket(void){
         }
 
         case GUIDANCE_PARAMETERS_MID:{
-            guidance_parameters_t* msg = (guidance_parameters_t*) guidanceAppData.guidance_MsgPtr;
+            //guidance_parameters_t* msg = (guidance_parameters_t*) guidanceAppData.guidance_MsgPtr;
             break;
         }
     }

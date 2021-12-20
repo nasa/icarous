@@ -152,5 +152,7 @@ void COGNITION_FindNewPath(FpRequest cmd);
 
 void COGNITION_SendDitchRequest(DitchCommand cmd);
 
+void COGNITION_SendRtlRequest(RtlCommand rtl_command);
+
 EXTERN appdataCog_t appdataCog;
 #endif /* _apInterface_h_ */
