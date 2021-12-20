@@ -141,7 +141,7 @@ void TRACKER_ProcessPacket(void){
             double sigmaP[6] = {25.0,25.0,25.0,0.0,0.0,0.0};
             double sigmaV[6] = {10.0,10.0,10.0,0.0,0.0,0.0};
             if(trackerAppData.initialized){
-                TargetTracker_InputCurrentState(trackerAppData.TargetTracker,msg->time_gps,pos,trkgsvs,sigmaP,sigmaV);
+                TargetTracker_InputCurrentState(trackerAppData.TargetTracker,msg->time_gps,pos,trkGsVs,sigmaP,sigmaV);
             }else{
                 TargetTracker_SetHomePosition(trackerAppData.TargetTracker,pos);
                 trackerAppData.initialized = true;

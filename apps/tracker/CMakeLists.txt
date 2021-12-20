@@ -12,6 +12,7 @@ include_directories(fsw/src)
 include_directories(fsw/tables)
 include_directories(${MODULES_ROOT}/Core/TargetTracker)
 include_directories(${MODULES_ROOT}/Core/Interfaces)
+include_directories(${MODULES_ROOT}/Core/Utils)
 aux_source_directory(fsw/src APP_SRC_FILES)
 
 add_cfe_app(tracker ${APP_SRC_FILES})
