@@ -4,6 +4,7 @@
 #include "tracker.h"
 #include "tracker_tbl.c"
 #include "TargetTracker.h"
+#include "UtilFunctions.h"
 #include "Icarous.h"
 
 CFE_EVS_BinFilter_t  tracker_EventFilters[] =
@@ -135,8 +136,7 @@ void TRACKER_ProcessPacket(void){
         case ICAROUS_POSITION_MID:{
             position_t* msg = (position_t*)trackerAppData.tracker_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude_abs};
-            double vel[3] = {msg->vn,msg->ve,msg->vd};
-            double trkgsvs[3] = {0.0,0.0,0.0};
+            double trkGsVs[3] = {0.0,0.0,0.0};
             ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,trkGsVs,trkGsVs+1,trkGsVs+2);
             double sigmaP[6] = {25.0,25.0,25.0,0.0,0.0,0.0};
             double sigmaV[6] = {10.0,10.0,10.0,0.0,0.0,0.0};
@@ -153,6 +153,8 @@ void TRACKER_ProcessPacket(void){
             object_t* msg = (object_t*)trackerAppData.tracker_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double vel[3] = {msg->ve,msg->vn,-msg->vd};
+            double sigmaP[6];
+            double sigmaV[6];
             memcpy(sigmaP,msg->sigmaP,sizeof(double)*6);
             memcpy(sigmaV,msg->sigmaV,sizeof(double)*6);
             if(trackerAppData.initialized){
