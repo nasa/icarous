@@ -3,6 +3,7 @@
 #include <TargetTracker.h>
 #include <StateReader.h>
 #include <ParameterData.h>
+#include <iomanip>
 
 TargetTracker::TargetTracker(std::string name,std::string configFile){
     callsign = name;
@@ -219,6 +220,7 @@ void TargetTracker::InputMeasurement(measurement& value){
     if(value.time > prevLogTime && log){
          prevLogTime = value.time;
          for(auto trk: tracks){
+             logFile<<std::fixed<<std::setprecision(4);
              logFile<<trk.time<<","<<trk.callsign<<","<<trk.locPos.x<<","<<trk.locPos.y<<","<<trk.locPos.z<<","
                     <<trk.position.latitude()<<","<<trk.position.longitude()<<","<<trk.position.alt()<<","
                     <<trk.velocity.track("degree")<<","<<trk.velocity.gs()<<","<<trk.velocity.vs()<<","
