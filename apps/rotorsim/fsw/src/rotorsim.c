@@ -3,6 +3,7 @@
 //
 
 #include <math.h>
+#include <time.h>
 #include "rotorsim.h"
 #include "UtilFunctions.h"
 #include "rotorsim_table.h"
@@ -103,6 +104,8 @@ void Rotorsim_AppInitData(RotorsimTable_t* TblPtr){
     rotorsimAppData.position[1] = rotorsimAppData.Rotorsim_Tbl.originLL[1];
     rotorsimAppData.position[2] = rotorsimAppData.Rotorsim_Tbl.initialAlt;
 
+
+    rotorsimAppData.flightplanReceived = false;
     PC_Quadcopter_Simulation_initialize();
     memset(PC_Quadcopter_Simulation_Y.yout,0,sizeof(real_T)*30);
 }
@@ -128,6 +131,7 @@ void Rotorsim_ProcessPacket(void){
             flightplan_t* fp;
             fp = (flightplan_t*) rotorsimAppData.Rotorsim_MsgPtr;
             memcpy(&rotorsimAppData.flightPlan,fp,sizeof(flightplan_t));
+            rotorsimAppData.flightplanReceived = true;
             break;
         }
 
@@ -255,8 +259,9 @@ void Rotorsim_GetOutputs(void){
     positionGPS.vd = rotorsimAppData.velocity[2];
     positionGPS.hdg = rotorsimAppData.heading; 
 
-    CFE_TIME_SysTime_t timeNow = CFE_TIME_GetTAI();
-    positionGPS.time_gps = timeNow.Seconds;
+    struct timespec ts;
+    timespec_get(&ts,TIME_UTC);
+    positionGPS.time_gps = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
 
 
     double heading = fmod(2*M_PI + atan2(positionGPS.ve,positionGPS.vn),2*M_PI)*180/M_PI;
@@ -266,7 +271,9 @@ void Rotorsim_GetOutputs(void){
     //OS_printf("position lon : %f\n",positionForBus.longitude);
     //OS_printf("position alt : %f\n",positionForBus.altitude_rel);
 
-    SendSBMsg(positionGPS);
+    if(rotorsimAppData.flightplanReceived){
+        SendSBMsg(positionGPS);
+    }
 
     attitude_t attitude;
     CFE_SB_InitMsg(&attitude,ICAROUS_ATTITUDE_MID, sizeof(attitude),TRUE);

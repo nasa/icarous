@@ -60,6 +60,7 @@ typedef struct{
     bool positionControl;                   ///< position control mode
     bool velocityControl;                   ///< velocity control mode
     bool flightplanSent;                    ///< flight plan send status
+    bool flightplanReceived;                ///< Received flightplan status
     int nextWP;                             ///< Next waypoint index
     flightplan_t flightPlan;                ///< Input flight plan
     uint32_t timerId;                       ///< Timer id
