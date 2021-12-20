@@ -450,11 +450,11 @@ measurement TargetTracker::GetData(int i){
     return tracks[i];
 }
 
-void* new_TargetTracker(char* callsign,char* configFile){
+void* new_TargetTracker(const char* callsign,const char* configFile){
     return new TargetTracker(std::string(callsign),std::string(configFile));
 }
 
-void TargetTracker_ReadParamsFromFile(void* obj,char* configFile){
+void TargetTracker_ReadParamsFromFile(void* obj,const char* configFile){
     ((TargetTracker*)obj)->ReadParamFromFile(std::string(configFile));
 }
 

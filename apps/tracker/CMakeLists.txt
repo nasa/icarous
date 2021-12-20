@@ -15,7 +15,16 @@ include_directories(${MODULES_ROOT}/Core/Interfaces)
 include_directories(${MODULES_ROOT}/Core/Utils)
 aux_source_directory(fsw/src APP_SRC_FILES)
 
-add_cfe_app(tracker ${APP_SRC_FILES})
+link_directories(${MODULES_LIB})
 
-#add_cfe_tables(tracker "fsw/tables/tracker_tbl.c")
+add_library(tracker MODULE ${APP_SRC_FILES})
 
+target_link_libraries(tracker TargetTracker Utils)
+
+set_target_properties(tracker PROPERTIES PREFIX "")
+
+set_target_properties(tracker PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
+
+foreach(TGT ${APP_INSTALL_LIST})
+    install(TARGETS tracker DESTINATION ${TGT}/${INSTALL_SUBDIR})
+endforeach()
