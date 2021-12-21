@@ -1,19 +1,17 @@
 var searchData=
 [
-  ['takeoffcommand_0',['TakeoffCommand',['../struct_takeoff_command.html',1,'']]],
-  ['takeoffphasehandler_1',['TakeoffPhaseHandler',['../class_takeoff_phase_handler.html',1,'']]],
-  ['targettracker_2',['TargetTracker',['../class_target_tracker.html',1,'']]],
-  ['trackerappdata_5ft_3',['trackerAppData_t',['../structtracker_app_data__t.html',1,'']]],
-  ['trackertable_5ft_4',['trackerTable_t',['../structtracker_table__t.html',1,'']]],
-  ['traffic_5falerts_5ft_5',['traffic_alerts_t',['../structtraffic__alerts__t.html',1,'']]],
-  ['traffic_5fparameters_5ft_6',['traffic_parameters_t',['../structtraffic__parameters__t.html',1,'']]],
-  ['trafficappdata_5ft_7',['TrafficAppData_t',['../struct_traffic_app_data__t.html',1,'']]],
-  ['trafficconflicthandler_8',['TrafficConflictHandler',['../class_traffic_conflict_handler.html',1,'']]],
-  ['trafficmonitor_9',['TrafficMonitor',['../class_traffic_monitor.html',1,'']]],
-  ['traffictable_5ft_10',['TrafficTable_t',['../struct_traffic_table__t.html',1,'']]],
-  ['trajectory_5fparameters_5ft_11',['trajectory_parameters_t',['../structtrajectory__parameters__t.html',1,'']]],
-  ['trajectory_5frequest_5ft_12',['trajectory_request_t',['../structtrajectory__request__t.html',1,'']]],
-  ['trajectoryappdata_5ft_13',['TrajectoryAppData_t',['../struct_trajectory_app_data__t.html',1,'']]],
-  ['trajectorytable_5ft_14',['TrajectoryTable_t',['../struct_trajectory_table__t.html',1,'']]],
-  ['trajmanager_15',['TrajManager',['../class_traj_manager.html',1,'']]]
+  ['safe2ditchintruders_5ft_0',['safe2ditchIntruders_t',['../structsafe2ditch_intruders__t.html',1,'']]],
+  ['safe2ditchstatus_5ft_1',['safe2ditchStatus_t',['../structsafe2ditch_status__t.html',1,'']]],
+  ['sch_5fappdata_5ft_2',['SCH_AppData_t',['../struct_s_c_h___app_data__t.html',1,'']]],
+  ['sch_5fdiagpacket_5ft_3',['SCH_DiagPacket_t',['../struct_s_c_h___diag_packet__t.html',1,'']]],
+  ['sch_5fentrycmd_5ft_4',['SCH_EntryCmd_t',['../struct_s_c_h___entry_cmd__t.html',1,'']]],
+  ['sch_5fgroupcmd_5ft_5',['SCH_GroupCmd_t',['../struct_s_c_h___group_cmd__t.html',1,'']]],
+  ['sch_5fhkpacket_5ft_6',['SCH_HkPacket_t',['../struct_s_c_h___hk_packet__t.html',1,'']]],
+  ['sch_5flibdata_5ft_7',['SCH_LibData_t',['../struct_s_c_h___lib_data__t.html',1,'']]],
+  ['sch_5fmessageentry_5ft_8',['SCH_MessageEntry_t',['../struct_s_c_h___message_entry__t.html',1,'']]],
+  ['sch_5fnoargscmd_5ft_9',['SCH_NoArgsCmd_t',['../struct_s_c_h___no_args_cmd__t.html',1,'']]],
+  ['sch_5fscheduleentry_5ft_10',['SCH_ScheduleEntry_t',['../struct_s_c_h___schedule_entry__t.html',1,'']]],
+  ['speedchange_11',['SpeedChange',['../struct_speed_change.html',1,'']]],
+  ['status_5ft_12',['status_t',['../structstatus__t.html',1,'']]],
+  ['statusmessage_13',['StatusMessage',['../struct_status_message.html',1,'']]]
 ];

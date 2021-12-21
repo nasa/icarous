@@ -18,6 +18,8 @@ Inheritance diagram for Merging\+Handler\+:\begin{figure}[H]
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_merging_handler_a7974949f1d4482ffc9985f874ca30648}{Initialize}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em perform all initialization activities for a specific task \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_merging_handler_a6c9c2223621f69b282dc8574b41a391f}{Execute}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
 \begin{DoxyCompactList}\small\item\em perform the core activity \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} \mbox{\hyperlink{class_merging_handler_a2d4439276943c3392e5c1f4a4f8803f0}{Terminate}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
@@ -49,6 +51,25 @@ ret\+Val\+\_\+e
 We just keep track of merging. This ensures we don\textquotesingle{}t execute unnecessary handlers during merging.
 
 Reimplemented from \mbox{\hyperlink{class_event_handler_af135cd3da9a23971205f2f9823ebf96b}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
+
+\mbox{\Hypertarget{class_merging_handler_a7974949f1d4482ffc9985f874ca30648}\label{class_merging_handler_a7974949f1d4482ffc9985f874ca30648}} 
+\index{MergingHandler@{MergingHandler}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!MergingHandler@{MergingHandler}}
+\doxysubsubsection{\texorpdfstring{Initialize()}{Initialize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_event_handler_a13d6566fa12d1797d297c426ae0d33f6}{ret\+Val\+\_\+e}} Merging\+Handler\+::\+Initialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ret\+Val\+\_\+e ~\newline
+ 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_event_handler_aac07dab7026608d668aeaa191455fa21}{Event\+Handler$<$ Cognition\+State\+\_\+t $>$}}.
 
 \mbox{\Hypertarget{class_merging_handler_a2d4439276943c3392e5c1f4a4f8803f0}\label{class_merging_handler_a2d4439276943c3392e5c1f4a4f8803f0}} 
 \index{MergingHandler@{MergingHandler}!Terminate@{Terminate}}

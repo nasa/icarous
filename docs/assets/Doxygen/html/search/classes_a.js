@@ -1,6 +1,12 @@
 var searchData=
 [
-  ['nmea_5fpflaa_5fs_0',['nmea_pflaa_s',['../structnmea__pflaa__s.html',1,'']]],
-  ['noargscmd_5ft_1',['noArgsCmd_t',['../structno_args_cmd__t.html',1,'']]],
-  ['node_2',['node',['../structnode.html',1,'']]]
+  ['measurement_0',['measurement',['../structmeasurement.html',1,'']]],
+  ['merger_1',['Merger',['../class_merger.html',1,'']]],
+  ['merger_5fparameters_5ft_2',['merger_parameters_t',['../structmerger__parameters__t.html',1,'']]],
+  ['mergerappdata_5ft_3',['mergerAppData_t',['../structmerger_app_data__t.html',1,'']]],
+  ['mergertable_5ft_4',['MergerTable_t',['../struct_merger_table__t.html',1,'']]],
+  ['mergingdata_5ft_5',['mergingData_t',['../structmerging_data__t.html',1,'']]],
+  ['merginghandler_6',['MergingHandler',['../class_merging_handler.html',1,'']]],
+  ['mergingparams_5ft_7',['mergingParams_t',['../structmerging_params__t.html',1,'']]],
+  ['missionitemreached_5ft_8',['missionItemReached_t',['../structmission_item_reached__t.html',1,'']]]
 ];

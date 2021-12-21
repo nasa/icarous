@@ -66,7 +66,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p >ICAROUS modules encapsulate the core functionalities required to enable autonomous operations of unmanned systems.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 ACCoRD</h1>
 <p >A library developed at NASA Langley for airspace applications. ACCoRD contains several useful utilities:</p><ul>
 <li>Data structures for representing aircraft state data (position, velocity, attitude, etc) in various coordinate frames and units.</li>
@@ -75,7 +75,7 @@ ACCoRD</h1>
 <li>Geofence functionality (PolyCARP)</li>
 <li>Sense and avoid functionality (DAIDALUS)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Core</h1>
 <p >Suite of libraries implementing autonomous decision making, path planning, traffic avoidance and guidance:</p><ul>
 <li>EventManager: A template library implementing an event handling framework.</li>
@@ -89,17 +89,17 @@ Core</h1>
 <li>Utils: Helper functions.</li>
 <li>Interfaces: Datastructures shared among all the core modules</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Compilation</h1>
 <p >Compile modules as follows:</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Linux/OSX</h2>
 <div class="fragment"><div class="line">mkdir build</div>
 <div class="line">cd build</div>
 <div class="line">cmake ..</div>
 <div class="line">make -j8</div>
 </div><!-- fragment --><p >The compiled libraries are located under <code>lib</code></p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Setup library paths</h2>
 <ul>
 <li>Define a new environment variable called <code>ICAROUS_HOME</code> to contain the path to the Icarous folder. We recommend using the export command in your ~/.bash_profile (OSX) or ~/.bashrc (Linux) for persistence. For example, <div class="fragment"><div class="line">export ICAROUS_HOME=/path/to/icarous</div>
@@ -107,7 +107,7 @@ Setup library paths</h2>
 <li>Append the <code>lib</code> folder to your <code>DYLD_LIBRARY_PATH</code> (OSX) or <code>LD_LIBRARY_PATH</code> (Linux) variable. <div class="fragment"><div class="line">export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$ICAROUS_HOME/Modules/lib</div>
 </div><!-- fragment --></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Windows</h2>
 <ul>
 <li>We recommend using <a href="https://code.visualstudio.com/">vscode</a> for compiling on windows.</li>

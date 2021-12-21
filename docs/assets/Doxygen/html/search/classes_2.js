@@ -11,5 +11,6 @@ var searchData=
   ['cognition_5fparams_5ft_8',['cognition_params_t',['../structcognition__params__t.html',1,'']]],
   ['cognitionstate_5ft_9',['CognitionState_t',['../struct_cognition_state__t.html',1,'']]],
   ['cognitiontable_5ft_10',['cognitionTable_t',['../structcognition_table__t.html',1,'']]],
-  ['command_11',['Command',['../struct_command.html',1,'']]]
+  ['command_11',['Command',['../struct_command.html',1,'']]],
+  ['commandreturntolaunch_12',['CommandReturnToLaunch',['../class_command_return_to_launch.html',1,'']]]
 ];

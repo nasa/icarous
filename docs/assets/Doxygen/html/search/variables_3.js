@@ -19,6 +19,6 @@ var searchData=
   ['ditchguidancerequired_16',['ditchGuidanceRequired',['../group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s.html#ga90385cba520828b86844521a9119fd96',1,'safe2ditchStatus_t']]],
   ['ditchrequested_17',['ditchRequested',['../group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s.html#gaecb89739afb0394f5aa90c3dc080096b',1,'safe2ditchStatus_t']]],
   ['ditchroutefeasible_18',['ditchRouteFeasible',['../struct_cognition_state__t.html#ab59308690ff4d2638321565c3a204114',1,'CognitionState_t']]],
-  ['ditchsite_19',['ditchsite',['../group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s.html#ga99b9642711be9a1a2763a2f4338ac3e5',1,'safe2ditchStatus_t']]],
-  ['ditchsite_20',['ditchSite',['../struct_cognition_state__t.html#a38b32950b832a5c6572ec6773d4168d7',1,'CognitionState_t']]]
+  ['ditchsite_19',['ditchSite',['../struct_cognition_state__t.html#a38b32950b832a5c6572ec6773d4168d7',1,'CognitionState_t']]],
+  ['ditchsite_20',['ditchsite',['../group___s_a_f_e2_d_i_t_c_h___m_e_s_s_a_g_e_s.html#ga99b9642711be9a1a2763a2f4338ac3e5',1,'safe2ditchStatus_t']]]
 ];

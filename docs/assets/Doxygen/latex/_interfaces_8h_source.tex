@@ -109,24 +109,26 @@
 \DoxyCodeLine{117     \textcolor{keywordtype}{double} planLookaheadTime;       \textcolor{comment}{// lookahead time for traffic and fence conflicts}}
 \DoxyCodeLine{118     \textcolor{keywordtype}{double} persistenceTime;         \textcolor{comment}{// traffic conflict persistence time}}
 \DoxyCodeLine{119     \textcolor{keywordtype}{bool} return2NextWP;             \textcolor{comment}{// Return to path behavior. 0 return to nearest point. 1. next WP}}
-\DoxyCodeLine{120     \textcolor{keywordtype}{bool} active;                    \textcolor{comment}{// Make cognition active                   }}
-\DoxyCodeLine{121     \textcolor{keywordtype}{bool} returnVector;              \textcolor{comment}{// Use vectors to command the vehicle to return to mission}}
-\DoxyCodeLine{122     \textcolor{keywordtype}{bool} verifyPlanConflict;        \textcolor{comment}{// Verify if imminent conflict is a real conflicty by comparing it with current plan}}
-\DoxyCodeLine{123     \textcolor{keywordtype}{int} PriorityTakeoff;}
-\DoxyCodeLine{124     \textcolor{keywordtype}{int} PrioirtyNominalDeparture;}
-\DoxyCodeLine{125     \textcolor{keywordtype}{int} PriorityPrimaryPlanComplete;}
-\DoxyCodeLine{126     \textcolor{keywordtype}{int} PrioritySecondaryPlanComplete;}
-\DoxyCodeLine{127     \textcolor{keywordtype}{int} PriorityReplanning;}
-\DoxyCodeLine{128     \textcolor{keywordtype}{int} PriorityMerging;}
-\DoxyCodeLine{129     \textcolor{keywordtype}{int} PriorityFenceConflict;}
-\DoxyCodeLine{130     \textcolor{keywordtype}{int} PriorityTrafficConflict1;}
-\DoxyCodeLine{131     \textcolor{keywordtype}{int} PriorityTrafficConflict2;}
-\DoxyCodeLine{132     \textcolor{keywordtype}{int} PriorityTrafficConflict3;}
-\DoxyCodeLine{133     \textcolor{keywordtype}{int} PriorityFlightPlanDeviation;}
-\DoxyCodeLine{134     \textcolor{keywordtype}{int} PriorityDitching;}
-\DoxyCodeLine{135     \textcolor{keywordtype}{int} PriorityTODReached;}
-\DoxyCodeLine{136 \}\mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}};}
-\DoxyCodeLine{137 }
-\DoxyCodeLine{138 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{120     \textcolor{keywordtype}{int} fenceAction;                \textcolor{comment}{// Action to take on geofence conflict. 0 next feasible WP. 1 Icarous-\/controlled RTL. 2 RTL command}}
+\DoxyCodeLine{121     \textcolor{keywordtype}{double} rtlAltitude;             \textcolor{comment}{// Altitude (m) to use for Icarous-\/controlled return to launch}}
+\DoxyCodeLine{122     \textcolor{keywordtype}{bool} active;                    \textcolor{comment}{// Make cognition active                   }}
+\DoxyCodeLine{123     \textcolor{keywordtype}{bool} returnVector;              \textcolor{comment}{// Use vectors to command the vehicle to return to mission}}
+\DoxyCodeLine{124     \textcolor{keywordtype}{bool} verifyPlanConflict;        \textcolor{comment}{// Verify if imminent conflict is a real conflicty by comparing it with current plan}}
+\DoxyCodeLine{125     \textcolor{keywordtype}{int} PriorityTakeoff;}
+\DoxyCodeLine{126     \textcolor{keywordtype}{int} PrioirtyNominalDeparture;}
+\DoxyCodeLine{127     \textcolor{keywordtype}{int} PriorityPrimaryPlanComplete;}
+\DoxyCodeLine{128     \textcolor{keywordtype}{int} PrioritySecondaryPlanComplete;}
+\DoxyCodeLine{129     \textcolor{keywordtype}{int} PriorityReplanning;}
+\DoxyCodeLine{130     \textcolor{keywordtype}{int} PriorityMerging;}
+\DoxyCodeLine{131     \textcolor{keywordtype}{int} PriorityFenceConflict;}
+\DoxyCodeLine{132     \textcolor{keywordtype}{int} PriorityTrafficConflict1;}
+\DoxyCodeLine{133     \textcolor{keywordtype}{int} PriorityTrafficConflict2;}
+\DoxyCodeLine{134     \textcolor{keywordtype}{int} PriorityTrafficConflict3;}
+\DoxyCodeLine{135     \textcolor{keywordtype}{int} PriorityFlightPlanDeviation;}
+\DoxyCodeLine{136     \textcolor{keywordtype}{int} PriorityDitching;}
+\DoxyCodeLine{137     \textcolor{keywordtype}{int} PriorityTODReached;}
+\DoxyCodeLine{138 \}\mbox{\hyperlink{structcognition__params__t}{cognition\_params\_t}};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

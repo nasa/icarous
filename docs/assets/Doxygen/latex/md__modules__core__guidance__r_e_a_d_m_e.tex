@@ -1,0 +1,5 @@
+The goal of the guidance module is to provide outer loop controller to autopilot controllers and thus enable the aircraft to follow a flightplan, execute specific flight patterns such as loiter, hover, oribit, helix etc. Custom flight phase specific guidance implementation for takeoff and landing can also be provided.
+
+Flight plan inputs are provided as a list of waypoints. These flight plans can simple linear plans. i.\+e. A sequence of waypoints. Flightplans can also involve Trajectory Change Points (TCP) that provide information about acceleration and deceleration segments. These flightplans with TCPs are referred to as kinematic plans. A simple linear plan can be converted into a kinematic plan. This conversion process is called repairing.
+
+There are several modes of operation. Each mode is responsible for computing output commands for a specific flightplan or flight pattern. The output commands are heading angle, ground speed and vertical speed values that can be executed by a low-\/level autopilot controller. 

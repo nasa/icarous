@@ -62,6 +62,12 @@ enum \mbox{\hyperlink{_cognition_8hpp_a88aeb8a0ce3ca5cb7d7a788e82de626a}{resolut
 , {\bfseries TRACK\+\_\+\+SPEED\+\_\+\+VS\+\_\+\+RESOLUTION}
  \}
 \begin{DoxyCompactList}\small\item\em Enumeration of resolution types. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{_cognition_8hpp_aece2caa0de541747a19fb32165e03a86}\label{_cognition_8hpp_aece2caa0de541747a19fb32165e03a86}} 
+enum \mbox{\hyperlink{_cognition_8hpp_aece2caa0de541747a19fb32165e03a86}{fence\+Action\+\_\+e}} \{ {\bfseries NEXT\+\_\+\+WP}
+, {\bfseries ICAROUS\+\_\+\+RTL}
+, {\bfseries COMMAND\+\_\+\+RTL}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of actions to take on geofence conflict. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}\label{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}} 
 enum \mbox{\hyperlink{_cognition_8hpp_a8f728ffbef412037d447405d576d7c25}{request\+\_\+e}} \{ {\bfseries REQUEST\+\_\+\+NIL}
 , {\bfseries REQUEST\+\_\+\+PROCESSING}
@@ -101,6 +107,8 @@ void \mbox{\hyperlink{_cognition_8hpp_ae75ba7b8dfad50bc6bec31ba5f665301}{Set\+Gu
 \begin{DoxyCompactList}\small\item\em enqueue the Flight Plan to be flown by guidance \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_a880da76735a82c8f114e5f4e76a0230d}{Set\+Land\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
 \begin{DoxyCompactList}\small\item\em enqueue the land command \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_cognition_8hpp_af558797182c2c8c3ec66a3badd45e6b7}{Set\+Rtl\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
+\begin{DoxyCompactList}\small\item\em enqueue the RTL command \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}{Set\+Ditch\+Site\+Request\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
 \begin{DoxyCompactList}\small\item\em enqueue the ditch site request command \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}{Find\+New\+Path}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const larcfm\+::\+Position \&positionA, const larcfm\+::\+Velocity \&velocityA, const larcfm\+::\+Position \&positionB, const larcfm\+::\+Velocity \&velocityB)
@@ -530,6 +538,17 @@ int total waypoints in queried plan
 \index{SetLandCmd@{SetLandCmd}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{SetLandCmd()}{SetLandCmd()}}
 {\footnotesize\ttfamily void Set\+Land\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & decision making state \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_cognition_8hpp_af558797182c2c8c3ec66a3badd45e6b7}\label{_cognition_8hpp_af558797182c2c8c3ec66a3badd45e6b7}} 
+\index{Cognition.hpp@{Cognition.hpp}!SetRtlCmd@{SetRtlCmd}}
+\index{SetRtlCmd@{SetRtlCmd}!Cognition.hpp@{Cognition.hpp}}
+\doxysubsubsection{\texorpdfstring{SetRtlCmd()}{SetRtlCmd()}}
+{\footnotesize\ttfamily void Set\+Rtl\+Cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

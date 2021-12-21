@@ -100,7 +100,7 @@ $(function() {
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classheapset.html#a2c4b5e77db8078795b5c706412125d42">   50</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classheapset.html#a2c4b5e77db8078795b5c706412125d42">pop</a>(){</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keyword">const</span> T&amp; val = priq.top();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keyword">const</span> T val = priq.top();</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        priq.pop();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        priset.erase(val);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
@@ -213,29 +213,32 @@ $(function() {
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>           handler-&gt;<a class="code hl_variable" href="class_event_handler.html#af09e6c69c2b80c0060352d9bb15b0516">priority</a> = handler-&gt;defaultPriority + 0.5;</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>           val = handler-&gt;RunEvent(state);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        }</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    }<span class="keywordflow">else</span>{</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        val = handler-&gt;RunEvent(state);</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordflow">if</span> (val) {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        handler-&gt;priority = handler-&gt;defaultPriority;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        activeEventHandlers.pop();</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    }</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">while</span> (handler-&gt;children.size() &gt; 0){</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        activeEventHandlers.push(handler-&gt;children.back());</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        handler-&gt;children.pop_back();</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    }</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>}</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="class_event_management.html#a96286032040430816ae68d68b1235abb">  239</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_event_management.html#a96286032040430816ae68d68b1235abb">EventManagement&lt;T&gt;::Run</a>(T* state){</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    RunEventMonitors(state);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    RunEventHandlers(state);</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>}</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        }<span class="keywordflow">else</span>{</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>           handler-&gt;priority = handler-&gt;defaultPriority;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>           activeEventHandlers.pop();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        }</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    }<span class="keywordflow">else</span>{</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        val = handler-&gt;RunEvent(state);</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordflow">if</span> (val) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        handler-&gt;priority = handler-&gt;defaultPriority;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        activeEventHandlers.pop();</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">while</span> (handler-&gt;children.size() &gt; 0){</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        activeEventHandlers.push(handler-&gt;children.back());</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        handler-&gt;children.pop_back();</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    }</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>}</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="class_event_management.html#a96286032040430816ae68d68b1235abb">  242</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_event_management.html#a96286032040430816ae68d68b1235abb">EventManagement&lt;T&gt;::Run</a>(T* state){</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    RunEventMonitors(state);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    RunEventHandlers(state);</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>}</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="a_event_handler_8hpp_html"><div class="ttname"><a href="_event_handler_8hpp.html">EventHandler.hpp</a></div><div class="ttdoc">Definition of event handler base class.</div></div>
 <div class="ttc" id="aclass_event_handler_html"><div class="ttname"><a href="class_event_handler.html">EventHandler</a></div><div class="ttdef"><b>Definition:</b> EventHandler.hpp:12</div></div>
 <div class="ttc" id="aclass_event_handler_html_a23e5c40362639a9a6df8a2c885993ce5"><div class="ttname"><a href="class_event_handler.html#a23e5c40362639a9a6df8a2c885993ce5">EventHandler::execState</a></div><div class="ttdeci">execState_e execState</div><div class="ttdoc">current execution state for this handler</div><div class="ttdef"><b>Definition:</b> EventHandler.hpp:74</div></div>
@@ -243,7 +246,7 @@ $(function() {
 <div class="ttc" id="aclass_event_handler_html_af09e6c69c2b80c0060352d9bb15b0516"><div class="ttname"><a href="class_event_handler.html#af09e6c69c2b80c0060352d9bb15b0516">EventHandler::priority</a></div><div class="ttdeci">float priority</div><div class="ttdoc">current execution priority</div><div class="ttdef"><b>Definition:</b> EventHandler.hpp:76</div></div>
 <div class="ttc" id="aclass_event_management_html"><div class="ttname"><a href="class_event_management.html">EventManagement</a></div><div class="ttdoc">Event Management class.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:104</div></div>
 <div class="ttc" id="aclass_event_management_html_a3750ccbf4466f7d689bade8a06909096"><div class="ttname"><a href="class_event_management.html#a3750ccbf4466f7d689bade8a06909096">EventManagement::handlerComp</a></div><div class="ttdeci">HandlerComp&lt; T &gt; handlerComp</div><div class="ttdoc">List of monitor functions.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:142</div></div>
-<div class="ttc" id="aclass_event_management_html_a96286032040430816ae68d68b1235abb"><div class="ttname"><a href="class_event_management.html#a96286032040430816ae68d68b1235abb">EventManagement::Run</a></div><div class="ttdeci">void Run(T *)</div><div class="ttdoc">Run event management.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:239</div></div>
+<div class="ttc" id="aclass_event_management_html_a96286032040430816ae68d68b1235abb"><div class="ttname"><a href="class_event_management.html#a96286032040430816ae68d68b1235abb">EventManagement::Run</a></div><div class="ttdeci">void Run(T *)</div><div class="ttdoc">Run event management.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:242</div></div>
 <div class="ttc" id="aclass_event_management_html_a9f12284c53782acdc62b784d4188f055"><div class="ttname"><a href="class_event_management.html#a9f12284c53782acdc62b784d4188f055">EventManagement::RunEventMonitors</a></div><div class="ttdeci">void RunEventMonitors(T *)</div><div class="ttdoc">Check all the trigger functions fo active triggers.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:167</div></div>
 <div class="ttc" id="aclass_event_management_html_aaae8271ef6528137dc23d47553ab5c0b"><div class="ttname"><a href="class_event_management.html#aaae8271ef6528137dc23d47553ab5c0b">EventManagement::Reset</a></div><div class="ttdeci">void Reset()</div><div class="ttdoc">Reset all triggers and handlers.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:159</div></div>
 <div class="ttc" id="aclass_event_management_html_aabb3f062c47e9eb5f81c66ee847083de"><div class="ttname"><a href="class_event_management.html#aabb3f062c47e9eb5f81c66ee847083de">EventManagement::RunEventHandlers</a></div><div class="ttdeci">void RunEventHandlers(T *)</div><div class="ttdoc">Execute active handlers.</div><div class="ttdef"><b>Definition:</b> EventManager.hpp:204</div></div>

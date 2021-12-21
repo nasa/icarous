@@ -1,0 +1,267 @@
+\hypertarget{_interfaces_8h}{}\doxysection{Modules/\+Core/\+Interfaces/\+Interfaces.h File Reference}
+\label{_interfaces_8h}\index{Modules/Core/Interfaces/Interfaces.h@{Modules/Core/Interfaces/Interfaces.h}}
+
+
+Datastrutures shared across core modules.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_aa55d0502e61717b40511139b6fc5e51d}\label{_interfaces_8h_aa55d0502e61717b40511139b6fc5e51d}} 
+\#define {\bfseries MAX\+\_\+\+FIX\+\_\+\+NAME\+\_\+\+SIZE}~20
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378}{tcp\+\_\+e}} \{ \newline
+\mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ac49b9aa4d7afab82f68592ddbd3e488b}{TCP\+\_\+\+NONE}} = 0
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa11a35d1036368875f9fcb52fad810d8}{TCP\+\_\+\+BOT}} = 1
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a40cd9f8d2629f27dce6f6738ea1c1abf}{TCP\+\_\+\+EOT}} = 2
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a274aa2ef8e0dd5cf87b3cf469790e0e0}{TCP\+\_\+\+MOT}} = 4
+, \newline
+\mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a2fd4dad7357cfb1e719c979cd0d0c6c8}{TCP\+\_\+\+EOTBOT}} = 5
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a23937924a06cc783fd3f6ff9c7f6b7e2}{TCP\+\_\+\+NONEg}} = 6
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa81502cf799491d0c8e4b8ffcd35fec2}{TCP\+\_\+\+BGS}} = 7
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a80e82e09500682db94c4e191f0913ad6}{TCP\+\_\+\+EGS}} = 8
+, \newline
+\mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aeb03d9c772e06e9d26aa849bd5bd76cc}{TCP\+\_\+\+EGSBGS}} = 9
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a0e22aa0b647656afc1cd76ed26207e0f}{TCP\+\_\+\+NONEv}} = 10
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a3af785333263da7f1f39e6ebfb1b3bda}{TCP\+\_\+\+BVS}} = 11
+, \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ab965be8e650182dbecb7eb8901c69ac5}{TCP\+\_\+\+EVS}} = 12
+, \newline
+\mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ad5e4e682070d49fbd0c869b0225287a3}{TCP\+\_\+\+EVSBVS}} = 13
+ \}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_ae613e6bb831d3172b4be862cf1dee145}\label{_interfaces_8h_ae613e6bb831d3172b4be862cf1dee145}} 
+enum {\bfseries band\+Region\+\_\+e} \{ \newline
+{\bfseries BANDREGION\+\_\+\+UNKNOWN} = 0
+, {\bfseries BANDREGION\+\_\+\+NONE} = 1
+, {\bfseries BANDREGION\+\_\+\+FAR} = 2
+, {\bfseries BANDREGION\+\_\+\+MID} = 3
+, \newline
+{\bfseries BANDREGION\+\_\+\+NEAR} = 4
+, {\bfseries BANDREGION\+\_\+\+RECOVERY} = 5
+ \}
+\item 
+enum \mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5}{object\+Type\+\_\+e}} \{ \newline
+\mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ad63fea3fe906a8799afbc7077fca7aca}{\+\_\+\+TRAFFIC\+\_\+\+SIM\+\_\+}}
+, \mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a1b9958ab1d2b697fe147ba6a04f7cd55}{\+\_\+\+TRAFFIC\+\_\+\+ADSB\+\_\+}}
+, \mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5aaef4be88ce4e7378d440a5c9f2e2bae6}{\+\_\+\+TRAFFIC\+\_\+\+RADAR\+\_\+}}
+, \mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ae88e6ce69c7710cea649ce82257de6f8}{\+\_\+\+TRAFFIC\+\_\+\+FLARM\+\_\+}}
+, \newline
+\mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a258b80bd4337885ef5274dcaedb56f24}{\+\_\+\+OBSTACLE\+\_\+}}
+ \}
+\begin{DoxyCompactList}\small\item\em object type \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{_interfaces_8h_ad09246453a4dabd919c7541484046a87}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+packed\+\_\+\+\_\+))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_a9a4c7d432874cec2e1ecbc14e0e5e2d6}\label{_interfaces_8h_a9a4c7d432874cec2e1ecbc14e0e5e2d6}} 
+{\bfseries waypoint\+\_\+t}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_a128a7bb9a9a2da8dcd559238519b29c5}\label{_interfaces_8h_a128a7bb9a9a2da8dcd559238519b29c5}} 
+{\bfseries bands\+\_\+t}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_ac8d201670c914fef1a84e09436f485a7}\label{_interfaces_8h_ac8d201670c914fef1a84e09436f485a7}} 
+{\bfseries geofence\+Conflict\+\_\+t}
+\item 
+\mbox{\Hypertarget{_interfaces_8h_ac282d39432854f63392e94b7480c3457}\label{_interfaces_8h_ac282d39432854f63392e94b7480c3457}} 
+{\bfseries trajectory\+Monitor\+Data\+\_\+t}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5}} 
+\index{Interfaces.h@{Interfaces.h}!objectType\_e@{objectType\_e}}
+\index{objectType\_e@{objectType\_e}!Interfaces.h@{Interfaces.h}}
+\doxysubsubsection{\texorpdfstring{objectType\_e}{objectType\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5}{object\+Type\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TRAFFIC\_SIM\_@{\_TRAFFIC\_SIM\_}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!\_TRAFFIC\_SIM\_@{\_TRAFFIC\_SIM\_}}}\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ad63fea3fe906a8799afbc7077fca7aca}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ad63fea3fe906a8799afbc7077fca7aca}} 
+\+\_\+\+TRAFFIC\+\_\+\+SIM\+\_\+&traffic data from simulation \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TRAFFIC\_ADSB\_@{\_TRAFFIC\_ADSB\_}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!\_TRAFFIC\_ADSB\_@{\_TRAFFIC\_ADSB\_}}}\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a1b9958ab1d2b697fe147ba6a04f7cd55}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a1b9958ab1d2b697fe147ba6a04f7cd55}} 
+\+\_\+\+TRAFFIC\+\_\+\+ADSB\+\_\+&traffic data from ADSB \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TRAFFIC\_RADAR\_@{\_TRAFFIC\_RADAR\_}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!\_TRAFFIC\_RADAR\_@{\_TRAFFIC\_RADAR\_}}}\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5aaef4be88ce4e7378d440a5c9f2e2bae6}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5aaef4be88ce4e7378d440a5c9f2e2bae6}} 
+\+\_\+\+TRAFFIC\+\_\+\+RADAR\+\_\+&traffic data from radar \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_TRAFFIC\_FLARM\_@{\_TRAFFIC\_FLARM\_}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!\_TRAFFIC\_FLARM\_@{\_TRAFFIC\_FLARM\_}}}\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ae88e6ce69c7710cea649ce82257de6f8}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5ae88e6ce69c7710cea649ce82257de6f8}} 
+\+\_\+\+TRAFFIC\+\_\+\+FLARM\+\_\+&traffic data from flarm \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_OBSTACLE\_@{\_OBSTACLE\_}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!\_OBSTACLE\_@{\_OBSTACLE\_}}}\mbox{\Hypertarget{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a258b80bd4337885ef5274dcaedb56f24}\label{_interfaces_8h_a8b6a37c9579d94b329f39b4b343ab0a5a258b80bd4337885ef5274dcaedb56f24}} 
+\+\_\+\+OBSTACLE\+\_\+&obstacle \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378}} 
+\index{Interfaces.h@{Interfaces.h}!tcp\_e@{tcp\_e}}
+\index{tcp\_e@{tcp\_e}!Interfaces.h@{Interfaces.h}}
+\doxysubsubsection{\texorpdfstring{tcp\_e}{tcp\_e}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378}{tcp\+\_\+e}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_NONE@{TCP\_NONE}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_NONE@{TCP\_NONE}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ac49b9aa4d7afab82f68592ddbd3e488b}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ac49b9aa4d7afab82f68592ddbd3e488b}} 
+TCP\+\_\+\+NONE&None. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_BOT@{TCP\_BOT}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_BOT@{TCP\_BOT}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa11a35d1036368875f9fcb52fad810d8}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa11a35d1036368875f9fcb52fad810d8}} 
+TCP\+\_\+\+BOT&Beginnning of turn. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EOT@{TCP\_EOT}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EOT@{TCP\_EOT}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a40cd9f8d2629f27dce6f6738ea1c1abf}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a40cd9f8d2629f27dce6f6738ea1c1abf}} 
+TCP\+\_\+\+EOT&End of vertical turn. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_MOT@{TCP\_MOT}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_MOT@{TCP\_MOT}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a274aa2ef8e0dd5cf87b3cf469790e0e0}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a274aa2ef8e0dd5cf87b3cf469790e0e0}} 
+TCP\+\_\+\+MOT&Middle of turn. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EOTBOT@{TCP\_EOTBOT}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EOTBOT@{TCP\_EOTBOT}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a2fd4dad7357cfb1e719c979cd0d0c6c8}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a2fd4dad7357cfb1e719c979cd0d0c6c8}} 
+TCP\+\_\+\+EOTBOT&End/\+Beginning of turn. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_NONEg@{TCP\_NONEg}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_NONEg@{TCP\_NONEg}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a23937924a06cc783fd3f6ff9c7f6b7e2}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a23937924a06cc783fd3f6ff9c7f6b7e2}} 
+TCP\+\_\+\+NONEg&None. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_BGS@{TCP\_BGS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_BGS@{TCP\_BGS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa81502cf799491d0c8e4b8ffcd35fec2}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aa81502cf799491d0c8e4b8ffcd35fec2}} 
+TCP\+\_\+\+BGS&Beginning of ground speed change. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EGS@{TCP\_EGS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EGS@{TCP\_EGS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a80e82e09500682db94c4e191f0913ad6}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a80e82e09500682db94c4e191f0913ad6}} 
+TCP\+\_\+\+EGS&End of ground speed change. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EGSBGS@{TCP\_EGSBGS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EGSBGS@{TCP\_EGSBGS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aeb03d9c772e06e9d26aa849bd5bd76cc}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378aeb03d9c772e06e9d26aa849bd5bd76cc}} 
+TCP\+\_\+\+EGSBGS&End/\+Beginning of speed change. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_NONEv@{TCP\_NONEv}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_NONEv@{TCP\_NONEv}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a0e22aa0b647656afc1cd76ed26207e0f}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a0e22aa0b647656afc1cd76ed26207e0f}} 
+TCP\+\_\+\+NONEv&None. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_BVS@{TCP\_BVS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_BVS@{TCP\_BVS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a3af785333263da7f1f39e6ebfb1b3bda}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378a3af785333263da7f1f39e6ebfb1b3bda}} 
+TCP\+\_\+\+BVS&Beginning of vertical speed change. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EVS@{TCP\_EVS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EVS@{TCP\_EVS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ab965be8e650182dbecb7eb8901c69ac5}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ab965be8e650182dbecb7eb8901c69ac5}} 
+TCP\+\_\+\+EVS&Beginning of vertical speed change. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TCP\_EVSBVS@{TCP\_EVSBVS}!Interfaces.h@{Interfaces.h}}\index{Interfaces.h@{Interfaces.h}!TCP\_EVSBVS@{TCP\_EVSBVS}}}\mbox{\Hypertarget{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ad5e4e682070d49fbd0c869b0225287a3}\label{_interfaces_8h_ae775a11d16a2a0593c7e98d424790378ad5e4e682070d49fbd0c869b0225287a3}} 
+TCP\+\_\+\+EVSBVS&End/\+Beginning of vertical speed change. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_interfaces_8h_ad09246453a4dabd919c7541484046a87}\label{_interfaces_8h_ad09246453a4dabd919c7541484046a87}} 
+\index{Interfaces.h@{Interfaces.h}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!Interfaces.h@{Interfaces.h}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily struct \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+packed\+\_\+\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\texorpdfstring{$<$}{<} waypoint index
+
+\texorpdfstring{$<$}{<} ETA at this waypoint
+
+\texorpdfstring{$<$}{<} waypoint name
+
+\texorpdfstring{$<$}{<} latitude in degrees
+
+\texorpdfstring{$<$}{<} longitude in degrees
+
+\texorpdfstring{$<$}{<} altitude Meters
+
+\texorpdfstring{$<$}{<} see \begin{DoxySeeAlso}{See also}
+wp\+\_\+metric\+\_\+e
+\end{DoxySeeAlso}
+\texorpdfstring{$<$}{<} wp\+\_\+metric value applicable at this waypoint
+
+\texorpdfstring{$<$}{<} info field
+
+\texorpdfstring{$<$}{<} band time
+
+\texorpdfstring{$<$}{<} total number of conflict traffic
+
+\texorpdfstring{$<$}{<} total number of bands (max\+:5)
+
+\texorpdfstring{$<$}{<} type of each band \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{traffic__msg_8h_a81a01a86de31071a92e6cce0bab9bc4b}{Region}}
+\end{DoxySeeAlso}
+\texorpdfstring{$<$}{<} min values of each band
+
+\texorpdfstring{$<$}{<} max values of each band
+
+\texorpdfstring{$<$}{<} 1 if recovery band is available
+
+\texorpdfstring{$<$}{<} current ownship conflict band
+
+\texorpdfstring{$<$}{<} time to violation
+
+\texorpdfstring{$<$}{<} time to recovery
+
+\texorpdfstring{$<$}{<} min horizontal distance
+
+\texorpdfstring{$<$}{<} min vertical distance
+
+\texorpdfstring{$<$}{<} resolution up
+
+\texorpdfstring{$<$}{<} resolution down
+
+\texorpdfstring{$<$}{<} preferred resolution
+
+\texorpdfstring{$<$}{<} number of conflicts
+
+\texorpdfstring{$<$}{<} total fences
+
+\texorpdfstring{$<$}{<} conflicting fence ids
+
+\texorpdfstring{$<$}{<} type of conflict (keep in\+: 0/ keep out\+:1)
+
+\texorpdfstring{$<$}{<} time to violating constraint at current speed
+
+\texorpdfstring{$<$}{<} recovery position
+
+\texorpdfstring{$<$}{<} fence conflicts
+
+\texorpdfstring{$<$}{<} traffic conflict
+
+\texorpdfstring{$<$}{<} line of sight to goal is avaialble
+
+\texorpdfstring{$<$}{<} conflicting fence ids
+
+\texorpdfstring{$<$}{<} callsign of conflicting traffic
+
+\texorpdfstring{$<$}{<} time to violating constraint at current speed
+
+\texorpdfstring{$<$}{<} time to violating constraint at current speed
+
+\texorpdfstring{$<$}{<} recovery position
+
+\texorpdfstring{$<$}{<} perp, striaght and time offsets with respect to next\+WP on primary plan
+
+\texorpdfstring{$<$}{<} perp, striaght and time offsets with respect to next\+WP on current plan
+
+\texorpdfstring{$<$}{<} current next\+WP
+
+\texorpdfstring{$<$}{<} next feasible waypoint

@@ -139,6 +139,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a88aeb8a0ce3ca5cb7d7a788e82de626a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of resolution types. <br /></td></tr>
 <tr class="separator:a88aeb8a0ce3ca5cb7d7a788e82de626a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aece2caa0de541747a19fb32165e03a86"><td class="memItemLeft" align="right" valign="top"><a id="aece2caa0de541747a19fb32165e03a86" name="aece2caa0de541747a19fb32165e03a86"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_cognition_8hpp.html#aece2caa0de541747a19fb32165e03a86">fenceAction_e</a> { <b>NEXT_WP</b>
+, <b>ICAROUS_RTL</b>
+, <b>COMMAND_RTL</b>
+ }</td></tr>
+<tr class="memdesc:aece2caa0de541747a19fb32165e03a86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of actions to take on geofence conflict. <br /></td></tr>
+<tr class="separator:aece2caa0de541747a19fb32165e03a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f728ffbef412037d447405d576d7c25"><td class="memItemLeft" align="right" valign="top"><a id="a8f728ffbef412037d447405d576d7c25" name="a8f728ffbef412037d447405d576d7c25"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_cognition_8hpp.html#a8f728ffbef412037d447405d576d7c25">request_e</a> { <b>REQUEST_NIL</b>
 , <b>REQUEST_PROCESSING</b>
 , <b>REQUEST_RESPONDED</b>
@@ -190,6 +196,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a880da76735a82c8f114e5f4e76a0230d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_cognition_8hpp.html#a880da76735a82c8f114e5f4e76a0230d">SetLandCmd</a> (<a class="el" href="struct_cognition_state__t.html">CognitionState_t</a> *state)</td></tr>
 <tr class="memdesc:a880da76735a82c8f114e5f4e76a0230d"><td class="mdescLeft">&#160;</td><td class="mdescRight">enqueue the land command  <a href="_cognition_8hpp.html#a880da76735a82c8f114e5f4e76a0230d">More...</a><br /></td></tr>
 <tr class="separator:a880da76735a82c8f114e5f4e76a0230d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af558797182c2c8c3ec66a3badd45e6b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_cognition_8hpp.html#af558797182c2c8c3ec66a3badd45e6b7">SetRtlCmd</a> (<a class="el" href="struct_cognition_state__t.html">CognitionState_t</a> *state)</td></tr>
+<tr class="memdesc:af558797182c2c8c3ec66a3badd45e6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">enqueue the RTL command  <a href="_cognition_8hpp.html#af558797182c2c8c3ec66a3badd45e6b7">More...</a><br /></td></tr>
+<tr class="separator:af558797182c2c8c3ec66a3badd45e6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16cc2c35c2c5d29dbbfb71d2ad3a4af4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_cognition_8hpp.html#a16cc2c35c2c5d29dbbfb71d2ad3a4af4">SetDitchSiteRequestCmd</a> (<a class="el" href="struct_cognition_state__t.html">CognitionState_t</a> *state)</td></tr>
 <tr class="memdesc:a16cc2c35c2c5d29dbbfb71d2ad3a4af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">enqueue the ditch site request command  <a href="_cognition_8hpp.html#a16cc2c35c2c5d29dbbfb71d2ad3a4af4">More...</a><br /></td></tr>
 <tr class="separator:a16cc2c35c2c5d29dbbfb71d2ad3a4af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1154,6 +1163,30 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void SetLandCmd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_cognition_state__t.html">CognitionState_t</a> *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>decision making state </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af558797182c2c8c3ec66a3badd45e6b7" name="af558797182c2c8c3ec66a3badd45e6b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af558797182c2c8c3ec66a3badd45e6b7">&#9670;&nbsp;</a></span>SetRtlCmd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetRtlCmd </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_cognition_state__t.html">CognitionState_t</a> *&#160;</td>
           <td class="paramname"><em>state</em></td><td>)</td>

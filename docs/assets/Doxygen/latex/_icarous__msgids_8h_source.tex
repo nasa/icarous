@@ -20,31 +20,32 @@
 \DoxyCodeLine{20 \textcolor{preprocessor}{\#define ICAROUS\_RESETFP\_MID 0x081D        }}
 \DoxyCodeLine{21 \textcolor{preprocessor}{\#define ICAROUS\_STATUS\_MID 0x081E         }}
 \DoxyCodeLine{22 \textcolor{preprocessor}{\#define ICAROUS\_DITCH\_MID 0x081F          }}
-\DoxyCodeLine{23 \textcolor{preprocessor}{\#ifdef APPDEF\_TRACKER}}
-\DoxyCodeLine{24 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID 0x0820   }}
-\DoxyCodeLine{25 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{26 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID ICAROUS\_TRAFFIC\_MID }}
-\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{28 \textcolor{preprocessor}{\#define UPLINK\_FLIGHTPLAN\_MID 0x0821      }}
-\DoxyCodeLine{29 \textcolor{preprocessor}{\#define DOWNLINK\_FLIGHTPLAN\_MID 0x0822    }}
-\DoxyCodeLine{30 \textcolor{preprocessor}{\#define ICAROUS\_VFRHUD\_MID 0x0823         }}
-\DoxyCodeLine{31 \textcolor{preprocessor}{\#define ICAROUS\_BATTERY\_STATUS\_MID 0x0824 }}
-\DoxyCodeLine{32 \textcolor{preprocessor}{\#define RADAR\_TRIGGER\_MID 0x0825          }}
-\DoxyCodeLine{33 \textcolor{preprocessor}{\#define ICAROUS\_RC\_CHANNELS\_MID 0x0826    }}
-\DoxyCodeLine{34 \textcolor{preprocessor}{\#define ICAROUS\_LOCAL\_POSITION\_MID 0x0827 }}
-\DoxyCodeLine{35 \textcolor{preprocessor}{\#define ICAROUS\_HOME\_POSITION\_MID 0x0828  }}
-\DoxyCodeLine{36 \textcolor{preprocessor}{\#define ICAROUS\_WPREACHED\_EXTERNAL\_MID 0x0829      }}
-\DoxyCodeLine{37 \textcolor{preprocessor}{\#define ICAROUS\_PARAMUPDATE\_MID 0x0830      }}
-\DoxyCodeLine{39 \textcolor{preprocessor}{\#define SendSBMsg(msg)\(\backslash\)}}
-\DoxyCodeLine{40 \textcolor{preprocessor}{CFE\_SB\_TimeStampMsg((CFE\_SB\_Msg\_t * ) \&msg); \(\backslash\)}}
-\DoxyCodeLine{41 \textcolor{preprocessor}{CFE\_SB\_SendMsg((CFE\_SB\_Msg\_t * ) \&msg);}}
-\DoxyCodeLine{42 }
-\DoxyCodeLine{43 \textcolor{preprocessor}{\#define SetStatus(msg,txt,level)\(\backslash\)}}
-\DoxyCodeLine{44 \textcolor{preprocessor}{memset(msg.buffer,0,sizeof(char)*250); \(\backslash\)}}
-\DoxyCodeLine{45 \textcolor{preprocessor}{strcpy(msg.buffer,txt); \(\backslash\)}}
-\DoxyCodeLine{46 \textcolor{preprocessor}{msg.severity=level; \(\backslash\)}}
-\DoxyCodeLine{47 \textcolor{preprocessor}{SendSBMsg(msg);}}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//CFETOP\_MSGIDS\_H}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define ICAROUS\_RTL\_MID 0x0820            }}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#ifdef APPDEF\_TRACKER}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID 0x0820   }}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{    \#define ICAROUS\_RAWTRAFFIC\_MID ICAROUS\_TRAFFIC\_MID }}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define UPLINK\_FLIGHTPLAN\_MID 0x0821      }}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define DOWNLINK\_FLIGHTPLAN\_MID 0x0822    }}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define ICAROUS\_VFRHUD\_MID 0x0823         }}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define ICAROUS\_BATTERY\_STATUS\_MID 0x0824 }}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define RADAR\_TRIGGER\_MID 0x0825          }}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define ICAROUS\_RC\_CHANNELS\_MID 0x0826    }}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define ICAROUS\_LOCAL\_POSITION\_MID 0x0827 }}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define ICAROUS\_HOME\_POSITION\_MID 0x0828  }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define ICAROUS\_WPREACHED\_EXTERNAL\_MID 0x0829      }}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define ICAROUS\_PARAMUPDATE\_MID 0x0830      }}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define SendSBMsg(msg)\(\backslash\)}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{CFE\_SB\_TimeStampMsg((CFE\_SB\_Msg\_t * ) \&msg); \(\backslash\)}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{CFE\_SB\_SendMsg((CFE\_SB\_Msg\_t * ) \&msg);}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define SetStatus(msg,txt,level)\(\backslash\)}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{memset(msg.buffer,0,sizeof(char)*250); \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{strcpy(msg.buffer,txt); \(\backslash\)}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{msg.severity=level; \(\backslash\)}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{SendSBMsg(msg);}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//CFETOP\_MSGIDS\_H}}
 
 \end{DoxyCode}

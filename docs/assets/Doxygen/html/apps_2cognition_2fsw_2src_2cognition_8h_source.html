@@ -182,8 +182,10 @@ $(function() {
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keywordtype">void</span> COGNITION_SendDitchRequest(<a class="code hl_struct" href="struct_ditch_command.html">DitchCommand</a> cmd);</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>EXTERN <a class="code hl_struct" href="structappdata_cog__t.html">appdataCog_t</a> appdataCog;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">#endif </span><span class="comment">/* _apInterface_h_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="keywordtype">void</span> COGNITION_SendRtlRequest(<a class="code hl_struct" href="struct_rtl_command.html">RtlCommand</a> rtl_command);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>EXTERN <a class="code hl_struct" href="structappdata_cog__t.html">appdataCog_t</a> appdataCog;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#endif </span><span class="comment">/* _apInterface_h_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_icarous__msg_8h_html"><div class="ttname"><a href="_icarous__msg_8h.html">Icarous_msg.h</a></div><div class="ttdoc">Icarous common message definitions.</div></div>
 <div class="ttc" id="a_icarous__msgids_8h_html"><div class="ttname"><a href="_icarous__msgids_8h.html">Icarous_msgids.h</a></div><div class="ttdoc">Message ID definition of common icarous messages.</div></div>
 <div class="ttc" id="aapps_2cognition_2fsw_2src_2cognition_8h_html_a06abe4570e72f736b14bbe056424b602"><div class="ttname"><a href="apps_2cognition_2fsw_2src_2cognition_8h.html#a06abe4570e72f736b14bbe056424b602">COGNITION_GetADSBData</a></div><div class="ttdeci">void COGNITION_GetADSBData(void)</div><div class="ttdoc">Read ADSB data from ADSB transponder and publish traffic data on software bus.</div></div>
@@ -204,10 +206,11 @@ $(function() {
 <div class="ttc" id="asafe2ditch__msgids_8h_html"><div class="ttname"><a href="safe2ditch__msgids_8h.html">safe2ditch_msgids.h</a></div><div class="ttdoc">message definitions for safe2ditch app</div></div>
 <div class="ttc" id="astruct_alt_change_html"><div class="ttname"><a href="struct_alt_change.html">AltChange</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:24</div></div>
 <div class="ttc" id="astruct_ditch_command_html"><div class="ttname"><a href="struct_ditch_command.html">DitchCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:41</div></div>
-<div class="ttc" id="astruct_fp_change_html"><div class="ttname"><a href="struct_fp_change.html">FpChange</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:46</div></div>
-<div class="ttc" id="astruct_fp_request_html"><div class="ttname"><a href="struct_fp_request.html">FpRequest</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:53</div></div>
+<div class="ttc" id="astruct_fp_change_html"><div class="ttname"><a href="struct_fp_change.html">FpChange</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:51</div></div>
+<div class="ttc" id="astruct_fp_request_html"><div class="ttname"><a href="struct_fp_request.html">FpRequest</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:58</div></div>
 <div class="ttc" id="astruct_land_command_html"><div class="ttname"><a href="struct_land_command.html">LandCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:36</div></div>
 <div class="ttc" id="astruct_p2_p_command_html"><div class="ttname"><a href="struct_p2_p_command.html">P2PCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:12</div></div>
+<div class="ttc" id="astruct_rtl_command_html"><div class="ttname"><a href="struct_rtl_command.html">RtlCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:46</div></div>
 <div class="ttc" id="astruct_speed_change_html"><div class="ttname"><a href="struct_speed_change.html">SpeedChange</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:18</div></div>
 <div class="ttc" id="astruct_takeoff_command_html"><div class="ttname"><a href="struct_takeoff_command.html">TakeoffCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:31</div></div>
 <div class="ttc" id="astruct_velocity_command_html"><div class="ttname"><a href="struct_velocity_command.html">VelocityCommand</a></div><div class="ttdef"><b>Definition:</b> Commands.hpp:5</div></div>

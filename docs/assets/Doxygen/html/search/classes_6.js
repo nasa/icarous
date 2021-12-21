@@ -9,8 +9,8 @@ var searchData=
   ['gsinterfacetable_5ft_6',['gsInterfaceTable_t',['../structgs_interface_table__t.html',1,'']]],
   ['guidance_7',['Guidance',['../class_guidance.html',1,'']]],
   ['guidance_5fparameters_5ft_8',['guidance_parameters_t',['../structguidance__parameters__t.html',1,'']]],
-  ['guidanceappdata_5ft_9',['GuidanceAppData_t',['../struct_guidance_app_data__t.html',1,'']]],
-  ['guidanceappdata_5ft_10',['guidanceAppData_t',['../structguidance_app_data__t.html',1,'']]],
+  ['guidanceappdata_5ft_9',['guidanceAppData_t',['../structguidance_app_data__t.html',1,'']]],
+  ['guidanceappdata_5ft_10',['GuidanceAppData_t',['../struct_guidance_app_data__t.html',1,'']]],
   ['guidanceoutput_5ft_11',['GuidanceOutput_t',['../struct_guidance_output__t.html',1,'']]],
   ['guidanceparams_5ft_12',['GuidanceParams_t',['../struct_guidance_params__t.html',1,'']]],
   ['guidancetable_5ft_13',['guidanceTable_t',['../structguidance_table__t.html',1,'']]]

@@ -33,7 +33,7 @@
 \DoxyCodeLine{44     \}}
 \DoxyCodeLine{45 }
 \DoxyCodeLine{50     \textcolor{keywordtype}{void} \mbox{\hyperlink{classheapset_a2c4b5e77db8078795b5c706412125d42}{pop}}()\{}
-\DoxyCodeLine{51         \textcolor{keyword}{const} T\& val = priq.top();}
+\DoxyCodeLine{51         \textcolor{keyword}{const} T val = priq.top();}
 \DoxyCodeLine{52         priq.pop();}
 \DoxyCodeLine{53         priset.erase(val);}
 \DoxyCodeLine{54     \}}
@@ -146,28 +146,31 @@
 \DoxyCodeLine{215 }
 \DoxyCodeLine{218            handler-\/>\mbox{\hyperlink{class_event_handler_af09e6c69c2b80c0060352d9bb15b0516}{priority}} = handler-\/>defaultPriority + 0.5;}
 \DoxyCodeLine{219            val = handler-\/>RunEvent(state);}
-\DoxyCodeLine{220         \}}
-\DoxyCodeLine{221     \}\textcolor{keywordflow}{else}\{}
-\DoxyCodeLine{222         val = handler-\/>RunEvent(state);}
-\DoxyCodeLine{223     \}}
-\DoxyCodeLine{224 }
-\DoxyCodeLine{226     \textcolor{keywordflow}{if} (val) \{}
-\DoxyCodeLine{227         handler-\/>priority = handler-\/>defaultPriority;}
-\DoxyCodeLine{228         activeEventHandlers.pop();}
-\DoxyCodeLine{229     \}}
-\DoxyCodeLine{230 }
-\DoxyCodeLine{232     \textcolor{keywordflow}{while} (handler-\/>children.size() > 0)\{}
-\DoxyCodeLine{233         activeEventHandlers.push(handler-\/>children.back());}
-\DoxyCodeLine{234         handler-\/>children.pop\_back();}
-\DoxyCodeLine{235     \}}
-\DoxyCodeLine{236 \}}
-\DoxyCodeLine{237 }
-\DoxyCodeLine{238 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
-\DoxyCodeLine{239 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a96286032040430816ae68d68b1235abb}{EventManagement<T>::Run}}(T* state)\{}
-\DoxyCodeLine{240     RunEventMonitors(state);}
-\DoxyCodeLine{241     RunEventHandlers(state);}
-\DoxyCodeLine{242 \}}
-\DoxyCodeLine{243 }
-\DoxyCodeLine{244 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{220         \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{221            handler-\/>priority = handler-\/>defaultPriority;}
+\DoxyCodeLine{222            activeEventHandlers.pop();}
+\DoxyCodeLine{223         \}}
+\DoxyCodeLine{224     \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{225         val = handler-\/>RunEvent(state);}
+\DoxyCodeLine{226     \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{229     \textcolor{keywordflow}{if} (val) \{}
+\DoxyCodeLine{230         handler-\/>priority = handler-\/>defaultPriority;}
+\DoxyCodeLine{231         activeEventHandlers.pop();}
+\DoxyCodeLine{232     \}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{235     \textcolor{keywordflow}{while} (handler-\/>children.size() > 0)\{}
+\DoxyCodeLine{236         activeEventHandlers.push(handler-\/>children.back());}
+\DoxyCodeLine{237         handler-\/>children.pop\_back();}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239 \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{242 \textcolor{keywordtype}{void} \mbox{\hyperlink{class_event_management_a96286032040430816ae68d68b1235abb}{EventManagement<T>::Run}}(T* state)\{}
+\DoxyCodeLine{243     RunEventMonitors(state);}
+\DoxyCodeLine{244     RunEventHandlers(state);}
+\DoxyCodeLine{245 \}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
