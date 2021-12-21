@@ -70,97 +70,533 @@ $(function() {
   <div class="headertitle"><div class="title">TargetTracker Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_target_tracker.html" title="TargetTracker.">TargetTracker</a>.  
+</p>
+
+<p><code>#include &lt;<a class="el" href="_target_tracker_8hpp_source.html">TargetTracker.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a36c0dd2033aca1748c9ac0e0bf588bb7"><td class="memItemLeft" align="right" valign="top"><a id="a36c0dd2033aca1748c9ac0e0bf588bb7" name="a36c0dd2033aca1748c9ac0e0bf588bb7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TargetTracker</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string configFile)</td></tr>
+<tr class="memitem:a36c0dd2033aca1748c9ac0e0bf588bb7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a36c0dd2033aca1748c9ac0e0bf588bb7">TargetTracker</a> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string configFile)</td></tr>
+<tr class="memdesc:a36c0dd2033aca1748c9ac0e0bf588bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Target Tracker object.  <a href="class_target_tracker.html#a36c0dd2033aca1748c9ac0e0bf588bb7">More...</a><br /></td></tr>
 <tr class="separator:a36c0dd2033aca1748c9ac0e0bf588bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca88bb2f0c0866e2336e43a747303fb4"><td class="memItemLeft" align="right" valign="top"><a id="aca88bb2f0c0866e2336e43a747303fb4" name="aca88bb2f0c0866e2336e43a747303fb4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadParamFromFile</b> (std::string configFile)</td></tr>
+<tr class="memitem:aca88bb2f0c0866e2336e43a747303fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#aca88bb2f0c0866e2336e43a747303fb4">ReadParamFromFile</a> (std::string configFile)</td></tr>
+<tr class="memdesc:aca88bb2f0c0866e2336e43a747303fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read parameters from file.  <a href="class_target_tracker.html#aca88bb2f0c0866e2336e43a747303fb4">More...</a><br /></td></tr>
 <tr class="separator:aca88bb2f0c0866e2336e43a747303fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memItemLeft" align="right" valign="top"><a id="af0ad8a42233bca42e8f1ed17dfe4d666" name="af0ad8a42233bca42e8f1ed17dfe4d666"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetHomePosition</b> (larcfm::Position &amp;home)</td></tr>
+<tr class="memitem:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">SetHomePosition</a> (larcfm::Position &amp;home)</td></tr>
+<tr class="memdesc:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Home Position object.  <a href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">More...</a><br /></td></tr>
 <tr class="separator:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a316c2ab73b39c4c47a32e249966bf2ab"><td class="memItemLeft" align="right" valign="top"><a id="a316c2ab73b39c4c47a32e249966bf2ab" name="a316c2ab73b39c4c47a32e249966bf2ab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetGateThresholds</b> (double p, double v)</td></tr>
+<tr class="memitem:a316c2ab73b39c4c47a32e249966bf2ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a316c2ab73b39c4c47a32e249966bf2ab">SetGateThresholds</a> (double p, double v)</td></tr>
+<tr class="memdesc:a316c2ab73b39c4c47a32e249966bf2ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the chi2 gating thresholds.  <a href="class_target_tracker.html#a316c2ab73b39c4c47a32e249966bf2ab">More...</a><br /></td></tr>
 <tr class="separator:a316c2ab73b39c4c47a32e249966bf2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a627eeaaf053b67606e62eeb2e559676d"><td class="memItemLeft" align="right" valign="top"><a id="a627eeaaf053b67606e62eeb2e559676d" name="a627eeaaf053b67606e62eeb2e559676d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdatePredictions</b> (double time)</td></tr>
+<tr class="memitem:a627eeaaf053b67606e62eeb2e559676d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a627eeaaf053b67606e62eeb2e559676d">UpdatePredictions</a> (double time)</td></tr>
+<tr class="memdesc:a627eeaaf053b67606e62eeb2e559676d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update track predictions for given time.  <a href="class_target_tracker.html#a627eeaaf053b67606e62eeb2e559676d">More...</a><br /></td></tr>
 <tr class="separator:a627eeaaf053b67606e62eeb2e559676d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a228b18fa3aefddb50d67d92296c0553c"><td class="memItemLeft" align="right" valign="top"><a id="a228b18fa3aefddb50d67d92296c0553c" name="a228b18fa3aefddb50d67d92296c0553c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetModelUncertainty</b> (double sigmaP[6], double sigmaV[6])</td></tr>
+<tr class="memitem:a228b18fa3aefddb50d67d92296c0553c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a228b18fa3aefddb50d67d92296c0553c">SetModelUncertainty</a> (double sigmaP[6], double sigmaV[6])</td></tr>
+<tr class="memdesc:a228b18fa3aefddb50d67d92296c0553c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Model Uncertainty.  <a href="class_target_tracker.html#a228b18fa3aefddb50d67d92296c0553c">More...</a><br /></td></tr>
 <tr class="separator:a228b18fa3aefddb50d67d92296c0553c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memItemLeft" align="right" valign="top"><a id="a8cda79a58cdf5cc179573106ebf4a15a" name="a8cda79a58cdf5cc179573106ebf4a15a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputCurrentState</b> (double time, larcfm::Position &amp;pos, larcfm::Velocity &amp;vel, double sigmaP[6], double sigmaV[6])</td></tr>
+<tr class="memitem:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">InputCurrentState</a> (double time, larcfm::Position &amp;pos, larcfm::Velocity &amp;vel, double sigmaP[6], double sigmaV[6])</td></tr>
+<tr class="memdesc:a8cda79a58cdf5cc179573106ebf4a15a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input ownship information.  <a href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">More...</a><br /></td></tr>
 <tr class="separator:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15330be6db6419158e806456b04b3af"><td class="memItemLeft" align="right" valign="top"><a id="af15330be6db6419158e806456b04b3af" name="af15330be6db6419158e806456b04b3af"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InputMeasurement</b> (<a class="el" href="structmeasurement.html">measurement</a> &amp;<a class="el" href="arducopter_8h.html#af658750d9926b54e48a492c3cf3f446b">traffic</a>)</td></tr>
+<tr class="memitem:af15330be6db6419158e806456b04b3af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#af15330be6db6419158e806456b04b3af">InputMeasurement</a> (<a class="el" href="structmeasurement.html">measurement</a> &amp;<a class="el" href="arducopter_8h.html#af658750d9926b54e48a492c3cf3f446b">traffic</a>)</td></tr>
+<tr class="memdesc:af15330be6db6419158e806456b04b3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input measurement data.  <a href="class_target_tracker.html#af15330be6db6419158e806456b04b3af">More...</a><br /></td></tr>
 <tr class="separator:af15330be6db6419158e806456b04b3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8baeff145edf1a2d12bb0fb03b431d13"><td class="memItemLeft" align="right" valign="top"><a id="a8baeff145edf1a2d12bb0fb03b431d13" name="a8baeff145edf1a2d12bb0fb03b431d13"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTotalTraffic</b> ()</td></tr>
+<tr class="memitem:a8baeff145edf1a2d12bb0fb03b431d13"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a8baeff145edf1a2d12bb0fb03b431d13">GetTotalTraffic</a> ()</td></tr>
+<tr class="memdesc:a8baeff145edf1a2d12bb0fb03b431d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total traffic.  <a href="class_target_tracker.html#a8baeff145edf1a2d12bb0fb03b431d13">More...</a><br /></td></tr>
 <tr class="separator:a8baeff145edf1a2d12bb0fb03b431d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a379164a8c0c83c88ec2392fb0542e43c"><td class="memItemLeft" align="right" valign="top"><a id="a379164a8c0c83c88ec2392fb0542e43c" name="a379164a8c0c83c88ec2392fb0542e43c"></a>
-<a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetIntruderData</b> (int i)</td></tr>
+<tr class="memitem:a379164a8c0c83c88ec2392fb0542e43c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a379164a8c0c83c88ec2392fb0542e43c">GetIntruderData</a> (int i)</td></tr>
+<tr class="memdesc:a379164a8c0c83c88ec2392fb0542e43c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get intruder.  <a href="class_target_tracker.html#a379164a8c0c83c88ec2392fb0542e43c">More...</a><br /></td></tr>
 <tr class="separator:a379164a8c0c83c88ec2392fb0542e43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda1015569581c3ca1538a028199ff91"><td class="memItemLeft" align="right" valign="top"><a id="abda1015569581c3ca1538a028199ff91" name="abda1015569581c3ca1538a028199ff91"></a>
-<a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> (int i)</td></tr>
+<tr class="memitem:abda1015569581c3ca1538a028199ff91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#abda1015569581c3ca1538a028199ff91">GetData</a> (int i)</td></tr>
+<tr class="memdesc:abda1015569581c3ca1538a028199ff91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get track data at given index.  <a href="class_target_tracker.html#abda1015569581c3ca1538a028199ff91">More...</a><br /></td></tr>
 <tr class="separator:abda1015569581c3ca1538a028199ff91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a02e1de75185dd918cab71a4df6c677f1"><td class="memItemLeft" align="right" valign="top"><a id="a02e1de75185dd918cab71a4df6c677f1" name="a02e1de75185dd918cab71a4df6c677f1"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CheckValidationGate</b> (<a class="el" href="structmeasurement.html">measurement</a> &amp;data)</td></tr>
+<tr class="memitem:a02e1de75185dd918cab71a4df6c677f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a02e1de75185dd918cab71a4df6c677f1">CheckValidationGate</a> (<a class="el" href="structmeasurement.html">measurement</a> &amp;data)</td></tr>
+<tr class="memdesc:a02e1de75185dd918cab71a4df6c677f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if mahalanobis distance criteria is satisfied.  <a href="class_target_tracker.html#a02e1de75185dd918cab71a4df6c677f1">More...</a><br /></td></tr>
 <tr class="separator:a02e1de75185dd918cab71a4df6c677f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a181f626b15de97e250440f32dfce525f"><td class="memItemLeft" align="right" valign="top"><a id="a181f626b15de97e250440f32dfce525f" name="a181f626b15de97e250440f32dfce525f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateEstimate</b> (<a class="el" href="structmeasurement.html">measurement</a> &amp;prediction, <a class="el" href="structmeasurement.html">measurement</a> &amp;value, bool onlyPrediction=false, double time=0)</td></tr>
+<tr class="memitem:a181f626b15de97e250440f32dfce525f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a181f626b15de97e250440f32dfce525f">UpdateEstimate</a> (<a class="el" href="structmeasurement.html">measurement</a> &amp;prediction, <a class="el" href="structmeasurement.html">measurement</a> &amp;value, bool onlyPrediction=false, double time=0)</td></tr>
+<tr class="memdesc:a181f626b15de97e250440f32dfce525f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform filter updates.  <a href="class_target_tracker.html#a181f626b15de97e250440f32dfce525f">More...</a><br /></td></tr>
 <tr class="separator:a181f626b15de97e250440f32dfce525f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a4de804c0884092f9fcf4f8b50721388c"><td class="memItemLeft" align="right" valign="top"><a id="a4de804c0884092f9fcf4f8b50721388c" name="a4de804c0884092f9fcf4f8b50721388c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>callsign</b></td></tr>
+<tr class="memdesc:a4de804c0884092f9fcf4f8b50721388c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ownship callsign <br /></td></tr>
 <tr class="separator:a4de804c0884092f9fcf4f8b50721388c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8656f10d0e9e95165e39c17130d73b0f"><td class="memItemLeft" align="right" valign="top"><a id="a8656f10d0e9e95165e39c17130d73b0f" name="a8656f10d0e9e95165e39c17130d73b0f"></a>
 std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>logFile</b></td></tr>
+<tr class="memdesc:a8656f10d0e9e95165e39c17130d73b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">tracker log file <br /></td></tr>
 <tr class="separator:a8656f10d0e9e95165e39c17130d73b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad697ba36e5bb552baee35100fe1c9624"><td class="memItemLeft" align="right" valign="top"><a id="ad697ba36e5bb552baee35100fe1c9624" name="ad697ba36e5bb552baee35100fe1c9624"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>log</b></td></tr>
+<tr class="memdesc:ad697ba36e5bb552baee35100fe1c9624"><td class="mdescLeft">&#160;</td><td class="mdescRight">log enable status <br /></td></tr>
 <tr class="separator:ad697ba36e5bb552baee35100fe1c9624"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e087163332f7aa234b8149e723ee103"><td class="memItemLeft" align="right" valign="top"><a id="a8e087163332f7aa234b8149e723ee103" name="a8e087163332f7aa234b8149e723ee103"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>timeout</b></td></tr>
+<tr class="memdesc:a8e087163332f7aa234b8149e723ee103"><td class="mdescLeft">&#160;</td><td class="mdescRight">track timeout <br /></td></tr>
 <tr class="separator:a8e087163332f7aa234b8149e723ee103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e532f0a6b1eecf99238dbe684d832e5"><td class="memItemLeft" align="right" valign="top"><a id="a2e532f0a6b1eecf99238dbe684d832e5" name="a2e532f0a6b1eecf99238dbe684d832e5"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>modelUncertaintyP</b> [6]</td></tr>
+<tr class="memdesc:a2e532f0a6b1eecf99238dbe684d832e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">position uncertainty associated with prediction model <br /></td></tr>
 <tr class="separator:a2e532f0a6b1eecf99238dbe684d832e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60803e3c826c1d32d9685fa0b44aa90e"><td class="memItemLeft" align="right" valign="top"><a id="a60803e3c826c1d32d9685fa0b44aa90e" name="a60803e3c826c1d32d9685fa0b44aa90e"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>modelUncertaintyV</b> [6]</td></tr>
+<tr class="memdesc:a60803e3c826c1d32d9685fa0b44aa90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocity uncertainty associated with velocity model <br /></td></tr>
 <tr class="separator:a60803e3c826c1d32d9685fa0b44aa90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d79f1668c85e4ac38dc0bd5e43d3a17"><td class="memItemLeft" align="right" valign="top"><a id="a8d79f1668c85e4ac38dc0bd5e43d3a17" name="a8d79f1668c85e4ac38dc0bd5e43d3a17"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>pThreshold</b></td></tr>
+<tr class="memdesc:a8d79f1668c85e4ac38dc0bd5e43d3a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">chi2 threshold for mahalanobis distance - position error <br /></td></tr>
 <tr class="separator:a8d79f1668c85e4ac38dc0bd5e43d3a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a959ba09db8db4ef38b7e04238d6e1724"><td class="memItemLeft" align="right" valign="top"><a id="a959ba09db8db4ef38b7e04238d6e1724" name="a959ba09db8db4ef38b7e04238d6e1724"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>vThreshold</b></td></tr>
+<tr class="memdesc:a959ba09db8db4ef38b7e04238d6e1724"><td class="mdescLeft">&#160;</td><td class="mdescRight">chi2 threshold for mahalanobis distance - velocity error <br /></td></tr>
 <tr class="separator:a959ba09db8db4ef38b7e04238d6e1724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac298a903710c3327ef24eacc83e0b375"><td class="memItemLeft" align="right" valign="top"><a id="ac298a903710c3327ef24eacc83e0b375" name="ac298a903710c3327ef24eacc83e0b375"></a>
 larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>homePos</b></td></tr>
+<tr class="memdesc:ac298a903710c3327ef24eacc83e0b375"><td class="mdescLeft">&#160;</td><td class="mdescRight">initial position - use to produce NED projections <br /></td></tr>
 <tr class="separator:ac298a903710c3327ef24eacc83e0b375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3dfb9abb31cb4d6b06ad029a191903a"><td class="memItemLeft" align="right" valign="top"><a id="af3dfb9abb31cb4d6b06ad029a191903a" name="af3dfb9abb31cb4d6b06ad029a191903a"></a>
 <a class="el" href="structmeasurement.html">measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>currentState</b></td></tr>
+<tr class="memdesc:af3dfb9abb31cb4d6b06ad029a191903a"><td class="mdescLeft">&#160;</td><td class="mdescRight">current state of ownship <br /></td></tr>
 <tr class="separator:af3dfb9abb31cb4d6b06ad029a191903a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad25d64b8d0044cd0e519f5bb5a5df1db"><td class="memItemLeft" align="right" valign="top"><a id="ad25d64b8d0044cd0e519f5bb5a5df1db" name="ad25d64b8d0044cd0e519f5bb5a5df1db"></a>
 std::vector&lt; <a class="el" href="structmeasurement.html">measurement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tracks</b></td></tr>
+<tr class="memdesc:ad25d64b8d0044cd0e519f5bb5a5df1db"><td class="mdescLeft">&#160;</td><td class="mdescRight">tracked measurements <br /></td></tr>
 <tr class="separator:ad25d64b8d0044cd0e519f5bb5a5df1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d3c43affbdaabbf5b441355628f76a6"><td class="memItemLeft" align="right" valign="top"><a id="a9d3c43affbdaabbf5b441355628f76a6" name="a9d3c43affbdaabbf5b441355628f76a6"></a>
 larcfm::EuclideanProjection&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b></td></tr>
+<tr class="memdesc:a9d3c43affbdaabbf5b441355628f76a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">projection <br /></td></tr>
 <tr class="separator:a9d3c43affbdaabbf5b441355628f76a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7413fcd10b65554976845b89c8c50a7"><td class="memItemLeft" align="right" valign="top"><a id="aa7413fcd10b65554976845b89c8c50a7" name="aa7413fcd10b65554976845b89c8c50a7"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>totalTracks</b></td></tr>
+<tr class="memdesc:aa7413fcd10b65554976845b89c8c50a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">total tracks <br /></td></tr>
 <tr class="separator:aa7413fcd10b65554976845b89c8c50a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe28bcb4d94593f9f7b6449d3686e53b"><td class="memItemLeft" align="right" valign="top"><a id="abe28bcb4d94593f9f7b6449d3686e53b" name="abe28bcb4d94593f9f7b6449d3686e53b"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>prevLogTime</b></td></tr>
+<tr class="memdesc:abe28bcb4d94593f9f7b6449d3686e53b"><td class="mdescLeft">&#160;</td><td class="mdescRight">previous log time <br /></td></tr>
 <tr class="separator:abe28bcb4d94593f9f7b6449d3686e53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a36c0dd2033aca1748c9ac0e0bf588bb7" name="a36c0dd2033aca1748c9ac0e0bf588bb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36c0dd2033aca1748c9ac0e0bf588bb7">&#9670;&nbsp;</a></span>TargetTracker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TargetTracker::TargetTracker </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>callsign</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>configFile</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callsign</td><td></td></tr>
+    <tr><td class="paramname">configFile</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a02e1de75185dd918cab71a4df6c677f1" name="a02e1de75185dd918cab71a4df6c677f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02e1de75185dd918cab71a4df6c677f1">&#9670;&nbsp;</a></span>CheckValidationGate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TargetTracker::CheckValidationGate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmeasurement.html">measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>input measurement </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int index of track the input data is associated with. -1 if no associations are found </dd></dl>
+
+</div>
+</div>
+<a id="abda1015569581c3ca1538a028199ff91" name="abda1015569581c3ca1538a028199ff91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abda1015569581c3ca1538a028199ff91">&#9670;&nbsp;</a></span>GetData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmeasurement.html">measurement</a> TargetTracker::GetData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>starts with 0. 0th index is ownship </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>measurement </dd></dl>
+
+</div>
+</div>
+<a id="a379164a8c0c83c88ec2392fb0542e43c" name="a379164a8c0c83c88ec2392fb0542e43c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a379164a8c0c83c88ec2392fb0542e43c">&#9670;&nbsp;</a></span>GetIntruderData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmeasurement.html">measurement</a> TargetTracker::GetIntruderData </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>starts with 0. 0th index is first traffic track </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>measurement </dd></dl>
+
+</div>
+</div>
+<a id="a8baeff145edf1a2d12bb0fb03b431d13" name="a8baeff145edf1a2d12bb0fb03b431d13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8baeff145edf1a2d12bb0fb03b431d13">&#9670;&nbsp;</a></span>GetTotalTraffic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TargetTracker::GetTotalTraffic </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="a8cda79a58cdf5cc179573106ebf4a15a" name="a8cda79a58cdf5cc179573106ebf4a15a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cda79a58cdf5cc179573106ebf4a15a">&#9670;&nbsp;</a></span>InputCurrentState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::InputCurrentState </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">larcfm::Velocity &amp;&#160;</td>
+          <td class="paramname"><em>vel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sigmaP</em>[6], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sigmaV</em>[6]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td></td></tr>
+    <tr><td class="paramname">pos</td><td></td></tr>
+    <tr><td class="paramname">vel</td><td></td></tr>
+    <tr><td class="paramname">sigmaP</td><td>covariances for xx,yy,zz,xy,xz,yz </td></tr>
+    <tr><td class="paramname">sigmaV</td><td>covariances for xx,yy,zz,xy,xz,yz </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af15330be6db6419158e806456b04b3af" name="af15330be6db6419158e806456b04b3af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af15330be6db6419158e806456b04b3af">&#9670;&nbsp;</a></span>InputMeasurement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::InputMeasurement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmeasurement.html">measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>traffic</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">traffic</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aca88bb2f0c0866e2336e43a747303fb4" name="aca88bb2f0c0866e2336e43a747303fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca88bb2f0c0866e2336e43a747303fb4">&#9670;&nbsp;</a></span>ReadParamFromFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::ReadParamFromFile </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>configFile</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">configFile</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a316c2ab73b39c4c47a32e249966bf2ab" name="a316c2ab73b39c4c47a32e249966bf2ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a316c2ab73b39c4c47a32e249966bf2ab">&#9670;&nbsp;</a></span>SetGateThresholds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::SetGateThresholds </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>position error threshold </td></tr>
+    <tr><td class="paramname">v</td><td>velocity error threshold </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af0ad8a42233bca42e8f1ed17dfe4d666" name="af0ad8a42233bca42e8f1ed17dfe4d666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0ad8a42233bca42e8f1ed17dfe4d666">&#9670;&nbsp;</a></span>SetHomePosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::SetHomePosition </td>
+          <td>(</td>
+          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramname"><em>home</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">home</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a228b18fa3aefddb50d67d92296c0553c" name="a228b18fa3aefddb50d67d92296c0553c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a228b18fa3aefddb50d67d92296c0553c">&#9670;&nbsp;</a></span>SetModelUncertainty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::SetModelUncertainty </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sigmaP</em>[6], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sigmaV</em>[6]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sigmaP</td><td>xx,yy,zz,xy,xz,yz </td></tr>
+    <tr><td class="paramname">sigmaV</td><td>xx,yy,zz,xy,xz,yz </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a181f626b15de97e250440f32dfce525f" name="a181f626b15de97e250440f32dfce525f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a181f626b15de97e250440f32dfce525f">&#9670;&nbsp;</a></span>UpdateEstimate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::UpdateEstimate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmeasurement.html">measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>prediction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structmeasurement.html">measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>onlyPrediction</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">prediction</td><td>previous know measurement </td></tr>
+    <tr><td class="paramname">value</td><td>new measurement to fuse into update </td></tr>
+    <tr><td class="paramname">onlyPrediction</td><td>perform only prediction </td></tr>
+    <tr><td class="paramname">time</td><td>time to be used for updatess if not available in the measurement </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a627eeaaf053b67606e62eeb2e559676d" name="a627eeaaf053b67606e62eeb2e559676d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a627eeaaf053b67606e62eeb2e559676d">&#9670;&nbsp;</a></span>UpdatePredictions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TargetTracker::UpdatePredictions </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>Modules/Core/TargetTracker/<a class="el" href="_target_tracker_8hpp_source.html">TargetTracker.hpp</a></li>
 <li>Modules/Core/TargetTracker/TargetTracker.cpp</li>

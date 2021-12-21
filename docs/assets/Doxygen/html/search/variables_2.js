@@ -1,7 +1,7 @@
 var searchData=
 [
   ['callsign_0',['callSign',['../struct_cognition_state__t.html#a493006fa7a1d466d52cb4d1c0a4d8948',1,'CognitionState_t::callSign()'],['../class_merger.html#a49243cdfca150876e1fc855e7d19404a',1,'Merger::callSign()']]],
-  ['callsign_1',['callsign',['../structobject__t.html#a74a384f1aff5a9c8446c26f0f3ea88dc',1,'object_t::callsign()'],['../structposition__t.html#aa4b22767dd91b0b2d85d1fbbf02a336c',1,'position_t::callsign()'],['../structlocal__position__t.html#af31b863e4f35e4d39ed898e7eecba765',1,'local_position_t::callsign()'],['../structhome__position__t.html#a34b3bbbe7ffa9856a1e1721002750f71',1,'home_position_t::callsign()'],['../structp_object.html#a30f2699c4e71c6eaf4d9991ef3502bc3',1,'pObject::callsign()']]],
+  ['callsign_1',['callsign',['../structobject__t.html#a74a384f1aff5a9c8446c26f0f3ea88dc',1,'object_t::callsign()'],['../structposition__t.html#aa4b22767dd91b0b2d85d1fbbf02a336c',1,'position_t::callsign()'],['../structlocal__position__t.html#af31b863e4f35e4d39ed898e7eecba765',1,'local_position_t::callsign()'],['../structhome__position__t.html#a34b3bbbe7ffa9856a1e1721002750f71',1,'home_position_t::callsign()'],['../structmeasurement.html#ab3501195d3639f5f5cb0d6c7e603eac6',1,'measurement::callsign()'],['../class_target_tracker.html#a4de804c0884092f9fcf4f8b50721388c',1,'TargetTracker::callsign()'],['../structp_object.html#a30f2699c4e71c6eaf4d9991ef3502bc3',1,'pObject::callsign()']]],
   ['candidateid_2',['candidateID',['../structraft_vote_request__t.html#a5a8d645673f55d9228471c9d16fdca8d',1,'raftVoteRequest_t::candidateID()'],['../structraft_vote_response__t.html#af2c15cbd1afe081a2454602f99b6c9a2',1,'raftVoteResponse_t::candidateID()']]],
   ['candidatepipeinitialized_3',['candidatePipeInitialized',['../structraft_app_data__t.html#ae818af1fcfedefca448832894323501a',1,'raftAppData_t']]],
   ['candidatetimeout_4',['candidateTimeout',['../structraft_app_data__t.html#aa70afb0dc820cb6d88a3cbd91bf32c6a',1,'raftAppData_t']]],
@@ -45,7 +45,8 @@ var searchData=
   ['currentplan_42',['currentPlan',['../class_guidance.html#a747324c9ea535bbdc0b0b05eb50be855',1,'Guidance']]],
   ['currentpos_43',['currentPos',['../class_guidance.html#a50450dacd698e9da0be6b593858bcef2',1,'Guidance']]],
   ['currentspeed_44',['currentSpeed',['../class_merger.html#aed08e3220c4c3727639a62fad5e2f315',1,'Merger']]],
-  ['currentwp_45',['currentWP',['../structappdata_int__t.html#a8dfca40223c4c88ced005b012e88fab9',1,'appdataInt_t::currentWP()'],['../struct_flarm_app_data__t.html#a297737df7dfa92ac0e415ecd1f535719',1,'FlarmAppData_t::currentWP()']]],
-  ['currentzone_46',['currentZone',['../class_merger.html#ae93ad994aed7596cdbcf9a872b51c75f',1,'Merger']]],
-  ['currtime_47',['currTime',['../class_guidance.html#abfa772a0dd17f1a3c07e63f535a7663e',1,'Guidance']]]
+  ['currentstate_45',['currentState',['../class_target_tracker.html#af3dfb9abb31cb4d6b06ad029a191903a',1,'TargetTracker']]],
+  ['currentwp_46',['currentWP',['../structappdata_int__t.html#a8dfca40223c4c88ced005b012e88fab9',1,'appdataInt_t::currentWP()'],['../struct_flarm_app_data__t.html#a297737df7dfa92ac0e415ecd1f535719',1,'FlarmAppData_t::currentWP()']]],
+  ['currentzone_47',['currentZone',['../class_merger.html#ae93ad994aed7596cdbcf9a872b51c75f',1,'Merger']]],
+  ['currtime_48',['currTime',['../class_guidance.html#abfa772a0dd17f1a3c07e63f535a7663e',1,'Guidance']]]
 ];

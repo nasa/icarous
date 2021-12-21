@@ -1,98 +1,270 @@
 \hypertarget{class_target_tracker}{}\doxysection{Target\+Tracker Class Reference}
 \label{class_target_tracker}\index{TargetTracker@{TargetTracker}}
+
+
+\mbox{\hyperlink{class_target_tracker}{Target\+Tracker}}.  
+
+
+
+
+{\ttfamily \#include $<$Target\+Tracker.\+hpp$>$}
+
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}\label{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}} 
-{\bfseries Target\+Tracker} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config\+File)
-\item 
-\mbox{\Hypertarget{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}\label{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}} 
-void {\bfseries Read\+Param\+From\+File} (std\+::string config\+File)
-\item 
-\mbox{\Hypertarget{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}\label{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}} 
-void {\bfseries Set\+Home\+Position} (larcfm\+::\+Position \&home)
-\item 
-\mbox{\Hypertarget{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}\label{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}} 
-void {\bfseries Set\+Gate\+Thresholds} (double p, double v)
-\item 
-\mbox{\Hypertarget{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}\label{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}} 
-void {\bfseries Update\+Predictions} (double time)
-\item 
-\mbox{\Hypertarget{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}\label{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}} 
-void {\bfseries Set\+Model\+Uncertainty} (double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
-\item 
-\mbox{\Hypertarget{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}\label{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}} 
-void {\bfseries Input\+Current\+State} (double time, larcfm\+::\+Position \&pos, larcfm\+::\+Velocity \&vel, double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
-\item 
-\mbox{\Hypertarget{class_target_tracker_af15330be6db6419158e806456b04b3af}\label{class_target_tracker_af15330be6db6419158e806456b04b3af}} 
-void {\bfseries Input\+Measurement} (\mbox{\hyperlink{structmeasurement}{measurement}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
-\item 
-\mbox{\Hypertarget{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}\label{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}} 
-int {\bfseries Get\+Total\+Traffic} ()
-\item 
-\mbox{\Hypertarget{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}\label{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}} 
-\mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries Get\+Intruder\+Data} (int i)
-\item 
-\mbox{\Hypertarget{class_target_tracker_abda1015569581c3ca1538a028199ff91}\label{class_target_tracker_abda1015569581c3ca1538a028199ff91}} 
-\mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries Get\+Data} (int i)
-\end{DoxyCompactItemize}
+\mbox{\hyperlink{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}{Target\+Tracker}} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, std\+::string config\+File)
+\begin{DoxyCompactList}\small\item\em Construct a new Target Tracker object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}{Read\+Param\+From\+File}} (std\+::string config\+File)
+\begin{DoxyCompactList}\small\item\em Read parameters from file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}{Set\+Home\+Position}} (larcfm\+::\+Position \&home)
+\begin{DoxyCompactList}\small\item\em Set the Home Position object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}{Set\+Gate\+Thresholds}} (double p, double v)
+\begin{DoxyCompactList}\small\item\em Set the chi2 gating thresholds. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}{Update\+Predictions}} (double time)
+\begin{DoxyCompactList}\small\item\em Update track predictions for given time. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}{Set\+Model\+Uncertainty}} (double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
+\begin{DoxyCompactList}\small\item\em Set the Model Uncertainty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}{Input\+Current\+State}} (double time, larcfm\+::\+Position \&pos, larcfm\+::\+Velocity \&vel, double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
+\begin{DoxyCompactList}\small\item\em Input ownship information. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_af15330be6db6419158e806456b04b3af}{Input\+Measurement}} (\mbox{\hyperlink{structmeasurement}{measurement}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\begin{DoxyCompactList}\small\item\em Input measurement data. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}{Get\+Total\+Traffic}} ()
+\begin{DoxyCompactList}\small\item\em Get the total traffic. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structmeasurement}{measurement}} \mbox{\hyperlink{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}{Get\+Intruder\+Data}} (int i)
+\begin{DoxyCompactList}\small\item\em Get intruder. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structmeasurement}{measurement}} \mbox{\hyperlink{class_target_tracker_abda1015569581c3ca1538a028199ff91}{Get\+Data}} (int i)
+\begin{DoxyCompactList}\small\item\em Get track data at given index. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}\label{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}} 
-int {\bfseries Check\+Validation\+Gate} (\mbox{\hyperlink{structmeasurement}{measurement}} \&data)
-\item 
-\mbox{\Hypertarget{class_target_tracker_a181f626b15de97e250440f32dfce525f}\label{class_target_tracker_a181f626b15de97e250440f32dfce525f}} 
-void {\bfseries Update\+Estimate} (\mbox{\hyperlink{structmeasurement}{measurement}} \&prediction, \mbox{\hyperlink{structmeasurement}{measurement}} \&value, bool only\+Prediction=false, double time=0)
-\end{DoxyCompactItemize}
+int \mbox{\hyperlink{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}{Check\+Validation\+Gate}} (\mbox{\hyperlink{structmeasurement}{measurement}} \&data)
+\begin{DoxyCompactList}\small\item\em Check if mahalanobis distance criteria is satisfied. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_target_tracker_a181f626b15de97e250440f32dfce525f}{Update\+Estimate}} (\mbox{\hyperlink{structmeasurement}{measurement}} \&prediction, \mbox{\hyperlink{structmeasurement}{measurement}} \&value, bool only\+Prediction=false, double time=0)
+\begin{DoxyCompactList}\small\item\em Perform filter updates. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_target_tracker_a4de804c0884092f9fcf4f8b50721388c}\label{class_target_tracker_a4de804c0884092f9fcf4f8b50721388c}} 
 std\+::string {\bfseries callsign}
-\item 
+\begin{DoxyCompactList}\small\item\em ownship callsign \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a8656f10d0e9e95165e39c17130d73b0f}\label{class_target_tracker_a8656f10d0e9e95165e39c17130d73b0f}} 
 std\+::ofstream {\bfseries log\+File}
-\item 
+\begin{DoxyCompactList}\small\item\em tracker log file \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_ad697ba36e5bb552baee35100fe1c9624}\label{class_target_tracker_ad697ba36e5bb552baee35100fe1c9624}} 
 bool {\bfseries log}
-\item 
+\begin{DoxyCompactList}\small\item\em log enable status \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a8e087163332f7aa234b8149e723ee103}\label{class_target_tracker_a8e087163332f7aa234b8149e723ee103}} 
 double {\bfseries timeout}
-\item 
+\begin{DoxyCompactList}\small\item\em track timeout \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a2e532f0a6b1eecf99238dbe684d832e5}\label{class_target_tracker_a2e532f0a6b1eecf99238dbe684d832e5}} 
 double {\bfseries model\+UncertaintyP} \mbox{[}6\mbox{]}
-\item 
+\begin{DoxyCompactList}\small\item\em position uncertainty associated with prediction model \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a60803e3c826c1d32d9685fa0b44aa90e}\label{class_target_tracker_a60803e3c826c1d32d9685fa0b44aa90e}} 
 double {\bfseries model\+UncertaintyV} \mbox{[}6\mbox{]}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity uncertainty associated with velocity model \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a8d79f1668c85e4ac38dc0bd5e43d3a17}\label{class_target_tracker_a8d79f1668c85e4ac38dc0bd5e43d3a17}} 
 double {\bfseries p\+Threshold}
-\item 
+\begin{DoxyCompactList}\small\item\em chi2 threshold for mahalanobis distance -\/ position error \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a959ba09db8db4ef38b7e04238d6e1724}\label{class_target_tracker_a959ba09db8db4ef38b7e04238d6e1724}} 
 double {\bfseries v\+Threshold}
-\item 
+\begin{DoxyCompactList}\small\item\em chi2 threshold for mahalanobis distance -\/ velocity error \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}\label{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}} 
 larcfm\+::\+Position {\bfseries home\+Pos}
-\item 
+\begin{DoxyCompactList}\small\item\em initial position -\/ use to produce NED projections \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}\label{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}} 
 \mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries current\+State}
-\item 
+\begin{DoxyCompactList}\small\item\em current state of ownship \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_ad25d64b8d0044cd0e519f5bb5a5df1db}\label{class_target_tracker_ad25d64b8d0044cd0e519f5bb5a5df1db}} 
 std\+::vector$<$ \mbox{\hyperlink{structmeasurement}{measurement}} $>$ {\bfseries tracks}
-\item 
+\begin{DoxyCompactList}\small\item\em tracked measurements \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_a9d3c43affbdaabbf5b441355628f76a6}\label{class_target_tracker_a9d3c43affbdaabbf5b441355628f76a6}} 
 larcfm\+::\+Euclidean\+Projection {\bfseries proj}
-\item 
+\begin{DoxyCompactList}\small\item\em projection \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_aa7413fcd10b65554976845b89c8c50a7}\label{class_target_tracker_aa7413fcd10b65554976845b89c8c50a7}} 
 int {\bfseries total\+Tracks}
-\item 
+\begin{DoxyCompactList}\small\item\em total tracks \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_abe28bcb4d94593f9f7b6449d3686e53b}\label{class_target_tracker_abe28bcb4d94593f9f7b6449d3686e53b}} 
 double {\bfseries prev\+Log\+Time}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em previous log time \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}\label{class_target_tracker_a36c0dd2033aca1748c9ac0e0bf588bb7}} 
+\index{TargetTracker@{TargetTracker}!TargetTracker@{TargetTracker}}
+\index{TargetTracker@{TargetTracker}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{TargetTracker()}{TargetTracker()}}
+{\footnotesize\ttfamily Target\+Tracker\+::\+Target\+Tracker (\begin{DoxyParamCaption}\item[{std\+::string}]{callsign,  }\item[{std\+::string}]{config\+File }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em callsign} & \\
+\hline
+{\em config\+File} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}\label{class_target_tracker_a02e1de75185dd918cab71a4df6c677f1}} 
+\index{TargetTracker@{TargetTracker}!CheckValidationGate@{CheckValidationGate}}
+\index{CheckValidationGate@{CheckValidationGate}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{CheckValidationGate()}{CheckValidationGate()}}
+{\footnotesize\ttfamily int Target\+Tracker\+::\+Check\+Validation\+Gate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmeasurement}{measurement}} \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & input measurement \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int index of track the input data is associated with. -\/1 if no associations are found 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_target_tracker_abda1015569581c3ca1538a028199ff91}\label{class_target_tracker_abda1015569581c3ca1538a028199ff91}} 
+\index{TargetTracker@{TargetTracker}!GetData@{GetData}}
+\index{GetData@{GetData}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{GetData()}{GetData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structmeasurement}{measurement}} Target\+Tracker\+::\+Get\+Data (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & starts with 0. 0th index is ownship \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+measurement 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}\label{class_target_tracker_a379164a8c0c83c88ec2392fb0542e43c}} 
+\index{TargetTracker@{TargetTracker}!GetIntruderData@{GetIntruderData}}
+\index{GetIntruderData@{GetIntruderData}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{GetIntruderData()}{GetIntruderData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structmeasurement}{measurement}} Target\+Tracker\+::\+Get\+Intruder\+Data (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & starts with 0. 0th index is first traffic track \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+measurement 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}\label{class_target_tracker_a8baeff145edf1a2d12bb0fb03b431d13}} 
+\index{TargetTracker@{TargetTracker}!GetTotalTraffic@{GetTotalTraffic}}
+\index{GetTotalTraffic@{GetTotalTraffic}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{GetTotalTraffic()}{GetTotalTraffic()}}
+{\footnotesize\ttfamily int Target\+Tracker\+::\+Get\+Total\+Traffic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}\label{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}} 
+\index{TargetTracker@{TargetTracker}!InputCurrentState@{InputCurrentState}}
+\index{InputCurrentState@{InputCurrentState}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{InputCurrentState()}{InputCurrentState()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Input\+Current\+State (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{larcfm\+::\+Position \&}]{pos,  }\item[{larcfm\+::\+Velocity \&}]{vel,  }\item[{double}]{sigmaP\mbox{[}6\mbox{]},  }\item[{double}]{sigmaV\mbox{[}6\mbox{]} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em pos} & \\
+\hline
+{\em vel} & \\
+\hline
+{\em sigmaP} & covariances for xx,yy,zz,xy,xz,yz \\
+\hline
+{\em sigmaV} & covariances for xx,yy,zz,xy,xz,yz \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_af15330be6db6419158e806456b04b3af}\label{class_target_tracker_af15330be6db6419158e806456b04b3af}} 
+\index{TargetTracker@{TargetTracker}!InputMeasurement@{InputMeasurement}}
+\index{InputMeasurement@{InputMeasurement}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{InputMeasurement()}{InputMeasurement()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Input\+Measurement (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmeasurement}{measurement}} \&}]{traffic }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em traffic} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}\label{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}} 
+\index{TargetTracker@{TargetTracker}!ReadParamFromFile@{ReadParamFromFile}}
+\index{ReadParamFromFile@{ReadParamFromFile}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{ReadParamFromFile()}{ReadParamFromFile()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Read\+Param\+From\+File (\begin{DoxyParamCaption}\item[{std\+::string}]{config\+File }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em config\+File} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}\label{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}} 
+\index{TargetTracker@{TargetTracker}!SetGateThresholds@{SetGateThresholds}}
+\index{SetGateThresholds@{SetGateThresholds}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{SetGateThresholds()}{SetGateThresholds()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Set\+Gate\+Thresholds (\begin{DoxyParamCaption}\item[{double}]{p,  }\item[{double}]{v }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & position error threshold \\
+\hline
+{\em v} & velocity error threshold \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}\label{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}} 
+\index{TargetTracker@{TargetTracker}!SetHomePosition@{SetHomePosition}}
+\index{SetHomePosition@{SetHomePosition}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{SetHomePosition()}{SetHomePosition()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Set\+Home\+Position (\begin{DoxyParamCaption}\item[{larcfm\+::\+Position \&}]{home }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em home} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}\label{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}} 
+\index{TargetTracker@{TargetTracker}!SetModelUncertainty@{SetModelUncertainty}}
+\index{SetModelUncertainty@{SetModelUncertainty}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{SetModelUncertainty()}{SetModelUncertainty()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Set\+Model\+Uncertainty (\begin{DoxyParamCaption}\item[{double}]{sigmaP\mbox{[}6\mbox{]},  }\item[{double}]{sigmaV\mbox{[}6\mbox{]} }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em sigmaP} & xx,yy,zz,xy,xz,yz \\
+\hline
+{\em sigmaV} & xx,yy,zz,xy,xz,yz \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_a181f626b15de97e250440f32dfce525f}\label{class_target_tracker_a181f626b15de97e250440f32dfce525f}} 
+\index{TargetTracker@{TargetTracker}!UpdateEstimate@{UpdateEstimate}}
+\index{UpdateEstimate@{UpdateEstimate}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{UpdateEstimate()}{UpdateEstimate()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Update\+Estimate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmeasurement}{measurement}} \&}]{prediction,  }\item[{\mbox{\hyperlink{structmeasurement}{measurement}} \&}]{value,  }\item[{bool}]{only\+Prediction = {\ttfamily false},  }\item[{double}]{time = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em prediction} & previous know measurement \\
+\hline
+{\em value} & new measurement to fuse into update \\
+\hline
+{\em only\+Prediction} & perform only prediction \\
+\hline
+{\em time} & time to be used for updatess if not available in the measurement \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}\label{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}} 
+\index{TargetTracker@{TargetTracker}!UpdatePredictions@{UpdatePredictions}}
+\index{UpdatePredictions@{UpdatePredictions}!TargetTracker@{TargetTracker}}
+\doxysubsubsection{\texorpdfstring{UpdatePredictions()}{UpdatePredictions()}}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Update\+Predictions (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Modules/\+Core/\+Target\+Tracker/Target\+Tracker.\+hpp\item 
+Modules/\+Core/\+Target\+Tracker/\mbox{\hyperlink{_target_tracker_8hpp}{Target\+Tracker.\+hpp}}\item 
 Modules/\+Core/\+Target\+Tracker/Target\+Tracker.\+cpp\end{DoxyCompactItemize}

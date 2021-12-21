@@ -68,38 +68,53 @@ $(function() {
   <div class="headertitle"><div class="title">measurement Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>datastructure to hold measurement data  
+</p>
+
+<p><code>#include &lt;<a class="el" href="_target_tracker_8hpp_source.html">TargetTracker.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab3501195d3639f5f5cb0d6c7e603eac6"><td class="memItemLeft" align="right" valign="top"><a id="ab3501195d3639f5f5cb0d6c7e603eac6" name="ab3501195d3639f5f5cb0d6c7e603eac6"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>callsign</b></td></tr>
+<tr class="memdesc:ab3501195d3639f5f5cb0d6c7e603eac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">callsign of traffic <br /></td></tr>
 <tr class="separator:ab3501195d3639f5f5cb0d6c7e603eac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb146d7ab5897172d143f4faf1cfa72c"><td class="memItemLeft" align="right" valign="top"><a id="aeb146d7ab5897172d143f4faf1cfa72c" name="aeb146d7ab5897172d143f4faf1cfa72c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
+<tr class="memdesc:aeb146d7ab5897172d143f4faf1cfa72c"><td class="mdescLeft">&#160;</td><td class="mdescRight">numerical id <br /></td></tr>
 <tr class="separator:aeb146d7ab5897172d143f4faf1cfa72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaa1dc7800c676d84da34d9901c44f60"><td class="memItemLeft" align="right" valign="top"><a id="afaa1dc7800c676d84da34d9901c44f60" name="afaa1dc7800c676d84da34d9901c44f60"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>time</b></td></tr>
+<tr class="memdesc:afaa1dc7800c676d84da34d9901c44f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">measurement timestamp <br /></td></tr>
 <tr class="separator:afaa1dc7800c676d84da34d9901c44f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51ac9b6051ddb4fce171fb10c12037c2"><td class="memItemLeft" align="right" valign="top"><a id="a51ac9b6051ddb4fce171fb10c12037c2" name="a51ac9b6051ddb4fce171fb10c12037c2"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>lastUpdate</b></td></tr>
+<tr class="memdesc:a51ac9b6051ddb4fce171fb10c12037c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">last updated timestamp <br /></td></tr>
 <tr class="separator:a51ac9b6051ddb4fce171fb10c12037c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3cb047d3316ef9fa6c836025c7671d7"><td class="memItemLeft" align="right" valign="top"><a id="ae3cb047d3316ef9fa6c836025c7671d7" name="ae3cb047d3316ef9fa6c836025c7671d7"></a>
 larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<tr class="memdesc:ae3cb047d3316ef9fa6c836025c7671d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">position <br /></td></tr>
 <tr class="separator:ae3cb047d3316ef9fa6c836025c7671d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad82a3edb4cc220537d61bcafb981059e"><td class="memItemLeft" align="right" valign="top"><a id="ad82a3edb4cc220537d61bcafb981059e" name="ad82a3edb4cc220537d61bcafb981059e"></a>
 larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<tr class="memdesc:ad82a3edb4cc220537d61bcafb981059e"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocity <br /></td></tr>
 <tr class="separator:ad82a3edb4cc220537d61bcafb981059e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1b61abbdb65b65cc11c55a785bb1c70"><td class="memItemLeft" align="right" valign="top"><a id="af1b61abbdb65b65cc11c55a785bb1c70" name="af1b61abbdb65b65cc11c55a785bb1c70"></a>
 larcfm::Vect3&#160;</td><td class="memItemRight" valign="bottom"><b>locPos</b></td></tr>
+<tr class="memdesc:af1b61abbdb65b65cc11c55a785bb1c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">position in local coordinate <br /></td></tr>
 <tr class="separator:af1b61abbdb65b65cc11c55a785bb1c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2839094acc4a97385da87203a03dfa79"><td class="memItemLeft" align="right" valign="top"><a id="a2839094acc4a97385da87203a03dfa79" name="a2839094acc4a97385da87203a03dfa79"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>sigmaP</b> [6]</td></tr>
+<tr class="memdesc:a2839094acc4a97385da87203a03dfa79"><td class="mdescLeft">&#160;</td><td class="mdescRight">positional covariance values xx,yy,zz,xy,xz,yz <br /></td></tr>
 <tr class="separator:a2839094acc4a97385da87203a03dfa79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f1af3a26b5b2bcc028999be8b8b07fa"><td class="memItemLeft" align="right" valign="top"><a id="a7f1af3a26b5b2bcc028999be8b8b07fa" name="a7f1af3a26b5b2bcc028999be8b8b07fa"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>sigmaV</b> [6]</td></tr>
+<tr class="memdesc:a7f1af3a26b5b2bcc028999be8b8b07fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">velocity covariance values xx,yy,zz,xy,xz,yz <br /></td></tr>
 <tr class="separator:a7f1af3a26b5b2bcc028999be8b8b07fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a738ef87468abc6c820179d3e8d47a0d3"><td class="memItemLeft" align="right" valign="top"><a id="a738ef87468abc6c820179d3e8d47a0d3" name="a738ef87468abc6c820179d3e8d47a0d3"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>sigma</b> [36]</td></tr>
+<tr class="memdesc:a738ef87468abc6c820179d3e8d47a0d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">covariance for combined state [x,Vx,y,Vy,z,Vz] <br /></td></tr>
 <tr class="separator:a738ef87468abc6c820179d3e8d47a0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>

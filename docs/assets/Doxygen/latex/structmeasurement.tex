@@ -1,40 +1,49 @@
 \hypertarget{structmeasurement}{}\doxysection{measurement Struct Reference}
 \label{structmeasurement}\index{measurement@{measurement}}
+
+
+datastructure to hold measurement data  
+
+
+
+
+{\ttfamily \#include $<$Target\+Tracker.\+hpp$>$}
+
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{structmeasurement_ab3501195d3639f5f5cb0d6c7e603eac6}\label{structmeasurement_ab3501195d3639f5f5cb0d6c7e603eac6}} 
 std\+::string {\bfseries callsign}
-\item 
+\begin{DoxyCompactList}\small\item\em callsign of traffic \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_aeb146d7ab5897172d143f4faf1cfa72c}\label{structmeasurement_aeb146d7ab5897172d143f4faf1cfa72c}} 
 int {\bfseries id}
-\item 
+\begin{DoxyCompactList}\small\item\em numerical id \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_afaa1dc7800c676d84da34d9901c44f60}\label{structmeasurement_afaa1dc7800c676d84da34d9901c44f60}} 
 double {\bfseries time}
-\item 
+\begin{DoxyCompactList}\small\item\em measurement timestamp \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_a51ac9b6051ddb4fce171fb10c12037c2}\label{structmeasurement_a51ac9b6051ddb4fce171fb10c12037c2}} 
 double {\bfseries last\+Update}
-\item 
+\begin{DoxyCompactList}\small\item\em last updated timestamp \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_ae3cb047d3316ef9fa6c836025c7671d7}\label{structmeasurement_ae3cb047d3316ef9fa6c836025c7671d7}} 
 larcfm\+::\+Position {\bfseries position}
-\item 
+\begin{DoxyCompactList}\small\item\em position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_ad82a3edb4cc220537d61bcafb981059e}\label{structmeasurement_ad82a3edb4cc220537d61bcafb981059e}} 
 larcfm\+::\+Velocity {\bfseries velocity}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_af1b61abbdb65b65cc11c55a785bb1c70}\label{structmeasurement_af1b61abbdb65b65cc11c55a785bb1c70}} 
 larcfm\+::\+Vect3 {\bfseries loc\+Pos}
-\item 
+\begin{DoxyCompactList}\small\item\em position in local coordinate \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_a2839094acc4a97385da87203a03dfa79}\label{structmeasurement_a2839094acc4a97385da87203a03dfa79}} 
 double {\bfseries sigmaP} \mbox{[}6\mbox{]}
-\item 
+\begin{DoxyCompactList}\small\item\em positional covariance values xx,yy,zz,xy,xz,yz \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_a7f1af3a26b5b2bcc028999be8b8b07fa}\label{structmeasurement_a7f1af3a26b5b2bcc028999be8b8b07fa}} 
 double {\bfseries sigmaV} \mbox{[}6\mbox{]}
-\item 
+\begin{DoxyCompactList}\small\item\em velocity covariance values xx,yy,zz,xy,xz,yz \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structmeasurement_a738ef87468abc6c820179d3e8d47a0d3}\label{structmeasurement_a738ef87468abc6c820179d3e8d47a0d3}} 
 double {\bfseries sigma} \mbox{[}36\mbox{]}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em covariance for combined state \mbox{[}x,Vx,y,Vy,z,Vz\mbox{]} \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Modules/\+Core/\+Target\+Tracker/Target\+Tracker.\+hpp\end{DoxyCompactItemize}
+Modules/\+Core/\+Target\+Tracker/\mbox{\hyperlink{_target_tracker_8hpp}{Target\+Tracker.\+hpp}}\end{DoxyCompactItemize}

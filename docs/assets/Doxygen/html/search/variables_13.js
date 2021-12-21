@@ -10,7 +10,7 @@ var searchData=
   ['vel_7',['vel',['../structnode.html#acb26a0111127858d1ae53e478504e77e',1,'node']]],
   ['velcmd_8',['velCmd',['../struct_guidance_output__t.html#afd38c82fb3bba51e8d13cd56b21f6b52',1,'GuidanceOutput_t']]],
   ['velcount_9',['velcount',['../structrotorsim_app_data__t.html#a8eacc9da565c3ea48f82e3358d11d1fd',1,'rotorsimAppData_t']]],
-  ['velocity_10',['velocity',['../structgeofence_app_data__t.html#a94aa045d428cef3b4c9c82ac61d7d5f2',1,'geofenceAppData_t::velocity()'],['../structrotorsim_app_data__t.html#a35b069f6873a3021f917fdced43c922b',1,'rotorsimAppData_t::velocity()'],['../struct_traffic_app_data__t.html#a878fe98935990fd4f97f80512937171d',1,'TrafficAppData_t::velocity()'],['../struct_trajectory_app_data__t.html#aa339d2f553217e4b788c83ec25fbd2de',1,'TrajectoryAppData_t::velocity()'],['../struct_cognition_state__t.html#a694f323f24ecc1a6e487786159d5e55d',1,'CognitionState_t::velocity()'],['../class_merger.html#a05b93e20f8f7e8bdc014deab2f10bc2c',1,'Merger::velocity()'],['../structp_object.html#a4fe635973fbbe4b0da5638a2efa8bda1',1,'pObject::velocity()']]],
+  ['velocity_10',['velocity',['../structgeofence_app_data__t.html#a94aa045d428cef3b4c9c82ac61d7d5f2',1,'geofenceAppData_t::velocity()'],['../structrotorsim_app_data__t.html#a35b069f6873a3021f917fdced43c922b',1,'rotorsimAppData_t::velocity()'],['../struct_traffic_app_data__t.html#a878fe98935990fd4f97f80512937171d',1,'TrafficAppData_t::velocity()'],['../struct_trajectory_app_data__t.html#aa339d2f553217e4b788c83ec25fbd2de',1,'TrajectoryAppData_t::velocity()'],['../struct_cognition_state__t.html#a694f323f24ecc1a6e487786159d5e55d',1,'CognitionState_t::velocity()'],['../class_merger.html#a05b93e20f8f7e8bdc014deab2f10bc2c',1,'Merger::velocity()'],['../structmeasurement.html#ad82a3edb4cc220537d61bcafb981059e',1,'measurement::velocity()'],['../structp_object.html#a4fe635973fbbe4b0da5638a2efa8bda1',1,'pObject::velocity()']]],
   ['velocitycontrol_11',['velocityControl',['../structrotorsim_app_data__t.html#aa79e18f76a7bf4cc30f480e1dcb74cc1',1,'rotorsimAppData_t']]],
   ['vertices_12',['vertices',['../structgeofence__t.html#a6b59ed6ee30258ea5647e026966aa8b7',1,'geofence_t']]],
   ['vfrhud_13',['vfrhud',['../arducopter_8h.html#a78c5f559492e1e13434fe9765a18ee04',1,'arducopter.h']]],
@@ -21,7 +21,8 @@ var searchData=
   ['vsbands_18',['vsBands',['../struct_traffic_app_data__t.html#aa961b336b5d93453ccdc01219ca9056a',1,'TrafficAppData_t']]],
   ['vsbandsnum_19',['vsBandsNum',['../struct_cognition_state__t.html#a8774f06d9c8acecdc9aab2026e33ed5b',1,'CognitionState_t']]],
   ['vstepback_20',['vstepback',['../struct_geofence_table__t.html#a116cd66a960ac8d7cb1a8cd39e1b4f47',1,'GeofenceTable_t']]],
-  ['vx_21',['vx',['../structlocal__position__t.html#af320c75089d9af8a5f5df110a94c37ef',1,'local_position_t']]],
-  ['vy_22',['vy',['../structlocal__position__t.html#aacfc80a4d7fc9ef77c980812209e94b3',1,'local_position_t']]],
-  ['vz_23',['vz',['../structlocal__position__t.html#af44af0ebdb4b5d950098443766903fb2',1,'local_position_t']]]
+  ['vthreshold_21',['vThreshold',['../class_target_tracker.html#a959ba09db8db4ef38b7e04238d6e1724',1,'TargetTracker']]],
+  ['vx_22',['vx',['../structlocal__position__t.html#af320c75089d9af8a5f5df110a94c37ef',1,'local_position_t']]],
+  ['vy_23',['vy',['../structlocal__position__t.html#aacfc80a4d7fc9ef77c980812209e94b3',1,'local_position_t']]],
+  ['vz_24',['vz',['../structlocal__position__t.html#af44af0ebdb4b5d950098443766903fb2',1,'local_position_t']]]
 ];

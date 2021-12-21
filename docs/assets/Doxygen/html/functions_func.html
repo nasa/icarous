@@ -88,6 +88,7 @@ $(function() {
 <li>CheckLineOfSightconflict()&#160;:&#160;<a class="el" href="class_traj_manager.html#a583b8515d76d2ae07628a78e3726a44c">TrajManager</a></li>
 <li>CheckProjectedFenceConflict()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a31080b3976cf59dbeb6fcc7f5878bf55">DubinsPlanner</a></li>
 <li>CheckTrafficConflict()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a390c2b3e77d392b1c0a97c29a0a11816">DubinsPlanner</a></li>
+<li>CheckValidationGate()&#160;:&#160;<a class="el" href="class_target_tracker.html#a02e1de75185dd918cab71a4df6c677f1">TargetTracker</a></li>
 <li>CheckWaypointArrival()&#160;:&#160;<a class="el" href="class_guidance.html#abb21bdc8546f5f4e5f0243d9341440de">Guidance</a></li>
 <li>clear()&#160;:&#160;<a class="el" href="classheapset.html#a2f181217ab521d276592605dcd5f3531">heapset&lt; T, Compare &gt;</a></li>
 <li>ClearAllPlans()&#160;:&#160;<a class="el" href="class_traj_manager.html#a98320dba7d693e779f4e2a9f0cdcbb92">TrajManager</a></li>
@@ -133,7 +134,9 @@ $(function() {
 <li>GetApproachPrecision()&#160;:&#160;<a class="el" href="class_guidance.html#a6eb0f998b75786d65b6c009b99ce709c">Guidance</a></li>
 <li>GetCognitionOutput()&#160;:&#160;<a class="el" href="class_cognition.html#a70e5766e8ff3b14a122ecd677c106075">Cognition</a></li>
 <li>GetCorrectIntersectionPoint()&#160;:&#160;<a class="el" href="class_guidance.html#acaf0febbd3b74f90045eca72c3ac466e">Guidance</a></li>
+<li>GetData()&#160;:&#160;<a class="el" href="class_target_tracker.html#abda1015569581c3ca1538a028199ff91">TargetTracker</a></li>
 <li>GetDubinsParams()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a16c02c746aeae668740731580b8e41c7">DubinsPlanner</a></li>
+<li>GetIntruderData()&#160;:&#160;<a class="el" href="class_target_tracker.html#a379164a8c0c83c88ec2392fb0542e43c">TargetTracker</a></li>
 <li>GetLineCircleIntersection()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a8696fad703550f4dbe2a7d9b71f94668">DubinsPlanner</a></li>
 <li>GetLineLineIntersection()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a1adb9787cab9bd7ab7d0e148395e9e2b">DubinsPlanner</a></li>
 <li>GetNextTrkVs()&#160;:&#160;<a class="el" href="class_dubins_planner.html#afbfc1bea8dd218fb0c4e91ee080fe5d8">DubinsPlanner</a></li>
@@ -141,6 +144,7 @@ $(function() {
 <li>GetPlan()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a051b99a331874a22ee7c83825c04823b">DubinsPlanner</a>, <a class="el" href="class_guidance.html#a6a1adb5833bec5563805c903343a4a76">Guidance</a>, <a class="el" href="class_traj_manager.html#a2873a4044713f90051474b43ec324383">TrajManager</a></li>
 <li>GetPlanPosition()&#160;:&#160;<a class="el" href="class_traj_manager.html#a2e93c7e3883b4735ddf28b56383f8a98">TrajManager</a></li>
 <li>GetPotentialFixes()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a6c52f474b4f482e5cf054a8b53db0807">DubinsPlanner</a></li>
+<li>GetTotalTraffic()&#160;:&#160;<a class="el" href="class_target_tracker.html#a8baeff145edf1a2d12bb0fb03b431d13">TargetTracker</a></li>
 <li>GetTotalWaypoints()&#160;:&#160;<a class="el" href="class_traj_manager.html#a1f0477999fcb00a7f8b64227772bb51f">TrajManager</a></li>
 <li>GetWaypoint()&#160;:&#160;<a class="el" href="class_guidance.html#a625e0e9f260b4a4548fefc9f1cbcd6e4">Guidance</a>, <a class="el" href="class_traj_manager.html#a7bce4c6c916027d7149fa3757158a893">TrajManager</a></li>
 <li>Guidance()&#160;:&#160;<a class="el" href="class_guidance.html#a15c663113709dbf7c63c6fccf82c6e5b">Guidance</a></li>
@@ -151,12 +155,14 @@ $(function() {
 <li>Initialize()&#160;:&#160;<a class="el" href="class_command_return_to_launch.html#a7f663244df8b31e6643cc2ccfe19bebe">CommandReturnToLaunch</a>, <a class="el" href="class_event_handler.html#aac07dab7026608d668aeaa191455fa21">EventHandler&lt; T &gt;</a>, <a class="el" href="class_icarous_return_to_launch.html#a6ee67e7979eb1518c1b88509a39563a6">IcarousReturnToLaunch</a>, <a class="el" href="class_land_phase_handler.html#a88cdaaa5f589bd5fb896d46c9fe74e5c">LandPhaseHandler</a>, <a class="el" href="class_merging_handler.html#a7974949f1d4482ffc9985f874ca30648">MergingHandler</a>, <a class="el" href="class_proceed_from_t_o_dto_land.html#af4175c9364c41502da2497b48301f54f">ProceedFromTODtoLand</a>, <a class="el" href="class_proceed_to_ditch_site.html#a9e5292f01334a6cb09cade5386b80466">ProceedToDitchSite</a>, <a class="el" href="class_request_ditch_site.html#a146d5555237f8d8bfc4008c01e4d7df0">RequestDitchSite</a>, <a class="el" href="class_return_to_mission.html#ac74b48869bad86fc59fb7ef37661e92f">ReturnToMission</a>, <a class="el" href="class_return_to_next_feasible_w_p.html#a424456de30512918479da6b9dbde5f24">ReturnToNextFeasibleWP</a>, <a class="el" href="class_takeoff_phase_handler.html#a4fff72ba8762541969fa61ec725ba327">TakeoffPhaseHandler</a>, <a class="el" href="class_traffic_conflict_handler.html#a58189c59ba7087d8327be0fdb81e3ad7">TrafficConflictHandler</a>, <a class="el" href="class_vector2_mission.html#ada1c3006ee891a0ea2257918881ef3de">Vector2Mission</a></li>
 <li>InitializeEventHandlers()&#160;:&#160;<a class="el" href="class_cognition.html#a7e723e3fc2a6a3a4e30e83b92dab9b8f">Cognition</a></li>
 <li>InputAltBands()&#160;:&#160;<a class="el" href="class_cognition.html#a33120ca09d581c337b966b0116f41be7">Cognition</a></li>
+<li>InputCurrentState()&#160;:&#160;<a class="el" href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">TargetTracker</a></li>
 <li>InputDitchStatus()&#160;:&#160;<a class="el" href="class_cognition.html#a736e8977902097a1bb45b499a8c156bf">Cognition</a></li>
 <li>InputFlightPlan()&#160;:&#160;<a class="el" href="class_traj_manager.html#ad029102a4fb513146d4b4bf396f464ae">TrajManager</a></li>
 <li>InputFlightPlanData()&#160;:&#160;<a class="el" href="class_cognition.html#affcbfdca38a2306aba13d726186a9092">Cognition</a></li>
 <li>InputFlightplanData()&#160;:&#160;<a class="el" href="class_guidance.html#a29eaeed053de650677f7a42ee393f36f">Guidance</a></li>
 <li>InputGeofenceConflictData()&#160;:&#160;<a class="el" href="class_cognition.html#a7355e6b91b9eae7a80279894f6daaa88">Cognition</a></li>
 <li>InputGeofenceData()&#160;:&#160;<a class="el" href="class_traj_manager.html#ab09a1d7f560de06fbf93e3730af6fb76">TrajManager</a></li>
+<li>InputMeasurement()&#160;:&#160;<a class="el" href="class_target_tracker.html#af15330be6db6419158e806456b04b3af">TargetTracker</a></li>
 <li>InputMergeStatus()&#160;:&#160;<a class="el" href="class_cognition.html#a17115253c12fa1f8aa163c1148e93635">Cognition</a></li>
 <li>InputParameters()&#160;:&#160;<a class="el" href="class_cognition.html#ae9e506b76993a176a98b376fd7e29050">Cognition</a></li>
 <li>InputSpeedBands()&#160;:&#160;<a class="el" href="class_cognition.html#abd18dc9b462b54bce2238ccba5ede8ee">Cognition</a></li>
@@ -194,7 +200,7 @@ $(function() {
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
 <li>ReachedWaypoint()&#160;:&#160;<a class="el" href="class_cognition.html#a25db5be625b9f50d6e2cbfb7a14e16ec">Cognition</a></li>
-<li>ReadParamFromFile()&#160;:&#160;<a class="el" href="class_guidance.html#afdc131e75d3d551c1c60db0245329f07">Guidance</a>, <a class="el" href="class_traj_manager.html#a45e6c05ae8fdc9178c78fed132912764">TrajManager</a></li>
+<li>ReadParamFromFile()&#160;:&#160;<a class="el" href="class_guidance.html#afdc131e75d3d551c1c60db0245329f07">Guidance</a>, <a class="el" href="class_target_tracker.html#aca88bb2f0c0866e2336e43a747303fb4">TargetTracker</a>, <a class="el" href="class_traj_manager.html#a45e6c05ae8fdc9178c78fed132912764">TrajManager</a></li>
 <li>ReadParamsFromFile()&#160;:&#160;<a class="el" href="class_cognition.html#ac270521c2ea11590f04b18c80a39e44f">Cognition</a></li>
 <li>Reset()&#160;:&#160;<a class="el" href="class_cognition.html#aa3347c50fb9e895f7439ebd9db358a36">Cognition</a>, <a class="el" href="class_dubins_planner.html#afea2491670f6a0eccbe5b0ff68884b66">DubinsPlanner</a>, <a class="el" href="class_event_management.html#aaae8271ef6528137dc23d47553ab5c0b">EventManagement&lt; T &gt;</a></li>
 <li>Run()&#160;:&#160;<a class="el" href="class_cognition.html#a60a6bcd7d63f4b44529af57a5489308d">Cognition</a>, <a class="el" href="class_event_management.html#a96286032040430816ae68d68b1235abb">EventManagement&lt; T &gt;</a></li>
@@ -208,9 +214,12 @@ $(function() {
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>SetAircraftState()&#160;:&#160;<a class="el" href="class_guidance.html#a80e367c673156c2b0dcbf74306e01d38">Guidance</a></li>
 <li>SetBoundary()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a7773404588cf99573cc050bfc1128bd8">DubinsPlanner</a></li>
+<li>SetGateThresholds()&#160;:&#160;<a class="el" href="class_target_tracker.html#a316c2ab73b39c4c47a32e249966bf2ab">TargetTracker</a></li>
 <li>SetGoal()&#160;:&#160;<a class="el" href="class_dubins_planner.html#ab08872773c6a776c20cb6f1cd9840b64">DubinsPlanner</a></li>
 <li>SetGuidanceMode()&#160;:&#160;<a class="el" href="class_guidance.html#a95bce920021a29d2b3c9dbe94e32fa95">Guidance</a></li>
 <li>SetGuidanceParams()&#160;:&#160;<a class="el" href="class_guidance.html#a59574093df3c470814eab4130a3f05a0">Guidance</a></li>
+<li>SetHomePosition()&#160;:&#160;<a class="el" href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">TargetTracker</a></li>
+<li>SetModelUncertainty()&#160;:&#160;<a class="el" href="class_target_tracker.html#a228b18fa3aefddb50d67d92296c0553c">TargetTracker</a></li>
 <li>SetObstacles()&#160;:&#160;<a class="el" href="class_dubins_planner.html#a538ba641f8e993f07b85e08ebd678ffb">DubinsPlanner</a></li>
 <li>SetParameters()&#160;:&#160;<a class="el" href="class_dubins_planner.html#afc1b12f473fbfdfb91e0d1a005634020">DubinsPlanner</a></li>
 <li>SetPlanOffset()&#160;:&#160;<a class="el" href="class_traj_manager.html#ae0afdb2cba65f1e7bfea706753f82c73">TrajManager</a></li>
@@ -226,6 +235,7 @@ $(function() {
 
 
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>TargetTracker()&#160;:&#160;<a class="el" href="class_target_tracker.html#a36c0dd2033aca1748c9ac0e0bf588bb7">TargetTracker</a></li>
 <li>Terminate()&#160;:&#160;<a class="el" href="class_event_handler.html#aee8e0423b7a0a239ebd9d973f35a0f51">EventHandler&lt; T &gt;</a>, <a class="el" href="class_fence_conflict_handler.html#a054f4003bf3b70f7385d70c445524a93">FenceConflictHandler</a>, <a class="el" href="class_icarous_return_to_launch.html#aaf5f5f8abbe605e7d9233527ffdaf28c">IcarousReturnToLaunch</a>, <a class="el" href="class_merging_handler.html#a2d4439276943c3392e5c1f4a4f8803f0">MergingHandler</a>, <a class="el" href="class_proceed_from_t_o_dto_land.html#ab30430bf17672addeede7d64df33f965">ProceedFromTODtoLand</a>, <a class="el" href="class_takeoff_phase_handler.html#a5271f8fe1363b76f8625e81ef32bebfd">TakeoffPhaseHandler</a>, <a class="el" href="class_traffic_conflict_handler.html#a92c6744a4467dddbecffbbe04dbd936c">TrafficConflictHandler</a>, <a class="el" href="class_vector2_mission.html#a1038644601a353ab53e7285ff3ad063b">Vector2Mission</a></li>
 <li>top()&#160;:&#160;<a class="el" href="classheapset.html#a829bcc324290049d81d4f9e6ae9c163a">heapset&lt; T, Compare &gt;</a></li>
 <li>TrajManager()&#160;:&#160;<a class="el" href="class_traj_manager.html#ac4cc8d2fcd4b6085545e5b602054280a">TrajManager</a></li>
@@ -234,6 +244,8 @@ $(function() {
 
 <h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
 <li>UpdateDubinsPlannerParameters()&#160;:&#160;<a class="el" href="class_traj_manager.html#acfefed23cbe0ae49f2b1a046c41a2347">TrajManager</a></li>
+<li>UpdateEstimate()&#160;:&#160;<a class="el" href="class_target_tracker.html#a181f626b15de97e250440f32dfce525f">TargetTracker</a></li>
+<li>UpdatePredictions()&#160;:&#160;<a class="el" href="class_target_tracker.html#a627eeaaf053b67606e62eeb2e559676d">TargetTracker</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
