@@ -1,0 +1,122 @@
+\hypertarget{_bounding_rectangle_8h_source}{}\doxysection{Bounding\+Rectangle.\+h}
+\label{_bounding_rectangle_8h_source}\index{Modules/ACCoRD/inc/BoundingRectangle.h@{Modules/ACCoRD/inc/BoundingRectangle.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef BOUNDINGRECTANGLE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define BOUNDINGRECTANGLE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21   }
+\DoxyCodeLine{34 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} \{ }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36  \textcolor{keyword}{private}:}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} xMin;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} xMax;}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double} yMin;}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double} yMax;}
+\DoxyCodeLine{41     \textcolor{keyword}{mutable} \textcolor{keywordtype}{double} xCenter;  \textcolor{comment}{// only used for LatLonAlt objects}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{keyword}{const} \textcolor{keyword}{static} \textcolor{keywordtype}{double} nullAlt;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46  \textcolor{keyword}{public}:}
+\DoxyCodeLine{50     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}{BoundingRectangle}}();}
+\DoxyCodeLine{51     }
+\DoxyCodeLine{56     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}{BoundingRectangle}}(\textcolor{keyword}{const} std::vector<Vect2>\& vertices);}
+\DoxyCodeLine{57  }
+\DoxyCodeLine{62     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}{BoundingRectangle}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& br);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{69     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a17c27b38b1a2251f9785cd3515eb6c71}{makePath}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& vertices);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{76     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae6b2ce631053b8db051a13dc6ebce5fd}{makePoly}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& vertices);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{83     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aa9e89edba9d21f47f8d9c6daff93b999}{makeUnconnected}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& vertices);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{88     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a984a59d75bcb0105585d2bd4efc81324}{clear}}();}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{95     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{102     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{103     }
+\DoxyCodeLine{109     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& br);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112  \textcolor{keyword}{private}:}
+\DoxyCodeLine{113     \textcolor{keywordtype}{double} fix\_lon(\textcolor{keywordtype}{double} lon) \textcolor{keyword}{const};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115  \textcolor{keyword}{public}:}
+\DoxyCodeLine{116     }
+\DoxyCodeLine{124     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{125     }
+\DoxyCodeLine{132     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{133     }
+\DoxyCodeLine{139     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla2);}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{147     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a1c5ea5b53b14e595d9743fe0f955adf6}{fixLonWrap}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{157     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a1c5ea5b53b14e595d9743fe0f955adf6}{fixLonWrap}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{168     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}}(\textcolor{keywordtype}{double} x,  \textcolor{keywordtype}{double} y) \textcolor{keyword}{const};}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{171     }
+\DoxyCodeLine{177     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{178     }
+\DoxyCodeLine{184     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{185     }
+\DoxyCodeLine{191     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{192     }
+\DoxyCodeLine{200     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ac7612da2229685b0575b7843c117e998}{intersects}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& rect) \textcolor{keyword}{const};}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{209     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ac7612da2229685b0575b7843c117e998}{intersects}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& rect, \textcolor{keywordtype}{double} buffer) \textcolor{keyword}{const};}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{214     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a19453118d90a9bcefee7745c5810acbe}{getMinX}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{219     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a90595f4f314fdcd32557b9e7844e2c57}{getMaxX}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{224     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae3a91c4ae378f6daabf538660b5b5c5e}{getMinY}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{229     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aff1cc9548362ebb560f5ee10e26f1dd5}{getMaxY}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231      \textcolor{keywordtype}{double} getMinLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{232      \textcolor{keywordtype}{double} getMaxLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{233      \textcolor{keywordtype}{double} getMinLat() \textcolor{keyword}{const};}
+\DoxyCodeLine{234      \textcolor{keywordtype}{double} getMaxLat() \textcolor{keyword}{const};}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 }
+\DoxyCodeLine{241     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_adb09ca5e650b4c4425dd724488b9a40f}{centerVect}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{248     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a72ab8374095acf842d45f7fabd16e67d}{centerPos}}()  \textcolor{keyword}{const};}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{254     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a0ed3f1702b65abc416a8a2ec0e77cda0}{lowerLeft}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{260     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ad9b22c3533d2dd34d8c538603de8ba98}{upperRight}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262     \textcolor{keywordtype}{double} getxCenter() \textcolor{keyword}{const};}
+\DoxyCodeLine{263         }
+\DoxyCodeLine{268     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_adf9ca7bc670ab35ca7ad73266f6176e7}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{271 \};}
+\DoxyCodeLine{272 \}}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BOUNDINGRECTANGLE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

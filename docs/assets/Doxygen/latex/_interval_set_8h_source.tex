@@ -1,0 +1,104 @@
+\hypertarget{_interval_set_8h_source}{}\doxysection{Interval\+Set.\+h}
+\label{_interval_set_8h_source}\index{Modules/ACCoRD/inc/IntervalSet.h@{Modules/ACCoRD/inc/IntervalSet.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * IntervalSet}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef INTERVALSET\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define INTERVALSET\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{54 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \{\textcolor{comment}{// : ErrorReporter \{}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{58     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}{max\_intervals}} = 400;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{public}:}
+\DoxyCodeLine{62     \mbox{\hyperlink{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}{IntervalSet}}();}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{67     \mbox{\hyperlink{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}{IntervalSet}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& l);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{70     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}{IntervalSet}}(\textcolor{keyword}{const} std::vector<Interval>\& v);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{73     std::vector<Interval> \mbox{\hyperlink{classlarcfm_1_1_interval_set_a6af9e66f40bfc129b662f23425d2a949}{toVector}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{76     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a09d89c38e3bde61406db9b8165f8ce58}{clear}}();}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{86     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& \mbox{\hyperlink{classlarcfm_1_1_interval_set_a98c3d5994e34bfaf2c11a77985606a13}{getInterval}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{90     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keywordtype}{bool} isEmpty() \textcolor{keyword}{const};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac3a1cdfe59eb5e5a2801c9c10599cba6}{in}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{107     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8633c570c0d8199c2863b4dae8d7d965}{unions}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& rn);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{113     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8633c570c0d8199c2863b4dae8d7d965}{unions}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& n);}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a318b53004cfbebdba3d3bf8a69c77e97}{almost\_unions}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& n, INT64FM maxUlps);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{131     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_ab622f3884095d19c305f2bc7c8bb1e20}{almost\_add}}(\textcolor{keywordtype}{double} l, \textcolor{keywordtype}{double} u);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_ab622f3884095d19c305f2bc7c8bb1e20}{almost\_add}}(\textcolor{keywordtype}{double} l, \textcolor{keywordtype}{double} u, INT64FM maxUlps);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{150     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a12c0e7185167401d7ef69099b3a7473e}{almost\_intersect}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& n);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{159     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a12c0e7185167401d7ef69099b3a7473e}{almost\_intersect}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& n, INT64FM maxUlps);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{169     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a435c04616496405dfd4d566823fdf791}{diff}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& rn);}
+\DoxyCodeLine{176     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_a435c04616496405dfd4d566823fdf791}{diff}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& n);}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}{removeSingle}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} width);}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{193     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}{removeSingle}}(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{198     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}{sweepSingle}}();}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{205     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}{sweepSingle}}(\textcolor{keywordtype}{double} width);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{212     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_interval_set_acd8bb9068130d035b2c3acb648449406}{sweepBreaks}}(\textcolor{keywordtype}{double} width);}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{215     std::string \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8ad8fd554f7cf35c896287e7e2be1e63}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219     std::string \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8ad8fd554f7cf35c896287e7e2be1e63}{toString}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{keyword}{private}:}
+\DoxyCodeLine{222     \textcolor{keywordtype}{int} order(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{223     \textcolor{keywordtype}{void} insert(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& r);}
+\DoxyCodeLine{224     \textcolor{keywordtype}{void} remove(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{225     \textcolor{keywordtype}{void} remove(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} len);}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} empty;}
+\DoxyCodeLine{228     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} r[\mbox{\hyperlink{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}{max\_intervals}}];}
+\DoxyCodeLine{229     \textcolor{keywordtype}{int} length;}
+\DoxyCodeLine{230 \};}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 \}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

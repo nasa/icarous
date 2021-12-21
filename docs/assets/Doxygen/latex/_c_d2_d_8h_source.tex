@@ -1,0 +1,65 @@
+\hypertarget{_c_d2_d_8h_source}{}\doxysection{CD2\+D.\+h}
+\label{_c_d2_d_8h_source}\index{Modules/ACCoRD/inc/CD2D.h@{Modules/ACCoRD/inc/CD2D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CD2D.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef CD2D\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define CD2D\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Consts.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Horizontal.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{55 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d2_d}{CD2D}} \{}
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{62   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{63       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{69   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{70       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{76   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{77       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{82   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ab5f74dac153809145e99e9a947a4c6e4}{violation}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{88   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}{cd2d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{89       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{95   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}{cd2d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{96       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{102   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}{cd2d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{103       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{109   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}{tcpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{110       \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{116   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}{tcpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{117       \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{123   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}{tcpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CD2D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

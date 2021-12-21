@@ -1,0 +1,474 @@
+\hypertarget{classlarcfm_1_1_bands_core}{}\doxysection{larcfm\+::Bands\+Core Class Reference}
+\label{classlarcfm_1_1_bands_core}\index{larcfm::BandsCore@{larcfm::BandsCore}}
+
+
+{\ttfamily \#include $<$Bands\+Core.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bands_core_aff127c9c99856b269941acbf0130b5ef}{Bands\+Core}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bands_core_a3abad97ed70b9e5a618b540073b15dfd}{Bands\+Core}} (double D, double H, double T, double max\+\_\+gs, double max\+\_\+vs)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bands_core_aabafb6e4ae001625e037055d7515d4b8}{Bands\+Core}} (double D, double H, double B, double T, double max\+\_\+gs, double max\+\_\+vs)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_abbcbdf4d1f656416304b123dfefff983}{set\+Time}} (double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ae758194360382c13ff71ae19ca679b06}\label{classlarcfm_1_1_bands_core_ae758194360382c13ff71ae19ca679b06}} 
+void {\bfseries set\+Start\+Time} (double t)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_a638920cc53eb0148eda1afcee9fb156e}{get\+Time}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_a819868c450ba79f1132b2adc204ade10}{get\+Start\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_aebb2e771816d7caa62f083cd53694a7e}{set\+Time\+Range}} (double b, double t)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a31ffe63369f6d8010a089cf8e4d79365}{set\+Diameter}} (double d)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_abf7149647986a9b128416323865874e5}{get\+Diameter}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_ad7cec4e1f42f59a248f06e3ccd46358d}{set\+Height}} (double h)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_ac9d134875fe72e96920eb39b28e999b4}{get\+Height}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a61a6356e5ee1de5bafd0bb740a7078ae}{set\+Max\+Ground\+Speed}} (double gs)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_aa9a067a732d3b14f9d9bc948c5cd4287}{get\+Max\+Ground\+Speed}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_ab6394626578e2437b2d738cb220b078b}{set\+Max\+Vertical\+Speed}} (double vs)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bands_core_adf18b595060c1d468144de45236fb818}{get\+Max\+Vertical\+Speed}} () const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_bands_core_afb8b3abc81107c34e741c2c4bdee73d1}{set\+Track\+Tolerance}} (double trk)
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_bands_core_a559c4aea861d54ceecc0b7611e8af92d}{get\+Track\+Tolerance}} () const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a553398610b8f1b51a9fb2e5f5898b796}{set\+Ground\+Speed\+Tolerance}} (double gs)
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_bands_core_a784e502217b5d40dffc09dcd6d0b4d07}{get\+Ground\+Speed\+Tolerance}} () const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a42f0f053accaf832ae05625942b84faa}{set\+Vertical\+Speed\+Tolerance}} (double vs)
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_bands_core_acb66efadefb999232c326508b22a807e}{get\+Vertical\+Speed\+Tolerance}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_ae469c97261eadc7a60888e2a26ae2b0f}{add\+Traffic}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi3, bool do\+\_\+trk, bool do\+\_\+gs, bool do\+\_\+vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a3c0e0251a56329c4ff1375297f712b37}\label{classlarcfm_1_1_bands_core_a3c0e0251a56329c4ff1375297f712b37}} 
+void {\bfseries add\+Traffic} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi3)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a31250ab2324c50a3b439980be236bbea}{clear\+Track\+Regions}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_aa7c8cf2fa70fd6fc9133df4d11d80fcb}\label{classlarcfm_1_1_bands_core_aa7c8cf2fa70fd6fc9133df4d11d80fcb}} 
+void {\bfseries clear\+Ground\+Speed\+Regions} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ae0fbf7c260a0bbb5b4efd351b906dbcf}\label{classlarcfm_1_1_bands_core_ae0fbf7c260a0bbb5b4efd351b906dbcf}} 
+void {\bfseries clear\+Vertical\+Speed\+Regions} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a91d54bfa65b6d6dd981335965030171f}\label{classlarcfm_1_1_bands_core_a91d54bfa65b6d6dd981335965030171f}} 
+void {\bfseries clear} (bool do\+\_\+trk, bool do\+\_\+gs, bool do\+\_\+vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a923f69bd469dfdc35a14973382e2728b}\label{classlarcfm_1_1_bands_core_a923f69bd469dfdc35a14973382e2728b}} 
+void {\bfseries clear} ()
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& \mbox{\hyperlink{classlarcfm_1_1_bands_core_a047c718590cb0f1c2bce73d50ea99c0d}{track\+Bands}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bands_core_aa3c965138ef5ac9a368318f97c4ef889}{track\+Bands}} (double trk) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a5857652ffd5d01cb9a496be1905f6474}\label{classlarcfm_1_1_bands_core_a5857652ffd5d01cb9a496be1905f6474}} 
+int {\bfseries track\+Size} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& \mbox{\hyperlink{classlarcfm_1_1_bands_core_a1584982f163c55ae21b550fecaada12b}{ground\+Speed\+Bands}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bands_core_a1f571983f49f21f975df0bdc0f3f3621}{ground\+Speed\+Bands}} (double gs) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a64dcbf9bf06019c580dd62320ac7dfa8}\label{classlarcfm_1_1_bands_core_a64dcbf9bf06019c580dd62320ac7dfa8}} 
+int {\bfseries ground\+Speed\+Size} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& \mbox{\hyperlink{classlarcfm_1_1_bands_core_a21a3a3c81ad5f60b8890dc1a200fc76d}{vertical\+Speed\+Bands}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bands_core_ae8bdb62ccde4fc4d5f9bb358510067c8}{vertical\+Speed\+Bands}} (double vs) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ab2d89b4b09f10ff30996962d0794d6bb}\label{classlarcfm_1_1_bands_core_ab2d89b4b09f10ff30996962d0794d6bb}} 
+int {\bfseries vertical\+Speed\+Size} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a6ed5c117ce512d444afdfa16c7595ac4}{clear\+Narrow\+Bands}} (bool do\+\_\+trk, bool do\+\_\+gs, bool do\+\_\+vs)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a71cf145f6c3644e533c4ba862ee017dc}{clear\+Track\+Breaks}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a558fbde877b156f82c85144329760ea2}\label{classlarcfm_1_1_bands_core_a558fbde877b156f82c85144329760ea2}} 
+void {\bfseries clear\+Ground\+Speed\+Breaks} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a0a0b6f7ee534193f66af2a616816e5d2}\label{classlarcfm_1_1_bands_core_a0a0b6f7ee534193f66af2a616816e5d2}} 
+void {\bfseries clear\+Vertical\+Speed\+Breaks} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ada50bfd33ef634a0810d77c626052cfa}\label{classlarcfm_1_1_bands_core_ada50bfd33ef634a0810d77c626052cfa}} 
+void {\bfseries clear\+Breaks} (bool do\+\_\+trk, bool do\+\_\+gs, bool do\+\_\+vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a7a33952fd36e99ff13b45167ba02c343}\label{classlarcfm_1_1_bands_core_a7a33952fd36e99ff13b45167ba02c343}} 
+void {\bfseries clear\+Breaks} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_bands_core_a1d1b5c31a288c1e722cd5aaeffbf310a}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a64dcaa11f589b4f8d00904bc1f8a42e0}{calc\+Trk\+Bands}} (\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vo3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vi3) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a3baa2a712b80f888ac6879b16b89b7cf}{calc\+Gs\+Bands}} (\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vo3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vi3) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bands_core_a05a9d2fc87878fbfce63aece79255ed4}{calc\+Vs\+Bands}} (\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vo3, \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vi3) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a9936337acfff68bf81dd7912f75b1335}\label{classlarcfm_1_1_bands_core_a9936337acfff68bf81dd7912f75b1335}} 
+void {\bfseries init} (double D, double H, double B, double T, double max\+\_\+gs, double max\+\_\+vs)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a11a0f74eec24e343af40d255fd2b3343}\label{classlarcfm_1_1_bands_core_a11a0f74eec24e343af40d255fd2b3343}} 
+double {\bfseries D}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_aab53424a562c41d4c5c5dfdd448bbaf7}\label{classlarcfm_1_1_bands_core_aab53424a562c41d4c5c5dfdd448bbaf7}} 
+double {\bfseries H}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_abd843781798a5a224bc9a5ff6b1f0c55}\label{classlarcfm_1_1_bands_core_abd843781798a5a224bc9a5ff6b1f0c55}} 
+double {\bfseries B}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a0566d3709cc270f6e3ef9280b1588469}\label{classlarcfm_1_1_bands_core_a0566d3709cc270f6e3ef9280b1588469}} 
+double {\bfseries T}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_aa692aa5873db1df28fc2200040173ea2}\label{classlarcfm_1_1_bands_core_aa692aa5873db1df28fc2200040173ea2}} 
+double {\bfseries max\+\_\+gs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ae234e5a237f852f95af693ba4b9901b5}\label{classlarcfm_1_1_bands_core_ae234e5a237f852f95af693ba4b9901b5}} 
+double {\bfseries max\+\_\+vs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ac39ecd767fd0bdc6a70e4ef18afa91ae}\label{classlarcfm_1_1_bands_core_ac39ecd767fd0bdc6a70e4ef18afa91ae}} 
+double {\bfseries trk\+Tol}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ab7ae9653b7d05f8e5589cc186b460c50}\label{classlarcfm_1_1_bands_core_ab7ae9653b7d05f8e5589cc186b460c50}} 
+double {\bfseries gs\+Tol}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a45a862ee0aa1bf73a7e1a93992320bf9}\label{classlarcfm_1_1_bands_core_a45a862ee0aa1bf73a7e1a93992320bf9}} 
+double {\bfseries vs\+Tol}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a67cde9bc0185e73665f453382f146bae}\label{classlarcfm_1_1_bands_core_a67cde9bc0185e73665f453382f146bae}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} {\bfseries trk\+\_\+regions}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_adee67852fb752d1d80eb8acfc3fe0363}\label{classlarcfm_1_1_bands_core_adee67852fb752d1d80eb8acfc3fe0363}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} {\bfseries gs\+\_\+regions}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_af1bbe35d4a07ac62fcccd6e4529a787c}\label{classlarcfm_1_1_bands_core_af1bbe35d4a07ac62fcccd6e4529a787c}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} {\bfseries vs\+\_\+regions}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a3cbd88ac906d91dad031a3a10ea83893}\label{classlarcfm_1_1_bands_core_a3cbd88ac906d91dad031a3a10ea83893}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} {\bfseries regions}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Objects of class \char`\"{}\+Bands\+Core\char`\"{} compute the conflict prevention bands using linear state-\/based predictions of ownship and (multiple) traffic aircraft positions. This class presumes the use \char`\"{}internal\char`\"{} units and Cartesian coordinates and it doesn\textquotesingle{}t perform bookkeeping of its parameters. For instance, if D, H, etc are set after traffic has been added, the method clear() has to be explicitly called. Otherwise, the state of the bands object is undetermined. For all these reasons, this class is not intended for general use. It is most appropriate for building algorithms that include prevention band information. For a more \char`\"{}user-\/friendly\char`\"{} version, try the \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} class. 
+
+The bands consist of ranges of guidance maneuvers\+: track angles, ground speeds, and vertical speeds. If a path is (immediately) taken that is within one these bands and no traffic aircraft maneuvers, then a loss of separation will occur within the specified lookahead time. Implicitly, any path that is not in a band does not have a loss of separation within the lookahead time.
+
+Disclaimers\+: Only parts of these algorithms have been formally verified. We plan to advance the formal verification, but it is currently not complete. Even with a \textquotesingle{}complete\textquotesingle{} verification, there will still be certain assumptions. For instance, the formal proofs use real numbers while these implementations use floating point numbers, so numerical differences could result. In addition, the geodesic computations include certain inaccuracies, especially near the poles.
+
+The basic usages is 
+\begin{DoxyPre}
+\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} b(..with configuration parameters..);
+b.clear();
+b.addTraffic(relative position of ownship and traffic,
+             velocity of ownship, 
+             velocity of one traffic aircraft);
+b.addTraffic(relative position of ownship and traffic,
+             velocity of ownship, 
+             velocity of one traffic aircraft);
+...add other traffic aircraft...
+
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} track\_bands = b.trackBands();
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} ground\_speed\_bands = b.groundSpeedBands();
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} vertical\_speed\_bands = b.verticalSpeedBands();
+\end{DoxyPre}
+
+
+When any \char`\"{}parameter\char`\"{} to this class is set (lookahead time, etc.), any previous bands information is cleared; therefore, all traffic aircraft must be added {\itshape after} the parameters are configured. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_aff127c9c99856b269941acbf0130b5ef}\label{classlarcfm_1_1_bands_core_aff127c9c99856b269941acbf0130b5ef}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!BandsCore@{BandsCore}}
+\index{BandsCore@{BandsCore}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{BandsCore()}{BandsCore()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Bands\+Core\+::\+Bands\+Core (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}} object with default values for configuration parameters. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a3abad97ed70b9e5a618b540073b15dfd}\label{classlarcfm_1_1_bands_core_a3abad97ed70b9e5a618b540073b15dfd}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!BandsCore@{BandsCore}}
+\index{BandsCore@{BandsCore}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{BandsCore()}{BandsCore()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Bands\+Core\+::\+Bands\+Core (\begin{DoxyParamCaption}\item[{double}]{D,  }\item[{double}]{H,  }\item[{double}]{T,  }\item[{double}]{max\+\_\+gs,  }\item[{double}]{max\+\_\+vs }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}} object with the given configuration parameters. The bands always begin as \char`\"{}empty\char`\"{} bands\+: green track bands from 0 to 2pi, green ground speed bands from 0 to max\+\_\+gs, and green vertical speed bands from -\/max\+\_\+vs to max\+\_\+vs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em D} & the minimum horizontal separation distance \\
+\hline
+{\em H} & the minimum vertical separation distance \\
+\hline
+{\em T} & the lookahead range end time (start time is 0) \\
+\hline
+{\em max\+\_\+gs} & the maximum ground speed that is output by \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}}, the minimum is 0. \\
+\hline
+{\em max\+\_\+vs} & the range of vertical speeds is -\/max\+\_\+vs to max\+\_\+vs \mbox{[}feet/min\mbox{]} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_aabafb6e4ae001625e037055d7515d4b8}\label{classlarcfm_1_1_bands_core_aabafb6e4ae001625e037055d7515d4b8}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!BandsCore@{BandsCore}}
+\index{BandsCore@{BandsCore}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{BandsCore()}{BandsCore()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Bands\+Core\+::\+Bands\+Core (\begin{DoxyParamCaption}\item[{double}]{D,  }\item[{double}]{H,  }\item[{double}]{B,  }\item[{double}]{T,  }\item[{double}]{max\+\_\+gs,  }\item[{double}]{max\+\_\+vs }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}} object with the given configuration parameters. The bands always begin as \char`\"{}empty\char`\"{} bands\+: green track bands from 0 to 2pi, green ground speed bands from 0 to max\+\_\+gs, and green vertical speed bands from -\/max\+\_\+vs to max\+\_\+vs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em D} & the minimum horizontal separation distance \\
+\hline
+{\em H} & the minimum vertical separation distance \\
+\hline
+{\em B} & the lookahead range start \\
+\hline
+{\em T} & the lookahead range end \\
+\hline
+{\em max\+\_\+gs} & the maximum ground speed that is output by \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}}, the minimum is 0. \\
+\hline
+{\em max\+\_\+vs} & the range of vertical speeds is -\/max\+\_\+vs to max\+\_\+vs \mbox{[}feet/min\mbox{]} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ae469c97261eadc7a60888e2a26ae2b0f}\label{classlarcfm_1_1_bands_core_ae469c97261eadc7a60888e2a26ae2b0f}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!addTraffic@{addTraffic}}
+\index{addTraffic@{addTraffic}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{addTraffic()}{addTraffic()}}
+{\footnotesize\ttfamily void Bands\+Core\+::add\+Traffic (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s3,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo3,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi3,  }\item[{bool}]{do\+\_\+trk,  }\item[{bool}]{do\+\_\+gs,  }\item[{bool}]{do\+\_\+vs }\end{DoxyParamCaption})}
+
+Compute the conflict prevention band information for one ownship/traffic aircraft pair and add this information to any existing band information. For a collection of \char`\"{}band\char`\"{} information to make sense, all ownship aircraft must be the same. All parameters are in cartesian coordinates in \char`\"{}internal\char`\"{} units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position of the traffic and ownship aircraft \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em vi} & the velocity of the traffic \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a3baa2a712b80f888ac6879b16b89b7cf}\label{classlarcfm_1_1_bands_core_a3baa2a712b80f888ac6879b16b89b7cf}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!calcGsBands@{calcGsBands}}
+\index{calcGsBands@{calcGsBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{calcGsBands()}{calcGsBands()}}
+{\footnotesize\ttfamily void Bands\+Core\+::calc\+Gs\+Bands (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{s3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vo3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vi3 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+This method computes the conflict bands for ground speed for the given aircraft pair. This method is nearly static, it only relies on the configuration parameters for the class (diameter, time, maximum gs, etc.) \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a64dcaa11f589b4f8d00904bc1f8a42e0}\label{classlarcfm_1_1_bands_core_a64dcaa11f589b4f8d00904bc1f8a42e0}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!calcTrkBands@{calcTrkBands}}
+\index{calcTrkBands@{calcTrkBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{calcTrkBands()}{calcTrkBands()}}
+{\footnotesize\ttfamily void Bands\+Core\+::calc\+Trk\+Bands (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{s3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vo3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vi3 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+This method computes the conflict bands for track angles for the given aircraft pair. This method is nearly static, it only relies on the configuration parameters for the class (diameter, time, maximum gs, etc.) \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a05a9d2fc87878fbfce63aece79255ed4}\label{classlarcfm_1_1_bands_core_a05a9d2fc87878fbfce63aece79255ed4}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!calcVsBands@{calcVsBands}}
+\index{calcVsBands@{calcVsBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{calcVsBands()}{calcVsBands()}}
+{\footnotesize\ttfamily void Bands\+Core\+::calc\+Vs\+Bands (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{s3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vo3,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{vi3 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+This method computes the conflict bands for vertical speed for the given aircraft pair. This method is nearly static, it only relies on the configuration parameters for the class (diameter, time, maximum gs, etc.) \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a6ed5c117ce512d444afdfa16c7595ac4}\label{classlarcfm_1_1_bands_core_a6ed5c117ce512d444afdfa16c7595ac4}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!clearNarrowBands@{clearNarrowBands}}
+\index{clearNarrowBands@{clearNarrowBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{clearNarrowBands()}{clearNarrowBands()}}
+{\footnotesize\ttfamily void Bands\+Core\+::clear\+Narrow\+Bands (\begin{DoxyParamCaption}\item[{bool}]{do\+\_\+trk,  }\item[{bool}]{do\+\_\+gs,  }\item[{bool}]{do\+\_\+vs }\end{DoxyParamCaption})}
+
+Internally modify the bands to remove narrow bands (-\/---X-\/--- becomes -\/-\/-\/-\/-\/-\/---). This should be run after the bands have been populated (if at all). This should be used on \char`\"{}green\char`\"{} bands. Tolerances define the filter sizes. trk\+Tol in \mbox{[}rad\mbox{]}, gs\+Tol in \mbox{[}m/s\mbox{]}, vs\+Tol in \mbox{[}m/s\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a71cf145f6c3644e533c4ba862ee017dc}\label{classlarcfm_1_1_bands_core_a71cf145f6c3644e533c4ba862ee017dc}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!clearTrackBreaks@{clearTrackBreaks}}
+\index{clearTrackBreaks@{clearTrackBreaks}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{clearTrackBreaks()}{clearTrackBreaks()}}
+{\footnotesize\ttfamily void Bands\+Core\+::clear\+Track\+Breaks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Internally modify the bands to remove narrow gaps (XXXX-\/\+XXXX becomes XXXXXXXXX). This should be run after the bands have been populated (if at all). This should be used on \char`\"{}red\char`\"{} bands. Tolerances define the filter sizes. trk\+Tol in \mbox{[}rad\mbox{]}, gs\+Tol in \mbox{[}m/s\mbox{]}, vs\+Tol in \mbox{[}m/s\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a31250ab2324c50a3b439980be236bbea}\label{classlarcfm_1_1_bands_core_a31250ab2324c50a3b439980be236bbea}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!clearTrackRegions@{clearTrackRegions}}
+\index{clearTrackRegions@{clearTrackRegions}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{clearTrackRegions()}{clearTrackRegions()}}
+{\footnotesize\ttfamily void Bands\+Core\+::clear\+Track\+Regions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear all bands to \char`\"{}empty\char`\"{} bands. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_abf7149647986a9b128416323865874e5}\label{classlarcfm_1_1_bands_core_abf7149647986a9b128416323865874e5}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getDiameter@{getDiameter}}
+\index{getDiameter@{getDiameter}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getDiameter()}{getDiameter()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Diameter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the minimum horizontal separation distance in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a784e502217b5d40dffc09dcd6d0b4d07}\label{classlarcfm_1_1_bands_core_a784e502217b5d40dffc09dcd6d0b4d07}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getGroundSpeedTolerance@{getGroundSpeedTolerance}}
+\index{getGroundSpeedTolerance@{getGroundSpeedTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getGroundSpeedTolerance()}{getGroundSpeedTolerance()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Ground\+Speed\+Tolerance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Returns minimum acceptable ground speed \mbox{\Hypertarget{classlarcfm_1_1_bands_core_ac9d134875fe72e96920eb39b28e999b4}\label{classlarcfm_1_1_bands_core_ac9d134875fe72e96920eb39b28e999b4}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the minimum vertical separation distance in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_aa9a067a732d3b14f9d9bc948c5cd4287}\label{classlarcfm_1_1_bands_core_aa9a067a732d3b14f9d9bc948c5cd4287}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getMaxGroundSpeed@{getMaxGroundSpeed}}
+\index{getMaxGroundSpeed@{getMaxGroundSpeed}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getMaxGroundSpeed()}{getMaxGroundSpeed()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Max\+Ground\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the maximum ground speed in internal units. ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_bands_core_adf18b595060c1d468144de45236fb818}\label{classlarcfm_1_1_bands_core_adf18b595060c1d468144de45236fb818}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getMaxVerticalSpeed@{getMaxVerticalSpeed}}
+\index{getMaxVerticalSpeed@{getMaxVerticalSpeed}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getMaxVerticalSpeed()}{getMaxVerticalSpeed()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Max\+Vertical\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the range of vertical speed in internal units output by \mbox{\hyperlink{classlarcfm_1_1_bands_core}{Bands\+Core}}. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a819868c450ba79f1132b2adc204ade10}\label{classlarcfm_1_1_bands_core_a819868c450ba79f1132b2adc204ade10}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getStartTime@{getStartTime}}
+\index{getStartTime@{getStartTime}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getStartTime()}{getStartTime()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Start\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the lookahead start time in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a638920cc53eb0148eda1afcee9fb156e}\label{classlarcfm_1_1_bands_core_a638920cc53eb0148eda1afcee9fb156e}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getTime@{getTime}}
+\index{getTime@{getTime}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getTime()}{getTime()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the end lookahead time in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a559c4aea861d54ceecc0b7611e8af92d}\label{classlarcfm_1_1_bands_core_a559c4aea861d54ceecc0b7611e8af92d}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getTrackTolerance@{getTrackTolerance}}
+\index{getTrackTolerance@{getTrackTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getTrackTolerance()}{getTrackTolerance()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Track\+Tolerance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Returns minimum acceptable track angle \mbox{\Hypertarget{classlarcfm_1_1_bands_core_acb66efadefb999232c326508b22a807e}\label{classlarcfm_1_1_bands_core_acb66efadefb999232c326508b22a807e}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!getVerticalSpeedTolerance@{getVerticalSpeedTolerance}}
+\index{getVerticalSpeedTolerance@{getVerticalSpeedTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{getVerticalSpeedTolerance()}{getVerticalSpeedTolerance()}}
+{\footnotesize\ttfamily double Bands\+Core\+::get\+Vertical\+Speed\+Tolerance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Returns minimum acceptable ground speed \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a1584982f163c55ae21b550fecaada12b}\label{classlarcfm_1_1_bands_core_a1584982f163c55ae21b550fecaada12b}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!groundSpeedBands@{groundSpeedBands}}
+\index{groundSpeedBands@{groundSpeedBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{groundSpeedBands()}{groundSpeedBands()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& Bands\+Core\+::ground\+Speed\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The ground speed bands in internal units. The range of ground speed bands is from 0 to max\+\_\+gs. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a1f571983f49f21f975df0bdc0f3f3621}\label{classlarcfm_1_1_bands_core_a1f571983f49f21f975df0bdc0f3f3621}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!groundSpeedBands@{groundSpeedBands}}
+\index{groundSpeedBands@{groundSpeedBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{groundSpeedBands()}{groundSpeedBands()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Bands\+Core\+::ground\+Speed\+Bands (\begin{DoxyParamCaption}\item[{double}]{gs }\end{DoxyParamCaption}) const}
+
+Is there a conflict (within the given lookahead time) for this ground speed? \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a31ffe63369f6d8010a089cf8e4d79365}\label{classlarcfm_1_1_bands_core_a31ffe63369f6d8010a089cf8e4d79365}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setDiameter@{setDiameter}}
+\index{setDiameter@{setDiameter}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setDiameter()}{setDiameter()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Diameter (\begin{DoxyParamCaption}\item[{double}]{d }\end{DoxyParamCaption})}
+
+Sets the minimum horizontal separation distance in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a553398610b8f1b51a9fb2e5f5898b796}\label{classlarcfm_1_1_bands_core_a553398610b8f1b51a9fb2e5f5898b796}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setGroundSpeedTolerance@{setGroundSpeedTolerance}}
+\index{setGroundSpeedTolerance@{setGroundSpeedTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setGroundSpeedTolerance()}{setGroundSpeedTolerance()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Ground\+Speed\+Tolerance (\begin{DoxyParamCaption}\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets a minimum size for green/no conflict bands to be allowed, to avoid \char`\"{}eye of the needle\char`\"{} situations. Any green bands smaller than this will not be reported. 
+\begin{DoxyParams}{Parameters}
+{\em gs} & minimum acceptable ground speed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_ad7cec4e1f42f59a248f06e3ccd46358d}\label{classlarcfm_1_1_bands_core_ad7cec4e1f42f59a248f06e3ccd46358d}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setHeight@{setHeight}}
+\index{setHeight@{setHeight}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setHeight()}{setHeight()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Height (\begin{DoxyParamCaption}\item[{double}]{h }\end{DoxyParamCaption})}
+
+Sets the minimum vertical separation distance in internal units. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a61a6356e5ee1de5bafd0bb740a7078ae}\label{classlarcfm_1_1_bands_core_a61a6356e5ee1de5bafd0bb740a7078ae}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setMaxGroundSpeed@{setMaxGroundSpeed}}
+\index{setMaxGroundSpeed@{setMaxGroundSpeed}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setMaxGroundSpeed()}{setMaxGroundSpeed()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Max\+Ground\+Speed (\begin{DoxyParamCaption}\item[{double}]{gs }\end{DoxyParamCaption})}
+
+Sets the maximum ground speed in internal units, the minimum is 0. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_ab6394626578e2437b2d738cb220b078b}\label{classlarcfm_1_1_bands_core_ab6394626578e2437b2d738cb220b078b}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setMaxVerticalSpeed@{setMaxVerticalSpeed}}
+\index{setMaxVerticalSpeed@{setMaxVerticalSpeed}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setMaxVerticalSpeed()}{setMaxVerticalSpeed()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Max\+Vertical\+Speed (\begin{DoxyParamCaption}\item[{double}]{vs }\end{DoxyParamCaption})}
+
+Sets the range of vertical speeds in internal units, -\/max\+\_\+vs to max\+\_\+vs. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_abbcbdf4d1f656416304b123dfefff983}\label{classlarcfm_1_1_bands_core_abbcbdf4d1f656416304b123dfefff983}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setTime@{setTime}}
+\index{setTime@{setTime}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setTime()}{setTime()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Time (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Set the end lookahead time in internal units. The lookahead range start is set to 0. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_aebb2e771816d7caa62f083cd53694a7e}\label{classlarcfm_1_1_bands_core_aebb2e771816d7caa62f083cd53694a7e}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setTimeRange@{setTimeRange}}
+\index{setTimeRange@{setTimeRange}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setTimeRange()}{setTimeRange()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Time\+Range (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Set the lookahead time range in internal units with start and end times. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_afb8b3abc81107c34e741c2c4bdee73d1}\label{classlarcfm_1_1_bands_core_afb8b3abc81107c34e741c2c4bdee73d1}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setTrackTolerance@{setTrackTolerance}}
+\index{setTrackTolerance@{setTrackTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setTrackTolerance()}{setTrackTolerance()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Track\+Tolerance (\begin{DoxyParamCaption}\item[{double}]{trk }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets a minimum size for green/no conflict bands to be allowed, to avoid \char`\"{}eye of the needle\char`\"{} situations. Any green bands smaller than this will not be reported. 
+\begin{DoxyParams}{Parameters}
+{\em trk} & minimum acceptable track angle \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a42f0f053accaf832ae05625942b84faa}\label{classlarcfm_1_1_bands_core_a42f0f053accaf832ae05625942b84faa}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!setVerticalSpeedTolerance@{setVerticalSpeedTolerance}}
+\index{setVerticalSpeedTolerance@{setVerticalSpeedTolerance}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{setVerticalSpeedTolerance()}{setVerticalSpeedTolerance()}}
+{\footnotesize\ttfamily void Bands\+Core\+::set\+Vertical\+Speed\+Tolerance (\begin{DoxyParamCaption}\item[{double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets a minimum size for green/no conflict bands to be allowed, to avoid \char`\"{}eye of the needle\char`\"{} situations. Any green bands smaller than this will not be reported. 
+\begin{DoxyParams}{Parameters}
+{\em vs} & minimum acceptable vertical speed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_core_a1d1b5c31a288c1e722cd5aaeffbf310a}\label{classlarcfm_1_1_bands_core_a1d1b5c31a288c1e722cd5aaeffbf310a}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!toString@{toString}}
+\index{toString@{toString}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string Bands\+Core\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a string representation of this object \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a047c718590cb0f1c2bce73d50ea99c0d}\label{classlarcfm_1_1_bands_core_a047c718590cb0f1c2bce73d50ea99c0d}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!trackBands@{trackBands}}
+\index{trackBands@{trackBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{trackBands()}{trackBands()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& Bands\+Core\+::track\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The track angle bands. The angles are in \textquotesingle{}compass\textquotesingle{} angles in internal units, counter-\/clockwise from true north. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_aa3c965138ef5ac9a368318f97c4ef889}\label{classlarcfm_1_1_bands_core_aa3c965138ef5ac9a368318f97c4ef889}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!trackBands@{trackBands}}
+\index{trackBands@{trackBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{trackBands()}{trackBands()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Bands\+Core\+::track\+Bands (\begin{DoxyParamCaption}\item[{double}]{trk }\end{DoxyParamCaption}) const}
+
+Is there a conflict (within the given lookahead time) for this track angle? \mbox{\Hypertarget{classlarcfm_1_1_bands_core_a21a3a3c81ad5f60b8890dc1a200fc76d}\label{classlarcfm_1_1_bands_core_a21a3a3c81ad5f60b8890dc1a200fc76d}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!verticalSpeedBands@{verticalSpeedBands}}
+\index{verticalSpeedBands@{verticalSpeedBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{verticalSpeedBands()}{verticalSpeedBands()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \& Bands\+Core\+::vertical\+Speed\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The vertical speed bands in internal units. The range of vertical speeds is -\/max\+\_\+vs to max\+\_\+vs. \mbox{\Hypertarget{classlarcfm_1_1_bands_core_ae8bdb62ccde4fc4d5f9bb358510067c8}\label{classlarcfm_1_1_bands_core_ae8bdb62ccde4fc4d5f9bb358510067c8}} 
+\index{larcfm::BandsCore@{larcfm::BandsCore}!verticalSpeedBands@{verticalSpeedBands}}
+\index{verticalSpeedBands@{verticalSpeedBands}!larcfm::BandsCore@{larcfm::BandsCore}}
+\doxysubsubsection{\texorpdfstring{verticalSpeedBands()}{verticalSpeedBands()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Bands\+Core\+::vertical\+Speed\+Bands (\begin{DoxyParamCaption}\item[{double}]{vs }\end{DoxyParamCaption}) const}
+
+Is there a conflict (within the given lookahead time) for this vertical speed? 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bands\+Core.\+h\item 
+Modules/\+ACCo\+RD/src/Bands\+Core.\+cpp\end{DoxyCompactItemize}

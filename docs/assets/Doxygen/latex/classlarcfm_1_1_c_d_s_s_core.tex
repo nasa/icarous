@@ -1,0 +1,548 @@
+\hypertarget{classlarcfm_1_1_c_d_s_s_core}{}\doxysection{larcfm\+::CDSSCore Class Reference}
+\label{classlarcfm_1_1_c_d_s_s_core}\index{larcfm::CDSSCore@{larcfm::CDSSCore}}
+
+
+{\ttfamily \#include $<$CDSSCore.\+h$>$}
+
+Inheritance diagram for larcfm\+::CDSSCore\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_c_d_s_s_core}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ad3318aa46c307813eda6cab03c8f18a3}\label{classlarcfm_1_1_c_d_s_s_core_ad3318aa46c307813eda6cab03c8f18a3}} 
+{\bfseries CDSSCore} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ade28e88d16202524d35aea3cf674c380}{cd}}, double cdfilter)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ad8ccaa31177c9260eb2ddbcc505aadab}{CDSSCore}} (const \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} \&cdss)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a1c4a6485257c4865ae2a238633a78b2a}\label{classlarcfm_1_1_c_d_s_s_core_a1c4a6485257c4865ae2a238633a78b2a}} 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} \& {\bfseries operator=} (const \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} \&cdss)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ab5b654ddc04d69bc999525f17652ed93}{get\+Filter\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a2ba6370739a1747f3282c79be16aa9db}{set\+Filter\+Time}} (double cdfilter)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a08e7844702329106b3877ad8b35b8726}{conflict}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ab4612bdb0091da496b59e5926d0fba19}{violation}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ad9fc6ddd0531ff414fd3f3271b0e2712}\label{classlarcfm_1_1_c_d_s_s_core_ad9fc6ddd0531ff414fd3f3271b0e2712}} 
+bool {\bfseries violation} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vop, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vip, const Euclidean\+Projection \&proj) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aca9bca4648553d3b17cef86d97113780}\label{classlarcfm_1_1_c_d_s_s_core_aca9bca4648553d3b17cef86d97113780}} 
+bool {\bfseries violation} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vop, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vip) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_aabe82b40517d786941b314ade82e511f}{conflict}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ad4c2b801c50f59a1fa56a3708ce42995}\label{classlarcfm_1_1_c_d_s_s_core_ad4c2b801c50f59a1fa56a3708ce42995}} 
+bool {\bfseries conflict} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a88298a3cedab80789469026642ec387d}\label{classlarcfm_1_1_c_d_s_s_core_a88298a3cedab80789469026642ec387d}} 
+bool {\bfseries conflict} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vop, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vip, double B, double T) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_af3f9a320e09a505fdcae7ad5d1d9d1c5}{detection\+Ever}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a48f985eb85256210ebea93ac392eccb4}{detection\+Between}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_afc06ec5cfbde5607dc7ec2c82a5ffa1d}{detection\+Between}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T, double time\+Horizon)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_accbdecbfaee2c390bd4968f5e741708d}{detection\+Between}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T, const std\+::string \&ut)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a6ebe295eaebb437b6389edec4c29ac92}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a1f03fe1ad6431c3e57d3d47b7a67e4b6}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double T, const std\+::string \&ut)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a1e5be171486ac35d2c95f5cb96d454cf}\label{classlarcfm_1_1_c_d_s_s_core_a1e5be171486ac35d2c95f5cb96d454cf}} 
+bool {\bfseries detection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vop, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vip, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_acb91d3c48e31f9c50183dcbfc2e47935}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vop, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vip, double T, Euclidean\+Projection proj)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a1fedc6f448dbace69fc3bd25a8c0a24d}{conflict\+Duration}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a7b52bede6c7c6b8ae678f739fccd82d2}{conflict\+Duration}} (const std\+::string \&ut) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a7302ca60db8a2cf5d12fea4c6daf21d0}{get\+Time\+In}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a669f83ab1b618e1de96502b280171ba4}{get\+Time\+In}} (const std\+::string \&ut) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a1d015f151155582331908ffa9c7299ad}{get\+Time\+Out}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ac219229d1db14c10d2821b415cc0890a}{get\+Time\+Out}} (const std\+::string \&ut) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a6d118026348c15c7e0e7da5aa327ec02}\label{classlarcfm_1_1_c_d_s_s_core_a6d118026348c15c7e0e7da5aa327ec02}} 
+double {\bfseries get\+Critical\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a3c64fc002eb1fd4c7aa665db826ef36a}\label{classlarcfm_1_1_c_d_s_s_core_a3c64fc002eb1fd4c7aa665db826ef36a}} 
+double {\bfseries get\+Critical\+Time} (const std\+::string \&ut) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ad6b7126602af40108024fe741f656cad}\label{classlarcfm_1_1_c_d_s_s_core_ad6b7126602af40108024fe741f656cad}} 
+double {\bfseries distance\+At\+Critical\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ade4c52df5c2e4355c9af7572be5fce05}\label{classlarcfm_1_1_c_d_s_s_core_ade4c52df5c2e4355c9af7572be5fce05}} 
+std\+::string {\bfseries get\+Identifier} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aa6e2c122b5c318092d10d616872a5d2b}\label{classlarcfm_1_1_c_d_s_s_core_aa6e2c122b5c318092d10d616872a5d2b}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries relative\+Position\+At\+Critical\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_af15ee6ce31c28bde9da0907340f85b4d}\label{classlarcfm_1_1_c_d_s_s_core_af15ee6ce31c28bde9da0907340f85b4d}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a3feb2959c1186b41acfba2960408619e}{set\+Core\+Detection\+Ptr}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$c)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_af3157fec84cd3dd181a469ec6153d52a}{set\+Core\+Detection\+Ref}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \&c)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_af0de2be5dccfbf9b6d0627af50b113f8}{get\+Core\+Detection\+Ptr}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \& \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a2111e915b94b181f911e12c341c36f9b}{get\+Core\+Detection\+Ref}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_af498c28539216980518feca984b475b7}\label{classlarcfm_1_1_c_d_s_s_core_af498c28539216980518feca984b475b7}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} {\bfseries make} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \&\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ade28e88d16202524d35aea3cf674c380}{cd}}, double cdfilter, const std\+::string \&tunit)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aee7ec9a00a9377a7bb3699e047401dda}\label{classlarcfm_1_1_c_d_s_s_core_aee7ec9a00a9377a7bb3699e047401dda}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} {\bfseries mk\+Cyl} (const std\+::string \&id, double D, double H, double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_aa64b968e4f91091ef8b9ec53a0689067}{filter}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a6b44d1b078f108c258a3539be5f54383}\label{classlarcfm_1_1_c_d_s_s_core_a6b44d1b078f108c258a3539be5f54383}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} {\bfseries mk\+Cyl} (const std\+::string \&id, double D, double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aaa6e2fcf6e6e79559b06df26b81e3937}\label{classlarcfm_1_1_c_d_s_s_core_aaa6e2fcf6e6e79559b06df26b81e3937}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} {\bfseries mk\+Tau\+MOD} (const std\+::string \&id, double DTHR, double ZTHR, double TTHR, double TCOA)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aeacab451fac9095415883cee42f56af7}\label{classlarcfm_1_1_c_d_s_s_core_aeacab451fac9095415883cee42f56af7}} 
+void {\bfseries init} (double d, double h, double f, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$c)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_aa64b968e4f91091ef8b9ec53a0689067}{filter}}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a0b5bea959a2ed25414d1649d5b7970be}{tca}}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aead33625eee0b115f8a5ee28ef84f7fe}\label{classlarcfm_1_1_c_d_s_s_core_aead33625eee0b115f8a5ee28ef84f7fe}} 
+double {\bfseries dtca}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aef02888aee592cb481d3132ce06f1e6a}\label{classlarcfm_1_1_c_d_s_s_core_aef02888aee592cb481d3132ce06f1e6a}} 
+double {\bfseries t\+\_\+in}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a983f5fb53bd3256055b3860cbd7340ca}\label{classlarcfm_1_1_c_d_s_s_core_a983f5fb53bd3256055b3860cbd7340ca}} 
+double {\bfseries t\+\_\+out}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_a4ffd2d329334f3de387cdedd4549a681}{stca}}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core_ade28e88d16202524d35aea3cf674c380}{cd}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The Class \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}}. Conflict detection between an ownship and traffic aircraft using state information for generic detectors. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ad8ccaa31177c9260eb2ddbcc505aadab}\label{classlarcfm_1_1_c_d_s_s_core_ad8ccaa31177c9260eb2ddbcc505aadab}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!CDSSCore@{CDSSCore}}
+\index{CDSSCore@{CDSSCore}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{CDSSCore()}{CDSSCore()}}
+{\footnotesize\ttfamily larcfm\+::\+CDSSCore\+::\+CDSSCore (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} \&}]{cdss }\end{DoxyParamCaption})}
+
+Copy constructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a08e7844702329106b3877ad8b35b8726}\label{classlarcfm_1_1_c_d_s_s_core_a08e7844702329106b3877ad8b35b8726}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::conflict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Was there a detected conflict? \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aabe82b40517d786941b314ade82e511f}\label{classlarcfm_1_1_c_d_s_s_core_aabe82b40517d786941b314ade82e511f}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::conflict (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{T }\end{DoxyParamCaption}) const}
+
+Determines if two aircraft are in conflict in a given lookahead time interval (internal units). This function DOES NOT compute time interval of conflict.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em D} & The horizontal size of the protection zone \\
+\hline
+{\em H} & The vertical size of the protection zone \\
+\hline
+{\em T} & upper bound of lookahead time interval in internal units \mbox{[}s\mbox{]} (T \texorpdfstring{$>$}{>} 0)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the aircraft are in conflict in the interval \mbox{[}0,T\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a1fedc6f448dbace69fc3bd25a8c0a24d}\label{classlarcfm_1_1_c_d_s_s_core_a1fedc6f448dbace69fc3bd25a8c0a24d}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!conflictDuration@{conflictDuration}}
+\index{conflictDuration@{conflictDuration}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{conflictDuration()}{conflictDuration()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::conflict\+Duration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Duration of conflict in internal units.
+
+\begin{DoxyReturn}{Returns}
+the duration of conflict. Zero means that there is not conflict. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a7b52bede6c7c6b8ae678f739fccd82d2}\label{classlarcfm_1_1_c_d_s_s_core_a7b52bede6c7c6b8ae678f739fccd82d2}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!conflictDuration@{conflictDuration}}
+\index{conflictDuration@{conflictDuration}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{conflictDuration()}{conflictDuration()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::conflict\+Duration (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ut }\end{DoxyParamCaption}) const}
+
+Duration of conflict in specified units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ut} & the explicit units of time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the duration of conflict in explicit units \mbox{[}ut\mbox{]}. Zero means that there is no conflict. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_acb91d3c48e31f9c50183dcbfc2e47935}\label{classlarcfm_1_1_c_d_s_s_core_acb91d3c48e31f9c50183dcbfc2e47935}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detection@{detection}}
+\index{detection@{detection}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sop,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vop,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vip,  }\item[{double}]{T,  }\item[{Euclidean\+Projection}]{proj }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time within a given lookahed time and computes the time interval of conflict (internal units). If time\+In() == 0, after this function is called then aircraft is in loss of separation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em T} & the lookahead time in internal units \mbox{[}s\mbox{]} (T \texorpdfstring{$>$}{>} 0) \\
+\hline
+{\em proj} & projection function from lat/lon -\/\texorpdfstring{$>$}{>} euclidean coordinates\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time in the interval \mbox{[}0,T\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a6ebe295eaebb437b6389edec4c29ac92}\label{classlarcfm_1_1_c_d_s_s_core_a6ebe295eaebb437b6389edec4c29ac92}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detection@{detection}}
+\index{detection@{detection}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{T }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time within a given lookahed time and computes the time interval of conflict (internal units). If time\+In() == 0, after this function is called then aircraft is in loss of separation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em T} & the lookahead time in internal units \mbox{[}s\mbox{]} (T \texorpdfstring{$>$}{>} 0)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time in the interval \mbox{[}0,T\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a1f03fe1ad6431c3e57d3d47b7a67e4b6}\label{classlarcfm_1_1_c_d_s_s_core_a1f03fe1ad6431c3e57d3d47b7a67e4b6}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detection@{detection}}
+\index{detection@{detection}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{T,  }\item[{const std\+::string \&}]{ut }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time within a given lookahead time and computes the time interval of conflict (specified units). If time\+In() == 0, after this function is called then aircraft is in loss of separation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em T} & the lookahead time in specified units \mbox{[}ut\mbox{]} (T \texorpdfstring{$>$}{>} 0) \\
+\hline
+{\em ut} & specified units of time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time in the interval \mbox{[}0,T\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a48f985eb85256210ebea93ac392eccb4}\label{classlarcfm_1_1_c_d_s_s_core_a48f985eb85256210ebea93ac392eccb4}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detectionBetween@{detectionBetween}}
+\index{detectionBetween@{detectionBetween}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detectionBetween()}{detectionBetween()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection\+Between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time in a given lookahead time interval and computes the time interval of conflict (internal units).
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em B} & lower bound of lookahead time interval in internal units \mbox{[}s\mbox{]} (B \texorpdfstring{$>$}{>}= 0) \\
+\hline
+{\em T} & upper bound of lookahead time interval in internal units \mbox{[}s\mbox{]} (T \texorpdfstring{$>$}{>} 0)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time in the interval \mbox{[}B,T\mbox{]}. NOTE\+: The time\+In and time\+Out values are NOT truncated by the B and T values. NOTE\+: the time\+Out value is truncated by Time\+Horizon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_accbdecbfaee2c390bd4968f5e741708d}\label{classlarcfm_1_1_c_d_s_s_core_accbdecbfaee2c390bd4968f5e741708d}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detectionBetween@{detectionBetween}}
+\index{detectionBetween@{detectionBetween}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detectionBetween()}{detectionBetween()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection\+Between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T,  }\item[{const std\+::string \&}]{ut }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time in a given lookahead time interval and computes the time interval of conflict (specified units).
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder \\
+\hline
+{\em B} & lower bound of lookahead time interval in specified units \mbox{[}ut\mbox{]} (B \texorpdfstring{$>$}{>}= 0) \\
+\hline
+{\em T} & upper bound of lookahead time interval in specified units \mbox{[}ut\mbox{]} (T \texorpdfstring{$>$}{>} 0) \\
+\hline
+{\em ut} & specified units of time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time in the interval \mbox{[}B,T\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_afc06ec5cfbde5607dc7ec2c82a5ffa1d}\label{classlarcfm_1_1_c_d_s_s_core_afc06ec5cfbde5607dc7ec2c82a5ffa1d}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detectionBetween@{detectionBetween}}
+\index{detectionBetween@{detectionBetween}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detectionBetween()}{detectionBetween()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection\+Between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T,  }\item[{double}]{time\+Horizon }\end{DoxyParamCaption})}
+
+Time horizon. Time\+Horizon \texorpdfstring{$<$}{<} 0 means an infinite time horizon. This parameter affects time\+Out()! Note\texorpdfstring{$>$}{>} This is NOT the lookahead time! The lookahead time is provided as a method parameter. Instead, this is intended to be a hard limit on the duration that state information is valid, for example if there is a TCP in the future. Effectively, a non-\/negative Time\+Horizon will cut short detection at that point, even if the lookahead time is longer. \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_af3f9a320e09a505fdcae7ad5d1d9d1c5}\label{classlarcfm_1_1_c_d_s_s_core_af3f9a320e09a505fdcae7ad5d1d9d1c5}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!detectionEver@{detectionEver}}
+\index{detectionEver@{detectionEver}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{detectionEver()}{detectionEver()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::detection\+Ever (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi }\end{DoxyParamCaption})}
+
+Detects a conflict that lasts more than filter time within time horizon and computes the time interval of conflict.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & the velocity of the ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & the velocity of the intruder\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if there is a conflict that last more than the filter time and is in the interval \mbox{[}0,infinity\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_af0de2be5dccfbf9b6d0627af50b113f8}\label{classlarcfm_1_1_c_d_s_s_core_af0de2be5dccfbf9b6d0627af50b113f8}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getCoreDetectionPtr@{getCoreDetectionPtr}}
+\index{getCoreDetectionPtr@{getCoreDetectionPtr}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getCoreDetectionPtr()}{getCoreDetectionPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+CDSSCore\+::get\+Core\+Detection\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This returns a pointer to this object\textquotesingle{}s core \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object. Do not delete it! 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_ae410c5193ee879510616c241f969df71}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a2111e915b94b181f911e12c341c36f9b}\label{classlarcfm_1_1_c_d_s_s_core_a2111e915b94b181f911e12c341c36f9b}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getCoreDetectionRef@{getCoreDetectionRef}}
+\index{getCoreDetectionRef@{getCoreDetectionRef}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getCoreDetectionRef()}{getCoreDetectionRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \& larcfm\+::\+CDSSCore\+::get\+Core\+Detection\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This returns a reference to this object\textquotesingle{}s core \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_a13923af713661cef9c63a09a30e538c3}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ab5b654ddc04d69bc999525f17652ed93}\label{classlarcfm_1_1_c_d_s_s_core_ab5b654ddc04d69bc999525f17652ed93}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getFilterTime@{getFilterTime}}
+\index{getFilterTime@{getFilterTime}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getFilterTime()}{getFilterTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::get\+Filter\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the conflict detection filter time.
+
+\begin{DoxyReturn}{Returns}
+the conflict detection filter time seconds 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a7302ca60db8a2cf5d12fea4c6daf21d0}\label{classlarcfm_1_1_c_d_s_s_core_a7302ca60db8a2cf5d12fea4c6daf21d0}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getTimeIn@{getTimeIn}}
+\index{getTimeIn@{getTimeIn}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getTimeIn()}{getTimeIn()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::get\+Time\+In (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to loss of separation. Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a669f83ab1b618e1de96502b280171ba4}\label{classlarcfm_1_1_c_d_s_s_core_a669f83ab1b618e1de96502b280171ba4}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getTimeIn@{getTimeIn}}
+\index{getTimeIn@{getTimeIn}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getTimeIn()}{getTimeIn()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::get\+Time\+In (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ut }\end{DoxyParamCaption}) const}
+
+Time to loss of separation in explicit units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ut} & the explicit units of time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the time to loss of separation in explicit units \mbox{[}ut\mbox{]}. If time is negative then there is no conflict. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a1d015f151155582331908ffa9c7299ad}\label{classlarcfm_1_1_c_d_s_s_core_a1d015f151155582331908ffa9c7299ad}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::get\+Time\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out of loss of separation. Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ac219229d1db14c10d2821b415cc0890a}\label{classlarcfm_1_1_c_d_s_s_core_ac219229d1db14c10d2821b415cc0890a}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::get\+Time\+Out (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ut }\end{DoxyParamCaption}) const}
+
+Time to recovery of loss of separation in explicit units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ut} & the explicit units of time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the time to recovery of loss of separation in explicit units \mbox{[}ut\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a3feb2959c1186b41acfba2960408619e}\label{classlarcfm_1_1_c_d_s_s_core_a3feb2959c1186b41acfba2960408619e}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!setCoreDetectionPtr@{setCoreDetectionPtr}}
+\index{setCoreDetectionPtr@{setCoreDetectionPtr}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{setCoreDetectionPtr()}{setCoreDetectionPtr()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSSCore\+::set\+Core\+Detection\+Ptr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+The makes an internal copy of c. You are responsible for deleting the original c after this call. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_ae7e17839a976d5acb5bf2d6d3303988c}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_af3157fec84cd3dd181a469ec6153d52a}\label{classlarcfm_1_1_c_d_s_s_core_af3157fec84cd3dd181a469ec6153d52a}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!setCoreDetectionRef@{setCoreDetectionRef}}
+\index{setCoreDetectionRef@{setCoreDetectionRef}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{setCoreDetectionRef()}{setCoreDetectionRef()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSSCore\+::set\+Core\+Detection\+Ref (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This makes an internal copy of c. You are responsible for cleaning up the original c after this call -- local or temporary variables are fine to use. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_af95d11212f07e638867ee8280271078c}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a2ba6370739a1747f3282c79be16aa9db}\label{classlarcfm_1_1_c_d_s_s_core_a2ba6370739a1747f3282c79be16aa9db}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!setFilterTime@{setFilterTime}}
+\index{setFilterTime@{setFilterTime}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{setFilterTime()}{setFilterTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSSCore\+::set\+Filter\+Time (\begin{DoxyParamCaption}\item[{double}]{cdfilter }\end{DoxyParamCaption})}
+
+Sets the conflict detection filter time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cdfilter} & the conflict detection filter time in seconds. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ab4612bdb0091da496b59e5926d0fba19}\label{classlarcfm_1_1_c_d_s_s_core_ab4612bdb0091da496b59e5926d0fba19}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!violation@{violation}}
+\index{violation@{violation}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{violation()}{violation()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSSCore\+::violation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi }\end{DoxyParamCaption}) const}
+
+Determines if two aircraft are in loss of separation. This function DOES NOT compute time interval of conflict.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & the position of the ownship \\
+\hline
+{\em vo} & velocity of ownship \\
+\hline
+{\em si} & the position of the intruder \\
+\hline
+{\em vi} & velocity of intruder\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the aircraft are in loss of separation. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_ade28e88d16202524d35aea3cf674c380}\label{classlarcfm_1_1_c_d_s_s_core_ade28e88d16202524d35aea3cf674c380}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!cd@{cd}}
+\index{cd@{cd}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{cd}{cd}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}$\ast$ larcfm\+::\+CDSSCore\+::cd\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_c_d3_d}{CD3D}} object \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_aa64b968e4f91091ef8b9ec53a0689067}\label{classlarcfm_1_1_c_d_s_s_core_aa64b968e4f91091ef8b9ec53a0689067}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!filter@{filter}}
+\index{filter@{filter}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{filter}{filter}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::filter\hspace{0.3cm}{\ttfamily [private]}}
+
+The conflict filter time \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a4ffd2d329334f3de387cdedd4549a681}\label{classlarcfm_1_1_c_d_s_s_core_a4ffd2d329334f3de387cdedd4549a681}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!stca@{stca}}
+\index{stca@{stca}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{stca}{stca}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+CDSSCore\+::stca\hspace{0.3cm}{\ttfamily [private]}}
+
+Aircraft relative position at time of closest approach. \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_s_core_a0b5bea959a2ed25414d1649d5b7970be}\label{classlarcfm_1_1_c_d_s_s_core_a0b5bea959a2ed25414d1649d5b7970be}} 
+\index{larcfm::CDSSCore@{larcfm::CDSSCore}!tca@{tca}}
+\index{tca@{tca}!larcfm::CDSSCore@{larcfm::CDSSCore}}
+\doxysubsubsection{\texorpdfstring{tca}{tca}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSSCore\+::tca\hspace{0.3cm}{\ttfamily [private]}}
+
+Time of (cylindrical) closest approach $\ast$. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CDSSCore.\+h\item 
+Modules/\+ACCo\+RD/src/CDSSCore.\+cpp\end{DoxyCompactItemize}

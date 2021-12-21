@@ -1,0 +1,77 @@
+\hypertarget{string__util_8h_source}{}\doxysection{string\+\_\+util.\+h}
+\label{string__util_8h_source}\index{Modules/ACCoRD/inc/string\_util.h@{Modules/ACCoRD/inc/string\_util.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * string\_util.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef STRING\_UTIL\_H}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define STRING\_UTIL\_H}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{comment}{/*}}
+\DoxyCodeLine{21 \textcolor{comment}{ * String manipulation \& parsing utility functions.}}
+\DoxyCodeLine{22 \textcolor{comment}{ * }}
+\DoxyCodeLine{23 \textcolor{comment}{ */}}
+\DoxyCodeLine{24  }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{29   std::vector<std::string> \mbox{\hyperlink{namespacelarcfm_abe9576c66f1f06c88ad1c6bc2e856e7a}{split}}(\textcolor{keyword}{const} std::string\& str,\textcolor{keyword}{const} std::string\& delimiters);}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   }
+\DoxyCodeLine{33   std::vector<std::string> \mbox{\hyperlink{namespacelarcfm_a742eedcfeca6c0e2e58cdf0c4b4f9832}{split\_empty}}(\textcolor{keyword}{const} std::string\& str,\textcolor{keyword}{const} std::string\& delimiters);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{36   std::vector<std::string> \mbox{\hyperlink{namespacelarcfm_af621d81905f4186e91412edda83edbdf}{split\_string\_empty}}(\textcolor{keyword}{const} std::string\& str,\textcolor{keyword}{const} std::string\& delimiter);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{39   std::vector<std::string> \mbox{\hyperlink{namespacelarcfm_a2c471c38009f43c9b727693d563da344}{split\_regex}}(\textcolor{keyword}{const} std::string\& str,\textcolor{keyword}{const} std::string\& delimiters);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{bool} matches(\textcolor{keyword}{const} std::string\& s, \textcolor{keyword}{const} std::string\& rgx\_str);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{46   std::string \mbox{\hyperlink{namespacelarcfm_ab807e0bc6cf654ff209591af87842455}{substring}}(\textcolor{keyword}{const} std::string\& s, \textcolor{keywordtype}{int} begin, \textcolor{keywordtype}{int} end);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{50   std::string \mbox{\hyperlink{namespacelarcfm_ab807e0bc6cf654ff209591af87842455}{substring}}(\textcolor{keyword}{const} std::string\& s, \textcolor{keywordtype}{int} begin);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a30c9cd4630e52c506c2aeab0a48fbda7}{trim}}(std::string\& s,\textcolor{keyword}{const} std::string\& drop = \textcolor{stringliteral}{"{} \(\backslash\)t\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{56   std::string \mbox{\hyperlink{namespacelarcfm_ab33b804185635615a00843f61861aa62}{trimCopy}}(\textcolor{keyword}{const} std::string\& s,\textcolor{keyword}{const} std::string\& drop = \textcolor{stringliteral}{"{} \(\backslash\)t\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{59   std::string \mbox{\hyperlink{namespacelarcfm_ac78ef11018896115742dbd9b13358461}{toLowerCase}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{62   std::string \mbox{\hyperlink{namespacelarcfm_ae7c35cecb1a6f4855de811b5f2fcdd76}{toUpperCase}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a70e71904b71bbd150854983eb667a733}{equals}}(\textcolor{keyword}{const} std::string\&, \textcolor{keyword}{const} std::string\&);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{68   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_aae46d1b87f640e8b887e5d064214b616}{equalsIgnoreCase}}(\textcolor{keyword}{const} std::string\&, \textcolor{keyword}{const} std::string\&);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a311680935652ce809bff3651b528d486}{replace}}(std::string\& s, \textcolor{keywordtype}{char} c1, \textcolor{keywordtype}{char} c2);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74   std::string \mbox{\hyperlink{namespacelarcfm_a311680935652ce809bff3651b528d486}{replace}}(\textcolor{keyword}{const} std::string\& s, \textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{77   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a86bafa196c7a2436e5e46e02abecabc6}{contains}}(\textcolor{keyword}{const} std::vector<std::string>\& v, \textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{80   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a86bafa196c7a2436e5e46e02abecabc6}{contains}}(\textcolor{keyword}{const} std::string\& str, \textcolor{keyword}{const} std::string\& sub);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{83   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a875611e5f20f6599c55b0b9f673dfd3b}{startsWith}}(\textcolor{keyword}{const} std::string\& str, \textcolor{keyword}{const} std::string\& prefix);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{86   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ab322fd174d7c3f5a0c8bddb8c6fda716}{endsWith}}(\textcolor{keyword}{const} std::string\& str, \textcolor{keyword}{const} std::string\& suffix);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{89   \textcolor{keywordtype}{int} \mbox{\hyperlink{namespacelarcfm_af1b151cb6efeb5ffdaba8d88243cb0ad}{parseInt}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// STRING\_UTIL\_H}}
+
+\end{DoxyCode}

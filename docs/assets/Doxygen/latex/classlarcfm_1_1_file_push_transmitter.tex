@@ -1,0 +1,140 @@
+\hypertarget{classlarcfm_1_1_file_push_transmitter}{}\doxysection{larcfm\+::File\+Push\+Transmitter Class Reference}
+\label{classlarcfm_1_1_file_push_transmitter}\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+Inheritance diagram for larcfm\+::File\+Push\+Transmitter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_file_push_transmitter}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_abb5aa3fb231e06ff4e5abc94673212ce}{publish}} (const std\+::string \&address, const std\+::string \&keyword)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a9ed3c39ea104b2d6a337be3ab4430ae5}{unpublish}} (const std\+::string \&keyword)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a2d68216af5476de20d17b7f1c88c199c}{update}} (const std\+::string \&keyword, const std\+::string \&data)
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_ab45d0c79bfdf2f55ac501e93db7d770f}{has\+Subscribers}} (const std\+::string \&keyword) const
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a218d79191c6c8b05ad80e5cc67b54957}{shutdown}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a1f76def311615eb48d9d40a0861f4606}\label{classlarcfm_1_1_file_push_transmitter_a1f76def311615eb48d9d40a0861f4606}} 
+static bool {\bfseries exists} (const std\+::string \&name)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a14f23b45269a0d1ca5a57ce1f2c3cbbc}\label{classlarcfm_1_1_file_push_transmitter_a14f23b45269a0d1ca5a57ce1f2c3cbbc}} 
+static bool {\bfseries create\+New\+File} (const std\+::string \&name)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_ace444af89e41cc3253439c44fb03a2a7}\label{classlarcfm_1_1_file_push_transmitter_ace444af89e41cc3253439c44fb03a2a7}} 
+static bool {\bfseries delete\+File} (const std\+::string \&name)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_ab47674a2f9be442f60b5f3c7e786279b}\label{classlarcfm_1_1_file_push_transmitter_ab47674a2f9be442f60b5f3c7e786279b}} 
+std\+::string {\bfseries filename}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_aa508de45ceac1c07753bdcdafbfc054b}\label{classlarcfm_1_1_file_push_transmitter_aa508de45ceac1c07753bdcdafbfc054b}} 
+std\+::string {\bfseries keyword}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a0a165556289a8d9a11bdc361e798bfbb}\label{classlarcfm_1_1_file_push_transmitter_a0a165556289a8d9a11bdc361e798bfbb}} 
+std\+::string {\bfseries outfile}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_ae7f755c588708ce56c32bff958acbf84}\label{classlarcfm_1_1_file_push_transmitter_ae7f755c588708ce56c32bff958acbf84}} 
+std\+::string {\bfseries lockfile}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a21c2ad8d97cfc51153cf4b0b92b4feda}\label{classlarcfm_1_1_file_push_transmitter_a21c2ad8d97cfc51153cf4b0b92b4feda}} 
+bool {\bfseries running}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_ab45d0c79bfdf2f55ac501e93db7d770f}\label{classlarcfm_1_1_file_push_transmitter_ab45d0c79bfdf2f55ac501e93db7d770f}} 
+\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}!hasSubscribers@{hasSubscribers}}
+\index{hasSubscribers@{hasSubscribers}!larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+\doxysubsubsection{\texorpdfstring{hasSubscribers()}{hasSubscribers()}}
+{\footnotesize\ttfamily bool larcfm\+::\+File\+Push\+Transmitter\+::has\+Subscribers (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Returns true if there is at least one active subscriber associated with this keyword 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_transmitter_a6395f88a5121aaea8566d304f11f9599}{larcfm\+::\+Transmitter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_abb5aa3fb231e06ff4e5abc94673212ce}\label{classlarcfm_1_1_file_push_transmitter_abb5aa3fb231e06ff4e5abc94673212ce}} 
+\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}!publish@{publish}}
+\index{publish@{publish}!larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+\doxysubsubsection{\texorpdfstring{publish()}{publish()}}
+{\footnotesize\ttfamily void larcfm\+::\+File\+Push\+Transmitter\+::publish (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{address,  }\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Publisher announces it has data of type keyword. 
+\begin{DoxyParams}{Parameters}
+{\em address} & string representing the address to be listened to for subscribers (e.\+g. port) \\
+\hline
+{\em keyword} & Keywords should be cumulative for all data types presented \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_transmitter_a3381d64fec62c0816a9919a0a6ff4ec3}{larcfm\+::\+Transmitter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a218d79191c6c8b05ad80e5cc67b54957}\label{classlarcfm_1_1_file_push_transmitter_a218d79191c6c8b05ad80e5cc67b54957}} 
+\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily bool larcfm\+::\+File\+Push\+Transmitter\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Attempts to cleanly shuts down this transmitter, releasing any associated resources. This does not \char`\"{}unpublish\char`\"{} the transmitter. \begin{DoxyReturn}{Returns}
+true if shut down successfully. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_transmitter_a23fac8ae8b1fca2dc9ba6ca9e37ee3c7}{larcfm\+::\+Transmitter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a9ed3c39ea104b2d6a337be3ab4430ae5}\label{classlarcfm_1_1_file_push_transmitter_a9ed3c39ea104b2d6a337be3ab4430ae5}} 
+\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}!unpublish@{unpublish}}
+\index{unpublish@{unpublish}!larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+\doxysubsubsection{\texorpdfstring{unpublish()}{unpublish()}}
+{\footnotesize\ttfamily void larcfm\+::\+File\+Push\+Transmitter\+::unpublish (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Publisher removes a certain keyword from its publishing list. 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & Keywords to remove \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_transmitter_a386023811fceccbf579ba3dd15d3bce8}{larcfm\+::\+Transmitter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_file_push_transmitter_a2d68216af5476de20d17b7f1c88c199c}\label{classlarcfm_1_1_file_push_transmitter_a2d68216af5476de20d17b7f1c88c199c}} 
+\index{larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}!update@{update}}
+\index{update@{update}!larcfm::FilePushTransmitter@{larcfm::FilePushTransmitter}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void larcfm\+::\+File\+Push\+Transmitter\+::update (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword,  }\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Publisher updates data to be transmitted. Depending on the connection type, this may immediately push the data to all subscribers or cache it until requested. 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & which keyword this data is associated with \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_transmitter_a02b25f33347631d6d48f6dc41f069706}{larcfm\+::\+Transmitter}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/File\+Push\+Transmitter.\+h\item 
+Modules/\+ACCo\+RD/src/File\+Push\+Transmitter.\+cpp\end{DoxyCompactItemize}

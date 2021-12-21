@@ -1,0 +1,162 @@
+\hypertarget{_separated_input_8h_source}{}\doxysection{Separated\+Input.\+h}
+\label{_separated_input_8h_source}\index{Modules/ACCoRD/inc/SeparatedInput.h@{Modules/ACCoRD/inc/SeparatedInput.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * SeparatedInput}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef SEPARATEDINPUT\_H}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define SEPARATEDINPUT\_H}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ParameterReader.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{29    }
+\DoxyCodeLine{95   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_separated_input}{SeparatedInput}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{ParameterReader}}, \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{96   \textcolor{keyword}{public}:}
+\DoxyCodeLine{97     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} maxLineSize = 800;}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_separated_input_1_1_separated_input_exception}{SeparatedInputException}} : \textcolor{keyword}{public} std::logic\_error}
+\DoxyCodeLine{100     \{}
+\DoxyCodeLine{101     \textcolor{keyword}{public}:}
+\DoxyCodeLine{102       \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_separated_input_1_1_separated_input_exception}{SeparatedInputException}} (\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{103     \};}
+\DoxyCodeLine{104     }
+\DoxyCodeLine{106     \mbox{\hyperlink{classlarcfm_1_1_separated_input_a0cc26320f680249ef29d2726c3479090}{SeparatedInput}}();}
+\DoxyCodeLine{107     }
+\DoxyCodeLine{109     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a0cc26320f680249ef29d2726c3479090}{SeparatedInput}}(std::istream *fs);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{112     \mbox{\hyperlink{classlarcfm_1_1_separated_input_a0cc26320f680249ef29d2726c3479090}{SeparatedInput}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_separated_input}{SeparatedInput}}\& x);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{115     \mbox{\hyperlink{classlarcfm_1_1_separated_input}{SeparatedInput}}\& \mbox{\hyperlink{classlarcfm_1_1_separated_input_a444fb8a5afcdca3d52d410c498c3f0f8}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_separated_input}{SeparatedInput}}\& x);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{124     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a0b44757bf64faa3a507039757e246b14}{setColumnDelimiters}}(\textcolor{keyword}{const} std::string\& delim);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{130     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_a3857c723c0f5b26d5dab363e1afa829c}{getColumnDelimiters}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \textcolor{keywordtype}{void} setFixedColumn(\textcolor{keyword}{const} std::string\& widths, \textcolor{keyword}{const} std::string\& nameList, \textcolor{keyword}{const} std::string\& unitList);}
+\DoxyCodeLine{133       }
+\DoxyCodeLine{139     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_aaab6d1849541c6cd41e93504ddd88320}{getHeading}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{140  }
+\DoxyCodeLine{144     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_input_aa620c9797b002217a400e54f2e5586e2}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{155     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a5090413e75eac3221da0da2aec5797b8}{findHeading}}(\textcolor{keyword}{const} std::string\& heading) \textcolor{keyword}{const};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{163     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_ace1e596570257767b18cae08340d301d}{getUnit}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{169     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_aef0b770601a5185c3a574ed83767d463}{unitFieldsDefined}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{174     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a73d4fc5e14a9d2d453c87d69a11165ef}{setCaseSensitive}}(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{180     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a8e196220d0de29f2fc67b9dcce8e1622}{getCaseSensitive}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182 }
+\DoxyCodeLine{204     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a5b486c7d5c66bde5a035f8a84ff39a0c}{setQuoteCharacter}}(\textcolor{keywordtype}{char} q);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{214     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_input_aca1fb01b481b322c70a0b239f1679111}{setCsv}}();}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a5b486c7d5c66bde5a035f8a84ff39a0c}{setQuoteCharacter}}(\textcolor{keywordtype}{char} q, \textcolor{keyword}{const} std::vector<char>\& delims, \textcolor{keyword}{const} std::string\& sub);}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{222     \textcolor{keywordtype}{char} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a2f3e2991886252519812d2c21f0a9561}{getQuoteCharacter}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& getParametersRef();}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{234     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a7387cc718226b69ce27b26893f9da028}{columnHasValue}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{235   }
+\DoxyCodeLine{241     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_a2dcd162017b6e78651e72843729f3d04}{getColumnString}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{242     }
+\DoxyCodeLine{248     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a102afb1a7daa22822511eeadbdf6969e}{getColumn}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{258     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a102afb1a7daa22822511eeadbdf6969e}{getColumn}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& default\_unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 }
+\DoxyCodeLine{268     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a102afb1a7daa22822511eeadbdf6969e}{getColumn}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} defaultValue, \textcolor{keywordtype}{bool} verbose) \textcolor{keyword}{const};}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{275     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_ad8e3ae30dec14e63bf4385f764f33990}{readLine}}();    }
+\DoxyCodeLine{276     }
+\DoxyCodeLine{280     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_input_a3d864187f9812b46841439ea9fa1af84}{lineNumber}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{285     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_a21fb1b04e1da8692322f7b52be9f4831}{getLine}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{292     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_a24951f57dc2fcbffce61beecbdfc4b79}{getPreambleImage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{295     }
+\DoxyCodeLine{296     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_aed639f6ef43672ad92f904c2ee1e23b8}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{297       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}();}
+\DoxyCodeLine{298     \}}
+\DoxyCodeLine{299     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_input_aee7c78cd2fb96288785c8c81b93e53a7}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{300       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}();}
+\DoxyCodeLine{301     \}}
+\DoxyCodeLine{302     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_a601082bcff5ac0c196e526189737417b}{getMessage}}() \{}
+\DoxyCodeLine{303       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}();}
+\DoxyCodeLine{304     \}}
+\DoxyCodeLine{305     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_input_afb2caa955c14a4e7d58ac996f02cfcdd}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{306       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}();}
+\DoxyCodeLine{307     \}    }
+\DoxyCodeLine{308     }
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310   \textcolor{keyword}{private}:}
+\DoxyCodeLine{311     std::istream* reader;}
+\DoxyCodeLine{312     }
+\DoxyCodeLine{313     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{314     \textcolor{keywordtype}{bool} header;         \textcolor{comment}{// header line read in}}
+\DoxyCodeLine{315     std::vector<std::string> header\_str;    \textcolor{comment}{// header line raw string}}
+\DoxyCodeLine{316     \textcolor{keywordtype}{bool} bunits;          \textcolor{comment}{// units line read in}}
+\DoxyCodeLine{317     std::vector<std::string> units\_str;     \textcolor{comment}{// Units type}}
+\DoxyCodeLine{318     std::vector<double> units\_factor;  \textcolor{comment}{// Units conversion value}}
+\DoxyCodeLine{319     std::vector<std::string> line\_str;      \textcolor{comment}{// raw line}}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321     \textcolor{keywordtype}{bool} fixed\_width;    \textcolor{comment}{// Instead of using a delimiter, use fixed width columns}}
+\DoxyCodeLine{322     std::vector<int> width\_int;        \textcolor{comment}{// The width of columns}}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324     \textcolor{keywordtype}{char} quoteCharacter;    \textcolor{comment}{// If a non-\/empty value, use that character to delimit complex string tokens}}
+\DoxyCodeLine{325     \textcolor{keywordtype}{bool} quoteCharDefined;  \textcolor{comment}{// because we don't have null}}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327     \textcolor{keywordtype}{int} linenum;}
+\DoxyCodeLine{328     }
+\DoxyCodeLine{329     \textcolor{keywordtype}{bool} caseSensitive;}
+\DoxyCodeLine{330     }
+\DoxyCodeLine{331     std::string patternStr;}
+\DoxyCodeLine{332     }
+\DoxyCodeLine{333     std::string preambleImage;}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 \textcolor{comment}{//    typedef std::map<std::string, Quad<std::string,double,std::string,bool> > paramtype;}}
+\DoxyCodeLine{336 \textcolor{comment}{//    paramtype parameters;}}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} parameters;}
+\DoxyCodeLine{339     }
+\DoxyCodeLine{340     \textcolor{keywordtype}{double} getUnitFactor(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{341     \textcolor{keywordtype}{bool} process\_units(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{342     \textcolor{keywordtype}{bool} process\_preamble(std::string str);}
+\DoxyCodeLine{343     \textcolor{keywordtype}{void} process\_line(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{344     }
+\DoxyCodeLine{345     std::vector<std::string> processQuotes(\textcolor{keyword}{const} std::string\& str) \textcolor{keyword}{const}; }
+\DoxyCodeLine{346     std::string readFullLine(std::istream* reader);  }
+\DoxyCodeLine{347   \};}
+\DoxyCodeLine{348 \}}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// SEPARATEDINPUT\_H}}
+
+\end{DoxyCode}

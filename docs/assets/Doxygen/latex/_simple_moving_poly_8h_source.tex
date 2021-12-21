@@ -1,0 +1,87 @@
+\hypertarget{_simple_moving_poly_8h_source}{}\doxysection{Simple\+Moving\+Poly.\+h}
+\label{_simple_moving_poly_8h_source}\index{Modules/ACCoRD/inc/SimpleMovingPoly.h@{Modules/ACCoRD/inc/SimpleMovingPoly.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef SIMPLEMOVINGPOLY\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define SIMPLEMOVINGPOLY\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}MovingPolygon3D.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}SimplePoly.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}} \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} poly;}
+\DoxyCodeLine{27     std::vector<Velocity> vlist;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{bool} morphingPoly;}
+\DoxyCodeLine{29   \textcolor{keyword}{public}:}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& start, \textcolor{keyword}{const} std::vector<Velocity>\& vs);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& start, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}();}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{52     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a76b0bff884855404cbf4898792cc1bee}{SimpleMovingPoly}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& units);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{59     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& p);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}} copy() \textcolor{keyword}{const};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     \textcolor{keywordtype}{bool} addVertex(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{keywordtype}{void} removeVertex(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} setTop(\textcolor{keywordtype}{double} top);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \textcolor{keywordtype}{void} setBottom(\textcolor{keywordtype}{double} bot);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{78     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a34f6e64c78fd926dbd10ac851edeef50}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& p3, \textcolor{keyword}{const} EuclideanProjection\& proj);}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{86     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a34f6e64c78fd926dbd10ac851edeef50}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& p3);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{keywordtype}{bool} isLatLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{96     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a70c16074faeee3f810b165638682041a}{position}}(\textcolor{keywordtype}{double} dt) \textcolor{keyword}{const};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{102     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a3b02c58e4b3b95fec051674e05c70266}{averageVelocity}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}} linear(\textcolor{keywordtype}{double} dt) \textcolor{keyword}{const};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{112     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a48fa02c5cc178cfa5bacecf76ce46a0f}{getMovingPolygon}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} EuclideanProjection\& proj) ;}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a48fa02c5cc178cfa5bacecf76ce46a0f}{getMovingPolygon}}(\textcolor{keyword}{const} EuclideanProjection\& proj) ;}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{125     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a98a4bb5ae7c6c7b8427b326747d368fd}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keywordtype}{double} dt) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{comment}{//  std::vector<std::string> toStringList(int vertex, bool trkgsvs, int precision) const;}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129     std::string \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a4780a810dc695447ddf7be993eb48e4d}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     std::vector<std::string> toStringList(\textcolor{keywordtype}{int} vertex, \textcolor{keywordtype}{bool} trkgsvs, \textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \}; \textcolor{comment}{//class}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \}\textcolor{comment}{// namespace}}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{138 }
+
+\end{DoxyCode}

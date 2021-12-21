@@ -1,0 +1,391 @@
+\hypertarget{classlarcfm_1_1_constants}{}\doxysection{larcfm\+::Constants Class Reference}
+\label{classlarcfm_1_1_constants}\index{larcfm::Constants@{larcfm::Constants}}
+
+
+{\ttfamily \#include $<$Constants.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_constants_af7b7a8a4db83831576ceceef02afe178}{set\+\_\+time\+\_\+accuracy}} (double acc)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_constants_aa0b504c9e1bcbccf008e6e004b536eac}{set\+\_\+horizontal\+\_\+accuracy}} (double acc)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_constants_aa69782ebdc1797091d3e5f260bc7b9fb}{set\+\_\+vertical\+\_\+accuracy}} (double acc)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_constants_a97e1faa7fa34281b1b64fc0383a44143}{get\+\_\+time\+\_\+accuracy}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_constants_a5ba10c39c6697ef252fcbe08c732a365}{get\+\_\+horizontal\+\_\+accuracy}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_constants_a9b97622e2604d42b1e224226fb21d3e1}{get\+\_\+vertical\+\_\+accuracy}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_constants_ae64a7c194e2e97e39ddd6cabd9315e96}{get\+\_\+latlon\+\_\+accuracy}} ()
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_constants_a65514c73d01ed950d1da830ece8d935c}{get\+\_\+output\+\_\+precision}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_constants_a2a4ffdca889f08bbb372a7633efdbcda}{set\+\_\+output\+\_\+precision}} (int i)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_constants_a1b47188cada5f7c4c490a28e947c9831}{set\+\_\+trailing\+\_\+zeros}} (bool b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a41fe01ccf99f0aaa3a814e3dd30f3b8c}{get\+\_\+trailing\+\_\+zeros}} ()
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a40cac193c879ac2d0c0894e99ba1a366}{almost\+\_\+equals\+\_\+time}} (double t1, double t2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a5fa213e25b6a546351a7e43d854a9d4c}{almost\+\_\+equals\+\_\+xy}} (double x1, double y1, double x2, double y2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a01ad7ab4a783fd75a4d2d4fc1bbe4859}{almost\+\_\+equals\+\_\+distance}} (double d)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a3db7d89c495e58a27d5625b86944496f}{almost\+\_\+equals\+\_\+radian}} (double d1, double d2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a3113197737ac32708bcb55d0230de258}{almost\+\_\+equals\+\_\+radian}} (double d)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_constants_a855de8b55229745ba4f66a7269b2a2ce}{almost\+\_\+equals\+\_\+alt}} (double a1, double a2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a1385b1477f3dd709e755e97b8df76d8e}\label{classlarcfm_1_1_constants_a1385b1477f3dd709e755e97b8df76d8e}} 
+static const std\+::string {\bfseries separator\+Pattern} = \char`\"{},;\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_abfa2f242125557d1de695275aac69660}{ws\+Pattern\+Base}} = \char`\"{}\mbox{[}\textbackslash{}t ,;\mbox{]}+\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_aa478c26f1071bc43211685d17b780c06}{ws\+Pattern\+Base\+No\+Regex}} = \char`\"{} \textbackslash{}t,;\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_a3f5c8f4c59ca132eade902751d7dced1}{ws\+Pattern\+Parens}} = \char`\"{}() \textbackslash{}t,;\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_a8031640ddceac810fe8569d061c58af0}{ws\+Pattern\+Braces}} = \char`\"{}\mbox{[}$\,$\mbox{]} \textbackslash{}t,;\char`\"{}
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_a84e1daef211398e62ed4b48abef42b8b}{version}} = larcfm\+::\+Formal\+ATM\+\_\+version
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_aa335c8db2b130507a81df283257932d8}{build\+\_\+date}} = \+\_\+\+\_\+\+DATE\+\_\+\+\_\+
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_constants_acf51f9a606b0cc01c6572c8ae4ea8392}{build\+\_\+time}} = \+\_\+\+\_\+\+TIME\+\_\+\+\_\+
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_constants_ad691d7f8b56a8f2694f07c01a03e543e}{GPS\+\_\+\+LIMIT\+\_\+\+HORIZONTAL}} = larcfm\+::\+Formal\+ATM\+\_\+\+GPS\+\_\+\+LIMIT\+\_\+\+HORIZONTAL
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_constants_a004d5992dc1a4665c4060688a841b1a3}{GPS\+\_\+\+LIMIT\+\_\+\+VERTICAL}} = larcfm\+::\+Formal\+ATM\+\_\+\+GPS\+\_\+\+LIMIT\+\_\+\+VERTICAL
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_constants_a18d31988462d34040797aca6f84ca8da}{TIME\+\_\+\+LIMIT\+\_\+\+EPSILON}} = larcfm\+::\+Formal\+ATM\+\_\+\+TIME\+\_\+\+LIMIT\+\_\+\+EPSILON
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a8b72a753528a790fa375549252b9172f}\label{classlarcfm_1_1_constants_a8b72a753528a790fa375549252b9172f}} 
+static const double {\bfseries NO\+\_\+\+TIME\+\_\+\+LIMIT\+\_\+\+EPSILON} = Formal\+ATM\+\_\+\+NO\+\_\+\+TIME\+\_\+\+LIMIT\+\_\+\+EPSILON
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a69bb43cd1afb508a99b75642ba2d70cb}\label{classlarcfm_1_1_constants_a69bb43cd1afb508a99b75642ba2d70cb}} 
+static const double {\bfseries NO\+\_\+\+TIME} = Formal\+ATM\+\_\+\+NO\+\_\+\+TIME
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_af0d4e3c7248f9f2fa17a87b8d9b926f1}\label{classlarcfm_1_1_constants_af0d4e3c7248f9f2fa17a87b8d9b926f1}} 
+static double {\bfseries HORIZONTAL\+\_\+\+ACCURACY} = 1E-\/7
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_af957ccedad144edb7c7e1915d9f72c6a}\label{classlarcfm_1_1_constants_af957ccedad144edb7c7e1915d9f72c6a}} 
+static double {\bfseries VERTICAL\+\_\+\+ACCURACY} = 1E-\/7
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_ae9f0de55729bb7c8dcb5f3efbb0b4648}\label{classlarcfm_1_1_constants_ae9f0de55729bb7c8dcb5f3efbb0b4648}} 
+static double {\bfseries HORIZONTAL\+\_\+\+ACCURACY\+\_\+\+RAD} = \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units\+::to}}(\char`\"{}NM\char`\"{}, Constants\+::\+HORIZONTAL\+\_\+\+ACCURACY) $\ast$ M\+\_\+\+PI / (180.\+0 $\ast$ 60.\+0)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a41fc116018b27b29db11b21ef9d9b6d7}\label{classlarcfm_1_1_constants_a41fc116018b27b29db11b21ef9d9b6d7}} 
+static double {\bfseries TIME\+\_\+\+ACCURACY} = 1E-\/7
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_afe26636443b9ea6d46b37bca7512208d}\label{classlarcfm_1_1_constants_afe26636443b9ea6d46b37bca7512208d}} 
+static int {\bfseries OUTPUT\+\_\+\+PRECISION} = 6
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_constants_aaaf7c62e4b92ea3c02710853d7c0811a}\label{classlarcfm_1_1_constants_aaaf7c62e4b92ea3c02710853d7c0811a}} 
+static bool {\bfseries TRAILING\+\_\+\+ZEROS} = true
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Key parameters for all of \mbox{\hyperlink{classlarcfm_1_1_util}{Util}}. Despite the name, not everything is a constant. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a855de8b55229745ba4f66a7269b2a2ce}\label{classlarcfm_1_1_constants_a855de8b55229745ba4f66a7269b2a2ce}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_alt@{almost\_equals\_alt}}
+\index{almost\_equals\_alt@{almost\_equals\_alt}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_alt()}{almost\_equals\_alt()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+alt (\begin{DoxyParamCaption}\item[{double}]{a1,  }\item[{double}]{a2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if these two altitudes are within the vertical accuracy of each other
+
+
+\begin{DoxyParams}{Parameters}
+{\em a1} & an altitude \\
+\hline
+{\em a2} & another altitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a01ad7ab4a783fd75a4d2d4fc1bbe4859}\label{classlarcfm_1_1_constants_a01ad7ab4a783fd75a4d2d4fc1bbe4859}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_distance@{almost\_equals\_distance}}
+\index{almost\_equals\_distance@{almost\_equals\_distance}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_distance()}{almost\_equals\_distance()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if this distance \mbox{[}m\mbox{]} is within the horizontal accuracy of zero
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a3113197737ac32708bcb55d0230de258}\label{classlarcfm_1_1_constants_a3113197737ac32708bcb55d0230de258}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_radian@{almost\_equals\_radian}}
+\index{almost\_equals\_radian@{almost\_equals\_radian}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_radian()}{almost\_equals\_radian()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+radian (\begin{DoxyParamCaption}\item[{double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if this angle \mbox{[}rad\mbox{]} is within the horizontal accuracy of zero
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a3db7d89c495e58a27d5625b86944496f}\label{classlarcfm_1_1_constants_a3db7d89c495e58a27d5625b86944496f}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_radian@{almost\_equals\_radian}}
+\index{almost\_equals\_radian@{almost\_equals\_radian}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_radian()}{almost\_equals\_radian()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+radian (\begin{DoxyParamCaption}\item[{double}]{d1,  }\item[{double}]{d2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if these two angles \mbox{[}rad\mbox{]} are within the horizontal accuracy of each other
+
+
+\begin{DoxyParams}{Parameters}
+{\em d1} & a distance \\
+\hline
+{\em d2} & another distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a40cac193c879ac2d0c0894e99ba1a366}\label{classlarcfm_1_1_constants_a40cac193c879ac2d0c0894e99ba1a366}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_time@{almost\_equals\_time}}
+\index{almost\_equals\_time@{almost\_equals\_time}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_time()}{almost\_equals\_time()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+time (\begin{DoxyParamCaption}\item[{double}]{t1,  }\item[{double}]{t2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if these two times are within the time accuracy of each other
+
+
+\begin{DoxyParams}{Parameters}
+{\em t1} & a time \\
+\hline
+{\em t2} & another time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a5fa213e25b6a546351a7e43d854a9d4c}\label{classlarcfm_1_1_constants_a5fa213e25b6a546351a7e43d854a9d4c}} 
+\index{larcfm::Constants@{larcfm::Constants}!almost\_equals\_xy@{almost\_equals\_xy}}
+\index{almost\_equals\_xy@{almost\_equals\_xy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{almost\_equals\_xy()}{almost\_equals\_xy()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::almost\+\_\+equals\+\_\+xy (\begin{DoxyParamCaption}\item[{double}]{x1,  }\item[{double}]{y1,  }\item[{double}]{x2,  }\item[{double}]{y2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true, if these two positions \mbox{[}m\mbox{]} within the horizontal accuracy of each other
+
+
+\begin{DoxyParams}{Parameters}
+{\em x1} & x coordinate for first value \\
+\hline
+{\em y1} & y coordinate for first value \\
+\hline
+{\em x2} & x coordinate for second value \\
+\hline
+{\em y2} & y coordinate for second value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if xy values are almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a5ba10c39c6697ef252fcbe08c732a365}\label{classlarcfm_1_1_constants_a5ba10c39c6697ef252fcbe08c732a365}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_horizontal\_accuracy@{get\_horizontal\_accuracy}}
+\index{get\_horizontal\_accuracy@{get\_horizontal\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_horizontal\_accuracy()}{get\_horizontal\_accuracy()}}
+{\footnotesize\ttfamily double larcfm\+::\+Constants\+::get\+\_\+horizontal\+\_\+accuracy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the horizontal accuracy value (in meters) \begin{DoxyReturn}{Returns}
+horizontal accuracy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_ae64a7c194e2e97e39ddd6cabd9315e96}\label{classlarcfm_1_1_constants_ae64a7c194e2e97e39ddd6cabd9315e96}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_latlon\_accuracy@{get\_latlon\_accuracy}}
+\index{get\_latlon\_accuracy@{get\_latlon\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_latlon\_accuracy()}{get\_latlon\_accuracy()}}
+{\footnotesize\ttfamily double larcfm\+::\+Constants\+::get\+\_\+latlon\+\_\+accuracy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the horizontal accuracy value (in radians) \begin{DoxyReturn}{Returns}
+horizontal accuracy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a65514c73d01ed950d1da830ece8d935c}\label{classlarcfm_1_1_constants_a65514c73d01ed950d1da830ece8d935c}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_output\_precision@{get\_output\_precision}}
+\index{get\_output\_precision@{get\_output\_precision}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_output\_precision()}{get\_output\_precision()}}
+{\footnotesize\ttfamily int larcfm\+::\+Constants\+::get\+\_\+output\+\_\+precision (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+return default precision for output values \begin{DoxyReturn}{Returns}
+number of digits of precision 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a97e1faa7fa34281b1b64fc0383a44143}\label{classlarcfm_1_1_constants_a97e1faa7fa34281b1b64fc0383a44143}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_time\_accuracy@{get\_time\_accuracy}}
+\index{get\_time\_accuracy@{get\_time\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_time\_accuracy()}{get\_time\_accuracy()}}
+{\footnotesize\ttfamily double larcfm\+::\+Constants\+::get\+\_\+time\+\_\+accuracy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the time accuracy value (in seconds) \begin{DoxyReturn}{Returns}
+time accuracy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a41fe01ccf99f0aaa3a814e3dd30f3b8c}\label{classlarcfm_1_1_constants_a41fe01ccf99f0aaa3a814e3dd30f3b8c}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_trailing\_zeros@{get\_trailing\_zeros}}
+\index{get\_trailing\_zeros@{get\_trailing\_zeros}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_trailing\_zeros()}{get\_trailing\_zeros()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Constants\+::get\+\_\+trailing\+\_\+zeros (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+return true if trailing zeros are enabled \begin{DoxyReturn}{Returns}
+true, if trailing zeros
+\end{DoxyReturn}
+return true if trailing zeros are enabled \mbox{\Hypertarget{classlarcfm_1_1_constants_a9b97622e2604d42b1e224226fb21d3e1}\label{classlarcfm_1_1_constants_a9b97622e2604d42b1e224226fb21d3e1}} 
+\index{larcfm::Constants@{larcfm::Constants}!get\_vertical\_accuracy@{get\_vertical\_accuracy}}
+\index{get\_vertical\_accuracy@{get\_vertical\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{get\_vertical\_accuracy()}{get\_vertical\_accuracy()}}
+{\footnotesize\ttfamily double larcfm\+::\+Constants\+::get\+\_\+vertical\+\_\+accuracy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the vertical accuracy value (in meters) \begin{DoxyReturn}{Returns}
+vertical accuracy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_aa0b504c9e1bcbccf008e6e004b536eac}\label{classlarcfm_1_1_constants_aa0b504c9e1bcbccf008e6e004b536eac}} 
+\index{larcfm::Constants@{larcfm::Constants}!set\_horizontal\_accuracy@{set\_horizontal\_accuracy}}
+\index{set\_horizontal\_accuracy@{set\_horizontal\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{set\_horizontal\_accuracy()}{set\_horizontal\_accuracy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Constants\+::set\+\_\+horizontal\+\_\+accuracy (\begin{DoxyParamCaption}\item[{double}]{acc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set the horizontal accuracy value. This value means any two positions that are within this value of each other are considered the same \mbox{[}m\mbox{]}. 
+\begin{DoxyParams}{Parameters}
+{\em acc} & accuracy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a2a4ffdca889f08bbb372a7633efdbcda}\label{classlarcfm_1_1_constants_a2a4ffdca889f08bbb372a7633efdbcda}} 
+\index{larcfm::Constants@{larcfm::Constants}!set\_output\_precision@{set\_output\_precision}}
+\index{set\_output\_precision@{set\_output\_precision}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{set\_output\_precision()}{set\_output\_precision()}}
+{\footnotesize\ttfamily void larcfm\+::\+Constants\+::set\+\_\+output\+\_\+precision (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+set default precision for output values (0-\/16) 
+\begin{DoxyParams}{Parameters}
+{\em i} & number of digits of precision \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_af7b7a8a4db83831576ceceef02afe178}\label{classlarcfm_1_1_constants_af7b7a8a4db83831576ceceef02afe178}} 
+\index{larcfm::Constants@{larcfm::Constants}!set\_time\_accuracy@{set\_time\_accuracy}}
+\index{set\_time\_accuracy@{set\_time\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{set\_time\_accuracy()}{set\_time\_accuracy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Constants\+::set\+\_\+time\+\_\+accuracy (\begin{DoxyParamCaption}\item[{double}]{acc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set the time accuracy value. This value means any two times that are within this value of each other are considered the same \mbox{[}s\mbox{]}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em acc} & accuracy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_a1b47188cada5f7c4c490a28e947c9831}\label{classlarcfm_1_1_constants_a1b47188cada5f7c4c490a28e947c9831}} 
+\index{larcfm::Constants@{larcfm::Constants}!set\_trailing\_zeros@{set\_trailing\_zeros}}
+\index{set\_trailing\_zeros@{set\_trailing\_zeros}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{set\_trailing\_zeros()}{set\_trailing\_zeros()}}
+{\footnotesize\ttfamily void larcfm\+::\+Constants\+::set\+\_\+trailing\+\_\+zeros (\begin{DoxyParamCaption}\item[{bool}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+set default trailing zeros in format printing 
+\begin{DoxyParams}{Parameters}
+{\em b} & enable/disable trailing zeros \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_aa69782ebdc1797091d3e5f260bc7b9fb}\label{classlarcfm_1_1_constants_aa69782ebdc1797091d3e5f260bc7b9fb}} 
+\index{larcfm::Constants@{larcfm::Constants}!set\_vertical\_accuracy@{set\_vertical\_accuracy}}
+\index{set\_vertical\_accuracy@{set\_vertical\_accuracy}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{set\_vertical\_accuracy()}{set\_vertical\_accuracy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Constants\+::set\+\_\+vertical\+\_\+accuracy (\begin{DoxyParamCaption}\item[{double}]{acc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set the vertical accuracy value. This value means any two positions that are within this value of each other are considered the same \mbox{[}m\mbox{]}. 
+\begin{DoxyParams}{Parameters}
+{\em acc} & accuracy \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_constants_aa335c8db2b130507a81df283257932d8}\label{classlarcfm_1_1_constants_aa335c8db2b130507a81df283257932d8}} 
+\index{larcfm::Constants@{larcfm::Constants}!build\_date@{build\_date}}
+\index{build\_date@{build\_date}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{build\_date}{build\_date}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::build\+\_\+date = \+\_\+\+\_\+\+DATE\+\_\+\+\_\+\hspace{0.3cm}{\ttfamily [static]}}
+
+String indicating the build date. Note this only changes if \mbox{\hyperlink{classlarcfm_1_1_constants}{Constants}} is recompiled (e.\+g. during a full build). Partial compilations may not update this value. \mbox{\Hypertarget{classlarcfm_1_1_constants_acf51f9a606b0cc01c6572c8ae4ea8392}\label{classlarcfm_1_1_constants_acf51f9a606b0cc01c6572c8ae4ea8392}} 
+\index{larcfm::Constants@{larcfm::Constants}!build\_time@{build\_time}}
+\index{build\_time@{build\_time}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{build\_time}{build\_time}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::build\+\_\+time = \+\_\+\+\_\+\+TIME\+\_\+\+\_\+\hspace{0.3cm}{\ttfamily [static]}}
+
+String indicating the build time. Note this only changes if \mbox{\hyperlink{classlarcfm_1_1_constants}{Constants}} is recompiled (e.\+g. during a full build). Partial compilations may not update this value. \mbox{\Hypertarget{classlarcfm_1_1_constants_ad691d7f8b56a8f2694f07c01a03e543e}\label{classlarcfm_1_1_constants_ad691d7f8b56a8f2694f07c01a03e543e}} 
+\index{larcfm::Constants@{larcfm::Constants}!GPS\_LIMIT\_HORIZONTAL@{GPS\_LIMIT\_HORIZONTAL}}
+\index{GPS\_LIMIT\_HORIZONTAL@{GPS\_LIMIT\_HORIZONTAL}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{GPS\_LIMIT\_HORIZONTAL}{GPS\_LIMIT\_HORIZONTAL}}
+{\footnotesize\ttfamily const double larcfm\+::\+Constants\+::\+GPS\+\_\+\+LIMIT\+\_\+\+HORIZONTAL = larcfm\+::\+Formal\+ATM\+\_\+\+GPS\+\_\+\+LIMIT\+\_\+\+HORIZONTAL\hspace{0.3cm}{\ttfamily [static]}}
+
+WAAS specification requirements (25 ft) for horizontal accuracy, 95\% of the time. In practice, the actual accuracy is much better. \mbox{\Hypertarget{classlarcfm_1_1_constants_a004d5992dc1a4665c4060688a841b1a3}\label{classlarcfm_1_1_constants_a004d5992dc1a4665c4060688a841b1a3}} 
+\index{larcfm::Constants@{larcfm::Constants}!GPS\_LIMIT\_VERTICAL@{GPS\_LIMIT\_VERTICAL}}
+\index{GPS\_LIMIT\_VERTICAL@{GPS\_LIMIT\_VERTICAL}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{GPS\_LIMIT\_VERTICAL}{GPS\_LIMIT\_VERTICAL}}
+{\footnotesize\ttfamily const double larcfm\+::\+Constants\+::\+GPS\+\_\+\+LIMIT\+\_\+\+VERTICAL = larcfm\+::\+Formal\+ATM\+\_\+\+GPS\+\_\+\+LIMIT\+\_\+\+VERTICAL\hspace{0.3cm}{\ttfamily [static]}}
+
+WAAS specification requirements (25 ft) for vertical accuracy, 95\% of the time. \mbox{\Hypertarget{classlarcfm_1_1_constants_a18d31988462d34040797aca6f84ca8da}\label{classlarcfm_1_1_constants_a18d31988462d34040797aca6f84ca8da}} 
+\index{larcfm::Constants@{larcfm::Constants}!TIME\_LIMIT\_EPSILON@{TIME\_LIMIT\_EPSILON}}
+\index{TIME\_LIMIT\_EPSILON@{TIME\_LIMIT\_EPSILON}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{TIME\_LIMIT\_EPSILON}{TIME\_LIMIT\_EPSILON}}
+{\footnotesize\ttfamily const double larcfm\+::\+Constants\+::\+TIME\+\_\+\+LIMIT\+\_\+\+EPSILON = larcfm\+::\+Formal\+ATM\+\_\+\+TIME\+\_\+\+LIMIT\+\_\+\+EPSILON\hspace{0.3cm}{\ttfamily [static]}}
+
+Most GPS units update with a frequency of at least 1 HZ. ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_constants_a84e1daef211398e62ed4b48abef42b8b}\label{classlarcfm_1_1_constants_a84e1daef211398e62ed4b48abef42b8b}} 
+\index{larcfm::Constants@{larcfm::Constants}!version@{version}}
+\index{version@{version}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{version}{version}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::version = larcfm\+::\+Formal\+ATM\+\_\+version\hspace{0.3cm}{\ttfamily [static]}}
+
+String indicating the version \mbox{\Hypertarget{classlarcfm_1_1_constants_abfa2f242125557d1de695275aac69660}\label{classlarcfm_1_1_constants_abfa2f242125557d1de695275aac69660}} 
+\index{larcfm::Constants@{larcfm::Constants}!wsPatternBase@{wsPatternBase}}
+\index{wsPatternBase@{wsPatternBase}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{wsPatternBase}{wsPatternBase}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::ws\+Pattern\+Base = \char`\"{}\mbox{[}\textbackslash{}t ,;\mbox{]}+\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Default pattern string representing whitespace in input files. This does not include parentheses or braces. \mbox{\Hypertarget{classlarcfm_1_1_constants_aa478c26f1071bc43211685d17b780c06}\label{classlarcfm_1_1_constants_aa478c26f1071bc43211685d17b780c06}} 
+\index{larcfm::Constants@{larcfm::Constants}!wsPatternBaseNoRegex@{wsPatternBaseNoRegex}}
+\index{wsPatternBaseNoRegex@{wsPatternBaseNoRegex}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{wsPatternBaseNoRegex}{wsPatternBaseNoRegex}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::ws\+Pattern\+Base\+No\+Regex = \char`\"{} \textbackslash{}t,;\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Default pattern string representing whitespace in input files. This does not include parentheses or braces. \mbox{\Hypertarget{classlarcfm_1_1_constants_a8031640ddceac810fe8569d061c58af0}\label{classlarcfm_1_1_constants_a8031640ddceac810fe8569d061c58af0}} 
+\index{larcfm::Constants@{larcfm::Constants}!wsPatternBraces@{wsPatternBraces}}
+\index{wsPatternBraces@{wsPatternBraces}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{wsPatternBraces}{wsPatternBraces}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::ws\+Pattern\+Braces = \char`\"{}\mbox{[}$\,$\mbox{]} \textbackslash{}t,;\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Default pattern string representing whitespace in input files. This includes square braces. \mbox{\Hypertarget{classlarcfm_1_1_constants_a3f5c8f4c59ca132eade902751d7dced1}\label{classlarcfm_1_1_constants_a3f5c8f4c59ca132eade902751d7dced1}} 
+\index{larcfm::Constants@{larcfm::Constants}!wsPatternParens@{wsPatternParens}}
+\index{wsPatternParens@{wsPatternParens}!larcfm::Constants@{larcfm::Constants}}
+\doxysubsubsection{\texorpdfstring{wsPatternParens}{wsPatternParens}}
+{\footnotesize\ttfamily const std\+::string larcfm\+::\+Constants\+::ws\+Pattern\+Parens = \char`\"{}() \textbackslash{}t,;\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+Default pattern string representing whitespace in input files. This includes parentheses. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Constants.\+h\item 
+Modules/\+ACCo\+RD/src/Constants.\+cpp\end{DoxyCompactItemize}

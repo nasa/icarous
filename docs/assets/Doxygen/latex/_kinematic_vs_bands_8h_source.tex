@@ -1,0 +1,50 @@
+\hypertarget{_kinematic_vs_bands_8h_source}{}\doxysection{Kinematic\+Vs\+Bands.\+h}
+\label{_kinematic_vs_bands_8h_source}\index{Modules/ACCoRD/inc/KinematicVsBands.h@{Modules/ACCoRD/inc/KinematicVsBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICVSBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICVSBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}KinematicRealBands.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands}{KinematicVsBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{KinematicRealBands}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21   \textcolor{keywordtype}{double} vertical\_accel\_; \textcolor{comment}{// Climb/descend acceleration}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{public}:}
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands}{KinematicVsBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26   \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands}{KinematicVsBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands}{KinematicVsBands}}\& b);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keywordtype}{bool} instantaneous\_bands() \textcolor{keyword}{const};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keywordtype}{double} get\_vertical\_accel() \textcolor{keyword}{const};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keywordtype}{void} set\_vertical\_accel(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   std::pair<Vect3, Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

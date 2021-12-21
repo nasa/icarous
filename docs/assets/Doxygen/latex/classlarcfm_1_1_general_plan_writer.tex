@@ -1,0 +1,426 @@
+\hypertarget{classlarcfm_1_1_general_plan_writer}{}\doxysection{larcfm\+::General\+Plan\+Writer Class Reference}
+\label{classlarcfm_1_1_general_plan_writer}\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+
+
+{\ttfamily \#include $<$General\+Plan\+Writer.\+h$>$}
+
+Inheritance diagram for larcfm\+::General\+Plan\+Writer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_general_plan_writer}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a7d815cafb99b0f78ca90011b172d4e68}{General\+Plan\+Writer}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_adee263cdb9c80258d59d819bcd1538c8}{open}} (const std\+::string \&filename)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_abfc0fc71c8d1e7dbcc84a96300a902f4}\label{classlarcfm_1_1_general_plan_writer_abfc0fc71c8d1e7dbcc84a96300a902f4}} 
+void {\bfseries open} (std\+::ostream $\ast$writer)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a8d8fc52850bd2aa358a5666b3ae4d0ae}\label{classlarcfm_1_1_general_plan_writer_a8d8fc52850bd2aa358a5666b3ae4d0ae}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a8d7dd54ae88ddc94d022e4115d8cb910}\label{classlarcfm_1_1_general_plan_writer_a8d7dd54ae88ddc94d022e4115d8cb910}} 
+bool {\bfseries is\+Trk\+Gs\+Vs} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ab20c4f0f79af82d15e68b9d542fba618}\label{classlarcfm_1_1_general_plan_writer_ab20c4f0f79af82d15e68b9d542fba618}} 
+void {\bfseries set\+Trk\+Gs\+Vs} (bool trkgsvs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a26254113499487f9b92c710b9b4b1a19}\label{classlarcfm_1_1_general_plan_writer_a26254113499487f9b92c710b9b4b1a19}} 
+bool {\bfseries has\+Polygons} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a5d48a0e9a26661552cfb316e60550d7a}{set\+Polygons}} (bool p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a1bec9c56a13a185b0089f2cb047be2b6}\label{classlarcfm_1_1_general_plan_writer_a1bec9c56a13a185b0089f2cb047be2b6}} 
+int {\bfseries get\+Precision} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a293201e43ccb8938a26632d06e64b31a}\label{classlarcfm_1_1_general_plan_writer_a293201e43ccb8938a26632d06e64b31a}} 
+void {\bfseries set\+Precision} (int precision)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a67f4447612f628ca93349fe10a285cee}\label{classlarcfm_1_1_general_plan_writer_a67f4447612f628ca93349fe10a285cee}} 
+int {\bfseries get\+Lat\+Lon\+Extra\+Precision} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_add143ccb701ea35dd4a322f7eeaf9d07}\label{classlarcfm_1_1_general_plan_writer_add143ccb701ea35dd4a322f7eeaf9d07}} 
+void {\bfseries set\+Lat\+Lon\+Extra\+Precision} (int precision)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a42d0cf3fe719cda09102e151c6530971}{is\+Output\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_adcb6f78dfcb15ad5ed9d9659e1a80fad}{set\+Output\+Time}} (bool display\+\_\+time)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ac71a919d14cf6ebdd0362af20c9b5efe}{is\+Output\+Units}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a4eda4a6fb6e193ee43e2ca075544baf1}{set\+Output\+Units}} (bool display\+\_\+units)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_aaf691b872f6f4811fc4170a91a842d2a}{set\+Column\+Delimiter\+Tab}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ada12bdd7fe8a74b17c8afa7eab633929}{set\+Column\+Delimiter\+Comma}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a981c685107277e25ffbf175b2a13797d}{set\+Column\+Delimiter\+Space}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a35da4206626c9759debb2623ef650f46}{add\+Comment}} (const std\+::string \&comment)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a4dae5864b2f84c0169794db6d2982edb}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pr)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ac6a120d4621174aff7754d5a0327f793}{set\+Poly\+Path\+Mode}} (Poly\+Path\+::\+Path\+Mode m)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a0febecd8723013bcdc82282679a7bc25}{clear\+Poly\+Path\+Mode}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a9a83add0781d1a6535679f25144e7cca}{set\+Poly\+Path\+Parameters}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ \&list)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a9c92222474507eb28687f241a5148215}\label{classlarcfm_1_1_general_plan_writer_a9c92222474507eb28687f241a5148215}} 
+void {\bfseries set\+Containment\+Parameter} (const std\+::string \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aac30ae5e06d5ff79b99fa616b0d437f1}\label{classlarcfm_1_1_general_plan_writer_aac30ae5e06d5ff79b99fa616b0d437f1}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} \&gp, double activation\+\_\+time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ae8c31a0d36d5f1b29c2764a58567e5cf}\label{classlarcfm_1_1_general_plan_writer_ae8c31a0d36d5f1b29c2764a58567e5cf}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} \&gp)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aae050c18551c4c0cb212e6e42a3acf43}\label{classlarcfm_1_1_general_plan_writer_aae050c18551c4c0cb212e6e42a3acf43}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a7ff9f312b59bd614dde37d0608b88dad}\label{classlarcfm_1_1_general_plan_writer_a7ff9f312b59bd614dde37d0608b88dad}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&p, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_adb294b591685edfa0a32966a5e86abe9}\label{classlarcfm_1_1_general_plan_writer_adb294b591685edfa0a32966a5e86abe9}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a409efc557db915648ecc8d3c7a4fec2b}\label{classlarcfm_1_1_general_plan_writer_a409efc557db915648ecc8d3c7a4fec2b}} 
+void {\bfseries write\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&p)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a52c95f0f74388bfa447524fdd55a4fcd}{size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ae0eb5cb9b94819dc18098b62c4885b84}{lines}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a15943bd5a63fb5a0fe7127921ec4b9ab}\label{classlarcfm_1_1_general_plan_writer_a15943bd5a63fb5a0fe7127921ec4b9ab}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_afa7c2e3e612d7b44a338d1a9a8c09565}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a256857c68e6c5d2b5ad02a523ab7a319}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a454ea0f0acedeb4ecef6f8c0420bdae0}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a9ae9d247eeb96f01f7423515cb40f222}{get\+Message\+No\+Clear}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a589e60f26a873fbb1e0da6060b77b274}\label{classlarcfm_1_1_general_plan_writer_a589e60f26a873fbb1e0da6060b77b274}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ac004101c8812b35fc06de902dd48d9ea}\label{classlarcfm_1_1_general_plan_writer_ac004101c8812b35fc06de902dd48d9ea}} 
+static void {\bfseries write} (const std\+::string \&filename, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ plist, const std\+::vector$<$ double $>$ active\+Times)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ab0e9898b1ce4d55bb2114e8066b8e726}\label{classlarcfm_1_1_general_plan_writer_ab0e9898b1ce4d55bb2114e8066b8e726}} 
+static void {\bfseries write} (const std\+::string \&filename, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ plist)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aa483726f0948f83d17f0263d14df9c6e}\label{classlarcfm_1_1_general_plan_writer_aa483726f0948f83d17f0263d14df9c6e}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a9121755d472269aa2efe7d21a420e8a0}\label{classlarcfm_1_1_general_plan_writer_a9121755d472269aa2efe7d21a420e8a0}} 
+\mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} {\bfseries output}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aebd0b4756b99a6b8e478285a9afc0f0e}\label{classlarcfm_1_1_general_plan_writer_aebd0b4756b99a6b8e478285a9afc0f0e}} 
+bool {\bfseries latlon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a3085ec26335b47e4e07021763f1b19bb}\label{classlarcfm_1_1_general_plan_writer_a3085ec26335b47e4e07021763f1b19bb}} 
+bool {\bfseries trkgsvs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a8a47c9a315fed259f389e33f9004f287}\label{classlarcfm_1_1_general_plan_writer_a8a47c9a315fed259f389e33f9004f287}} 
+bool {\bfseries display\+\_\+time}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ace3444a9130b4f482a7bb457a14f7bbd}\label{classlarcfm_1_1_general_plan_writer_ace3444a9130b4f482a7bb457a14f7bbd}} 
+bool {\bfseries first\+\_\+line}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_abe7d98bc61dbd445f5bc8de83eb7f2bc}\label{classlarcfm_1_1_general_plan_writer_abe7d98bc61dbd445f5bc8de83eb7f2bc}} 
+bool {\bfseries display\+\_\+units}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a96cb8724febe7c2be9abd6a1f397ee9a}\label{classlarcfm_1_1_general_plan_writer_a96cb8724febe7c2be9abd6a1f397ee9a}} 
+bool {\bfseries polygons}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a1ebb187933aeb2f800da200bba91dc42}\label{classlarcfm_1_1_general_plan_writer_a1ebb187933aeb2f800da200bba91dc42}} 
+bool {\bfseries source}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aae1bb1df8818eb7f021cc91d55779a7e}\label{classlarcfm_1_1_general_plan_writer_aae1bb1df8818eb7f021cc91d55779a7e}} 
+bool {\bfseries time2}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_afcbbcaca34b6b11a5d8242834a0e01ff}\label{classlarcfm_1_1_general_plan_writer_afcbbcaca34b6b11a5d8242834a0e01ff}} 
+int {\bfseries precision}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_addb78f79e5d23ee30fd5b89d5eace45f}\label{classlarcfm_1_1_general_plan_writer_addb78f79e5d23ee30fd5b89d5eace45f}} 
+int {\bfseries lat\+Lon\+Extra\+Precision}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ac452c1c07456cd51b711b4dac4ffca50}\label{classlarcfm_1_1_general_plan_writer_ac452c1c07456cd51b711b4dac4ffca50}} 
+int {\bfseries lines\+\_\+i}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a71303d6c272a242e52820c605328432e}\label{classlarcfm_1_1_general_plan_writer_a71303d6c272a242e52820c605328432e}} 
+int {\bfseries num}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a70439322146fd6c7c35bc7b1be062986}\label{classlarcfm_1_1_general_plan_writer_a70439322146fd6c7c35bc7b1be062986}} 
+std\+::string {\bfseries fname}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a6e5bc5e66a283b3ffb22067403f4dc14}\label{classlarcfm_1_1_general_plan_writer_a6e5bc5e66a283b3ffb22067403f4dc14}} 
+Poly\+Path\+::\+Path\+Mode {\bfseries mode}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a978f7212a9d205334f944efc069a602c}\label{classlarcfm_1_1_general_plan_writer_a978f7212a9d205334f944efc069a602c}} 
+bool {\bfseries modedefined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a97c8fbcf211c73069bcb37176d0ed52b}\label{classlarcfm_1_1_general_plan_writer_a97c8fbcf211c73069bcb37176d0ed52b}} 
+std\+::ostream $\ast$ {\bfseries fw}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+This object writes a set of aircraft states, possibly over time, (and parameters) from a file The Aircraft states are stored in an Array\+List\texorpdfstring{$<$}{<}\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}}\texorpdfstring{$>$}{>}.
+
+State files consist of comma or space-\/separated values, with one point per line. Required columns include aircraft name, 3 position columns (either x\mbox{[}NM\mbox{]}/y\mbox{[}NM\mbox{]}/z\mbox{[}ft\mbox{]} or latitude\mbox{[}deg\mbox{]}/longitude\mbox{[}deg\mbox{]}/altitude\mbox{[}ft\mbox{]}) and 3 velocity columns (either vx\mbox{[}knot\mbox{]}/vy\mbox{[}knot\mbox{]}/vz\mbox{[}fpm\mbox{]} or track\mbox{[}deg\mbox{]}/gs\mbox{[}knot\mbox{]}/vs\mbox{[}fpm\mbox{]}).
+
+An optional column is time \mbox{[}s\mbox{]}. If it is included, a \char`\"{}history\char`\"{} will be build if an aircraft has more than one entry. If it is not included, only the last entry for an aircraft will be stored.
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above).
+
+If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark ("{}). The aircraft name is case sensitive, so US54A != Us54a != us54a.
+
+Any empty line or any line starting with a hash sign (\#) is ignored.
+
+Files may also include parameter definitions prior to other data. Parameter definitions are of the form \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} = \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}, one per line, where \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} is a case-\/insensitive alphanumeric word and \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} is either a numeral or string. The \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}. Note that parameters require a space on either side of the equals sign. Note that it is possible to also update the stored parameter values (or store additional ones) through API calls.
+
+Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type.
+
+If the optional parameter \char`\"{}filetype\char`\"{} is specified, its value must be \char`\"{}state\char`\"{} or \char`\"{}history\char`\"{} (no quotes) for this reader to accept the file without error. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a7d815cafb99b0f78ca90011b172d4e68}\label{classlarcfm_1_1_general_plan_writer_a7d815cafb99b0f78ca90011b172d4e68}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!GeneralPlanWriter@{GeneralPlanWriter}}
+\index{GeneralPlanWriter@{GeneralPlanWriter}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{GeneralPlanWriter()}{GeneralPlanWriter()}}
+{\footnotesize\ttfamily larcfm\+::\+General\+Plan\+Writer\+::\+General\+Plan\+Writer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+A new \mbox{\hyperlink{classlarcfm_1_1_general_state_writer}{General\+State\+Writer}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a35da4206626c9759debb2623ef650f46}\label{classlarcfm_1_1_general_plan_writer_a35da4206626c9759debb2623ef650f46}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!addComment@{addComment}}
+\index{addComment@{addComment}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{addComment()}{addComment()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::add\+Comment (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{comment }\end{DoxyParamCaption})}
+
+Adds a comment line to the file. 
+\begin{DoxyParams}{Parameters}
+{\em comment} & comment string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a0febecd8723013bcdc82282679a7bc25}\label{classlarcfm_1_1_general_plan_writer_a0febecd8723013bcdc82282679a7bc25}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!clearPolyPathMode@{clearPolyPathMode}}
+\index{clearPolyPathMode@{clearPolyPathMode}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{clearPolyPathMode()}{clearPolyPathMode()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::clear\+Poly\+Path\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear any set polygon Path\+Mode. The Path\+Mode will default to the first written item\textquotesingle{}s path mode if it is a \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} or MORPHING if it is not. Whatever the stored Path\+Mode, all polygons written will be converted to that type.
+
+Clear any set polygon Path\+Mode. The Path\+Mode will default to the first written item\textquotesingle{}s path mode if it is a \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} or MORPHING if it is not. Whatever the stored Path\+Mode, all polygons written will be converted to that type. 
+\begin{DoxyParams}{Parameters}
+{\em m} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a454ea0f0acedeb4ecef6f8c0420bdae0}\label{classlarcfm_1_1_general_plan_writer_a454ea0f0acedeb4ecef6f8c0420bdae0}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+General\+Plan\+Writer\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a9ae9d247eeb96f01f7423515cb40f222}\label{classlarcfm_1_1_general_plan_writer_a9ae9d247eeb96f01f7423515cb40f222}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+General\+Plan\+Writer\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_afa7c2e3e612d7b44a338d1a9a8c09565}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_afa7c2e3e612d7b44a338d1a9a8c09565}\label{classlarcfm_1_1_general_plan_writer_afa7c2e3e612d7b44a338d1a9a8c09565}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+Plan\+Writer\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a256857c68e6c5d2b5ad02a523ab7a319}\label{classlarcfm_1_1_general_plan_writer_a256857c68e6c5d2b5ad02a523ab7a319}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+Plan\+Writer\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a42d0cf3fe719cda09102e151c6530971}\label{classlarcfm_1_1_general_plan_writer_a42d0cf3fe719cda09102e151c6530971}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!isOutputTime@{isOutputTime}}
+\index{isOutputTime@{isOutputTime}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{isOutputTime()}{isOutputTime()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+Plan\+Writer\+::is\+Output\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Will the time be added to the file \begin{DoxyReturn}{Returns}
+true, if the time is to be output to the file 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ac71a919d14cf6ebdd0362af20c9b5efe}\label{classlarcfm_1_1_general_plan_writer_ac71a919d14cf6ebdd0362af20c9b5efe}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!isOutputUnits@{isOutputUnits}}
+\index{isOutputUnits@{isOutputUnits}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{isOutputUnits()}{isOutputUnits()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+Plan\+Writer\+::is\+Output\+Units (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Will the units be displayed? \begin{DoxyReturn}{Returns}
+true, if the units are to be displayed in output 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ae0eb5cb9b94819dc18098b62c4885b84}\label{classlarcfm_1_1_general_plan_writer_ae0eb5cb9b94819dc18098b62c4885b84}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!lines@{lines}}
+\index{lines@{lines}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{lines()}{lines()}}
+{\footnotesize\ttfamily int larcfm\+::\+General\+Plan\+Writer\+::lines (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return number of lines added \begin{DoxyReturn}{Returns}
+number of lines 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_adee263cdb9c80258d59d819bcd1538c8}\label{classlarcfm_1_1_general_plan_writer_adee263cdb9c80258d59d819bcd1538c8}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!open@{open}}
+\index{open@{open}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::open (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+A new \mbox{\hyperlink{classlarcfm_1_1_general_state_writer}{General\+State\+Writer}} based on the given file. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & name of file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ada12bdd7fe8a74b17c8afa7eab633929}\label{classlarcfm_1_1_general_plan_writer_ada12bdd7fe8a74b17c8afa7eab633929}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setColumnDelimiterComma@{setColumnDelimiterComma}}
+\index{setColumnDelimiterComma@{setColumnDelimiterComma}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterComma()}{setColumnDelimiterComma()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Column\+Delimiter\+Comma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a comma. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a981c685107277e25ffbf175b2a13797d}\label{classlarcfm_1_1_general_plan_writer_a981c685107277e25ffbf175b2a13797d}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setColumnDelimiterSpace@{setColumnDelimiterSpace}}
+\index{setColumnDelimiterSpace@{setColumnDelimiterSpace}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterSpace()}{setColumnDelimiterSpace()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Column\+Delimiter\+Space (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a space. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_aaf691b872f6f4811fc4170a91a842d2a}\label{classlarcfm_1_1_general_plan_writer_aaf691b872f6f4811fc4170a91a842d2a}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setColumnDelimiterTab@{setColumnDelimiterTab}}
+\index{setColumnDelimiterTab@{setColumnDelimiterTab}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterTab()}{setColumnDelimiterTab()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Column\+Delimiter\+Tab (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a tab. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_adcb6f78dfcb15ad5ed9d9659e1a80fad}\label{classlarcfm_1_1_general_plan_writer_adcb6f78dfcb15ad5ed9d9659e1a80fad}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setOutputTime@{setOutputTime}}
+\index{setOutputTime@{setOutputTime}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setOutputTime()}{setOutputTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Output\+Time (\begin{DoxyParamCaption}\item[{bool}]{display\+\_\+time\+\_\+ }\end{DoxyParamCaption})}
+
+Should the time be added to the file 
+\begin{DoxyParams}{Parameters}
+{\em display\+\_\+time} & true, if the time is to be output to the file \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a4eda4a6fb6e193ee43e2ca075544baf1}\label{classlarcfm_1_1_general_plan_writer_a4eda4a6fb6e193ee43e2ca075544baf1}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setOutputUnits@{setOutputUnits}}
+\index{setOutputUnits@{setOutputUnits}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setOutputUnits()}{setOutputUnits()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Output\+Units (\begin{DoxyParamCaption}\item[{bool}]{display\+\_\+units\+\_\+ }\end{DoxyParamCaption})}
+
+Should the units be displayed? 
+\begin{DoxyParams}{Parameters}
+{\em display\+\_\+units} & true, if the units are to be displayed in output \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a4dae5864b2f84c0169794db6d2982edb}\label{classlarcfm_1_1_general_plan_writer_a4dae5864b2f84c0169794db6d2982edb}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{pr }\end{DoxyParamCaption})}
+
+Set parameters. Use all the parameters in the reader. 
+\begin{DoxyParams}{Parameters}
+{\em pr} & parameters \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a5d48a0e9a26661552cfb316e60550d7a}\label{classlarcfm_1_1_general_plan_writer_a5d48a0e9a26661552cfb316e60550d7a}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setPolygons@{setPolygons}}
+\index{setPolygons@{setPolygons}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setPolygons()}{setPolygons()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Polygons (\begin{DoxyParamCaption}\item[{bool}]{p }\end{DoxyParamCaption})}
+
+Toggle extra polygon headers, true=include (default true) 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_ac6a120d4621174aff7754d5a0327f793}\label{classlarcfm_1_1_general_plan_writer_ac6a120d4621174aff7754d5a0327f793}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setPolyPathMode@{setPolyPathMode}}
+\index{setPolyPathMode@{setPolyPathMode}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setPolyPathMode()}{setPolyPathMode()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Poly\+Path\+Mode (\begin{DoxyParamCaption}\item[{Poly\+Path\+::\+Path\+Mode}]{m }\end{DoxyParamCaption})}
+
+Specify a polygon Path\+Mode. If this is not set ahead of time, this will default to the first written item\textquotesingle{}s path mode if it is a \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} or MORPHING if it is not. Whatever the stored Path\+Mode, all polygons written will be converted to that type. 
+\begin{DoxyParams}{Parameters}
+{\em m} & path mode\\
+\hline
+\end{DoxyParams}
+Specify a polygon Path\+Mode. If this is not set ahead of time, this will default to the first written item\textquotesingle{}s path mode if it is a \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} or MORPHING if it is not. Whatever the stored Path\+Mode, all polygons written will be converted to that type. 
+\begin{DoxyParams}{Parameters}
+{\em m} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a9a83add0781d1a6535679f25144e7cca}\label{classlarcfm_1_1_general_plan_writer_a9a83add0781d1a6535679f25144e7cca}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!setPolyPathParameters@{setPolyPathParameters}}
+\index{setPolyPathParameters@{setPolyPathParameters}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{setPolyPathParameters()}{setPolyPathParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+Plan\+Writer\+::set\+Poly\+Path\+Parameters (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ \&}]{list }\end{DoxyParamCaption})}
+
+If necessary, this must be called before the first write call \mbox{\Hypertarget{classlarcfm_1_1_general_plan_writer_a52c95f0f74388bfa447524fdd55a4fcd}\label{classlarcfm_1_1_general_plan_writer_a52c95f0f74388bfa447524fdd55a4fcd}} 
+\index{larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}!size@{size}}
+\index{size@{size}!larcfm::GeneralPlanWriter@{larcfm::GeneralPlanWriter}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+General\+Plan\+Writer\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of states added to the file \begin{DoxyReturn}{Returns}
+number of states 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/General\+Plan\+Writer.\+h\item 
+Modules/\+ACCo\+RD/src/General\+Plan\+Writer.\+cpp\end{DoxyCompactItemize}

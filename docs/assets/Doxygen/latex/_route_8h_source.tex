@@ -1,0 +1,152 @@
+\hypertarget{_route_8h_source}{}\doxysection{Route.\+h}
+\label{_route_8h_source}\index{Modules/ACCoRD/inc/Route.h@{Modules/ACCoRD/inc/Route.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef ROUTE\_H}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define ROUTE\_H}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25     std::vector<std::string>   names;}
+\DoxyCodeLine{26     std::vector<std::string>   infos;}
+\DoxyCodeLine{27     std::vector<Position> positions;}
+\DoxyCodeLine{28     std::vector<double> radius\_v;                               \textcolor{comment}{// optional information about turn}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string virtualName;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}();}
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& gsp);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{int} start, \textcolor{keywordtype}{int} end);}
+\DoxyCodeLine{44     }
+\DoxyCodeLine{49     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{59     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a3c82bef3c316908b8a05e744ff7c30d2}{mkRoute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{int} start, \textcolor{keywordtype}{int} end, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{66     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a07fdb8a99d8bf0cff63483f1ef58f4b3}{mkRouteNamedOnly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}});}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{74     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a3c82bef3c316908b8a05e744ff7c30d2}{mkRoute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     }
+\DoxyCodeLine{85     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a136bdbde491abe9f00055040cc2d40fd}{mkRouteBankAngle}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{94     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_adf58a5a986434d8a33f31f03ab3e7a40}{mkRouteCut}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{int} start, \textcolor{keywordtype}{int} end);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     }
+\DoxyCodeLine{97     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{98     }
+\DoxyCodeLine{99     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} position(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} positionFromDistance(\textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} positionFromDistance(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{104     }
+\DoxyCodeLine{105     std::string name(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{107     std::string info(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keywordtype}{double} radius(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{//  bool isAltPreserve(int i) const;}}
+\DoxyCodeLine{112 \textcolor{comment}{//}}
+\DoxyCodeLine{113 \textcolor{comment}{//  void setAltPreserve(int i, bool val);}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& data);}
+\DoxyCodeLine{122     }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{130     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos,  \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& data, \textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{141     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}{add}}(\textcolor{keywordtype}{int} ix, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& data, \textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& p, \textcolor{keywordtype}{int} ix);}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{keywordtype}{void} addAll(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& p) ;}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     }
+\DoxyCodeLine{148     \textcolor{keywordtype}{void} set(\textcolor{keywordtype}{int} ix, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& data, \textcolor{keywordtype}{double});}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150         }
+\DoxyCodeLine{151     \textcolor{keywordtype}{void} remove(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{152     }
+\DoxyCodeLine{153     \textcolor{keywordtype}{void} removeFirst();}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     }
+\DoxyCodeLine{156     \textcolor{keywordtype}{void} removeLast();}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158     }
+\DoxyCodeLine{159     }
+\DoxyCodeLine{160     }
+\DoxyCodeLine{161     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} append(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& p2);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{void} updateWithDefaultRadius(\textcolor{keywordtype}{double} default\_radius);}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{173     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_route_ac83f3e4399c3caef5461d31ea0a47eca}{findName}}(\textcolor{keyword}{const} std::string\& nm, \textcolor{keywordtype}{int} startIx) \textcolor{keyword}{const};}
+\DoxyCodeLine{174     }
+\DoxyCodeLine{181     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_route_ac83f3e4399c3caef5461d31ea0a47eca}{findName}}(\textcolor{keyword}{const} std::string\& nm) \textcolor{keyword}{const};}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     }
+\DoxyCodeLine{184     \textcolor{keywordtype}{void} setName(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& name);}
+\DoxyCodeLine{185     }
+\DoxyCodeLine{186     \textcolor{keywordtype}{int} findInfo(\textcolor{keyword}{const} std::string\&  nm, \textcolor{keywordtype}{int} startIx) \textcolor{keyword}{const};}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keywordtype}{int} findInfo(\textcolor{keyword}{const} std::string\&  nm) \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190     \textcolor{keywordtype}{void} setInfo(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& data);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193     \textcolor{keywordtype}{void} setPosition(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos);}
+\DoxyCodeLine{194     }
+\DoxyCodeLine{195     \textcolor{keywordtype}{void} setRadius(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} copy() \textcolor{keyword}{const};}
+\DoxyCodeLine{198     }
+\DoxyCodeLine{208     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_route_ad2436520db155f36fbd89ba4f4583ddf}{pathDistance}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} j, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{209     }
+\DoxyCodeLine{210     }
+\DoxyCodeLine{211     \textcolor{keywordtype}{double} pathDistance(\textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{212     }
+\DoxyCodeLine{213     }
+\DoxyCodeLine{214     \textcolor{keywordtype}{double} pathDistance() \textcolor{keyword}{const};}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{224     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} positionFromDistance(\textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} gs, \textcolor{keywordtype}{double} defaultBank, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{234     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_route_aafafaaabe17c909d4e8e9c69ca4162b1}{velocityFromDistance}}(\textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} gs, \textcolor{keywordtype}{double} defaultBank, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 }
+\DoxyCodeLine{244     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_route_abef0cff5e5a484d38e6ecf65c735a5d6}{linearPlan}}(\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} gs) \textcolor{keyword}{const};}
+\DoxyCodeLine{245     }
+\DoxyCodeLine{246     }
+\DoxyCodeLine{251     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_route_ab25ee3d3515e8452d9c5e99652e4e93f}{equals}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254     }
+\DoxyCodeLine{255     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{256     }
+\DoxyCodeLine{257     std::string toString(\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} gs) \textcolor{keyword}{const};}
+\DoxyCodeLine{258     }
+\DoxyCodeLine{259 \};}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \}}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,153 @@
+\hypertarget{_horizontal_8h_source}{}\doxysection{Horizontal.\+h}
+\label{_horizontal_8h_source}\index{Modules/ACCoRD/inc/Horizontal.h@{Modules/ACCoRD/inc/Horizontal.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Horizontal.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef HORIZONTAL\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define HORIZONTAL\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}TangentLine.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}: \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{29   \mbox{\hyperlink{classlarcfm_1_1_horizontal_ab24417c295807d9bba43ac2891757c5d}{Horizontal}}();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{32   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_horizontal_ab24417c295807d9bba43ac2891757c5d}{Horizontal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_horizontal_ab24417c295807d9bba43ac2891757c5d}{Horizontal}}(\textcolor{keywordtype}{double} kk, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{38   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a3befc2e0843594b88cb7d0961c9d5704}{undef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{double}  \mbox{\hyperlink{classlarcfm_1_1_horizontal_a01b26ba9cf62bb8b08e02fc291fa075f}{k}};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{44   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}\& \mbox{\hyperlink{classlarcfm_1_1_horizontal_a721b53193f50c96f0dd066315d0d7e67}{NoHorizontalSolution}}();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{47   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} best\_horizontal(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}\& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}\& v2);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{57   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_horizontal_ac7fec30c66f935dd8adc5667e91ec2d5}{tcpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{67   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a0720bf4d1a934b2ccf7d552633309dea}{dcpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69   \textcolor{comment}{/* Horizontal miss distance within lookahead time */}}
+\DoxyCodeLine{70   \textcolor{keyword}{static} \textcolor{keywordtype}{double} hmd(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{83   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a7bf5c246f8d72248bcdcabd5e2651e89}{Theta\_D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v,}
+\DoxyCodeLine{84       \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{97   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a4aece832520e8fa3c5acfa81f34197f7}{Delta}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{99   \textcolor{keyword}{static} \textcolor{keywordtype}{bool}   almost\_horizontal\_los(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{101   \textcolor{keyword}{static} \textcolor{keywordtype}{bool}   horizontal\_sep(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{103   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} horizontal\_dir(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{105   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} horizontal\_dir\_at(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \textcolor{keywordtype}{double} t,}
+\DoxyCodeLine{106       \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} horizontal\_entry(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{111   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} Vdir(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{113   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} W0(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} j);}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{118   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a864915760e0c943db9c6630db3379275}{gs\_only\_line}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{121   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_line(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{124   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_only\_dot(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& u,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{125       \textcolor{keyword}{const} \textcolor{keywordtype}{double} j);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{128   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_only\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{129       \textcolor{keyword}{const} \textcolor{keywordtype}{double} th, \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{132   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{133       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& l, \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,}
+\DoxyCodeLine{134       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{137   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_only(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,}
+\DoxyCodeLine{138       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{141   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_only\_circle(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{142       \textcolor{keyword}{const} \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{145   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} gs\_circle(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{146       \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{151   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_horizontal_a2e4508eec895f4355c12955eb07fba91}{trk\_only\_line\_irt}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{152       \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{155   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_only\_line(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{158   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_line\_irt(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{159       \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{162   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_line(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{165   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_only\_dot(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& u,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{166       \textcolor{keyword}{const} \textcolor{keywordtype}{double} j,\textcolor{keyword}{const} \textcolor{keywordtype}{int} irt);}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{169   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_only\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{170       \textcolor{keyword}{const} \textcolor{keywordtype}{double} th,\textcolor{keyword}{const} \textcolor{keywordtype}{int} dir,\textcolor{keyword}{const} \textcolor{keywordtype}{int} irt,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{173   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_vertical\_irt(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& l,}
+\DoxyCodeLine{174       \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,\textcolor{keyword}{const} \textcolor{keywordtype}{int} irt,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D,\textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} repulsiveTrk(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{double} minRelSpeed);}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} repulsiveGs(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{double} minRelSpeed, \textcolor{keywordtype}{double} minGs, \textcolor{keywordtype}{double} maxGs);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{183   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& l,}
+\DoxyCodeLine{184       \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D,\textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{187   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_only(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{188       \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{191   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_only\_circle(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{192       \textcolor{keyword}{const} \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{195   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} trk\_circle(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{196       \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{int} irt, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{202   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_horizontal_aa27db1eaf26e4a1ac977345f1646f108}{opt\_trk\_gs\_line}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{205   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} opt\_line(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{208   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} opt\_trk\_gs(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& nv,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{209       \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D,\textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{212   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} opt\_trk\_gs\_dot(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& u,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{213       \textcolor{keyword}{const} \textcolor{keywordtype}{double} j);}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{216   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} opt\_trk\_gs\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,}
+\DoxyCodeLine{217       \textcolor{keyword}{const} \textcolor{keywordtype}{double} th,\textcolor{keyword}{const} \textcolor{keywordtype}{int} dir,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{220   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} opt\_vertical(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}\& l,}
+\DoxyCodeLine{221       \textcolor{keyword}{const} \textcolor{keywordtype}{int} epsv,\textcolor{keyword}{const} \textcolor{keywordtype}{double} D,\textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223   \textcolor{comment}{/*}}
+\DoxyCodeLine{224 \textcolor{comment}{   * Unit left perpendicular vector to v}}
+\DoxyCodeLine{225 \textcolor{comment}{   */}}
+\DoxyCodeLine{226   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} unit\_perpL(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \};}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* HORIZONTAL\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

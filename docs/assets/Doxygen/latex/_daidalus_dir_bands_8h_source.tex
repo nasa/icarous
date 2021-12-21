@@ -1,0 +1,63 @@
+\hypertarget{_daidalus_dir_bands_8h_source}{}\doxysection{Daidalus\+Dir\+Bands.\+h}
+\label{_daidalus_dir_bands_8h_source}\index{Modules/ACCoRD/inc/DaidalusDirBands.h@{Modules/ACCoRD/inc/DaidalusDirBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DAIDALUSDIRBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DAIDALUSDIRBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}DaidalusRealBands.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Kinematics.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ProjectedKinematics.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_dir_bands}{DaidalusDirBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_daidalus_dir_bands}{DaidalusDirBands}}();}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_daidalus_dir_bands}{DaidalusDirBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_dir_bands}{DaidalusDirBands}}\& b);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} get\_recovery(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} saturate\_corrective\_bands(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keywordtype}{int} dta\_status) \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} instantaneous\_bands(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keyword}{virtual} std::pair<Vect3, Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} max\_delta\_resolution(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

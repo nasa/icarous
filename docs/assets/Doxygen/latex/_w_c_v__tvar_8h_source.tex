@@ -1,0 +1,112 @@
+\hypertarget{_w_c_v__tvar_8h_source}{}\doxysection{WCV\+\_\+tvar.\+h}
+\label{_w_c_v__tvar_8h_source}\index{Modules/ACCoRD/inc/WCV\_tvar.h@{Modules/ACCoRD/inc/WCV\_tvar.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef WCV\_TVAR\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define WCV\_TVAR\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}WCVTable.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ConflictData.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}WCV\_Vertical.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{23   \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}} table;}
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___vertical}{WCV\_Vertical}}* wcv\_vertical;}
+\DoxyCodeLine{25   std::string id;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \textcolor{keywordtype}{void} copyFrom(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}}\& core);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}}\& core);}
+\DoxyCodeLine{32   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{\string~WCV\_tvar}}();}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_af0833e74fb7a93d585ae2ec3446c1600}{setWCVTable}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tables);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} getDTHR() \textcolor{keyword}{const};}
+\DoxyCodeLine{40   \textcolor{keywordtype}{double} getDTHR(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keywordtype}{double} getZTHR() \textcolor{keyword}{const};}
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} getZTHR(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keywordtype}{double} getTTHR() \textcolor{keyword}{const};}
+\DoxyCodeLine{46   \textcolor{keywordtype}{double} getTTHR(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{keywordtype}{double} getTCOA() \textcolor{keyword}{const};}
+\DoxyCodeLine{49   \textcolor{keywordtype}{double} getTCOA(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{void} setDTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{52   \textcolor{keywordtype}{void} setDTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54   \textcolor{keywordtype}{void} setZTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{55   \textcolor{keywordtype}{void} setZTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keywordtype}{void} setTTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{58   \textcolor{keywordtype}{void} setTTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \textcolor{keywordtype}{void} setTCOA(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{61   \textcolor{keywordtype}{void} setTCOA(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} horizontal\_tvar(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} horizontal\_WCV\_interval(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keywordtype}{bool} horizontal\_WCV(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69   \textcolor{comment}{// The methods violation and conflict are inherited from Detection3DSum. This enable a uniform}}
+\DoxyCodeLine{70   \textcolor{comment}{// treatment of border cases in the generic bands algorithms}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_a3858a126446404841aaacaf30d7db24e}{conflictDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} WCV3D(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} WCV\_interval(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{keywordtype}{bool} containsTable(\mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}}* wcv) \textcolor{keyword}{const};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{81   \textcolor{keyword}{virtual} std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_a858a29a14386d3eaadb8cb8f43b445fb}{copy}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{90   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{91   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{92   \textcolor{keyword}{virtual} std::string getSimpleSuperClassName()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{93     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}WCV\_tvar"{}};}
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   \textcolor{keyword}{virtual} std::string getIdentifier() \textcolor{keyword}{const};}
+\DoxyCodeLine{97   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_aaf2597833fcdc519c9783b1f15953509}{horizontalHazardZone}}(std::vector<Position>\& haz, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder,}
+\DoxyCodeLine{100       \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} hazard\_zone\_far\_end(std::vector<Position>\& haz,}
+\DoxyCodeLine{103       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& po, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& pu, \textcolor{keywordtype}{double} T)\textcolor{keyword}{ const }\{\}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_aea9070eef8e26b130904c220f3b94558}{equals}}(Detection3D* o) \textcolor{keyword}{const};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \};}
+\DoxyCodeLine{108 \}}
+\DoxyCodeLine{109 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,62 @@
+\hypertarget{classlarcfm_1_1_hysteresis_data}{}\doxysection{larcfm\+::Hysteresis\+Data Class Reference}
+\label{classlarcfm_1_1_hysteresis_data}\index{larcfm::HysteresisData@{larcfm::HysteresisData}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_ab9c2e05f978a9173b7a131278440b724}\label{classlarcfm_1_1_hysteresis_data_ab9c2e05f978a9173b7a131278440b724}} 
+{\bfseries Hysteresis\+Data} (double hysteresis\+\_\+time, double persistence\+\_\+time, int m, int n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a2e11cf42904d58b6ec7142441311ac05}\label{classlarcfm_1_1_hysteresis_data_a2e11cf42904d58b6ec7142441311ac05}} 
+void {\bfseries outdate\+If\+Current\+Time} (double current\+\_\+time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_afe80a08e7aeaf8fd9e53d1cb8513a6ce}\label{classlarcfm_1_1_hysteresis_data_afe80a08e7aeaf8fd9e53d1cb8513a6ce}} 
+bool {\bfseries is\+Updated\+At\+Current\+Time} (double current\+\_\+time) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a6bfc57b30c3eaeeb70469aeef0d8586a}\label{classlarcfm_1_1_hysteresis_data_a6bfc57b30c3eaeeb70469aeef0d8586a}} 
+double {\bfseries get\+Init\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a540ec8fc0bada34f1c65380486d14a74}\label{classlarcfm_1_1_hysteresis_data_a540ec8fc0bada34f1c65380486d14a74}} 
+double {\bfseries get\+Last\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a997c8af2415ff8950174e45766d12f54}\label{classlarcfm_1_1_hysteresis_data_a997c8af2415ff8950174e45766d12f54}} 
+int {\bfseries get\+Last\+Value} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a2bdbad20b669f63347a126e109334f36}\label{classlarcfm_1_1_hysteresis_data_a2bdbad20b669f63347a126e109334f36}} 
+void {\bfseries reset} (int val)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_ad733d897bf19625ca07e96925b466d05}\label{classlarcfm_1_1_hysteresis_data_ad733d897bf19625ca07e96925b466d05}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a56c26625beda82ed9eb9234ebbc1fa0e}\label{classlarcfm_1_1_hysteresis_data_a56c26625beda82ed9eb9234ebbc1fa0e}} 
+int {\bfseries apply\+Hysteresis\+Logic} (int current\+\_\+value, double current\+\_\+time)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_ab4d52b6cc8ac34754120d27eca6ad461}\label{classlarcfm_1_1_hysteresis_data_ab4d52b6cc8ac34754120d27eca6ad461}} 
+\mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} {\bfseries mofn\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_aa8a650bf2a514382412d11a2cfa216d4}\label{classlarcfm_1_1_hysteresis_data_aa8a650bf2a514382412d11a2cfa216d4}} 
+double {\bfseries hysteresis\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a3a4cdb6214941ccd5c49a94ba5c0c0c8}\label{classlarcfm_1_1_hysteresis_data_a3a4cdb6214941ccd5c49a94ba5c0c0c8}} 
+double {\bfseries persistence\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a55beffa1579744584ed77c16435f06b0}\label{classlarcfm_1_1_hysteresis_data_a55beffa1579744584ed77c16435f06b0}} 
+double {\bfseries init\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_adb43a523418e5d29e4e09bb29b21fb4e}\label{classlarcfm_1_1_hysteresis_data_adb43a523418e5d29e4e09bb29b21fb4e}} 
+double {\bfseries last\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_a5ff3ec2e5f2369788b806a94eaa71991}\label{classlarcfm_1_1_hysteresis_data_a5ff3ec2e5f2369788b806a94eaa71991}} 
+int {\bfseries last\+\_\+value\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_hysteresis_data_aed6b614c1d01f13f1442e7a6ecc112ca}\label{classlarcfm_1_1_hysteresis_data_aed6b614c1d01f13f1442e7a6ecc112ca}} 
+bool {\bfseries outdated\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Hysteresis\+Data.\+h\item 
+Modules/\+ACCo\+RD/src/Hysteresis\+Data.\+cpp\end{DoxyCompactItemize}

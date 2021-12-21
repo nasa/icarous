@@ -1,0 +1,256 @@
+\hypertarget{classlarcfm_1_1_orthographic_projection}{}\doxysection{larcfm\+::Orthographic\+Projection Class Reference}
+\label{classlarcfm_1_1_orthographic_projection}\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+
+
+{\ttfamily \#include $<$Orthographic\+Projection.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a9b667f83fd3e3d645471c838dd19933d}{Orthographic\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a681ac3922e5cfb4638a2bd85c757cf27}{Orthographic\+Projection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ab63e921d915c62ea4c6eb2d2a90c4fa2}{Orthographic\+Projection}} (double lat, double lon, double alt)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a119058fab820eeb5449962c92a76b8f7}{$\sim$\+Orthographic\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection}{Orthographic\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_aad834189a11e74c2cd46e4a81f131ebd}{make\+New}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_orthographic_projection}{Orthographic\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a1c0f66c201e64e0cb71330a4f038c816}{make\+New}} (double lat, double lon, double alt) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ab3a16d6263fc808799228d5eb48ce346}{conflict\+Range}} (double latitude, double accuracy) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ab4949d778ea55c72ea1f9897f4a74310}{max\+Range}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_aad7e9bcb6fe998938240dafd38472014}{get\+Projection\+Point}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_afbe847766aee0d7e9e7f4e86da9d2cdd}{project2}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a30dc0e38059f07d0317a7ea6407dec48}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_add5da5f4c383da26d6eba6a4acc630ca}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a72a51a546c80471846dfcd22b7f464a9}{project\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ac0089b5c96de556a968e35dfc6066512}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&xy, double alt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_abaae9d2c54a20a6ca2504f5ef6a7d183}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&xyz) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a508ede33c799644040021c4d54497d2e}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a4edcbe344f6593fe21c16d1f2e62a649}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a87d812a61bd9d2d9b119ad2799139889}{inverse\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a4d32d7f373b59b9caa666627255a6a94}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a39aa5c90b4855ec43bcac29ada34b2ff}\label{classlarcfm_1_1_orthographic_projection_a39aa5c90b4855ec43bcac29ada34b2ff}} 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries project} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ad0fc0ca9c57eb112ef85feaee56585c8}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a7194905034e2c2d13f91d2af7cf63b49}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ae9176b188c0302417dc1989a8bc10b27}{spherical2xy}} (double lat, double lon) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_af0c830da5ef20df322cafe93dc115872}\label{classlarcfm_1_1_orthographic_projection_af0c830da5ef20df322cafe93dc115872}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries xy2spherical} (double x, double y, double alt) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a6b96a2fea45a304809b1cac3cfb0c7ad}\label{classlarcfm_1_1_orthographic_projection_a6b96a2fea45a304809b1cac3cfb0c7ad}} 
+double {\bfseries proj\+Alt}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a92a00097bf7d399119a1b5d2bd50f314}\label{classlarcfm_1_1_orthographic_projection_a92a00097bf7d399119a1b5d2bd50f314}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries lla\+Ref}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class creates a local Euclidean projection around a given point. This projection may be used to transform geodetic coordinates (\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} objects) into this Euclidean frame, using the \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_a30dc0e38059f07d0317a7ea6407dec48}{project()}} method. Also points within this frame, may be found in geodetic coordinates with the \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection_ac0089b5c96de556a968e35dfc6066512}{inverse()}} method. As long as the points are close to the projection point, the errors will be very small.
+
+This is a standard orthographic projection, and is functionally similar to the ENU projection (it uses different calculations). ~\newline
+ It distorts distances from the tangent point, compressing them more as the distance increases (similar to a picture of a planet from distant space). ~\newline
+ Note that this projection should be considered to have a hard limit of \mbox{\hyperlink{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}{Great\+Circle.\+spherical\+\_\+earth\+\_\+radius}} as the maximum allowed distance from the tangent reference point, and significant distortion may occur at much smaller distances.
+
+
+\begin{DoxyItemize}
+\item Note\+: These formulas are taken from en.\+wikipedia.\+org/wiki/\+Orthographic\+\_\+projection\+\_\+in\+\_\+cartography 
+\item Note\+: projection objects should never be made directly, and instead should be retrieved via Projection.\+get\+Projection() 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a9b667f83fd3e3d645471c838dd19933d}\label{classlarcfm_1_1_orthographic_projection_a9b667f83fd3e3d645471c838dd19933d}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!OrthographicProjection@{OrthographicProjection}}
+\index{OrthographicProjection@{OrthographicProjection}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{OrthographicProjection()}{OrthographicProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Orthographic\+Projection\+::\+Orthographic\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a681ac3922e5cfb4638a2bd85c757cf27}\label{classlarcfm_1_1_orthographic_projection_a681ac3922e5cfb4638a2bd85c757cf27}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!OrthographicProjection@{OrthographicProjection}}
+\index{OrthographicProjection@{OrthographicProjection}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{OrthographicProjection()}{OrthographicProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Orthographic\+Projection\+::\+Orthographic\+Projection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ab63e921d915c62ea4c6eb2d2a90c4fa2}\label{classlarcfm_1_1_orthographic_projection_ab63e921d915c62ea4c6eb2d2a90c4fa2}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!OrthographicProjection@{OrthographicProjection}}
+\index{OrthographicProjection@{OrthographicProjection}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{OrthographicProjection()}{OrthographicProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Orthographic\+Projection\+::\+Orthographic\+Projection (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude of reference point \\
+\hline
+{\em lon} & longitude of reference point \\
+\hline
+{\em alt} & altitude of reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a119058fab820eeb5449962c92a76b8f7}\label{classlarcfm_1_1_orthographic_projection_a119058fab820eeb5449962c92a76b8f7}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!````~OrthographicProjection@{$\sim$OrthographicProjection}}
+\index{````~OrthographicProjection@{$\sim$OrthographicProjection}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{$\sim$OrthographicProjection()}{~OrthographicProjection()}}
+{\footnotesize\ttfamily larcfm\+::\+Orthographic\+Projection\+::$\sim$\+Orthographic\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ab3a16d6263fc808799228d5eb48ce346}\label{classlarcfm_1_1_orthographic_projection_ab3a16d6263fc808799228d5eb48ce346}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!conflictRange@{conflictRange}}
+\index{conflictRange@{conflictRange}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{conflictRange()}{conflictRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Orthographic\+Projection\+::conflict\+Range (\begin{DoxyParamCaption}\item[{double}]{latitude,  }\item[{double}]{accuracy }\end{DoxyParamCaption}) const}
+
+Given an ownship latitude and desired accuracy, what is the longest distance to conflict this projection will support? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_aad7e9bcb6fe998938240dafd38472014}\label{classlarcfm_1_1_orthographic_projection_aad7e9bcb6fe998938240dafd38472014}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!getProjectionPoint@{getProjectionPoint}}
+\index{getProjectionPoint@{getProjectionPoint}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{getProjectionPoint()}{getProjectionPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Orthographic\+Projection\+::get\+Projection\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the projection point for this projection \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ac0089b5c96de556a968e35dfc6066512}\label{classlarcfm_1_1_orthographic_projection_ac0089b5c96de556a968e35dfc6066512}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Orthographic\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{xy,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ad0fc0ca9c57eb112ef85feaee56585c8}\label{classlarcfm_1_1_orthographic_projection_ad0fc0ca9c57eb112ef85feaee56585c8}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Orthographic\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity and the point. If to\+Lat\+Lon is true, the point/velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_abaae9d2c54a20a6ca2504f5ef6a7d183}\label{classlarcfm_1_1_orthographic_projection_abaae9d2c54a20a6ca2504f5ef6a7d183}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Orthographic\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{xyz }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a87d812a61bd9d2d9b119ad2799139889}\label{classlarcfm_1_1_orthographic_projection_a87d812a61bd9d2d9b119ad2799139889}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!inverseVelocity@{inverseVelocity}}
+\index{inverseVelocity@{inverseVelocity}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{inverseVelocity()}{inverseVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Orthographic\+Projection\+::inverse\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity. If to\+Lat\+Lon is true, the velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_aad834189a11e74c2cd46e4a81f131ebd}\label{classlarcfm_1_1_orthographic_projection_aad834189a11e74c2cd46e4a81f131ebd}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection}{Orthographic\+Projection}} larcfm\+::\+Orthographic\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a1c0f66c201e64e0cb71330a4f038c816}\label{classlarcfm_1_1_orthographic_projection_a1c0f66c201e64e0cb71330a4f038c816}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_orthographic_projection}{Orthographic\+Projection}} larcfm\+::\+Orthographic\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ab4949d778ea55c72ea1f9897f4a74310}\label{classlarcfm_1_1_orthographic_projection_ab4949d778ea55c72ea1f9897f4a74310}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!maxRange@{maxRange}}
+\index{maxRange@{maxRange}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{maxRange()}{maxRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Orthographic\+Projection\+::max\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+What is the maximum effective horizontal range of this projection? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a30dc0e38059f07d0317a7ea6407dec48}\label{classlarcfm_1_1_orthographic_projection_a30dc0e38059f07d0317a7ea6407dec48}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!project@{project}}
+\index{project@{project}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Orthographic\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a4d32d7f373b59b9caa666627255a6a94}\label{classlarcfm_1_1_orthographic_projection_a4d32d7f373b59b9caa666627255a6a94}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!project@{project}}
+\index{project@{project}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Orthographic\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-\/space. If the position is already in Euclidean coordinates, this acts as the idenitty function. \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_add5da5f4c383da26d6eba6a4acc630ca}\label{classlarcfm_1_1_orthographic_projection_add5da5f4c383da26d6eba6a4acc630ca}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!project@{project}}
+\index{project@{project}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Orthographic\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_afbe847766aee0d7e9e7f4e86da9d2cdd}\label{classlarcfm_1_1_orthographic_projection_afbe847766aee0d7e9e7f4e86da9d2cdd}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!project2@{project2}}
+\index{project2@{project2}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{project2()}{project2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Orthographic\+Projection\+::project2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 2-\/space \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a72a51a546c80471846dfcd22b7f464a9}\label{classlarcfm_1_1_orthographic_projection_a72a51a546c80471846dfcd22b7f464a9}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!projectPoint@{projectPoint}}
+\index{projectPoint@{projectPoint}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{projectPoint()}{projectPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Orthographic\+Projection\+::project\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a508ede33c799644040021c4d54497d2e}\label{classlarcfm_1_1_orthographic_projection_a508ede33c799644040021c4d54497d2e}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Orthographic\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in geodetic coordinates, return a projection of this velocity in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a4edcbe344f6593fe21c16d1f2e62a649}\label{classlarcfm_1_1_orthographic_projection_a4edcbe344f6593fe21c16d1f2e62a649}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Orthographic\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{ss,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_ae9176b188c0302417dc1989a8bc10b27}\label{classlarcfm_1_1_orthographic_projection_ae9176b188c0302417dc1989a8bc10b27}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!spherical2xy@{spherical2xy}}
+\index{spherical2xy@{spherical2xy}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{spherical2xy()}{spherical2xy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Orthographic\+Projection\+::spherical2xy (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Transforms a lat/lon position to a point on in R3 (on a sphere) From Wikipedia\+: en.\+wikipedia.\+org/wiki/\+Orthographic\+\_\+projection\+\_\+in\+\_\+cartography 
+\begin{DoxyParams}{Parameters}
+{\em lat} & Latitude \\
+\hline
+{\em lon} & Longitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point in R2 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_orthographic_projection_a7194905034e2c2d13f91d2af7cf63b49}\label{classlarcfm_1_1_orthographic_projection_a7194905034e2c2d13f91d2af7cf63b49}} 
+\index{larcfm::OrthographicProjection@{larcfm::OrthographicProjection}!toString@{toString}}
+\index{toString@{toString}!larcfm::OrthographicProjection@{larcfm::OrthographicProjection}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Orthographic\+Projection\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+String representation 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Orthographic\+Projection.\+h\item 
+Modules/\+ACCo\+RD/src/Orthographic\+Projection.\+cpp\end{DoxyCompactItemize}

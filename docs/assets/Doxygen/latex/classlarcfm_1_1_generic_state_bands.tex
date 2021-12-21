@@ -1,0 +1,68 @@
+\hypertarget{classlarcfm_1_1_generic_state_bands}{}\doxysection{larcfm\+::Generic\+State\+Bands Class Reference}
+\label{classlarcfm_1_1_generic_state_bands}\index{larcfm::GenericStateBands@{larcfm::GenericStateBands}}
+
+
+{\ttfamily \#include $<$Generic\+State\+Bands.\+h$>$}
+
+Inheritance diagram for larcfm\+::Generic\+State\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.886598cm]{classlarcfm_1_1_generic_state_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands_ab0ecd5bfb6d33c517af0ca51ddf04c37}{set\+Ownship}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)=0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands_a0135c52f05378183002f6f1db50fb3d6}{add\+Traffic}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)=0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This provides an interface to classes for various conflict prevention bands. The input to these objects is the position and velocity of the ownship, the output is ranges of guidance maneuvers\+: track angles, ground speeds, and vertical speeds. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_generic_state_bands_a0135c52f05378183002f6f1db50fb3d6}\label{classlarcfm_1_1_generic_state_bands_a0135c52f05378183002f6f1db50fb3d6}} 
+\index{larcfm::GenericStateBands@{larcfm::GenericStateBands}!addTraffic@{addTraffic}}
+\index{addTraffic@{addTraffic}!larcfm::GenericStateBands@{larcfm::GenericStateBands}}
+\doxysubsubsection{\texorpdfstring{addTraffic()}{addTraffic()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+State\+Bands\+::add\+Traffic (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Add a traffic aircraft to this set of the conflict prevention bands. No traffic aircraft can be added until the ownship is set (see \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands_ab0ecd5bfb6d33c517af0ca51ddf04c37}{set\+Ownship()}}). The coordinate frame of the traffic position must be the same as that of the object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em si} & position of the traffic \\
+\hline
+{\em vi} & velocity of the traffic \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a733f5d38f4dd6f546191648553ed0036}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a4e002adbc00d0d3b99f670540bb78847}{larcfm\+::\+Triple\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a1eccd4228e5d5fe5e913f90e997f8af9}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a743ac82946af4a850415bd65710673db}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_daidalus_a476deb9571bbc9982d98d66c4a5f0b40}{larcfm\+::\+Daidalus}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_state_bands_ab0ecd5bfb6d33c517af0ca51ddf04c37}\label{classlarcfm_1_1_generic_state_bands_ab0ecd5bfb6d33c517af0ca51ddf04c37}} 
+\index{larcfm::GenericStateBands@{larcfm::GenericStateBands}!setOwnship@{setOwnship}}
+\index{setOwnship@{setOwnship}!larcfm::GenericStateBands@{larcfm::GenericStateBands}}
+\doxysubsubsection{\texorpdfstring{setOwnship()}{setOwnship()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+State\+Bands\+::set\+Ownship (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Specify the ownship\textquotesingle{}s position and velocity. Once the ownship is set, any existing \textquotesingle{}band\textquotesingle{} information is cleared. This also sets the coordinate frame for this object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & ownship position \\
+\hline
+{\em v} & ownship velocity \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a44635cecab793c05f2551c63231072d1}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a3a763f12f5893f5f053ab5b1f29d8c7e}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2ffe9c43bf751ae6276452a95a50b418}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a86b38d4219805ad6916e74e65160d05d}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa3e9080984e985bcfa6d3b06e0be0e86}{larcfm\+::\+Triple\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Generic\+State\+Bands.\+h\end{DoxyCompactItemize}

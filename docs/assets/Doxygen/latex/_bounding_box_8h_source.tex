@@ -1,0 +1,96 @@
+\hypertarget{_bounding_box_8h_source}{}\doxysection{Bounding\+Box.\+h}
+\label{_bounding_box_8h_source}\index{Modules/ACCoRD/inc/BoundingBox.h@{Modules/ACCoRD/inc/BoundingBox.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2018-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef BOUNDINGBOX\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define BOUNDINGBOX\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bounding_box}{BoundingBox}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{private}:}
+\DoxyCodeLine{27     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} br;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double} zMin;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} zMax;}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36 \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{BoundingBox}}();}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{BoundingBox}}(\textcolor{keywordtype}{double} zMin, \textcolor{keywordtype}{double} zMax);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{43 \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{BoundingBox}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{BoundingBox}}\& bb);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{50      \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{BoundingBox}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& br);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{58 \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{BoundingBox}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& br, \textcolor{keywordtype}{double} zMin, \textcolor{keywordtype}{double} zMax);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{65 \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_adf19e1677e5f66b9cd8dccb324f7af61}{clear}}();}
+\DoxyCodeLine{66     }
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}{add}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y, \textcolor{keywordtype}{double} z);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{81 \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{82     }
+\DoxyCodeLine{89 \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{90     }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a7bea926974b4ed731c25a2e2b7d3de62}{getMinX}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{100 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a1065a62a51692a06134e1456763b03e7}{getMaxX}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{105 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_adefd158b1324059f5fa61c390f551956}{getMinY}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{110 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ab104ed9ae07cce5b5104f40b835d5cd2}{getMaxY}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{116 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a0caddff6fa26031c3eb0d581e06e283c}{getMinZ}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{121 \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a8864275bb0fc1c6b1732836628222dbf}{getMaxZ}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keywordtype}{double} getMinLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{124 \textcolor{keywordtype}{double} getMaxLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{125 \textcolor{keywordtype}{double} getMinLat() \textcolor{keyword}{const};}
+\DoxyCodeLine{126 \textcolor{keywordtype}{double} getMaxLat() \textcolor{keyword}{const};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     }
+\DoxyCodeLine{129 \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} upperRightTop();}
+\DoxyCodeLine{130     }
+\DoxyCodeLine{131 \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} lowerLeftBottom();}
+\DoxyCodeLine{132     }
+\DoxyCodeLine{133 \textcolor{keywordtype}{double} getMinAlt();}
+\DoxyCodeLine{134 \textcolor{keywordtype}{double} getMaxAlt();}
+\DoxyCodeLine{135     }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} getBoundRect() \textcolor{keyword}{const};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keywordtype}{bool} intersects(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{BoundingBox}}\& bb);}
+\DoxyCodeLine{140     }
+\DoxyCodeLine{141 \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{BoundingBox}} linear(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} dt);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 std::string toString();}
+\DoxyCodeLine{144     }
+\DoxyCodeLine{145 \};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BOUNDINGBOX\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

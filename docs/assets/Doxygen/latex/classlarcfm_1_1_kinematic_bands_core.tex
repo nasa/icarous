@@ -1,0 +1,198 @@
+\hypertarget{classlarcfm_1_1_kinematic_bands_core}{}\doxysection{larcfm\+::Kinematic\+Bands\+Core Class Reference}
+\label{classlarcfm_1_1_kinematic_bands_core}\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_aefac2872f6bbb802d07391835d176672}\label{classlarcfm_1_1_kinematic_bands_core_aefac2872f6bbb802d07391835d176672}} 
+{\bfseries Kinematic\+Bands\+Core} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{Kinematic\+Bands\+Parameters}} \&params)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a228202417a716c829411d650f6d8389c}\label{classlarcfm_1_1_kinematic_bands_core_a228202417a716c829411d650f6d8389c}} 
+{\bfseries Kinematic\+Bands\+Core} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{Kinematic\+Bands\+Core}} \&core)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a2ccdea07aaf3436061b9db6efb58dee4}\label{classlarcfm_1_1_kinematic_bands_core_a2ccdea07aaf3436061b9db6efb58dee4}} 
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{Kinematic\+Bands\+Core}} \& {\bfseries operator=} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{Kinematic\+Bands\+Core}} \&core)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a621540e32926519248a7a6256152edf0}{set\+Kinematic\+Bands\+Core}} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{Kinematic\+Bands\+Core}} \&core)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a70c990459119791ac5b52975b271dc6b}{clear}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a3331ec797f524caf7bee3ea5c343439a}{reset}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a4a88b397f7a9205e2483b3d1b58d5c4f}{current\+Alert\+Level}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_afa13a29ecb5434161263374a1760d513}{epsilonH}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a833495a71efdf6da010e0d41f8117031}{epsilonV}} ()
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ const \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_af30805dfffa44d4c5c1bc2aa8b81ed9b}{corrective\+Aircraft}} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a448192e71172a171da102f1f5e626a0a}{min\+Horizontal\+Recovery}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a25de7cd9102741c32f6efefbddf830cc}{min\+Vertical\+Recovery}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_af3e4c0ae7182f80b5dd76308f6262daa}\label{classlarcfm_1_1_kinematic_bands_core_af3e4c0ae7182f80b5dd76308f6262daa}} 
+bool {\bfseries has\+Ownship} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a495069d8938f69cd815cadfabd5502e8}\label{classlarcfm_1_1_kinematic_bands_core_a495069d8938f69cd815cadfabd5502e8}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries intruder} (const std\+::string \&id) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a6f0ab82fb262ea10d36c0f98454f582a}\label{classlarcfm_1_1_kinematic_bands_core_a6f0ab82fb262ea10d36c0f98454f582a}} 
+bool {\bfseries has\+Traffic} () const
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ const \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_abdb4af46d8b4e393121413258ee5caaa}{conflict\+Aircraft}} (int alert\+\_\+level)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} const \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a01a6cfc8dd9e2a287ab7ed8d66830cba}{time\+Interval\+Of\+Violation}} (int alert\+\_\+level)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a5187520a28653c336928671295ec77ce}\label{classlarcfm_1_1_kinematic_bands_core_a5187520a28653c336928671295ec77ce}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} const \& {\bfseries criteria\+\_\+ac} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_ad7bae3c85e43dc96f6b154676cc83651}\label{classlarcfm_1_1_kinematic_bands_core_ad7bae3c85e43dc96f6b154676cc83651}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} const \& {\bfseries recovery\+\_\+ac} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a6f217bab3e65a0fd47675d265dc4d6fe}\label{classlarcfm_1_1_kinematic_bands_core_a6f217bab3e65a0fd47675d265dc4d6fe}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a6cf9b345c8d1847da5d193bfb6ef11aa}\label{classlarcfm_1_1_kinematic_bands_core_a6cf9b345c8d1847da5d193bfb6ef11aa}} 
+static int {\bfseries epsilonH} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a485ddeb744abf62fab1247ca0fa8baf4}\label{classlarcfm_1_1_kinematic_bands_core_a485ddeb744abf62fab1247ca0fa8baf4}} 
+static int {\bfseries epsilonV} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a0ae6c79ee4ff0165504d9c880b522bc2}\label{classlarcfm_1_1_kinematic_bands_core_a0ae6c79ee4ff0165504d9c880b522bc2}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries ownship}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a26f19257b58cd070c288ef11f834eb36}\label{classlarcfm_1_1_kinematic_bands_core_a26f19257b58cd070c288ef11f834eb36}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ {\bfseries traffic}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a06153ed2302dc254fa9794e753987b3f}\label{classlarcfm_1_1_kinematic_bands_core_a06153ed2302dc254fa9794e753987b3f}} 
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{Kinematic\+Bands\+Parameters}} {\bfseries parameters}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_aeff8d9b6311f0ac7d26861e41872f558}\label{classlarcfm_1_1_kinematic_bands_core_aeff8d9b6311f0ac7d26861e41872f558}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries most\+\_\+urgent\+\_\+ac}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_af377057b2c7bb9726da753c8cb9a8134}\label{classlarcfm_1_1_kinematic_bands_core_af377057b2c7bb9726da753c8cb9a8134}} 
+static \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} {\bfseries RA}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a1e4a61be9552dd2e3f18d054104ed2b5}{update}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_aaa108270fa3c8171125ab269b51c69a1}{conflict\+\_\+aircraft}} (int alert\+\_\+level)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a9ecdba413a5f38e28167e4eb9d293e35}\label{classlarcfm_1_1_kinematic_bands_core_a9ecdba413a5f38e28167e4eb9d293e35}} 
+bool {\bfseries outdated\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_aed898e08482e4ef52231c6caa1ea4d48}\label{classlarcfm_1_1_kinematic_bands_core_aed898e08482e4ef52231c6caa1ea4d48}} 
+int {\bfseries epsh\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_afc70243f488926d1d860d75319080552}\label{classlarcfm_1_1_kinematic_bands_core_afc70243f488926d1d860d75319080552}} 
+int {\bfseries epsv\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_aef90e8357c2bfa59efbd388269df87ea}\label{classlarcfm_1_1_kinematic_bands_core_aef90e8357c2bfa59efbd388269df87ea}} 
+std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ $>$ {\bfseries conflict\+\_\+acs\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_abdba139e42711006c4d9ce88eff312a8}\label{classlarcfm_1_1_kinematic_bands_core_abdba139e42711006c4d9ce88eff312a8}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$ {\bfseries tiov\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a6ded7846b1d28a95d474ec4938c76e84}\label{classlarcfm_1_1_kinematic_bands_core_a6ded7846b1d28a95d474ec4938c76e84}} 
+int {\bfseries current\+\_\+alert\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a70c990459119791ac5b52975b271dc6b}\label{classlarcfm_1_1_kinematic_bands_core_a70c990459119791ac5b52975b271dc6b}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!clear@{clear}}
+\index{clear@{clear}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+Core\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear ownship and traffic data from this object. \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_aaa108270fa3c8171125ab269b51c69a1}\label{classlarcfm_1_1_kinematic_bands_core_aaa108270fa3c8171125ab269b51c69a1}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!conflict\_aircraft@{conflict\_aircraft}}
+\index{conflict\_aircraft@{conflict\_aircraft}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{conflict\_aircraft()}{conflict\_aircraft()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+Core\+::conflict\+\_\+aircraft (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Put in conflict\+\_\+acs\+\_\+ the list of aircraft predicted to be in conflict for the given alert level. Requires\+: 1 \texorpdfstring{$<$}{<}= alert\+\_\+level \texorpdfstring{$<$}{<}= alertor.\+most\+Severe\+Alert\+Level() \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_abdb4af46d8b4e393121413258ee5caaa}\label{classlarcfm_1_1_kinematic_bands_core_abdb4af46d8b4e393121413258ee5caaa}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!conflictAircraft@{conflictAircraft}}
+\index{conflictAircraft@{conflictAircraft}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{conflictAircraft()}{conflictAircraft()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ const  \& larcfm\+::\+Kinematic\+Bands\+Core\+::conflict\+Aircraft (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption})}
+
+Return list of conflict aircraft for a given alert level. Requires\+: 1 \texorpdfstring{$<$}{<}= alert\+\_\+level \texorpdfstring{$<$}{<}= alertor.\+most\+Severe\+Alert\+Level() \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_af30805dfffa44d4c5c1bc2aa8b81ed9b}\label{classlarcfm_1_1_kinematic_bands_core_af30805dfffa44d4c5c1bc2aa8b81ed9b}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!correctiveAircraft@{correctiveAircraft}}
+\index{correctiveAircraft@{correctiveAircraft}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{correctiveAircraft()}{correctiveAircraft()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ const  \& larcfm\+::\+Kinematic\+Bands\+Core\+::corrective\+Aircraft (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return list of corrective aircraft \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a4a88b397f7a9205e2483b3d1b58d5c4f}\label{classlarcfm_1_1_kinematic_bands_core_a4a88b397f7a9205e2483b3d1b58d5c4f}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!currentAlertLevel@{currentAlertLevel}}
+\index{currentAlertLevel@{currentAlertLevel}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{currentAlertLevel()}{currentAlertLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Kinematic\+Bands\+Core\+::current\+Alert\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns current alert level \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_afa13a29ecb5434161263374a1760d513}\label{classlarcfm_1_1_kinematic_bands_core_afa13a29ecb5434161263374a1760d513}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!epsilonH@{epsilonH}}
+\index{epsilonH@{epsilonH}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{epsilonH()}{epsilonH()}}
+{\footnotesize\ttfamily int larcfm\+::\+Kinematic\+Bands\+Core\+::epsilonH (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns horizontal epsilon for implicit coordination with respect to criteria ac \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a833495a71efdf6da010e0d41f8117031}\label{classlarcfm_1_1_kinematic_bands_core_a833495a71efdf6da010e0d41f8117031}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!epsilonV@{epsilonV}}
+\index{epsilonV@{epsilonV}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{epsilonV()}{epsilonV()}}
+{\footnotesize\ttfamily int larcfm\+::\+Kinematic\+Bands\+Core\+::epsilonV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns vertical epsilon for implicit coordination with respect to criteria ac \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a448192e71172a171da102f1f5e626a0a}\label{classlarcfm_1_1_kinematic_bands_core_a448192e71172a171da102f1f5e626a0a}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!minHorizontalRecovery@{minHorizontalRecovery}}
+\index{minHorizontalRecovery@{minHorizontalRecovery}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{minHorizontalRecovery()}{minHorizontalRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Kinematic\+Bands\+Core\+::min\+Horizontal\+Recovery (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns actual minimum horizontal separation for recovery bands in internal units. \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a25de7cd9102741c32f6efefbddf830cc}\label{classlarcfm_1_1_kinematic_bands_core_a25de7cd9102741c32f6efefbddf830cc}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!minVerticalRecovery@{minVerticalRecovery}}
+\index{minVerticalRecovery@{minVerticalRecovery}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{minVerticalRecovery()}{minVerticalRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Kinematic\+Bands\+Core\+::min\+Vertical\+Recovery (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns actual minimum vertical separation for recovery bands in internal units. \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a3331ec797f524caf7bee3ea5c343439a}\label{classlarcfm_1_1_kinematic_bands_core_a3331ec797f524caf7bee3ea5c343439a}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!reset@{reset}}
+\index{reset@{reset}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+Core\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reset cached values \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a621540e32926519248a7a6256152edf0}\label{classlarcfm_1_1_kinematic_bands_core_a621540e32926519248a7a6256152edf0}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!setKinematicBandsCore@{setKinematicBandsCore}}
+\index{setKinematicBandsCore@{setKinematicBandsCore}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{setKinematicBandsCore()}{setKinematicBandsCore()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+Core\+::set\+Kinematic\+Bands\+Core (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{Kinematic\+Bands\+Core}} \&}]{core }\end{DoxyParamCaption})}
+
+Set kinematic bands core \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a01a6cfc8dd9e2a287ab7ed8d66830cba}\label{classlarcfm_1_1_kinematic_bands_core_a01a6cfc8dd9e2a287ab7ed8d66830cba}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!timeIntervalOfViolation@{timeIntervalOfViolation}}
+\index{timeIntervalOfViolation@{timeIntervalOfViolation}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{timeIntervalOfViolation()}{timeIntervalOfViolation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} const  \& larcfm\+::\+Kinematic\+Bands\+Core\+::time\+Interval\+Of\+Violation (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption})}
+
+Return time interval of violation for given alert level Requires\+: 1 \texorpdfstring{$<$}{<}= alert\+\_\+level \texorpdfstring{$<$}{<}= alertor.\+most\+Severe\+Alert\+Level() \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_core_a1e4a61be9552dd2e3f18d054104ed2b5}\label{classlarcfm_1_1_kinematic_bands_core_a1e4a61be9552dd2e3f18d054104ed2b5}} 
+\index{larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}!update@{update}}
+\index{update@{update}!larcfm::KinematicBandsCore@{larcfm::KinematicBandsCore}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+Core\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Update cached values 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Kinematic\+Bands\+Core.\+h\end{DoxyCompactItemize}

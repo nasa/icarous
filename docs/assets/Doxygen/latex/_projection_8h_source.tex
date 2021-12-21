@@ -1,0 +1,75 @@
+\hypertarget{_projection_8h_source}{}\doxysection{Projection.\+h}
+\label{_projection_8h_source}\index{Modules/ACCoRD/inc/Projection.h@{Modules/ACCoRD/inc/Projection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Projection.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Holding area for universal projection information.  All projection objects should be retrieved using these functions.}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef PROJECTION\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define PROJECTION\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19  \textcolor{comment}{/*}}
+\DoxyCodeLine{20 \textcolor{comment}{  * WARNING! The string "{}EuclideanProjection"{} is the name of a MACRO}}
+\DoxyCodeLine{21 \textcolor{comment}{  * representing the actual type of the chosen projection.}}
+\DoxyCodeLine{22 \textcolor{comment}{  *}}
+\DoxyCodeLine{23 \textcolor{comment}{  * Anything starting with this string will be replaced with SOMETHING}}
+\DoxyCodeLine{24 \textcolor{comment}{  * ELSE at compile time.  You may not notice a difference.  At first.}}
+\DoxyCodeLine{25 \textcolor{comment}{  *}}
+\DoxyCodeLine{26 \textcolor{comment}{  */}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28  \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{37 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_projection}{Projection}} \{}
+\DoxyCodeLine{38    \textcolor{keyword}{private}:}
+\DoxyCodeLine{39        \textcolor{keyword}{static} EuclideanProjection projection;}
+\DoxyCodeLine{40        \textcolor{keyword}{static} ProjectionType ptype;}
+\DoxyCodeLine{41    \textcolor{keyword}{public}:}
+\DoxyCodeLine{56        \textcolor{keyword}{static} EuclideanProjection \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{createProjection}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{73        \textcolor{keyword}{static} EuclideanProjection \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{createProjection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{93       \textcolor{keyword}{static} EuclideanProjection \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{createProjection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{108        \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_projection_a85908ab61899a2477969bed071fa6060}{projectionConflictRange}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} accuracy);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{117        \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_projection_a3c2f3323ad210805c12eb2fac115ba2f}{projectionMaxRange}}();}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{125        \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_projection_ad7918b8f54abebd72ab4f0f6eaf1e363}{setProjectionType}}(ProjectionType t);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{133        \textcolor{keyword}{static} ProjectionType \mbox{\hyperlink{classlarcfm_1_1_projection_ab40db762008de3f4057eebcefd71566b}{getProjectionTypeFromString}}(std::string s);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{140        \textcolor{keyword}{static} ProjectionType \mbox{\hyperlink{classlarcfm_1_1_projection_a1c5c78de1ea65540a18640febce29b82}{getProjectionType}}();}
+\DoxyCodeLine{141    \};}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{148    EuclideanProjection \mbox{\hyperlink{namespacelarcfm_af16dc2244bd354af537fe68aee7bf560}{getProjection}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{153    EuclideanProjection \mbox{\hyperlink{namespacelarcfm_af16dc2244bd354af537fe68aee7bf560}{getProjection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{169    \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a70df635c5278e20108288e57e89407cd}{projectionConflictRange}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} accuracy);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{179    \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a83aef93931f539ce1a2cd260eee220a2}{projectionMaxRange}}();}
+\DoxyCodeLine{180      }
+\DoxyCodeLine{181 }
+\DoxyCodeLine{186    \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_adf0783e94490f8089173b572f461f391}{setProjectionType}}(ProjectionType t);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{192    ProjectionType \mbox{\hyperlink{namespacelarcfm_a69fb6b8c08c1134ce7d2f8cadc343064}{getProjectionTypeFromString}}(std::string s);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{198    ProjectionType \mbox{\hyperlink{namespacelarcfm_ad89c78d0c0a0425d920383523814d320}{getProjectionType}}();}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200  \}}
+\DoxyCodeLine{201  }
+\DoxyCodeLine{202 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* PROJECTION\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

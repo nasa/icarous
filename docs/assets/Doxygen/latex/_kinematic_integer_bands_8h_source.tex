@@ -1,0 +1,173 @@
+\hypertarget{_kinematic_integer_bands_8h_source}{}\doxysection{Kinematic\+Integer\+Bands.\+h}
+\label{_kinematic_integer_bands_8h_source}\index{Modules/ACCoRD/inc/KinematicIntegerBands.h@{Modules/ACCoRD/inc/KinematicIntegerBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICINTEGERBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICINTEGERBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Integerval.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_integer_bands}{KinematicIntegerBands}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25   \textcolor{comment}{// This class computes NONE bands}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \textcolor{keyword}{virtual} std::pair<Vect3,Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{29   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_kinematic_integer_bands}{\string~KinematicIntegerBands}}() \{\}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{32   \textcolor{comment}{/* Used in definition of kinematic trajectory */}}
+\DoxyCodeLine{33   \textcolor{keywordtype}{int} j\_step\_;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{private}:}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} conflict(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{38       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{keywordtype}{int} first\_los\_step(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} tstep,\textcolor{keywordtype}{bool} trajdir,}
+\DoxyCodeLine{41       \textcolor{keywordtype}{int} min, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{int} first\_los\_search\_index(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{44       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max,}
+\DoxyCodeLine{45       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordtype}{int} bands\_search\_index(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{48       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2, }
+\DoxyCodeLine{49       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{50       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{keywordtype}{void} traj\_conflict\_only\_bands(std::vector<Integerval>\& l,}
+\DoxyCodeLine{53       \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{54       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56   \textcolor{keywordtype}{void} kinematic\_bands(std::vector<Integerval>\& l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{57       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2, }
+\DoxyCodeLine{58       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{59       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{public}:}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keywordtype}{bool} no\_conflict(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{64       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   \textcolor{keyword}{static} \textcolor{keywordtype}{void} append\_intband(std::vector<Integerval>\& l, std::vector<Integerval>\& r);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{keyword}{static} \textcolor{keywordtype}{void} neg(std::vector<Integerval>\& l);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{comment}{// INTERFACE FUNCTION}}
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} kinematic\_bands\_combine(std::vector<Integerval>\& l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{72       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{73       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{74       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   \textcolor{keywordtype}{bool} any\_los\_aircraft(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk,}
+\DoxyCodeLine{77       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79   \textcolor{comment}{// trajdir: false is left}}
+\DoxyCodeLine{80   \textcolor{keywordtype}{int} first\_green(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{81       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{82       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{83       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85   \textcolor{keywordtype}{bool} all\_int\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{86       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{87       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{88       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool} any\_conflict\_aircraft(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk,}
+\DoxyCodeLine{91       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \textcolor{keywordtype}{void} instantaneous\_bands\_combine(std::vector<Integerval>\& l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{94       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{95       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{96       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{97       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keywordtype}{bool} red\_band\_exist(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{100       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{101       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{102       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104   \textcolor{comment}{// INTERFACE FUNCTION}}
+\DoxyCodeLine{105   \textcolor{keywordtype}{bool} any\_int\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{106       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{107       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{108       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110   \textcolor{keywordtype}{bool} all\_instantaneous\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{111       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{112       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{113       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{114       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   \textcolor{keywordtype}{bool} any\_instantaneous\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{117       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{118       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{119       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{120       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keyword}{private}:}
+\DoxyCodeLine{123   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} linvel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k) \textcolor{keyword}{const};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keywordtype}{bool} repulsive\_at(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac, \textcolor{keywordtype}{int} epsh) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127   \textcolor{keywordtype}{int} first\_nonrepulsive\_step(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac, \textcolor{keywordtype}{int} epsh) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129   \textcolor{keywordtype}{bool} vert\_repul\_at(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131   \textcolor{keywordtype}{int} first\_nonvert\_repul\_step(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{bool} cd\_future\_traj(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} t,}
+\DoxyCodeLine{134       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   \textcolor{keywordtype}{bool} any\_conflict\_step(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max,}
+\DoxyCodeLine{137       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139   \textcolor{keywordtype}{bool} no\_instantaneous\_conflict(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{140       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{141       \textcolor{keywordtype}{bool} trajdir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{142       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{143       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145   \textcolor{keywordtype}{void} instantaneous\_bands(std::vector<Integerval>\& l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{146       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{147       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{148       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{149       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151   \textcolor{keywordtype}{int} first\_instantaneous\_green(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{152       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{153       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{154       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{155       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   \textcolor{keywordtype}{bool} instantaneous\_red\_band\_exist(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{158       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{159       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{160       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{161       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

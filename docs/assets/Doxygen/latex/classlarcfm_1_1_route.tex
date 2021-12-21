@@ -1,0 +1,460 @@
+\hypertarget{classlarcfm_1_1_route}{}\doxysection{larcfm\+::Route Class Reference}
+\label{classlarcfm_1_1_route}\index{larcfm::Route@{larcfm::Route}}
+
+
+{\ttfamily \#include $<$Route.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a2cd41dfa7504d7a8ed26285bc36a1fb8}\label{classlarcfm_1_1_route_a2cd41dfa7504d7a8ed26285bc36a1fb8}} 
+{\bfseries Route} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&gsp)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_route_a8243cea6654712fcd8928af711bed895}{Route}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int start, int end)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_route_a8e01f5d43199a5a302c5647043cadc1d}{Route}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_ac03b585a59d18b00221b5bfa767eef41}\label{classlarcfm_1_1_route_ac03b585a59d18b00221b5bfa767eef41}} 
+int {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_af818efdcb5144585a55fd745b89b2833}\label{classlarcfm_1_1_route_af818efdcb5144585a55fd745b89b2833}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries position} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_aea727cb01dfa49c616354d74869745db}\label{classlarcfm_1_1_route_aea727cb01dfa49c616354d74869745db}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries position\+From\+Distance} (double dist, bool linear) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_adda221cce44b82c7f2d8560ecf62886d}\label{classlarcfm_1_1_route_adda221cce44b82c7f2d8560ecf62886d}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries position\+From\+Distance} (int i, double dist, bool linear) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_adcab6d1e41fc7df6f95d2e24f2b7b7cf}\label{classlarcfm_1_1_route_adcab6d1e41fc7df6f95d2e24f2b7b7cf}} 
+std\+::string {\bfseries name} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a9d1ac28c1615fc3d609ef9eed886f0df}\label{classlarcfm_1_1_route_a9d1ac28c1615fc3d609ef9eed886f0df}} 
+std\+::string {\bfseries info} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_aafeb8fe12bbfd7cef97bec5a70631511}\label{classlarcfm_1_1_route_aafeb8fe12bbfd7cef97bec5a70631511}} 
+double {\bfseries radius} (int i) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&data)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_route_ad330b5b412ba2b2771b4d5637984ec13}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&data, double rad)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_route_a8f66b77179e0c2a95f4be698d7d1e9f5}{add}} (int ix, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&data, double rad)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a77f2decb9fd409792f601f20c0d58780}\label{classlarcfm_1_1_route_a77f2decb9fd409792f601f20c0d58780}} 
+void {\bfseries add} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&p, int ix)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a5ff65fd2a8ded8e880df34b01281345d}\label{classlarcfm_1_1_route_a5ff65fd2a8ded8e880df34b01281345d}} 
+void {\bfseries add\+All} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a1e82eea32eb710002d15ca7e6e86db4f}\label{classlarcfm_1_1_route_a1e82eea32eb710002d15ca7e6e86db4f}} 
+void {\bfseries set} (int ix, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&data, double)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_ab72cc54c392d266e612d9bb1374605e4}\label{classlarcfm_1_1_route_ab72cc54c392d266e612d9bb1374605e4}} 
+void {\bfseries remove} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a05e47546cc8c1883bc5f322b89e24b2e}\label{classlarcfm_1_1_route_a05e47546cc8c1883bc5f322b89e24b2e}} 
+void {\bfseries remove\+First} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a9248ea8e6009974b4d4b0e18479a1edb}\label{classlarcfm_1_1_route_a9248ea8e6009974b4d4b0e18479a1edb}} 
+void {\bfseries remove\+Last} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_afe676b607427aa7e74a4c72c89345a31}\label{classlarcfm_1_1_route_afe676b607427aa7e74a4c72c89345a31}} 
+\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} {\bfseries append} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&p2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a54f31face0082c0976c6306d7884ef64}\label{classlarcfm_1_1_route_a54f31face0082c0976c6306d7884ef64}} 
+void {\bfseries update\+With\+Default\+Radius} (double default\+\_\+radius)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_route_ac83f3e4399c3caef5461d31ea0a47eca}{find\+Name}} (const std\+::string \&nm, int start\+Ix) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_route_ad80d76ee0d5978e18206ed190d14a138}{find\+Name}} (const std\+::string \&nm) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_aec663e10545a6ecc4f625d966b9d9c98}\label{classlarcfm_1_1_route_aec663e10545a6ecc4f625d966b9d9c98}} 
+void {\bfseries set\+Name} (int i, const std\+::string \&name)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a569528445ed83fb5fbb35f241fa034a5}\label{classlarcfm_1_1_route_a569528445ed83fb5fbb35f241fa034a5}} 
+int {\bfseries find\+Info} (const std\+::string \&nm, int start\+Ix) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_aa87ebb8edb1238c546e1349d0f4a0974}\label{classlarcfm_1_1_route_aa87ebb8edb1238c546e1349d0f4a0974}} 
+int {\bfseries find\+Info} (const std\+::string \&nm) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a72033e6001a42c8dc0e74ac4eb26edc9}\label{classlarcfm_1_1_route_a72033e6001a42c8dc0e74ac4eb26edc9}} 
+void {\bfseries set\+Info} (int i, const std\+::string \&data)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_ae67a933ed8a5cb43767efcbb3f980361}\label{classlarcfm_1_1_route_ae67a933ed8a5cb43767efcbb3f980361}} 
+void {\bfseries set\+Position} (int i, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a1f83be381c430aeebb7182422452c361}\label{classlarcfm_1_1_route_a1f83be381c430aeebb7182422452c361}} 
+void {\bfseries set\+Radius} (int i, double rad)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a7f4c8264fe0db39a0da5fc53a1c97866}\label{classlarcfm_1_1_route_a7f4c8264fe0db39a0da5fc53a1c97866}} 
+\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} {\bfseries copy} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_route_ad2436520db155f36fbd89ba4f4583ddf}{path\+Distance}} (int i, int j, bool linear) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a62eca42603cf345c502835ab11a0d9c6}\label{classlarcfm_1_1_route_a62eca42603cf345c502835ab11a0d9c6}} 
+double {\bfseries path\+Distance} (bool linear) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a06f02a4b0062de3ad35f3c78445bd082}\label{classlarcfm_1_1_route_a06f02a4b0062de3ad35f3c78445bd082}} 
+double {\bfseries path\+Distance} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_route_a4345980a789a88af4c4de09c287fa4a8}{position\+From\+Distance}} (double dist, double gs, double default\+Bank, bool linear) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_route_aafafaaabe17c909d4e8e9c69ca4162b1}{velocity\+From\+Distance}} (double dist, double gs, double default\+Bank, bool linear) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_route_abef0cff5e5a484d38e6ecf65c735a5d6}{linear\+Plan}} (double start\+Time, double gs) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_route_ab25ee3d3515e8452d9c5e99652e4e93f}{equals}} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_af95ec8bfe77702822e0da9adb42ec627}\label{classlarcfm_1_1_route_af95ec8bfe77702822e0da9adb42ec627}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a2bbb58a33614013861e0408dd1029120}\label{classlarcfm_1_1_route_a2bbb58a33614013861e0408dd1029120}} 
+std\+::string {\bfseries to\+String} (double start\+Time, double gs) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a3c82bef3c316908b8a05e744ff7c30d2}{mk\+Route}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, int start, int end, double radius)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a07fdb8a99d8bf0cff63483f1ef58f4b3}{mk\+Route\+Named\+Only}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a093a1e5943fafb11dcdbd9298e695f64}{mk\+Route}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double radius)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_a136bdbde491abe9f00055040cc2d40fd}{mk\+Route\+Bank\+Angle}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double bank\+Angle)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_route_adf58a5a986434d8a33f31f03ab3e7a40}{mk\+Route\+Cut}} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, int start, int end)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a29112aed9c122a9cedb3aa548696ef4c}\label{classlarcfm_1_1_route_a29112aed9c122a9cedb3aa548696ef4c}} 
+static const std\+::string {\bfseries virtual\+Name} = \char`\"{}\$virtual\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a7252d1646b4334b385c7b85c675cedca}\label{classlarcfm_1_1_route_a7252d1646b4334b385c7b85c675cedca}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries names}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_af8e30ca576ebcaa7864ddc6fe6de73fd}\label{classlarcfm_1_1_route_af8e30ca576ebcaa7864ddc6fe6de73fd}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries infos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a3bab853f8c3dcd2e5f058bc23c6e08ad}\label{classlarcfm_1_1_route_a3bab853f8c3dcd2e5f058bc23c6e08ad}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ {\bfseries positions}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_route_a61b2e8d8bea471309cc01dd15df727b2}\label{classlarcfm_1_1_route_a61b2e8d8bea471309cc01dd15df727b2}} 
+std\+::vector$<$ double $>$ {\bfseries radius\+\_\+v}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class (and tools) for creating a \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}, that is, a sequence of 3D positions. Routes can be converted into Plans and vice versa. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a8243cea6654712fcd8928af711bed895}\label{classlarcfm_1_1_route_a8243cea6654712fcd8928af711bed895}} 
+\index{larcfm::Route@{larcfm::Route}!Route@{Route}}
+\index{Route@{Route}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{Route()}{Route()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Route\+::\+Route (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})}
+
+Creates a route from a linear plan, all points have radius 0.\+0
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a8e01f5d43199a5a302c5647043cadc1d}\label{classlarcfm_1_1_route_a8e01f5d43199a5a302c5647043cadc1d}} 
+\index{larcfm::Route@{larcfm::Route}!Route@{Route}}
+\index{Route@{Route}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{Route()}{Route()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Route\+::\+Route (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc }\end{DoxyParamCaption})}
+
+Create a route from a linear plan, all points have radius 0.\+0
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}\label{classlarcfm_1_1_route_a88118656357506eb704b88608c452cd9}} 
+\index{larcfm::Route@{larcfm::Route}!add@{add}}
+\index{add@{add}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Route\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})}
+
+Add a position 
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+{\em label} & label for point -- if this equals Route.\+virtual\+Name, then this will become a virtual point when make into a linear plan \\
+\hline
+{\em data} & data field for a point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_route_ad330b5b412ba2b2771b4d5637984ec13}\label{classlarcfm_1_1_route_ad330b5b412ba2b2771b4d5637984ec13}} 
+\index{larcfm::Route@{larcfm::Route}!add@{add}}
+\index{add@{add}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Route\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{data,  }\item[{double}]{rad }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+{\em label} & label for point -- if this equals Route.\+virtual\+Name, then this will become a virtual point when make into a linear plan \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a8f66b77179e0c2a95f4be698d7d1e9f5}\label{classlarcfm_1_1_route_a8f66b77179e0c2a95f4be698d7d1e9f5}} 
+\index{larcfm::Route@{larcfm::Route}!add@{add}}
+\index{add@{add}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Route\+::add (\begin{DoxyParamCaption}\item[{int}]{ix,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{data,  }\item[{double}]{rad }\end{DoxyParamCaption})}
+
+Add a position
+
+
+\begin{DoxyParams}{Parameters}
+{\em ix} & index \\
+\hline
+{\em pos} & position \\
+\hline
+{\em label} & label for point -- if this equals Route.\+virtual\+Name, then this will become a virtual point when make into a linear plan \\
+\hline
+{\em data} & data field for a point \\
+\hline
+{\em rad} & radius \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_route_ab25ee3d3515e8452d9c5e99652e4e93f}\label{classlarcfm_1_1_route_ab25ee3d3515e8452d9c5e99652e4e93f}} 
+\index{larcfm::Route@{larcfm::Route}!equals@{equals}}
+\index{equals@{equals}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Route\+::equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&}]{fp }\end{DoxyParamCaption}) const}
+
+test equality of Gs\+Plans 
+\begin{DoxyParams}{Parameters}
+{\em fp} & another route \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if equal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_ad80d76ee0d5978e18206ed190d14a138}\label{classlarcfm_1_1_route_ad80d76ee0d5978e18206ed190d14a138}} 
+\index{larcfm::Route@{larcfm::Route}!findName@{findName}}
+\index{findName@{findName}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{findName()}{findName()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Route\+::find\+Name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nm }\end{DoxyParamCaption}) const}
+
+Return the index of first point that has a label equal to the given string -\/1 if there are no matches.
+
+
+\begin{DoxyParams}{Parameters}
+{\em nm} & String to match \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of matching label 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_ac83f3e4399c3caef5461d31ea0a47eca}\label{classlarcfm_1_1_route_ac83f3e4399c3caef5461d31ea0a47eca}} 
+\index{larcfm::Route@{larcfm::Route}!findName@{findName}}
+\index{findName@{findName}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{findName()}{findName()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Route\+::find\+Name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nm,  }\item[{int}]{start\+Ix }\end{DoxyParamCaption}) const}
+
+Return the index of first point that has a label equal to the given string -\/1 if there are no matches.
+
+
+\begin{DoxyParams}{Parameters}
+{\em nm} & String to match \\
+\hline
+{\em start\+Ix} & index to begin searching \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of matching label 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_abef0cff5e5a484d38e6ecf65c735a5d6}\label{classlarcfm_1_1_route_abef0cff5e5a484d38e6ecf65c735a5d6}} 
+\index{larcfm::Route@{larcfm::Route}!linearPlan@{linearPlan}}
+\index{linearPlan@{linearPlan}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{linearPlan()}{linearPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Route\+::linear\+Plan (\begin{DoxyParamCaption}\item[{double}]{start\+Time,  }\item[{double}]{gs }\end{DoxyParamCaption}) const}
+
+Create a linear plan from this route using a constant ground speed \char`\"{}gs\char`\"{}. It will copy the radius information into the plan.
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Time} & The time that will be assigned to point 0 \\
+\hline
+{\em gs} & ground speed to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear plan with a constant ground speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a093a1e5943fafb11dcdbd9298e695f64}\label{classlarcfm_1_1_route_a093a1e5943fafb11dcdbd9298e695f64}} 
+\index{larcfm::Route@{larcfm::Route}!mkRoute@{mkRoute}}
+\index{mkRoute@{mkRoute}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{mkRoute()}{mkRoute()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Route\+::mk\+Route (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{radius }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route from a linear plan and make all radii have the value \char`\"{}radius\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & source plan \\
+\hline
+{\em radius} & radius to be used at every vertex (for path distance calculations) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new route 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a3c82bef3c316908b8a05e744ff7c30d2}\label{classlarcfm_1_1_route_a3c82bef3c316908b8a05e744ff7c30d2}} 
+\index{larcfm::Route@{larcfm::Route}!mkRoute@{mkRoute}}
+\index{mkRoute@{mkRoute}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{mkRoute()}{mkRoute()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Route\+::mk\+Route (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{int}]{start,  }\item[{int}]{end,  }\item[{double}]{radius }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route from a linear plan and calculate radii using \char`\"{}radius\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & linear plan \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+{\em radius} & this radius value is inserted at all vertex points (used in path distance calculations) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+route generated from linear plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a136bdbde491abe9f00055040cc2d40fd}\label{classlarcfm_1_1_route_a136bdbde491abe9f00055040cc2d40fd}} 
+\index{larcfm::Route@{larcfm::Route}!mkRouteBankAngle@{mkRouteBankAngle}}
+\index{mkRouteBankAngle@{mkRouteBankAngle}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{mkRouteBankAngle()}{mkRouteBankAngle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Route\+::mk\+Route\+Bank\+Angle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route from a linear plan and calculate radii using \char`\"{}bank\+Angle\char`\"{} NOTE\+: If a radius is already stored in the source plan, this will not overwrite it
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & source plan \\
+\hline
+{\em bank\+Angle} & bank angle used to calculate radii values (used in path distance calculations) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} generated from a linear plan fp, radii added to vertexs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_adf58a5a986434d8a33f31f03ab3e7a40}\label{classlarcfm_1_1_route_adf58a5a986434d8a33f31f03ab3e7a40}} 
+\index{larcfm::Route@{larcfm::Route}!mkRouteCut@{mkRouteCut}}
+\index{mkRouteCut@{mkRouteCut}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{mkRouteCut()}{mkRouteCut()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Route\+::mk\+Route\+Cut (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&}]{fp,  }\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route which is a subset of the given route (from the starting index, to the ending index)
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & source route \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new route 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_a07fdb8a99d8bf0cff63483f1ef58f4b3}\label{classlarcfm_1_1_route_a07fdb8a99d8bf0cff63483f1ef58f4b3}} 
+\index{larcfm::Route@{larcfm::Route}!mkRouteNamedOnly@{mkRouteNamedOnly}}
+\index{mkRouteNamedOnly@{mkRouteNamedOnly}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{mkRouteNamedOnly()}{mkRouteNamedOnly()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Route\+::mk\+Route\+Named\+Only (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route from a plan fp using only the named points. All other points are discarded
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & source plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+route constructed from named points in plan \char`\"{}fp\char`\"{} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_ad2436520db155f36fbd89ba4f4583ddf}\label{classlarcfm_1_1_route_ad2436520db155f36fbd89ba4f4583ddf}} 
+\index{larcfm::Route@{larcfm::Route}!pathDistance@{pathDistance}}
+\index{pathDistance@{pathDistance}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{pathDistance()}{pathDistance()}}
+{\footnotesize\ttfamily double larcfm\+::\+Route\+::path\+Distance (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j,  }\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+Find the path distance between the given starting and ending indexes 
+\begin{DoxyParams}{Parameters}
+{\em i} & starting index \\
+\hline
+{\em j} & ending index \\
+\hline
+{\em linear} & if true, use linear distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance from i to j; returns -\/1 if the \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} is ill-\/formed
+\end{DoxyReturn}
+Note\+: the distance is from MOT to MOT if linear = false and indices are vertices \mbox{\Hypertarget{classlarcfm_1_1_route_a4345980a789a88af4c4de09c287fa4a8}\label{classlarcfm_1_1_route_a4345980a789a88af4c4de09c287fa4a8}} 
+\index{larcfm::Route@{larcfm::Route}!positionFromDistance@{positionFromDistance}}
+\index{positionFromDistance@{positionFromDistance}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{positionFromDistance()}{positionFromDistance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Route\+::position\+From\+Distance (\begin{DoxyParamCaption}\item[{double}]{dist,  }\item[{double}]{gs,  }\item[{double}]{default\+Bank,  }\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} along the route 
+\begin{DoxyParams}{Parameters}
+{\em dist} & distance to query \\
+\hline
+{\em gs} & ground speed (must be greater than zero, but otherwise only used for turn generation) \\
+\hline
+{\em default\+Bank} & default bank angle for turns (overridden by radius info) \\
+\hline
+{\em linear} & true to remain linear, false to generate turns. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} at distance (does not incorporate vertical or ground speed accelerations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_route_aafafaaabe17c909d4e8e9c69ca4162b1}\label{classlarcfm_1_1_route_aafafaaabe17c909d4e8e9c69ca4162b1}} 
+\index{larcfm::Route@{larcfm::Route}!velocityFromDistance@{velocityFromDistance}}
+\index{velocityFromDistance@{velocityFromDistance}!larcfm::Route@{larcfm::Route}}
+\doxysubsubsection{\texorpdfstring{velocityFromDistance()}{velocityFromDistance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Route\+::velocity\+From\+Distance (\begin{DoxyParamCaption}\item[{double}]{dist,  }\item[{double}]{gs,  }\item[{double}]{default\+Bank,  }\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} along the route (primarily track) 
+\begin{DoxyParams}{Parameters}
+{\em dist} & distance to query \\
+\hline
+{\em gs} & ground speed (must be greater than zero, but otherwise only used for turn generation) \\
+\hline
+{\em default\+Bank} & default bank angle for turns (overridden by radius info) \\
+\hline
+{\em linear} & true to remain linear, false to generate turns. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} at distance (does not incorporate vertical or ground speed accelerations) 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Route.\+h\item 
+Modules/\+ACCo\+RD/src/Route.\+cpp\end{DoxyCompactItemize}

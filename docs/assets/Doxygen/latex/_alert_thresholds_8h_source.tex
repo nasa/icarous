@@ -1,0 +1,139 @@
+\hypertarget{_alert_thresholds_8h_source}{}\doxysection{Alert\+Thresholds.\+h}
+\label{_alert_thresholds_8h_source}\index{Modules/ACCoRD/inc/AlertThresholds.h@{Modules/ACCoRD/inc/AlertThresholds.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef ALERTTHRESHOLDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define ALERTTHRESHOLDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}CDCylinder.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ParameterTable.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Detection3DAcceptor.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_table}{ParameterTable}}, \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor}{Detection3DAcceptor}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{private}:}
+\DoxyCodeLine{26   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* detector\_; \textcolor{comment}{// State-\/based detector}}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double}  alerting\_time\_; \textcolor{comment}{// Alerting\_time}}
+\DoxyCodeLine{28   \textcolor{comment}{// If alerting\_time > 0, alert is based on detection}}
+\DoxyCodeLine{29   \textcolor{comment}{// If alerting\_time = 0, alert is based on violation}}
+\DoxyCodeLine{30   \textcolor{keywordtype}{double} early\_alerting\_time\_; \textcolor{comment}{// Early alerting time (for maneuver guidance). If zero, same as alerting\_time}}
+\DoxyCodeLine{31   BandsRegion::Region region\_;  \textcolor{comment}{// Guidance region for this alert}}
+\DoxyCodeLine{32   \textcolor{keywordtype}{double} spread\_hdir\_;  \textcolor{comment}{// Alert when direction band within spread (non-\/negative value)}}
+\DoxyCodeLine{33   \textcolor{keywordtype}{double} spread\_hs\_;   \textcolor{comment}{// Alert when horizontal speed band within spread (non-\/negative value)}}
+\DoxyCodeLine{34   \textcolor{keywordtype}{double} spread\_vs\_;   \textcolor{comment}{// Alert when vertical speed band within speed (non-\/negative value)}}
+\DoxyCodeLine{35   \textcolor{keywordtype}{double} spread\_alt\_;  \textcolor{comment}{// Alert when altitude  band within spread (non-\/negative value)}}
+\DoxyCodeLine{36   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keywordtype}{void} copyFrom(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& athr);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& INVALID();}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{bool} isValid() \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}();}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{54   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det,}
+\DoxyCodeLine{55       \textcolor{keywordtype}{double} alerting\_time, \textcolor{keywordtype}{double} early\_alerting\_time,}
+\DoxyCodeLine{56       BandsRegion::Region region);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& athr);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{\string~AlertThresholds}}();}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{comment}{// needed because of pointer}}
+\DoxyCodeLine{63   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& athr);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}\& \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af47775f139a9487a04d99b845a07ac70}{getCoreDetectionRef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{73   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a58dd8d934835066c90b944288bb15e9c}{getCoreDetectionPtr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{78   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a6e5acf48bcc43d3b0e4f20dad3f2e442}{setCoreDetectionRef}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}\& det);}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{83   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a9273508ab7eadb13381589d211f372a8}{setCoreDetectionPtr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{88   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_aa702fac3618700b95a747874f1d50d7f}{getAlertingTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{93   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_aa702fac3618700b95a747874f1d50d7f}{getAlertingTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{98   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_acb67682f0e95cea860f8056e8c9a723c}{setAlertingTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{103   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_acb67682f0e95cea860f8056e8c9a723c}{setAlertingTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{108   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af816a0e9e313397ce3eb58dd6d29256c}{getEarlyAlertingTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{113   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af816a0e9e313397ce3eb58dd6d29256c}{getEarlyAlertingTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{118   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af091ee8d536184620b37cc3218838d73}{setEarlyAlertingTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{123   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af091ee8d536184620b37cc3218838d73}{setEarlyAlertingTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{128   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_af5a6308e99653e699ebe4e7ecc60f7c9}{getRegion}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a2f32ea23cc6f3e207e26ec72b3222291}{setRegion}}(BandsRegion::Region region);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{138   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_ad9cff9a4d1b43c294418d7fc01491602}{getHorizontalDirectionSpread}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{143   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_ad9cff9a4d1b43c294418d7fc01491602}{getHorizontalDirectionSpread}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{149   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a4686e666f2034208c704375b70fd384d}{setHorizontalDirectionSpread}}(\textcolor{keywordtype}{double} spread);}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{155   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a4686e666f2034208c704375b70fd384d}{setHorizontalDirectionSpread}}(\textcolor{keywordtype}{double} spread, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{160   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_ad9d927b0ffb44ce33331f573053e44fa}{getHorizontalSpeedSpread}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{165   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_ad9d927b0ffb44ce33331f573053e44fa}{getHorizontalSpeedSpread}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{171   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a103e95c5152728bb1bf6c1eb22057cad}{setHorizontalSpeedSpread}}(\textcolor{keywordtype}{double} spread);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{177   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a103e95c5152728bb1bf6c1eb22057cad}{setHorizontalSpeedSpread}}(\textcolor{keywordtype}{double} spread, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{182   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a0f83923c25f04fe14f219eccfffaa2fa}{getVerticalSpeedSpread}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{187   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a0f83923c25f04fe14f219eccfffaa2fa}{getVerticalSpeedSpread}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{193   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a930b5213b9bb3d2284d9dd9aeba32c09}{setVerticalSpeedSpread}}(\textcolor{keywordtype}{double} spread);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{199   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a930b5213b9bb3d2284d9dd9aeba32c09}{setVerticalSpeedSpread}}(\textcolor{keywordtype}{double} spread, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{204   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a732337d0cbb4255df2e66bdbb7f36f9b}{getAltitudeSpread}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{209   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a732337d0cbb4255df2e66bdbb7f36f9b}{getAltitudeSpread}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{215   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a05b3a6c20346b570c17ffc09a3d232d1}{setAltitudeSpread}}(\textcolor{keywordtype}{double} spread);}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{221   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds_a05b3a6c20346b570c17ffc09a3d232d1}{setAltitudeSpread}}(\textcolor{keywordtype}{double} spread, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \};}
+\DoxyCodeLine{236 \}}
+\DoxyCodeLine{237 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

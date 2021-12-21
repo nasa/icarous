@@ -1,0 +1,50 @@
+\hypertarget{_poly2_d_l_l_core_8h_source}{}\doxysection{Poly2\+DLLCore.\+h}
+\label{_poly2_d_l_l_core_8h_source}\index{Modules/ACCoRD/inc/Poly2DLLCore.h@{Modules/ACCoRD/inc/Poly2DLLCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Poly2DLL.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef Poly2DLLCore\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define Poly2DLLCore\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{comment}{//\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{20 \textcolor{comment}{//\#include "{}GeneralPath.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core}{Poly2DLLCore}} \{}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{//private:}}
+\DoxyCodeLine{33 \textcolor{comment}{//  static const double BUFF;}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{public}:}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{static} std::pair<bool,bool> \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_ada61f46692896ea088295888c4c9d886}{upshot\_crosses\_edge}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} edges\_crossed\_upto(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& s, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} j);}
+\DoxyCodeLine{39     \textcolor{keyword}{static} std::pair<int,bool> number\_upshot\_crosses\_upto(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll) ;}
+\DoxyCodeLine{40     \textcolor{keyword}{static} std::vector<LatLonAlt> fix\_polygon(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} spherical\_inside\_prelim(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll) ;}
+\DoxyCodeLine{49     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_a7c4fb2a2d7818bc0610b599f639c3e3a}{spherical\_inside}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{50     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} spherical\_outside\_prelim(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll);}
+\DoxyCodeLine{58     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_aa3056bec6603c03fea5f5d07f0ab0b75}{spherical\_outside}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& ll, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{59 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* Poly2DLLCore\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

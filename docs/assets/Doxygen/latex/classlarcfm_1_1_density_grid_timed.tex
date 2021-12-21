@@ -1,0 +1,51 @@
+\hypertarget{classlarcfm_1_1_density_grid_timed}{}\doxysection{larcfm\+::Density\+Grid\+Timed Class Reference}
+\label{classlarcfm_1_1_density_grid_timed}\index{larcfm::DensityGridTimed@{larcfm::DensityGridTimed}}
+Inheritance diagram for larcfm\+::Density\+Grid\+Timed\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_density_grid_timed}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a1a4e50505152dade334cbdb217113842}\label{classlarcfm_1_1_density_grid_timed_a1a4e50505152dade334cbdb217113842}} 
+{\bfseries Density\+Grid\+Timed} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&end, double startT, double ground\+Speed, int buffer, double sq\+Sz, bool ll)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_ace346bf90b78c0da7b3337286b570623}\label{classlarcfm_1_1_density_grid_timed_ace346bf90b78c0da7b3337286b570623}} 
+{\bfseries Density\+Grid\+Timed} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int buffer, double square\+Size)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a0b563f330d604be1f2c561540dbc05b6}\label{classlarcfm_1_1_density_grid_timed_a0b563f330d604be1f2c561540dbc05b6}} 
+double {\bfseries get\+Lookahead\+End\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_adaeecf40b958edac66a3b1082b0eeb0c}\label{classlarcfm_1_1_density_grid_timed_adaeecf40b958edac66a3b1082b0eeb0c}} 
+void {\bfseries set\+Lookahead\+End\+Time} (double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a9b36853dcaa8d9c0f2c407bedf9b8c49}\label{classlarcfm_1_1_density_grid_timed_a9b36853dcaa8d9c0f2c407bedf9b8c49}} 
+virtual double {\bfseries get\+WeightT} (int x, int y, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_ad3d1a791c37f8131186f1d58843c745d}\label{classlarcfm_1_1_density_grid_timed_ad3d1a791c37f8131186f1d58843c745d}} 
+virtual double {\bfseries get\+WeightT} (const std\+::pair$<$ int, int $>$ \&xy, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_aa25faf8ae69766e1d400830ea1dd59a6}\label{classlarcfm_1_1_density_grid_timed_aa25faf8ae69766e1d400830ea1dd59a6}} 
+virtual double {\bfseries get\+WeightT} (const \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ \&pii) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a655b3fa624648084d5ab6ea8969cfcd1}\label{classlarcfm_1_1_density_grid_timed_a655b3fa624648084d5ab6ea8969cfcd1}} 
+double {\bfseries get\+Ground\+Speed} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a37b47ea3e1071a8549cbf5db58fb1f1d}\label{classlarcfm_1_1_density_grid_timed_a37b47ea3e1071a8549cbf5db58fb1f1d}} 
+double {\bfseries lookahead\+End\+Time}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_timed_a45d2a6752ee2f2596275839b0b5eab04}\label{classlarcfm_1_1_density_grid_timed_a45d2a6752ee2f2596275839b0b5eab04}} 
+double {\bfseries gs}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Density\+Grid\+Timed.\+h\item 
+Modules/\+ACCo\+RD/src/Density\+Grid\+Timed.\+cpp\end{DoxyCompactItemize}

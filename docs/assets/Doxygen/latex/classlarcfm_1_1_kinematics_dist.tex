@@ -1,0 +1,192 @@
+\hypertarget{classlarcfm_1_1_kinematics_dist}{}\doxysection{larcfm\+::Kinematics\+Dist Class Reference}
+\label{classlarcfm_1_1_kinematics_dist}\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+
+
+{\ttfamily \#include $<$Kinematics\+Dist.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a1198c2107ee76b87dc011afc318ccdcd}{min\+Dist\+Between\+Trk}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvi, double bank\+Angle\+Own, double stop\+Time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a0cc17e8d8ce4c91c96659bfeaa0db3e5}{min\+Dist\+Between\+Gs}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvi, double gs\+Accel\+Own, double gs\+Accel\+Traf, double stop\+Time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_ac18842e5823df3661d07e60cb8fa24e6}{min\+Dist\+Between\+Gs}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double gs\+Accel\+Own, double stop\+Time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_ad102fe32f947867067713739b2f7697d}{min\+Dist\+Between\+Vs}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvi, double vs\+Accel\+Own, double vs\+Accel\+Traf, double stop\+Time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a0db76c6ac12100e1e49b3c2619644912}{min\+Dist\+Between\+Vs}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double vs\+Accel\+Own, double stop\+Time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_a5da0b8ef2aa7279b074de4de1ad8af51}\label{classlarcfm_1_1_kinematics_dist_a5da0b8ef2aa7279b074de4de1ad8af51}} 
+static double {\bfseries gs\+Time\+Constant\+Accel\+From\+Dist} (double gs1, double a, double dist)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A library of functions to aid the computation of the kinematics of an aircraft. This library is currently under development and is far from complete. The majority of the functions handle constant velocity turns and movement with constant ground speed acceleration.
+
+Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians, linear speeds are in m/s, distances are in meters, time is in seconds.
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_a0cc17e8d8ce4c91c96659bfeaa0db3e5}\label{classlarcfm_1_1_kinematics_dist_a0cc17e8d8ce4c91c96659bfeaa0db3e5}} 
+\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}!minDistBetweenGs@{minDistBetweenGs}}
+\index{minDistBetweenGs@{minDistBetweenGs}!larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+\doxysubsubsection{\texorpdfstring{minDistBetweenGs()}{minDistBetweenGs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Kinematics\+Dist\+::min\+Dist\+Between\+Gs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvi,  }\item[{double}]{gs\+Accel\+Own,  }\item[{double}]{gs\+Accel\+Traf,  }\item[{double}]{stop\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Minimum distance between two aircraft when BOTH aircraft gs accelerate, compute trajectories up to time stop\+Time
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & initial position of ownship \\
+\hline
+{\em vo} & initial velocity of ownship \\
+\hline
+{\em nvo} & the target velocity of ownship (i.\+e. after turn maneuver complete) \\
+\hline
+{\em si} & initial position of traffic \\
+\hline
+{\em vi} & initial velocity of traffic \\
+\hline
+{\em nvi} & target velocity of traffic (i.\+e. after acceleration maneuver complete) \\
+\hline
+{\em gs\+Accel\+Own} & ground speed acceleration of the ownship \\
+\hline
+{\em gs\+Accel\+Traf} & ground speed acceleration of the traffic \\
+\hline
+{\em stop\+Time} & the duration of the turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum distance data packed in a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_ac18842e5823df3661d07e60cb8fa24e6}\label{classlarcfm_1_1_kinematics_dist_ac18842e5823df3661d07e60cb8fa24e6}} 
+\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}!minDistBetweenGs@{minDistBetweenGs}}
+\index{minDistBetweenGs@{minDistBetweenGs}!larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+\doxysubsubsection{\texorpdfstring{minDistBetweenGs()}{minDistBetweenGs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Kinematics\+Dist\+::min\+Dist\+Between\+Gs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{gs\+Accel\+Own,  }\item[{double}]{stop\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Minimum distance between two aircraft when only ownship gs accelerates, compute trajectories up to time stop\+Time
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & initial position of ownship \\
+\hline
+{\em vo} & initial velocity of ownship \\
+\hline
+{\em nvo} & the target velocity of ownship (i.\+e. after turn maneuver complete) \\
+\hline
+{\em si} & initial position of traffic \\
+\hline
+{\em vi} & initial velocity of traffic \\
+\hline
+{\em gs\+Accel\+Own} & ground speed acceleration of the ownship \\
+\hline
+{\em stop\+Time} & the duration of the turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum distance data packed in a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_a1198c2107ee76b87dc011afc318ccdcd}\label{classlarcfm_1_1_kinematics_dist_a1198c2107ee76b87dc011afc318ccdcd}} 
+\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}!minDistBetweenTrk@{minDistBetweenTrk}}
+\index{minDistBetweenTrk@{minDistBetweenTrk}!larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+\doxysubsubsection{\texorpdfstring{minDistBetweenTrk()}{minDistBetweenTrk()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Kinematics\+Dist\+::min\+Dist\+Between\+Trk (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvi,  }\item[{double}]{bank\+Angle\+Own,  }\item[{double}]{stop\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Minimum distance between two aircraft when BOTH turn, compute trajectories up to time stop\+Time
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & initial position of ownship \\
+\hline
+{\em vo} & initial velocity of ownship \\
+\hline
+{\em nvo} & the target velocity of ownship (i.\+e. after turn maneuver complete) \\
+\hline
+{\em si} & initial position of traffic \\
+\hline
+{\em vi} & initial velocity of traffic \\
+\hline
+{\em nvi} & the target velocity of traffic (i.\+e. after turn maneuver complete) \\
+\hline
+{\em bank\+Angle\+Own} & the bank angle of the ownship \\
+\hline
+{\em turn\+Right\+Own} & the turn direction of ownship \\
+\hline
+{\em bank\+Angle\+Traf} & the bank angle of the traffic \\
+\hline
+{\em turn\+Right\+Traf} & the turn direction of traffic \\
+\hline
+{\em stop\+Time} & the duration of the turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum distance data packed in a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_ad102fe32f947867067713739b2f7697d}\label{classlarcfm_1_1_kinematics_dist_ad102fe32f947867067713739b2f7697d}} 
+\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}!minDistBetweenVs@{minDistBetweenVs}}
+\index{minDistBetweenVs@{minDistBetweenVs}!larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+\doxysubsubsection{\texorpdfstring{minDistBetweenVs()}{minDistBetweenVs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Kinematics\+Dist\+::min\+Dist\+Between\+Vs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvi,  }\item[{double}]{vs\+Accel\+Own,  }\item[{double}]{vs\+Accel\+Traf,  }\item[{double}]{stop\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Minimum distance between two aircraft when BOTH aircraft vs accelerate, compute trajectories up to time stop\+Time
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & initial position of ownship \\
+\hline
+{\em vo} & initial velocity of ownship \\
+\hline
+{\em nvo} & the target velocity of ownship (i.\+e. after turn maneuver complete) \\
+\hline
+{\em si} & initial position of traffic \\
+\hline
+{\em vi} & initial velocity of traffic \\
+\hline
+{\em nvi} & target velocity of traffic (i.\+e. after acceleration maneuver complete) \\
+\hline
+{\em vs\+Accel\+Own} & vertical speed acceleration of the ownship \\
+\hline
+{\em vs\+Accel\+Traf} & vertical speed acceleration of the traffic \\
+\hline
+{\em stop\+Time} & the duration of the turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum distance data packed in a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematics_dist_a0db76c6ac12100e1e49b3c2619644912}\label{classlarcfm_1_1_kinematics_dist_a0db76c6ac12100e1e49b3c2619644912}} 
+\index{larcfm::KinematicsDist@{larcfm::KinematicsDist}!minDistBetweenVs@{minDistBetweenVs}}
+\index{minDistBetweenVs@{minDistBetweenVs}!larcfm::KinematicsDist@{larcfm::KinematicsDist}}
+\doxysubsubsection{\texorpdfstring{minDistBetweenVs()}{minDistBetweenVs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Kinematics\+Dist\+::min\+Dist\+Between\+Vs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{vs\+Accel\+Own,  }\item[{double}]{stop\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Minimum distance between two aircraft when only ownship vs accelerates, compute trajectories up to time stop\+Time
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & initial position of ownship \\
+\hline
+{\em vo} & initial velocity of ownship \\
+\hline
+{\em nvo} & the target velocity of ownship (i.\+e. after turn maneuver complete) \\
+\hline
+{\em si} & initial position of traffic \\
+\hline
+{\em vi} & initial velocity of traffic \\
+\hline
+{\em vs\+Accel\+Own} & vertical speed acceleration of the ownship\\
+\hline
+{\em stop\+Time} & the duration of the turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum distance data packed in a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Kinematics\+Dist.\+h\item 
+Modules/\+ACCo\+RD/src/Kinematics\+Dist.\+cpp\end{DoxyCompactItemize}

@@ -28,8 +28,8 @@
 \DoxyCodeLine{33 \textcolor{keyword}{struct }\mbox{\hyperlink{structnode}{node}}\{}
 \DoxyCodeLine{34     \textcolor{keywordtype}{int} \mbox{\hyperlink{structnode_a8ceaa10e39f74fdfdae30c68a50074e2}{id}};                       }
 \DoxyCodeLine{35     \textcolor{keywordtype}{double} \mbox{\hyperlink{structnode_a1796942a581e0dfafbc1246388e8df6d}{time}};                  }
-\DoxyCodeLine{36     larcfm::Vect3 \mbox{\hyperlink{structnode_af39b66878f2f8f161303d99606f459bd}{pos}};            }
-\DoxyCodeLine{37     larcfm::Velocity \mbox{\hyperlink{structnode_acb26a0111127858d1ae53e478504e77e}{vel}};         }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \mbox{\hyperlink{structnode_af39b66878f2f8f161303d99606f459bd}{pos}};            }
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{structnode_acb26a0111127858d1ae53e478504e77e}{vel}};         }
 \DoxyCodeLine{38  }
 \DoxyCodeLine{39     \textcolor{keywordtype}{bool} \mbox{\hyperlink{structnode_a2bb54dc5ca0779ec078ef17714dd9759}{goal}};                    }
 \DoxyCodeLine{40     \textcolor{keywordtype}{double} g,\mbox{\hyperlink{structnode_ac4cf6a61a005dfc2cfd95f2650bafddc}{h}};                   }
@@ -44,7 +44,7 @@
 \DoxyCodeLine{53 }
 \DoxyCodeLine{54 \textcolor{keyword}{private}:}
 \DoxyCodeLine{55 }
-\DoxyCodeLine{56     larcfm::Poly3D \mbox{\hyperlink{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}{boundingBox}}; }
+\DoxyCodeLine{56     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{larcfm::Poly3D}} \mbox{\hyperlink{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}{boundingBox}}; }
 \DoxyCodeLine{57 }
 \DoxyCodeLine{58     std::vector<larcfm::Vect2> \mbox{\hyperlink{class_dubins_planner_a54e32946cfc5abf90f5d7ea7019a3bbb}{shrunkbbox}}; }
 \DoxyCodeLine{59 }
@@ -54,11 +54,11 @@
 \DoxyCodeLine{63 }
 \DoxyCodeLine{64     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_dubins_planner_a1e1e844a75b968a52cd43f7e71b22aa5}{nodeCount}}; }
 \DoxyCodeLine{65 }
-\DoxyCodeLine{66     larcfm::Vect3 \mbox{\hyperlink{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}{rootFix}};    }
-\DoxyCodeLine{67     larcfm::Velocity \mbox{\hyperlink{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}{rootVel}}; }
+\DoxyCodeLine{66     \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \mbox{\hyperlink{class_dubins_planner_a0e6c201fd49bcfc2af30ba4b54ba9ae1}{rootFix}};    }
+\DoxyCodeLine{67     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_dubins_planner_a020b92c82ac3d11e9897c1ba34e672b7}{rootVel}}; }
 \DoxyCodeLine{68     }
-\DoxyCodeLine{69     larcfm::Vect3 \mbox{\hyperlink{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}{goalFix}};    }
-\DoxyCodeLine{70     larcfm::Velocity \mbox{\hyperlink{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}{goalVel}}; }
+\DoxyCodeLine{69     \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \mbox{\hyperlink{class_dubins_planner_a7132aea9eb58ae624cb63fb6546459e6}{goalFix}};    }
+\DoxyCodeLine{70     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_dubins_planner_ad72c26152e61d24a0833c503578f3750}{goalVel}}; }
 \DoxyCodeLine{71 }
 \DoxyCodeLine{72     std::vector<larcfm::Vect3> \mbox{\hyperlink{class_dubins_planner_afd823df431577710e305752b9ad8fe47}{trafficPosition}};    }
 \DoxyCodeLine{73     std::vector<larcfm::Velocity> \mbox{\hyperlink{class_dubins_planner_a7f55fe8a4346354f5d261a31aba09e16}{trafficVelocity}}; }
@@ -79,25 +79,25 @@
 \DoxyCodeLine{101 }
 \DoxyCodeLine{107     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_afc1b12f473fbfdfb91e0d1a005634020}{SetParameters}}(\mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}}\& prms);}
 \DoxyCodeLine{108 }
-\DoxyCodeLine{115     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}{SetVehicleInitialConditions}}(larcfm::Vect3\& pos, larcfm::Velocity\& vel);}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a576b0f004f0174443ca8fe482d262317}{SetVehicleInitialConditions}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}}\& pos, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}}\& vel);}
 \DoxyCodeLine{116 }
 \DoxyCodeLine{123     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}{SetTraffic}}(std::vector<larcfm::Vect3>\& tfpos,std::vector<larcfm::Velocity>\& tfvel);}
 \DoxyCodeLine{124 }
-\DoxyCodeLine{130     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}{SetTraffic}}(larcfm::Plan \&tf);}
+\DoxyCodeLine{130     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a71e0e220f4b3ecb30b98b99da14e0026}{SetTraffic}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}} \&tf);}
 \DoxyCodeLine{131 }
-\DoxyCodeLine{137     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}{SetBoundary}}(larcfm::Poly3D\& \mbox{\hyperlink{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}{boundingBox}});}
+\DoxyCodeLine{137     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a7773404588cf99573cc050bfc1128bd8}{SetBoundary}}(\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{larcfm::Poly3D}}\& \mbox{\hyperlink{class_dubins_planner_aeb138e28c3ff32089e9623bbf658d039}{boundingBox}});}
 \DoxyCodeLine{138 }
 \DoxyCodeLine{145     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a1ad9090422661aaf274c08c68298dcfc}{SetZBoundary}}(\textcolor{keywordtype}{double} zmin,\textcolor{keywordtype}{double} zmax);}
 \DoxyCodeLine{146 }
 \DoxyCodeLine{152     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a538ba641f8e993f07b85e08ebd678ffb}{SetObstacles}}(std::list<larcfm::Poly3D> \&\mbox{\hyperlink{class_dubins_planner_af6c5b25c6a8bc33056dc56e93c30d7c3}{obstacleList}});}
 \DoxyCodeLine{153 }
-\DoxyCodeLine{160     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}{SetGoal}}(larcfm::Vect3\& goal,larcfm::Velocity finalVel);}
+\DoxyCodeLine{160     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_ab08872773c6a776c20cb6f1cd9840b64}{SetGoal}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}}\& goal,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} finalVel);}
 \DoxyCodeLine{161 }
 \DoxyCodeLine{169     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a78a0a2ff57273c00ca94ccb30a8da1e4}{ComputePath}}(\textcolor{keywordtype}{double} startTime);}
 \DoxyCodeLine{170 }
-\DoxyCodeLine{177     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}{GetPlan}}(larcfm::EuclideanProjection\& proj,larcfm::Plan\& plan);}
+\DoxyCodeLine{177     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a051b99a331874a22ee7c83825c04823b}{GetPlan}}(larcfm::EuclideanProjection\& proj,\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}}\& plan);}
 \DoxyCodeLine{178 }
-\DoxyCodeLine{191     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}{LinePlanIntersection}}(larcfm::Vect2\& A,larcfm::Vect2\& B,\textcolor{keywordtype}{double} floor,\textcolor{keywordtype}{double} ceiling,larcfm::Vect3\& currentPos,larcfm::Vect3\& nextPos);}
+\DoxyCodeLine{191     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a0a67f8803f0581b35920af29077b6d47}{LinePlanIntersection}}(\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}}\& A,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}}\& B,\textcolor{keywordtype}{double} floor,\textcolor{keywordtype}{double} ceiling,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}}\& currentPos,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}}\& nextPos);}
 \DoxyCodeLine{192 }
 \DoxyCodeLine{193 \textcolor{keyword}{private}:}
 \DoxyCodeLine{194 }
@@ -105,18 +105,18 @@
 \DoxyCodeLine{202 }
 \DoxyCodeLine{207     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_a6c52f474b4f482e5cf054a8b53db0807}{GetPotentialFixes}}();}
 \DoxyCodeLine{208 }
-\DoxyCodeLine{226     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}{CheckConflictCircleCircle}}(larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1,larcfm::Velocity startVel1,larcfm::Vect2 timeInterval1, \textcolor{keywordtype}{double} radius1,}
-\DoxyCodeLine{227                                    larcfm::Vect3 center2, larcfm::Vect3 start2, larcfm::Vect3 stop2,larcfm::Velocity startVel2,larcfm::Vect2 timeInterval2, \textcolor{keywordtype}{double} radius2 );}
+\DoxyCodeLine{226     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a5f01e9478c1b2697aa91d56927bd509e}{CheckConflictCircleCircle}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} center1, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start1, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} stop1,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} startVel1,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval1, \textcolor{keywordtype}{double} radius1,}
+\DoxyCodeLine{227                                    \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} center2, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start2, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} stop2,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} startVel2,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval2, \textcolor{keywordtype}{double} radius2 );}
 \DoxyCodeLine{228 }
-\DoxyCodeLine{245     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}{CheckConflictLineCircle}}(larcfm::Vect3 center1, larcfm::Vect3 start1, larcfm::Vect3 stop1,\textcolor{keywordtype}{double} turnRate,larcfm::Vect2 timeInterval1, \textcolor{keywordtype}{double} radius1,}
-\DoxyCodeLine{246                                  larcfm::Vect3 start2, larcfm::Vect3 startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
+\DoxyCodeLine{245     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a8d0c1dde9cc87b3456b5c6437229f901}{CheckConflictLineCircle}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} center1, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start1, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} stop1,\textcolor{keywordtype}{double} turnRate,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval1, \textcolor{keywordtype}{double} radius1,}
+\DoxyCodeLine{246                                  \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start2, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} startVel2,\textcolor{keywordtype}{double} t2,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval2);}
 \DoxyCodeLine{247 }
-\DoxyCodeLine{257     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}{GetLineCircleIntersection}}(larcfm::Vect2 start,larcfm::Vect2 direction,\textcolor{keywordtype}{double} t0,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{257     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a8696fad703550f4dbe2a7d9b71f94668}{GetLineCircleIntersection}}(\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} start,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} direction,\textcolor{keywordtype}{double} t0,\textcolor{keywordtype}{double} R);}
 \DoxyCodeLine{258 }
-\DoxyCodeLine{271     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}{GetLineLineIntersection}}(larcfm::Vect3 start1,larcfm::Vect3 direction1,\textcolor{keywordtype}{double} t1,larcfm::Vect3 start2,larcfm::Vect3 direction2,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{271     std::pair<double,double> \mbox{\hyperlink{class_dubins_planner_a1adb9787cab9bd7ab7d0e148395e9e2b}{GetLineLineIntersection}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start1,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} direction1,\textcolor{keywordtype}{double} t1,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start2,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} direction2,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} R);}
 \DoxyCodeLine{272 }
-\DoxyCodeLine{287     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a519360a48df40b77704a55983e2e298f}{CheckConflictLineLine}}(larcfm::Vect3 start1, larcfm::Velocity startVel1,\textcolor{keywordtype}{double} t1,larcfm::Vect2 timeInterval1,}
-\DoxyCodeLine{288                                larcfm::Vect3 start2, larcfm::Velocity startVel2,\textcolor{keywordtype}{double} t2,larcfm::Vect2 timeInterval2);}
+\DoxyCodeLine{287     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a519360a48df40b77704a55983e2e298f}{CheckConflictLineLine}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start1, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} startVel1,\textcolor{keywordtype}{double} t1,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval1,}
+\DoxyCodeLine{288                                \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} start2, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} startVel2,\textcolor{keywordtype}{double} t2,\mbox{\hyperlink{classlarcfm_1_1_vect2}{larcfm::Vect2}} timeInterval2);}
 \DoxyCodeLine{289 }
 \DoxyCodeLine{295     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_dubins_planner_aa89c38916f0d2d3f79dd45b669ae1449}{BuildTree}}(\mbox{\hyperlink{structnode}{node}}* nd);}
 \DoxyCodeLine{296 }
@@ -142,8 +142,8 @@
 \DoxyCodeLine{396 }
 \DoxyCodeLine{404     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}{CheckTrafficConflict}}(tcpData\_t trajectory);}
 \DoxyCodeLine{405 }
-\DoxyCodeLine{425     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}{CheckTrafficConflict}}(\textcolor{keywordtype}{double} startTime,larcfm::Vect3 center1, larcfm::Vect3 startPos, larcfm::Vect3 tcp1,}
-\DoxyCodeLine{426                                                larcfm::Vect3 center2, larcfm::Vect3 tcp2, larcfm::Vect3 endPos,\textcolor{keywordtype}{double} r,\textcolor{keywordtype}{double} t1,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} t3,\textcolor{keywordtype}{double} gs,\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{425     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_dubins_planner_a390c2b3e77d392b1c0a97c29a0a11816}{CheckTrafficConflict}}(\textcolor{keywordtype}{double} startTime,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} center1, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} startPos, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} tcp1,}
+\DoxyCodeLine{426                                                \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} center2, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} tcp2, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} endPos,\textcolor{keywordtype}{double} r,\textcolor{keywordtype}{double} t1,\textcolor{keywordtype}{double} t2,\textcolor{keywordtype}{double} t3,\textcolor{keywordtype}{double} gs,\textcolor{keywordtype}{double} vs);}
 \DoxyCodeLine{427     std::list<node>* GetNodeList();}
 \DoxyCodeLine{428 }
 \DoxyCodeLine{429 \};}

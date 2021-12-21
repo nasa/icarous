@@ -1,0 +1,106 @@
+\hypertarget{_poly_reader_8h_source}{}\doxysection{Poly\+Reader.\+h}
+\label{_poly_reader_8h_source}\index{Modules/ACCoRD/inc/PolyReader.h@{Modules/ACCoRD/inc/PolyReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolyReader}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Authors: George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2016 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYREADER\_H}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYREADER\_H}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}SeparatedInput.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}PlanReader.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{67 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly_reader}{PolyReader}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_plan_reader}{PlanReader}} \{}
+\DoxyCodeLine{68 \textcolor{keyword}{private}:}
+\DoxyCodeLine{69     \textcolor{comment}{// we store the heading indices in the following order:}}
+\DoxyCodeLine{70     \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{71         NAME,}
+\DoxyCodeLine{72         LAT\_SX,}
+\DoxyCodeLine{73         LON\_SY,}
+\DoxyCodeLine{74         SZ,}
+\DoxyCodeLine{75         TIME,}
+\DoxyCodeLine{76         LABEL,}
+\DoxyCodeLine{77         TYPE,}
+\DoxyCodeLine{78         TCP\_TRK,}
+\DoxyCodeLine{79         TCP\_GS,}
+\DoxyCodeLine{80         TCP\_VS,}
+\DoxyCodeLine{81         ACC\_TRK,}
+\DoxyCodeLine{82         ACC\_GS,}
+\DoxyCodeLine{83         ACC\_VS,}
+\DoxyCodeLine{84         TRK,}
+\DoxyCodeLine{85         GS,}
+\DoxyCodeLine{86         VS,}
+\DoxyCodeLine{87         SRC\_LAT\_SX,}
+\DoxyCodeLine{88         SRC\_LON\_SY,}
+\DoxyCodeLine{89         SRC\_ALT,}
+\DoxyCodeLine{90         SRC\_TIME,}
+\DoxyCodeLine{91         RADIUS,}
+\DoxyCodeLine{92         SZ2,}
+\DoxyCodeLine{93         ENDTIME}
+\DoxyCodeLine{94     \};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{97         POLY,}
+\DoxyCodeLine{98         UNKNOWN,}
+\DoxyCodeLine{99         PLAN}
+\DoxyCodeLine{100     \};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     std::vector<PolyPath> paths;}
+\DoxyCodeLine{103     std::vector<PolyPath> containment;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     \textcolor{keywordtype}{int} altHeadings5(\textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2, \textcolor{keyword}{const} std::string\& s3, \textcolor{keyword}{const} std::string\& s4, \textcolor{keyword}{const} std::string\& s5) \textcolor{keyword}{const};}
+\DoxyCodeLine{106     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} loadfile();}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{109     \textcolor{keywordtype}{int} pathNameIndex(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{110     \textcolor{keywordtype}{int} containmentNameIndex(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{keyword}{public}:}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{115     \mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa436d01a881a04ce20e97c68e075ee49}{PolyReader}}();}
+\DoxyCodeLine{116 \textcolor{comment}{//  /** Create a new PolyReader based on an already-\/created SeparatedInput. */}}
+\DoxyCodeLine{117 \textcolor{comment}{//  PolyReader(SeparatedInput\& input);}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} open(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{120     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} open(std::istream* input);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{124     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa4cbdfd7eef725b80e87e461424e38c7}{planSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{127     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a5b667c38e9006ea41b28e51feaac9b06}{polySize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{130     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a682e405f0656df15a7f080990f7d8aa2}{containmentSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{133     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a0df73aca3ec61adbee6914e446d0492c}{getPlan}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{136     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_afd6e3265f83f1e68a164d865c41997c4}{getPolyPath}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{139     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a7328c4d8b5a3b0ca5bfc83455bda71cb}{getContainmentPolygon}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa493e9a03fd3873b7ea7e3fda5057b5e}{combinedSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{150     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a57b2c821607f03c6b942862b6daa7c6f}{getCombinedPlan}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \};}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PLANREADER\_H}}
+
+\end{DoxyCode}

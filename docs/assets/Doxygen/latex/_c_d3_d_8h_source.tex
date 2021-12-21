@@ -1,0 +1,101 @@
+\hypertarget{_c_d3_d_8h_source}{}\doxysection{CD3\+D.\+h}
+\label{_c_d3_d_8h_source}\index{Modules/ACCoRD/inc/CD3D.h@{Modules/ACCoRD/inc/CD3D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CD3D.h }}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10) }}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * CD3D is an algorithm for 3-\/D conflict *detection*.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Unit Convention}}
+\DoxyCodeLine{12 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{13 \textcolor{comment}{ * All units in this file are *internal*:}}
+\DoxyCodeLine{14 \textcolor{comment}{ * -\/ Units of distance are denoted [d]}}
+\DoxyCodeLine{15 \textcolor{comment}{ * -\/ Units of time are denoted     [t]}}
+\DoxyCodeLine{16 \textcolor{comment}{ * -\/ Units of speed are denoted    [d/t]}}
+\DoxyCodeLine{17 \textcolor{comment}{ *}}
+\DoxyCodeLine{18 \textcolor{comment}{ * REMARK: X points to East, Y points to North. }}
+\DoxyCodeLine{19 \textcolor{comment}{ *}}
+\DoxyCodeLine{20 \textcolor{comment}{ * Naming Convention}}
+\DoxyCodeLine{21 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 \textcolor{comment}{ *   The intruder is fixed at the origin of the coordinate system.}}
+\DoxyCodeLine{23 \textcolor{comment}{ * }}
+\DoxyCodeLine{24 \textcolor{comment}{ *   D  : Diameter of the protected zone [d]}}
+\DoxyCodeLine{25 \textcolor{comment}{ *   H  : Height of the protected zone [d]}}
+\DoxyCodeLine{26 \textcolor{comment}{ *   B  : Lower bound of lookahed time interval [t] (B >= 0)}}
+\DoxyCodeLine{27 \textcolor{comment}{ *   T  : Upper bound of lookahead time interval [t] (B < T)}}
+\DoxyCodeLine{28 \textcolor{comment}{ *   s  : Relative 3-\/D position of the ownship [d,d,d]}}
+\DoxyCodeLine{29 \textcolor{comment}{ *   vo : Ownship velocity vector [d/t,d/t,d/t]}}
+\DoxyCodeLine{30 \textcolor{comment}{ *   vi : Traffic velocity vector [d/t,d/t,d/t]}}
+\DoxyCodeLine{31 \textcolor{comment}{ * }}
+\DoxyCodeLine{32 \textcolor{comment}{ * Functions}}
+\DoxyCodeLine{33 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{34 \textcolor{comment}{ * LoS : Check for 3-\/D loss of separation}}
+\DoxyCodeLine{35 \textcolor{comment}{ * detection : 3-\/D conflict detection with calculation of conflict interval }}
+\DoxyCodeLine{36 \textcolor{comment}{ * cd3d      : Check for predicted conflict}}
+\DoxyCodeLine{37 \textcolor{comment}{ * }}
+\DoxyCodeLine{38 \textcolor{comment}{ * Global variables (modified by detection)}}
+\DoxyCodeLine{39 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{40 \textcolor{comment}{ * t\_in  : Time to loss of separation}}
+\DoxyCodeLine{41 \textcolor{comment}{ * t\_out : Time to recovery from loss of separation}}
+\DoxyCodeLine{42 \textcolor{comment}{ *}}
+\DoxyCodeLine{43 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{44 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{45 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{46 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{47 \textcolor{comment}{ */}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#ifndef CD3D\_H\_}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define CD3D\_H\_}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#include "{}CD2D.h"{}}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#include "{}Vertical.h"{}}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d3_d}{CD3D}} \{}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{public}:}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{73   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a9fb7143f61db362f03c95af24f13a529}{LoS}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{85   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a30f4ed5b25baf5d6d943dade2f3164eb}{lossOfSep}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{103   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a1436620cc38e5264c827ad2171681606}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{116   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_acfef0e37a70fd022238ff62de4067bfb}{detectionActual}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{131   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_abec65f749f734e9350d54ba39ef11185}{cd3d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{145   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_abec65f749f734e9350d54ba39ef11185}{cd3d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{158   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_abec65f749f734e9350d54ba39ef11185}{cd3d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{172   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a23b2d0637f6487e31a66b5265f6e143f}{tccpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{173       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{188   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a23b2d0637f6487e31a66b5265f6e143f}{tccpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{189       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{203   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_a23b2d0637f6487e31a66b5265f6e143f}{tccpa}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{204       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207   \};}
+\DoxyCodeLine{208   }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CD3D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

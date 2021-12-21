@@ -1,0 +1,323 @@
+\hypertarget{classlarcfm_1_1_interval}{}\doxysection{larcfm\+::Interval Class Reference}
+\label{classlarcfm_1_1_interval}\index{larcfm::Interval@{larcfm::Interval}}
+
+
+{\ttfamily \#include $<$Interval.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_aa82fdaf27343a874836d071a6ef87610}\label{classlarcfm_1_1_interval_aa82fdaf27343a874836d071a6ef87610}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$\+::size\+\_\+type {\bfseries nat}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_a54d9c6986eb3a9091aab974beff681dc}{Interval}} (double lb, double ub)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}{Interval}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_a5007ef4fa7916241ecf43558fcf37e00}{Interval}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&i)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_interval_ae178819101b270edbf5cfb8cf0bfbf50}{operator==}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_abbee4d022a104dbeda34f1e02942536c}{is\+Empty}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_interval_a2dbba405744a0c403c030c4bb6559fe7}{to\+String}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_aa1b27a00dd447199a1ebe8aad48df5df}\label{classlarcfm_1_1_interval_aa1b27a00dd447199a1ebe8aad48df5df}} 
+std\+::string {\bfseries to\+String} (int precision) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a92227b6856a227b073ad685982aecb47}\label{classlarcfm_1_1_interval_a92227b6856a227b073ad685982aecb47}} 
+std\+::string {\bfseries to\+String\+Units} (const std\+::string \&unit) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a0015e4c11d9fe9a606cef750bbc9daf6}{is\+Single}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a2ec0b6d080eaa45b3270d71ef4b0688a}{is\+Single}} (double width) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a144eee73f5509831890dd75723f693c3}{in}} (double x) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a082a23f075b76b1d6494fba791d5fc48}{in\+CC}} (double x) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_abcffa2b901033ae63b330ce31c726d45}{in\+CO}} (double x) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a351e9439069fb45fc20fc82fa21d5b04}{in\+OC}} (double x) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a9adc1cde2d0158447f7ac6792fa10fe7}{in\+OO}} (double x) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a09c3ef2962e4d58294cb201de6e98750}{almost\+\_\+in}} (double x, bool lb\+\_\+close, bool ub\+\_\+close) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a64d1a42bd110bc004e8f3e2fdae782a1}{almost\+\_\+in}} (double x, bool lb\+\_\+close, bool ub\+\_\+close, INT64\+FM max\+Ulps) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_a10b0d7f8948552cd07318a75b04e797f}{overlap}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&r) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_interval_a8cb103cfce3507925031a2d22e457d8f}{intersect}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&r) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a8721dfe5fbedf07b9636cfb5b6e34576}\label{classlarcfm_1_1_interval_a8721dfe5fbedf07b9636cfb5b6e34576}} 
+std\+::string {\bfseries to\+PVS} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a2f2abe351eb44176911ba5f6132fa50d}\label{classlarcfm_1_1_interval_a2f2abe351eb44176911ba5f6132fa50d}} 
+std\+::string {\bfseries to\+PVS} (int precision) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_interval_ac12e9d26d71daebca4ac2c90bde915ad}{low}}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_interval_a77b8cc554086fe72be553a2060665251}{up}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_interval_a1d17977c01ff00eea2ef3a547e430eec}{EMPTY}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} represents a interval of double\textquotesingle{}s from a lower bound to an upper bound. This class is immutable.
+
+Whether the interval is interpreted as open or closed is context-\/dependent. There are various membership tests allowing for the different interpretations. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a54d9c6986eb3a9091aab974beff681dc}\label{classlarcfm_1_1_interval_a54d9c6986eb3a9091aab974beff681dc}} 
+\index{larcfm::Interval@{larcfm::Interval}!Interval@{Interval}}
+\index{Interval@{Interval}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{Interval()}{Interval()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Interval\+::\+Interval (\begin{DoxyParamCaption}\item[{double}]{lb,  }\item[{double}]{ub }\end{DoxyParamCaption})}
+
+Construct an \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em lb} & lower bound of the region \\
+\hline
+{\em ub} & upper bound of the region \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}\label{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}} 
+\index{larcfm::Interval@{larcfm::Interval}!Interval@{Interval}}
+\index{Interval@{Interval}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{Interval()}{Interval()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Interval\+::\+Interval (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct an empty interval \mbox{\Hypertarget{classlarcfm_1_1_interval_a5007ef4fa7916241ecf43558fcf37e00}\label{classlarcfm_1_1_interval_a5007ef4fa7916241ecf43558fcf37e00}} 
+\index{larcfm::Interval@{larcfm::Interval}!Interval@{Interval}}
+\index{Interval@{Interval}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{Interval()}{Interval()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Interval\+::\+Interval (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{i }\end{DoxyParamCaption})}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} which is a copy of the given \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}. 
+\begin{DoxyParams}{Parameters}
+{\em i} & interval \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a09c3ef2962e4d58294cb201de6e98750}\label{classlarcfm_1_1_interval_a09c3ef2962e4d58294cb201de6e98750}} 
+\index{larcfm::Interval@{larcfm::Interval}!almost\_in@{almost\_in}}
+\index{almost\_in@{almost\_in}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{almost\_in()}{almost\_in()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Interval\+::almost\+\_\+in (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{bool}]{lb\+\_\+close,  }\item[{bool}]{ub\+\_\+close }\end{DoxyParamCaption}) const}
+
+Is the element (almost) in this interval, where close/open conditions are given as parameters 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+{\em lb\+\_\+close} & lower bound \\
+\hline
+{\em ub\+\_\+close} & upper bound \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if in interval
+\end{DoxyReturn}
+Is the element (almost) in this interval, where close/open conditions are given as parameters \mbox{\Hypertarget{classlarcfm_1_1_interval_a64d1a42bd110bc004e8f3e2fdae782a1}\label{classlarcfm_1_1_interval_a64d1a42bd110bc004e8f3e2fdae782a1}} 
+\index{larcfm::Interval@{larcfm::Interval}!almost\_in@{almost\_in}}
+\index{almost\_in@{almost\_in}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{almost\_in()}{almost\_in()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Interval\+::almost\+\_\+in (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{bool}]{lb\+\_\+close,  }\item[{bool}]{ub\+\_\+close,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption}) const}
+
+Is the element (almost) in this interval, where close/open conditions are given as parameters 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+{\em lb\+\_\+close} & lower bound \\
+\hline
+{\em ub\+\_\+close} & upper bound \\
+\hline
+{\em max\+Ulps} & tolerance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval
+\end{DoxyReturn}
+Is the element (almost) in this interval, where close/open conditions are given as parameters \mbox{\Hypertarget{classlarcfm_1_1_interval_a144eee73f5509831890dd75723f693c3}\label{classlarcfm_1_1_interval_a144eee73f5509831890dd75723f693c3}} 
+\index{larcfm::Interval@{larcfm::Interval}!in@{in}}
+\index{in@{in}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{in()}{in()}}
+{\footnotesize\ttfamily bool Interval\+::in (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the element in this closed/closed interval? 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a082a23f075b76b1d6494fba791d5fc48}\label{classlarcfm_1_1_interval_a082a23f075b76b1d6494fba791d5fc48}} 
+\index{larcfm::Interval@{larcfm::Interval}!inCC@{inCC}}
+\index{inCC@{inCC}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{inCC()}{inCC()}}
+{\footnotesize\ttfamily bool Interval\+::in\+CC (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the element in this closed/closed interval? 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_abcffa2b901033ae63b330ce31c726d45}\label{classlarcfm_1_1_interval_abcffa2b901033ae63b330ce31c726d45}} 
+\index{larcfm::Interval@{larcfm::Interval}!inCO@{inCO}}
+\index{inCO@{inCO}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{inCO()}{inCO()}}
+{\footnotesize\ttfamily bool Interval\+::in\+CO (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the element in this closed/open interval? 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a351e9439069fb45fc20fc82fa21d5b04}\label{classlarcfm_1_1_interval_a351e9439069fb45fc20fc82fa21d5b04}} 
+\index{larcfm::Interval@{larcfm::Interval}!inOC@{inOC}}
+\index{inOC@{inOC}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{inOC()}{inOC()}}
+{\footnotesize\ttfamily bool Interval\+::in\+OC (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the element in this open/closed interval? 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a9adc1cde2d0158447f7ac6792fa10fe7}\label{classlarcfm_1_1_interval_a9adc1cde2d0158447f7ac6792fa10fe7}} 
+\index{larcfm::Interval@{larcfm::Interval}!inOO@{inOO}}
+\index{inOO@{inOO}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{inOO()}{inOO()}}
+{\footnotesize\ttfamily bool Interval\+::in\+OO (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the element in this open/open interval? 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if value in interval 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a8cb103cfce3507925031a2d22e457d8f}\label{classlarcfm_1_1_interval_a8cb103cfce3507925031a2d22e457d8f}} 
+\index{larcfm::Interval@{larcfm::Interval}!intersect@{intersect}}
+\index{intersect@{intersect}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{intersect()}{intersect()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} Interval\+::intersect (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{r }\end{DoxyParamCaption}) const}
+
+Returns a new interval which is the intersection of the current \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} and the given \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}. If the two regions do not overlap, then an empty region is returned. 
+\begin{DoxyParams}{Parameters}
+{\em r} & interval \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+intersection or empty 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_abbee4d022a104dbeda34f1e02942536c}\label{classlarcfm_1_1_interval_abbee4d022a104dbeda34f1e02942536c}} 
+\index{larcfm::Interval@{larcfm::Interval}!isEmpty@{isEmpty}}
+\index{isEmpty@{isEmpty}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{isEmpty()}{isEmpty()}}
+{\footnotesize\ttfamily bool Interval\+::is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if the interval is empty, or otherwise ill-\/formed. \begin{DoxyReturn}{Returns}
+true if empty 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a0015e4c11d9fe9a606cef750bbc9daf6}\label{classlarcfm_1_1_interval_a0015e4c11d9fe9a606cef750bbc9daf6}} 
+\index{larcfm::Interval@{larcfm::Interval}!isSingle@{isSingle}}
+\index{isSingle@{isSingle}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{isSingle()}{isSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Interval\+::is\+Single (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Is this interval a single value? \begin{DoxyReturn}{Returns}
+true if single value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a2ec0b6d080eaa45b3270d71ef4b0688a}\label{classlarcfm_1_1_interval_a2ec0b6d080eaa45b3270d71ef4b0688a}} 
+\index{larcfm::Interval@{larcfm::Interval}!isSingle@{isSingle}}
+\index{isSingle@{isSingle}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{isSingle()}{isSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Interval\+::is\+Single (\begin{DoxyParamCaption}\item[{double}]{width }\end{DoxyParamCaption}) const}
+
+Is this interval a single value? (with intervals of the indicated width or smaller counting) 
+\begin{DoxyParams}{Parameters}
+{\em width} & width of interval \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if single 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_ae178819101b270edbf5cfb8cf0bfbf50}\label{classlarcfm_1_1_interval_ae178819101b270edbf5cfb8cf0bfbf50}} 
+\index{larcfm::Interval@{larcfm::Interval}!operator==@{operator==}}
+\index{operator==@{operator==}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily int Interval\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Returns true if the bounds of the intervals are equal. \mbox{\Hypertarget{classlarcfm_1_1_interval_a10b0d7f8948552cd07318a75b04e797f}\label{classlarcfm_1_1_interval_a10b0d7f8948552cd07318a75b04e797f}} 
+\index{larcfm::Interval@{larcfm::Interval}!overlap@{overlap}}
+\index{overlap@{overlap}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{overlap()}{overlap()}}
+{\footnotesize\ttfamily bool Interval\+::overlap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{r }\end{DoxyParamCaption}) const}
+
+Does the given \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} overlap with this \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}. Intervals that only share an endpoint do not overlap, for example, (1.\+0,2.\+0) and (2.\+0,3.\+0) do not overlap. 
+\begin{DoxyParams}{Parameters}
+{\em r} & interval \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if overlap 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a2dbba405744a0c403c030c4bb6559fe7}\label{classlarcfm_1_1_interval_a2dbba405744a0c403c030c4bb6559fe7}} 
+\index{larcfm::Interval@{larcfm::Interval}!toString@{toString}}
+\index{toString@{toString}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string Interval\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+String representation (as a closed interval) 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_a1d17977c01ff00eea2ef3a547e430eec}\label{classlarcfm_1_1_interval_a1d17977c01ff00eea2ef3a547e430eec}} 
+\index{larcfm::Interval@{larcfm::Interval}!EMPTY@{EMPTY}}
+\index{EMPTY@{EMPTY}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{EMPTY}{EMPTY}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} Interval\+::\+EMPTY\hspace{0.3cm}{\ttfamily [static]}}
+
+An empty interval. \mbox{\Hypertarget{classlarcfm_1_1_interval_ac12e9d26d71daebca4ac2c90bde915ad}\label{classlarcfm_1_1_interval_ac12e9d26d71daebca4ac2c90bde915ad}} 
+\index{larcfm::Interval@{larcfm::Interval}!low@{low}}
+\index{low@{low}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{low}{low}}
+{\footnotesize\ttfamily double larcfm\+::\+Interval\+::low}
+
+The lower bound of this interval \mbox{\Hypertarget{classlarcfm_1_1_interval_a77b8cc554086fe72be553a2060665251}\label{classlarcfm_1_1_interval_a77b8cc554086fe72be553a2060665251}} 
+\index{larcfm::Interval@{larcfm::Interval}!up@{up}}
+\index{up@{up}!larcfm::Interval@{larcfm::Interval}}
+\doxysubsubsection{\texorpdfstring{up}{up}}
+{\footnotesize\ttfamily double larcfm\+::\+Interval\+::up}
+
+The upper bound of this interval 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Interval.\+h\item 
+Modules/\+ACCo\+RD/src/Interval.\+cpp\end{DoxyCompactItemize}

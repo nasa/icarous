@@ -1,0 +1,551 @@
+\hypertarget{classlarcfm_1_1_alerter}{}\doxysection{larcfm\+::Alerter Class Reference}
+\label{classlarcfm_1_1_alerter}\index{larcfm::Alerter@{larcfm::Alerter}}
+
+
+{\ttfamily \#include $<$Alerter.\+h$>$}
+
+Inheritance diagram for larcfm\+::Alerter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_alerter}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ac90ccfe96a92dfe30593cb93abf83ab6}\label{classlarcfm_1_1_alerter_ac90ccfe96a92dfe30593cb93abf83ab6}} 
+bool {\bfseries is\+Valid} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ad6384cf0fb924caa2e8b8ee44d3b25a8}\label{classlarcfm_1_1_alerter_ad6384cf0fb924caa2e8b8ee44d3b25a8}} 
+{\bfseries Alerter} (const std\+::string \&id)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alerter_ae7c871744864ef723c5eeeb21ecfe096}{set\+Id}} (const std\+::string \&id)
+\item 
+const std\+::string \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ae0acab43a9469f9a018c7a701485cf8d}{get\+Id}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alerter_a555b115f00f5bb93de7cf1fe3b387d1a}{clear}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alerter_a752a2e92256c2d289e76d77f018cbb40}{most\+Severe\+Alert\+Level}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alerter_a5df65d3f15669ae448f39e3e3f552395}{alert\+Level\+For\+Region}} (Bands\+Region\+::\+Region region) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_alerter_ac8734ea3e08c137bdb2ba9588eee40b1}{get\+Detector\+Ptr}} (int alert\+\_\+level) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alerter_a1d6e6697ff2adda55a3de2f8b0c6eb79}{set\+Level}} (int level, const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&thresholds)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alerter_ab8415b40410b83581336365b3a486ef2}{add\+Level}} (const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&thresholds)
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ab916826b324f982bd1b05ffa4ed57bae}{get\+Level}} (int alert\+\_\+level) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_alerter_a2ffb7a41b24cf99fc3c611823c0eff16}{get\+Parameters}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alerter_a5134fbb5a11ca35f7afe1241db7624e0}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alerter_a56188e12e60954d3f0c5b5e13a735248}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ae67c9700a29261ca12b35aeae6717ce3}\label{classlarcfm_1_1_alerter_ae67c9700a29261ca12b35aeae6717ce3}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aee32aec56b1fa8058f0c1bcc66883a5e}\label{classlarcfm_1_1_alerter_aee32aec56b1fa8058f0c1bcc66883a5e}} 
+std\+::string {\bfseries to\+PVS} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a198734fb9398a2e3e07d2edf3455aa2d}\label{classlarcfm_1_1_alerter_a198734fb9398a2e3e07d2edf3455aa2d}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& {\bfseries INVALID} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_aba269d7ace47b521cb07030282463b9a}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ab6504d57eb0748492081ba2898ec0325}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a3149beae130a9c70421786ea021ddfb3}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a191c2cd2e5cecdba4a5e61ec1386f9a7}{DWC\+\_\+\+Phase\+\_\+I}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a2833ad34a8f915b6eb559d2f6f823884}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+preventive}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a4fda1152eac208d5136ac5ddff51bd4b}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+corrective}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_aee838a588ffc05b7144bae092f84d194}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+warning}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_aa267b2271fd6596887ba40ece0d07844}{DWC\+\_\+\+Phase\+\_\+\+II}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ae0b8a9b1268470995257d21a003be0e2}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+preventive}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a63f52083c204909d3efa7364b5d6dbc0}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+corrective}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ac30f3b35f2f95f9f200d82ba3d536260}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+warning}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a66cc6ae934988f99805b3386c5d7f31e}{DWC\+\_\+\+Non\+\_\+\+Coop}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_abd1420e4ffe55d121ae97e4edfab75ba}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a6e739315f0ee042c06e69f6a43607a54}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_aeeea1bb4dfa24ce7601d63c3df1e7782}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ace2e43afe75cba368dd91dcc593da06f}{DWC\+\_\+\+Phase\+\_\+\+I\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a40261f23c5ea1f4484ce88d59047947c}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a866644b8ceb103cb65557e66ecd1c20c}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a57f8bd3c761e72d4479aca241a0f7ab5}{DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a4396ed91bf4d302d9ba74132d4d116e1}{DWC\+\_\+\+Phase\+\_\+\+II\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a582c49edb04871150843a0b753b3baca}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_ab408c79d44fcba23b02eb08d18cc588b}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_aba4997063bc5ed27fb8c10897689dfda}{DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a0af39f0f3d5924a23e1ad014c84a4f6b}{DWC\+\_\+\+Non\+\_\+\+Coop\+\_\+\+SUM}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a61eb9840bbe59029d1a2156c01f97459}{Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a3079deebc9c85e202f8973876b0edcf7}{Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_afb16e7233e24ade81887e06fae35df27}{Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a103dcae75ad1ec187a028ec3538bf83b}{Buffered\+\_\+\+DWC\+\_\+\+Phase\+\_\+I}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \mbox{\hyperlink{classlarcfm_1_1_alerter_a4a281883c0c5800fecbdc5e35fc55862}{Single\+Bands}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$detector, double alerting\+\_\+time, double lookahead\+\_\+time, const std\+::string name=\char`\"{}default\char`\"{})
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a502d47d562d3a6192516ead622fc0032}{CD3\+D\+\_\+\+Single\+Bands}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a6ea6c40ff69aa5946dc70ef0b7376475}{WCV\+\_\+\+TAUMOD\+\_\+\+Single\+Bands}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a99044f9e948a5d4330dc624202f8b79f}{TCASII\+\_\+\+TA\+\_\+\+THR}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a1443d9280f1f63058a96f0c74512a4d0}{TCASII\+\_\+\+RA\+\_\+\+THR}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& \mbox{\hyperlink{classlarcfm_1_1_alerter_a78f98833ada957023f879961c0f7f820}{TCASII}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_afcfce97e840fae0fa9c62b9b39b2b606}\label{classlarcfm_1_1_alerter_afcfce97e840fae0fa9c62b9b39b2b606}} 
+static std\+::string {\bfseries list\+To\+PVS} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} $>$ \&alerter)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a196f067b9ef70d81644174f4880d302b}\label{classlarcfm_1_1_alerter_a196f067b9ef70d81644174f4880d302b}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} $>$ {\bfseries levels\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ae4f9d8f13fd6db7e65d99a9c57137096}\label{classlarcfm_1_1_alerter_ae4f9d8f13fd6db7e65d99a9c57137096}} 
+std\+::string {\bfseries id\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+It is assumed that for all alert level i \texorpdfstring{$>$}{>}= 1\+: detection(i+1) =\texorpdfstring{$>$}{>} detection(i) and that there is at least one guidance level whose region is different from NONE. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ab8415b40410b83581336365b3a486ef2}\label{classlarcfm_1_1_alerter_ab8415b40410b83581336365b3a486ef2}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!addLevel@{addLevel}}
+\index{addLevel@{addLevel}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{addLevel()}{addLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alerter\+::add\+Level (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&}]{thresholds }\end{DoxyParamCaption})}
+
+Add an alert level and returns its numerical type, which is a positive number. \mbox{\Hypertarget{classlarcfm_1_1_alerter_a5df65d3f15669ae448f39e3e3f552395}\label{classlarcfm_1_1_alerter_a5df65d3f15669ae448f39e3e3f552395}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!alertLevelForRegion@{alertLevelForRegion}}
+\index{alertLevelForRegion@{alertLevelForRegion}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{alertLevelForRegion()}{alertLevelForRegion()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alerter\+::alert\+Level\+For\+Region (\begin{DoxyParamCaption}\item[{Bands\+Region\+::\+Region}]{region }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+first alert level whose region is equal to given region. Returns -\/1 if none. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a103dcae75ad1ec187a028ec3538bf83b}\label{classlarcfm_1_1_alerter_a103dcae75ad1ec187a028ec3538bf83b}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!Buffered\_DWC\_Phase\_I@{Buffered\_DWC\_Phase\_I}}
+\index{Buffered\_DWC\_Phase\_I@{Buffered\_DWC\_Phase\_I}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{Buffered\_DWC\_Phase\_I()}{Buffered\_DWC\_Phase\_I()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+Buffered\+\_\+\+DWC\+\_\+\+Phase\+\_\+I (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds (buffered) as defined in RTCA DO-\/365. Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a3079deebc9c85e202f8973876b0edcf7}\label{classlarcfm_1_1_alerter_a3079deebc9c85e202f8973876b0edcf7}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!Buffered\_Phase\_I\_HAZ\_corrective@{Buffered\_Phase\_I\_HAZ\_corrective}}
+\index{Buffered\_Phase\_I\_HAZ\_corrective@{Buffered\_Phase\_I\_HAZ\_corrective}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{Buffered\_Phase\_I\_HAZ\_corrective()}{Buffered\_Phase\_I\_HAZ\_corrective()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+buffered HAZ corrective thresholds, i.\+e., DTHR=1nmi, ZTHR=450ft, TTHR=35s, TCOA=20s, alerting time = 60s, early alerting time = 75s, bands region = MID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a61eb9840bbe59029d1a2156c01f97459}\label{classlarcfm_1_1_alerter_a61eb9840bbe59029d1a2156c01f97459}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!Buffered\_Phase\_I\_HAZ\_preventive@{Buffered\_Phase\_I\_HAZ\_preventive}}
+\index{Buffered\_Phase\_I\_HAZ\_preventive@{Buffered\_Phase\_I\_HAZ\_preventive}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{Buffered\_Phase\_I\_HAZ\_preventive()}{Buffered\_Phase\_I\_HAZ\_preventive()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+buffered HAZ preventive thresholds, i.\+e., DTHR=1nmi, ZTHR=750ft, TTHR=35s, TCOA=20s, alerting time = 60s, early alerting time = 75s, bands region = NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_afb16e7233e24ade81887e06fae35df27}\label{classlarcfm_1_1_alerter_afb16e7233e24ade81887e06fae35df27}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!Buffered\_Phase\_I\_HAZ\_warning@{Buffered\_Phase\_I\_HAZ\_warning}}
+\index{Buffered\_Phase\_I\_HAZ\_warning@{Buffered\_Phase\_I\_HAZ\_warning}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{Buffered\_Phase\_I\_HAZ\_warning()}{Buffered\_Phase\_I\_HAZ\_warning()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+Buffered\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+buffered HAZ warning thresholds, i.\+e., DTHR=1nmi, ZTHR=450ft, TTHR=35s, TCOA=20s, alerting time = 30s, early alerting time = 55s, bands region = NEAR 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a502d47d562d3a6192516ead622fc0032}\label{classlarcfm_1_1_alerter_a502d47d562d3a6192516ead622fc0032}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!CD3D\_SingleBands@{CD3D\_SingleBands}}
+\index{CD3D\_SingleBands@{CD3D\_SingleBands}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{CD3D\_SingleBands()}{CD3D\_SingleBands()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+CD3\+D\+\_\+\+Single\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds for ACCo\+RD\textquotesingle{}s \mbox{\hyperlink{classlarcfm_1_1_c_d3_d}{CD3D}}, i.\+e., separation is given by cylinder of 5nmi/1000ft. Alerting time is 180s. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a555b115f00f5bb93de7cf1fe3b387d1a}\label{classlarcfm_1_1_alerter_a555b115f00f5bb93de7cf1fe3b387d1a}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!clear@{clear}}
+\index{clear@{clear}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alerter\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clears alert levels \mbox{\Hypertarget{classlarcfm_1_1_alerter_a63f52083c204909d3efa7364b5d6dbc0}\label{classlarcfm_1_1_alerter_a63f52083c204909d3efa7364b5d6dbc0}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_corrective@{DO\_365\_Non\_Coop\_HAZ\_corrective}}
+\index{DO\_365\_Non\_Coop\_HAZ\_corrective@{DO\_365\_Non\_Coop\_HAZ\_corrective}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_corrective()}{DO\_365\_Non\_Coop\_HAZ\_corrective()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+corrective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ corrective thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s, bands region = MID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ab408c79d44fcba23b02eb08d18cc588b}\label{classlarcfm_1_1_alerter_ab408c79d44fcba23b02eb08d18cc588b}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM@{DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM}}
+\index{DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM@{DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM()}{DO\_365\_Non\_Coop\_HAZ\_corrective\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ corrective thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s, bands region = MID, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ae0b8a9b1268470995257d21a003be0e2}\label{classlarcfm_1_1_alerter_ae0b8a9b1268470995257d21a003be0e2}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_preventive@{DO\_365\_Non\_Coop\_HAZ\_preventive}}
+\index{DO\_365\_Non\_Coop\_HAZ\_preventive@{DO\_365\_Non\_Coop\_HAZ\_preventive}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_preventive()}{DO\_365\_Non\_Coop\_HAZ\_preventive()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+preventive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ preventive thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 55s, early alerting time = 110s, bands region = NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a582c49edb04871150843a0b753b3baca}\label{classlarcfm_1_1_alerter_a582c49edb04871150843a0b753b3baca}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM@{DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM}}
+\index{DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM@{DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM()}{DO\_365\_Non\_Coop\_HAZ\_preventive\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ preventive thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 50s, early alerting time = 110s, bands region = NONE, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ac30f3b35f2f95f9f200d82ba3d536260}\label{classlarcfm_1_1_alerter_ac30f3b35f2f95f9f200d82ba3d536260}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_warning@{DO\_365\_Non\_Coop\_HAZ\_warning}}
+\index{DO\_365\_Non\_Coop\_HAZ\_warning@{DO\_365\_Non\_Coop\_HAZ\_warning}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_warning()}{DO\_365\_Non\_Coop\_HAZ\_warning()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+warning (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ warning thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 25s, early alerting time = 90s, bands region = NEAR 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aba4997063bc5ed27fb8c10897689dfda}\label{classlarcfm_1_1_alerter_aba4997063bc5ed27fb8c10897689dfda}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Non\_Coop\_HAZ\_warning\_SUM@{DO\_365\_Non\_Coop\_HAZ\_warning\_SUM}}
+\index{DO\_365\_Non\_Coop\_HAZ\_warning\_SUM@{DO\_365\_Non\_Coop\_HAZ\_warning\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Non\_Coop\_HAZ\_warning\_SUM()}{DO\_365\_Non\_Coop\_HAZ\_warning\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Non\+\_\+\+Coop\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365B HAZ warning thresholds Non-\/\+Cooperative, i.\+e., DTHR=2200ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 20s, early alerting time = 90s, bands region = NEAR, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ab6504d57eb0748492081ba2898ec0325}\label{classlarcfm_1_1_alerter_ab6504d57eb0748492081ba2898ec0325}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_corrective@{DO\_365\_Phase\_I\_HAZ\_corrective}}
+\index{DO\_365\_Phase\_I\_HAZ\_corrective@{DO\_365\_Phase\_I\_HAZ\_corrective}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_corrective()}{DO\_365\_Phase\_I\_HAZ\_corrective()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ corrective thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=450ft, TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s, bands region = MID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a6e739315f0ee042c06e69f6a43607a54}\label{classlarcfm_1_1_alerter_a6e739315f0ee042c06e69f6a43607a54}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_corrective\_SUM@{DO\_365\_Phase\_I\_HAZ\_corrective\_SUM}}
+\index{DO\_365\_Phase\_I\_HAZ\_corrective\_SUM@{DO\_365\_Phase\_I\_HAZ\_corrective\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_corrective\_SUM()}{DO\_365\_Phase\_I\_HAZ\_corrective\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ corrective thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=450ft, TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s, bands region = MID, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aba269d7ace47b521cb07030282463b9a}\label{classlarcfm_1_1_alerter_aba269d7ace47b521cb07030282463b9a}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_preventive@{DO\_365\_Phase\_I\_HAZ\_preventive}}
+\index{DO\_365\_Phase\_I\_HAZ\_preventive@{DO\_365\_Phase\_I\_HAZ\_preventive}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_preventive()}{DO\_365\_Phase\_I\_HAZ\_preventive()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ preventive thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=700ft, TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s, bands region = NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_abd1420e4ffe55d121ae97e4edfab75ba}\label{classlarcfm_1_1_alerter_abd1420e4ffe55d121ae97e4edfab75ba}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_preventive\_SUM@{DO\_365\_Phase\_I\_HAZ\_preventive\_SUM}}
+\index{DO\_365\_Phase\_I\_HAZ\_preventive\_SUM@{DO\_365\_Phase\_I\_HAZ\_preventive\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_preventive\_SUM()}{DO\_365\_Phase\_I\_HAZ\_preventive\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ preventive thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=700ft, TTHR=35s, TCOA=0, alerting time = 50s, early alerting time = 75s, bands region = NONE, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a3149beae130a9c70421786ea021ddfb3}\label{classlarcfm_1_1_alerter_a3149beae130a9c70421786ea021ddfb3}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_warning@{DO\_365\_Phase\_I\_HAZ\_warning}}
+\index{DO\_365\_Phase\_I\_HAZ\_warning@{DO\_365\_Phase\_I\_HAZ\_warning}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_warning()}{DO\_365\_Phase\_I\_HAZ\_warning()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ warning thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=450ft, TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s, bands region = NEAR 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aeeea1bb4dfa24ce7601d63c3df1e7782}\label{classlarcfm_1_1_alerter_aeeea1bb4dfa24ce7601d63c3df1e7782}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_I\_HAZ\_warning\_SUM@{DO\_365\_Phase\_I\_HAZ\_warning\_SUM}}
+\index{DO\_365\_Phase\_I\_HAZ\_warning\_SUM@{DO\_365\_Phase\_I\_HAZ\_warning\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_I\_HAZ\_warning\_SUM()}{DO\_365\_Phase\_I\_HAZ\_warning\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+I\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365 HAZ warning thresholds Phase I (en-\/route), i.\+e., DTHR=0.\+66nmi, ZTHR=450ft, TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s, bands region = NEAR, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a4fda1152eac208d5136ac5ddff51bd4b}\label{classlarcfm_1_1_alerter_a4fda1152eac208d5136ac5ddff51bd4b}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_corrective@{DO\_365\_Phase\_II\_HAZ\_corrective}}
+\index{DO\_365\_Phase\_II\_HAZ\_corrective@{DO\_365\_Phase\_II\_HAZ\_corrective}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_corrective()}{DO\_365\_Phase\_II\_HAZ\_corrective()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+corrective (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ corrective thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s, bands region = MID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a866644b8ceb103cb65557e66ecd1c20c}\label{classlarcfm_1_1_alerter_a866644b8ceb103cb65557e66ecd1c20c}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_corrective\_SUM@{DO\_365\_Phase\_II\_HAZ\_corrective\_SUM}}
+\index{DO\_365\_Phase\_II\_HAZ\_corrective\_SUM@{DO\_365\_Phase\_II\_HAZ\_corrective\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_corrective\_SUM()}{DO\_365\_Phase\_II\_HAZ\_corrective\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+corrective\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ corrective thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s, bands region = MID, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a2833ad34a8f915b6eb559d2f6f823884}\label{classlarcfm_1_1_alerter_a2833ad34a8f915b6eb559d2f6f823884}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_preventive@{DO\_365\_Phase\_II\_HAZ\_preventive}}
+\index{DO\_365\_Phase\_II\_HAZ\_preventive@{DO\_365\_Phase\_II\_HAZ\_preventive}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_preventive()}{DO\_365\_Phase\_II\_HAZ\_preventive()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+preventive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ preventive thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s, bands region = NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a40261f23c5ea1f4484ce88d59047947c}\label{classlarcfm_1_1_alerter_a40261f23c5ea1f4484ce88d59047947c}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_preventive\_SUM@{DO\_365\_Phase\_II\_HAZ\_preventive\_SUM}}
+\index{DO\_365\_Phase\_II\_HAZ\_preventive\_SUM@{DO\_365\_Phase\_II\_HAZ\_preventive\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_preventive\_SUM()}{DO\_365\_Phase\_II\_HAZ\_preventive\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+preventive\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ preventive thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s, bands region = NONE, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aee838a588ffc05b7144bae092f84d194}\label{classlarcfm_1_1_alerter_aee838a588ffc05b7144bae092f84d194}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_warning@{DO\_365\_Phase\_II\_HAZ\_warning}}
+\index{DO\_365\_Phase\_II\_HAZ\_warning@{DO\_365\_Phase\_II\_HAZ\_warning}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_warning()}{DO\_365\_Phase\_II\_HAZ\_warning()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+warning (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ warning thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 45s, early alerting time = 75s, bands region = NEAR 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a57f8bd3c761e72d4479aca241a0f7ab5}\label{classlarcfm_1_1_alerter_a57f8bd3c761e72d4479aca241a0f7ab5}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DO\_365\_Phase\_II\_HAZ\_warning\_SUM@{DO\_365\_Phase\_II\_HAZ\_warning\_SUM}}
+\index{DO\_365\_Phase\_II\_HAZ\_warning\_SUM@{DO\_365\_Phase\_II\_HAZ\_warning\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DO\_365\_Phase\_II\_HAZ\_warning\_SUM()}{DO\_365\_Phase\_II\_HAZ\_warning\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+DO\+\_\+365\+\_\+\+Phase\+\_\+\+II\+\_\+\+HAZ\+\_\+warning\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+DO-\/365A HAZ warning thresholds Phase II (DTA), i.\+e., DTHR=1500ft, ZTHR=450ft, TTHR=0s, TCOA=0, alerting time = 40s, early alerting time = 75s, bands region = MID, with SUM 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a66cc6ae934988f99805b3386c5d7f31e}\label{classlarcfm_1_1_alerter_a66cc6ae934988f99805b3386c5d7f31e}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Non\_Coop@{DWC\_Non\_Coop}}
+\index{DWC\_Non\_Coop@{DWC\_Non\_Coop}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Non\_Coop()}{DWC\_Non\_Coop()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Non\+\_\+\+Coop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365B Non-\/\+Cooperative Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a0af39f0f3d5924a23e1ad014c84a4f6b}\label{classlarcfm_1_1_alerter_a0af39f0f3d5924a23e1ad014c84a4f6b}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Non\_Coop\_SUM@{DWC\_Non\_Coop\_SUM}}
+\index{DWC\_Non\_Coop\_SUM@{DWC\_Non\_Coop\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Non\_Coop\_SUM()}{DWC\_Non\_Coop\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Non\+\_\+\+Coop\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365B Non-\/\+Cooperative, with SUM Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a191c2cd2e5cecdba4a5e61ec1386f9a7}\label{classlarcfm_1_1_alerter_a191c2cd2e5cecdba4a5e61ec1386f9a7}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Phase\_I@{DWC\_Phase\_I}}
+\index{DWC\_Phase\_I@{DWC\_Phase\_I}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Phase\_I()}{DWC\_Phase\_I()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Phase\+\_\+I (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365 Phase I (en-\/route). Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ace2e43afe75cba368dd91dcc593da06f}\label{classlarcfm_1_1_alerter_ace2e43afe75cba368dd91dcc593da06f}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Phase\_I\_SUM@{DWC\_Phase\_I\_SUM}}
+\index{DWC\_Phase\_I\_SUM@{DWC\_Phase\_I\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Phase\_I\_SUM()}{DWC\_Phase\_I\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Phase\+\_\+\+I\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365 Phase I (en-\/route), with SUM Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_aa267b2271fd6596887ba40ece0d07844}\label{classlarcfm_1_1_alerter_aa267b2271fd6596887ba40ece0d07844}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Phase\_II@{DWC\_Phase\_II}}
+\index{DWC\_Phase\_II@{DWC\_Phase\_II}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Phase\_II()}{DWC\_Phase\_II()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Phase\+\_\+\+II (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365A Phase II (DTA) Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a4396ed91bf4d302d9ba74132d4d116e1}\label{classlarcfm_1_1_alerter_a4396ed91bf4d302d9ba74132d4d116e1}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!DWC\_Phase\_II\_SUM@{DWC\_Phase\_II\_SUM}}
+\index{DWC\_Phase\_II\_SUM@{DWC\_Phase\_II\_SUM}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{DWC\_Phase\_II\_SUM()}{DWC\_Phase\_II\_SUM()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+DWC\+\_\+\+Phase\+\_\+\+II\+\_\+\+SUM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds as defined in RTCA DO-\/365A Phase II (DTA), with SUM. Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ac8734ea3e08c137bdb2ba9588eee40b1}\label{classlarcfm_1_1_alerter_ac8734ea3e08c137bdb2ba9588eee40b1}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!getDetectorPtr@{getDetectorPtr}}
+\index{getDetectorPtr@{getDetectorPtr}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{getDetectorPtr()}{getDetectorPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+Alerter\+::get\+Detector\+Ptr (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+detector for given alert level starting from 1. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ae0acab43a9469f9a018c7a701485cf8d}\label{classlarcfm_1_1_alerter_ae0acab43a9469f9a018c7a701485cf8d}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!getId@{getId}}
+\index{getId@{getId}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily const std\+::string \& larcfm\+::\+Alerter\+::get\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+alerter identifier. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ab916826b324f982bd1b05ffa4ed57bae}\label{classlarcfm_1_1_alerter_ab916826b324f982bd1b05ffa4ed57bae}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!getLevel@{getLevel}}
+\index{getLevel@{getLevel}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{getLevel()}{getLevel()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::get\+Level (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+threshold values of a given alert level 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a2ffb7a41b24cf99fc3c611823c0eff16}\label{classlarcfm_1_1_alerter_a2ffb7a41b24cf99fc3c611823c0eff16}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Alerter\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a752a2e92256c2d289e76d77f018cbb40}\label{classlarcfm_1_1_alerter_a752a2e92256c2d289e76d77f018cbb40}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!mostSevereAlertLevel@{mostSevereAlertLevel}}
+\index{mostSevereAlertLevel@{mostSevereAlertLevel}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{mostSevereAlertLevel()}{mostSevereAlertLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alerter\+::most\+Severe\+Alert\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+most severe alert level. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_ae7c871744864ef723c5eeeb21ecfe096}\label{classlarcfm_1_1_alerter_ae7c871744864ef723c5eeeb21ecfe096}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!setId@{setId}}
+\index{setId@{setId}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{setId()}{setId()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alerter\+::set\+Id (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id }\end{DoxyParamCaption})}
+
+Set alerter identifier. 
+\begin{DoxyParams}{Parameters}
+{\em id} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a1d6e6697ff2adda55a3de2f8b0c6eb79}\label{classlarcfm_1_1_alerter_a1d6e6697ff2adda55a3de2f8b0c6eb79}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!setLevel@{setLevel}}
+\index{setLevel@{setLevel}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{setLevel()}{setLevel()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alerter\+::set\+Level (\begin{DoxyParamCaption}\item[{int}]{level,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&}]{thresholds }\end{DoxyParamCaption})}
+
+Set the threshold values of a given alert level. \mbox{\Hypertarget{classlarcfm_1_1_alerter_a56188e12e60954d3f0c5b5e13a735248}\label{classlarcfm_1_1_alerter_a56188e12e60954d3f0c5b5e13a735248}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alerter\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{larcfm\+::\+Parameter\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a4a281883c0c5800fecbdc5e35fc55862}\label{classlarcfm_1_1_alerter_a4a281883c0c5800fecbdc5e35fc55862}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!SingleBands@{SingleBands}}
+\index{SingleBands@{SingleBands}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{SingleBands()}{SingleBands()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} larcfm\+::\+Alerter\+::\+Single\+Bands (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{detector,  }\item[{double}]{alerting\+\_\+time,  }\item[{double}]{lookahead\+\_\+time,  }\item[{const std\+::string}]{name = {\ttfamily \char`\"{}default\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds for single bands given by detector, alerting time, and lookahead time. The single bands region is NEAR 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a78f98833ada957023f879961c0f7f820}\label{classlarcfm_1_1_alerter_a78f98833ada957023f879961c0f7f820}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!TCASII@{TCASII}}
+\index{TCASII@{TCASII}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{TCASII()}{TCASII()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+TCASII (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+DAIDALUS\textquotesingle{}s ideal TCASII alerter logic \mbox{\Hypertarget{classlarcfm_1_1_alerter_a1443d9280f1f63058a96f0c74512a4d0}\label{classlarcfm_1_1_alerter_a1443d9280f1f63058a96f0c74512a4d0}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!TCASII\_RA\_THR@{TCASII\_RA\_THR}}
+\index{TCASII\_RA\_THR@{TCASII\_RA\_THR}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{TCASII\_RA\_THR()}{TCASII\_RA\_THR()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+TCASII\+\_\+\+RA\+\_\+\+THR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+TCASII-\/\+RA thresholds \mbox{\Hypertarget{classlarcfm_1_1_alerter_a99044f9e948a5d4330dc624202f8b79f}\label{classlarcfm_1_1_alerter_a99044f9e948a5d4330dc624202f8b79f}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!TCASII\_TA\_THR@{TCASII\_TA\_THR}}
+\index{TCASII\_TA\_THR@{TCASII\_TA\_THR}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{TCASII\_TA\_THR()}{TCASII\_TA\_THR()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \& larcfm\+::\+Alerter\+::\+TCASII\+\_\+\+TA\+\_\+\+THR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+TCASII-\/\+TA thresholds \mbox{\Hypertarget{classlarcfm_1_1_alerter_a5134fbb5a11ca35f7afe1241db7624e0}\label{classlarcfm_1_1_alerter_a5134fbb5a11ca35f7afe1241db7624e0}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alerter\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alerter_a6ea6c40ff69aa5946dc70ef0b7376475}\label{classlarcfm_1_1_alerter_a6ea6c40ff69aa5946dc70ef0b7376475}} 
+\index{larcfm::Alerter@{larcfm::Alerter}!WCV\_TAUMOD\_SingleBands@{WCV\_TAUMOD\_SingleBands}}
+\index{WCV\_TAUMOD\_SingleBands@{WCV\_TAUMOD\_SingleBands}!larcfm::Alerter@{larcfm::Alerter}}
+\doxysubsubsection{\texorpdfstring{WCV\_TAUMOD\_SingleBands()}{WCV\_TAUMOD\_SingleBands()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \& larcfm\+::\+Alerter\+::\+WCV\+\_\+\+TAUMOD\+\_\+\+Single\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds for DAIDALUS single bands \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\+\_\+\+TAUMOD}} , i.\+e., separation is given by cylinder of DTHR=0.\+66nmi, ZTHR=450ft, TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Alerter.\+h\item 
+Modules/\+ACCo\+RD/src/Alerter.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,74 @@
+\hypertarget{classlarcfm_1_1_generic_d_h_state_bands}{}\doxysection{larcfm\+::Generic\+DHState\+Bands Class Reference}
+\label{classlarcfm_1_1_generic_d_h_state_bands}\index{larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}}
+
+
+{\ttfamily \#include $<$Generic\+DHState\+Bands.\+h$>$}
+
+Inheritance diagram for larcfm\+::Generic\+DHState\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.848797cm]{classlarcfm_1_1_generic_d_h_state_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a406e50aa8b45d9136ec509ef805e3cb8}{set\+Distance}} (double d, const std\+::string \&unit)=0
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a7939b02b5dae03e17c69a4a2b28a1dc5}{get\+Distance}} (const std\+::string \&uni) const =0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a7f421e7857be66e2f98b9e9c6058f151}{set\+Height}} (double h, const std\+::string \&unit)=0
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_ae04c31610f14585c5b7d5bc09ebdbd0e}{get\+Height}} (const std\+::string \&unit) const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This provides an interface to classes for various conflict prevention bands. The input to these objects is the position and velocity of the ownship, the output is ranges of guidance maneuvers\+: track angles, ground speeds, and vertical speeds. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_generic_d_h_state_bands_a7939b02b5dae03e17c69a4a2b28a1dc5}\label{classlarcfm_1_1_generic_d_h_state_bands_a7939b02b5dae03e17c69a4a2b28a1dc5}} 
+\index{larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily virtual double larcfm\+::\+Generic\+DHState\+Bands\+::get\+Distance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{uni }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns the minimum horizontal separation distance \mbox{[}nmi\mbox{]} 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a964459a64a3f183e7fe68b47aad18fc3}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a8277b538016d31b060f34d7effa727a2}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa34ad8fd4e92c25f0ac27f9648572f57}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_d_h_state_bands_ae04c31610f14585c5b7d5bc09ebdbd0e}\label{classlarcfm_1_1_generic_d_h_state_bands_ae04c31610f14585c5b7d5bc09ebdbd0e}} 
+\index{larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily virtual double larcfm\+::\+Generic\+DHState\+Bands\+::get\+Height (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns the minimum vertical separation distance. \mbox{[}feet\mbox{]} 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_afbb350010b99ac6a004e8f5233f8687f}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_ad78dceb234ff72bd05c5f7f2a0afdd8a}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a847ab48fee2172584e92b451deb48cc5}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_d_h_state_bands_a406e50aa8b45d9136ec509ef805e3cb8}\label{classlarcfm_1_1_generic_d_h_state_bands_a406e50aa8b45d9136ec509ef805e3cb8}} 
+\index{larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}!setDistance@{setDistance}}
+\index{setDistance@{setDistance}!larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}}
+\doxysubsubsection{\texorpdfstring{setDistance()}{setDistance()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+DHState\+Bands\+::set\+Distance (\begin{DoxyParamCaption}\item[{double}]{d,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Sets the minimum horizontal separation distance \mbox{[}nmi\mbox{]}. When this parameter is set any existing band information is cleared. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_abb2a44bfb8a93a27a3504f52b7c628cf}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_aeb8478db1012b615cc56bf90acbd9a48}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab7f08c7ae9ab5f1ba1600474254538fe}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_d_h_state_bands_a7f421e7857be66e2f98b9e9c6058f151}\label{classlarcfm_1_1_generic_d_h_state_bands_a7f421e7857be66e2f98b9e9c6058f151}} 
+\index{larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}!setHeight@{setHeight}}
+\index{setHeight@{setHeight}!larcfm::GenericDHStateBands@{larcfm::GenericDHStateBands}}
+\doxysubsubsection{\texorpdfstring{setHeight()}{setHeight()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+DHState\+Bands\+::set\+Height (\begin{DoxyParamCaption}\item[{double}]{h,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Sets the minimum vertical separation distance \mbox{[}feet\mbox{]}. When this parameter is set any existing band information is cleared. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a7689cd77cf0b200dabcbfa8a34f27cd2}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a6b8c467f138e5f008fe1704a4c41efc6}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a22978c65eea3ad3c17d1b9734288c0ce}{larcfm\+::\+Triple\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Generic\+DHState\+Bands.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,99 @@
+\hypertarget{classlarcfm_1_1_moving_polygon2_d}{}\doxysection{larcfm\+::Moving\+Polygon2D Class Reference}
+\label{classlarcfm_1_1_moving_polygon2_d}\index{larcfm::MovingPolygon2D@{larcfm::MovingPolygon2D}}
+
+
+{\ttfamily \#include $<$Moving\+Polygon2\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a2fb30bf4614978f597b23709e66053bf}\label{classlarcfm_1_1_moving_polygon2_d_a2fb30bf4614978f597b23709e66053bf}} 
+{\bfseries Moving\+Polygon2D} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ polystart, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ polyvel, double tend)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a42d0de16b6c53d9f4eec25e01a53d477}\label{classlarcfm_1_1_moving_polygon2_d_a42d0de16b6c53d9f4eec25e01a53d477}} 
+{\bfseries Moving\+Polygon2D} (const \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \&polygon, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&polyvel, double tend)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_aeb4b806055a86f921d6075071e253721}\label{classlarcfm_1_1_moving_polygon2_d_aeb4b806055a86f921d6075071e253721}} 
+{\bfseries Moving\+Polygon2D} (const \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \&polygon, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&vels, double tend\+\_\+d)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_aaff4a5dc876c110820e28108f33b3025}\label{classlarcfm_1_1_moving_polygon2_d_aaff4a5dc876c110820e28108f33b3025}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} {\bfseries position} (double t) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d_a63f57161d1225375d3a65c36d6e9041b}{is\+Stable}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a03a25924740938bbb5b73f65cddf609e}\label{classlarcfm_1_1_moving_polygon2_d_a03a25924740938bbb5b73f65cddf609e}} 
+int {\bfseries size} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d_a150950969021ad49a239db2e690d872c}{reverse\+Order}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_aaa6ab5b1d99ff40d25925e6c1916b5f1}\label{classlarcfm_1_1_moving_polygon2_d_aaa6ab5b1d99ff40d25925e6c1916b5f1}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_ac407b24c79d2e11f7e52a6405218da73}\label{classlarcfm_1_1_moving_polygon2_d_ac407b24c79d2e11f7e52a6405218da73}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries get\+Polyvel} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a7384217be49a0a51ad2faba989e7c075}\label{classlarcfm_1_1_moving_polygon2_d_a7384217be49a0a51ad2faba989e7c075}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries get\+Polystart} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a35aba002c6477a25cb3adef846cbd3da}\label{classlarcfm_1_1_moving_polygon2_d_a35aba002c6477a25cb3adef846cbd3da}} 
+double {\bfseries get\+Tend} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a8ff8d368487b28c956f408d3e7f116b1}\label{classlarcfm_1_1_moving_polygon2_d_a8ff8d368487b28c956f408d3e7f116b1}} 
+void {\bfseries set\+Polystart} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&polystart)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a4928bfaabd23a498ac175d720cff6465}\label{classlarcfm_1_1_moving_polygon2_d_a4928bfaabd23a498ac175d720cff6465}} 
+void {\bfseries set\+Polyvel} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&polyvel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_ad72dabd946ef0816c0c5ef72a40bc74c}\label{classlarcfm_1_1_moving_polygon2_d_ad72dabd946ef0816c0c5ef72a40bc74c}} 
+void {\bfseries set\+Tend} (double tend)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a8702d96dfcacba473fe8c023c9516654}\label{classlarcfm_1_1_moving_polygon2_d_a8702d96dfcacba473fe8c023c9516654}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries polystart}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_ae6fa55d38a379d386330adef47045ab8}\label{classlarcfm_1_1_moving_polygon2_d_ae6fa55d38a379d386330adef47045ab8}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries polyvel}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a0779846f6b0468bf42aceae7f56f8efa}\label{classlarcfm_1_1_moving_polygon2_d_a0779846f6b0468bf42aceae7f56f8efa}} 
+double {\bfseries tend}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a7241f9e98554db7cdbda6c20204cdbcf}\label{classlarcfm_1_1_moving_polygon2_d_a7241f9e98554db7cdbda6c20204cdbcf}} 
+bool {\bfseries known\+Stable}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_ad0b039e7f2114e6e1aca671bd90dea5f}\label{classlarcfm_1_1_moving_polygon2_d_ad0b039e7f2114e6e1aca671bd90dea5f}} 
+bool {\bfseries known\+Unstable}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Polygon detection. Based on UNVERIFIED PVS code.
+
+A \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} contains a list of \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vertices and a corresponding list of velocities. These lists must be the same size. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a63f57161d1225375d3a65c36d6e9041b}\label{classlarcfm_1_1_moving_polygon2_d_a63f57161d1225375d3a65c36d6e9041b}} 
+\index{larcfm::MovingPolygon2D@{larcfm::MovingPolygon2D}!isStable@{isStable}}
+\index{isStable@{isStable}!larcfm::MovingPolygon2D@{larcfm::MovingPolygon2D}}
+\doxysubsubsection{\texorpdfstring{isStable()}{isStable()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Moving\+Polygon2\+D\+::is\+Stable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+return true if this polygon is \char`\"{}stable\char`\"{}, i.\+e., all vector velocities are the same \begin{DoxyReturn}{Returns}
+true, if stable 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon2_d_a150950969021ad49a239db2e690d872c}\label{classlarcfm_1_1_moving_polygon2_d_a150950969021ad49a239db2e690d872c}} 
+\index{larcfm::MovingPolygon2D@{larcfm::MovingPolygon2D}!reverseOrder@{reverseOrder}}
+\index{reverseOrder@{reverseOrder}!larcfm::MovingPolygon2D@{larcfm::MovingPolygon2D}}
+\doxysubsubsection{\texorpdfstring{reverseOrder()}{reverseOrder()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} larcfm\+::\+Moving\+Polygon2\+D\+::reverse\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Reverse order of vertices \begin{DoxyReturn}{Returns}
+new polygon 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Moving\+Polygon2\+D.\+h\item 
+Modules/\+ACCo\+RD/src/Moving\+Polygon2\+D.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,88 @@
+\hypertarget{_daidalus_file_walker_8h_source}{}\doxysection{Daidalus\+File\+Walker.\+h}
+\label{_daidalus_file_walker_8h_source}\index{Modules/ACCoRD/inc/DaidalusFileWalker.h@{Modules/ACCoRD/inc/DaidalusFileWalker.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * DaidalusFileWalker.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef DAIDALUSFILEWALKER\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define DAIDALUSFILEWALKER\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}SequenceReader.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Daidalus.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker}{DaidalusFileWalker}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{24   \textcolor{keyword}{private}:}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_sequence_reader}{SequenceReader}} sr\_;}
+\DoxyCodeLine{26   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} p\_;}
+\DoxyCodeLine{27   std::vector<double> times\_;}
+\DoxyCodeLine{28   \textcolor{keywordtype}{int} index\_;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keyword}{public}:}
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker}{DaidalusFileWalker}}(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{keywordtype}{void} resetInputFile(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keyword}{private}:}
+\DoxyCodeLine{36   \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} extraColumnsToParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader}{SequenceReader}}\& sr, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& ac\_name);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{keyword}{public}:}
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} firstTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} lastTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keywordtype}{int} getIndex() \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordtype}{double} getTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{bool} atBeginning() \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{bool} atEnd() \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} goToTime(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordtype}{bool} goToTimeStep(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keywordtype}{void} goToBeginning();}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{void} goToEnd();}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keywordtype}{void} goNext();}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keywordtype}{void} goPrev();}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{int} indexOfTime(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keyword}{static} \textcolor{keywordtype}{void} readExtraColumns(\mbox{\hyperlink{classlarcfm_1_1_daidalus}{Daidalus}}\& daa, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader}{SequenceReader}}\& sr, \textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69   \textcolor{keywordtype}{void} readState(\mbox{\hyperlink{classlarcfm_1_1_daidalus}{Daidalus}}\& daa);}
+\DoxyCodeLine{70   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker_a8d0af8523c9f3acb788227d7f05b0dbe}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker_abec10091563a7b709febe8b5b56ec867}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker_ab3f3408c257817184c3fdfc0569f4254}{getMessage}}();}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_file_walker_a7fdc63c9b21f14548f88f77914d9c3bf}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DAIDALUSFILEWALKER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

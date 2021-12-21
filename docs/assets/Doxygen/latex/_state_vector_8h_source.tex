@@ -1,0 +1,52 @@
+\hypertarget{_state_vector_8h_source}{}\doxysection{State\+Vector.\+h}
+\label{_state_vector_8h_source}\index{Modules/ACCoRD/inc/StateVector.h@{Modules/ACCoRD/inc/StateVector.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * StateVector}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * a three element tuple}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef STATEVECTOR\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define STATEVECTOR\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \{}
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}     ss;    \textcolor{comment}{// s ;}}
+\DoxyCodeLine{29     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}  vv;    \textcolor{comment}{// v ;}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double}    tt ;   \textcolor{comment}{// t;}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ss=\mbox{\hyperlink{classlarcfm_1_1_vect3_aa4b584e343aa48e58c2ee22048c8adb8}{Vect3::ZERO}}(), \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vv=\mbox{\hyperlink{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}{Velocity::ZEROV}}(), \textcolor{keyword}{const} \textcolor{keywordtype}{double} tt=0);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv, \textcolor{keywordtype}{double} t );}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} makeXYZ(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y, \textcolor{keywordtype}{double} z, \textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} gs, \textcolor{keywordtype}{double} vs, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     std::pair<Vect3,Velocity> pair() \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s() \textcolor{keyword}{const};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v() \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keywordtype}{double} t() \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48    \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* STATEVECTOR\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

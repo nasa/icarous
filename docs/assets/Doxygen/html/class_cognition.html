@@ -84,7 +84,7 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Reset</b> ()</td></tr>
 <tr class="memdesc:aa3347c50fb9e895f7439ebd9db358a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset event management framework. <br /></td></tr>
 <tr class="separator:aa3347c50fb9e895f7439ebd9db358a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6cea9736284d76ad3f166095eba6027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#aa6cea9736284d76ad3f166095eba6027">InputVehicleState</a> (const larcfm::Position &amp;pos, const larcfm::Velocity &amp;vel, const double heading)</td></tr>
+<tr class="memitem:aa6cea9736284d76ad3f166095eba6027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#aa6cea9736284d76ad3f166095eba6027">InputVehicleState</a> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;pos, const <a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> &amp;vel, const double heading)</td></tr>
 <tr class="memdesc:aa6cea9736284d76ad3f166095eba6027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input current aircraft state data.  <a href="class_cognition.html#aa6cea9736284d76ad3f166095eba6027">More...</a><br /></td></tr>
 <tr class="separator:aa6cea9736284d76ad3f166095eba6027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affcbfdca38a2306aba13d726186a9092"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#affcbfdca38a2306aba13d726186a9092">InputFlightPlanData</a> (const std::string &amp;plan_id, const std::list&lt; <a class="el" href="structwaypoint__t.html">waypoint_t</a> &gt; &amp;waypoints, const double initHeading, bool repair, double repairTurnRate)</td></tr>
@@ -96,7 +96,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Reset</b> ()</td></tr
 <tr class="memitem:ae9e506b76993a176a98b376fd7e29050"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#ae9e506b76993a176a98b376fd7e29050">InputParameters</a> (const <a class="el" href="structcognition__params__t.html">cognition_params_t</a> &amp;new_params)</td></tr>
 <tr class="memdesc:ae9e506b76993a176a98b376fd7e29050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input paramaters directly.  <a href="class_cognition.html#ae9e506b76993a176a98b376fd7e29050">More...</a><br /></td></tr>
 <tr class="separator:ae9e506b76993a176a98b376fd7e29050"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a736e8977902097a1bb45b499a8c156bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#a736e8977902097a1bb45b499a8c156bf">InputDitchStatus</a> (const larcfm::Position &amp;ditch_site, const double todAltitude, const bool ditch_requested)</td></tr>
+<tr class="memitem:a736e8977902097a1bb45b499a8c156bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#a736e8977902097a1bb45b499a8c156bf">InputDitchStatus</a> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;ditch_site, const double todAltitude, const bool ditch_requested)</td></tr>
 <tr class="memdesc:a736e8977902097a1bb45b499a8c156bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input ditch status.  <a href="class_cognition.html#a736e8977902097a1bb45b499a8c156bf">More...</a><br /></td></tr>
 <tr class="separator:a736e8977902097a1bb45b499a8c156bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17115253c12fa1f8aa163c1148e93635"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cognition.html#a17115253c12fa1f8aa163c1148e93635">InputMergeStatus</a> (const int merge_status)</td></tr>
@@ -283,7 +283,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Cognition::InputDitchStatus </td>
           <td>(</td>
-          <td class="paramtype">const larcfm::Position &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;&#160;</td>
           <td class="paramname"><em>ditch_site</em>, </td>
         </tr>
         <tr>
@@ -559,13 +559,13 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Cognition::InputVehicleState </td>
           <td>(</td>
-          <td class="paramtype">const larcfm::Position &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;&#160;</td>
           <td class="paramname"><em>pos</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const larcfm::Velocity &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> &amp;&#160;</td>
           <td class="paramname"><em>vel</em>, </td>
         </tr>
         <tr>

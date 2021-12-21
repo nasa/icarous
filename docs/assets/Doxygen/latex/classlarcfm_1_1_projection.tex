@@ -1,0 +1,184 @@
+\hypertarget{classlarcfm_1_1_projection}{}\doxysection{larcfm\+::Projection Class Reference}
+\label{classlarcfm_1_1_projection}\index{larcfm::Projection@{larcfm::Projection}}
+
+
+{\ttfamily \#include $<$Projection.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Euclidean\+Projection \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{create\+Projection}} (double lat, double lon, double alt)
+\item 
+static Euclidean\+Projection \mbox{\hyperlink{classlarcfm_1_1_projection_a388ab1536da4ba96ad3899e76cca0f57}{create\+Projection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+static Euclidean\+Projection \mbox{\hyperlink{classlarcfm_1_1_projection_a2aa2e33b39e0f40da23ff7cd8d095642}{create\+Projection}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_projection_a85908ab61899a2477969bed071fa6060}{projection\+Conflict\+Range}} (double lat, double accuracy)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_projection_a3c2f3323ad210805c12eb2fac115ba2f}{projection\+Max\+Range}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_projection_ad7918b8f54abebd72ab4f0f6eaf1e363}{set\+Projection\+Type}} (Projection\+Type t)
+\item 
+static Projection\+Type \mbox{\hyperlink{classlarcfm_1_1_projection_ab40db762008de3f4057eebcefd71566b}{get\+Projection\+Type\+From\+String}} (std\+::string s)
+\item 
+static Projection\+Type \mbox{\hyperlink{classlarcfm_1_1_projection_a1c5c78de1ea65540a18640febce29b82}{get\+Projection\+Type}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a621747f8afea80794c3bef982d5511ac}\label{classlarcfm_1_1_projection_a621747f8afea80794c3bef982d5511ac}} 
+static Euclidean\+Projection {\bfseries projection} = Euclidean\+Projection()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a364cb7827610a737216d701bee4fe30e}\label{classlarcfm_1_1_projection_a364cb7827610a737216d701bee4fe30e}} 
+static Projection\+Type {\bfseries ptype} = projection\+\_\+type\+\_\+value\+\_\+\+\_\+
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A static holding class for universal projection (Spherical Earth to Euclidean plane) information. ~\newline
+ All projection objects should be retrieved from this class.
+
+Remember that the given projection point becomes the origin of the Euclidean space, so to preserve absolute altitude (above sea level) information in the Euclidean space, it may be necessary to make the projection point\textquotesingle{}s altitude zero. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a388ab1536da4ba96ad3899e76cca0f57}\label{classlarcfm_1_1_projection_a388ab1536da4ba96ad3899e76cca0f57}} 
+\index{larcfm::Projection@{larcfm::Projection}!createProjection@{createProjection}}
+\index{createProjection@{createProjection}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{createProjection()}{createProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Euclidean\+Projection larcfm\+::\+Projection\+::create\+Projection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns a new projection for the current type with the given reference point.
+
+Note that in the projected Euclidean frame, if two points are made using the same projection, their {\itshape relative} altitudes will be consistent, but their {\itshape absolute} altitudes may have changed (the reference point is subtracted). If you need to have the same absolute altitude values in the geodetic and Euclidean frames, the reference point should have a zero altitude.
+
+For example, if you call p2 = Projection.\+create\+Projection(p1).project(p1), p2 will have an altitude of zero. If you instead call p2 = \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{Projection.\+create\+Projection}}(p1.\+zero\+Alt(0)).project(p1), p2 will have the same altitude as p1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & reference point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new projection 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a2aa2e33b39e0f40da23ff7cd8d095642}\label{classlarcfm_1_1_projection_a2aa2e33b39e0f40da23ff7cd8d095642}} 
+\index{larcfm::Projection@{larcfm::Projection}!createProjection@{createProjection}}
+\index{createProjection@{createProjection}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{createProjection()}{createProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Euclidean\+Projection larcfm\+::\+Projection\+::create\+Projection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns a new projection for the current type with the given reference point. This will return an altitude-\/preserving projection against the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} if it is lat/lon. If it is Euclidean, the projection will be against the \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a9e62dc3bb950b63f1c90a9facbdd32e3}{Lat\+Lon\+Alt.\+ZERO}} point.
+
+Note that in the projected Euclidean frame, if two points are made using the same projection, their {\itshape relative} altitudes will be consistent, but their {\itshape absolute} altitudes may have changed (the reference point is subtracted). If you need to have the same absolute altitude values in the geodetic and Euclidean frames, the reference point should have a zero altitude.
+
+For example, if you call p2 = Projection.\+create\+Projection(p1).project(p1), p2 will have an altitude of zero. If you instead call p2 = \mbox{\hyperlink{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}{Projection.\+create\+Projection}}(p1.\+zero\+Alt(0)).project(p1), p2 will have the same altitude as p1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & reference point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new projection 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}\label{classlarcfm_1_1_projection_a5927440c70b04a27239922f1bfb89961}} 
+\index{larcfm::Projection@{larcfm::Projection}!createProjection@{createProjection}}
+\index{createProjection@{createProjection}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{createProjection()}{createProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Euclidean\+Projection larcfm\+::\+Projection\+::create\+Projection (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns a new projection for the current type with the given reference point.
+
+Note that in the projected Euclidean frame, if two points are made using the same projection, their {\itshape relative} altitudes will be consistent, but their {\itshape absolute} altitudes may have changed (the reference point is subtracted). If you need to have the same absolute altitude values in the geodetic and Euclidean frames, the reference point should have a zero altitude.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude of reference point \\
+\hline
+{\em lon} & longitude of reference point \\
+\hline
+{\em alt} & altitude of reference point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new projection 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a1c5c78de1ea65540a18640febce29b82}\label{classlarcfm_1_1_projection_a1c5c78de1ea65540a18640febce29b82}} 
+\index{larcfm::Projection@{larcfm::Projection}!getProjectionType@{getProjectionType}}
+\index{getProjectionType@{getProjectionType}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{getProjectionType()}{getProjectionType()}}
+{\footnotesize\ttfamily Projection\+Type larcfm\+::\+Projection\+::get\+Projection\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the current Projection\+Type
+
+\begin{DoxyReturn}{Returns}
+type of projection 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_ab40db762008de3f4057eebcefd71566b}\label{classlarcfm_1_1_projection_ab40db762008de3f4057eebcefd71566b}} 
+\index{larcfm::Projection@{larcfm::Projection}!getProjectionTypeFromString@{getProjectionTypeFromString}}
+\index{getProjectionTypeFromString@{getProjectionTypeFromString}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{getProjectionTypeFromString()}{getProjectionTypeFromString()}}
+{\footnotesize\ttfamily Projection\+Type larcfm\+::\+Projection\+::get\+Projection\+Type\+From\+String (\begin{DoxyParamCaption}\item[{std\+::string}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Given a string representation of a Projection\+Type, return the Projection\+Type
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & name of projection type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+projection type 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a85908ab61899a2477969bed071fa6060}\label{classlarcfm_1_1_projection_a85908ab61899a2477969bed071fa6060}} 
+\index{larcfm::Projection@{larcfm::Projection}!projectionConflictRange@{projectionConflictRange}}
+\index{projectionConflictRange@{projectionConflictRange}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{projectionConflictRange()}{projectionConflictRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Projection\+::projection\+Conflict\+Range (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{accuracy }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Geodetic projections into the Euclidean frame, for various reasons, tend to lose accuracy over long distances or when close to the poles. This can be countered by examining trajectories as shorter segments at a time. ~\newline
+ This is already done in Detector and Stratway, but not in any other tools. For \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i}{CDII}}, it is best to break up the ownship\textquotesingle{}s plan in this way. For \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} and \mbox{\hyperlink{classlarcfm_1_1_intent_bands}{Intent\+Bands}}, it is better to break up the traffic in this way.
+
+This return an estimate on the suggested maximum segment size, depending on the current projection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & -\/ latitude \mbox{[}rad\mbox{]} \\
+\hline
+{\em accuracy} & -\/ desired accuracy (allowable error) \mbox{[}m\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the maximum length of a trajectory segment at the given latitude that preserves the desired accuracy. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_a3c2f3323ad210805c12eb2fac115ba2f}\label{classlarcfm_1_1_projection_a3c2f3323ad210805c12eb2fac115ba2f}} 
+\index{larcfm::Projection@{larcfm::Projection}!projectionMaxRange@{projectionMaxRange}}
+\index{projectionMaxRange@{projectionMaxRange}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{projectionMaxRange()}{projectionMaxRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Projection\+::projection\+Max\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This is a range about which the projection will completely break down and start producing nonsensical answers. Attempting to use the projection at ranges greater than this is an error state (at ranges less than this but greater than the conflict\+Range, it may still be unacceptably inaccurate, however).
+
+\begin{DoxyReturn}{Returns}
+maximum range for the projection (in meters). ~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projection_ad7918b8f54abebd72ab4f0f6eaf1e363}\label{classlarcfm_1_1_projection_ad7918b8f54abebd72ab4f0f6eaf1e363}} 
+\index{larcfm::Projection@{larcfm::Projection}!setProjectionType@{setProjectionType}}
+\index{setProjectionType@{setProjectionType}!larcfm::Projection@{larcfm::Projection}}
+\doxysubsubsection{\texorpdfstring{setProjectionType()}{setProjectionType()}}
+{\footnotesize\ttfamily void larcfm\+::\+Projection\+::set\+Projection\+Type (\begin{DoxyParamCaption}\item[{Projection\+Type}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set the projection to a new type. This is a global change.
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & type of projection \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Projection.\+h\item 
+Modules/\+ACCo\+RD/src/Projection.\+cpp\end{DoxyCompactItemize}

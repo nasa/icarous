@@ -1,0 +1,149 @@
+\hypertarget{_general_plan_writer_8h_source}{}\doxysection{General\+Plan\+Writer.\+h}
+\label{_general_plan_writer_8h_source}\index{Modules/ACCoRD/inc/GeneralPlanWriter.h@{Modules/ACCoRD/inc/GeneralPlanWriter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * GeneralPlanWriter.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *  Created on: Mar 8, 2017}}
+\DoxyCodeLine{11 \textcolor{comment}{ *      Author: ghagen}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef GENERALPLANWRITER\_H}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define GENERALPLANWRITER\_H}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}GeneralPlan.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}SeparatedOutput.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{63 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_general_plan_writer}{GeneralPlanWriter}} : \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{64 \textcolor{keyword}{private}:}
+\DoxyCodeLine{65     \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{66     \mbox{\hyperlink{classlarcfm_1_1_separated_output}{SeparatedOutput}} output;}
+\DoxyCodeLine{67     \textcolor{keywordtype}{bool} latlon;}
+\DoxyCodeLine{68     \textcolor{keywordtype}{bool} trkgsvs;}
+\DoxyCodeLine{69     \textcolor{keywordtype}{bool} display\_time;}
+\DoxyCodeLine{70     \textcolor{keywordtype}{bool} first\_line;}
+\DoxyCodeLine{71     \textcolor{keywordtype}{bool} display\_units;}
+\DoxyCodeLine{72     \textcolor{keywordtype}{bool} polygons; \textcolor{comment}{// includes polygons (needs extra header)}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{bool} source;}
+\DoxyCodeLine{74     \textcolor{keywordtype}{bool} time2;}
+\DoxyCodeLine{75     \textcolor{keywordtype}{int} precision;}
+\DoxyCodeLine{76     \textcolor{keywordtype}{int} latLonExtraPrecision;}
+\DoxyCodeLine{77     \textcolor{keywordtype}{int} lines\_i;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{int} num;}
+\DoxyCodeLine{79     std::string fname;}
+\DoxyCodeLine{80     PolyPath::PathMode mode;}
+\DoxyCodeLine{81     \textcolor{keywordtype}{bool} modedefined;}
+\DoxyCodeLine{82     std::ostream* fw;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{public}:}
+\DoxyCodeLine{87     \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a7d815cafb99b0f78ca90011b172d4e68}{GeneralPlanWriter}}();}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_adee263cdb9c80258d59d819bcd1538c8}{open}}(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_adee263cdb9c80258d59d819bcd1538c8}{open}}(std::ostream* writer);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} close();}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} isTrkGsVs() \textcolor{keyword}{const};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keywordtype}{void} setTrkGsVs(\textcolor{keywordtype}{bool} trkgsvs);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     \textcolor{keywordtype}{bool} hasPolygons() \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a5d48a0e9a26661552cfb316e60550d7a}{setPolygons}}(\textcolor{keywordtype}{bool} p);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111     \textcolor{keywordtype}{int} getPrecision() \textcolor{keyword}{const};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113     \textcolor{keywordtype}{void} setPrecision(\textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115     \textcolor{keywordtype}{int} getLatLonExtraPrecision() \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{void} setLatLonExtraPrecision(\textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a42d0cf3fe719cda09102e151c6530971}{isOutputTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_adcb6f78dfcb15ad5ed9d9659e1a80fad}{setOutputTime}}(\textcolor{keywordtype}{bool} display\_time);}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{132     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ac71a919d14cf6ebdd0362af20c9b5efe}{isOutputUnits}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{137     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a4eda4a6fb6e193ee43e2ca075544baf1}{setOutputUnits}}(\textcolor{keywordtype}{bool} display\_units);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_aaf691b872f6f4811fc4170a91a842d2a}{setColumnDelimiterTab}}();}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{147     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ada12bdd7fe8a74b17c8afa7eab633929}{setColumnDelimiterComma}}();}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{152     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a981c685107277e25ffbf175b2a13797d}{setColumnDelimiterSpace}}();}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{158     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a35da4206626c9759debb2623ef650f46}{addComment}}(\textcolor{keyword}{const} std::string\& comment);}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a4dae5864b2f84c0169794db6d2982edb}{setParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pr);}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{171     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ac6a120d4621174aff7754d5a0327f793}{setPolyPathMode}}(PolyPath::PathMode m);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{177     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a0febecd8723013bcdc82282679a7bc25}{clearPolyPathMode}}();}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a9a83add0781d1a6535679f25144e7cca}{setPolyPathParameters}}(\textcolor{keyword}{const} std::vector<GeneralPlan>\& list);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181     \textcolor{keywordtype}{void} setContainmentParameter(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}\& gp, \textcolor{keywordtype}{double} activation\_time);}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}\& gp);}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& p, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p);}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193     \textcolor{keywordtype}{void} writePlan(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& p);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{199     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a52c95f0f74388bfa447524fdd55a4fcd}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{205     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_ae0eb5cb9b94819dc18098b62c4885b84}{lines}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{bool} isLatLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210     \textcolor{keyword}{static} \textcolor{keywordtype}{void} write(\textcolor{keyword}{const} std::string\& filename, \textcolor{keyword}{const} std::vector<GeneralPlan> plist, \textcolor{keyword}{const} std::vector<double> activeTimes);}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212     \textcolor{keyword}{static} \textcolor{keywordtype}{void} write(\textcolor{keyword}{const} std::string\& filename, \textcolor{keyword}{const} std::vector<GeneralPlan> plist);}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_afa7c2e3e612d7b44a338d1a9a8c09565}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a256857c68e6c5d2b5ad02a523ab7a319}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220     std::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a454ea0f0acedeb4ecef6f8c0420bdae0}{getMessage}}();}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222     std::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_writer_a9ae9d247eeb96f01f7423515cb40f222}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{225 \};}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_GENERALPLANWRITER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

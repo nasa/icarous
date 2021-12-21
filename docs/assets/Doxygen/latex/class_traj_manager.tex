@@ -18,13 +18,13 @@ void \mbox{\hyperlink{class_traj_manager_a45e6c05ae8fdc9178c78fed132912764}{Read
 \begin{DoxyCompactList}\small\item\em Read parameters from file. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_traj_manager_acfefed23cbe0ae49f2b1a046c41a2347}{Update\+Dubins\+Planner\+Parameters}} (\mbox{\hyperlink{struct_dubins_params}{Dubins\+Params\+\_\+t}} \&params)
 \begin{DoxyCompactList}\small\item\em Update dubins planner parameters. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}{Find\+Path}} (std\+::string plan\+ID, larcfm\+::\+Position from\+Position, larcfm\+::\+Position to\+Position, larcfm\+::\+Velocity from\+Velocity, larcfm\+::\+Velocity to\+Velocity)
+int \mbox{\hyperlink{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}{Find\+Path}} (std\+::string plan\+ID, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} from\+Position, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} to\+Position, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} from\+Velocity, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} to\+Velocity)
 \begin{DoxyCompactList}\small\item\em Compute path. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}{Get\+Total\+Waypoints}} (std\+::string plan\+ID)
 \begin{DoxyCompactList}\small\item\em Get the Total Waypoints. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_traj_manager_a7bce4c6c916027d7149fa3757158a893}{Get\+Waypoint}} (std\+::string plan\+ID, int wpid, \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} \&wp)
 \begin{DoxyCompactList}\small\item\em Get the Waypoint object. \end{DoxyCompactList}\item 
-larcfm\+::\+Plan $\ast$ \mbox{\hyperlink{class_traj_manager_a2873a4044713f90051474b43ec324383}{Get\+Plan}} (std\+::string plan\+ID)
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ \mbox{\hyperlink{class_traj_manager_a2873a4044713f90051474b43ec324383}{Get\+Plan}} (std\+::string plan\+ID)
 \begin{DoxyCompactList}\small\item\em Get pointer to Plan object. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_a98320dba7d693e779f4e2a9f0cdcbb92}\label{class_traj_manager_a98320dba7d693e779f4e2a9f0cdcbb92}} 
 void {\bfseries Clear\+All\+Plans} ()
@@ -34,11 +34,11 @@ void {\bfseries Clear\+Fences} ()
 \begin{DoxyCompactList}\small\item\em Clear fences. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_traj_manager_ab09a1d7f560de06fbf93e3730af6fb76}{Input\+Geofence\+Data}} (int type, int index, int total\+Vertices, double floor, double ceiling, double pos\mbox{[}$\,$\mbox{]}\mbox{[}2\mbox{]})
 \begin{DoxyCompactList}\small\item\em Input geofence. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_traj_manager_a4878a4a9cf29f8cec2015b56c6891153}{Input\+Geofence\+Data}} (int type, int index, int total\+Vertices, double floor, double ceiling, std\+::vector$<$ larcfm\+::\+Position $>$ \&vertices)
+void \mbox{\hyperlink{class_traj_manager_a4878a4a9cf29f8cec2015b56c6891153}{Input\+Geofence\+Data}} (int type, int index, int total\+Vertices, double floor, double ceiling, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} $>$ \&vertices)
 \begin{DoxyCompactList}\small\item\em Input geofence. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_traj_manager_ad029102a4fb513146d4b4bf396f464ae}{Input\+Flight\+Plan}} (const std\+::string \&plan\+\_\+id, const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&waypoints, const double init\+Heading, bool repair, double repair\+Turn\+Rate)
 \begin{DoxyCompactList}\small\item\em Input a flightplan. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}{Input\+Traffic}} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, larcfm\+::\+Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm\+::\+Velocity \&velocity, double time)
+int \mbox{\hyperlink{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}{Input\+Traffic}} (std\+::string \mbox{\hyperlink{structcallsign}{callsign}}, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&velocity, double time)
 \begin{DoxyCompactList}\small\item\em Input traffic data. \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{class_traj_manager_a023ebd8ba7069b48add51d9a0c6910d2}{Plan\+To\+String}} (std\+::string plan\+ID)
 \begin{DoxyCompactList}\small\item\em Convert plan to string. \end{DoxyCompactList}\item 
@@ -48,35 +48,35 @@ void \mbox{\hyperlink{class_traj_manager_a146a0c73232ee8b9bc156834b13ae1ef}{Comb
 \begin{DoxyCompactList}\small\item\em Combine planA with planB from given index. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_traj_manager_ae0afdb2cba65f1e7bfea706753f82c73}{Set\+Plan\+Offset}} (std\+::string plan\+ID, int n, double offset)
 \begin{DoxyCompactList}\small\item\em Set the time Offset for given plan. \end{DoxyCompactList}\item 
-larcfm\+::\+Position \mbox{\hyperlink{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}{Get\+Plan\+Position}} (std\+::string plan\+ID, double t)
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \mbox{\hyperlink{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}{Get\+Plan\+Position}} (std\+::string plan\+ID, double t)
 \begin{DoxyCompactList}\small\item\em Get the position on plan at given t. \end{DoxyCompactList}\item 
-trajectory\+Monitor\+Data\+\_\+t \mbox{\hyperlink{class_traj_manager_a110b698f40430e8cba4507d73e141155}{Monitor\+Trajectory}} (double time, std\+::string plan\+ID, larcfm\+::\+Position pos, larcfm\+::\+Velocity vel, int next\+WP1, int next\+WP2)
+trajectory\+Monitor\+Data\+\_\+t \mbox{\hyperlink{class_traj_manager_a110b698f40430e8cba4507d73e141155}{Monitor\+Trajectory}} (double time, std\+::string plan\+ID, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} pos, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} vel, int next\+WP1, int next\+WP2)
 \begin{DoxyCompactList}\small\item\em Monitor trajectory. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_traj_manager_aed928f616c72752436415104756cd49d}\label{class_traj_manager_aed928f616c72752436415104756cd49d}} 
-larcfm\+::\+Position {\bfseries start\+Pos}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries start\+Pos}
 \begin{DoxyCompactList}\small\item\em start position for planning \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}\label{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}} 
-larcfm\+::\+Position {\bfseries end\+Pos}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries end\+Pos}
 \begin{DoxyCompactList}\small\item\em goal position for planning \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_a59cc793d864e494b58fe835b09e52036}\label{class_traj_manager_a59cc793d864e494b58fe835b09e52036}} 
-larcfm\+::\+Velocity {\bfseries start\+Vel}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries start\+Vel}
 \begin{DoxyCompactList}\small\item\em start velocity for planning \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}\label{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}} 
-larcfm\+::\+Velocity {\bfseries end\+Vel}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries end\+Vel}
 \begin{DoxyCompactList}\small\item\em goal velocity for planning \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 int64\+\_\+t \mbox{\hyperlink{class_traj_manager_a166ccb9b94627ec79dcf91aa5171bc7f}{Find\+Dubins\+Path}} (std\+::string plan\+ID)
 \begin{DoxyCompactList}\small\item\em Compute new path. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{class_traj_manager_aeb22fbc67e8ce8417064541e043a8c8a}{Find\+Time\+To\+Fence\+Violation}} (larcfm\+::\+Poly3D polygon, larcfm\+::\+Vect3 so, larcfm\+::\+Velocity vel)
+double \mbox{\hyperlink{class_traj_manager_aeb22fbc67e8ce8417064541e043a8c8a}{Find\+Time\+To\+Fence\+Violation}} (\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{larcfm\+::\+Poly3D}} polygon, \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} so, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} vel)
 \begin{DoxyCompactList}\small\item\em Function to compute projected time to violation to all fence edges. \end{DoxyCompactList}\item 
-std\+::vector$<$ double $>$ \mbox{\hyperlink{class_traj_manager_a726097bdf7594aa0d94bcf4aaa9930ac}{Compute\+Plan\+Offsets}} (const std\+::string plan\+ID, int next\+WP, larcfm\+::\+Position current\+Pos, larcfm\+::\+Velocity current\+Vel, double time\+At\+Pos)
+std\+::vector$<$ double $>$ \mbox{\hyperlink{class_traj_manager_a726097bdf7594aa0d94bcf4aaa9930ac}{Compute\+Plan\+Offsets}} (const std\+::string plan\+ID, int next\+WP, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} current\+Pos, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} current\+Vel, double time\+At\+Pos)
 \begin{DoxyCompactList}\small\item\em Compute cross track (perpendicular deviation), along track (longitudinal deviations) and time delays. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{class_traj_manager_a583b8515d76d2ae07628a78e3726a44c}{Check\+Line\+Of\+Sightconflict}} (larcfm\+::\+Position start, larcfm\+::\+Position end)
+bool \mbox{\hyperlink{class_traj_manager_a583b8515d76d2ae07628a78e3726a44c}{Check\+Line\+Of\+Sightconflict}} (\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} start, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} end)
 \begin{DoxyCompactList}\small\item\em Check line of sight conflict. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_a257756133fde7a93afe1a324b78fc15f}\label{class_traj_manager_a257756133fde7a93afe1a324b78fc15f}} 
 void {\bfseries Log\+Input} ()
@@ -100,10 +100,10 @@ int {\bfseries num\+Plans}
 std\+::ofstream {\bfseries log}
 \begin{DoxyCompactList}\small\item\em log holder \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_ad78426499dd4317635b7b5dfd1cd9b44}\label{class_traj_manager_ad78426499dd4317635b7b5dfd1cd9b44}} 
-std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries flight\+Plans}
+std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ {\bfseries flight\+Plans}
 \begin{DoxyCompactList}\small\item\em list of plans \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_a17106374cd0ee1f04f300623f983c377}\label{class_traj_manager_a17106374cd0ee1f04f300623f983c377}} 
-std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries traffic\+Plans}
+std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ {\bfseries traffic\+Plans}
 \begin{DoxyCompactList}\small\item\em list of plans for traffic vehicles (intent information) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_traj_manager_a0cac578371392e0b5c3be7f1cb612855}\label{class_traj_manager_a0cac578371392e0b5c3be7f1cb612855}} 
 std\+::list$<$ \mbox{\hyperlink{structfence_object}{fence\+Object}} $>$ {\bfseries fence\+List}
@@ -134,7 +134,7 @@ std\+::map$<$ std\+::string, \mbox{\hyperlink{structp_object}{p\+Object}} $>$ {\
 \index{TrajManager@{TrajManager}!CheckLineOfSightconflict@{CheckLineOfSightconflict}}
 \index{CheckLineOfSightconflict@{CheckLineOfSightconflict}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{CheckLineOfSightconflict()}{CheckLineOfSightconflict()}}
-{\footnotesize\ttfamily bool Traj\+Manager\+::\+Check\+Line\+Of\+Sightconflict (\begin{DoxyParamCaption}\item[{larcfm\+::\+Position}]{start,  }\item[{larcfm\+::\+Position}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily bool Traj\+Manager\+::\+Check\+Line\+Of\+Sightconflict (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{start,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -162,7 +162,7 @@ std\+::map$<$ std\+::string, \mbox{\hyperlink{structp_object}{p\+Object}} $>$ {\
 \index{TrajManager@{TrajManager}!ComputePlanOffsets@{ComputePlanOffsets}}
 \index{ComputePlanOffsets@{ComputePlanOffsets}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{ComputePlanOffsets()}{ComputePlanOffsets()}}
-{\footnotesize\ttfamily std\+::vector$<$ double $>$ Traj\+Manager\+::\+Compute\+Plan\+Offsets (\begin{DoxyParamCaption}\item[{const std\+::string}]{plan\+ID,  }\item[{int}]{next\+WP,  }\item[{larcfm\+::\+Position}]{current\+Pos,  }\item[{larcfm\+::\+Velocity}]{current\+Vel,  }\item[{double}]{time\+At\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ Traj\+Manager\+::\+Compute\+Plan\+Offsets (\begin{DoxyParamCaption}\item[{const std\+::string}]{plan\+ID,  }\item[{int}]{next\+WP,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{current\+Pos,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{current\+Vel,  }\item[{double}]{time\+At\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -198,7 +198,7 @@ int64\+\_\+t total number of waypoints computed
 \index{TrajManager@{TrajManager}!FindPath@{FindPath}}
 \index{FindPath@{FindPath}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{FindPath()}{FindPath()}}
-{\footnotesize\ttfamily int Traj\+Manager\+::\+Find\+Path (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID,  }\item[{larcfm\+::\+Position}]{from\+Position,  }\item[{larcfm\+::\+Position}]{to\+Position,  }\item[{larcfm\+::\+Velocity}]{from\+Velocity,  }\item[{larcfm\+::\+Velocity}]{to\+Velocity }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int Traj\+Manager\+::\+Find\+Path (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{from\+Position,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{to\+Position,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{from\+Velocity,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{to\+Velocity }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -220,7 +220,7 @@ int total number of waypoints
 \index{TrajManager@{TrajManager}!FindTimeToFenceViolation@{FindTimeToFenceViolation}}
 \index{FindTimeToFenceViolation@{FindTimeToFenceViolation}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{FindTimeToFenceViolation()}{FindTimeToFenceViolation()}}
-{\footnotesize\ttfamily double Traj\+Manager\+::\+Find\+Time\+To\+Fence\+Violation (\begin{DoxyParamCaption}\item[{larcfm\+::\+Poly3D}]{polygon,  }\item[{larcfm\+::\+Vect3}]{so,  }\item[{larcfm\+::\+Velocity}]{vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily double Traj\+Manager\+::\+Find\+Time\+To\+Fence\+Violation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{larcfm\+::\+Poly3D}}}]{polygon,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}}}]{so,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -238,7 +238,7 @@ double time to violation
 \index{TrajManager@{TrajManager}!GetPlan@{GetPlan}}
 \index{GetPlan@{GetPlan}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
-{\footnotesize\ttfamily larcfm\+::\+Plan $\ast$ Traj\+Manager\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ Traj\+Manager\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -246,13 +246,13 @@ double time to violation
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Plan$\ast$ 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}}$\ast$ 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}\label{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}} 
 \index{TrajManager@{TrajManager}!GetPlanPosition@{GetPlanPosition}}
 \index{GetPlanPosition@{GetPlanPosition}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{GetPlanPosition()}{GetPlanPosition()}}
-{\footnotesize\ttfamily larcfm\+::\+Position Traj\+Manager\+::\+Get\+Plan\+Position (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID,  }\item[{double}]{t }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} Traj\+Manager\+::\+Get\+Plan\+Position (\begin{DoxyParamCaption}\item[{std\+::string}]{plan\+ID,  }\item[{double}]{t }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -262,7 +262,7 @@ larcfm\+::\+Plan$\ast$
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Position 
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}\label{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}} 
 \index{TrajManager@{TrajManager}!GetTotalWaypoints@{GetTotalWaypoints}}
@@ -340,7 +340,7 @@ int
 \index{TrajManager@{TrajManager}!InputGeofenceData@{InputGeofenceData}}
 \index{InputGeofenceData@{InputGeofenceData}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{InputGeofenceData()}{InputGeofenceData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void Traj\+Manager\+::\+Input\+Geofence\+Data (\begin{DoxyParamCaption}\item[{int}]{type,  }\item[{int}]{index,  }\item[{int}]{total\+Vertices,  }\item[{double}]{floor,  }\item[{double}]{ceiling,  }\item[{std\+::vector$<$ larcfm\+::\+Position $>$ \&}]{vertices }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Traj\+Manager\+::\+Input\+Geofence\+Data (\begin{DoxyParamCaption}\item[{int}]{type,  }\item[{int}]{index,  }\item[{int}]{total\+Vertices,  }\item[{double}]{floor,  }\item[{double}]{ceiling,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} $>$ \&}]{vertices }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -361,7 +361,7 @@ int
 \index{TrajManager@{TrajManager}!InputTraffic@{InputTraffic}}
 \index{InputTraffic@{InputTraffic}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{InputTraffic()}{InputTraffic()}}
-{\footnotesize\ttfamily int Traj\+Manager\+::\+Input\+Traffic (\begin{DoxyParamCaption}\item[{std\+::string}]{callsign,  }\item[{larcfm\+::\+Position \&}]{position,  }\item[{larcfm\+::\+Velocity \&}]{velocity,  }\item[{double}]{time }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int Traj\+Manager\+::\+Input\+Traffic (\begin{DoxyParamCaption}\item[{std\+::string}]{callsign,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{position,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{velocity,  }\item[{double}]{time }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -381,7 +381,7 @@ int
 \index{TrajManager@{TrajManager}!MonitorTrajectory@{MonitorTrajectory}}
 \index{MonitorTrajectory@{MonitorTrajectory}!TrajManager@{TrajManager}}
 \doxysubsubsection{\texorpdfstring{MonitorTrajectory()}{MonitorTrajectory()}}
-{\footnotesize\ttfamily trajectory\+Monitor\+Data\+\_\+t Traj\+Manager\+::\+Monitor\+Trajectory (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{std\+::string}]{plan\+ID,  }\item[{larcfm\+::\+Position}]{pos,  }\item[{larcfm\+::\+Velocity}]{vel,  }\item[{int}]{next\+WP1,  }\item[{int}]{next\+WP2 }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily trajectory\+Monitor\+Data\+\_\+t Traj\+Manager\+::\+Monitor\+Trajectory (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{std\+::string}]{plan\+ID,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{pos,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{vel,  }\item[{int}]{next\+WP1,  }\item[{int}]{next\+WP2 }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

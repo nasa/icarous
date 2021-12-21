@@ -1,0 +1,136 @@
+\hypertarget{_priority_8h_source}{}\doxysection{Priority.\+h}
+\label{_priority_8h_source}\index{Modules/ACCoRD/inc/Priority.h@{Modules/ACCoRD/inc/Priority.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Priority Rules Computation  }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Authors: Alwyn Goodloe, Cesar Munoz, and Anthony Narkawicz}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{6 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{7 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{9 \textcolor{comment}{ */}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef PRIORITY\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define PRIORITY\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{comment}{//\#include "{}UnitSymbols.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}PriorityCore.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{32 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_priority}{Priority}}  \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{private}:}
+\DoxyCodeLine{35     \mbox{\hyperlink{classlarcfm_1_1_priority}{Priority}}() \{}
+\DoxyCodeLine{36         \textcolor{comment}{// Do not allow these to be created.}}
+\DoxyCodeLine{37     \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}{TIME\_MANEUVER\_RESTRICTION}};}
+\DoxyCodeLine{43     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}{TIME\_PROXIMITY}};}
+\DoxyCodeLine{45     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}{TIME\_LOOKAHEAD}};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{49     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a23e75841fd80e81a5fa08d75943bcee7}{get\_tc}}()\{}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units::to}}(\textcolor{stringliteral}{"{}s"{}}, \mbox{\hyperlink{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}{PriorityCore::TC}});}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{54     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a9694d2dba60ec6780bd826606015d6f6}{get\_cruise\_def}}()\{}
+\DoxyCodeLine{55         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units::to}}(\textcolor{stringliteral}{"{}fpm"{}}, \mbox{\hyperlink{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}{PriorityCore::CRUISE\_DEF}});}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{59     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a779705db616c958a00c02d9c36bdd418}{get\_vertical\_deadband}}()\{}
+\DoxyCodeLine{60         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units::to}}(\textcolor{stringliteral}{"{}fpm"{}}, \mbox{\hyperlink{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}{PriorityCore::VERTICAL\_DEADBAND}});}
+\DoxyCodeLine{61     \}}
+\DoxyCodeLine{62     }
+\DoxyCodeLine{64     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_acd6e45f582dfc9a25c21f8dcf372f6ba}{get\_lateral\_deadband}}()\{}
+\DoxyCodeLine{65         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units::to}}(\textcolor{stringliteral}{"{}kn"{}}, \mbox{\hyperlink{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}{PriorityCore::LATERAL\_DEADBAND}});}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{69     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_ae91e61a19ac9cb73a67acc92c1a174f7}{get\_lateral\_relative\_deadband}}()\{}
+\DoxyCodeLine{70         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units::to}}(\textcolor{stringliteral}{"{}kn"{}}, PriorityCore::LATERAL\_RELATIVE\_DEADBAND);}
+\DoxyCodeLine{71     \}}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_aa41b6ff9c911a8ef090f20b955649c9e}{get\_time\_maneuver\_restriction}}()\{}
+\DoxyCodeLine{76         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}{TIME\_MANEUVER\_RESTRICTION}};}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78     }
+\DoxyCodeLine{80     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a2b62e2292d48f9e4b3fa8da23f8178d6}{get\_time\_proximity}}()\{}
+\DoxyCodeLine{81         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}{TIME\_PROXIMITY}};}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{84     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_a37e0a8d69a0a1838538f73682938fd7a}{get\_time\_lookahead}}()\{}
+\DoxyCodeLine{85         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}{TIME\_LOOKAHEAD}};}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{94         \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a26a87d6200a2b11a0dedc8cdb9712676}{set\_tc}}(\textcolor{keywordtype}{double} tc)\{}
+\DoxyCodeLine{95       \mbox{\hyperlink{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}{PriorityCore::TC}} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}s"{}}, tc);}
+\DoxyCodeLine{96     \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{103     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_ac601b77e2753588c2c41a2616bbbb8ba}{set\_cruise\_def}}(\textcolor{keywordtype}{double} CruiseDef)\{}
+\DoxyCodeLine{104         \mbox{\hyperlink{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}{PriorityCore::CRUISE\_DEF}} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}fpm"{}}, CruiseDef);}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{112     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a1b1653e533149354110e82180309e2fd}{set\_vertical\_deadband}}(\textcolor{keywordtype}{double} VerticalDeadband)\{}
+\DoxyCodeLine{113         \mbox{\hyperlink{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}{PriorityCore::VERTICAL\_DEADBAND}} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}fpm"{}}, VerticalDeadband);}
+\DoxyCodeLine{114     \}}
+\DoxyCodeLine{115     }
+\DoxyCodeLine{121     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a03f34c455716ebd0925e49d24c777ac2}{set\_lateral\_deadband}}(\textcolor{keywordtype}{double} LateralDeadband)\{}
+\DoxyCodeLine{122         \mbox{\hyperlink{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}{PriorityCore::LATERAL\_DEADBAND}} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}kn"{}}, LateralDeadband);}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     }
+\DoxyCodeLine{132     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a04428595c70f112f79e6a1adc364673b}{set\_lateral\_relative\_deadband}}(\textcolor{keywordtype}{double} LateralRelativeDeadband)\{}
+\DoxyCodeLine{133         PriorityCore::LATERAL\_RELATIVE\_DEADBAND = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}kn"{}}, LateralRelativeDeadband);}
+\DoxyCodeLine{134     \}}
+\DoxyCodeLine{135     }
+\DoxyCodeLine{137     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_adb63c5f6ffade9b499cacc59d1de0191}{set\_time\_maneuver\_restriction}}(\textcolor{keywordtype}{double} TimeManeuverRestriction)\{}
+\DoxyCodeLine{138         \mbox{\hyperlink{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}{TIME\_MANEUVER\_RESTRICTION}} = TimeManeuverRestriction;}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140     }
+\DoxyCodeLine{142     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a0d70a81ca66c51026b29809d925a8265}{set\_time\_proximity}}(\textcolor{keywordtype}{double} TimeProximity)\{}
+\DoxyCodeLine{143         \mbox{\hyperlink{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}{TIME\_PROXIMITY}} = TimeProximity;}
+\DoxyCodeLine{144     \}}
+\DoxyCodeLine{145     }
+\DoxyCodeLine{147     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_priority_a2d4ed731c18fdc9889381e514075455e}{set\_time\_lookahead}}(\textcolor{keywordtype}{double} TimeLookahead)\{}
+\DoxyCodeLine{148          \mbox{\hyperlink{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}{TIME\_LOOKAHEAD}} = TimeLookahead;}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{169     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_ac10162decfa39f81065752b0a5bcc319}{lateral\_only}} (}
+\DoxyCodeLine{170             \textcolor{keywordtype}{double} sox, \textcolor{keywordtype}{double} soy, \textcolor{keywordtype}{double} soz, }
+\DoxyCodeLine{171             \textcolor{keywordtype}{double} vox, \textcolor{keywordtype}{double} voy, \textcolor{keywordtype}{double} voz, }
+\DoxyCodeLine{172             \textcolor{keywordtype}{double} six, \textcolor{keywordtype}{double} siy, \textcolor{keywordtype}{double} siz,}
+\DoxyCodeLine{173             \textcolor{keywordtype}{double} vix, \textcolor{keywordtype}{double} viy, \textcolor{keywordtype}{double} viz );}
+\DoxyCodeLine{174     }
+\DoxyCodeLine{194     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_ae40701847659ab82cb4fb6934183bf16}{check}} (}
+\DoxyCodeLine{195         \textcolor{keywordtype}{double} sox, \textcolor{keywordtype}{double} soy, \textcolor{keywordtype}{double} soz, }
+\DoxyCodeLine{196         \textcolor{keywordtype}{double} vox, \textcolor{keywordtype}{double} voy, \textcolor{keywordtype}{double} voz,}
+\DoxyCodeLine{197         \textcolor{keywordtype}{bool} mo,}
+\DoxyCodeLine{198         \textcolor{keywordtype}{double} six, \textcolor{keywordtype}{double} siy, \textcolor{keywordtype}{double} siz,}
+\DoxyCodeLine{199         \textcolor{keywordtype}{double} vix, \textcolor{keywordtype}{double} viy, \textcolor{keywordtype}{double} viz,}
+\DoxyCodeLine{200         \textcolor{keywordtype}{bool} mi);}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{221     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_a5de07d6006362e6226a0446cd85d5e75}{checkLL}}(}
+\DoxyCodeLine{222             \textcolor{keywordtype}{double} lato, \textcolor{keywordtype}{double} lono, \textcolor{keywordtype}{double} alto,}
+\DoxyCodeLine{223             \textcolor{keywordtype}{double} trko, \textcolor{keywordtype}{double} gso, \textcolor{keywordtype}{double} vso,}
+\DoxyCodeLine{224             \textcolor{keywordtype}{bool} mo,}
+\DoxyCodeLine{225             \textcolor{keywordtype}{double} lati, \textcolor{keywordtype}{double} loni, \textcolor{keywordtype}{double} alti,}
+\DoxyCodeLine{226             \textcolor{keywordtype}{double} trki, \textcolor{keywordtype}{double} gsi, \textcolor{keywordtype}{double} vsi,}
+\DoxyCodeLine{227             \textcolor{keywordtype}{bool} mi);}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{240     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_a5c6cf8dc04070639f80a067780fee9f4}{check}}(}
+\DoxyCodeLine{241             \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& po, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{bool} mo,}
+\DoxyCodeLine{242             \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{bool} mi);}
+\DoxyCodeLine{243 \};}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 \}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* PRIORITY\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

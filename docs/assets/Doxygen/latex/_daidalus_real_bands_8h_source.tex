@@ -1,0 +1,237 @@
+\hypertarget{_daidalus_real_bands_8h_source}{}\doxysection{Daidalus\+Real\+Bands.\+h}
+\label{_daidalus_real_bands_8h_source}\index{Modules/ACCoRD/inc/DaidalusRealBands.h@{Modules/ACCoRD/inc/DaidalusRealBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2018-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DAIDALUSREALBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DAIDALUSREALBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Integerval.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}BandsRange.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}DaidalusIntegerBands.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}IndexLevelT.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}DaidalusCore.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}DaidalusParameters.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}RecoveryInformation.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}BandsMofN.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}BandsHysteresis.h"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}ColorValue.h"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{31 \textcolor{comment}{//\#include "{}DaidalusCore.h"{}}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands}{DaidalusIntegerBands}} \{}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{private}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{comment}{  /*** PRIVATE VARIABLES */}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} mod\_;  \textcolor{comment}{// If mod\_ > 0, bands are circular modulo this value}}
+\DoxyCodeLine{42   \textcolor{comment}{// When the following values are different from 0, they overwrite the values in the}}
+\DoxyCodeLine{43   \textcolor{comment}{// parameters.}}
+\DoxyCodeLine{44   \textcolor{comment}{// min\_rel (max\_rel) is the positive distance from current value to minimum (maximum) value.}}
+\DoxyCodeLine{45   \textcolor{comment}{// When mod\_ > 0, min\_rel, max\_rel in [0,mod\_/2]}}
+\DoxyCodeLine{46   \textcolor{keywordtype}{double} min\_rel\_; \textcolor{comment}{// Relative min value. A negative value represents val-\/min, i.e., from val to min}}
+\DoxyCodeLine{47   \textcolor{keywordtype}{double} max\_rel\_; \textcolor{comment}{// Relative max value. A negative value represents max-\/val, i.e., from val to max}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{comment}{  /**** CACHED VARIABLES ****/}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{bool} outdated\_; \textcolor{comment}{// bool to control re-\/computation of cached values}}
+\DoxyCodeLine{52   \textcolor{keywordtype}{int} checked\_;  \textcolor{comment}{// Cached status of input values. Negative unchecked, 0 invalid, 1 valid}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54   \textcolor{comment}{/* Cached lists of aircraft indices, alert\_levels, and lookahead times, sorted by indices, contributing to peripheral}}
+\DoxyCodeLine{55 \textcolor{comment}{   * bands listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR */}}
+\DoxyCodeLine{56   std::vector<std::vector<IndexLevelT> > acs\_peripheral\_bands\_;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{comment}{/* Cached lists of aircraft indices, alert\_levels, and lookahead times, sorted by indices, contributing to any type}}
+\DoxyCodeLine{59 \textcolor{comment}{   * of bands listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR.}}
+\DoxyCodeLine{60 \textcolor{comment}{   * These lists are computed as the concatenation of acs\_conflict\_bands and acs\_peripheral\_bands. */}}
+\DoxyCodeLine{61   std::vector<std::vector<IndexLevelT> > acs\_bands\_;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   std::vector<BandsRange> ranges\_;     \textcolor{comment}{// Cached list of bands ranges}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{comment}{/*}}
+\DoxyCodeLine{66 \textcolor{comment}{   * recovery\_time\_ is the time to recovery from violation.}}
+\DoxyCodeLine{67 \textcolor{comment}{   * Negative infinity means no possible recovery.}}
+\DoxyCodeLine{68 \textcolor{comment}{   * NaN means no recovery bands are computed (either because there is no conflict or}}
+\DoxyCodeLine{69 \textcolor{comment}{   * because they are disabled)}}
+\DoxyCodeLine{70 \textcolor{comment}{   */}}
+\DoxyCodeLine{71   \textcolor{keywordtype}{double} recovery\_time\_;   \textcolor{comment}{// Cached recovery time}}
+\DoxyCodeLine{72   \textcolor{keywordtype}{int} recovery\_nfactor\_; \textcolor{comment}{// Number of times the recovery volume was reduced}}
+\DoxyCodeLine{73   \textcolor{comment}{/*}}
+\DoxyCodeLine{74 \textcolor{comment}{   * recovery\_horizontal\_distance and recovery\_vertical\_distance is the}}
+\DoxyCodeLine{75 \textcolor{comment}{   * distance guaranteed by the recovery bands. Negative infinity means no possible recovery.}}
+\DoxyCodeLine{76 \textcolor{comment}{   * NaN means no recovery bands are computed (either because there is no conflict of}}
+\DoxyCodeLine{77 \textcolor{comment}{   * because they are disabled)}}
+\DoxyCodeLine{78 \textcolor{comment}{   */}}
+\DoxyCodeLine{79   \textcolor{keywordtype}{double} recovery\_horizontal\_distance\_; \textcolor{comment}{// Cached recovery horizontal\_separaton}}
+\DoxyCodeLine{80   \textcolor{keywordtype}{double} recovery\_vertical\_distance\_; \textcolor{comment}{// Cached recovery horizontal\_separaton}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \textcolor{keywordtype}{double} min\_val\_; \textcolor{comment}{// Absolute min value (min\_val= min when mod == 0 \&\& !rel)}}
+\DoxyCodeLine{83   \textcolor{keywordtype}{double} max\_val\_; \textcolor{comment}{// Absolute max value (max\_val = max when mod == 0 \&\& !rel)}}
+\DoxyCodeLine{84   \textcolor{keywordtype}{double} min\_relative\_; \textcolor{comment}{// Computed relative min value}}
+\DoxyCodeLine{85   \textcolor{keywordtype}{double} max\_relative\_; \textcolor{comment}{// Computed relative max value}}
+\DoxyCodeLine{86   \textcolor{keywordtype}{bool}   circular\_; \textcolor{comment}{// True if bands is fully circular}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{comment}{  /**** HYSTERESIS VARIABLES ****/}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90   \mbox{\hyperlink{classlarcfm_1_1_bands_hysteresis}{BandsHysteresis}} bands\_hysteresis\_;}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{public}:}
+\DoxyCodeLine{93   \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}}(\textcolor{keywordtype}{double} mod=0);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95   \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}}\& b);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} get\_recovery(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} instantaneous\_bands(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} max\_delta\_resolution(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} saturate\_corrective\_bands(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keywordtype}{int} dta\_status) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119   \textcolor{comment}{// If necessary to be defined by the subclasses}}
+\DoxyCodeLine{120   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_special\_configuration(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keywordtype}{int} dta\_status) \{\}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{double} get\_min\_val\_() \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124   \textcolor{keywordtype}{double} get\_max\_val\_() \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{keywordtype}{double} get\_mod() \textcolor{keyword}{const};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_ac9505897a97021eedbc0e1a6d5c5cb20}{set\_min\_max\_rel}}(\textcolor{keywordtype}{double} min\_rel, \textcolor{keywordtype}{double} max\_rel);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{private}:}
+\DoxyCodeLine{136   \textcolor{keywordtype}{double} min\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   \textcolor{keywordtype}{double} max\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \textcolor{keywordtype}{bool} set\_input(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{int} dta\_status);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keyword}{public}:}
+\DoxyCodeLine{143   \textcolor{keywordtype}{bool} kinematic\_conflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{144       \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* detector, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} alerting\_time, \textcolor{keywordtype}{int} dta\_status);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146   \textcolor{keywordtype}{int} length(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& interval(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150   BandsRegion::Region region(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{155   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a64823b0ae5b59f39c708ce042cd29903}{indexOf}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{160   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_abbe71768706a4d142772a1373dad622d}{stale}}();}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{165   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_ac154bec176ab1b154344e126729d7943}{clear\_hysteresis}}();}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{170   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a3c5068ffd8a9f43af937d0c9d26ed476}{isFresh}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{175   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a8a7baed1e3bba03d4ba1d10064a107a2}{refresh}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{180   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a0e0e6d00f1846fe980c09ce14f0c7344}{force\_compute}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{keyword}{private}:}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_ae271e02567910b3b74546aff3ef81b63}{peripheral\_aircraft}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{int} conflict\_region);}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{keyword}{public}:}
+\DoxyCodeLine{197   \textcolor{keyword}{const} std::vector<IndexLevelT>\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a1c1407d045300bea11695b493a3086de}{acs\_peripheral\_bands}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{int} conflict\_region);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{202   \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a6ec71229a22434262dff600d711269ea}{recoveryInformation}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{207   \textcolor{keyword}{const} std::vector<BandsRange>\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_aa9d6a48fc248afdf3cf611f318e88ddd}{ranges}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 \textcolor{keyword}{private}:}
+\DoxyCodeLine{215   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a5eb029af97f2fe65ace7c29e499c0739}{color\_values}}(std::vector<ColorValue>\& lcvs, \textcolor{keyword}{const} std::vector<IntervalSet>\& none\_sets, \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{bool} recovery, \textcolor{keywordtype}{int} last\_region);}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{220   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_ab51dd420e010194cd80b36cba265595c}{saturateNoneIntervalSet}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset) \textcolor{keyword}{const};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{228   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a0c849323a21c1016a68b4bb2792fa549}{compute\_none\_bands}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& none\_set\_region, \textcolor{keyword}{const} std::vector<IndexLevelT>\& ilts,}
+\DoxyCodeLine{229       \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery,}
+\DoxyCodeLine{230       \textcolor{keywordtype}{bool} recovery\_case, \textcolor{keywordtype}{double} B, \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{237   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_ab372b59d74c3ed17c6dacc5ec4caec25}{compute\_recovery\_bands}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& none\_set\_region, \textcolor{keyword}{const} std::vector<IndexLevelT>\& ilts,}
+\DoxyCodeLine{238       \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{244   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a2b905e25c6d974dc862c57b7ad171f8d}{compute\_region}}(std::vector<IntervalSet>\& none\_sets, \textcolor{keywordtype}{int} conflict\_region, \textcolor{keywordtype}{int} corrective\_region, \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{249   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a508840ec0ab959b0491ef604784b3c40}{compute}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 \textcolor{keyword}{public}:}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{259   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a3cf51920cdc4d26b6fc9b6935d6d9a1a}{resolution}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{267   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a93ecbfb4d27581bf66610e49f26fd369}{raw\_resolution}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{273   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a2f6c384c5fe836071d16c3b534dc30e7}{preferred\_direction}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{282   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a97022a5d46cce709f0c3481a2e71df21}{last\_time\_to\_maneuver}}(\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder);}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 \textcolor{keyword}{private}:}
+\DoxyCodeLine{285   \textcolor{keywordtype}{int} maxdown(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287   \textcolor{keywordtype}{int} maxup(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{296   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a99a5cf204fa9c1defa4ea491d596c7e5}{add\_noneset}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset, \textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub) \textcolor{keyword}{const};}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 \textcolor{keyword}{public}:}
+\DoxyCodeLine{303   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a1a48cb6b237d80d6256301dfbaafe448}{toIntervalSet}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset, \textcolor{keyword}{const} std::vector<Integerval>\& l, \textcolor{keywordtype}{double} scal, \textcolor{keywordtype}{double} add) \textcolor{keyword}{const};}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{309   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands_a9ac169ff3875c5ba5f2974b2c5e36937}{none\_bands}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{310       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} any\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{313       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} all\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{316       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318   \textcolor{keywordtype}{bool} all\_green(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{319       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321   \textcolor{keywordtype}{bool} any\_green(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{322       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324   std::string rawString() \textcolor{keyword}{const};}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330 \};}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \}}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

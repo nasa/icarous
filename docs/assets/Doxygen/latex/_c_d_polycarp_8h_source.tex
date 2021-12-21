@@ -1,0 +1,92 @@
+\hypertarget{_c_d_polycarp_8h_source}{}\doxysection{CDPolycarp.\+h}
+\label{_c_d_polycarp_8h_source}\index{Modules/ACCoRD/inc/CDPolycarp.h@{Modules/ACCoRD/inc/CDPolycarp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * CDPolycarp.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *  Created on: Dec 23, 2015}}
+\DoxyCodeLine{11 \textcolor{comment}{ *      Author: ghagen}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef CDPOLYCARP\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define CDPOLYCARP\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}DetectionPolygon.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Poly2D.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}Horizontal.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}MovingPolygon2D.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}MovingPolygon3D.h"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp}{CDPolycarp}}: \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}} \{}
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31 \textcolor{keyword}{private}:}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   std::vector<double> tin;}
+\DoxyCodeLine{34   std::vector<double> tout;}
+\DoxyCodeLine{35   std::vector<double> tca;}
+\DoxyCodeLine{36   std::vector<double> tdist;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keywordtype}{double} buff;}
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} fac;}
+\DoxyCodeLine{40   std::string id;}
+\DoxyCodeLine{41   \textcolor{keywordtype}{bool} checkNice;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{public}:}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp}{CDPolycarp}}();}
+\DoxyCodeLine{47   \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp}{CDPolycarp}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} f, \textcolor{keywordtype}{bool} check);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{bool} isNicePolygon(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& mp) \textcolor{keyword}{const};}
+\DoxyCodeLine{58   \textcolor{keywordtype}{bool} isNicePolygon(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& mp) \textcolor{keyword}{const};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \textcolor{keywordtype}{double} getBuff() \textcolor{keyword}{const};}
+\DoxyCodeLine{61   \textcolor{keywordtype}{void} setBuff(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{62   \textcolor{keywordtype}{double} getFac() \textcolor{keyword}{const};}
+\DoxyCodeLine{63   \textcolor{keywordtype}{void} setFac(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{72   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp_a21652dd3633283463e995612f60cde35}{setCheckNice}}(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{73   \textcolor{keywordtype}{bool} isCheckNice();}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{81   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp_af162f2edd0507c40d28e90ed7b9315c5}{definitelyInside}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si) \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{89   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp_a4b22f6fc1656eb31cbd07b8dcb8469c2}{definitelyOutside}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si) \textcolor{keyword}{const};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{99   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp_ade061b992a8072761ad38f7a3a8b594e}{nearEdge}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si, \textcolor{keywordtype}{double} h, \textcolor{keywordtype}{double} v) \textcolor{keyword}{const};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{102   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{103   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{104   \textcolor{keywordtype}{bool} violation(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si) \textcolor{keyword}{const};}
+\DoxyCodeLine{105   \textcolor{keywordtype}{bool} conflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{106   \textcolor{keywordtype}{bool} conflictDetection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) ;}
+\DoxyCodeLine{107   std::vector<double> getTimesIn() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{108   std::vector<double> getTimesOut() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{109   std::vector<double> getCriticalTimesOfConflict() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{110   std::vector<double> getDistancesAtCriticalTimes() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{111   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{112   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* copy() \textcolor{keyword}{const};}
+\DoxyCodeLine{113   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{114   std::string getClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{115   std::string getIdentifier() \textcolor{keyword}{const};}
+\DoxyCodeLine{116   \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{117   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp_a15ae1fcf2bca7a682f584679e7db99c7}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* d) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 \};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_CDPOLYCARP\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

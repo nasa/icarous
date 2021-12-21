@@ -1,0 +1,43 @@
+\hypertarget{_error_reporter_8h_source}{}\doxysection{Error\+Reporter.\+h}
+\label{_error_reporter_8h_source}\index{Modules/ACCoRD/inc/ErrorReporter.h@{Modules/ACCoRD/inc/ErrorReporter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * ErrorReporter}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef ERRORREPORTER\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define ERRORREPORTER\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22  \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{hasError}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{33   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{hasMessage}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{42   \textcolor{keyword}{virtual} std::string \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{getMessage}}() = 0;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{52   \textcolor{keyword}{virtual} std::string \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{getMessageNoClear}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{\string~ErrorReporter}}() \{ \textcolor{comment}{/* empty */} \};}
+\DoxyCodeLine{55 \};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ERRORREPORTER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,138 @@
+\hypertarget{classlarcfm_1_1_c_d_poly_iter2_d}{}\doxysection{larcfm\+::CDPoly\+Iter2D Class Reference}
+\label{classlarcfm_1_1_c_d_poly_iter2_d}\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter2_d_afb4c6d09c6e2730015f7035064219e56}{get\+Times\+In}} () const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter2_d_a7a3c743424f9d78c398c5cc91b1861ef}{get\+Times\+Out}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a9bbae24127ccc58bd68787b21a6fc8ec}\label{classlarcfm_1_1_c_d_poly_iter2_d_a9bbae24127ccc58bd68787b21a6fc8ec}} 
+int {\bfseries get\+Conflicts} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a831ab4b8efad721d95de290f961afed9}\label{classlarcfm_1_1_c_d_poly_iter2_d_a831ab4b8efad721d95de290f961afed9}} 
+double {\bfseries get\+Time\+In} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter2_d_a523712acbe44afcf53320c23df8cdac1}{get\+Time\+Out}} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a19f0e1a94b98d233f82e0577d0633d82}\label{classlarcfm_1_1_c_d_poly_iter2_d_a19f0e1a94b98d233f82e0577d0633d82}} 
+double {\bfseries get\+Time\+In} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter2_d_ab0378fbc3f3a72f8fd346fdc7ea180c1}{get\+Time\+Out}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_aafce9a8104746978abeb7c6403caa713}\label{classlarcfm_1_1_c_d_poly_iter2_d_aafce9a8104746978abeb7c6403caa713}} 
+double {\bfseries poly2\+D\+\_\+detection\+\_\+micro} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mpi, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, double t0, bool t0in, double t1, bool t1in, double minstep) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter2_d_a92d4b0cdafc80afd8b0816b514b2fac3}{poly\+Iter2\+D\+\_\+detection}} (double T, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mpi, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, double t\+Step)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_aa77b482b20f5f3e5a7db0fd1e22ed80c}\label{classlarcfm_1_1_c_d_poly_iter2_d_aa77b482b20f5f3e5a7db0fd1e22ed80c}} 
+int {\bfseries conflicts}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a57bfd876370bcdcf47ed103c9131f4dc}\label{classlarcfm_1_1_c_d_poly_iter2_d_a57bfd876370bcdcf47ed103c9131f4dc}} 
+std\+::vector$<$ double $>$ {\bfseries timesin}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_ab7eab2d5bd1d8c729a5a8d508d2eb9b8}\label{classlarcfm_1_1_c_d_poly_iter2_d_ab7eab2d5bd1d8c729a5a8d508d2eb9b8}} 
+std\+::vector$<$ double $>$ {\bfseries timesout}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_acff3f0da051107f189ee9b05988eb963}\label{classlarcfm_1_1_c_d_poly_iter2_d_acff3f0da051107f189ee9b05988eb963}} 
+static const double {\bfseries micro\+Step\+Num} = 10.\+0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_ab0378fbc3f3a72f8fd346fdc7ea180c1}\label{classlarcfm_1_1_c_d_poly_iter2_d_ab0378fbc3f3a72f8fd346fdc7ea180c1}} 
+\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDPoly\+Iter2\+D\+::get\+Time\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. Note that this is a relative time.
+\end{DoxyReturn}
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. ~\newline
+ Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a523712acbe44afcf53320c23df8cdac1}\label{classlarcfm_1_1_c_d_poly_iter2_d_a523712acbe44afcf53320c23df8cdac1}} 
+\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDPoly\+Iter2\+D\+::get\+Time\+Out (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. Note that this is a relative time.
+\end{DoxyReturn}
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. ~\newline
+ Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_afb4c6d09c6e2730015f7035064219e56}\label{classlarcfm_1_1_c_d_poly_iter2_d_afb4c6d09c6e2730015f7035064219e56}} 
+\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}!getTimesIn@{getTimesIn}}
+\index{getTimesIn@{getTimesIn}!larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsubsection{\texorpdfstring{getTimesIn()}{getTimesIn()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter2\+D\+::get\+Times\+In (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to loss of separation. If time is negative then there is no conflict. Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a7a3c743424f9d78c398c5cc91b1861ef}\label{classlarcfm_1_1_c_d_poly_iter2_d_a7a3c743424f9d78c398c5cc91b1861ef}} 
+\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}!getTimesOut@{getTimesOut}}
+\index{getTimesOut@{getTimesOut}!larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsubsection{\texorpdfstring{getTimesOut()}{getTimesOut()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter2\+D\+::get\+Times\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. Note that this is a relative time.
+\end{DoxyReturn}
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. ~\newline
+ Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter2_d_a92d4b0cdafc80afd8b0816b514b2fac3}\label{classlarcfm_1_1_c_d_poly_iter2_d_a92d4b0cdafc80afd8b0816b514b2fac3}} 
+\index{larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}!polyIter2D\_detection@{polyIter2D\_detection}}
+\index{polyIter2D\_detection@{polyIter2D\_detection}!larcfm::CDPolyIter2D@{larcfm::CDPolyIter2D}}
+\doxysubsubsection{\texorpdfstring{polyIter2D\_detection()}{polyIter2D\_detection()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDPoly\+Iter2\+D\+::poly\+Iter2\+D\+\_\+detection (\begin{DoxyParamCaption}\item[{double}]{T,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&}]{mpi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{double}]{t\+Step }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em T} & lookahead time \\
+\hline
+{\em pi} & polygon \\
+\hline
+{\em vi} & velocity vector for polygon \\
+\hline
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if ownship will enter loss with polygon pi within lookahead time T 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CDPoly\+Iter2\+D.\+h\item 
+Modules/\+ACCo\+RD/src/CDPoly\+Iter2\+D.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,230 @@
+\hypertarget{classlarcfm_1_1_e_n_u_projection}{}\doxysection{larcfm\+::ENUProjection Class Reference}
+\label{classlarcfm_1_1_e_n_u_projection}\index{larcfm::ENUProjection@{larcfm::ENUProjection}}
+
+
+{\ttfamily \#include $<$ENUProjection.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}{ENUProjection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a1041331239153252c664a1e5df489fa8}{ENUProjection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a17ea9c694f43589172952a2f2b52b3be}{ENUProjection}} (double lat, double lon, double alt)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0733e7b1624c99b68c8cc13a2a1522d0}{$\sim$\+ENUProjection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa95ec9e8ed466bca1ede513cbe7fd144}{make\+New}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a7eb59a1556b53f1fecd3345789ffc88e}{make\+New}} (double lat, double lon, double alt) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a9545219fb094f23cf60b163f8bcf8c4e}{conflict\+Range}} (double latitude, double accuracy) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa739b5c3edd04b4223accf795ce38601}{max\+Range}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0e88e1d4f3282b51a1d56872653b2033}{get\+Projection\+Point}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ad1dde6591141fb2a85dc00555c106cc0}{project2}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a7d768c5d790f4da8ec07e5ae3426082d}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a47a2d42221fd99b2c1a4176e69f54fbe}{project\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&xy, double alt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a063fc64f225a83e6b4aa280271974470}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&xyz) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a76d8d177b13b1d3d032801cd9de4f38b}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a68328a85db6b9f7e3c5ebb422f3684b6}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa0408d57746707ea5f71ea409f9451f4}{inverse\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a50f684fde4e59e519e2cb184b399c568}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a89a7047bc8df1961a4dd7032fa09a77d}\label{classlarcfm_1_1_e_n_u_projection_a89a7047bc8df1961a4dd7032fa09a77d}} 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries project} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0a0ee149a900e4a59c6c917929102891}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0c42be2127842216f707707c41a4a9f8}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a7b12a7249c26cd65c86e33672b4e0122}\label{classlarcfm_1_1_e_n_u_projection_a7b12a7249c26cd65c86e33672b4e0122}} 
+double {\bfseries proj\+Alt}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a9326e0a360ff9ab4c387a4efc84ed212}\label{classlarcfm_1_1_e_n_u_projection_a9326e0a360ff9ab4c387a4efc84ed212}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries ref}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a32b4777033db74132521952dbd1f80c0}\label{classlarcfm_1_1_e_n_u_projection_a32b4777033db74132521952dbd1f80c0}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries lla\+Ref}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class creates a local Euclidean projection around a given point. This projection may be used to transform geodetic coordinates (\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} objects) into this Euclidean frame, using the \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project()}} method. Also points within this frame, may be found in geodetic coordinates with the \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}{inverse()}} method. As long as the points are close to the projection point, the errors will be very small.
+
+This is equivalent to a ENU (or geodetic tangent) projection (a form of orthographic projection). It distorts distances from the tangent point, compressing them more as the distance increases (similar to a picture of a planet from distant space). ~\newline
+ Note that this projection should be considered to have a hard limit of \mbox{\hyperlink{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}{Great\+Circle.\+spherical\+\_\+earth\+\_\+radius}} as the maximum allowed distance from the tangent reference point, and significant distortion may occur at much smaller distances.
+
+Note\+: projection objects should never be made directly, and instead should be retrieved via Projection.\+get\+Projection() 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}\label{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!ENUProjection@{ENUProjection}}
+\index{ENUProjection@{ENUProjection}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{ENUProjection()}{ENUProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+ENUProjection\+::\+ENUProjection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a1041331239153252c664a1e5df489fa8}\label{classlarcfm_1_1_e_n_u_projection_a1041331239153252c664a1e5df489fa8}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!ENUProjection@{ENUProjection}}
+\index{ENUProjection@{ENUProjection}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{ENUProjection()}{ENUProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+ENUProjection\+::\+ENUProjection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a17ea9c694f43589172952a2f2b52b3be}\label{classlarcfm_1_1_e_n_u_projection_a17ea9c694f43589172952a2f2b52b3be}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!ENUProjection@{ENUProjection}}
+\index{ENUProjection@{ENUProjection}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{ENUProjection()}{ENUProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+ENUProjection\+::\+ENUProjection (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude of reference point \\
+\hline
+{\em lon} & longitude of reference point \\
+\hline
+{\em alt} & altitude of reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a0733e7b1624c99b68c8cc13a2a1522d0}\label{classlarcfm_1_1_e_n_u_projection_a0733e7b1624c99b68c8cc13a2a1522d0}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!````~ENUProjection@{$\sim$ENUProjection}}
+\index{````~ENUProjection@{$\sim$ENUProjection}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{$\sim$ENUProjection()}{~ENUProjection()}}
+{\footnotesize\ttfamily larcfm\+::\+ENUProjection\+::$\sim$\+ENUProjection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a9545219fb094f23cf60b163f8bcf8c4e}\label{classlarcfm_1_1_e_n_u_projection_a9545219fb094f23cf60b163f8bcf8c4e}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!conflictRange@{conflictRange}}
+\index{conflictRange@{conflictRange}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{conflictRange()}{conflictRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+ENUProjection\+::conflict\+Range (\begin{DoxyParamCaption}\item[{double}]{latitude,  }\item[{double}]{accuracy }\end{DoxyParamCaption}) const}
+
+Given an ownship latitude and desired accuracy, what is the longest distance to conflict this projection will support? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a0e88e1d4f3282b51a1d56872653b2033}\label{classlarcfm_1_1_e_n_u_projection_a0e88e1d4f3282b51a1d56872653b2033}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!getProjectionPoint@{getProjectionPoint}}
+\index{getProjectionPoint@{getProjectionPoint}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{getProjectionPoint()}{getProjectionPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+ENUProjection\+::get\+Projection\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the projection point for this projection \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}\label{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+ENUProjection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{xy,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a0a0ee149a900e4a59c6c917929102891}\label{classlarcfm_1_1_e_n_u_projection_a0a0ee149a900e4a59c6c917929102891}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+ENUProjection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity and the point. If to\+Lat\+Lon is true, the point/velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a063fc64f225a83e6b4aa280271974470}\label{classlarcfm_1_1_e_n_u_projection_a063fc64f225a83e6b4aa280271974470}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+ENUProjection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{xyz }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_aa0408d57746707ea5f71ea409f9451f4}\label{classlarcfm_1_1_e_n_u_projection_aa0408d57746707ea5f71ea409f9451f4}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!inverseVelocity@{inverseVelocity}}
+\index{inverseVelocity@{inverseVelocity}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{inverseVelocity()}{inverseVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+ENUProjection\+::inverse\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity. If to\+Lat\+Lon is true, the velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_aa95ec9e8ed466bca1ede513cbe7fd144}\label{classlarcfm_1_1_e_n_u_projection_aa95ec9e8ed466bca1ede513cbe7fd144}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} larcfm\+::\+ENUProjection\+::make\+New (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a7eb59a1556b53f1fecd3345789ffc88e}\label{classlarcfm_1_1_e_n_u_projection_a7eb59a1556b53f1fecd3345789ffc88e}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} larcfm\+::\+ENUProjection\+::make\+New (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_aa739b5c3edd04b4223accf795ce38601}\label{classlarcfm_1_1_e_n_u_projection_aa739b5c3edd04b4223accf795ce38601}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!maxRange@{maxRange}}
+\index{maxRange@{maxRange}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{maxRange()}{maxRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+ENUProjection\+::max\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+What is the maximum effective horizontal range of this projection? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}\label{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!project@{project}}
+\index{project@{project}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+ENUProjection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a50f684fde4e59e519e2cb184b399c568}\label{classlarcfm_1_1_e_n_u_projection_a50f684fde4e59e519e2cb184b399c568}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!project@{project}}
+\index{project@{project}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+ENUProjection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-\/space. If the position is already in Euclidean coordinates, this acts as the idenitty function. \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a7d768c5d790f4da8ec07e5ae3426082d}\label{classlarcfm_1_1_e_n_u_projection_a7d768c5d790f4da8ec07e5ae3426082d}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!project@{project}}
+\index{project@{project}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+ENUProjection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_ad1dde6591141fb2a85dc00555c106cc0}\label{classlarcfm_1_1_e_n_u_projection_ad1dde6591141fb2a85dc00555c106cc0}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!project2@{project2}}
+\index{project2@{project2}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{project2()}{project2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+ENUProjection\+::project2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 2-\/space \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a47a2d42221fd99b2c1a4176e69f54fbe}\label{classlarcfm_1_1_e_n_u_projection_a47a2d42221fd99b2c1a4176e69f54fbe}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!projectPoint@{projectPoint}}
+\index{projectPoint@{projectPoint}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{projectPoint()}{projectPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+ENUProjection\+::project\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a76d8d177b13b1d3d032801cd9de4f38b}\label{classlarcfm_1_1_e_n_u_projection_a76d8d177b13b1d3d032801cd9de4f38b}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+ENUProjection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in geodetic coordinates, return a projection of this velocity in Euclidean 3-\/space Note that, due to the distortions introduced by this projection, the projected track and ground speed may change as distance from the projection point increases! \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a68328a85db6b9f7e3c5ebb422f3684b6}\label{classlarcfm_1_1_e_n_u_projection_a68328a85db6b9f7e3c5ebb422f3684b6}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+ENUProjection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{ss,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) Note that, due to the distortions introduced by this projection, the projected track and ground speed may change as distance from the projection point increases! \mbox{\Hypertarget{classlarcfm_1_1_e_n_u_projection_a0c42be2127842216f707707c41a4a9f8}\label{classlarcfm_1_1_e_n_u_projection_a0c42be2127842216f707707c41a4a9f8}} 
+\index{larcfm::ENUProjection@{larcfm::ENUProjection}!toString@{toString}}
+\index{toString@{toString}!larcfm::ENUProjection@{larcfm::ENUProjection}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+ENUProjection\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+String representation 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/ENUProjection.\+h\item 
+Modules/\+ACCo\+RD/src/ENUProjection.\+cpp\end{DoxyCompactItemize}

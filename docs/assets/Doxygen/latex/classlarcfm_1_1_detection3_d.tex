@@ -1,0 +1,271 @@
+\hypertarget{classlarcfm_1_1_detection3_d}{}\doxysection{larcfm\+::Detection3D Class Reference}
+\label{classlarcfm_1_1_detection3_d}\index{larcfm::Detection3D@{larcfm::Detection3D}}
+Inheritance diagram for larcfm\+::Detection3D\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.632432cm]{classlarcfm_1_1_detection3_d}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0bcb3d2578bc6f2a64816fede5d5c43f}{violation}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a8f1efd65ea31a974fe32bb0cf3ae5382}{conflict}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T) const
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a2ee67971d48e6a8aedce8a2ac44af29d}{conflict\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T) const =0
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_aa2ca0cc23aa820425db5e932e37a6f2b}{violation\+At\+With\+Traffic\+State}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double t) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a9f65a5297136257692e5ef909fe172a6}{conflict\+With\+Traffic\+State}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double B, double T) const
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a06c5d18137ac3a130bcb9ca27a16b06d}{conflict\+Detection\+With\+Traffic\+State}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double B, double T) const
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a38aba03a3b33636dc14091165be54d5c}{copy}} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a9bc1f2d43b34a789d5659e805a4619b5}\label{classlarcfm_1_1_detection3_d_a9bc1f2d43b34a789d5659e805a4619b5}} 
+virtual \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ {\bfseries make} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_aefe91a02f0fa69b3b0bcd1baecb7f8d6}\label{classlarcfm_1_1_detection3_d_aefe91a02f0fa69b3b0bcd1baecb7f8d6}} 
+std\+::string {\bfseries get\+Canonical\+Class\+Name} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_af58c651a20cb954f3348aabd1185b299}\label{classlarcfm_1_1_detection3_d_af58c651a20cb954f3348aabd1185b299}} 
+std\+::string {\bfseries get\+Canonical\+Super\+Class\+Name} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a9b93a739b863dcf0f49b32a3523c1e38}\label{classlarcfm_1_1_detection3_d_a9b93a739b863dcf0f49b32a3523c1e38}} 
+virtual std\+::string {\bfseries get\+Simple\+Class\+Name} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a51a3edac4061f7f76e6b91fdd3fd6998}\label{classlarcfm_1_1_detection3_d_a51a3edac4061f7f76e6b91fdd3fd6998}} 
+virtual std\+::string {\bfseries get\+Simple\+Super\+Class\+Name} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_ab70f176967626b52704e356773537b7b}\label{classlarcfm_1_1_detection3_d_ab70f176967626b52704e356773537b7b}} 
+virtual std\+::string {\bfseries to\+String} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a87a2d8c02e1375552eada74fbd0258bb}\label{classlarcfm_1_1_detection3_d_a87a2d8c02e1375552eada74fbd0258bb}} 
+virtual std\+::string {\bfseries to\+PVS} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_af9ad21a529217d91561c5948d5fc28fd}\label{classlarcfm_1_1_detection3_d_af9ad21a529217d91561c5948d5fc28fd}} 
+virtual std\+::string {\bfseries get\+Identifier} () const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_abbc08f55eeec39e56f5c485ceaa6c59f}\label{classlarcfm_1_1_detection3_d_abbc08f55eeec39e56f5c485ceaa6c59f}} 
+virtual void {\bfseries set\+Identifier} (const std\+::string \&s)=0
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}{equals}} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$o) const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a687e04a5fccab518b579b228d06a13e2}\label{classlarcfm_1_1_detection3_d_a687e04a5fccab518b579b228d06a13e2}} 
+virtual bool {\bfseries contains} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd) const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a12de645175471bffdb27a6a9b2f004d3}\label{classlarcfm_1_1_detection3_d_a12de645175471bffdb27a6a9b2f004d3}} 
+bool {\bfseries instance\+Of} (const std\+::string \&classname) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_detection3_d_af0b794e142c772fbaecf9447944596e8}{horizontal\+Contours}} (std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ $>$ \&blobs, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double thr, double T) const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a563197ae6fae4af5fd668ca19dc33bcd}{horizontal\+Hazard\+Zone}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&haz, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double T) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_ae4393de292a8ead5ec04fa1a5a5eaf69}\label{classlarcfm_1_1_detection3_d_ae4393de292a8ead5ec04fa1a5a5eaf69}} 
+static void {\bfseries add\+\_\+blob} (std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ $>$ \&blobs, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&vin, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&vout)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a8f1efd65ea31a974fe32bb0cf3ae5382}\label{classlarcfm_1_1_detection3_d_a8f1efd65ea31a974fe32bb0cf3ae5382}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Detection3\+D\+::conflict (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const}
+
+This functional call returns true if there will be a violation between times B and T from now (relative). 
+\begin{DoxyParams}{Parameters}
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+{\em si} & intruder position \\
+\hline
+{\em vi} & intruder velocity \\
+\hline
+{\em B} & beginning of detection time (\texorpdfstring{$>$}{>}=0) \\
+\hline
+{\em T} & end of detection time (if T \texorpdfstring{$<$}{<} 0 then use an \char`\"{}infinite\char`\"{} lookahead time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict within times B to T 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a2ee67971d48e6a8aedce8a2ac44af29d}\label{classlarcfm_1_1_detection3_d_a2ee67971d48e6a8aedce8a2ac44af29d}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!conflictDetection@{conflictDetection}}
+\index{conflictDetection@{conflictDetection}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{conflictDetection()}{conflictDetection()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} larcfm\+::\+Detection3\+D\+::conflict\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+This functional call returns a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict between times B and T from now (relative), if any. 
+\begin{DoxyParams}{Parameters}
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+{\em si} & intruder position \\
+\hline
+{\em vi} & intruder velocity \\
+\hline
+{\em D} & horizontal separation \\
+\hline
+{\em H} & vertical separation \\
+\hline
+{\em B} & beginning of detection time (\texorpdfstring{$>$}{>}=0) \\
+\hline
+{\em T} & end of detection time (if T \texorpdfstring{$<$}{<} 0 then use an \char`\"{}infinite\char`\"{} lookahead time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a8c87fae6aa630e94bce9848d18574e1c}{larcfm\+::\+CDCylinder}}, \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a3a8d6dae893c5108d0e51160ca02faeb}{larcfm\+::\+TCAS3D}}, and \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_a3858a126446404841aaacaf30d7db24e}{larcfm\+::\+WCV\+\_\+tvar}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a06c5d18137ac3a130bcb9ca27a16b06d}\label{classlarcfm_1_1_detection3_d_a06c5d18137ac3a130bcb9ca27a16b06d}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!conflictDetectionWithTrafficState@{conflictDetectionWithTrafficState}}
+\index{conflictDetectionWithTrafficState@{conflictDetectionWithTrafficState}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{conflictDetectionWithTrafficState()}{conflictDetectionWithTrafficState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} larcfm\+::\+Detection3\+D\+::conflict\+Detection\+With\+Traffic\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This functional call returns a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict between times B and T from now (relative), if any. 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & ownship state \\
+\hline
+{\em intruder} & intruder state \\
+\hline
+{\em D} & horizontal separation \\
+\hline
+{\em H} & vertical separation \\
+\hline
+{\em B} & beginning of detection time (\texorpdfstring{$>$}{>}=0) \\
+\hline
+{\em T} & end of detection time (if T \texorpdfstring{$<$}{<} 0 then use an \char`\"{}infinite\char`\"{} lookahead time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict 
+\end{DoxyReturn}
+
+
+Reimplemented in \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a5f61b6a4864a67036d5a02ed4dfb1fd3}{larcfm\+::\+WCV\+\_\+\+TAUMOD\+\_\+\+SUM}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a9f65a5297136257692e5ef909fe172a6}\label{classlarcfm_1_1_detection3_d_a9f65a5297136257692e5ef909fe172a6}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!conflictWithTrafficState@{conflictWithTrafficState}}
+\index{conflictWithTrafficState@{conflictWithTrafficState}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{conflictWithTrafficState()}{conflictWithTrafficState()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Detection3\+D\+::conflict\+With\+Traffic\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const}
+
+This functional call returns true if there will be a violation between times B and T from now (relative). 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & ownship state \\
+\hline
+{\em intruder} & intruder state \\
+\hline
+{\em B} & beginning of detection time (\texorpdfstring{$>$}{>}=0) \\
+\hline
+{\em T} & end of detection time (if T \texorpdfstring{$<$}{<} 0 then use an \char`\"{}infinite\char`\"{} lookahead time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict within times B to T 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a38aba03a3b33636dc14091165be54d5c}\label{classlarcfm_1_1_detection3_d_a38aba03a3b33636dc14091165be54d5c}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!copy@{copy}}
+\index{copy@{copy}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+Detection3\+D\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+This returns a pointer to a new instance of this type of Detector3D. You are responsible for destroying this instance when it is no longer needed. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_aa9599fe5c6452d6838acecbf4cfdc468}{larcfm\+::\+CDCylinder}}, \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7ce395fecc3e754abd4fa77609508306}{larcfm\+::\+TCAS3D}}, \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z_a7c50912c16b1058d67feea82f0ca9df2}{larcfm\+::\+WCV\+\_\+\+HZ}}, \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_adc21a416703b417911d9c7707d55accf}{larcfm\+::\+WCV\+\_\+\+TAUMOD}}, \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a1f4390ce86a967bb884bc431d5395f9a}{larcfm\+::\+WCV\+\_\+\+TAUMOD\+\_\+\+SUM}}, \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a_ad01253c458fbbcacea477fe46883b7d2}{larcfm\+::\+WCV\+\_\+\+TCPA}}, \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_e_p_a810979848a12c01dd6eb4cdccb29714a}{larcfm\+::\+WCV\+\_\+\+TEP}}, and \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_a858a29a14386d3eaadb8cb8f43b445fb}{larcfm\+::\+WCV\+\_\+tvar}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}\label{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!equals@{equals}}
+\index{equals@{equals}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily virtual bool larcfm\+::\+Detection3\+D\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{o }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return true if two instances have identical parameters (including identifiers). Use address equality (\&x == \&y) to distinguish instances. A generic implementation, assuming the identifier is included in the \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object, would be virtual bool \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}{equals(\+Detection3\+D$\ast$ o) const }}\{ if (!larcfm\mbox{\hyperlink{namespacelarcfm_a70e71904b71bbd150854983eb667a733}{equals}}(get\+Class\+Name(), o-\/\texorpdfstring{$>$}{>}get\+Class\+Name())) return false; if (!get\+Parameter\+Data().equals(o-\/\texorpdfstring{$>$}{>}get\+Parameter\+Data())) return false; return true; \} 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a1bbefcf02f1eceb6cc3730dff5f6bff8}{larcfm\+::\+CDCylinder}}, \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}{larcfm\+::\+TCAS3D}}, and \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_aea9070eef8e26b130904c220f3b94558}{larcfm\+::\+WCV\+\_\+tvar}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_af0b794e142c772fbaecf9447944596e8}\label{classlarcfm_1_1_detection3_d_af0b794e142c772fbaecf9447944596e8}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!horizontalContours@{horizontalContours}}
+\index{horizontalContours@{horizontalContours}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{horizontalContours()}{horizontalContours()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection3\+D\+::horizontal\+Contours (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ $>$ \&}]{blobs,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{thr,  }\item[{double}]{T }\end{DoxyParamCaption}) const}
+
+Computes horizontal list of contours contributed by intruder aircraft. A contour is a list of points in counter-\/clockwise direction representing a polygon. Last point should be connected to first one. 
+\begin{DoxyParams}{Parameters}
+{\em thr} & This is a contour threshold in radians \mbox{[}0,pi\mbox{]}. This threshold indicates how far from current direction to look for contours. A value of 0 means only conflict contour. A value of pi means all contours. \\
+\hline
+{\em T} & Lookahead time in seconds\\
+\hline
+\end{DoxyParams}
+NOTE\+: The computed polygon should only be used for display purposes since it\textquotesingle{}s merely an approximation of the actual contours defined by the violation and detection methods. \mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a563197ae6fae4af5fd668ca19dc33bcd}\label{classlarcfm_1_1_detection3_d_a563197ae6fae4af5fd668ca19dc33bcd}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!horizontalHazardZone@{horizontalHazardZone}}
+\index{horizontalHazardZone@{horizontalHazardZone}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{horizontalHazardZone()}{horizontalHazardZone()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection3\+D\+::horizontal\+Hazard\+Zone (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&}]{haz,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a list of points (polygon) that approximates the horizontal hazard zone around the ownship, with respect to a traffic aircraft. A polygon is a list of points in counter-\/clockwise direction, where the last point is connected to the first one. 
+\begin{DoxyParams}{Parameters}
+{\em T} & This time represents a time horizon in seconds. When T is 0, the polygon represents the hazard zone. Otherwise, the are represents the hazard zone with time horizon T.\\
+\hline
+\end{DoxyParams}
+NOTE 1\+: This polygon should only be used for display purposes since it\textquotesingle{}s merely an approximation of the actual hazard zone defined by the violation and detection methods.
+
+NOTE 2\+: This method has to be redefined as appropriate for every specific hazard zone. 
+
+Reimplemented in \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a0c450e449f821fcc135e08b7325ac820}{larcfm\+::\+CDCylinder}}, \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_acada7dc7e792f05c628eecd53d336ee3}{larcfm\+::\+TCAS3D}}, and \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar_aaf2597833fcdc519c9783b1f15953509}{larcfm\+::\+WCV\+\_\+tvar}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_a0bcb3d2578bc6f2a64816fede5d5c43f}\label{classlarcfm_1_1_detection3_d_a0bcb3d2578bc6f2a64816fede5d5c43f}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!violation@{violation}}
+\index{violation@{violation}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{violation()}{violation()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Detection3\+D\+::violation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi }\end{DoxyParamCaption}) const}
+
+This functional call returns true if there is a violation given the current states. 
+\begin{DoxyParams}{Parameters}
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+{\em si} & intruder position \\
+\hline
+{\em vi} & intruder velocity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a violation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_aa2ca0cc23aa820425db5e932e37a6f2b}\label{classlarcfm_1_1_detection3_d_aa2ca0cc23aa820425db5e932e37a6f2b}} 
+\index{larcfm::Detection3D@{larcfm::Detection3D}!violationAtWithTrafficState@{violationAtWithTrafficState}}
+\index{violationAtWithTrafficState@{violationAtWithTrafficState}!larcfm::Detection3D@{larcfm::Detection3D}}
+\doxysubsubsection{\texorpdfstring{violationAtWithTrafficState()}{violationAtWithTrafficState()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Detection3\+D\+::violation\+At\+With\+Traffic\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+This functional call returns true if there is a violation at time t. 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & ownship state \\
+\hline
+{\em intruder} & intruder state \\
+\hline
+{\em t} & time in seconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a violation at time t 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Detection3\+D.\+h\item 
+Modules/\+ACCo\+RD/src/Detection3\+D.\+cpp\end{DoxyCompactItemize}

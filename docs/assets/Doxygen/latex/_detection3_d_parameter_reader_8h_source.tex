@@ -1,0 +1,42 @@
+\hypertarget{_detection3_d_parameter_reader_8h_source}{}\doxysection{Detection3\+DParameter\+Reader.\+h}
+\label{_detection3_d_parameter_reader_8h_source}\index{Modules/ACCoRD/inc/Detection3DParameterReader.h@{Modules/ACCoRD/inc/Detection3DParameterReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DETECTION3DPARAMETERREADER\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DETECTION3DPARAMETERREADER\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader}{Detection3DParameterReader}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23   \textcolor{keyword}{static} std::map<std::string, Detection3D*> registeredDetection3DClasses;}
+\DoxyCodeLine{24   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} registered;}
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_a4fb6db0efe7b109ad399fe2d1acacdde}{registerDefaults}}();}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_a4f47bdcbef664c2a617a3d397c5d59b6}{registerDetection3D}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd);}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_a4f47bdcbef664c2a617a3d397c5d59b6}{registerDetection3D}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd, \textcolor{keyword}{const} std::string\& aternate\_name);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{43   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<std::vector<Detection3D*>}},\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}*,\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}*> \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_aa1b67e2cd4b35e710dfc655708b37a8c}{readCoreDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& params);}
+\DoxyCodeLine{44   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<std::vector<Detection3D*>}},\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}*,\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}*> \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_aa1b67e2cd4b35e710dfc655708b37a8c}{readCoreDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& params, \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 \}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

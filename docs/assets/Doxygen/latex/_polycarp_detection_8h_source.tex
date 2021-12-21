@@ -1,0 +1,45 @@
+\hypertarget{_polycarp_detection_8h_source}{}\doxysection{Polycarp\+Detection.\+h}
+\label{_polycarp_detection_8h_source}\index{Modules/ACCoRD/inc/PolycarpDetection.h@{Modules/ACCoRD/inc/PolycarpDetection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpDetection -\/ collision detection between and point and a 2D polygon}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYCARPDETECTION\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYCARPDETECTION\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}MovingPolygon2D.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_detection}{PolycarpDetection}} \{}
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25   \textcolor{keyword}{static} std::vector<Vect2> polygon\_2D\_at(\textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& pv, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{26   \textcolor{keyword}{static} \textcolor{keywordtype}{double} dot\_zero\_linear\_2D\_alg(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& b, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{27   \textcolor{keyword}{static} \textcolor{keywordtype}{double} lookahead\_proj(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{28   \textcolor{keyword}{static} std::vector<double> swap\_times(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& startvel, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& endvel);}
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} dot\_nneg\_linear\_2D\_alg(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& b, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} dot\_nneg\_spec(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& b, \textcolor{keywordtype}{int} eps, \textcolor{keywordtype}{int} eps2, \textcolor{keywordtype}{double} Fac);}
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} edge\_detect\_simple(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& b, \textcolor{keywordtype}{double} Fac);}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} edge\_detect(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& startvel, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& endvel, \textcolor{keywordtype}{double} Fac);}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} Collision\_Detector(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& mp, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} Fac, \textcolor{keywordtype}{bool} insideBad);}
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} Static\_Collision\_Detector(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& pv, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{bool} insideBad);}
+\DoxyCodeLine{36   \textcolor{keyword}{static} std::vector<double> collisionTimesInOut(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& mp, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} Fac);}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} nice\_moving\_polygon\_2D(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& mp, \textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} Fac);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \};}
+\DoxyCodeLine{40 \}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{42 }
+
+\end{DoxyCode}

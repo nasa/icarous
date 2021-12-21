@@ -1,0 +1,574 @@
+\hypertarget{classlarcfm_1_1_separated_output}{}\doxysection{larcfm\+::Separated\+Output Class Reference}
+\label{classlarcfm_1_1_separated_output}\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+
+
+{\ttfamily \#include $<$Separated\+Output.\+h$>$}
+
+Inheritance diagram for larcfm\+::Separated\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_separated_output}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_separated_output_a2c52f00f3fcbb3e7108eae444bc88050}{Separated\+Output}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_separated_output_a6c4723f441358458e20a019309a39831}{Separated\+Output}} (std\+::ostream $\ast$w)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} \& \mbox{\hyperlink{classlarcfm_1_1_separated_output_a90a182c11d2b95cffd82754e39d5dc27}{operator=}} (const \mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} \&x)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a9e0c17b7b55fa31c1ba7114e633d3c40}\label{classlarcfm_1_1_separated_output_a9e0c17b7b55fa31c1ba7114e633d3c40}} 
+void {\bfseries close} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_ad4c45df7d46460cd16d0c10334d698b6}{get\+Heading}} (int i)
+\item 
+long \mbox{\hyperlink{classlarcfm_1_1_separated_output_a7ad9056f865d4606424f2c6f57f5fe9e}{length}} ()
+\item 
+long \mbox{\hyperlink{classlarcfm_1_1_separated_output_a655a1bf77bcbbf82f64a2284281b9d9d}{size}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a1e4855fd67ea69e53ec774f6c596d1c9}{set\+Output\+Units}} (bool output)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9ac8b571b1507da1cf72578ab6a5f078}{set\+Heading}} (int i, const std\+::string \&name, const std\+::string \&unit)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}{add\+Heading}} (const std\+::string \&name, const std\+::string \&unit)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a929751f98323efc7f70fded4b17ef89a}{add\+Heading}} (const std\+::vector$<$ std\+::string $>$ \&names, const std\+::vector$<$ std\+::string $>$ \&units)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a51a5a8f37bbf592b9e57d33ed48b5a73}{add\+Heading}} (const std\+::vector$<$ std\+::string $>$ \&names\+\_\+and\+\_\+units)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}{find\+Heading}} (const std\+::string \&heading, bool case\+Sensitive)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_separated_output_a80d0614eef84e28e23633491bd72d633}{find\+Heading}} (const std\+::string \&heading1, const std\+::string \&heading2, bool case\+Sensitive)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_separated_output_a116ec3de4751caf51da51e543af0eff7}{find\+Heading}} (const std\+::string \&heading1, const std\+::string \&heading2, const std\+::string \&heading3, bool case\+Sensitive)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_separated_output_a24882ac5b2a52a2463ff84f4dcc6f421}{find\+Heading}} (const std\+::string \&heading1, const std\+::string \&heading2, const std\+::string \&heading3, const std\+::string \&heading4, bool case\+Sensitive)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_a782b417a1d19fa9188a63686c16230f4}{get\+Unit}} (int i)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}{set\+Column}} (int i, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a83044068ed18ffdc8fc032c232ce4b34}{set\+Column}} (double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a3e6685ffb163386961169bf57392f977}{set\+Column}} (int i, const std\+::string \&val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_ae090962572bf50e646287391fa5d1666}{add\+Column}} (const std\+::string \&val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_af2f351922fdc62ee21ccd5226c88c2a9}{add\+Column}} (const std\+::vector$<$ std\+::string $>$ \&vals)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_ae29f6ecd6b1fbe1232f9ca53c97c110c}{set\+Column\+Delimiter\+Tab}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a1f37b53717900e6c9e4373c26f4f5e5a}{set\+Column\+Delimiter\+Comma}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a0497e2e219887006706f97186dd8a611}{set\+Column\+Delimiter\+Space}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a538fdcfbaaf57b83c4cf407cc779dbbe}{set\+Column\+Space}} (int num)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a2e4ea345afd965e155ff2d501261d5c5}{set\+Empty\+Value}} (std\+::string e)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a29fe69f5bcda22232683139202b25c5b}{set\+Comment\+Character}} (const std\+::string \&c)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a423fd72cf136e4a0acac2816624c81ab}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pr)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_aea3415cde40ee241a674826496cbb615}\label{classlarcfm_1_1_separated_output_aea3415cde40ee241a674826496cbb615}} 
+void {\bfseries set\+Parameter} (const std\+::string \&key, const std\+::string \&value)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a7e69d9afb2edc5f0bb630f7489bf0821}{clear\+Parameters}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a09f62a31b127543adc4e3e9494f8da40}{add\+Comment}} (const std\+::string \&c)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_separated_output_a4e7f98495a749c99bc9ef44a1258e2ac}{write\+Line}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a759df7989135f4f209836ccfefd7b3ae}\label{classlarcfm_1_1_separated_output_a759df7989135f4f209836ccfefd7b3ae}} 
+void {\bfseries flush} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a219106c4bec1edf6518de2f087ab55b0}\label{classlarcfm_1_1_separated_output_a219106c4bec1edf6518de2f087ab55b0}} 
+std\+::string {\bfseries to\+String} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_separated_output_a6ad8926d19b4fc96cc3a6ad309ab3cdb}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_separated_output_a99d7710ae0acaa5cb9e1030878575504}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_af42393e4eed3561f1fd8754376f102d3}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_a4cfc8d0a529267aa3d39ff41407dd229}{get\+Message\+No\+Clear}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a45c3470c61bb4b9f418cb683fc12e576}\label{classlarcfm_1_1_separated_output_a45c3470c61bb4b9f418cb683fc12e576}} 
+void {\bfseries init} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a678a349199dd36cc7d862a6339cf20ac}\label{classlarcfm_1_1_separated_output_a678a349199dd36cc7d862a6339cf20ac}} 
+void {\bfseries print\+\_\+line} (std\+::vector$<$ std\+::string $>$ vals)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_af86077c94d0801d2c9e184275bf05b1c}\label{classlarcfm_1_1_separated_output_af86077c94d0801d2c9e184275bf05b1c}} 
+std\+::ostream $\ast$ {\bfseries writer}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a090e8dd49d865d82c8ee63b5bd5f497a}\label{classlarcfm_1_1_separated_output_a090e8dd49d865d82c8ee63b5bd5f497a}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_acea2fdf9dd2f064fdfffd7f209efc304}\label{classlarcfm_1_1_separated_output_acea2fdf9dd2f064fdfffd7f209efc304}} 
+bool {\bfseries header}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a2aeb8b1e3e5228b9450ae4badef6fd2b}\label{classlarcfm_1_1_separated_output_a2aeb8b1e3e5228b9450ae4badef6fd2b}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries header\+\_\+str}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_aacbf527a0acb8c55350ce7a16f00e607}\label{classlarcfm_1_1_separated_output_aacbf527a0acb8c55350ce7a16f00e607}} 
+bool {\bfseries bunits}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_ae8d05627a03a53d0b7a2647c202addc1}\label{classlarcfm_1_1_separated_output_ae8d05627a03a53d0b7a2647c202addc1}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries units\+\_\+str}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a00de0a985ee9c86e852e58c16c79bd91}\label{classlarcfm_1_1_separated_output_a00de0a985ee9c86e852e58c16c79bd91}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries line\+\_\+str}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a52bca084d6c2f48c6ce195d77fa26ec4}\label{classlarcfm_1_1_separated_output_a52bca084d6c2f48c6ce195d77fa26ec4}} 
+long {\bfseries size\+\_\+l}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_ac8ec5efa2f1f851e3e9389d680c00847}\label{classlarcfm_1_1_separated_output_ac8ec5efa2f1f851e3e9389d680c00847}} 
+int {\bfseries column\+\_\+count}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_af66642203168b5a4905d41c695aa3dfe}\label{classlarcfm_1_1_separated_output_af66642203168b5a4905d41c695aa3dfe}} 
+int {\bfseries header\+\_\+count}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_ad298ebd31f6d24be504433445e03bdac}\label{classlarcfm_1_1_separated_output_ad298ebd31f6d24be504433445e03bdac}} 
+char {\bfseries delim}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a7175f92ecd85a12d4c8a1861bb674415}\label{classlarcfm_1_1_separated_output_a7175f92ecd85a12d4c8a1861bb674415}} 
+std\+::string {\bfseries space}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a06276ea76e6f06f4d37b3db5003b99c4}\label{classlarcfm_1_1_separated_output_a06276ea76e6f06f4d37b3db5003b99c4}} 
+std\+::string {\bfseries comment\+\_\+char}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a3f79fa6367ac78ebbea041b815401cd4}\label{classlarcfm_1_1_separated_output_a3f79fa6367ac78ebbea041b815401cd4}} 
+std\+::string {\bfseries empty}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a1b15c53fe40d6e1e99050d104e37e933}\label{classlarcfm_1_1_separated_output_a1b15c53fe40d6e1e99050d104e37e933}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries comments}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_accc4475fa5cb7a22d55783045c4934c3}\label{classlarcfm_1_1_separated_output_accc4475fa5cb7a22d55783045c4934c3}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries params}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to writes a separated value file (separated by commas, spaces, or tabs).
+
+only one file can be created from an object.
+
+Future\+: handle a memory buffer, standard output/error, file, socket? 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a2c52f00f3fcbb3e7108eae444bc88050}\label{classlarcfm_1_1_separated_output_a2c52f00f3fcbb3e7108eae444bc88050}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!SeparatedOutput@{SeparatedOutput}}
+\index{SeparatedOutput@{SeparatedOutput}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{SeparatedOutput()}{SeparatedOutput()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Separated\+Output\+::\+Separated\+Output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create an \char`\"{}empty\char`\"{} separated output \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a6c4723f441358458e20a019309a39831}\label{classlarcfm_1_1_separated_output_a6c4723f441358458e20a019309a39831}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!SeparatedOutput@{SeparatedOutput}}
+\index{SeparatedOutput@{SeparatedOutput}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{SeparatedOutput()}{SeparatedOutput()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Separated\+Output\+::\+Separated\+Output (\begin{DoxyParamCaption}\item[{std\+::ostream $\ast$}]{w }\end{DoxyParamCaption})}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} from the given writer 
+\begin{DoxyParams}{Parameters}
+{\em w} & writer object\\
+\hline
+\end{DoxyParams}
+Create a new \mbox{\hyperlink{classlarcfm_1_1_separated_input}{Separated\+Input}} from the given reader 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_ae090962572bf50e646287391fa5d1666}\label{classlarcfm_1_1_separated_output_ae090962572bf50e646287391fa5d1666}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addColumn@{addColumn}}
+\index{addColumn@{addColumn}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addColumn()}{addColumn()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Column (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{val }\end{DoxyParamCaption})}
+
+Adds the given value to the next column. 
+\begin{DoxyParams}{Parameters}
+{\em val} & value\\
+\hline
+\end{DoxyParams}
+Adds the given value to the next column. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_af2f351922fdc62ee21ccd5226c88c2a9}\label{classlarcfm_1_1_separated_output_af2f351922fdc62ee21ccd5226c88c2a9}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addColumn@{addColumn}}
+\index{addColumn@{addColumn}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addColumn()}{addColumn()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Column (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{vals }\end{DoxyParamCaption})}
+
+Adds each of the given values to the next columns. 
+\begin{DoxyParams}{Parameters}
+{\em vals} & list of values\\
+\hline
+\end{DoxyParams}
+Adds each of the given values to the next columns. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a09f62a31b127543adc4e3e9494f8da40}\label{classlarcfm_1_1_separated_output_a09f62a31b127543adc4e3e9494f8da40}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addComment@{addComment}}
+\index{addComment@{addComment}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addComment()}{addComment()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Comment (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{c }\end{DoxyParamCaption})}
+
+Add the following line to the comments. 
+\begin{DoxyParams}{Parameters}
+{\em c} & comment string\\
+\hline
+\end{DoxyParams}
+Add the following line to the comments. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}\label{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addHeading@{addHeading}}
+\index{addHeading@{addHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addHeading()}{addHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Heading (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})}
+
+Add the given heading (and unit) to the next column 
+\begin{DoxyParams}{Parameters}
+{\em name} & the name of this column heading \\
+\hline
+{\em unit} & the unit for this column. If you don\textquotesingle{}t know, then use \char`\"{}unspecified\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a929751f98323efc7f70fded4b17ef89a}\label{classlarcfm_1_1_separated_output_a929751f98323efc7f70fded4b17ef89a}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addHeading@{addHeading}}
+\index{addHeading@{addHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addHeading()}{addHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Heading (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{names,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{units }\end{DoxyParamCaption})}
+
+Add the given heading (and unit) to the next column 
+\begin{DoxyParams}{Parameters}
+{\em names} & the name of this column heading \\
+\hline
+{\em units} & the unit for this column. If you don\textquotesingle{}t know, then use \char`\"{}unspecified\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a51a5a8f37bbf592b9e57d33ed48b5a73}\label{classlarcfm_1_1_separated_output_a51a5a8f37bbf592b9e57d33ed48b5a73}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!addHeading@{addHeading}}
+\index{addHeading@{addHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{addHeading()}{addHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::add\+Heading (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{names\+\_\+and\+\_\+units }\end{DoxyParamCaption})}
+
+Add the given heading (and unit) to the next column 
+\begin{DoxyParams}{Parameters}
+{\em names\+\_\+and\+\_\+units} & an array containing an alternating list of heading names and heading units. The length of this list must be even. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a7e69d9afb2edc5f0bb630f7489bf0821}\label{classlarcfm_1_1_separated_output_a7e69d9afb2edc5f0bb630f7489bf0821}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!clearParameters@{clearParameters}}
+\index{clearParameters@{clearParameters}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{clearParameters()}{clearParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::clear\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear all parameters. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}\label{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!findHeading@{findHeading}}
+\index{findHeading@{findHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{findHeading()}{findHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily int larcfm\+::\+Separated\+Output\+::find\+Heading (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{heading,  }\item[{bool}]{case\+Sensitive }\end{DoxyParamCaption})}
+
+Find the index of the column with given heading. If the heading is not found, then -\/1 is returned. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. 
+\begin{DoxyParams}{Parameters}
+{\em heading} & name of heading \\
+\hline
+{\em case\+Sensitive} & false if ignoring case \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of heading
+\end{DoxyReturn}
+Find the index of the column with given heading. If the heading is not found, then -\/1 is returned. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a80d0614eef84e28e23633491bd72d633}\label{classlarcfm_1_1_separated_output_a80d0614eef84e28e23633491bd72d633}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!findHeading@{findHeading}}
+\index{findHeading@{findHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{findHeading()}{findHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily int larcfm\+::\+Separated\+Output\+::find\+Heading (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{heading1,  }\item[{const std\+::string \&}]{heading2,  }\item[{bool}]{case\+Sensitive }\end{DoxyParamCaption})}
+
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. 
+\begin{DoxyParams}{Parameters}
+{\em heading1} & name of heading \\
+\hline
+{\em heading2} & alternate name of heading \\
+\hline
+{\em case\+Sensitive} & false if ignore case \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of heading
+\end{DoxyReturn}
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a116ec3de4751caf51da51e543af0eff7}\label{classlarcfm_1_1_separated_output_a116ec3de4751caf51da51e543af0eff7}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!findHeading@{findHeading}}
+\index{findHeading@{findHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{findHeading()}{findHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily int larcfm\+::\+Separated\+Output\+::find\+Heading (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{heading1,  }\item[{const std\+::string \&}]{heading2,  }\item[{const std\+::string \&}]{heading3,  }\item[{bool}]{case\+Sensitive }\end{DoxyParamCaption})}
+
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. 
+\begin{DoxyParams}{Parameters}
+{\em heading1} & name of heading \\
+\hline
+{\em heading2} & alternate name of heading \\
+\hline
+{\em heading3} & alternate name of heading \\
+\hline
+{\em case\+Sensitive} & false if ignore heading \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of heading
+\end{DoxyReturn}
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a24882ac5b2a52a2463ff84f4dcc6f421}\label{classlarcfm_1_1_separated_output_a24882ac5b2a52a2463ff84f4dcc6f421}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!findHeading@{findHeading}}
+\index{findHeading@{findHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{findHeading()}{findHeading()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily int larcfm\+::\+Separated\+Output\+::find\+Heading (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{heading1,  }\item[{const std\+::string \&}]{heading2,  }\item[{const std\+::string \&}]{heading3,  }\item[{const std\+::string \&}]{heading4,  }\item[{bool}]{case\+Sensitive }\end{DoxyParamCaption})}
+
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. 
+\begin{DoxyParams}{Parameters}
+{\em heading1} & name of heading \\
+\hline
+{\em heading2} & alternate name of heading \\
+\hline
+{\em heading3} & alternate name of heading \\
+\hline
+{\em heading4} & alternate name of heading \\
+\hline
+{\em case\+Sensitive} & false if ignore heading \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of heading
+\end{DoxyReturn}
+Find the index of the column with any of the given headings. If none of the given headings is found, then -\/1 is returned. This tries to find the first heading, and if it finds it then returns that index. If it doesn\textquotesingle{}t find it, it moves to the next heading, etc. Note\+: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_ad4c45df7d46460cd16d0c10334d698b6}\label{classlarcfm_1_1_separated_output_ad4c45df7d46460cd16d0c10334d698b6}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!getHeading@{getHeading}}
+\index{getHeading@{getHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{getHeading()}{getHeading()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Separated\+Output\+::get\+Heading (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Return the heading for the given column 
+\begin{DoxyParams}{Parameters}
+{\em i} & column index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+heading
+\end{DoxyReturn}
+Return the heading for the given column \mbox{\Hypertarget{classlarcfm_1_1_separated_output_af42393e4eed3561f1fd8754376f102d3}\label{classlarcfm_1_1_separated_output_af42393e4eed3561f1fd8754376f102d3}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Separated\+Output\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a4cfc8d0a529267aa3d39ff41407dd229}\label{classlarcfm_1_1_separated_output_a4cfc8d0a529267aa3d39ff41407dd229}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Separated\+Output\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_separated_output_a6ad8926d19b4fc96cc3a6ad309ab3cdb}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a782b417a1d19fa9188a63686c16230f4}\label{classlarcfm_1_1_separated_output_a782b417a1d19fa9188a63686c16230f4}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!getUnit@{getUnit}}
+\index{getUnit@{getUnit}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{getUnit()}{getUnit()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Separated\+Output\+::get\+Unit (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Returns the units string for the i-\/th column. If an invalid column is entered, then \char`\"{}unspecified\char`\"{} is returned. 
+\begin{DoxyParams}{Parameters}
+{\em i} & column index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unit
+\end{DoxyReturn}
+Returns the units string for the i-\/th column. If an invalid column is entered, then \char`\"{}unspecified\char`\"{} is returned. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a6ad8926d19b4fc96cc3a6ad309ab3cdb}\label{classlarcfm_1_1_separated_output_a6ad8926d19b4fc96cc3a6ad309ab3cdb}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Separated\+Output\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a99d7710ae0acaa5cb9e1030878575504}\label{classlarcfm_1_1_separated_output_a99d7710ae0acaa5cb9e1030878575504}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Separated\+Output\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a7ad9056f865d4606424f2c6f57f5fe9e}\label{classlarcfm_1_1_separated_output_a7ad9056f865d4606424f2c6f57f5fe9e}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!length@{length}}
+\index{length@{length}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{length()}{length()}}
+{\footnotesize\ttfamily long larcfm\+::\+Separated\+Output\+::length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the number of rows written \begin{DoxyReturn}{Returns}
+number of rows
+\end{DoxyReturn}
+Return the number of rows written \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a90a182c11d2b95cffd82754e39d5dc27}\label{classlarcfm_1_1_separated_output_a90a182c11d2b95cffd82754e39d5dc27}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!operator=@{operator=}}
+\index{operator=@{operator=}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} \& larcfm\+::\+Separated\+Output\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} \&}]{x }\end{DoxyParamCaption})}
+
+Assignment Operator. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a83044068ed18ffdc8fc032c232ce4b34}\label{classlarcfm_1_1_separated_output_a83044068ed18ffdc8fc032c232ce4b34}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumn@{setColumn}}
+\index{setColumn@{setColumn}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumn()}{setColumn()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column (\begin{DoxyParamCaption}\item[{double}]{val }\end{DoxyParamCaption})}
+
+Sets the next column value equal to the given value. The value is in internal units. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a3e6685ffb163386961169bf57392f977}\label{classlarcfm_1_1_separated_output_a3e6685ffb163386961169bf57392f977}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumn@{setColumn}}
+\index{setColumn@{setColumn}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumn()}{setColumn()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const std\+::string \&}]{val }\end{DoxyParamCaption})}
+
+Sets the next column value equal to the given value. 
+\begin{DoxyParams}{Parameters}
+{\em i} & index of column \\
+\hline
+{\em val} & value\\
+\hline
+\end{DoxyParams}
+Sets the next column value equal to the given value. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}\label{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumn@{setColumn}}
+\index{setColumn@{setColumn}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumn()}{setColumn()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Sets the next column value equal to the given value. The value is in internal units. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a1f37b53717900e6c9e4373c26f4f5e5a}\label{classlarcfm_1_1_separated_output_a1f37b53717900e6c9e4373c26f4f5e5a}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumnDelimiterComma@{setColumnDelimiterComma}}
+\index{setColumnDelimiterComma@{setColumnDelimiterComma}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterComma()}{setColumnDelimiterComma()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column\+Delimiter\+Comma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a comma \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a0497e2e219887006706f97186dd8a611}\label{classlarcfm_1_1_separated_output_a0497e2e219887006706f97186dd8a611}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumnDelimiterSpace@{setColumnDelimiterSpace}}
+\index{setColumnDelimiterSpace@{setColumnDelimiterSpace}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterSpace()}{setColumnDelimiterSpace()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column\+Delimiter\+Space (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a space. If a space is used as a separator then the empty value should be set (see set\+Empty\+Value). \mbox{\Hypertarget{classlarcfm_1_1_separated_output_ae29f6ecd6b1fbe1232f9ca53c97c110c}\label{classlarcfm_1_1_separated_output_ae29f6ecd6b1fbe1232f9ca53c97c110c}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumnDelimiterTab@{setColumnDelimiterTab}}
+\index{setColumnDelimiterTab@{setColumnDelimiterTab}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterTab()}{setColumnDelimiterTab()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column\+Delimiter\+Tab (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a tab \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a538fdcfbaaf57b83c4cf407cc779dbbe}\label{classlarcfm_1_1_separated_output_a538fdcfbaaf57b83c4cf407cc779dbbe}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setColumnSpace@{setColumnSpace}}
+\index{setColumnSpace@{setColumnSpace}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setColumnSpace()}{setColumnSpace()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Column\+Space (\begin{DoxyParamCaption}\item[{int}]{num }\end{DoxyParamCaption})}
+
+Sets the number of extra spaces after the delimiter 
+\begin{DoxyParams}{Parameters}
+{\em num} & number of spaces\\
+\hline
+\end{DoxyParams}
+Sets the number of extra spaces after the delimiter \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a29fe69f5bcda22232683139202b25c5b}\label{classlarcfm_1_1_separated_output_a29fe69f5bcda22232683139202b25c5b}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setCommentCharacter@{setCommentCharacter}}
+\index{setCommentCharacter@{setCommentCharacter}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setCommentCharacter()}{setCommentCharacter()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Comment\+Character (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{c }\end{DoxyParamCaption})}
+
+Set the code indicating the start of a comment. 
+\begin{DoxyParams}{Parameters}
+{\em c} & comment character\\
+\hline
+\end{DoxyParams}
+Set the code indicating the start of a comment. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a2e4ea345afd965e155ff2d501261d5c5}\label{classlarcfm_1_1_separated_output_a2e4ea345afd965e155ff2d501261d5c5}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setEmptyValue@{setEmptyValue}}
+\index{setEmptyValue@{setEmptyValue}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setEmptyValue()}{setEmptyValue()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Empty\+Value (\begin{DoxyParamCaption}\item[{std\+::string}]{e }\end{DoxyParamCaption})}
+
+The value to be displayed if a column is "{}skipped"{}. Empty values are only added inside a line, not at the end. 
+\begin{DoxyParams}{Parameters}
+{\em e} & value to indicate empty\\
+\hline
+\end{DoxyParams}
+The value to be displayed if a column is \char`\"{}skipped\char`\"{}. Empty values are only added inside a line, not at the end. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a9ac8b571b1507da1cf72578ab6a5f078}\label{classlarcfm_1_1_separated_output_a9ac8b571b1507da1cf72578ab6a5f078}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setHeading@{setHeading}}
+\index{setHeading@{setHeading}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setHeading()}{setHeading()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Heading (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const std\+::string \&}]{name,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})}
+
+Set the heading for the given column number, columns begin at 0. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the column number \\
+\hline
+{\em name} & the name of this column heading \\
+\hline
+{\em unit} & the unit for this column. If you don\textquotesingle{}t know, then use \char`\"{}unspecified\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a1e4855fd67ea69e53ec774f6c596d1c9}\label{classlarcfm_1_1_separated_output_a1e4855fd67ea69e53ec774f6c596d1c9}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setOutputUnits@{setOutputUnits}}
+\index{setOutputUnits@{setOutputUnits}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setOutputUnits()}{setOutputUnits()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Output\+Units (\begin{DoxyParamCaption}\item[{bool}]{output }\end{DoxyParamCaption})}
+
+Should the output units be placed in the output file? 
+\begin{DoxyParams}{Parameters}
+{\em output} & if true, then the units should be displayed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_separated_output_a423fd72cf136e4a0acac2816624c81ab}\label{classlarcfm_1_1_separated_output_a423fd72cf136e4a0acac2816624c81ab}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{pr }\end{DoxyParamCaption})}
+
+Additively set parameters. (This does not delete existing parameters, but will overwrite them.) 
+\begin{DoxyParams}{Parameters}
+{\em pr} & parameter object\\
+\hline
+\end{DoxyParams}
+Set parameters. Use all the parameters in the reader. \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a655a1bf77bcbbf82f64a2284281b9d9d}\label{classlarcfm_1_1_separated_output_a655a1bf77bcbbf82f64a2284281b9d9d}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!size@{size}}
+\index{size@{size}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily long larcfm\+::\+Separated\+Output\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the number of columns \begin{DoxyReturn}{Returns}
+number of columns
+\end{DoxyReturn}
+Return the number of columns \mbox{\Hypertarget{classlarcfm_1_1_separated_output_a4e7f98495a749c99bc9ef44a1258e2ac}\label{classlarcfm_1_1_separated_output_a4e7f98495a749c99bc9ef44a1258e2ac}} 
+\index{larcfm::SeparatedOutput@{larcfm::SeparatedOutput}!writeLine@{writeLine}}
+\index{writeLine@{writeLine}!larcfm::SeparatedOutput@{larcfm::SeparatedOutput}}
+\doxysubsubsection{\texorpdfstring{writeLine()}{writeLine()}}
+{\footnotesize\ttfamily void larcfm\+::\+Separated\+Output\+::write\+Line (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Writes a line of the output. The first call to write\+Line will write the column headings, units, etc.
+
+Writes a line of the output. The first call to read\+Line will read the column headings, units, etc. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Separated\+Output.\+h\item 
+Modules/\+ACCo\+RD/src/Separated\+Output.\+cpp\end{DoxyCompactItemize}

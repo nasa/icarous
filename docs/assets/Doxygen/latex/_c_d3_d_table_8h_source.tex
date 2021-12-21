@@ -1,0 +1,75 @@
+\hypertarget{_c_d3_d_table_8h_source}{}\doxysection{CD3\+DTable.\+h}
+\label{_c_d3_d_table_8h_source}\index{Modules/ACCoRD/inc/CD3DTable.h@{Modules/ACCoRD/inc/CD3DTable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2012-\/2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef CD3DTABLE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define CD3DTABLE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ParameterTable.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d3_d_table}{CD3DTable}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_table}{ParameterTable}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   \textcolor{keywordtype}{double} D;}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double} H;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_table}{CD3DTable}}();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_table}{CD3DTable}}(\textcolor{keywordtype}{double} d, \textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_table}{CD3DTable}}(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& hunit);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keywordtype}{double} getHorizontalSeparation() \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{void} setHorizontalSeparation(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} getVerticalSeparation() \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{void} setVerticalSeparation(\textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} getHorizontalSeparation(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keywordtype}{void} setHorizontalSeparation(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordtype}{double} getVerticalSeparation(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{void} setVerticalSeparation(\textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d3_d_table}{CD3DTable}}\& t2) \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

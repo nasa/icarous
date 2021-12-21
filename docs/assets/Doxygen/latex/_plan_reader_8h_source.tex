@@ -1,0 +1,153 @@
+\hypertarget{_plan_reader_8h_source}{}\doxysection{Plan\+Reader.\+h}
+\label{_plan_reader_8h_source}\index{Modules/ACCoRD/inc/PlanReader.h@{Modules/ACCoRD/inc/PlanReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolyReader}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Authors: George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYREADER\_H}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYREADER\_H}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterProvider.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ParameterReader.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}SeparatedInput.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_plan_reader}{PlanReader}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}}, \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{ParameterReader}}, \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{ParameterProvider}} \{}
+\DoxyCodeLine{69 \textcolor{keyword}{private}:}
+\DoxyCodeLine{70     \textcolor{comment}{// we store the heading indices in the following order:}}
+\DoxyCodeLine{71     \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{72         ID,}
+\DoxyCodeLine{73         LAT\_SX,}
+\DoxyCodeLine{74         LON\_SY,}
+\DoxyCodeLine{75         SZ,}
+\DoxyCodeLine{76         TIME,}
+\DoxyCodeLine{77         POINT\_NAME,}
+\DoxyCodeLine{78         INFO,}
+\DoxyCodeLine{79         TYPE,}
+\DoxyCodeLine{80         TCP\_TRK,}
+\DoxyCodeLine{81         TCP\_GS,}
+\DoxyCodeLine{82         TCP\_VS,}
+\DoxyCodeLine{83         ACC\_TRK,}
+\DoxyCodeLine{84         ACC\_GS,}
+\DoxyCodeLine{85         ACC\_VS,}
+\DoxyCodeLine{86         TRK,}
+\DoxyCodeLine{87         GS,}
+\DoxyCodeLine{88         VS,}
+\DoxyCodeLine{89 \textcolor{comment}{//      SRC\_LAT\_SX,}}
+\DoxyCodeLine{90 \textcolor{comment}{//      SRC\_LON\_SY,}}
+\DoxyCodeLine{91 \textcolor{comment}{//      SRC\_ALT,}}
+\DoxyCodeLine{92 \textcolor{comment}{//      SRC\_TIME,}}
+\DoxyCodeLine{93         RADIUS,}
+\DoxyCodeLine{94         CENTER\_LAT\_SX,}
+\DoxyCodeLine{95         CENTER\_LON\_SY,}
+\DoxyCodeLine{96         CENTER\_ALT,}
+\DoxyCodeLine{97         SZ2,}
+\DoxyCodeLine{98         ENDTIME}
+\DoxyCodeLine{99     \};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{102         POLY,}
+\DoxyCodeLine{103         UNKNOWN,}
+\DoxyCodeLine{104         PLAN}
+\DoxyCodeLine{105     \};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107     std::vector<PolyPath> paths;}
+\DoxyCodeLine{108     std::vector<PolyPath> containment;}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     \textcolor{keywordtype}{int} altHeadings5(\textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2, \textcolor{keyword}{const} std::string\& s3, \textcolor{keyword}{const} std::string\& s4, \textcolor{keyword}{const} std::string\& s5) \textcolor{keyword}{const};}
+\DoxyCodeLine{111     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} loadfile();}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{114     \textcolor{keywordtype}{int} pathNameIndex(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{115     \textcolor{keywordtype}{int} containmentNameIndex(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{116     \textcolor{keywordtype}{int} planNameIndex(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{119     \mbox{\hyperlink{classlarcfm_1_1_separated_input}{SeparatedInput}} input;}
+\DoxyCodeLine{120     std::vector<Plan> plans;}
+\DoxyCodeLine{121 \textcolor{comment}{//  bool hasRead;}}
+\DoxyCodeLine{122 \textcolor{comment}{//  bool latlon;}}
+\DoxyCodeLine{123     \textcolor{keywordtype}{bool} clock;}
+\DoxyCodeLine{124     std::vector<int> head;}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     \textcolor{keywordtype}{int} altHeadings(\textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2, \textcolor{keyword}{const} std::string\& s3, \textcolor{keyword}{const} std::string\& s4) \textcolor{keyword}{const};}
+\DoxyCodeLine{127     \textcolor{keywordtype}{int} altHeadings(\textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2, \textcolor{keyword}{const} std::string\& s3) \textcolor{keyword}{const};}
+\DoxyCodeLine{128     \textcolor{keywordtype}{int} altHeadings(\textcolor{keyword}{const} std::string\& s1, \textcolor{keyword}{const} std::string\& s2) \textcolor{keyword}{const};}
+\DoxyCodeLine{129     \textcolor{keywordtype}{double} getClock(\textcolor{keyword}{const} std::string\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     \textcolor{keywordtype}{bool} OLD\_COLUMN\_HEADERS;}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{comment}{//  double timeOffset;}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{keyword}{public}:}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{139     \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a4ae32214106a6877a5cc9b9576b5c86d}{PlanReader}}();}
+\DoxyCodeLine{140 \textcolor{comment}{//  /** Create a new PolyReader based on an already-\/created SeparatedInput. */}}
+\DoxyCodeLine{141 \textcolor{comment}{//  PolyReader(SeparatedInput\& input);}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} open(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{144     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} open(std::istream* input);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{150     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a883beaebe64acc0bd17dfe463de64af7}{planSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{155     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a756fc446f4f59a354219e6fd9e47ffe3}{polySize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{160     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a969a61a9a18e3739f658678521e5faf1}{containmentSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{165     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a42d560bdc881f0f767b9e2b6cfe74f5f}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{171     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a83052fb038d0d48cf0d717cd45cdf167}{getPlan}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{177     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a4c99a604c09a7fb364386707be78d4f7}{getPolyPath}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{183     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a0e5e3b7b4a96045f84f564dc74e412d8}{getContainmentPolygon}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{188     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a61eea3507f1de708e490361413d750f7}{combinedSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{196     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a2378ff09562fe0c0bd5abcef6466430d}{getCombinedPlan}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{199     \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{200     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& getParametersRef();}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ac5dc4f376fe3ccdc8615136738c45f97}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{205         \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}() || input.\mbox{\hyperlink{classlarcfm_1_1_separated_input_aed639f6ef43672ad92f904c2ee1e23b8}{hasError}}();}
+\DoxyCodeLine{206     \}}
+\DoxyCodeLine{207     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_aa87d3d22a6c3c7f2613feac276190101}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{208         \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}() || input.\mbox{\hyperlink{classlarcfm_1_1_separated_input_aee7c78cd2fb96288785c8c81b93e53a7}{hasMessage}}();}
+\DoxyCodeLine{209     \}}
+\DoxyCodeLine{210     std::string \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ae449f76d5a367fb4313658f9fb3aff2c}{getMessage}}() \{}
+\DoxyCodeLine{211         \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}() + input.\mbox{\hyperlink{classlarcfm_1_1_separated_input_a601082bcff5ac0c196e526189737417b}{getMessage}}();}
+\DoxyCodeLine{212     \}}
+\DoxyCodeLine{213     std::string \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a0ecedce9c1916e1c4f2f348722080df6}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{214         \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}() + input.\mbox{\hyperlink{classlarcfm_1_1_separated_input_afb2caa955c14a4e7d58ac996f02cfcdd}{getMessageNoClear}}();}
+\DoxyCodeLine{215     \}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 \};}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PLANREADER\_H}}
+
+\end{DoxyCode}

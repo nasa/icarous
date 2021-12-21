@@ -1,0 +1,95 @@
+\hypertarget{_tuple6_8h_source}{}\doxysection{Tuple6.\+h}
+\label{_tuple6_8h_source}\index{Modules/ACCoRD/inc/Tuple6.h@{Modules/ACCoRD/inc/Tuple6.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Tuple6.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * a four element tuple}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ *}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef Tuple6\_H\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define Tuple6\_H\_}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{29 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6>}
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6}} \{}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33  T1 first;}
+\DoxyCodeLine{34  T2 second;}
+\DoxyCodeLine{35  T3 third;}
+\DoxyCodeLine{36  T4 fourth;}
+\DoxyCodeLine{37  T5 fifth;}
+\DoxyCodeLine{38  T6 sixth;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{41   \mbox{\hyperlink{classlarcfm_1_1_tuple6_a4f2027db74e6bbfbf0e676e5b62642fe}{Tuple6}}(): first(T1()), second(T2()), third(T3()), fourth(T4()), fifth(T5()), sixth(T6()) \{\}}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{44   \mbox{\hyperlink{classlarcfm_1_1_tuple6_ae7757b9b89d97b74cbb392d5f15ed14a}{Tuple6}}(\textcolor{keyword}{const} T1\& first, \textcolor{keyword}{const} T2\& second, \textcolor{keyword}{const} T3\& third, \textcolor{keyword}{const} T4\& fourth, \textcolor{keyword}{const} T5\& fifth, \textcolor{keyword}{const} T6\& sixth) :}
+\DoxyCodeLine{45       first(first), second(second), third(third), fourth(fourth), fifth(fifth), sixth(sixth) \{}
+\DoxyCodeLine{46   \}}
+\DoxyCodeLine{47  }
+\DoxyCodeLine{50   T1 \mbox{\hyperlink{classlarcfm_1_1_tuple6_adf90f406425d4b063697e749613572e1}{getFirst}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{51     \textcolor{keywordflow}{return} first;}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53  }
+\DoxyCodeLine{56   T2 \mbox{\hyperlink{classlarcfm_1_1_tuple6_aa3d0b87919c48d57a5c85e333832969a}{getSecond}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{57     \textcolor{keywordflow}{return} second;}
+\DoxyCodeLine{58     \}}
+\DoxyCodeLine{59  }
+\DoxyCodeLine{62   T3 \mbox{\hyperlink{classlarcfm_1_1_tuple6_a09530c061a47d234191ee3cd56b37bb6}{getThird}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{63     \textcolor{keywordflow}{return} third;}
+\DoxyCodeLine{64   \}}
+\DoxyCodeLine{65  }
+\DoxyCodeLine{68   T4 \mbox{\hyperlink{classlarcfm_1_1_tuple6_a972a5512ae64918d64da05f2d97fdb46}{getFourth}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{69     \textcolor{keywordflow}{return} fourth;}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{74   T5 \mbox{\hyperlink{classlarcfm_1_1_tuple6_a00b4a6fce5d3d368e0442dc457bc6908}{getFifth}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{75     \textcolor{keywordflow}{return} fifth;}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{80   T6 \mbox{\hyperlink{classlarcfm_1_1_tuple6_aec576e9ca207fb0e3c987da8b1f69552}{getSixth}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{81     \textcolor{keywordflow}{return} sixth;}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{86   \textcolor{keyword}{template}<\textcolor{keyword}{typename} U1, \textcolor{keyword}{typename} U2, \textcolor{keyword}{typename} U3, \textcolor{keyword}{typename} U4, \textcolor{keyword}{typename} U5, \textcolor{keyword}{typename} U6>}
+\DoxyCodeLine{87   \mbox{\hyperlink{classlarcfm_1_1_tuple6_a3b39c78d703d993b94261791b47ac929}{Tuple6}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<U1,U2,U3,U4,U5,U6>}}\& q): first(q.first), second(q.second), third(q.third), fourth(q.fourth), fifth(q.fifth) , sixth(q.sixth)\{\}}
+\DoxyCodeLine{88  }
+\DoxyCodeLine{90   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5, T6>}} \mbox{\hyperlink{classlarcfm_1_1_tuple6_ad164cea3148c4c4e4e494bb8402095cf}{make}}(\textcolor{keyword}{const} T1\& e1, \textcolor{keyword}{const} T2\& e2, \textcolor{keyword}{const} T3\& e3, \textcolor{keyword}{const} T4\& e4, \textcolor{keyword}{const} T5\& e5, \textcolor{keyword}{const} T6\& e6) \{}
+\DoxyCodeLine{91     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4, T5, T6>}}(e1, e2, e3, e4, e5, e6);}
+\DoxyCodeLine{92   \}}
+\DoxyCodeLine{93 \};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{96   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6>}
+\DoxyCodeLine{97   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ae714da719acb7ee9047444b14eafe7e9}{operator== }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q2) \{}
+\DoxyCodeLine{98     \textcolor{keywordflow}{return} q1.first == q2.first \&\& q1.second == q2.second \&\& q1.third == q2.third \&\& q1.fourth == q2.fourth \&\& q1.fifth == q2.fifth \&\& q1.sixth == q2.sixth;}
+\DoxyCodeLine{99   \}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{102   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6>}
+\DoxyCodeLine{103   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a9532427b324c671f7e0dd98d4f3711c2}{operator!= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q2) \{}
+\DoxyCodeLine{104     \textcolor{keywordflow}{return} !(q1 == q2);}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{108   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6>}
+\DoxyCodeLine{109   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a6a2dce4e496905966ddaeadde89ad8a7}{operator< }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<T1,T2,T3,T4,T5,T6>}}\& q2) \{}
+\DoxyCodeLine{110       \textcolor{keywordflow}{return} q1 != q2 \&\& !(q1 < q2);}
+\DoxyCodeLine{111   \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* Tuple6\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

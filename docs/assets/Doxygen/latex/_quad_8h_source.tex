@@ -1,0 +1,100 @@
+\hypertarget{_quad_8h_source}{}\doxysection{Quad.\+h}
+\label{_quad_8h_source}\index{Modules/ACCoRD/inc/Quad.h@{Modules/ACCoRD/inc/Quad.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Quad.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * a four element tuple}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ *}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef QUAD\_H\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define QUAD\_H\_}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{28 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4> }
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_quad}{Quad}} \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32  T1 first;}
+\DoxyCodeLine{33  T2 second;}
+\DoxyCodeLine{34  T3 third;}
+\DoxyCodeLine{35  T4 fourth;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{38   \mbox{\hyperlink{classlarcfm_1_1_quad_a406bbd76babcdea6a0912483631f24c3}{Quad}}(): first(T1()), second(T2()), third(T3()), fourth(T4()) \{\}}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{41   \mbox{\hyperlink{classlarcfm_1_1_quad_a38c1001d218d7ae2056c3c8c08eb4c84}{Quad}}(\textcolor{keyword}{const} T1\& first, \textcolor{keyword}{const} T2\& second, \textcolor{keyword}{const} T3\& third, \textcolor{keyword}{const} T4\& fourth) : first(first), second(second), third(third), fourth(fourth) \{}
+\DoxyCodeLine{42   \}}
+\DoxyCodeLine{43  }
+\DoxyCodeLine{47   T1 \mbox{\hyperlink{classlarcfm_1_1_quad_a0c355eb1526d3b925b6b739dc64f2dbd}{getFirst}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{48     \textcolor{keywordflow}{return} first;}
+\DoxyCodeLine{49     \}}
+\DoxyCodeLine{50  }
+\DoxyCodeLine{54   T2 \mbox{\hyperlink{classlarcfm_1_1_quad_a553ef4f233ee685fcad68d6f2164669b}{getSecond}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{55     \textcolor{keywordflow}{return} second;}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57  }
+\DoxyCodeLine{61   T3 \mbox{\hyperlink{classlarcfm_1_1_quad_a5415c392fe9d0a8b5ea30b5af299f6ea}{getThird}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{62     \textcolor{keywordflow}{return} third;}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64  }
+\DoxyCodeLine{68   T4 \mbox{\hyperlink{classlarcfm_1_1_quad_af32f08aeda751bb3ce6cf9afa70e7cd7}{getFourth}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{69     \textcolor{keywordflow}{return} fourth;}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keyword}{typename} U1, \textcolor{keyword}{typename} U2, \textcolor{keyword}{typename} U3, \textcolor{keyword}{typename} U4>}
+\DoxyCodeLine{74   \mbox{\hyperlink{classlarcfm_1_1_quad_ab8938fce25f3bf99e585115f09092ea7}{Quad}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<U1,U2,U3,U4>}}\& q): first(q.first), second(q.second), third(q.third), fourth(q.fourth) \{\}}
+\DoxyCodeLine{75  }
+\DoxyCodeLine{77   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}} \mbox{\hyperlink{classlarcfm_1_1_quad_af2453d217088acaadf5c25aee1229e19}{make}}(\textcolor{keyword}{const} T1\& e1, \textcolor{keyword}{const} T2\& e2, \textcolor{keyword}{const} T3\& e3, \textcolor{keyword}{const} T4\& e4) \{}
+\DoxyCodeLine{78     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}(e1, e2, e3, e4);}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{83   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{84   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ae714da719acb7ee9047444b14eafe7e9}{operator== }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q2) \{}
+\DoxyCodeLine{85     \textcolor{keywordflow}{return} q1.first == q2.first \&\& q1.second == q2.second \&\& q1.third == q2.third \&\& q1.fourth == q2.fourth;}
+\DoxyCodeLine{86   \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{89   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a9532427b324c671f7e0dd98d4f3711c2}{operator!= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q2) \{}
+\DoxyCodeLine{91     \textcolor{keywordflow}{return} !(q1 == q2);}
+\DoxyCodeLine{92   \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{95   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{96   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a6a2dce4e496905966ddaeadde89ad8a7}{operator< }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q2) \{}
+\DoxyCodeLine{97     \textcolor{keywordflow}{if} (q1.first == q2.first) \{}
+\DoxyCodeLine{98         \textcolor{keywordflow}{if} (q1.second == q2.second) \{}
+\DoxyCodeLine{99             \textcolor{keywordflow}{if} (q1.third == q2.third) \{}
+\DoxyCodeLine{100                     \textcolor{keywordflow}{return} q1.fourth < q2.fourth;}
+\DoxyCodeLine{101             \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{102                 \textcolor{keywordflow}{return} q1.third < q2.third;}
+\DoxyCodeLine{103             \}}
+\DoxyCodeLine{104         \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{105             \textcolor{keywordflow}{return} q1.second < q2.second;}
+\DoxyCodeLine{106         \}}
+\DoxyCodeLine{107     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{108         \textcolor{keywordflow}{return} q1.first < q2.first;}
+\DoxyCodeLine{109     \}}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{113   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{114   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a7882c413c0a6083b364c11ca158a4cdf}{operator> }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<T1,T2,T3,T4>}}\& q2) \{}
+\DoxyCodeLine{115       \textcolor{keywordflow}{return} q1 != q2 \&\& !(q1 < q2);}
+\DoxyCodeLine{116   \}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* QUAD\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

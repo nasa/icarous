@@ -23,15 +23,15 @@
 \DoxyCodeLine{26     std::string \mbox{\hyperlink{structp_object_a30f2699c4e71c6eaf4d9991ef3502bc3}{callsign}};      }
 \DoxyCodeLine{27     \textcolor{keywordtype}{int} \mbox{\hyperlink{structp_object_a4d453dfb0df455cc3bdaba93c7ae0eed}{id}};                    }
 \DoxyCodeLine{28     \textcolor{keywordtype}{double} \mbox{\hyperlink{structp_object_acef9933d1426ccdb6cf9d5969969f92a}{time}};               }
-\DoxyCodeLine{29     larcfm::Position \mbox{\hyperlink{structp_object_aa20c859a8d95171551b3cf1361c9028c}{position}}; }
-\DoxyCodeLine{30     larcfm::Velocity \mbox{\hyperlink{structp_object_a4fe635973fbbe4b0da5638a2efa8bda1}{velocity}}; }
+\DoxyCodeLine{29     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{structp_object_aa20c859a8d95171551b3cf1361c9028c}{position}}; }
+\DoxyCodeLine{30     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{structp_object_a4fe635973fbbe4b0da5638a2efa8bda1}{velocity}}; }
 \DoxyCodeLine{31 \}\mbox{\hyperlink{structp_object}{pObject}};}
 \DoxyCodeLine{32 }
 \DoxyCodeLine{37 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}\{}
 \DoxyCodeLine{38     \textcolor{keyword}{enum} FENCE\_TYPE \{KEEP\_IN, KEEP\_OUT\}; }
 \DoxyCodeLine{39     \textcolor{keywordtype}{int} \mbox{\hyperlink{structfence_object_adf30e0eceae60711cbb6bd0087a9c71e}{fenceType}};                       }
 \DoxyCodeLine{40     \textcolor{keywordtype}{int} \mbox{\hyperlink{structfence_object_a9a6a537943f97ac1f5675413f01f828b}{id}};                              }
-\DoxyCodeLine{41     larcfm::SimplePoly \mbox{\hyperlink{structfence_object_acaf10ed45e5102539cbe9a8e0d805262}{polygon}};          }
+\DoxyCodeLine{41     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{larcfm::SimplePoly}} \mbox{\hyperlink{structfence_object_acaf10ed45e5102539cbe9a8e0d805262}{polygon}};          }
 \DoxyCodeLine{42 \}\mbox{\hyperlink{structfence_object}{fenceObject}};}
 \DoxyCodeLine{43 }
 \DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{class_traj_manager}{TrajManager}}\{}
@@ -50,18 +50,18 @@
 \DoxyCodeLine{60 }
 \DoxyCodeLine{67     int64\_t \mbox{\hyperlink{class_traj_manager_a166ccb9b94627ec79dcf91aa5171bc7f}{FindDubinsPath}}(std::string planID);}
 \DoxyCodeLine{68 }
-\DoxyCodeLine{77     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_traj_manager_aeb22fbc67e8ce8417064541e043a8c8a}{FindTimeToFenceViolation}}(larcfm::Poly3D polygon,larcfm::Vect3 so,larcfm::Velocity vel);}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_traj_manager_aeb22fbc67e8ce8417064541e043a8c8a}{FindTimeToFenceViolation}}(\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{larcfm::Poly3D}} polygon,\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} so,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} vel);}
 \DoxyCodeLine{78 }
-\DoxyCodeLine{89     std::vector<double> \mbox{\hyperlink{class_traj_manager_a726097bdf7594aa0d94bcf4aaa9930ac}{ComputePlanOffsets}}(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} nextWP,larcfm::Position currentPos,larcfm::Velocity currentVel,\textcolor{keywordtype}{double} timeAtPos);}
+\DoxyCodeLine{89     std::vector<double> \mbox{\hyperlink{class_traj_manager_a726097bdf7594aa0d94bcf4aaa9930ac}{ComputePlanOffsets}}(\textcolor{keyword}{const} std::string planID,\textcolor{keywordtype}{int} nextWP,\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} currentPos,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} currentVel,\textcolor{keywordtype}{double} timeAtPos);}
 \DoxyCodeLine{90 }
-\DoxyCodeLine{97     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_traj_manager_a583b8515d76d2ae07628a78e3726a44c}{CheckLineOfSightconflict}}(larcfm::Position start, larcfm::Position end);}
+\DoxyCodeLine{97     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_traj_manager_a583b8515d76d2ae07628a78e3726a44c}{CheckLineOfSightconflict}}(\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} start, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} end);}
 \DoxyCodeLine{98 }
 \DoxyCodeLine{102     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_traj_manager_a257756133fde7a93afe1a324b78fc15f}{LogInput}}();}
 \DoxyCodeLine{103 \textcolor{keyword}{public}:}
-\DoxyCodeLine{104     larcfm::Position \mbox{\hyperlink{class_traj_manager_aed928f616c72752436415104756cd49d}{startPos}}; }
-\DoxyCodeLine{105     larcfm::Position \mbox{\hyperlink{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}{endPos}};   }
-\DoxyCodeLine{106     larcfm::Velocity \mbox{\hyperlink{class_traj_manager_a59cc793d864e494b58fe835b09e52036}{startVel}}; }
-\DoxyCodeLine{107     larcfm::Velocity \mbox{\hyperlink{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}{endVel}};   }
+\DoxyCodeLine{104     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{class_traj_manager_aed928f616c72752436415104756cd49d}{startPos}}; }
+\DoxyCodeLine{105     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{class_traj_manager_af3451e801481ae9f4de8eb3dcb7f481a}{endPos}};   }
+\DoxyCodeLine{106     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_traj_manager_a59cc793d864e494b58fe835b09e52036}{startVel}}; }
+\DoxyCodeLine{107     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_traj_manager_abbe2faad7d0585c91791f655bdd3327d}{endVel}};   }
 \DoxyCodeLine{108 }
 \DoxyCodeLine{115     \mbox{\hyperlink{class_traj_manager_ac4cc8d2fcd4b6085545e5b602054280a}{TrajManager}}(std::string \mbox{\hyperlink{structcallsign}{callsign}},std::string config);}
 \DoxyCodeLine{116 }
@@ -69,13 +69,13 @@
 \DoxyCodeLine{123 }
 \DoxyCodeLine{129     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_traj_manager_acfefed23cbe0ae49f2b1a046c41a2347}{UpdateDubinsPlannerParameters}}(\mbox{\hyperlink{struct_dubins_params}{DubinsParams\_t}} \&params);}
 \DoxyCodeLine{130 }
-\DoxyCodeLine{141     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}{FindPath}}(std::string planID, larcfm::Position fromPosition,larcfm::Position toPosition,larcfm::Velocity fromVelocity,larcfm::Velocity toVelocity);}
+\DoxyCodeLine{141     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_a68314e436ffb89b0f6541dcfb446fab1}{FindPath}}(std::string planID, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} fromPosition,\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} toPosition,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} fromVelocity,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} toVelocity);}
 \DoxyCodeLine{142 }
 \DoxyCodeLine{149     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_a1f0477999fcb00a7f8b64227772bb51f}{GetTotalWaypoints}}(std::string planID);}
 \DoxyCodeLine{150 }
 \DoxyCodeLine{159     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_a7bce4c6c916027d7149fa3757158a893}{GetWaypoint}}(std::string planID,\textcolor{keywordtype}{int} wpid,\mbox{\hyperlink{structwaypoint__t}{waypoint\_t}}\& wp);}
 \DoxyCodeLine{160 }
-\DoxyCodeLine{167     larcfm::Plan* \mbox{\hyperlink{class_traj_manager_a2873a4044713f90051474b43ec324383}{GetPlan}}(std::string planID);}
+\DoxyCodeLine{167     \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}}* \mbox{\hyperlink{class_traj_manager_a2873a4044713f90051474b43ec324383}{GetPlan}}(std::string planID);}
 \DoxyCodeLine{168 }
 \DoxyCodeLine{173     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_traj_manager_a98320dba7d693e779f4e2a9f0cdcbb92}{ClearAllPlans}}();}
 \DoxyCodeLine{174 }
@@ -88,7 +88,7 @@
 \DoxyCodeLine{214     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_traj_manager_ad029102a4fb513146d4b4bf396f464ae}{InputFlightPlan}}(\textcolor{keyword}{const} std::string \&plan\_id, \textcolor{keyword}{const} std::list<waypoint\_t> \&waypoints, }
 \DoxyCodeLine{215                          \textcolor{keyword}{const} \textcolor{keywordtype}{double} initHeading,\textcolor{keywordtype}{bool} repair,\textcolor{keywordtype}{double} repairTurnRate);}
 \DoxyCodeLine{216     }
-\DoxyCodeLine{226     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}{InputTraffic}}(std::string \mbox{\hyperlink{structcallsign}{callsign}}, larcfm::Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm::Velocity \&velocity,\textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{226     \textcolor{keywordtype}{int} \mbox{\hyperlink{class_traj_manager_afbc4d6a5b372500d7582acc2c532163a}{InputTraffic}}(std::string \mbox{\hyperlink{structcallsign}{callsign}}, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \&velocity,\textcolor{keywordtype}{double} time);}
 \DoxyCodeLine{227 }
 \DoxyCodeLine{234     std::string \mbox{\hyperlink{class_traj_manager_a023ebd8ba7069b48add51d9a0c6910d2}{PlanToString}}(std::string planID);}
 \DoxyCodeLine{235 }
@@ -98,9 +98,9 @@
 \DoxyCodeLine{252 }
 \DoxyCodeLine{260     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_traj_manager_ae0afdb2cba65f1e7bfea706753f82c73}{SetPlanOffset}}(std::string planID,\textcolor{keywordtype}{int} n,\textcolor{keywordtype}{double} offset);}
 \DoxyCodeLine{261 }
-\DoxyCodeLine{269     larcfm::Position \mbox{\hyperlink{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}{GetPlanPosition}}(std::string planID,\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{269     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{class_traj_manager_a2e93c7e3883b4735ddf28b56383f8a98}{GetPlanPosition}}(std::string planID,\textcolor{keywordtype}{double} t);}
 \DoxyCodeLine{270 }
-\DoxyCodeLine{282     trajectoryMonitorData\_t \mbox{\hyperlink{class_traj_manager_a110b698f40430e8cba4507d73e141155}{MonitorTrajectory}}(\textcolor{keywordtype}{double} time, std::string planID, larcfm::Position pos,larcfm::Velocity vel, \textcolor{keywordtype}{int} nextWP1,\textcolor{keywordtype}{int} nextWP2);}
+\DoxyCodeLine{282     trajectoryMonitorData\_t \mbox{\hyperlink{class_traj_manager_a110b698f40430e8cba4507d73e141155}{MonitorTrajectory}}(\textcolor{keywordtype}{double} time, std::string planID, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} pos,\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} vel, \textcolor{keywordtype}{int} nextWP1,\textcolor{keywordtype}{int} nextWP2);}
 \DoxyCodeLine{283 \};}
 \DoxyCodeLine{284 }
 \DoxyCodeLine{285 }

@@ -1,0 +1,118 @@
+\hypertarget{_constants_8h_source}{}\doxysection{Constants.\+h}
+\label{_constants_8h_source}\index{Modules/ACCoRD/inc/Constants.h@{Modules/ACCoRD/inc/Constants.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Constants.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * General Constants}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{9 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef CONSTANTS\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define CONSTANTS\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{// these will all eventually be moved into the object initialization}}
+\DoxyCodeLine{24 \textcolor{keyword}{static} \textcolor{keyword}{const} std::string FormalATM\_version = \textcolor{stringliteral}{"{}v2.7.4"{}};}
+\DoxyCodeLine{25 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} FormalATM\_GPS\_LIMIT\_HORIZONTAL = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}ft"{}}, 25.0); \textcolor{comment}{// in order to keep both versions tied to a single entry, this needs to be defined here.}}
+\DoxyCodeLine{26 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} FormalATM\_GPS\_LIMIT\_VERTICAL = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units::from}}(\textcolor{stringliteral}{"{}ft"{}}, 25.0); \textcolor{comment}{// in order to keep both versions tied to a single entry, this needs to be defined here.}}
+\DoxyCodeLine{27 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} FormalATM\_TIME\_LIMIT\_EPSILON = 1.0;\textcolor{comment}{// in order to keep both versions tied to a single entry, this needs to be defined here.}}
+\DoxyCodeLine{28 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} FormalATM\_NO\_TIME\_LIMIT\_EPSILON = -\/1;}
+\DoxyCodeLine{29 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} FormalATM\_NO\_TIME = -\/1;}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{34 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_constants}{Constants}} \{}
+\DoxyCodeLine{35 \textcolor{keyword}{private}:}
+\DoxyCodeLine{36     \textcolor{keyword}{static} \textcolor{keywordtype}{double} HORIZONTAL\_ACCURACY;}
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keywordtype}{double} VERTICAL\_ACCURACY;}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \textcolor{keywordtype}{double} HORIZONTAL\_ACCURACY\_RAD;}
+\DoxyCodeLine{39     \textcolor{keyword}{static} \textcolor{keywordtype}{double} TIME\_ACCURACY;}
+\DoxyCodeLine{40     \textcolor{keyword}{static} \textcolor{keywordtype}{int}    OUTPUT\_PRECISION;}
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keywordtype}{bool}   TRAILING\_ZEROS;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{public}:}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string separatorPattern;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{51     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_abfa2f242125557d1de695275aac69660}{wsPatternBase}};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{56     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_aa478c26f1071bc43211685d17b780c06}{wsPatternBaseNoRegex}};}
+\DoxyCodeLine{60     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_a3f5c8f4c59ca132eade902751d7dced1}{wsPatternParens}};}
+\DoxyCodeLine{64     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_a8031640ddceac810fe8569d061c58af0}{wsPatternBraces}};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{70     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_a84e1daef211398e62ed4b48abef42b8b}{version}};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{77     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_aa335c8db2b130507a81df283257932d8}{build\_date}};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{84     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_constants_acf51f9a606b0cc01c6572c8ae4ea8392}{build\_time}};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_ad691d7f8b56a8f2694f07c01a03e543e}{GPS\_LIMIT\_HORIZONTAL}};}
+\DoxyCodeLine{93     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_a004d5992dc1a4665c4060688a841b1a3}{GPS\_LIMIT\_VERTICAL}};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{96     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_a18d31988462d34040797aca6f84ca8da}{TIME\_LIMIT\_EPSILON}};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NO\_TIME\_LIMIT\_EPSILON;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NO\_TIME;}
+\DoxyCodeLine{107     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_constants_af7b7a8a4db83831576ceceef02afe178}{set\_time\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{113     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_constants_aa0b504c9e1bcbccf008e6e004b536eac}{set\_horizontal\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{119     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_constants_aa69782ebdc1797091d3e5f260bc7b9fb}{set\_vertical\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{123     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_a97e1faa7fa34281b1b64fc0383a44143}{get\_time\_accuracy}}();}
+\DoxyCodeLine{127     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_a5ba10c39c6697ef252fcbe08c732a365}{get\_horizontal\_accuracy}}();}
+\DoxyCodeLine{131     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_a9b97622e2604d42b1e224226fb21d3e1}{get\_vertical\_accuracy}}();}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{136     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_constants_ae64a7c194e2e97e39ddd6cabd9315e96}{get\_latlon\_accuracy}}();}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{141     \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_constants_a65514c73d01ed950d1da830ece8d935c}{get\_output\_precision}}();}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{146     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_constants_a2a4ffdca889f08bbb372a7633efdbcda}{set\_output\_precision}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{151     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_constants_a1b47188cada5f7c4c490a28e947c9831}{set\_trailing\_zeros}}(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{156     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a41fe01ccf99f0aaa3a814e3dd30f3b8c}{get\_trailing\_zeros}}();}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{164     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a40cac193c879ac2d0c0894e99ba1a366}{almost\_equals\_time}}(\textcolor{keywordtype}{double} t1, \textcolor{keywordtype}{double} t2);}
+\DoxyCodeLine{173     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a5fa213e25b6a546351a7e43d854a9d4c}{almost\_equals\_xy}}(\textcolor{keywordtype}{double} x1, \textcolor{keywordtype}{double} y1, \textcolor{keywordtype}{double} x2, \textcolor{keywordtype}{double} y2);}
+\DoxyCodeLine{179     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a01ad7ab4a783fd75a4d2d4fc1bbe4859}{almost\_equals\_distance}}(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{186     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a3db7d89c495e58a27d5625b86944496f}{almost\_equals\_radian}}(\textcolor{keywordtype}{double} d1, \textcolor{keywordtype}{double} d2);}
+\DoxyCodeLine{192     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a3db7d89c495e58a27d5625b86944496f}{almost\_equals\_radian}}(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{199     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_constants_a855de8b55229745ba4f66a7269b2a2ce}{almost\_equals\_alt}}(\textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2);}
+\DoxyCodeLine{200 \};}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{205 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} TIME\_LIMIT\_EPSILON = FormalATM\_TIME\_LIMIT\_EPSILON;\textcolor{comment}{// in order to keep both versions tied to a single entry, this needs to be defined here.}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{210 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NO\_TIME\_LIMIT\_EPSILON = FormalATM\_NO\_TIME\_LIMIT\_EPSILON;}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{215 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NO\_TIME = FormalATM\_NO\_TIME;}
+\DoxyCodeLine{221 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a18edc2288523879ee25c667c3e504e73}{set\_time\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{227 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_ae41c8c0e11bf9ff9757f396e7dd9d2ef}{set\_horizontal\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{233 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a549428bec75557bcbb9d3091bd043c7b}{set\_vertical\_accuracy}}(\textcolor{keywordtype}{double} acc);}
+\DoxyCodeLine{237 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a8c8672956f41534d75dd40a6c66078d8}{get\_time\_accuracy}}();}
+\DoxyCodeLine{241 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a2eb442eac4f3edf13c4ea5f92801242b}{get\_horizontal\_accuracy}}();}
+\DoxyCodeLine{245 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a4a5c112cae4e5b2ec9c7e903d3c9c4f8}{get\_vertical\_accuracy}}();}
+\DoxyCodeLine{249 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a7d5bf6cb3799dba8d7552d3165932cc7}{almost\_equals\_time}}(\textcolor{keywordtype}{double} t1, \textcolor{keywordtype}{double} t2);}
+\DoxyCodeLine{253 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a6c06f777561e8e11f3660617da2f7856}{almost\_equals\_xy}}(\textcolor{keywordtype}{double} x1, \textcolor{keywordtype}{double} y1, \textcolor{keywordtype}{double} x2, \textcolor{keywordtype}{double} y2);}
+\DoxyCodeLine{257 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_add0a4db29574843a09e22e720caf8ec5}{almost\_equals\_distance}}(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{261 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_aedda4aff3b46a1e88a1d65664cee8e22}{almost\_equals\_radian}}(\textcolor{keywordtype}{double} d1, \textcolor{keywordtype}{double} d2);}
+\DoxyCodeLine{265 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_aedda4aff3b46a1e88a1d65664cee8e22}{almost\_equals\_radian}}(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{269 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ada29d8e82eae8bfdf2af2cb8996f6f1c}{almost\_equals\_alt}}(\textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CONSTANTS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

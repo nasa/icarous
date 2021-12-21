@@ -1,0 +1,40 @@
+\hypertarget{_detection_polygon_parameter_reader_8h_source}{}\doxysection{Detection\+Polygon\+Parameter\+Reader.\+h}
+\label{_detection_polygon_parameter_reader_8h_source}\index{Modules/ACCoRD/inc/DetectionPolygonParameterReader.h@{Modules/ACCoRD/inc/DetectionPolygonParameterReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DETECTIONPOLYGONPARAMETERREADER\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DETECTIONPOLYGONPARAMETERREADER\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}DetectionPolygon.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader}{DetectionPolygonParameterReader}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23   \textcolor{keyword}{static} std::map<std::string, DetectionPolygon*> registeredDetectionPolygonClasses;}
+\DoxyCodeLine{24   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} registered;}
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_a41551b81e84cb5a275690c0212b6dbbe}{registerDefaults}}();}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_ac452c99050d1dee9583fb6b925866156}{registerDetectionPolygon}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* cd);}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_ac452c99050d1dee9583fb6b925866156}{registerDetectionPolygon}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* cd, \textcolor{keyword}{const} std::string\& aternate\_name);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{42   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<std::vector<DetectionPolygon*>}},\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}*,\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}*> \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_aae6f2921e2cb2bdf5c35ed2850b8e223}{readPolygonDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& params);}
+\DoxyCodeLine{43   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<std::vector<DetectionPolygon*>}},\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}*,\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}*> \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_aae6f2921e2cb2bdf5c35ed2850b8e223}{readPolygonDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& params, \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

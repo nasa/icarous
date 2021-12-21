@@ -1,0 +1,42 @@
+\hypertarget{_generic_d_h_state_bands_8h_source}{}\doxysection{Generic\+DHState\+Bands.\+h}
+\label{_generic_d_h_state_bands_8h_source}\index{Modules/ACCoRD/inc/GenericDHStateBands.h@{Modules/ACCoRD/inc/GenericDHStateBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Bands interface}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef GENERICDHSTATEBANDS\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define GENERICDHSTATEBANDS\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}GenericStateBands.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands}{GenericDHStateBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands}{GenericStateBands}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29  \textcolor{keyword}{public}:}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands}{\string~GenericDHStateBands}}() \{\};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a406e50aa8b45d9136ec509ef805e3cb8}{setDistance}}(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& unit) = 0;}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a7939b02b5dae03e17c69a4a2b28a1dc5}{getDistance}}(\textcolor{keyword}{const} std::string\& uni) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_a7f421e7857be66e2f98b9e9c6058f151}{setHeight}}(\textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& unit) = 0;}
+\DoxyCodeLine{44     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands_ae04c31610f14585c5b7d5bc09ebdbd0e}{getHeight}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

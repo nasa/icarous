@@ -1,0 +1,352 @@
+\hypertarget{classlarcfm_1_1_priority}{}\doxysection{larcfm\+::Priority Class Reference}
+\label{classlarcfm_1_1_priority}\index{larcfm::Priority@{larcfm::Priority}}
+
+
+{\ttfamily \#include $<$Priority.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a23e75841fd80e81a5fa08d75943bcee7}{get\+\_\+tc}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a9694d2dba60ec6780bd826606015d6f6}{get\+\_\+cruise\+\_\+def}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a779705db616c958a00c02d9c36bdd418}{get\+\_\+vertical\+\_\+deadband}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_acd6e45f582dfc9a25c21f8dcf372f6ba}{get\+\_\+lateral\+\_\+deadband}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_ae91e61a19ac9cb73a67acc92c1a174f7}{get\+\_\+lateral\+\_\+relative\+\_\+deadband}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_aa41b6ff9c911a8ef090f20b955649c9e}{get\+\_\+time\+\_\+maneuver\+\_\+restriction}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a2b62e2292d48f9e4b3fa8da23f8178d6}{get\+\_\+time\+\_\+proximity}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a37e0a8d69a0a1838538f73682938fd7a}{get\+\_\+time\+\_\+lookahead}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a26a87d6200a2b11a0dedc8cdb9712676}{set\+\_\+tc}} (double tc)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_ac601b77e2753588c2c41a2616bbbb8ba}{set\+\_\+cruise\+\_\+def}} (double Cruise\+Def)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a1b1653e533149354110e82180309e2fd}{set\+\_\+vertical\+\_\+deadband}} (double Vertical\+Deadband)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a03f34c455716ebd0925e49d24c777ac2}{set\+\_\+lateral\+\_\+deadband}} (double Lateral\+Deadband)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a04428595c70f112f79e6a1adc364673b}{set\+\_\+lateral\+\_\+relative\+\_\+deadband}} (double Lateral\+Relative\+Deadband)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_adb63c5f6ffade9b499cacc59d1de0191}{set\+\_\+time\+\_\+maneuver\+\_\+restriction}} (double Time\+Maneuver\+Restriction)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a0d70a81ca66c51026b29809d925a8265}{set\+\_\+time\+\_\+proximity}} (double Time\+Proximity)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_priority_a2d4ed731c18fdc9889381e514075455e}{set\+\_\+time\+\_\+lookahead}} (double Time\+Lookahead)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_ac10162decfa39f81065752b0a5bcc319}{lateral\+\_\+only}} (double sox, double soy, double soz, double vox, double voy, double voz, double six, double siy, double siz, double vix, double viy, double viz)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_ae40701847659ab82cb4fb6934183bf16}{check}} (double sox, double soy, double soz, double vox, double voy, double voz, bool mo, double six, double siy, double siz, double vix, double viy, double viz, bool mi)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_a5de07d6006362e6226a0446cd85d5e75}{check\+LL}} (double lato, double lono, double alto, double trko, double gso, double vso, bool mo, double lati, double loni, double alti, double trki, double gsi, double vsi, bool mi)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_a5c6cf8dc04070639f80a067780fee9f4}{check}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&po, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, bool mo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, bool mi)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}{TIME\+\_\+\+MANEUVER\+\_\+\+RESTRICTION}}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}{TIME\+\_\+\+PROXIMITY}}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}{TIME\+\_\+\+LOOKAHEAD}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class is used to determine if one aircraft has priority over another aircraft. It is an encapsulation of the \char`\"{}right of way\char`\"{} rules.
+
+Disclaimer\+: The current rules have been verified to have certain safety and liveness properties, but they have not been validated, that is, they may not behave \char`\"{}naturally.\char`\"{} As we learn more about what is expected, these rules may evolve in the future. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_a5c6cf8dc04070639f80a067780fee9f4}\label{classlarcfm_1_1_priority_a5c6cf8dc04070639f80a067780fee9f4}} 
+\index{larcfm::Priority@{larcfm::Priority}!check@{check}}
+\index{check@{check}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+::check (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{po,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{bool}]{mo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{bool}]{mi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority over the given traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em po} & position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship \\
+\hline
+{\em mo} & true if the ownship is managed \\
+\hline
+{\em pi} & position of the traffic aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em mi} & true if the traffic aircraft is managed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_ae40701847659ab82cb4fb6934183bf16}\label{classlarcfm_1_1_priority_ae40701847659ab82cb4fb6934183bf16}} 
+\index{larcfm::Priority@{larcfm::Priority}!check@{check}}
+\index{check@{check}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+::check (\begin{DoxyParamCaption}\item[{double}]{sox,  }\item[{double}]{soy,  }\item[{double}]{soz,  }\item[{double}]{vox,  }\item[{double}]{voy,  }\item[{double}]{voz,  }\item[{bool}]{mo,  }\item[{double}]{six,  }\item[{double}]{siy,  }\item[{double}]{siz,  }\item[{double}]{vix,  }\item[{double}]{viy,  }\item[{double}]{viz,  }\item[{bool}]{mi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority over the given traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sox} & x component of the position of the ownship in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em soy} & y component of the position of the ownship in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em soz} & z component of the position of the ownship in \mbox{[}ft\mbox{]} \\
+\hline
+{\em vox} & x component of the velocity of the ownship in \mbox{[}knot\mbox{]} \\
+\hline
+{\em voy} & y component of the velocity of the ownship in \mbox{[}knot\mbox{]} \\
+\hline
+{\em voz} & z component of the velocity of the ownship in \mbox{[}fpm\mbox{]} \\
+\hline
+{\em mo} & true if the ownship is managed \\
+\hline
+{\em six} & x component of the position of the traffic aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em siy} & y component of the position of the traffic aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em siz} & z component of the position of the traffic aircraft in \mbox{[}ft\mbox{]} \\
+\hline
+{\em vix} & x component of the velocity of the traffic aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em viy} & y component of the velocity of the traffic aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em viz} & z component of the velocity of the traffic aircraft in \mbox{[}fpm\mbox{]} \\
+\hline
+{\em mi} & true if the traffic aircraft is managed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_a5de07d6006362e6226a0446cd85d5e75}\label{classlarcfm_1_1_priority_a5de07d6006362e6226a0446cd85d5e75}} 
+\index{larcfm::Priority@{larcfm::Priority}!checkLL@{checkLL}}
+\index{checkLL@{checkLL}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{checkLL()}{checkLL()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+::check\+LL (\begin{DoxyParamCaption}\item[{double}]{lato,  }\item[{double}]{lono,  }\item[{double}]{alto,  }\item[{double}]{trko,  }\item[{double}]{gso,  }\item[{double}]{vso,  }\item[{bool}]{mo,  }\item[{double}]{lati,  }\item[{double}]{loni,  }\item[{double}]{alti,  }\item[{double}]{trki,  }\item[{double}]{gsi,  }\item[{double}]{vsi,  }\item[{bool}]{mi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority over the given traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lato} & latitude of the ownship in \mbox{[}degrees north\mbox{]} \\
+\hline
+{\em lono} & longitude of the ownship in \mbox{[}degrees east\mbox{]} \\
+\hline
+{\em alto} & altitude of the ownship in \mbox{[}ft\mbox{]} \\
+\hline
+{\em trko} & track angle of the velocity of the ownship in \mbox{[}deg, clockwise from true north\mbox{]} \\
+\hline
+{\em gso} & ground speed of the ownship in \mbox{[}knot\mbox{]} \\
+\hline
+{\em vso} & vertical speed of the ownship in \mbox{[}fpm\mbox{]} \\
+\hline
+{\em mo} & true if the ownship is managed \\
+\hline
+{\em lati} & latitude of the traffic aircraft in \mbox{[}degrees north\mbox{]} \\
+\hline
+{\em loni} & longitude of the traffic aircraft in \mbox{[}degrees east\mbox{]} \\
+\hline
+{\em alti} & altitude of the traffic aircraft in \mbox{[}ft\mbox{]} \\
+\hline
+{\em trki} & track angle of the velocity of the traffic aircraft in \mbox{[}deg, clockwise from true north\mbox{]} \\
+\hline
+{\em gsi} & ground speed of the traffic aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em vsi} & vertical speed of the traffic aircraft in \mbox{[}fpm\mbox{]} \\
+\hline
+{\em mi} & true if the traffic aircraft is managed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_a9694d2dba60ec6780bd826606015d6f6}\label{classlarcfm_1_1_priority_a9694d2dba60ec6780bd826606015d6f6}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_cruise\_def@{get\_cruise\_def}}
+\index{get\_cruise\_def@{get\_cruise\_def}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_cruise\_def()}{get\_cruise\_def()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+cruise\+\_\+def (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns the vertical speed value that defines \char`\"{}cruise\char`\"{} in \mbox{[}fpm\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_priority_acd6e45f582dfc9a25c21f8dcf372f6ba}\label{classlarcfm_1_1_priority_acd6e45f582dfc9a25c21f8dcf372f6ba}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_lateral\_deadband@{get\_lateral\_deadband}}
+\index{get\_lateral\_deadband@{get\_lateral\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_lateral\_deadband()}{get\_lateral\_deadband()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+lateral\+\_\+deadband (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns the value of the relative uncertainty in horizontal speed in \mbox{[}knot\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_priority_ae91e61a19ac9cb73a67acc92c1a174f7}\label{classlarcfm_1_1_priority_ae91e61a19ac9cb73a67acc92c1a174f7}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_lateral\_relative\_deadband@{get\_lateral\_relative\_deadband}}
+\index{get\_lateral\_relative\_deadband@{get\_lateral\_relative\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_lateral\_relative\_deadband()}{get\_lateral\_relative\_deadband()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+lateral\+\_\+relative\+\_\+deadband (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns the value of the relative uncertainty in horizontal speed in \mbox{[}knot\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_priority_a23e75841fd80e81a5fa08d75943bcee7}\label{classlarcfm_1_1_priority_a23e75841fd80e81a5fa08d75943bcee7}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_tc@{get\_tc}}
+\index{get\_tc@{get\_tc}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_tc()}{get\_tc()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+tc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns TC in seconds \mbox{\Hypertarget{classlarcfm_1_1_priority_a37e0a8d69a0a1838538f73682938fd7a}\label{classlarcfm_1_1_priority_a37e0a8d69a0a1838538f73682938fd7a}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_time\_lookahead@{get\_time\_lookahead}}
+\index{get\_time\_lookahead@{get\_time\_lookahead}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_time\_lookahead()}{get\_time\_lookahead()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+time\+\_\+lookahead (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+returns the value of the time lookahead. I don\textquotesingle{}t know what this parameter is for ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_aa41b6ff9c911a8ef090f20b955649c9e}\label{classlarcfm_1_1_priority_aa41b6ff9c911a8ef090f20b955649c9e}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_time\_maneuver\_restriction@{get\_time\_maneuver\_restriction}}
+\index{get\_time\_maneuver\_restriction@{get\_time\_maneuver\_restriction}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_time\_maneuver\_restriction()}{get\_time\_maneuver\_restriction()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+time\+\_\+maneuver\+\_\+restriction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+returns the value of the time maneuver restrictions. I don\textquotesingle{}t know what this parameter is for \mbox{\Hypertarget{classlarcfm_1_1_priority_a2b62e2292d48f9e4b3fa8da23f8178d6}\label{classlarcfm_1_1_priority_a2b62e2292d48f9e4b3fa8da23f8178d6}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_time\_proximity@{get\_time\_proximity}}
+\index{get\_time\_proximity@{get\_time\_proximity}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_time\_proximity()}{get\_time\_proximity()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+time\+\_\+proximity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+returns the value of the time proximity. I don\textquotesingle{}t know what this parameter is for ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_a779705db616c958a00c02d9c36bdd418}\label{classlarcfm_1_1_priority_a779705db616c958a00c02d9c36bdd418}} 
+\index{larcfm::Priority@{larcfm::Priority}!get\_vertical\_deadband@{get\_vertical\_deadband}}
+\index{get\_vertical\_deadband@{get\_vertical\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{get\_vertical\_deadband()}{get\_vertical\_deadband()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+::get\+\_\+vertical\+\_\+deadband (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Returns the value of the relative uncertainty in vertical speed in \mbox{[}fpm\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_priority_ac10162decfa39f81065752b0a5bcc319}\label{classlarcfm_1_1_priority_ac10162decfa39f81065752b0a5bcc319}} 
+\index{larcfm::Priority@{larcfm::Priority}!lateral\_only@{lateral\_only}}
+\index{lateral\_only@{lateral\_only}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{lateral\_only()}{lateral\_only()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+::lateral\+\_\+only (\begin{DoxyParamCaption}\item[{double}]{sox,  }\item[{double}]{soy,  }\item[{double}]{soz,  }\item[{double}]{vox,  }\item[{double}]{voy,  }\item[{double}]{voz,  }\item[{double}]{six,  }\item[{double}]{siy,  }\item[{double}]{siz,  }\item[{double}]{vix,  }\item[{double}]{viy,  }\item[{double}]{viz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority (in the lateral dimension only) over the traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sox} & x component of the position of the ownship in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em soy} & y component of the position of the ownship in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em soz} & z component of the position of the ownship in \mbox{[}ft\mbox{]} \\
+\hline
+{\em vox} & x component of the velocity of the ownship in \mbox{[}knot\mbox{]} \\
+\hline
+{\em voy} & y component of the velocity of the ownship in \mbox{[}knot\mbox{]} \\
+\hline
+{\em voz} & z component of the velocity of the ownship in \mbox{[}fpm\mbox{]} \\
+\hline
+{\em six} & x component of the position of the traffic aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em siy} & y component of the position of the traffic aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em siz} & z component of the position of the traffic aircraft in \mbox{[}ft\mbox{]} \\
+\hline
+{\em vix} & x component of the velocity of the traffic aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em viy} & y component of the velocity of the traffic aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em viz} & z component of the velocity of the traffic aircraft in \mbox{[}fpm\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_ac601b77e2753588c2c41a2616bbbb8ba}\label{classlarcfm_1_1_priority_ac601b77e2753588c2c41a2616bbbb8ba}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_cruise\_def@{set\_cruise\_def}}
+\index{set\_cruise\_def@{set\_cruise\_def}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_cruise\_def()}{set\_cruise\_def()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+cruise\+\_\+def (\begin{DoxyParamCaption}\item[{double}]{Cruise\+Def }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the vertical speed that defines \char`\"{}cruise\char`\"{} in \mbox{[}fpm\mbox{]} 
+
+This value should never change; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_a03f34c455716ebd0925e49d24c777ac2}\label{classlarcfm_1_1_priority_a03f34c455716ebd0925e49d24c777ac2}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_lateral\_deadband@{set\_lateral\_deadband}}
+\index{set\_lateral\_deadband@{set\_lateral\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_lateral\_deadband()}{set\_lateral\_deadband()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+lateral\+\_\+deadband (\begin{DoxyParamCaption}\item[{double}]{Lateral\+Deadband }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the relative uncertainty in the horizontal speed in \mbox{[}knot\mbox{]} 
+
+This value should never change; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_a04428595c70f112f79e6a1adc364673b}\label{classlarcfm_1_1_priority_a04428595c70f112f79e6a1adc364673b}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_lateral\_relative\_deadband@{set\_lateral\_relative\_deadband}}
+\index{set\_lateral\_relative\_deadband@{set\_lateral\_relative\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_lateral\_relative\_deadband()}{set\_lateral\_relative\_deadband()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+lateral\+\_\+relative\+\_\+deadband (\begin{DoxyParamCaption}\item[{double}]{Lateral\+Relative\+Deadband }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the relative uncertainty in the horizontal speed in \mbox{[}knot\mbox{]} ~\newline
+
+
+This value should never change; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_a26a87d6200a2b11a0dedc8cdb9712676}\label{classlarcfm_1_1_priority_a26a87d6200a2b11a0dedc8cdb9712676}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_tc@{set\_tc}}
+\index{set\_tc@{set\_tc}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_tc()}{set\_tc()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+tc (\begin{DoxyParamCaption}\item[{double}]{tc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the relative uncertainty in the horizontal speed in \mbox{[}knot\mbox{]} 
+
+This value should never change; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_a2d4ed731c18fdc9889381e514075455e}\label{classlarcfm_1_1_priority_a2d4ed731c18fdc9889381e514075455e}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_time\_lookahead@{set\_time\_lookahead}}
+\index{set\_time\_lookahead@{set\_time\_lookahead}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_time\_lookahead()}{set\_time\_lookahead()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+time\+\_\+lookahead (\begin{DoxyParamCaption}\item[{double}]{Time\+Lookahead }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the time lookahead. I don\textquotesingle{}t know what this parameter is for ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_adb63c5f6ffade9b499cacc59d1de0191}\label{classlarcfm_1_1_priority_adb63c5f6ffade9b499cacc59d1de0191}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_time\_maneuver\_restriction@{set\_time\_maneuver\_restriction}}
+\index{set\_time\_maneuver\_restriction@{set\_time\_maneuver\_restriction}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_time\_maneuver\_restriction()}{set\_time\_maneuver\_restriction()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+time\+\_\+maneuver\+\_\+restriction (\begin{DoxyParamCaption}\item[{double}]{Time\+Maneuver\+Restriction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the time to maneuver. I don\textquotesingle{}t know what this parameter is for ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_a0d70a81ca66c51026b29809d925a8265}\label{classlarcfm_1_1_priority_a0d70a81ca66c51026b29809d925a8265}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_time\_proximity@{set\_time\_proximity}}
+\index{set\_time\_proximity@{set\_time\_proximity}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_time\_proximity()}{set\_time\_proximity()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+time\+\_\+proximity (\begin{DoxyParamCaption}\item[{double}]{Time\+Proximity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the time proximity. I don\textquotesingle{}t know what this parameter is for ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_a1b1653e533149354110e82180309e2fd}\label{classlarcfm_1_1_priority_a1b1653e533149354110e82180309e2fd}} 
+\index{larcfm::Priority@{larcfm::Priority}!set\_vertical\_deadband@{set\_vertical\_deadband}}
+\index{set\_vertical\_deadband@{set\_vertical\_deadband}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{set\_vertical\_deadband()}{set\_vertical\_deadband()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Priority\+::set\+\_\+vertical\+\_\+deadband (\begin{DoxyParamCaption}\item[{double}]{Vertical\+Deadband }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Set the value of the relative uncertainty in vertical speed in \mbox{[}fpm\mbox{]} 
+
+This value should never change; however, since its precise values is still to be experimentally determined, it is left modifiable. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}\label{classlarcfm_1_1_priority_a5bc8617066def119f5ca3f1488364b44}} 
+\index{larcfm::Priority@{larcfm::Priority}!TIME\_LOOKAHEAD@{TIME\_LOOKAHEAD}}
+\index{TIME\_LOOKAHEAD@{TIME\_LOOKAHEAD}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{TIME\_LOOKAHEAD}{TIME\_LOOKAHEAD}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+::\+TIME\+\_\+\+LOOKAHEAD\hspace{0.3cm}{\ttfamily [static]}}
+
+I don\textquotesingle{}t know what this parameter is for \mbox{\Hypertarget{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}\label{classlarcfm_1_1_priority_a046c764fe764522ee6f10626020f4382}} 
+\index{larcfm::Priority@{larcfm::Priority}!TIME\_MANEUVER\_RESTRICTION@{TIME\_MANEUVER\_RESTRICTION}}
+\index{TIME\_MANEUVER\_RESTRICTION@{TIME\_MANEUVER\_RESTRICTION}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{TIME\_MANEUVER\_RESTRICTION}{TIME\_MANEUVER\_RESTRICTION}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+::\+TIME\+\_\+\+MANEUVER\+\_\+\+RESTRICTION\hspace{0.3cm}{\ttfamily [static]}}
+
+I don\textquotesingle{}t know what this parameter is for \mbox{\Hypertarget{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}\label{classlarcfm_1_1_priority_aa8cdf463a7e4fc0810dd34c838ad35a3}} 
+\index{larcfm::Priority@{larcfm::Priority}!TIME\_PROXIMITY@{TIME\_PROXIMITY}}
+\index{TIME\_PROXIMITY@{TIME\_PROXIMITY}!larcfm::Priority@{larcfm::Priority}}
+\doxysubsubsection{\texorpdfstring{TIME\_PROXIMITY}{TIME\_PROXIMITY}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+::\+TIME\+\_\+\+PROXIMITY\hspace{0.3cm}{\ttfamily [static]}}
+
+I don\textquotesingle{}t know what this parameter is for 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Priority.\+h\end{DoxyCompactItemize}

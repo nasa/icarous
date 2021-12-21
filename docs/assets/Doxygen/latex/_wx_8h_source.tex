@@ -1,0 +1,54 @@
+\hypertarget{_wx_8h_source}{}\doxysection{Wx.\+h}
+\label{_wx_8h_source}\index{Modules/ACCoRD/inc/Wx.h@{Modules/ACCoRD/inc/Wx.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifndef WX\_H\_}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define WX\_H\_}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}WeatherUtil.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_wx}{Wx}} \{}
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} reRoute(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& own, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pp) ;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} reRoute(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& own, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} cellSize,}
+\DoxyCodeLine{25                   \textcolor{keywordtype}{bool} adhere, \textcolor{keywordtype}{bool} solutionSmoothing) ;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} reRoute(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& own, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{bool} adhere, \textcolor{keywordtype}{bool} solutionSmoothing);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} reRoute(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& own, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{bool} adhere,}
+\DoxyCodeLine{31                   \textcolor{keywordtype}{bool} solutionSmoothing, \textcolor{keywordtype}{double} timeOfCurrentPosition, \textcolor{keywordtype}{double} reRouteLeadIn) ;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} reRoute(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& own, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{bool} adhere);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{67     \textcolor{keyword}{static} std::pair<Plan,DensityGrid> reRoute(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} startPos, \textcolor{keywordtype}{double} startTime,}
+\DoxyCodeLine{68             \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} endPos, \textcolor{keywordtype}{double} gs,}
+\DoxyCodeLine{69             \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} cellSize, \textcolor{keywordtype}{double} buffer,}
+\DoxyCodeLine{70             \textcolor{keywordtype}{double} factor, \textcolor{keywordtype}{double} T\_p, std::vector<PolyPath> containment,}
+\DoxyCodeLine{71             \textcolor{keywordtype}{double} reRouteLeadIn) ;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{private}:}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \};}
+\DoxyCodeLine{78 \}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

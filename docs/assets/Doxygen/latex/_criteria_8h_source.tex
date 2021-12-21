@@ -1,0 +1,60 @@
+\hypertarget{_criteria_8h_source}{}\doxysection{Criteria.\+h}
+\label{_criteria_8h_source}\index{Modules/ACCoRD/inc/Criteria.h@{Modules/ACCoRD/inc/Criteria.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Criteria.h -\/ determine implicit coordination criteria}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Cesar Munoz}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef CRITERIA\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define CRITERIA\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_criteria}{Criteria}} \{}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{59   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_a63e2c82044934ad7c0d572ed66125a05}{check}}(\textcolor{keywordtype}{double} sox, \textcolor{keywordtype}{double} soy, \textcolor{keywordtype}{double} soz,}
+\DoxyCodeLine{60           \textcolor{keywordtype}{double} vox, \textcolor{keywordtype}{double} voy, \textcolor{keywordtype}{double} voz,}
+\DoxyCodeLine{61           \textcolor{keywordtype}{double} six, \textcolor{keywordtype}{double} siy, \textcolor{keywordtype}{double} siz,}
+\DoxyCodeLine{62           \textcolor{keywordtype}{double} vix, \textcolor{keywordtype}{double} viy, \textcolor{keywordtype}{double} viz,}
+\DoxyCodeLine{63           \textcolor{keywordtype}{double} nvox, \textcolor{keywordtype}{double} nvoy, \textcolor{keywordtype}{double} nvoz,}
+\DoxyCodeLine{64           \textcolor{keywordtype}{double} minRelVs,}
+\DoxyCodeLine{65           \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{93   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_aa89683c5f370540a62735288e89c8844}{checkLL}}(}
+\DoxyCodeLine{94             \textcolor{keywordtype}{double} lato, \textcolor{keywordtype}{double} lono, \textcolor{keywordtype}{double} alto,}
+\DoxyCodeLine{95             \textcolor{keywordtype}{double} trko, \textcolor{keywordtype}{double} gso, \textcolor{keywordtype}{double} vso,}
+\DoxyCodeLine{96             \textcolor{keywordtype}{double} lati, \textcolor{keywordtype}{double} loni, \textcolor{keywordtype}{double} alti,}
+\DoxyCodeLine{97             \textcolor{keywordtype}{double} trki, \textcolor{keywordtype}{double} gsi, \textcolor{keywordtype}{double} vsi,}
+\DoxyCodeLine{98             \textcolor{keywordtype}{double} ntrko, \textcolor{keywordtype}{double} ngso, \textcolor{keywordtype}{double} nvso,}
+\DoxyCodeLine{99             \textcolor{keywordtype}{double} minRelVs, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{116     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_a63e2c82044934ad7c0d572ed66125a05}{check}}(}
+\DoxyCodeLine{117             \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo,}
+\DoxyCodeLine{118             \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{119             \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo,}
+\DoxyCodeLine{120             \textcolor{keywordtype}{double} minRelVs,  \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \}}
+\DoxyCodeLine{126 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// CRITERIA\_H\_}}
+
+\end{DoxyCode}

@@ -1,0 +1,770 @@
+\hypertarget{classlarcfm_1_1_aircraft_state}{}\doxysection{larcfm\+::Aircraft\+State Class Reference}
+\label{classlarcfm_1_1_aircraft_state}\index{larcfm::AircraftState@{larcfm::AircraftState}}
+
+
+{\ttfamily \#include $<$Aircraft\+State.\+h$>$}
+
+Inheritance diagram for larcfm\+::Aircraft\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_aircraft_state}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4caf782bee927f085698de8a2f7d0afe}{Aircraft\+State}} (const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}}, int buffer\+\_\+size)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aa72c555a763b51b55c15fc33cc0dace6}{Aircraft\+State}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ac2bf600250425d4b1e22a4e266d12184}{Aircraft\+State}} (const std\+::string \&id)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_af95670ccae897ec08ad4b31b8c2f7bb4}\label{classlarcfm_1_1_aircraft_state_af95670ccae897ec08ad4b31b8c2f7bb4}} 
+{\bfseries Aircraft\+State} (const \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} \&orig)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a370b973d16f8d34e0e1a1010d767486a}\label{classlarcfm_1_1_aircraft_state_a370b973d16f8d34e0e1a1010d767486a}} 
+\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} \& {\bfseries operator=} (const \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} \&rhs)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae04edaffeaf6cda3782891a9d2c3b54d}{check\+Lat\+Lon}} (bool ll) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae21cf69ca868548bc443be313cabcdaf}{is\+Lat\+Lon}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_abb743a76c75b5923186e648e814ee5b0}{copy}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a9ac9c71202c37d09a4650547387e2ffb}{get\+Buffer\+Size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a128bbf3e8481be47e8bfc21192c87d88}{clear}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a9daed8ad031895d125087008cf5beb0f}{find}} (double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}}) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a366f786b806296dd6ce0bc7d79615927}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vv, double tm)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a1ce86b67bc55d527035805a336025c74}{get}} (int i)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aa1a14b5dc001deffdd87c309244d2327}{get\+Last}} ()
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aea538edb532477053eb9f59aa7deaf7c}{position}} (int i) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a43694b43006e8380e9b9c83037d17360}{velocity}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a8503cc3a9300d6b740cc5e645c2410cf}{position\+Last}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_affeeee5e051f8a0f0000a39ea88969fc}{velocity\+Last}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}{time\+Last}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a6c3a9fc18feda992e5d4881df6c4d829}{remove}} (int n)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad87093d794e6ff5797144b31c2a4f58e}{remove\+Up\+To\+Time}} (double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}})
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_adfe85cc5762a2435892cb0143729b0eb}{remove\+Last}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection}} (const Euclidean\+Projection \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae4c4f0e56d7db0d18b5e3cc9bd251233}{update\+Projection}} ()
+\item 
+Euclidean\+Projection \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a43bb38ee2d4fcb114a12a686ddaab86e}{get\+Projection}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ab0a44deea55eb2d8720814c41585e2e3}{pred}} (double t)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a2982f9af0bb11d23c3488bd2644e877a}{pred\+Linear}} (double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a5926562f2ea0cee0754aac1d05fe4a6b}\label{classlarcfm_1_1_aircraft_state_a5926562f2ea0cee0754aac1d05fe4a6b}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries position\+Linear} (double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_afeca97b4ec23f92441659449d0d0c071}{velocity\+At}} (double t) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a74fdefddd862ad1d805ff1ba8f0d0f6d}{in\+Level\+Flight}} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_af390b20f1cc776516bdc5ff1016b8d59}{last\+Straight\+Time}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4ecbcda589eff355b56456657e4d2e58}{track\+Rate}} (int i)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ab9007ecab011bdfe1f0dbed84fec26f3}{time\+Last\+Zero\+Track\+Rate}} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_affee3f56c8e25588624352c900add830}{avg\+Track\+Rate}} (int num\+Pts\+Trk\+Rate\+Calc)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad93acddcbf314aa8bb49582adc7d00ba}{avg\+Vs\+Rate}} (int num\+Pts\+Vs\+Rate\+Calc)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4b7b4886c7e0978c0e5effc92157d9cd}{prune}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a71d60b314f85c1e905b4114f9cb693dc}{dump}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a3e7a4dadda7334454ba6364bd2dfde09}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a1a1537b867aa3cd78b28b1e6109f9d79}{to\+Output}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a3742b015f3d277c83bd2726675307403}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_adcecfb0f39fdd9fdfc459d6dbf846116}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae99e799e007d2e7faa692d5ad0e6e41a}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ac7e122ba99d805d7bb88bbd0cad6c35d}{get\+Message\+No\+Clear}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a77f93cd864e368086790cd93348c4ffd}{close\+Enough}} (\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v1, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aec48c40e2ad4a190b77f25d1c7f3e2cc}{DEFAULT\+\_\+\+BUFFER\+\_\+\+SIZE}} = 10
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a63c0b1f2afbf168ce916c4a37c18870b}\label{classlarcfm_1_1_aircraft_state_a63c0b1f2afbf168ce916c4a37c18870b}} 
+static bool {\bfseries project\+Velocity} = true
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ac9fc3bd1a772433c9f332ccf93f3b1b1}\label{classlarcfm_1_1_aircraft_state_ac9fc3bd1a772433c9f332ccf93f3b1b1}} 
+void {\bfseries init} (std\+::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}}, int buffer\+\_\+size)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aecd58cdeecb4d6d72e227a8f0e19b4b8}\label{classlarcfm_1_1_aircraft_state_aecd58cdeecb4d6d72e227a8f0e19b4b8}} 
+void {\bfseries insert\+At} (int i, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vv, double tm)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a85091c6fd170f11945d301e3374d8d5a}\label{classlarcfm_1_1_aircraft_state_a85091c6fd170f11945d301e3374d8d5a}} 
+void {\bfseries calc} (\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $\ast$vel2, double $\ast$velZ, double $\ast$timevar, int length)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a5a4a3652ac708820f58e8dcd67850dd3}\label{classlarcfm_1_1_aircraft_state_a5a4a3652ac708820f58e8dcd67850dd3}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries predS} (double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a797b1280f80bdfc76145acc5eefd928b}\label{classlarcfm_1_1_aircraft_state_a797b1280f80bdfc76145acc5eefd928b}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries predV} (double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a5f5665516b251ba7827b165fce420e0e}\label{classlarcfm_1_1_aircraft_state_a5f5665516b251ba7827b165fce420e0e}} 
+int {\bfseries ext2int} (int i) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a571b20fb167c151958376a1027f5cb2b}\label{classlarcfm_1_1_aircraft_state_a571b20fb167c151958376a1027f5cb2b}} 
+int {\bfseries buffer\+Size}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a187c0f24d47e46d7ea2272e278abf7b5}\label{classlarcfm_1_1_aircraft_state_a187c0f24d47e46d7ea2272e278abf7b5}} 
+int {\bfseries oldest}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ac05c135dcb1dec1db75f0f714bb71872}\label{classlarcfm_1_1_aircraft_state_ac05c135dcb1dec1db75f0f714bb71872}} 
+int {\bfseries sz}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a4ed1a5ec1efa7060a9addacf6811a115}\label{classlarcfm_1_1_aircraft_state_a4ed1a5ec1efa7060a9addacf6811a115}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ab9d210bc08f23ceed043a8cec6b111dc}\label{classlarcfm_1_1_aircraft_state_ab9d210bc08f23ceed043a8cec6b111dc}} 
+std\+::string {\bfseries id}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_afe76bfce7e9a045335ba3c6eb35902bd}\label{classlarcfm_1_1_aircraft_state_afe76bfce7e9a045335ba3c6eb35902bd}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $\ast$ {\bfseries s\+\_\+list}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ac0bded731135c045f7d66cd75eb34fbe}\label{classlarcfm_1_1_aircraft_state_ac0bded731135c045f7d66cd75eb34fbe}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $\ast$ {\bfseries v\+\_\+list}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a350ad8bfc22da7b0c2b8aaba51bb2a0c}\label{classlarcfm_1_1_aircraft_state_a350ad8bfc22da7b0c2b8aaba51bb2a0c}} 
+double $\ast$ {\bfseries t\+\_\+list}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a468d508ff71d074e48ce4062d43fddeb}\label{classlarcfm_1_1_aircraft_state_a468d508ff71d074e48ce4062d43fddeb}} 
+Euclidean\+Projection {\bfseries sp}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a57afc1465d578c0bd80c532241983dcc}\label{classlarcfm_1_1_aircraft_state_a57afc1465d578c0bd80c532241983dcc}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $\ast$ {\bfseries proj\+S2}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a3465d5712e259340035e20f3e533cebd}\label{classlarcfm_1_1_aircraft_state_a3465d5712e259340035e20f3e533cebd}} 
+double $\ast$ {\bfseries projH}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ad1675b51606f6cb4252721239e9128ed}\label{classlarcfm_1_1_aircraft_state_ad1675b51606f6cb4252721239e9128ed}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $\ast$ {\bfseries proj\+V2}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a4352e1a7e2b84dce0f38747fe83483f2}\label{classlarcfm_1_1_aircraft_state_a4352e1a7e2b84dce0f38747fe83483f2}} 
+double $\ast$ {\bfseries proj\+VZ}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a3a6cb2160bab21dd545b016db910f589}\label{classlarcfm_1_1_aircraft_state_a3a6cb2160bab21dd545b016db910f589}} 
+double $\ast$ {\bfseries projT}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aa4f63a2edd3c09b95206e0c2b228ae73}\label{classlarcfm_1_1_aircraft_state_aa4f63a2edd3c09b95206e0c2b228ae73}} 
+bool {\bfseries projection\+\_\+initialized}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a3973bc8c384f51eda883f056e0becab8}\label{classlarcfm_1_1_aircraft_state_a3973bc8c384f51eda883f056e0becab8}} 
+bool {\bfseries projection\+\_\+done}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ad5e70fe76ca2635d6a23519b3a39ff7b}\label{classlarcfm_1_1_aircraft_state_ad5e70fe76ca2635d6a23519b3a39ff7b}} 
+bool {\bfseries regression\+\_\+done}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a645257ab45ddab41083e90e847a1c47b}\label{classlarcfm_1_1_aircraft_state_a645257ab45ddab41083e90e847a1c47b}} 
+int {\bfseries recent\+Ind}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_af0edd89e3f7de673e5a9b85eb634881f}\label{classlarcfm_1_1_aircraft_state_af0edd89e3f7de673e5a9b85eb634881f}} 
+double {\bfseries horizvelintercept}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_afb58d6bc6da4a8cd96505a55f225eb99}\label{classlarcfm_1_1_aircraft_state_afb58d6bc6da4a8cd96505a55f225eb99}} 
+double {\bfseries horizvelslope}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a15d167e6c980a8c63e528788e849bfd2}\label{classlarcfm_1_1_aircraft_state_a15d167e6c980a8c63e528788e849bfd2}} 
+double {\bfseries vertvelintercept}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a31292637120ac405c2119da7339267e0}\label{classlarcfm_1_1_aircraft_state_a31292637120ac405c2119da7339267e0}} 
+double {\bfseries vertvelslope}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a14434785fbfee1ca9e479d706ee00fd0}\label{classlarcfm_1_1_aircraft_state_a14434785fbfee1ca9e479d706ee00fd0}} 
+double {\bfseries ls\+\_\+t}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_afe31a468af0c6c9922c696e619c26cf5}\label{classlarcfm_1_1_aircraft_state_afe31a468af0c6c9922c696e619c26cf5}} 
+double {\bfseries ls\+\_\+trk}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a134f04e1d5bfc010dc260123830105ef}\label{classlarcfm_1_1_aircraft_state_a134f04e1d5bfc010dc260123830105ef}} 
+double {\bfseries last\+Zero\+Track\+Rate\+Threshold}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0f032d9d9ce5e7748e1d9e9bbd4197cb}{MAX\+\_\+\+RELATIVE\+\_\+\+DIFF}} = 0.\+10
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aa17c45f085d4f033cb90826fa201758f}\label{classlarcfm_1_1_aircraft_state_aa17c45f085d4f033cb90826fa201758f}} 
+static double {\bfseries min\+Climb\+Velocity} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units\+::from}}(\char`\"{}fpm\char`\"{},150)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class captures a limited history of an aircraft\textquotesingle{}s position and velocity. ~\newline
+ This class essentially operates as an array, where the time field determines the order. It is intended that this method is called frequently and the oldest values are dropped. The maximum number of values stored is available through max\+Buffer\+Size(). The oldest value (that is, the smallest t) is always in element 0, the latest element (that is, the largest time) is always at index \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}} -\/ 1.
+
+The primary accessors are \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aea538edb532477053eb9f59aa7deaf7c}{position()}} and \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a43694b43006e8380e9b9c83037d17360}{velocity()}} which are indexed from 0 to \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1. The latest values are located at \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1.
+
+The method \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a1ce86b67bc55d527035805a336025c74}{get()}} will return a Euclidean projection of the position and velocity given the projection function in \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection()}} or \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae4c4f0e56d7db0d18b5e3cc9bd251233}{update\+Projection()}}. Be careful\+: if you do not specifically indicate which projection to use, this class will make a choice for you, that is probably not what you expect.
+
+In addition, this method can predict future points (currently this uses a quadratic regression approximation). These predictions are available through the methods pred(t), and pred\+Linear(t). These are based on the Euclidean projected points. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a4caf782bee927f085698de8a2f7d0afe}\label{classlarcfm_1_1_aircraft_state_a4caf782bee927f085698de8a2f7d0afe}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!AircraftState@{AircraftState}}
+\index{AircraftState@{AircraftState}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{AircraftState()}{AircraftState()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Aircraft\+State\+::\+Aircraft\+State (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{int}]{buffer\+\_\+size }\end{DoxyParamCaption})}
+
+Construct a new object. 
+\begin{DoxyParams}{Parameters}
+{\em name} & the string name for this object \\
+\hline
+{\em buffer\+\_\+size} & the maximum number of data values that are stored in this object. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aa72c555a763b51b55c15fc33cc0dace6}\label{classlarcfm_1_1_aircraft_state_aa72c555a763b51b55c15fc33cc0dace6}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!AircraftState@{AircraftState}}
+\index{AircraftState@{AircraftState}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{AircraftState()}{AircraftState()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Aircraft\+State\+::\+Aircraft\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct a new object with the default buffer size \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ac2bf600250425d4b1e22a4e266d12184}\label{classlarcfm_1_1_aircraft_state_ac2bf600250425d4b1e22a4e266d12184}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!AircraftState@{AircraftState}}
+\index{AircraftState@{AircraftState}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{AircraftState()}{AircraftState()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Aircraft\+State\+::\+Aircraft\+State (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Construct a new object with the default buffer size 
+\begin{DoxyParams}{Parameters}
+{\em id} & Aircraft identifier \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a366f786b806296dd6ce0bc7d79615927}\label{classlarcfm_1_1_aircraft_state_a366f786b806296dd6ce0bc7d79615927}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!add@{add}}
+\index{add@{add}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{ss,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vv,  }\item[{double}]{tm }\end{DoxyParamCaption})}
+
+Add a new position and velocity vector for the given time. If the given time is greater than any other time in the list, then this method will operate very fast. On the other hand, if the time is between some elements that already exist then the addition will be in the correct order, but may be fairly slow. If an element is added that matches another time, then this point overwrites the existing point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ss} & the position at the given time \\
+\hline
+{\em vv} & the velocity at the given time \\
+\hline
+{\em tm} & the time of the position and velocity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_affee3f56c8e25588624352c900add830}\label{classlarcfm_1_1_aircraft_state_affee3f56c8e25588624352c900add830}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!avgTrackRate@{avgTrackRate}}
+\index{avgTrackRate@{avgTrackRate}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{avgTrackRate()}{avgTrackRate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::avg\+Track\+Rate (\begin{DoxyParamCaption}\item[{int}]{num\+Pts\+Trk\+Rate\+Calc }\end{DoxyParamCaption})}
+
+EXPERIMENTAL Estimate track rate from sequence of velocity vectors stored in this object. The sign of the track rate indicates the direction of the turn 
+\begin{DoxyParams}{Parameters}
+{\em num\+Pts\+Trk\+Rate\+Calc} & number of data points used in the average, must be at least 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+signed track rate (if insufficient number of points, return 0); 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ad93acddcbf314aa8bb49582adc7d00ba}\label{classlarcfm_1_1_aircraft_state_ad93acddcbf314aa8bb49582adc7d00ba}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!avgVsRate@{avgVsRate}}
+\index{avgVsRate@{avgVsRate}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{avgVsRate()}{avgVsRate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::avg\+Vs\+Rate (\begin{DoxyParamCaption}\item[{int}]{num\+Pts\+Vs\+Rate\+Calc }\end{DoxyParamCaption})}
+
+EXPERIMENTAL Estimate rate of change of vertical speed from sequence of velocity vectors stored in this object. ~\newline
+ The sign of the vertical speed rate indicates the direction of the acceleration 
+\begin{DoxyParams}{Parameters}
+{\em num\+Pts\+Vs\+Rate\+Calc} & number of data points used in the average, must be at least 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+signed vertical speed rate (if insufficient number of points, return 0);
+\end{DoxyReturn}
+EXPERIMENTAL Estimate rate of change of vertical speed from sequence of velocity vectors stored in this object. The sign of the vertical speed rate indicates the direction of the acceleration 
+\begin{DoxyParams}{Parameters}
+{\em num\+Pts\+Vs\+Rate\+Calc} & number of data points used in the average, must be at least 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+signed vertical speed rate (if insufficient number of points, return 0); 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ae04edaffeaf6cda3782891a9d2c3b54d}\label{classlarcfm_1_1_aircraft_state_ae04edaffeaf6cda3782891a9d2c3b54d}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!checkLatLon@{checkLatLon}}
+\index{checkLatLon@{checkLatLon}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{checkLatLon()}{checkLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::check\+Lat\+Lon (\begin{DoxyParamCaption}\item[{bool}]{ll }\end{DoxyParamCaption}) const}
+
+If the parameter ll matches the current latlon (true for lat/lon/alt, false for Euclidean) value, then return true. If there are no positions in this object, then true is always returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ll} & value to check lat/lon status against \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+if ll agrees with the lat/lon status of this object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a128bbf3e8481be47e8bfc21192c87d88}\label{classlarcfm_1_1_aircraft_state_a128bbf3e8481be47e8bfc21192c87d88}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!clear@{clear}}
+\index{clear@{clear}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear all data \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a77f93cd864e368086790cd93348c4ffd}\label{classlarcfm_1_1_aircraft_state_a77f93cd864e368086790cd93348c4ffd}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!closeEnough@{closeEnough}}
+\index{closeEnough@{closeEnough}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{closeEnough()}{closeEnough()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::close\+Enough (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}}]{v1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}}]{v2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if these two velocities are \char`\"{}close\char`\"{} to each other 
+\begin{DoxyParams}{Parameters}
+{\em v1} & velocity of one aircraft \\
+\hline
+{\em v2} & velocity of another aircraft \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if close 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_abb743a76c75b5923186e648e814ee5b0}\label{classlarcfm_1_1_aircraft_state_abb743a76c75b5923186e648e814ee5b0}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!copy@{copy}}
+\index{copy@{copy}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} larcfm\+::\+Aircraft\+State\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+return a deep copy of this object \begin{DoxyReturn}{Returns}
+the copy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a71d60b314f85c1e905b4114f9cb693dc}\label{classlarcfm_1_1_aircraft_state_a71d60b314f85c1e905b4114f9cb693dc}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!dump@{dump}}
+\index{dump@{dump}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{dump()}{dump()}}
+{\footnotesize\ttfamily string larcfm\+::\+Aircraft\+State\+::dump (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a debug string \begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a9daed8ad031895d125087008cf5beb0f}\label{classlarcfm_1_1_aircraft_state_a9daed8ad031895d125087008cf5beb0f}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!find@{find}}
+\index{find@{find}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{find()}{find()}}
+{\footnotesize\ttfamily int larcfm\+::\+Aircraft\+State\+::find (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Return the index of the given time. A negative index is returned if the time doesn\textquotesingle{}t exist.
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a1ce86b67bc55d527035805a336025c74}\label{classlarcfm_1_1_aircraft_state_a1ce86b67bc55d527035805a336025c74}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!get@{get}}
+\index{get@{get}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} larcfm\+::\+Aircraft\+State\+::get (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Return a Euclidean position and velocity for the given index. The position and velocity are projected into a Euclidean frame by the projection set by the \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection()}} method. If the index is out of range (less than zero or greater than \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}), then a zero position and velocity are returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position and velocity at index i 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a9ac9c71202c37d09a4650547387e2ffb}\label{classlarcfm_1_1_aircraft_state_a9ac9c71202c37d09a4650547387e2ffb}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!getBufferSize@{getBufferSize}}
+\index{getBufferSize@{getBufferSize}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{getBufferSize()}{getBufferSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Aircraft\+State\+::get\+Buffer\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the maximum number of elements that can be stored. ~\newline
+ This value is always greater or equal to \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}. ~\newline
+ There is deliberately no method set\+Buffer\+Size() \begin{DoxyReturn}{Returns}
+maximum number of elements 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aa1a14b5dc001deffdd87c309244d2327}\label{classlarcfm_1_1_aircraft_state_aa1a14b5dc001deffdd87c309244d2327}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!getLast@{getLast}}
+\index{getLast@{getLast}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{getLast()}{getLast()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} larcfm\+::\+Aircraft\+State\+::get\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return a Euclidean position and velocity for the latest time in this object. The position and velocity are projected into a Euclidean frame by the projection set by the \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection()}} method. \begin{DoxyReturn}{Returns}
+last position and velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ae99e799e007d2e7faa692d5ad0e6e41a}\label{classlarcfm_1_1_aircraft_state_ae99e799e007d2e7faa692d5ad0e6e41a}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Aircraft\+State\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ac7e122ba99d805d7bb88bbd0cad6c35d}\label{classlarcfm_1_1_aircraft_state_ac7e122ba99d805d7bb88bbd0cad6c35d}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Aircraft\+State\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a3742b015f3d277c83bd2726675307403}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a43bb38ee2d4fcb114a12a686ddaab86e}\label{classlarcfm_1_1_aircraft_state_a43bb38ee2d4fcb114a12a686ddaab86e}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!getProjection@{getProjection}}
+\index{getProjection@{getProjection}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{getProjection()}{getProjection()}}
+{\footnotesize\ttfamily Euclidean\+Projection larcfm\+::\+Aircraft\+State\+::get\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the current projection used in this \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}} Be sure to note if the returned projection point has a zero altitude or not. \begin{DoxyReturn}{Returns}
+the current projection object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a3742b015f3d277c83bd2726675307403}\label{classlarcfm_1_1_aircraft_state_a3742b015f3d277c83bd2726675307403}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_adcecfb0f39fdd9fdfc459d6dbf846116}\label{classlarcfm_1_1_aircraft_state_adcecfb0f39fdd9fdfc459d6dbf846116}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a74fdefddd862ad1d805ff1ba8f0d0f6d}\label{classlarcfm_1_1_aircraft_state_a74fdefddd862ad1d805ff1ba8f0d0f6d}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!inLevelFlight@{inLevelFlight}}
+\index{inLevelFlight@{inLevelFlight}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{inLevelFlight()}{inLevelFlight()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::in\+Level\+Flight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Determines if the aircraft is almost in level flight \begin{DoxyReturn}{Returns}
+true, if in level flight 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ae21cf69ca868548bc443be313cabcdaf}\label{classlarcfm_1_1_aircraft_state_ae21cf69ca868548bc443be313cabcdaf}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Aircraft\+State\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+is lat/lon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_af390b20f1cc776516bdc5ff1016b8d59}\label{classlarcfm_1_1_aircraft_state_af390b20f1cc776516bdc5ff1016b8d59}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!lastStraightTime@{lastStraightTime}}
+\index{lastStraightTime@{lastStraightTime}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{lastStraightTime()}{lastStraightTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::last\+Straight\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Last time when track rate was near zero
+
+\begin{DoxyReturn}{Returns}
+time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}\label{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!name@{name}}
+\index{name@{name}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily string larcfm\+::\+Aircraft\+State\+::name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the name of this object
+
+\begin{DoxyReturn}{Returns}
+name 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aea538edb532477053eb9f59aa7deaf7c}\label{classlarcfm_1_1_aircraft_state_aea538edb532477053eb9f59aa7deaf7c}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!position@{position}}
+\index{position@{position}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& larcfm\+::\+Aircraft\+State\+::position (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+The position for the given index. An index of 0 corresponds to the earliest time in this object; and index of \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1 corresponds to the latest time. This method returns a \char`\"{}zero\char`\"{} position for an out of bounds index \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a8503cc3a9300d6b740cc5e645c2410cf}\label{classlarcfm_1_1_aircraft_state_a8503cc3a9300d6b740cc5e645c2410cf}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!positionLast@{positionLast}}
+\index{positionLast@{positionLast}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{positionLast()}{positionLast()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Aircraft\+State\+::position\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The latest (i.\+e., last) position in this object. Note that this may not be synchronized with data from other aircraft! It is generally better to use position\+Linear(tm) for traffic aircraft.
+
+\begin{DoxyReturn}{Returns}
+last position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ab0a44deea55eb2d8720814c41585e2e3}\label{classlarcfm_1_1_aircraft_state_ab0a44deea55eb2d8720814c41585e2e3}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!pred@{pred}}
+\index{pred@{pred}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{pred()}{pred()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} larcfm\+::\+Aircraft\+State\+::pred (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Return a predicted Euclidean position and velocity for the given time, based on an analysis of the history data. For accuracy, the time, t, should be close the latest time added to this class (accessed through the method \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}{time\+Last()}}). The positions and velocities used are projected into a Euclidean frame by the projection set by the \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection()}} method. 
+\begin{DoxyParams}{Parameters}
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position and velocity vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a2982f9af0bb11d23c3488bd2644e877a}\label{classlarcfm_1_1_aircraft_state_a2982f9af0bb11d23c3488bd2644e877a}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!predLinear@{predLinear}}
+\index{predLinear@{predLinear}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{predLinear()}{predLinear()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} larcfm\+::\+Aircraft\+State\+::pred\+Linear (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Return a predicted Euclidean position and velocity for the given time, based on a linear extrapolation from the most recent (relative to t) data point. For accuracy, the time, t, should be close the latest time added to this class (accessed through the method \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}{time\+Last()}}). The positions and velocities used are projected into a Euclidean frame by the projection set by the \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{set\+Projection()}} method.
+
+A warning is generated if all data points are at times greater than t. 
+\begin{DoxyParams}{Parameters}
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position and velocity vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a4b7b4886c7e0978c0e5effc92157d9cd}\label{classlarcfm_1_1_aircraft_state_a4b7b4886c7e0978c0e5effc92157d9cd}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!prune@{prune}}
+\index{prune@{prune}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{prune()}{prune()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::prune (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Throw away old points that have accelerations \char`\"{}significantly\char`\"{} different from the latest \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a6c3a9fc18feda992e5d4881df6c4d829}\label{classlarcfm_1_1_aircraft_state_a6c3a9fc18feda992e5d4881df6c4d829}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!remove@{remove}}
+\index{remove@{remove}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::remove (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+remove oldest n entries 
+\begin{DoxyParams}{Parameters}
+{\em n} & number of entries \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_adfe85cc5762a2435892cb0143729b0eb}\label{classlarcfm_1_1_aircraft_state_adfe85cc5762a2435892cb0143729b0eb}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!removeLast@{removeLast}}
+\index{removeLast@{removeLast}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{removeLast()}{removeLast()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::remove\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+remove the latest (i.\+e. newest) data point \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ad87093d794e6ff5797144b31c2a4f58e}\label{classlarcfm_1_1_aircraft_state_ad87093d794e6ff5797144b31c2a4f58e}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!removeUpToTime@{removeUpToTime}}
+\index{removeUpToTime@{removeUpToTime}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{removeUpToTime()}{removeUpToTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::remove\+Up\+To\+Time (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption})}
+
+remove any data older than the given time 
+\begin{DoxyParams}{Parameters}
+{\em time} & value of time \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}\label{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!setProjection@{setProjection}}
+\index{setProjection@{setProjection}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{setProjection()}{setProjection()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::set\+Projection (\begin{DoxyParamCaption}\item[{const Euclidean\+Projection \&}]{p }\end{DoxyParamCaption})}
+
+Set the new projection, but do not do any calculations Note that altitudes will be preserved when using this projection -- it should have a projection reference point with a zero altitude. 
+\begin{DoxyParams}{Parameters}
+{\em p} & the new projection object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}\label{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!size@{size}}
+\index{size@{size}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+Aircraft\+State\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of data elements \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}\label{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!time@{time}}
+\index{time@{time}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{time()}{time()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::time (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+The time of the given index. An index of 0 corresponds to the earliest time in this object; and index of \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1 corresponds to the latest time. This method returns a negative time for an out of bounds index
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}\label{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!timeLast@{timeLast}}
+\index{timeLast@{timeLast}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{timeLast()}{timeLast()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::time\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The latest (i.\+e., last) time in this object. \begin{DoxyReturn}{Returns}
+last time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ab9007ecab011bdfe1f0dbed84fec26f3}\label{classlarcfm_1_1_aircraft_state_ab9007ecab011bdfe1f0dbed84fec26f3}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!timeLastZeroTrackRate@{timeLastZeroTrackRate}}
+\index{timeLastZeroTrackRate@{timeLastZeroTrackRate}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{timeLastZeroTrackRate()}{timeLastZeroTrackRate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::time\+Last\+Zero\+Track\+Rate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+EXPERIMENTAL returns time when track rate was near zero. This method cannot return a value older than buffer\+Size. The companion method last\+Straight\+Time is not as limited. \begin{DoxyReturn}{Returns}
+time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a1a1537b867aa3cd78b28b1e6109f9d79}\label{classlarcfm_1_1_aircraft_state_a1a1537b867aa3cd78b28b1e6109f9d79}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!toOutput@{toOutput}}
+\index{toOutput@{toOutput}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{toOutput()}{toOutput()}}
+{\footnotesize\ttfamily string larcfm\+::\+Aircraft\+State\+::to\+Output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns a string representation of this object compatible with \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}} \begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a3e7a4dadda7334454ba6364bd2dfde09}\label{classlarcfm_1_1_aircraft_state_a3e7a4dadda7334454ba6364bd2dfde09}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!toString@{toString}}
+\index{toString@{toString}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily string larcfm\+::\+Aircraft\+State\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a string representation of this object \begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a4ecbcda589eff355b56456657e4d2e58}\label{classlarcfm_1_1_aircraft_state_a4ecbcda589eff355b56456657e4d2e58}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!trackRate@{trackRate}}
+\index{trackRate@{trackRate}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{trackRate()}{trackRate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::track\+Rate (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Track Rate calculation 
+\begin{DoxyParams}{Parameters}
+{\em i} & index (0..\mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+track rate at ith data location 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_ae4c4f0e56d7db0d18b5e3cc9bd251233}\label{classlarcfm_1_1_aircraft_state_ae4c4f0e56d7db0d18b5e3cc9bd251233}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!updateProjection@{updateProjection}}
+\index{updateProjection@{updateProjection}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{updateProjection()}{updateProjection()}}
+{\footnotesize\ttfamily void larcfm\+::\+Aircraft\+State\+::update\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reproject all the points \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a43694b43006e8380e9b9c83037d17360}\label{classlarcfm_1_1_aircraft_state_a43694b43006e8380e9b9c83037d17360}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!velocity@{velocity}}
+\index{velocity@{velocity}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{velocity()}{velocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Aircraft\+State\+::velocity (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+The velocity for the given index. An index of 0 corresponds to the earliest time in this object; and index of \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size()}}-\/1 corresponds to the latest time. This method returns a zero velocity for an out of bounds index \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_afeca97b4ec23f92441659449d0d0c071}\label{classlarcfm_1_1_aircraft_state_afeca97b4ec23f92441659449d0d0c071}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!velocityAt@{velocityAt}}
+\index{velocityAt@{velocityAt}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{velocityAt()}{velocityAt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Aircraft\+State\+::velocity\+At (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Returns the velocity data from the most recent entry at or before time t.
+
+Generates a warning and returns INVALID if there is no data. 
+\begin{DoxyParams}{Parameters}
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_affeeee5e051f8a0f0000a39ea88969fc}\label{classlarcfm_1_1_aircraft_state_affeeee5e051f8a0f0000a39ea88969fc}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!velocityLast@{velocityLast}}
+\index{velocityLast@{velocityLast}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{velocityLast()}{velocityLast()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Aircraft\+State\+::velocity\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The latest (i.\+e., last) velocity in this object. Note that this may not be synchronized with data from other aircraft! It is generally better to use velocity\+Before(tm) for traffic aircraft.
+
+\begin{DoxyReturn}{Returns}
+last velocity 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_aec48c40e2ad4a190b77f25d1c7f3e2cc}\label{classlarcfm_1_1_aircraft_state_aec48c40e2ad4a190b77f25d1c7f3e2cc}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!DEFAULT\_BUFFER\_SIZE@{DEFAULT\_BUFFER\_SIZE}}
+\index{DEFAULT\_BUFFER\_SIZE@{DEFAULT\_BUFFER\_SIZE}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_BUFFER\_SIZE}{DEFAULT\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily const int larcfm\+::\+Aircraft\+State\+::\+DEFAULT\+\_\+\+BUFFER\+\_\+\+SIZE = 10\hspace{0.3cm}{\ttfamily [static]}}
+
+The maximum number of history points this detector will allow \mbox{\Hypertarget{classlarcfm_1_1_aircraft_state_a0f032d9d9ce5e7748e1d9e9bbd4197cb}\label{classlarcfm_1_1_aircraft_state_a0f032d9d9ce5e7748e1d9e9bbd4197cb}} 
+\index{larcfm::AircraftState@{larcfm::AircraftState}!MAX\_RELATIVE\_DIFF@{MAX\_RELATIVE\_DIFF}}
+\index{MAX\_RELATIVE\_DIFF@{MAX\_RELATIVE\_DIFF}!larcfm::AircraftState@{larcfm::AircraftState}}
+\doxysubsubsection{\texorpdfstring{MAX\_RELATIVE\_DIFF}{MAX\_RELATIVE\_DIFF}}
+{\footnotesize\ttfamily double larcfm\+::\+Aircraft\+State\+::\+MAX\+\_\+\+RELATIVE\+\_\+\+DIFF = 0.\+10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+The percent difference in altitude that is assumed to be acceptable, used in \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4b7b4886c7e0978c0e5effc92157d9cd}{prune()}} 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Aircraft\+State.\+h\item 
+Modules/\+ACCo\+RD/src/Aircraft\+State.\+cpp\end{DoxyCompactItemize}

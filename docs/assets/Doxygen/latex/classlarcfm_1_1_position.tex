@@ -1,0 +1,1081 @@
+\hypertarget{classlarcfm_1_1_position}{}\doxysection{larcfm\+::Position Class Reference}
+\label{classlarcfm_1_1_position}\index{larcfm::Position@{larcfm::Position}}
+
+
+{\ttfamily \#include $<$Position.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position_a68ccc30b7425acba731f3dd9203b648c}{Position}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position_a7bc6324331c9b8bd472ed8cd3bab8434}{Position}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&\mbox{\hyperlink{classlarcfm_1_1_position_ad0a3ac3f6fb4158d332bc8f7fd7bbe13}{lla}})
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position_abc35e7c24ff97b43e18c615b0c190317}{Position}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a6c79a16be19051eb693a7d7dfd7823d6}\label{classlarcfm_1_1_position_a6c79a16be19051eb693a7d7dfd7823d6}} 
+{\bfseries Position} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_ac4335ca7af43b7f69fa5fa519fee5bbc}{almost\+Equals}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_ac3462b9cdf82011241ebabb1349c01fa}{almost\+Equals}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pp, double epsilon\+\_\+horiz, double epsilon\+\_\+vert) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_a3902fc91726d0eadc016b39412a51f02}{almost\+Equals2D}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pp, double epsilon\+\_\+horiz) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_af7a4428c8ffe42d0bcd8dc8c0b05354d}{operator==}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_a432878327247c393c53de8c743406229}{operator!=}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_position_ab05aa5075fd04843eda18b6aa440b8cc}{vect2}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \& \mbox{\hyperlink{classlarcfm_1_1_position_aaec2f9e375c6f5f642b1aaa6b7e76200}{vect3}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \& \mbox{\hyperlink{classlarcfm_1_1_position_ad0a3ac3f6fb4158d332bc8f7fd7bbe13}{lla}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_aa90e9960ffca0a1dd19399710f509bd4}{is\+Invalid}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}{y}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}{z}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}{lat}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}{lon}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}{alt}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a0350dd9c5ba57293c08d63d68f6e4631}{latitude}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a87b50a4710dfee13c796d090d8d245bd}{longitude}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_abb420b67c9e452ebef40517cc083329c}{altitude}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a1a7a14a8e12dc78037dbb3e0cf75498c}{x\+Coordinate}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a8e1951688e834da3ca034958759bcaab}{y\+Coordinate}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_aa38a924ce06e252f3e34a5768d8ebc72}{z\+Coordinate}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_a3650f9132b4204fd7edc427fc9580780}{is\+Lat\+Lon}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a3d12546c98d095372fb0b41503f16202}{mkX}} (const double xx) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a2faaecc9082023d74976666f90bc51bf}{mk\+Lon}} (const double \mbox{\hyperlink{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}{lon}}) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_ab1f396d058179430a1771059d7777aea}{mkY}} (const double yy) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a1f221f96dc80ac5c687dc9e47c0a041f}{mk\+Lat}} (const double \mbox{\hyperlink{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}{lat}}) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a8b835288473fa428fc9c903e866a6bc1}{mkZ}} (const double zz) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_af7a82bdd9d50fb58c75af12b6bf90239}{mk\+Alt}} (const double \mbox{\hyperlink{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}{alt}}) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a0f653c7b09c3f1e7c801d1fb5811427b}{zero\+Alt}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_ac4d224f642a6d941d83ad4d163c50274}{distanceH}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a101b0e29440e390921ae30c2518fe408}{distanceV}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a3590749de2368245e869bc081b0f12e2}{signed\+DistanceV}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a74379bf3aab3ea688585beeb2c71ffd6}{linear}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double time) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_aaeeac10c0b9e2c3dc021af0876b992ec}{linear\+Est}} (double dn, double de) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a4b3fc81952db30db0bbaeed32dc38f04}{linear\+Est}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double time) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_aa25976a500fb9aecc7e05b8bcc34f887}\label{classlarcfm_1_1_position_aa25976a500fb9aecc7e05b8bcc34f887}} 
+const std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries linear\+Dist2D} (double \mbox{\hyperlink{classlarcfm_1_1_position_af002e634047a2ef49e687e605681dbc5}{track}}, double d, double gs\+At\+\_\+d) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a204785d8c6c43733501c63b293441d16}{linear\+Dist2D}} (double \mbox{\hyperlink{classlarcfm_1_1_position_af002e634047a2ef49e687e605681dbc5}{track}}, double d) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_abbb3f1ca3fbb1389a8fe1b7e20850ae3}{mid\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a89d0f3e0ba1424031b80a3347325e79a}\label{classlarcfm_1_1_position_a89d0f3e0ba1424031b80a3347325e79a}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries interpolate} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double f) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_af002e634047a2ef49e687e605681dbc5}{track}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_ac8e33d7541d426e17ad13f24ba3bc48e}\label{classlarcfm_1_1_position_ac8e33d7541d426e17ad13f24ba3bc48e}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries initial\+Velocity} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double time) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_position_acced0183ac5ffe24592e1a4a037ab822}{final\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double time) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_position_a9e4369babf69ea044a3d30969511aeb3}{representative\+Track}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_position_aef8cd891f071afbde89a61791cfe6b03}{average\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double speed) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_position_af80f61856d74a20a0985160f9378b2bb}{avg\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double dt) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_a036d8f530c3f749df6584ce84193c36d}{is\+West}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&a) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_position_a39aefa604e419444ddfe58a9e85751ab}{LoS}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, double D, double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a597af6075ad30785ec0807591d0d38d9}\label{classlarcfm_1_1_position_a597af6075ad30785ec0807591d0d38d9}} 
+bool {\bfseries collinear} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p2) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_aa8b8e0a2ca90c41006066a3ca61a934a}\label{classlarcfm_1_1_position_aa8b8e0a2ca90c41006066a3ca61a934a}} 
+std\+::string {\bfseries to\+Unit\+Test} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_af60a3fd2f71287967b51d3fd13791508}\label{classlarcfm_1_1_position_af60a3fd2f71287967b51d3fd13791508}} 
+std\+::string {\bfseries to\+Unit\+Test\+SI} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_a3d5910c33721169d7dccac1b652c202c}{to\+String}} (int prec) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_a7d2479acc873fae0fe38dd9e1b52f430}{to\+String2D}} (int prec) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_ae51c8a2d38a42f39e21a0d74fb19e201}{to\+String\+Units}} (const std\+::string \&xunit, const std\+::string \&yunit, const std\+::string \&zunit) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_acbcda56f4cede9efa587097708a8a626}\label{classlarcfm_1_1_position_acbcda56f4cede9efa587097708a8a626}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a34965eb3dc70885d0d685eae6daaeb5b}\label{classlarcfm_1_1_position_a34965eb3dc70885d0d685eae6daaeb5b}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} (int precision) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a6721809e7fd4f79190d6e144ce1141ea}\label{classlarcfm_1_1_position_a6721809e7fd4f79190d6e144ce1141ea}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} (int precision, int lat\+Lon\+Extra\+Precision, bool internal\+Units) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_aa30874761979dd905591724348568dae}{to\+String\+NP}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_position_a9f8488fe549b1087a4df4b5c81fa2b71}{to\+String\+NP}} (int precision) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a4ed27855ffe98e079e52c6d7a42ac865}{make\+Lat\+Lon\+Alt}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}{lat}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}{lon}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}{alt}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a7a4f1d8d2f515224851a87280db094c4}{make\+Lat\+Lon\+Alt}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}{lat}}, std\+::string lat\+\_\+unit, double \mbox{\hyperlink{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}{lon}}, std\+::string lon\+\_\+unit, double \mbox{\hyperlink{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}{alt}}, std\+::string alt\+\_\+unit)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a7a5999108a5626be8ff108251363a1ee}{mk\+Lat\+Lon\+Alt}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}{lat}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}{lon}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}{alt}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a83da5cd5b100c4f98b915907caedca97}{make\+XYZ}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}{y}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}{z}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_aff928c197453652fbe3d747950c64eaf}{mk\+XYZ}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}{y}}, double \mbox{\hyperlink{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}{z}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a1124dd3e3ab1644a882bf636a52e1997}{make\+XYZ}} (double \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x}}, std\+::string x\+\_\+unit, double \mbox{\hyperlink{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}{y}}, std\+::string y\+\_\+unit, double \mbox{\hyperlink{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}{z}}, std\+::string z\+\_\+unit)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a26393553cf6e8ba2bd7e3878fa6d45cd}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&\mbox{\hyperlink{classlarcfm_1_1_position_ad0a3ac3f6fb4158d332bc8f7fd7bbe13}{lla}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_ae591b47b32ba36489a96c271cb79f7f5}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p)
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& \mbox{\hyperlink{classlarcfm_1_1_position_a5225decd49c8728f82b056ed8631c042}{ZERO\+\_\+\+LL}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& \mbox{\hyperlink{classlarcfm_1_1_position_adc26276ac3cded5595f5ef4b1ac486af}{ZERO\+\_\+\+XYZ}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_af0ac454ca70c0fe6998f12bfab0669b3}\label{classlarcfm_1_1_position_af0ac454ca70c0fe6998f12bfab0669b3}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& {\bfseries INVALID} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a1b5b2367e0bd1aa3037463c0a183f887}\label{classlarcfm_1_1_position_a1b5b2367e0bd1aa3037463c0a183f887}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ {\bfseries intersection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ \mbox{\hyperlink{classlarcfm_1_1_position_a250d24bbcc079591943b5fcdd9ee7a77}{intersection}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so2, double dto, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si2)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a3cc3da2e85fbdf5822f326f25cc46161}{intersection2D}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so2, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si2)
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a9d2e1ecf3a4d40158df400948b9ae632}{parse\+LL}} (const std\+::string \&s)
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_a7ee9b2f5f5571328d5d2531af09e9ddb}{parse\+XYZ}} (const std\+::string \&s)
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_position_abcbc122840e0957d4c6368667f50cf51}{parse}} (const std\+::string \&s)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_ad31ab185eb8091f5dfad38beca7a2e2c}\label{classlarcfm_1_1_position_ad31ab185eb8091f5dfad38beca7a2e2c}} 
+{\bfseries Position} (const double \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x}}, const double \mbox{\hyperlink{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}{y}}, const double \mbox{\hyperlink{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}{z}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a67bf6e07ff59811a7ef1c0847b7c2318}\label{classlarcfm_1_1_position_a67bf6e07ff59811a7ef1c0847b7c2318}} 
+bool {\bfseries latlon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_a07bc7bc3e59f85de62c09de53a255540}\label{classlarcfm_1_1_position_a07bc7bc3e59f85de62c09de53a255540}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries ll}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_aaefe6e91797aaa361f25e14ba4531889}\label{classlarcfm_1_1_position_aaefe6e91797aaa361f25e14ba4531889}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries s3}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class captures a single position represented in either Euclidean or Lat/\+Lon coordinates. ~\newline
+ This class is immutable.
+
+This class is designed to be resilient; The methods do not return errors when a position in the \char`\"{}wrong\char`\"{} geometry is provided. So the method \mbox{\hyperlink{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}{x()}} will return a value even when the original position was provided in \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}. ~\newline
+ The correspondence is as follows\+: 
+\begin{DoxyItemize}
+\item latitude corresponds to Y 
+\item longitude corresponds to X 
+\item altitude corresponds to altitude (obviously) 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a68ccc30b7425acba731f3dd9203b648c}\label{classlarcfm_1_1_position_a68ccc30b7425acba731f3dd9203b648c}} 
+\index{larcfm::Position@{larcfm::Position}!Position@{Position}}
+\index{Position@{Position}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Position\+::\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create an empty \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object \mbox{\Hypertarget{classlarcfm_1_1_position_a7bc6324331c9b8bd472ed8cd3bab8434}\label{classlarcfm_1_1_position_a7bc6324331c9b8bd472ed8cd3bab8434}} 
+\index{larcfm::Position@{larcfm::Position}!Position@{Position}}
+\index{Position@{Position}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Position\+::\+Position (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object from a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object. The position will be a Lat/\+Lon position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & a latitude/longitude/altitude object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_position_abc35e7c24ff97b43e18c615b0c190317}\label{classlarcfm_1_1_position_abc35e7c24ff97b43e18c615b0c190317}} 
+\index{larcfm::Position@{larcfm::Position}!Position@{Position}}
+\index{Position@{Position}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{Position()}{Position()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Position\+::\+Position (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object from a \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} object. This method assumes the \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} is in internal units. 
+\begin{DoxyParams}{Parameters}
+{\em v} & three dimensional vector \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ac3462b9cdf82011241ebabb1349c01fa}\label{classlarcfm_1_1_position_ac3462b9cdf82011241ebabb1349c01fa}} 
+\index{larcfm::Position@{larcfm::Position}!almostEquals@{almostEquals}}
+\index{almostEquals@{almostEquals}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{almostEquals()}{almostEquals()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::almost\+Equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pp,  }\item[{double}]{epsilon\+\_\+horiz,  }\item[{double}]{epsilon\+\_\+vert }\end{DoxyParamCaption}) const}
+
+Checks if two Positions are almost the same.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pp} & \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} for comparison \\
+\hline
+{\em epsilon\+\_\+horiz} & allowable horizontal deviation \mbox{[}m\mbox{]} \\
+\hline
+{\em epsilon\+\_\+vert} & allowable vertical deviation \mbox{[}m\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true}, if {\ttfamily this} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} is almost equal to {\ttfamily v}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ac4335ca7af43b7f69fa5fa519fee5bbc}\label{classlarcfm_1_1_position_ac4335ca7af43b7f69fa5fa519fee5bbc}} 
+\index{larcfm::Position@{larcfm::Position}!almostEquals@{almostEquals}}
+\index{almostEquals@{almostEquals}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{almostEquals()}{almostEquals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::almost\+Equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Checks if two Positions are almost the same.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} for comparison\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true}, if {\ttfamily this} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} is almost equal to {\ttfamily v}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a3902fc91726d0eadc016b39412a51f02}\label{classlarcfm_1_1_position_a3902fc91726d0eadc016b39412a51f02}} 
+\index{larcfm::Position@{larcfm::Position}!almostEquals2D@{almostEquals2D}}
+\index{almostEquals2D@{almostEquals2D}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{almostEquals2D()}{almostEquals2D()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::almost\+Equals2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pp,  }\item[{double}]{epsilon\+\_\+horiz }\end{DoxyParamCaption}) const}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pp} & \\
+\hline
+{\em epsilon\+\_\+horiz} & max distance in meters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}\label{classlarcfm_1_1_position_a9f2068643c260ca9f41f1ee4d506d086}} 
+\index{larcfm::Position@{larcfm::Position}!alt@{alt}}
+\index{alt@{alt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{alt()}{alt()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::alt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the altitude \begin{DoxyReturn}{Returns}
+altitude \mbox{[}internal\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_abb420b67c9e452ebef40517cc083329c}\label{classlarcfm_1_1_position_abb420b67c9e452ebef40517cc083329c}} 
+\index{larcfm::Position@{larcfm::Position}!altitude@{altitude}}
+\index{altitude@{altitude}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{altitude()}{altitude()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::altitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the altitude in feet \begin{DoxyReturn}{Returns}
+altitude \mbox{[}ft\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_aef8cd891f071afbde89a61791cfe6b03}\label{classlarcfm_1_1_position_aef8cd891f071afbde89a61791cfe6b03}} 
+\index{larcfm::Position@{larcfm::Position}!averageVelocity@{averageVelocity}}
+\index{averageVelocity@{averageVelocity}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{averageVelocity()}{averageVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Position\+::average\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2,  }\item[{double}]{speed }\end{DoxyParamCaption}) const}
+
+Return the average velocity between the current position and the given position, with the given speed \mbox{[}internal units\mbox{]}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p2} & another position \\
+\hline
+{\em speed} & the ground speed going from this \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} to the given position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity (3D)
+\end{DoxyReturn}
+Return the average velocity between the current position and the given position, with the given speed \mbox{[}internal units\mbox{]}. \mbox{\Hypertarget{classlarcfm_1_1_position_af80f61856d74a20a0985160f9378b2bb}\label{classlarcfm_1_1_position_af80f61856d74a20a0985160f9378b2bb}} 
+\index{larcfm::Position@{larcfm::Position}!avgVelocity@{avgVelocity}}
+\index{avgVelocity@{avgVelocity}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{avgVelocity()}{avgVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Position\+::avg\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2,  }\item[{double}]{dt }\end{DoxyParamCaption}) const}
+
+Return the average velocity between the current position and the given position, with the given delta time dt.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p2} & another position \\
+\hline
+{\em dt} & delta time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+average velocity
+\end{DoxyReturn}
+Return the average velocity between the current position and the given position, with the given delta time dt. \mbox{\Hypertarget{classlarcfm_1_1_position_ac4d224f642a6d941d83ad4d163c50274}\label{classlarcfm_1_1_position_ac4d224f642a6d941d83ad4d163c50274}} 
+\index{larcfm::Position@{larcfm::Position}!distanceH@{distanceH}}
+\index{distanceH@{distanceH}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{distanceH()}{distanceH()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::distanceH (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return the horizontal distance between the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} 
+\begin{DoxyParams}{Parameters}
+{\em p} & another position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+horizontal distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a101b0e29440e390921ae30c2518fe408}\label{classlarcfm_1_1_position_a101b0e29440e390921ae30c2518fe408}} 
+\index{larcfm::Position@{larcfm::Position}!distanceV@{distanceV}}
+\index{distanceV@{distanceV}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{distanceV()}{distanceV()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::distanceV (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return the vertical distance between the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & another position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vertical distance (absolute distance) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_acced0183ac5ffe24592e1a4a037ab822}\label{classlarcfm_1_1_position_acced0183ac5ffe24592e1a4a037ab822}} 
+\index{larcfm::Position@{larcfm::Position}!finalVelocity@{finalVelocity}}
+\index{finalVelocity@{finalVelocity}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{finalVelocity()}{finalVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Position\+::final\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+return the velocity going from this to p over dt seconds. Returns a ZERO velocity if dt \texorpdfstring{$<$}{<}= 0 \mbox{\Hypertarget{classlarcfm_1_1_position_a250d24bbcc079591943b5fcdd9ee7a77}\label{classlarcfm_1_1_position_a250d24bbcc079591943b5fcdd9ee7a77}} 
+\index{larcfm::Position@{larcfm::Position}!intersection@{intersection}}
+\index{intersection@{intersection}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{intersection()}{intersection()}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ larcfm\+::\+Position\+::intersection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so2,  }\item[{double}]{dto,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns intersection point and time of intersection relative to the time of position so for time return value, it assumes that an aircraft travels from so1 to so2 in dto seconds and the other aircraft from si to si2 a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1) \mbox{\Hypertarget{classlarcfm_1_1_position_a3cc3da2e85fbdf5822f326f25cc46161}\label{classlarcfm_1_1_position_a3cc3da2e85fbdf5822f326f25cc46161}} 
+\index{larcfm::Position@{larcfm::Position}!intersection2D@{intersection2D}}
+\index{intersection2D@{intersection2D}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{intersection2D()}{intersection2D()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::intersection2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns intersection point between two lines defined by the four positions. If the Postions are \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} then the lines are Great Circle lines, otherwise they are infinite lines in Euclidean space. 
+\begin{DoxyParams}{Parameters}
+{\em so} & first point of infinite line A \\
+\hline
+{\em so2} & second point of infinite line A \\
+\hline
+{\em si} & first point of infinite line B \\
+\hline
+{\em si2} & second point of infinite line B \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the intersection point. If parallel, return INVALID
+\end{DoxyReturn}
+Returns intersection point and time of intersection relative to the time of position so for time return value, it assumes that an aircraft travels from so1 to so2 in dto seconds and the other aircraft from si to si2 a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1) \mbox{\Hypertarget{classlarcfm_1_1_position_aa90e9960ffca0a1dd19399710f509bd4}\label{classlarcfm_1_1_position_aa90e9960ffca0a1dd19399710f509bd4}} 
+\index{larcfm::Position@{larcfm::Position}!isInvalid@{isInvalid}}
+\index{isInvalid@{isInvalid}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{isInvalid()}{isInvalid()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::is\+Invalid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if this \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} is invalid \begin{DoxyReturn}{Returns}
+true, if invalid position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a3650f9132b4204fd7edc427fc9580780}\label{classlarcfm_1_1_position_a3650f9132b4204fd7edc427fc9580780}} 
+\index{larcfm::Position@{larcfm::Position}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return if this \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} is a latitude or longitude \begin{DoxyReturn}{Returns}
+true if latitude/longitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a036d8f530c3f749df6584ce84193c36d}\label{classlarcfm_1_1_position_a036d8f530c3f749df6584ce84193c36d}} 
+\index{larcfm::Position@{larcfm::Position}!isWest@{isWest}}
+\index{isWest@{isWest}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{isWest()}{isWest()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::is\+West (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{a }\end{DoxyParamCaption}) const}
+
+Return true if this point is west of the given point (this.\+x \texorpdfstring{$<$}{<} a.\+x) 
+\begin{DoxyParams}{Parameters}
+{\em a} & other point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if this.\+x \texorpdfstring{$<$}{<} a.\+x (or this.\+lon \texorpdfstring{$<$}{<} a.\+lon, accounting for wraparound) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}\label{classlarcfm_1_1_position_a4e299ca3d7a4cb2d33badb8281ba35d4}} 
+\index{larcfm::Position@{larcfm::Position}!lat@{lat}}
+\index{lat@{lat}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{lat()}{lat()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::lat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the latitude \begin{DoxyReturn}{Returns}
+latitude \mbox{[}internal\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a0350dd9c5ba57293c08d63d68f6e4631}\label{classlarcfm_1_1_position_a0350dd9c5ba57293c08d63d68f6e4631}} 
+\index{larcfm::Position@{larcfm::Position}!latitude@{latitude}}
+\index{latitude@{latitude}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{latitude()}{latitude()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::latitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the latitude in degrees north \begin{DoxyReturn}{Returns}
+latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a74379bf3aab3ea688585beeb2c71ffd6}\label{classlarcfm_1_1_position_a74379bf3aab3ea688585beeb2c71ffd6}} 
+\index{larcfm::Position@{larcfm::Position}!linear@{linear}}
+\index{linear@{linear}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{linear()}{linear()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::linear (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Perform a linear projection of the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} with given velocity and time. If \mbox{\hyperlink{classlarcfm_1_1_position_a3650f9132b4204fd7edc427fc9580780}{is\+Lat\+Lon()}} is true, then a great circle route is followed and the velocity represents the initial velocity along the great circle.
+
+Reminder\+: If this is used in a stepwise fashion over lat/lon, be careful when passing over or near the poles and keep the velocity track in mind.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & the velocity \\
+\hline
+{\em time} & the time from the current point Note\+: using a negative time value is the same a velocity moving in the opposite direction (along the great circle, if appropriate) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear projection of the position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a204785d8c6c43733501c63b293441d16}\label{classlarcfm_1_1_position_a204785d8c6c43733501c63b293441d16}} 
+\index{larcfm::Position@{larcfm::Position}!linearDist2D@{linearDist2D}}
+\index{linearDist2D@{linearDist2D}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{linearDist2D()}{linearDist2D()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::linear\+Dist2D (\begin{DoxyParamCaption}\item[{double}]{track,  }\item[{double}]{d }\end{DoxyParamCaption}) const}
+
+Returns a new position in the given direction at the given distance from this point The altitude is not changed!
+
+
+\begin{DoxyParams}{Parameters}
+{\em track} & track \\
+\hline
+{\em d} & distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a4b3fc81952db30db0bbaeed32dc38f04}\label{classlarcfm_1_1_position_a4b3fc81952db30db0bbaeed32dc38f04}} 
+\index{larcfm::Position@{larcfm::Position}!linearEst@{linearEst}}
+\index{linearEst@{linearEst}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{linearEst()}{linearEst()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::linear\+Est (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Perform a estimation of a linear projection of the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} with the given velocity and time. 
+\begin{DoxyParams}{Parameters}
+{\em vo} & the velocity \\
+\hline
+{\em time} & the time from the current point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear projection of the position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_aaeeac10c0b9e2c3dc021af0876b992ec}\label{classlarcfm_1_1_position_aaeeac10c0b9e2c3dc021af0876b992ec}} 
+\index{larcfm::Position@{larcfm::Position}!linearEst@{linearEst}}
+\index{linearEst@{linearEst}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{linearEst()}{linearEst()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::linear\+Est (\begin{DoxyParamCaption}\item[{double}]{dn,  }\item[{double}]{de }\end{DoxyParamCaption}) const}
+
+Calculate a new position that is offset from the current position by (dn,de) 
+\begin{DoxyParams}{Parameters}
+{\em dn} & offset in north direction (m) \\
+\hline
+{\em de} & offset in east direction (m) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear projection of the position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ad0a3ac3f6fb4158d332bc8f7fd7bbe13}\label{classlarcfm_1_1_position_ad0a3ac3f6fb4158d332bc8f7fd7bbe13}} 
+\index{larcfm::Position@{larcfm::Position}!lla@{lla}}
+\index{lla@{lla}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{lla()}{lla()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \& larcfm\+::\+Position\+::lla (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the associated \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object \mbox{\Hypertarget{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}\label{classlarcfm_1_1_position_a388f4a4b2a6dae4c5e4fb4e320fa9fbf}} 
+\index{larcfm::Position@{larcfm::Position}!lon@{lon}}
+\index{lon@{lon}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{lon()}{lon()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the longitude \begin{DoxyReturn}{Returns}
+longitude \mbox{[}internal\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a87b50a4710dfee13c796d090d8d245bd}\label{classlarcfm_1_1_position_a87b50a4710dfee13c796d090d8d245bd}} 
+\index{larcfm::Position@{larcfm::Position}!longitude@{longitude}}
+\index{longitude@{longitude}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{longitude()}{longitude()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::longitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the longitude in degrees east \begin{DoxyReturn}{Returns}
+longitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a39aefa604e419444ddfe58a9e85751ab}\label{classlarcfm_1_1_position_a39aefa604e419444ddfe58a9e85751ab}} 
+\index{larcfm::Position@{larcfm::Position}!LoS@{LoS}}
+\index{LoS@{LoS}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{LoS()}{LoS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::\+LoS (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2,  }\item[{double}]{D,  }\item[{double}]{H }\end{DoxyParamCaption})}
+
+Determine if a loss of separation has occurred (using either geodesic or Euclidean calculations)
+
+
+\begin{DoxyParams}{Parameters}
+{\em p2} & the position of the other aircraft \\
+\hline
+{\em D} & horizontal distance to specify loss of separation \\
+\hline
+{\em H} & vertical distance to specify loss of separation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a loss of separation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a26393553cf6e8ba2bd7e3878fa6d45cd}\label{classlarcfm_1_1_position_a26393553cf6e8ba2bd7e3878fa6d45cd}} 
+\index{larcfm::Position@{larcfm::Position}!make@{make}}
+\index{make@{make}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object from a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object. The position will be a Lat/\+Lon position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & a latitude/longitude/altitude object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ae591b47b32ba36489a96c271cb79f7f5}\label{classlarcfm_1_1_position_ae591b47b32ba36489a96c271cb79f7f5}} 
+\index{larcfm::Position@{larcfm::Position}!make@{make}}
+\index{make@{make}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object from a \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} object. This method assumes the \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} is in internal units. 
+\begin{DoxyParams}{Parameters}
+{\em v} & three dimensional vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a4ed27855ffe98e079e52c6d7a42ac865}\label{classlarcfm_1_1_position_a4ed27855ffe98e079e52c6d7a42ac865}} 
+\index{larcfm::Position@{larcfm::Position}!makeLatLonAlt@{makeLatLonAlt}}
+\index{makeLatLonAlt@{makeLatLonAlt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{makeLatLonAlt()}{makeLatLonAlt()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make\+Lat\+Lon\+Alt (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new lat/lon position with coordinates ({\ttfamily lat},{\ttfamily lon},{\ttfamily alt}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude \mbox{[}deg north latitude\mbox{]} \\
+\hline
+{\em lon} & longitude \mbox{[}deg east longitude\mbox{]} \\
+\hline
+{\em alt} & altitude \mbox{[}ft\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a7a4f1d8d2f515224851a87280db094c4}\label{classlarcfm_1_1_position_a7a4f1d8d2f515224851a87280db094c4}} 
+\index{larcfm::Position@{larcfm::Position}!makeLatLonAlt@{makeLatLonAlt}}
+\index{makeLatLonAlt@{makeLatLonAlt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{makeLatLonAlt()}{makeLatLonAlt()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make\+Lat\+Lon\+Alt (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{std\+::string}]{lat\+\_\+unit,  }\item[{double}]{lon,  }\item[{std\+::string}]{lon\+\_\+unit,  }\item[{double}]{alt,  }\item[{std\+::string}]{alt\+\_\+unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new lat/lon position with coordinates ({\ttfamily lat},{\ttfamily lon},{\ttfamily alt}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude \mbox{[}lat\+\_\+unit north latitude\mbox{]} \\
+\hline
+{\em lat\+\_\+unit} & units of latitude \\
+\hline
+{\em lon} & longitude \mbox{[}lon\+\_\+unit east longitude\mbox{]} \\
+\hline
+{\em lon\+\_\+unit} & units of latitude \\
+\hline
+{\em alt} & altitude \mbox{[}alt\+\_\+unit\mbox{]} \\
+\hline
+{\em alt\+\_\+unit} & units of altitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a83da5cd5b100c4f98b915907caedca97}\label{classlarcfm_1_1_position_a83da5cd5b100c4f98b915907caedca97}} 
+\index{larcfm::Position@{larcfm::Position}!makeXYZ@{makeXYZ}}
+\index{makeXYZ@{makeXYZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{makeXYZ()}{makeXYZ()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make\+XYZ (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y,  }\item[{double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new Euclidean position with coordinates ({\ttfamily x},{\ttfamily y},{\ttfamily z}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & coordinate \mbox{[}nmi\mbox{]} \\
+\hline
+{\em y} & coordinate \mbox{[}nmi\mbox{]} \\
+\hline
+{\em z} & altitude \mbox{[}ft\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a1124dd3e3ab1644a882bf636a52e1997}\label{classlarcfm_1_1_position_a1124dd3e3ab1644a882bf636a52e1997}} 
+\index{larcfm::Position@{larcfm::Position}!makeXYZ@{makeXYZ}}
+\index{makeXYZ@{makeXYZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{makeXYZ()}{makeXYZ()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::make\+XYZ (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{std\+::string}]{x\+\_\+unit,  }\item[{double}]{y,  }\item[{std\+::string}]{y\+\_\+unit,  }\item[{double}]{z,  }\item[{std\+::string}]{z\+\_\+unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new Euclidean position with coordinates ({\ttfamily x},{\ttfamily y},{\ttfamily z}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & coordinate \mbox{[}x\+\_\+unit\mbox{]} \\
+\hline
+{\em x\+\_\+unit} & units of x coordinate \\
+\hline
+{\em y} & coordinate \mbox{[}y\+\_\+unit\mbox{]} \\
+\hline
+{\em y\+\_\+unit} & units of y coordinate \\
+\hline
+{\em z} & altitude \mbox{[}z\+\_\+unit\mbox{]} \\
+\hline
+{\em z\+\_\+unit} & units of z coordinate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_abbb3f1ca3fbb1389a8fe1b7e20850ae3}\label{classlarcfm_1_1_position_abbb3f1ca3fbb1389a8fe1b7e20850ae3}} 
+\index{larcfm::Position@{larcfm::Position}!midPoint@{midPoint}}
+\index{midPoint@{midPoint}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{midPoint()}{midPoint()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mid\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2 }\end{DoxyParamCaption}) const}
+
+Return the mid point between the current position and the given position 
+\begin{DoxyParams}{Parameters}
+{\em p2} & the other position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the midpoint 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_af7a82bdd9d50fb58c75af12b6bf90239}\label{classlarcfm_1_1_position_af7a82bdd9d50fb58c75af12b6bf90239}} 
+\index{larcfm::Position@{larcfm::Position}!mkAlt@{mkAlt}}
+\index{mkAlt@{mkAlt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkAlt()}{mkAlt()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mk\+Alt (\begin{DoxyParamCaption}\item[{const double}]{alt }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the altitude changed (internal units) 
+\begin{DoxyParams}{Parameters}
+{\em alt} & new altitude value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a1f221f96dc80ac5c687dc9e47c0a041f}\label{classlarcfm_1_1_position_a1f221f96dc80ac5c687dc9e47c0a041f}} 
+\index{larcfm::Position@{larcfm::Position}!mkLat@{mkLat}}
+\index{mkLat@{mkLat}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkLat()}{mkLat()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mk\+Lat (\begin{DoxyParamCaption}\item[{const double}]{lat }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the latitude changed 
+\begin{DoxyParams}{Parameters}
+{\em lat} & new latitude value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a7a5999108a5626be8ff108251363a1ee}\label{classlarcfm_1_1_position_a7a5999108a5626be8ff108251363a1ee}} 
+\index{larcfm::Position@{larcfm::Position}!mkLatLonAlt@{mkLatLonAlt}}
+\index{mkLatLonAlt@{mkLatLonAlt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkLatLonAlt()}{mkLatLonAlt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mk\+Lat\+Lon\+Alt (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new lat/lon position with coordinates ({\ttfamily lat},{\ttfamily lon},{\ttfamily alt}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude \mbox{[}radians\mbox{]} \\
+\hline
+{\em lon} & longitude \mbox{[}radians\mbox{]} \\
+\hline
+{\em alt} & altitude \mbox{[}m\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a2faaecc9082023d74976666f90bc51bf}\label{classlarcfm_1_1_position_a2faaecc9082023d74976666f90bc51bf}} 
+\index{larcfm::Position@{larcfm::Position}!mkLon@{mkLon}}
+\index{mkLon@{mkLon}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkLon()}{mkLon()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mk\+Lon (\begin{DoxyParamCaption}\item[{const double}]{lon }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the longitude changed 
+\begin{DoxyParams}{Parameters}
+{\em lon} & new longitude value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a3d12546c98d095372fb0b41503f16202}\label{classlarcfm_1_1_position_a3d12546c98d095372fb0b41503f16202}} 
+\index{larcfm::Position@{larcfm::Position}!mkX@{mkX}}
+\index{mkX@{mkX}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkX()}{mkX()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mkX (\begin{DoxyParamCaption}\item[{const double}]{xx }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the X coordinate changed \mbox{\Hypertarget{classlarcfm_1_1_position_aff928c197453652fbe3d747950c64eaf}\label{classlarcfm_1_1_position_aff928c197453652fbe3d747950c64eaf}} 
+\index{larcfm::Position@{larcfm::Position}!mkXYZ@{mkXYZ}}
+\index{mkXYZ@{mkXYZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkXYZ()}{mkXYZ()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mk\+XYZ (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y,  }\item[{double}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a new Euclidean position with coordinates ({\ttfamily x},{\ttfamily y},{\ttfamily z}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & coordinate \mbox{[}m\mbox{]} \\
+\hline
+{\em y} & coordinate \mbox{[}m\mbox{]} \\
+\hline
+{\em z} & altitude \mbox{[}m\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ab1f396d058179430a1771059d7777aea}\label{classlarcfm_1_1_position_ab1f396d058179430a1771059d7777aea}} 
+\index{larcfm::Position@{larcfm::Position}!mkY@{mkY}}
+\index{mkY@{mkY}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkY()}{mkY()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mkY (\begin{DoxyParamCaption}\item[{const double}]{yy }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the Y coordinate changed \mbox{\Hypertarget{classlarcfm_1_1_position_a8b835288473fa428fc9c903e866a6bc1}\label{classlarcfm_1_1_position_a8b835288473fa428fc9c903e866a6bc1}} 
+\index{larcfm::Position@{larcfm::Position}!mkZ@{mkZ}}
+\index{mkZ@{mkZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{mkZ()}{mkZ()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::mkZ (\begin{DoxyParamCaption}\item[{const double}]{zz }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with the Z coordinate changed \mbox{\Hypertarget{classlarcfm_1_1_position_a432878327247c393c53de8c743406229}\label{classlarcfm_1_1_position_a432878327247c393c53de8c743406229}} 
+\index{larcfm::Position@{larcfm::Position}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Are these two positions unequal? \mbox{\Hypertarget{classlarcfm_1_1_position_af7a4428c8ffe42d0bcd8dc8c0b05354d}\label{classlarcfm_1_1_position_af7a4428c8ffe42d0bcd8dc8c0b05354d}} 
+\index{larcfm::Position@{larcfm::Position}!operator==@{operator==}}
+\index{operator==@{operator==}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Position\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Are these two positions equal? \mbox{\Hypertarget{classlarcfm_1_1_position_abcbc122840e0957d4c6368667f50cf51}\label{classlarcfm_1_1_position_abcbc122840e0957d4c6368667f50cf51}} 
+\index{larcfm::Position@{larcfm::Position}!parse@{parse}}
+\index{parse@{parse}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::parse (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This interprets a string into a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} or XYZ position, if appropriate units are given. If no units are present, it returns an invalid \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}. 
+\begin{DoxyParams}{Parameters}
+{\em s} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a9d2e1ecf3a4d40158df400948b9ae632}\label{classlarcfm_1_1_position_a9d2e1ecf3a4d40158df400948b9ae632}} 
+\index{larcfm::Position@{larcfm::Position}!parseLL@{parseLL}}
+\index{parseLL@{parseLL}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{parseLL()}{parseLL()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::parse\+LL (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This interprets a string as a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} position with units in deg/deg/ft or the specified units (inverse of \mbox{\hyperlink{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}{to\+String()}})
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position
+\end{DoxyReturn}
+This interprets a string as a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} position with units of deg/deg/ft or in the specified units (inverse of \mbox{\hyperlink{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}{to\+String()}}) \mbox{\Hypertarget{classlarcfm_1_1_position_a7ee9b2f5f5571328d5d2531af09e9ddb}\label{classlarcfm_1_1_position_a7ee9b2f5f5571328d5d2531af09e9ddb}} 
+\index{larcfm::Position@{larcfm::Position}!parseXYZ@{parseXYZ}}
+\index{parseXYZ@{parseXYZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{parseXYZ()}{parseXYZ()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::parse\+XYZ (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This interprets a string as a XYZ position with units in NM/\+NM/ft or the specified units (inverse of \mbox{\hyperlink{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}{to\+String()}})
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position
+\end{DoxyReturn}
+This interprets a string as a XYZ position with units of nmi/nmi/ft or in the specified units (inverse of \mbox{\hyperlink{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}{to\+String()}}) \mbox{\Hypertarget{classlarcfm_1_1_position_a9e4369babf69ea044a3d30969511aeb3}\label{classlarcfm_1_1_position_a9e4369babf69ea044a3d30969511aeb3}} 
+\index{larcfm::Position@{larcfm::Position}!representativeTrack@{representativeTrack}}
+\index{representativeTrack@{representativeTrack}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{representativeTrack()}{representativeTrack()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::representative\+Track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return the track angle of the vector from the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} to the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, based on representative course 
+\begin{DoxyParams}{Parameters}
+{\em p} & another position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+representative course 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a3590749de2368245e869bc081b0f12e2}\label{classlarcfm_1_1_position_a3590749de2368245e869bc081b0f12e2}} 
+\index{larcfm::Position@{larcfm::Position}!signedDistanceV@{signedDistanceV}}
+\index{signedDistanceV@{signedDistanceV}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{signedDistanceV()}{signedDistanceV()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::signed\+DistanceV (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return the vertical distance between the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}. Positive values mean the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} is above the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & another position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vertical distance (positive values mean current position is above the given position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}\label{classlarcfm_1_1_position_ac1e74cf90f192f31f14ca506a5b6ea75}} 
+\index{larcfm::Position@{larcfm::Position}!toString@{toString}}
+\index{toString@{toString}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a string representation \mbox{\Hypertarget{classlarcfm_1_1_position_a3d5910c33721169d7dccac1b652c202c}\label{classlarcfm_1_1_position_a3d5910c33721169d7dccac1b652c202c}} 
+\index{larcfm::Position@{larcfm::Position}!toString@{toString}}
+\index{toString@{toString}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String (\begin{DoxyParamCaption}\item[{int}]{prec }\end{DoxyParamCaption}) const}
+
+Return a string representation 
+\begin{DoxyParams}{Parameters}
+{\em prec} & digits of precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a7d2479acc873fae0fe38dd9e1b52f430}\label{classlarcfm_1_1_position_a7d2479acc873fae0fe38dd9e1b52f430}} 
+\index{larcfm::Position@{larcfm::Position}!toString2D@{toString2D}}
+\index{toString2D@{toString2D}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toString2D()}{toString2D()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String2D (\begin{DoxyParamCaption}\item[{int}]{prec }\end{DoxyParamCaption}) const}
+
+Return a string representation 
+\begin{DoxyParams}{Parameters}
+{\em prec} & digits of precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_aa30874761979dd905591724348568dae}\label{classlarcfm_1_1_position_aa30874761979dd905591724348568dae}} 
+\index{larcfm::Position@{larcfm::Position}!toStringNP@{toStringNP}}
+\index{toStringNP@{toStringNP}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toStringNP()}{toStringNP()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String\+NP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a string representation with a default precision but without parentheses. \begin{DoxyReturn}{Returns}
+string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a9f8488fe549b1087a4df4b5c81fa2b71}\label{classlarcfm_1_1_position_a9f8488fe549b1087a4df4b5c81fa2b71}} 
+\index{larcfm::Position@{larcfm::Position}!toStringNP@{toStringNP}}
+\index{toStringNP@{toStringNP}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toStringNP()}{toStringNP()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String\+NP (\begin{DoxyParamCaption}\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+Return a string representation, with a user-\/specified digits of precision (0-\/15) without units or parentheses. 
+\begin{DoxyParams}{Parameters}
+{\em precision} & digits of precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ae51c8a2d38a42f39e21a0d74fb19e201}\label{classlarcfm_1_1_position_ae51c8a2d38a42f39e21a0d74fb19e201}} 
+\index{larcfm::Position@{larcfm::Position}!toStringUnits@{toStringUnits}}
+\index{toStringUnits@{toStringUnits}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{toStringUnits()}{toStringUnits()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Position\+::to\+String\+Units (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{xunit,  }\item[{const std\+::string \&}]{yunit,  }\item[{const std\+::string \&}]{zunit }\end{DoxyParamCaption}) const}
+
+Return a string representation using the given unit conversions (latitude and longitude, if appropriate, are always in degrees, so only the z unit is used in that case)
+
+Return a string representation using the given unit conversions (latitude and longitude, if appropriate, are always in degrees, so only the z unit is used in that case). \mbox{\Hypertarget{classlarcfm_1_1_position_af002e634047a2ef49e687e605681dbc5}\label{classlarcfm_1_1_position_af002e634047a2ef49e687e605681dbc5}} 
+\index{larcfm::Position@{larcfm::Position}!track@{track}}
+\index{track@{track}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return the track angle of the vector from the current \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} to the given \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, based on initial course 
+\begin{DoxyParams}{Parameters}
+{\em p} & another position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+track angle within \mbox{[}0..2PI\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_ab05aa5075fd04843eda18b6aa440b8cc}\label{classlarcfm_1_1_position_ab05aa5075fd04843eda18b6aa440b8cc}} 
+\index{larcfm::Position@{larcfm::Position}!vect2@{vect2}}
+\index{vect2@{vect2}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{vect2()}{vect2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Position\+::vect2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the horizontal position as a standard \mbox{\hyperlink{classlarcfm_1_1_position_ab05aa5075fd04843eda18b6aa440b8cc}{vect2()}}. This returns either (x,y), or, equivalently, (lon, lat). \begin{DoxyReturn}{Returns}
+2D vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_aaec2f9e375c6f5f642b1aaa6b7e76200}\label{classlarcfm_1_1_position_aaec2f9e375c6f5f642b1aaa6b7e76200}} 
+\index{larcfm::Position@{larcfm::Position}!vect3@{vect3}}
+\index{vect3@{vect3}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{vect3()}{vect3()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \& larcfm\+::\+Position\+::vect3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the three dimensional position vector \mbox{\Hypertarget{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}\label{classlarcfm_1_1_position_a9cfdb3d5df2f27253744bf0047075408}} 
+\index{larcfm::Position@{larcfm::Position}!x@{x}}
+\index{x@{x}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{x()}{x()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::x (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the x coordinate \begin{DoxyReturn}{Returns}
+x coordinate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a1a7a14a8e12dc78037dbb3e0cf75498c}\label{classlarcfm_1_1_position_a1a7a14a8e12dc78037dbb3e0cf75498c}} 
+\index{larcfm::Position@{larcfm::Position}!xCoordinate@{xCoordinate}}
+\index{xCoordinate@{xCoordinate}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{xCoordinate()}{xCoordinate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::x\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the x coordinate in \mbox{[}NM\mbox{]} \begin{DoxyReturn}{Returns}
+x coordinate \mbox{[}NM\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}\label{classlarcfm_1_1_position_a6063013facc7e0335aa91d07c7298dce}} 
+\index{larcfm::Position@{larcfm::Position}!y@{y}}
+\index{y@{y}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{y()}{y()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the y coordinate \begin{DoxyReturn}{Returns}
+y coordinate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a8e1951688e834da3ca034958759bcaab}\label{classlarcfm_1_1_position_a8e1951688e834da3ca034958759bcaab}} 
+\index{larcfm::Position@{larcfm::Position}!yCoordinate@{yCoordinate}}
+\index{yCoordinate@{yCoordinate}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{yCoordinate()}{yCoordinate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::y\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the y coordinate in \mbox{[}NM\mbox{]} \begin{DoxyReturn}{Returns}
+y coordinate \mbox{[}NM\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}\label{classlarcfm_1_1_position_a62166a0f3f6a9669a59f1158aad613fa}} 
+\index{larcfm::Position@{larcfm::Position}!z@{z}}
+\index{z@{z}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{z()}{z()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::z (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the z coordinate \begin{DoxyReturn}{Returns}
+z coordinate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_aa38a924ce06e252f3e34a5768d8ebc72}\label{classlarcfm_1_1_position_aa38a924ce06e252f3e34a5768d8ebc72}} 
+\index{larcfm::Position@{larcfm::Position}!zCoordinate@{zCoordinate}}
+\index{zCoordinate@{zCoordinate}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{zCoordinate()}{zCoordinate()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+::z\+Coordinate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the z coordinate in \mbox{[}ft\mbox{]} \begin{DoxyReturn}{Returns}
+z coordinate \mbox{[}ft\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_position_a5225decd49c8728f82b056ed8631c042}\label{classlarcfm_1_1_position_a5225decd49c8728f82b056ed8631c042}} 
+\index{larcfm::Position@{larcfm::Position}!ZERO\_LL@{ZERO\_LL}}
+\index{ZERO\_LL@{ZERO\_LL}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{ZERO\_LL()}{ZERO\_LL()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& larcfm\+::\+Position\+::\+ZERO\+\_\+\+LL (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Zero latitude, longitude and altitude \mbox{\Hypertarget{classlarcfm_1_1_position_adc26276ac3cded5595f5ef4b1ac486af}\label{classlarcfm_1_1_position_adc26276ac3cded5595f5ef4b1ac486af}} 
+\index{larcfm::Position@{larcfm::Position}!ZERO\_XYZ@{ZERO\_XYZ}}
+\index{ZERO\_XYZ@{ZERO\_XYZ}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{ZERO\_XYZ()}{ZERO\_XYZ()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& larcfm\+::\+Position\+::\+ZERO\+\_\+\+XYZ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Zero x, y, and z \mbox{\Hypertarget{classlarcfm_1_1_position_a0f653c7b09c3f1e7c801d1fb5811427b}\label{classlarcfm_1_1_position_a0f653c7b09c3f1e7c801d1fb5811427b}} 
+\index{larcfm::Position@{larcfm::Position}!zeroAlt@{zeroAlt}}
+\index{zeroAlt@{zeroAlt}!larcfm::Position@{larcfm::Position}}
+\doxysubsubsection{\texorpdfstring{zeroAlt()}{zeroAlt()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Position\+::zero\+Alt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} from the current one with an altitude of zero \begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Position.\+h\item 
+Modules/\+ACCo\+RD/src/Position.\+cpp\end{DoxyCompactItemize}

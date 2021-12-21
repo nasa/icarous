@@ -1,0 +1,229 @@
+\hypertarget{classlarcfm_1_1_simple_no_polar_projection}{}\doxysection{larcfm\+::Simple\+No\+Polar\+Projection Class Reference}
+\label{classlarcfm_1_1_simple_no_polar_projection}\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+
+
+{\ttfamily \#include $<$Simple\+No\+Polar\+Projection.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a3c1adf7b530c73aa8bfb2848152313c6}{Simple\+No\+Polar\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_ad91df31adecbd87c75253fa1e4b3f6c1}{Simple\+No\+Polar\+Projection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_ab37801f86da3f57259e78149744808c2}{Simple\+No\+Polar\+Projection}} (double lat, double lon, double alt)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a4dbba7d25a1f07085cc530231bcd9e8a}{$\sim$\+Simple\+No\+Polar\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection}{Simple\+No\+Polar\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_abd784a6e7cc08c8c5fa2abafdc6f9b91}{make\+New}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection}{Simple\+No\+Polar\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a702c291e1452ac1b220b7a7a8180987a}{make\+New}} (double lat, double lon, double alt) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_ad7ff253a3ec477615a496ec14c5e8dfb}{conflict\+Range}} (double latitude, double accuracy) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a2082527ac3c20635671731a4867540e1}{max\+Range}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_ab828e57e1a099251867128a6cb891393}{get\+Projection\+Point}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a25ba809c0063ac112cf56cce1871d72e}{project2}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a23f356b6082a10d19235dbd7f629adf6}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_afea38e7108f6c7e119e98feb6bac65e3}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a2f2320cab5f1a896a0b8d8da0974a352}{project\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a620cb17178c2698065cd2a7c2684d403}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&xy, double alt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_aa79e64a8f9324c43b4c162f35d57a0ee}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&xyz) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_acc14ce0aa8de633254a497740dabd946}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a305f3aba8abb31852b56a7708707db72}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_af2e0913232637ae9a4be16e87135b746}{inverse\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_abda08e96e9a31a178e30d208efdef9ac}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_ac01a2cebd359b821c6c1c854545ae7fe}\label{classlarcfm_1_1_simple_no_polar_projection_ac01a2cebd359b821c6c1c854545ae7fe}} 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries project} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a659931c6227486b400be1db911b84629}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a1f244a80b724b107b826b752aa925148}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a3d9e73bd824825a3d3b9175ca6259279}\label{classlarcfm_1_1_simple_no_polar_projection_a3d9e73bd824825a3d3b9175ca6259279}} 
+double {\bfseries proj\+Lat}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a070a18b05886a69393afc1161cac23a0}\label{classlarcfm_1_1_simple_no_polar_projection_a070a18b05886a69393afc1161cac23a0}} 
+double {\bfseries proj\+Lon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a2beff77cf6771f94d30afb74c227f04b}\label{classlarcfm_1_1_simple_no_polar_projection_a2beff77cf6771f94d30afb74c227f04b}} 
+double {\bfseries proj\+Alt}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class creates a local Euclidean projection around a given point. This projection may be used to transform geodesic coordinates (\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} objects) into this Euclidean frame, using the \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a23f356b6082a10d19235dbd7f629adf6}{project()}} method. Also points within this frame, may be found in geodesic coordinates with the \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection_a620cb17178c2698065cd2a7c2684d403}{inverse()}} method. As long as the points are close to the projection point, the errors will be very small.
+
+This is mimics the original projection function, and does not try to compensate for being near the poles.
+
+Note\+: projection objects should never be made directly, and instead should be retrieved via Projection.\+get\+Projection() 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a3c1adf7b530c73aa8bfb2848152313c6}\label{classlarcfm_1_1_simple_no_polar_projection_a3c1adf7b530c73aa8bfb2848152313c6}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!SimpleNoPolarProjection@{SimpleNoPolarProjection}}
+\index{SimpleNoPolarProjection@{SimpleNoPolarProjection}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{SimpleNoPolarProjection()}{SimpleNoPolarProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+No\+Polar\+Projection\+::\+Simple\+No\+Polar\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_ad91df31adecbd87c75253fa1e4b3f6c1}\label{classlarcfm_1_1_simple_no_polar_projection_ad91df31adecbd87c75253fa1e4b3f6c1}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!SimpleNoPolarProjection@{SimpleNoPolarProjection}}
+\index{SimpleNoPolarProjection@{SimpleNoPolarProjection}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{SimpleNoPolarProjection()}{SimpleNoPolarProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+No\+Polar\+Projection\+::\+Simple\+No\+Polar\+Projection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_ab37801f86da3f57259e78149744808c2}\label{classlarcfm_1_1_simple_no_polar_projection_ab37801f86da3f57259e78149744808c2}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!SimpleNoPolarProjection@{SimpleNoPolarProjection}}
+\index{SimpleNoPolarProjection@{SimpleNoPolarProjection}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{SimpleNoPolarProjection()}{SimpleNoPolarProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+No\+Polar\+Projection\+::\+Simple\+No\+Polar\+Projection (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude of reference point \\
+\hline
+{\em lon} & longitude of reference point \\
+\hline
+{\em alt} & altitude of reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a4dbba7d25a1f07085cc530231bcd9e8a}\label{classlarcfm_1_1_simple_no_polar_projection_a4dbba7d25a1f07085cc530231bcd9e8a}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!````~SimpleNoPolarProjection@{$\sim$SimpleNoPolarProjection}}
+\index{````~SimpleNoPolarProjection@{$\sim$SimpleNoPolarProjection}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{$\sim$SimpleNoPolarProjection()}{~SimpleNoPolarProjection()}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+No\+Polar\+Projection\+::$\sim$\+Simple\+No\+Polar\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_ad7ff253a3ec477615a496ec14c5e8dfb}\label{classlarcfm_1_1_simple_no_polar_projection_ad7ff253a3ec477615a496ec14c5e8dfb}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!conflictRange@{conflictRange}}
+\index{conflictRange@{conflictRange}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{conflictRange()}{conflictRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+No\+Polar\+Projection\+::conflict\+Range (\begin{DoxyParamCaption}\item[{double}]{latitude,  }\item[{double}]{accuracy }\end{DoxyParamCaption}) const}
+
+Given an ownship latitude and desired accuracy, what is the longest distance to conflict this projection will support? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_ab828e57e1a099251867128a6cb891393}\label{classlarcfm_1_1_simple_no_polar_projection_ab828e57e1a099251867128a6cb891393}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!getProjectionPoint@{getProjectionPoint}}
+\index{getProjectionPoint@{getProjectionPoint}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{getProjectionPoint()}{getProjectionPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::get\+Projection\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the projection point for this projection \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a620cb17178c2698065cd2a7c2684d403}\label{classlarcfm_1_1_simple_no_polar_projection_a620cb17178c2698065cd2a7c2684d403}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{xy,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a659931c6227486b400be1db911b84629}\label{classlarcfm_1_1_simple_no_polar_projection_a659931c6227486b400be1db911b84629}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Simple\+No\+Polar\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity and the point. If to\+Lat\+Lon is true, the point/velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_aa79e64a8f9324c43b4c162f35d57a0ee}\label{classlarcfm_1_1_simple_no_polar_projection_aa79e64a8f9324c43b4c162f35d57a0ee}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{xyz }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_af2e0913232637ae9a4be16e87135b746}\label{classlarcfm_1_1_simple_no_polar_projection_af2e0913232637ae9a4be16e87135b746}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!inverseVelocity@{inverseVelocity}}
+\index{inverseVelocity@{inverseVelocity}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{inverseVelocity()}{inverseVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::inverse\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity. If to\+Lat\+Lon is true, the velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_abd784a6e7cc08c8c5fa2abafdc6f9b91}\label{classlarcfm_1_1_simple_no_polar_projection_abd784a6e7cc08c8c5fa2abafdc6f9b91}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection}{Simple\+No\+Polar\+Projection}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a702c291e1452ac1b220b7a7a8180987a}\label{classlarcfm_1_1_simple_no_polar_projection_a702c291e1452ac1b220b7a7a8180987a}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_no_polar_projection}{Simple\+No\+Polar\+Projection}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a2082527ac3c20635671731a4867540e1}\label{classlarcfm_1_1_simple_no_polar_projection_a2082527ac3c20635671731a4867540e1}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!maxRange@{maxRange}}
+\index{maxRange@{maxRange}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{maxRange()}{maxRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+No\+Polar\+Projection\+::max\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+What is the maximum effective horizontal range of this projection? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a23f356b6082a10d19235dbd7f629adf6}\label{classlarcfm_1_1_simple_no_polar_projection_a23f356b6082a10d19235dbd7f629adf6}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!project@{project}}
+\index{project@{project}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_abda08e96e9a31a178e30d208efdef9ac}\label{classlarcfm_1_1_simple_no_polar_projection_abda08e96e9a31a178e30d208efdef9ac}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!project@{project}}
+\index{project@{project}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Simple\+No\+Polar\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-\/space. If the position is already in Euclidean coordinates, this acts as the idenitty function. \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_afea38e7108f6c7e119e98feb6bac65e3}\label{classlarcfm_1_1_simple_no_polar_projection_afea38e7108f6c7e119e98feb6bac65e3}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!project@{project}}
+\index{project@{project}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a25ba809c0063ac112cf56cce1871d72e}\label{classlarcfm_1_1_simple_no_polar_projection_a25ba809c0063ac112cf56cce1871d72e}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!project2@{project2}}
+\index{project2@{project2}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{project2()}{project2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 2-\/space \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a2f2320cab5f1a896a0b8d8da0974a352}\label{classlarcfm_1_1_simple_no_polar_projection_a2f2320cab5f1a896a0b8d8da0974a352}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!projectPoint@{projectPoint}}
+\index{projectPoint@{projectPoint}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{projectPoint()}{projectPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_acc14ce0aa8de633254a497740dabd946}\label{classlarcfm_1_1_simple_no_polar_projection_acc14ce0aa8de633254a497740dabd946}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in geodetic coordinates, return a projection of this velocity in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a305f3aba8abb31852b56a7708707db72}\label{classlarcfm_1_1_simple_no_polar_projection_a305f3aba8abb31852b56a7708707db72}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Simple\+No\+Polar\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{ss,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_simple_no_polar_projection_a1f244a80b724b107b826b752aa925148}\label{classlarcfm_1_1_simple_no_polar_projection_a1f244a80b724b107b826b752aa925148}} 
+\index{larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}!toString@{toString}}
+\index{toString@{toString}!larcfm::SimpleNoPolarProjection@{larcfm::SimpleNoPolarProjection}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Simple\+No\+Polar\+Projection\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+String representation 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Simple\+No\+Polar\+Projection.\+h\item 
+Modules/\+ACCo\+RD/src/Simple\+No\+Polar\+Projection.\+cpp\end{DoxyCompactItemize}

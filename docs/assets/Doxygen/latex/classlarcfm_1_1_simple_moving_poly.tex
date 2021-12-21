@@ -1,0 +1,253 @@
+\hypertarget{classlarcfm_1_1_simple_moving_poly}{}\doxysection{larcfm\+::Simple\+Moving\+Poly Class Reference}
+\label{classlarcfm_1_1_simple_moving_poly}\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+
+
+{\ttfamily \#include $<$Simple\+Moving\+Poly.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_aae8d12e43f02454a87045efeca9fa91e}\label{classlarcfm_1_1_simple_moving_poly_aae8d12e43f02454a87045efeca9fa91e}} 
+{\bfseries Simple\+Moving\+Poly} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&start, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \&vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a303435a822c3a6cd78582069255143cb}\label{classlarcfm_1_1_simple_moving_poly_a303435a822c3a6cd78582069255143cb}} 
+{\bfseries Simple\+Moving\+Poly} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a3a9ec28516d068e1e2285f7af9388e86}{Simple\+Moving\+Poly}} (double b, double t)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a76b0bff884855404cbf4898792cc1bee}{Simple\+Moving\+Poly}} (double b, double t, const std\+::string \&units)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_ae99375ae3bb283c2886a3dba3ceb7890}{Simple\+Moving\+Poly}} (const \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a5f49b35cb73fa20f1283abb18d3eb3cf}\label{classlarcfm_1_1_simple_moving_poly_a5f49b35cb73fa20f1283abb18d3eb3cf}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries copy} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_ad2bf7dbb05c4f60186949c1a31ae9995}\label{classlarcfm_1_1_simple_moving_poly_ad2bf7dbb05c4f60186949c1a31ae9995}} 
+bool {\bfseries add\+Vertex} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_ac2523265e31ebeb489b80c0e65b36268}\label{classlarcfm_1_1_simple_moving_poly_ac2523265e31ebeb489b80c0e65b36268}} 
+void {\bfseries remove\+Vertex} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a4ab5c85441bfaa05252e6f05cedf16ad}\label{classlarcfm_1_1_simple_moving_poly_a4ab5c85441bfaa05252e6f05cedf16ad}} 
+void {\bfseries set\+Top} (double top)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a2d1ddd378073a5e69dceca423f65c886}\label{classlarcfm_1_1_simple_moving_poly_a2d1ddd378073a5e69dceca423f65c886}} 
+void {\bfseries set\+Bottom} (double bot)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a627ecef0b8f822aea75494f39d8a6842}\label{classlarcfm_1_1_simple_moving_poly_a627ecef0b8f822aea75494f39d8a6842}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a70c16074faeee3f810b165638682041a}{position}} (double dt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a3b02c58e4b3b95fec051674e05c70266}{average\+Velocity}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a53ceddec9b8dd241501cd6c5db9b604b}\label{classlarcfm_1_1_simple_moving_poly_a53ceddec9b8dd241501cd6c5db9b604b}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries linear} (double dt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a48fa02c5cc178cfa5bacecf76ce46a0f}{get\+Moving\+Polygon}} (double time, const Euclidean\+Projection \&proj)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a5e9096c9304a84cc20f1221db78b4d2e}\label{classlarcfm_1_1_simple_moving_poly_a5e9096c9304a84cc20f1221db78b4d2e}} 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} {\bfseries get\+Moving\+Polygon} (const Euclidean\+Projection \&proj)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a07bbbd1c85e57a1beb12e070fa90be90}\label{classlarcfm_1_1_simple_moving_poly_a07bbbd1c85e57a1beb12e070fa90be90}} 
+int {\bfseries size} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a98a4bb5ae7c6c7b8427b326747d368fd}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double dt) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a4780a810dc695447ddf7be993eb48e4d}\label{classlarcfm_1_1_simple_moving_poly_a4780a810dc695447ddf7be993eb48e4d}} 
+std\+::string {\bfseries to\+String} () const
+\begin{DoxyCompactList}\small\item\em $\ast$$\ast$ \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_ac3fdade50414680c517e76635e50cc73}\label{classlarcfm_1_1_simple_moving_poly_ac3fdade50414680c517e76635e50cc73}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} (int vertex, bool trkgsvs, int precision) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a34f6e64c78fd926dbd10ac851edeef50}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&p3, const Euclidean\+Projection \&proj)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly_a29c075bb9cd652b6590bbdc786d74034}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&p3)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_adf6a5abb8e6993ebf7841c06412d45e4}\label{classlarcfm_1_1_simple_moving_poly_adf6a5abb8e6993ebf7841c06412d45e4}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} {\bfseries poly}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_afaf9c89e60f47d6e83bd862d7cdd71fc}\label{classlarcfm_1_1_simple_moving_poly_afaf9c89e60f47d6e83bd862d7cdd71fc}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries vlist}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a59548ef8bc19ae44004c33f952549450}\label{classlarcfm_1_1_simple_moving_poly_a59548ef8bc19ae44004c33f952549450}} 
+bool {\bfseries morphing\+Poly}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A \char`\"{}stateful\char`\"{} version of a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} that includes velocity. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a3a9ec28516d068e1e2285f7af9388e86}\label{classlarcfm_1_1_simple_moving_poly_a3a9ec28516d068e1e2285f7af9388e86}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!SimpleMovingPoly@{SimpleMovingPoly}}
+\index{SimpleMovingPoly@{SimpleMovingPoly}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{SimpleMovingPoly()}{SimpleMovingPoly()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Moving\+Poly\+::\+Simple\+Moving\+Poly (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \\
+\hline
+{\em t} & Top altitude\\
+\hline
+\end{DoxyParams}
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \\
+\hline
+{\em t} & Top Altitude \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a76b0bff884855404cbf4898792cc1bee}\label{classlarcfm_1_1_simple_moving_poly_a76b0bff884855404cbf4898792cc1bee}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!SimpleMovingPoly@{SimpleMovingPoly}}
+\index{SimpleMovingPoly@{SimpleMovingPoly}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{SimpleMovingPoly()}{SimpleMovingPoly()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Moving\+Poly\+::\+Simple\+Moving\+Poly (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{t,  }\item[{const std\+::string \&}]{units }\end{DoxyParamCaption})}
+
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \\
+\hline
+{\em t} & Top altitude \\
+\hline
+{\em units} & units of altitude \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_ae99375ae3bb283c2886a3dba3ceb7890}\label{classlarcfm_1_1_simple_moving_poly_ae99375ae3bb283c2886a3dba3ceb7890}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!SimpleMovingPoly@{SimpleMovingPoly}}
+\index{SimpleMovingPoly@{SimpleMovingPoly}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{SimpleMovingPoly()}{SimpleMovingPoly()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Moving\+Poly\+::\+Simple\+Moving\+Poly (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \&}]{p }\end{DoxyParamCaption})}
+
+Create a deep copy of a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Source poly. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a3b02c58e4b3b95fec051674e05c70266}\label{classlarcfm_1_1_simple_moving_poly_a3b02c58e4b3b95fec051674e05c70266}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!averageVelocity@{averageVelocity}}
+\index{averageVelocity@{averageVelocity}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{averageVelocity()}{averageVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Simple\+Moving\+Poly\+::average\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the average \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (at time 0). \begin{DoxyReturn}{Returns}
+velocity
+\end{DoxyReturn}
+Return the average \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (at time 0). \mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a98a4bb5ae7c6c7b8427b326747d368fd}\label{classlarcfm_1_1_simple_moving_poly_a98a4bb5ae7c6c7b8427b326747d368fd}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!contains@{contains}}
+\index{contains@{contains}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Moving\+Poly\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{double}]{dt }\end{DoxyParamCaption}) const}
+
+Return true if point p is within the polygon at time dt from now.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+{\em dt} & time increment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if point is in polygon
+\end{DoxyReturn}
+Return true if point p is within the polygon at time dt from now. \mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a48fa02c5cc178cfa5bacecf76ce46a0f}\label{classlarcfm_1_1_simple_moving_poly_a48fa02c5cc178cfa5bacecf76ce46a0f}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!getMovingPolygon@{getMovingPolygon}}
+\index{getMovingPolygon@{getMovingPolygon}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{getMovingPolygon()}{getMovingPolygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} larcfm\+::\+Simple\+Moving\+Poly\+::get\+Moving\+Polygon (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})}
+
+This will return a moving polygon that starts at a time 
+\begin{DoxyParams}{Parameters}
+{\em time} & start time \\
+\hline
+{\em proj} & relevant projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+moving polygon
+\end{DoxyReturn}
+This will return a moving polygon that starts at point i and ends at point i+1 
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+{\em proj} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a29c075bb9cd652b6590bbdc786d74034}\label{classlarcfm_1_1_simple_moving_poly_a29c075bb9cd652b6590bbdc786d74034}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!make@{make}}
+\index{make@{make}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} larcfm\+::\+Simple\+Moving\+Poly\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&}]{p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use Euclidean coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p3} & polygon \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon
+\end{DoxyReturn}
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use Euclidean coordinates. \mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a34f6e64c78fd926dbd10ac851edeef50}\label{classlarcfm_1_1_simple_moving_poly_a34f6e64c78fd926dbd10ac851edeef50}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!make@{make}}
+\index{make@{make}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} larcfm\+::\+Simple\+Moving\+Poly\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&}]{p3,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use latlon coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p3} & polygon \\
+\hline
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon
+\end{DoxyReturn}
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use latlon coordinates. \mbox{\Hypertarget{classlarcfm_1_1_simple_moving_poly_a70c16074faeee3f810b165638682041a}\label{classlarcfm_1_1_simple_moving_poly_a70c16074faeee3f810b165638682041a}} 
+\index{larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}!position@{position}}
+\index{position@{position}!larcfm::SimpleMovingPoly@{larcfm::SimpleMovingPoly}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Moving\+Poly\+::position (\begin{DoxyParamCaption}\item[{double}]{dt }\end{DoxyParamCaption}) const}
+
+Return the polygon projected to be at time dt (dt = 0 returns a copy of the base polygon)
+
+
+\begin{DoxyParams}{Parameters}
+{\em dt} & time increment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon
+\end{DoxyReturn}
+Return the polygon projected to be at time dt (dt = 0 returns a copy of the base polygon) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Simple\+Moving\+Poly.\+h\item 
+Modules/\+ACCo\+RD/src/Simple\+Moving\+Poly.\+cpp\end{DoxyCompactItemize}

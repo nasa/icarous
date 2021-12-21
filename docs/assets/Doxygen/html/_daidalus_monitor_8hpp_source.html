@@ -121,8 +121,8 @@ $(function() {
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">bool</span> CheckSafeToTurn(<span class="keywordtype">double</span> position[],<span class="keywordtype">double</span> velocity[],<span class="keywordtype">double</span> fromHeading,<span class="keywordtype">double</span> toHeading);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">bool</span> CheckTurnConflict(<span class="keywordtype">double</span> low, <span class="keywordtype">double</span> high, <span class="keywordtype">double</span> newHeading, <span class="keywordtype">double</span> oldHeading);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    larcfm::Daidalus DAA1;   <span class="comment">// DAA1 object used for regular traffic monitor</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    larcfm::Daidalus DAA2;   <span class="comment">// DAA2 object used for stateless queries</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="classlarcfm_1_1_daidalus.html">larcfm::Daidalus</a> DAA1;   <span class="comment">// DAA1 object used for regular traffic monitor</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classlarcfm_1_1_daidalus.html">larcfm::Daidalus</a> DAA2;   <span class="comment">// DAA2 object used for stateless queries</span></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordtype">int</span> dataSource;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordtype">bool</span> sensorMapping;</div>
@@ -136,9 +136,9 @@ $(function() {
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_class" href="class_daidalus_monitor.html">DaidalusMonitor</a>(std::string <a class="code hl_struct" href="structcallsign.html">callsign</a>, std::string daaConfig);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> MonitorTraffic(larcfm::Velocity windfrom);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> MonitorTraffic(<a class="code hl_class" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> windfrom);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    std::string GetAlerter(<span class="keywordtype">object</span>&amp; intruder);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">bool</span> CheckPositionFeasibility(<span class="keyword">const</span> larcfm::Position pos,<span class="keyword">const</span> <span class="keywordtype">double</span> speed);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">bool</span> CheckPositionFeasibility(<span class="keyword">const</span> <a class="code hl_class" href="classlarcfm_1_1_position.html">larcfm::Position</a> pos,<span class="keyword">const</span> <span class="keywordtype">double</span> speed);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">void</span> UpdateParameters(std::string daaParameters);</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">int</span> GetTrafficAlerts(<span class="keywordtype">int</span> index,std::string&amp; trafficID,<span class="keywordtype">int</span>&amp; alertLevel);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    bands_t GetTrackBands(<span class="keywordtype">void</span>);</div>
@@ -151,6 +151,9 @@ $(function() {
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_daidalus_monitor_html"><div class="ttname"><a href="class_daidalus_monitor.html">DaidalusMonitor</a></div><div class="ttdef"><b>Definition:</b> DaidalusMonitor.hpp:11</div></div>
 <div class="ttc" id="aclass_traffic_monitor_html"><div class="ttname"><a href="class_traffic_monitor.html">TrafficMonitor</a></div><div class="ttdef"><b>Definition:</b> TrafficMonitor.hpp:25</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_daidalus_html"><div class="ttname"><a href="classlarcfm_1_1_daidalus.html">larcfm::Daidalus</a></div><div class="ttdef"><b>Definition:</b> Daidalus.h:94</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_position_html"><div class="ttname"><a href="classlarcfm_1_1_position.html">larcfm::Position</a></div><div class="ttdef"><b>Definition:</b> Position.h:40</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_velocity_html"><div class="ttname"><a href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a></div><div class="ttdef"><b>Definition:</b> Velocity.h:36</div></div>
 <div class="ttc" id="astructcallsign_html"><div class="ttname"><a href="structcallsign.html">callsign</a></div><div class="ttdef"><b>Definition:</b> icarous_utils.c:58</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

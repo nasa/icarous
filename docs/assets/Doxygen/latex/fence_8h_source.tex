@@ -28,7 +28,7 @@
 \DoxyCodeLine{60 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
 \DoxyCodeLine{61 \textcolor{preprocessor}{\#include "{}math.h"{}}}
 \DoxyCodeLine{62 }
-\DoxyCodeLine{63 \textcolor{keyword}{using namespace }larcfm;}
+\DoxyCodeLine{63 \textcolor{keyword}{using namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}};}
 \DoxyCodeLine{64 }
 \DoxyCodeLine{65 \textcolor{keyword}{class }fence\{}
 \DoxyCodeLine{66 }
@@ -46,37 +46,37 @@
 \DoxyCodeLine{78     \textcolor{keywordtype}{bool} conflict;}
 \DoxyCodeLine{79     \textcolor{keywordtype}{bool} projectedViolation;}
 \DoxyCodeLine{80     EuclideanProjection proj;}
-\DoxyCodeLine{81     SimplePoly geoPoly0;          \textcolor{comment}{// Original polygon in lat,lon}}
-\DoxyCodeLine{82     SimplePoly geoPoly1;          \textcolor{comment}{// Expanded/Contracted polygon in lat,lon}}
-\DoxyCodeLine{83     Poly3D geoPoly3D;             \textcolor{comment}{// 3D polygon in cartesian coordinates}}
-\DoxyCodeLine{84     CDPolycarp geoPolyCarp;}
-\DoxyCodeLine{85     PolycarpResolution geoPolyResolution;}
-\DoxyCodeLine{86     PolycarpDetection geoPolyDetect;}
-\DoxyCodeLine{87     CDIIPolygon geoCDIIPolygon;}
+\DoxyCodeLine{81     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} geoPoly0;          \textcolor{comment}{// Original polygon in lat,lon}}
+\DoxyCodeLine{82     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} geoPoly1;          \textcolor{comment}{// Expanded/Contracted polygon in lat,lon}}
+\DoxyCodeLine{83     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} geoPoly3D;             \textcolor{comment}{// 3D polygon in cartesian coordinates}}
+\DoxyCodeLine{84     \mbox{\hyperlink{classlarcfm_1_1_c_d_polycarp}{CDPolycarp}} geoPolyCarp;}
+\DoxyCodeLine{85     \mbox{\hyperlink{classlarcfm_1_1_polycarp_resolution}{PolycarpResolution}} geoPolyResolution;}
+\DoxyCodeLine{86     \mbox{\hyperlink{classlarcfm_1_1_polycarp_detection}{PolycarpDetection}} geoPolyDetect;}
+\DoxyCodeLine{87     \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}} geoCDIIPolygon;}
 \DoxyCodeLine{88     std::vector<Vect2> fenceVertices0; \textcolor{comment}{// Cartesian coordinates of vertices of geoPoly0}}
 \DoxyCodeLine{89     std::vector<Vect2> fenceVertices1; \textcolor{comment}{//Cartesian coordinates of vertices of geoPoly1}}
-\DoxyCodeLine{90     Position recoveryPoint;}
-\DoxyCodeLine{91     PolyPath geoPolyPath;}
+\DoxyCodeLine{90     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} recoveryPoint;}
+\DoxyCodeLine{91     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} geoPolyPath;}
 \DoxyCodeLine{92 }
 \DoxyCodeLine{93 \textcolor{keyword}{public}:}
 \DoxyCodeLine{94     fence()\{\};}
 \DoxyCodeLine{95     fence(\textcolor{keywordtype}{int} ID, FENCE\_TYPE ftype, uint16\_t nVert, \textcolor{keywordtype}{double} infloor, \textcolor{keywordtype}{double} inCeiling);}
 \DoxyCodeLine{96     \textcolor{keywordtype}{void} AddVertex(\textcolor{keywordtype}{int} index, \textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon,\textcolor{keywordtype}{double} ResolBUFF);}
-\DoxyCodeLine{97     \textcolor{keywordtype}{void} CheckViolation(AircraftState acState,\textcolor{keywordtype}{double} elapsedTime,Plan fp);}
-\DoxyCodeLine{98     \textcolor{keywordtype}{bool} CollisionDetection(Position pos, Vect2 v,\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} stopTime);}
-\DoxyCodeLine{99     \textcolor{keywordtype}{bool} CheckWPFeasibility(Position current, Position nextWP);}
+\DoxyCodeLine{97     \textcolor{keywordtype}{void} CheckViolation(\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}} acState,\textcolor{keywordtype}{double} elapsedTime,\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} fp);}
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} CollisionDetection(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} pos, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} v,\textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} CheckWPFeasibility(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} current, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} nextWP);}
 \DoxyCodeLine{100     int16\_t GetID();}
 \DoxyCodeLine{101     uint16\_t GetSize();}
-\DoxyCodeLine{102     Poly3D* GetPoly3D();}
-\DoxyCodeLine{103     Position GetRecoveryPoint();}
+\DoxyCodeLine{102     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}* GetPoly3D();}
+\DoxyCodeLine{103     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} GetRecoveryPoint();}
 \DoxyCodeLine{104     \textcolor{keywordtype}{bool} GetConflictStatus();}
 \DoxyCodeLine{105     \textcolor{keywordtype}{bool} GetProjectedStatus();}
 \DoxyCodeLine{106     \textcolor{keywordtype}{bool} GetViolationStatus();}
 \DoxyCodeLine{107     FENCE\_TYPE GetType();}
 \DoxyCodeLine{108     \textcolor{keywordtype}{void} GetEntryExitTime(\textcolor{keywordtype}{double}\& in, \textcolor{keywordtype}{double}\& out);}
-\DoxyCodeLine{109     SimplePoly* GetPoly();}
-\DoxyCodeLine{110     SimplePoly* GetPolyMod();}
-\DoxyCodeLine{111     PolyPath* GetPolyPath();}
+\DoxyCodeLine{109     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}* GetPoly();}
+\DoxyCodeLine{110     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}* GetPolyMod();}
+\DoxyCodeLine{111     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}* GetPolyPath();}
 \DoxyCodeLine{112     EuclideanProjection* GetProjection();}
 \DoxyCodeLine{113     \textcolor{keywordtype}{double} GetCeiling();}
 \DoxyCodeLine{114     \textcolor{keywordtype}{void} clear()\{\textcolor{keywordtype}{id} = -\/1;\};}

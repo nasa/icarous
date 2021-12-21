@@ -1,0 +1,126 @@
+\hypertarget{_intent_bands_core_8h_source}{}\doxysection{Intent\+Bands\+Core.\+h}
+\label{_intent_bands_core_8h_source}\index{Modules/ACCoRD/inc/IntentBandsCore.h@{Modules/ACCoRD/inc/IntentBandsCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Conflict Prevention Bands}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: George Hagen, Jeff Maddalon, Rick Butler, Cesar Munoz}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef INTENTBANDSCORE\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define INTENTBANDSCORE\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{87 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_intent_bands_core}{IntentBandsCore}} \{}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89  \textcolor{keyword}{private}:}
+\DoxyCodeLine{90   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} allowVariableProtectionZones;}
+\DoxyCodeLine{91  \textcolor{keyword}{public}:}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{107   \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a604c69d7844c4989bbee165d4206571a}{IntentBandsCore}}(\textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} max\_gs, \textcolor{keywordtype}{double} max\_vs);}
+\DoxyCodeLine{111   \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a604c69d7844c4989bbee165d4206571a}{IntentBandsCore}}();}
+\DoxyCodeLine{112    }
+\DoxyCodeLine{113   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core}{\string~IntentBandsCore}}() \{\};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a432d2b5c2a567b0422eeba7e55536452}{setTime}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{119   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_aa0f3cd11872b6f13e07e26bbb2cee1a2}{getTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{121   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ac14e97c5190f6a9f68e8226910ddaf3b}{getStartTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{124   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a659227dabff21681f21726287e0f1e6c}{setTimeRange}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);  }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{128   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a5515a26c822cce9679059a0d7e679338}{setDiameter}}(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{130   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a1d5c09a2e291c9c83eaef4ec936ca466}{getDiameter}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{134   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_accff453577275a6102d302e4830745d3}{setHeight}}(\textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{137   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a10c941552b77a9b93dc4afbfde4ca266}{getHeight}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{141   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_af1af5aaf144a5d3306baca63af8576d2}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{143   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a6e8e3581728d0d4ce2fa27c0c7ee84db}{getMaxGroundSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{147   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ade5fa249cf86bfc26994bbf7b8c5b272}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{151   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a9704d160abb21688cef8cd34d0ca386c}{getMaxVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{158   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_aaee532f943d34d1ee82c0294a950b919}{setTrackTolerance}}(\textcolor{keywordtype}{double} trk);}
+\DoxyCodeLine{160   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_af554318a12f1ea0aa13c62260f9e326d}{getTrackTolerance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{166   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_abe7323209862b10c9abf3b5dffbd9bd5}{setGroundSpeedTolerance}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{168   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a9df26a18449cb6502030b4d868fd61ee}{getGroundSpeedTolerance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{174   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a63819d84b1d7f47c7e57f8133af311b1}{setVerticalSpeedTolerance}}(\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{176   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a8f83b8caebc54b99ca61017260adb399}{getVerticalSpeedTolerance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{192   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a1839be891dca5a6187a756abbe2115d4}{addTraffic}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}});}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{209   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ac9137e9617553cd98c986f0e7455d53c}{addTrafficLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}});}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211   }
+\DoxyCodeLine{215   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a6e5e9535a71ea1479f4b3c7e80014ede}{clear}}();}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{222   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ab4e19a17eedb3b17b2904ef9f2525faf}{trackBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{225   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a81dd95894c45b140122ba24f309a4f81}{groundSpeedBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{228   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_abe3e4bd982afc95af3121bc332504a53}{verticalSpeedBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{235   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ade1cf2352d53c3d939090a81c74a8928}{calcTrkBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{242   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a3bc79a812b981b50125b95be2426457a}{calcTrkBandsLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{249   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_ae8e02def472d07dd6ffe4f0d95df9185}{calcGsBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{256   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a922220cfb51174c1beaa0c7ec2714698}{calcGsBandsLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{263   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a064d88386d011cde9815b3582a70793b}{calcVsBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{270   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a1e59f9d7cfb4879fe3103786f4c10df0}{calcVsBandsLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{271   }
+\DoxyCodeLine{278     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a598946c6ff68f7f65de702ed28c369b9}{clearNarrowBands}}();}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{286     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a328a844be1262c21c2adb0b13dce030d}{clearBreaks}}();}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{290   std::string \mbox{\hyperlink{classlarcfm_1_1_intent_bands_core_a834e3193d6fd6e0b66e452ee2a4ed2f5}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292  \textcolor{keyword}{private}:}
+\DoxyCodeLine{293   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} trk\_regions;}
+\DoxyCodeLine{294   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} gs\_regions;}
+\DoxyCodeLine{295   \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} vs\_regions;}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   \textcolor{keywordtype}{double} D;    }
+\DoxyCodeLine{298   \textcolor{keywordtype}{double} H;    }
+\DoxyCodeLine{299   \textcolor{keywordtype}{double} B;}
+\DoxyCodeLine{300   \textcolor{keywordtype}{double} T; }
+\DoxyCodeLine{301   \textcolor{keywordtype}{double} max\_gs;}
+\DoxyCodeLine{302   \textcolor{keywordtype}{double} max\_vs;}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304   \textcolor{keywordtype}{double} trkTol;}
+\DoxyCodeLine{305   \textcolor{keywordtype}{double} gsTol;}
+\DoxyCodeLine{306   \textcolor{keywordtype}{double} vsTol;}
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   \textcolor{keywordtype}{void} init(\textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} max\_gs, \textcolor{keywordtype}{double} max\_vs);}
+\DoxyCodeLine{309   }
+\DoxyCodeLine{310   \textcolor{keywordtype}{void} pln(std::string str) \textcolor{keyword}{const};}
+\DoxyCodeLine{311   \textcolor{keywordtype}{void} p(std::string str) \textcolor{keyword}{const};}
+\DoxyCodeLine{312   }
+\DoxyCodeLine{313 \};}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 \}}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

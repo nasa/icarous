@@ -1,0 +1,746 @@
+\hypertarget{classlarcfm_1_1_units}{}\doxysection{larcfm\+::Units Class Reference}
+\label{classlarcfm_1_1_units}\index{larcfm::Units@{larcfm::Units}}
+
+
+{\ttfamily \#include $<$Units.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{to}} (const double symbol, const double value)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_a2fbd64e79587d1a9b4391fafbd4fbdd0}{to}} (const std\+::string \&symbol, double value)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{from}} (const double symbol, const double value)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_ad5a546353d4602a3d275a4e6da4b6afe}{from}} (const std\+::string \&units, double value)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_abddcc030a23f6761997ea524fabcff87}\label{classlarcfm_1_1_units_abddcc030a23f6761997ea524fabcff87}} 
+static double {\bfseries from\+Internal} (const std\+::string \&default\+Units, const std\+::string \&units, double value)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{get\+Factor}} (const std\+::string \&unit)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_units_a9bffebe3e8c201ad3cc0c0fca1995d5e}{is\+Unit}} (const std\+::string \&unit)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_units_a068af7834d86557e874cd4f7518e186c}{is\+Compatible}} (const std\+::string \&unit1, const std\+::string \&unit2)
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}} (const std\+::string \&symbol, double value)
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_a67a9e982c26a3e258dfbe5d3c6309e4b}{strX}} (const std\+::string \&symbol, double value)
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_ac8eeec6fc5f9517e513ea00d937cee07}{str}} (const std\+::string \&symbol, double value, int precision)
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_aabca9596e3e076b7b0c365084db737ed}{clean}} (const std\+::string \&unit)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_afcdd87345c0a792e891801594d19b624}\label{classlarcfm_1_1_units_afcdd87345c0a792e891801594d19b624}} 
+static double {\bfseries parse} (const std\+::string \&default\+Units\+From, const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}}, double default\+\_\+val)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a1fcecd0dd4f518c19643fc7ee5848554}\label{classlarcfm_1_1_units_a1fcecd0dd4f518c19643fc7ee5848554}} 
+static double {\bfseries parse} (const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}})
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_units_ae2aad0eb13c89bbb39313677fe916461}{parse}} (const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}}, double default\+\_\+value)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a550a5d73d16888d937644b7a4c337150}\label{classlarcfm_1_1_units_a550a5d73d16888d937644b7a4c337150}} 
+static double {\bfseries parse} (const std\+::string \&, const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}})
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_a0c72f247b1d1d6f6f2e6b049cd717e28}{parse\+Units}} (const std\+::string \&\mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}})
+\item 
+static const std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_ae290960c0e417898135eb55463fedcfb}{canonical}} (const std\+::string \&unit)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_ac44f7395b79e3b95e8c7ee7d0d583085}{unspecified}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}unspecified\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a5677a40fe3685f3910153360bcc8c316}{unitless}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}unitless\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a98ba72fe6a52f0163a2b6bde273f5320}{internal}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}internal\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a6e686f06eb2bfea7d965c97fd0de3eef}{m}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}m\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a4b7bd37cdbd3a10dd1c0c3a4ac3913e7}{km}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}km\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a84a95dc1eea0956629edc8bfbe51e474}{nmi}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}NM\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a57fb0b42e74eff87fea62226d2c4018b}{NM}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}NM\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a1b9a806b6ba11ccde3a26a8818a9fafe}{foot}}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_afb9b2cf35749737585efea8866e955bd}{ft}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}ft\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a4f5fc17b241057f6597267de9c7fff30}{mm}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mm\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a2715c92744f171ac559cfc34666bbd68}{meter2}}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}s\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a7d07bb6429eaac570401262a185cbd88}{sec}}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_afed46c17a8280f7917b1a077f6e45bcd}{min}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}min\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a94f47b552859c673fd991fb6dc8e3fc9}{hour}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}hour\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_afda99bc5832602c5c1834138e30a5a4d}{day}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}day\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a330ef0745768d563be9b24dc6d18f6a6}{ms}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}ms\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_abc7e6a70799715191ecbc2dd8ad22d3d}{rad}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}rad\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_ae55aa2ca6f98e562382db8aa5f2f9713}{deg}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}deg\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a7bfe65c858d91f26727e324a780962b2}{degree}}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a0217219988003ff26f58d2dec08cbd58}{kg}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kg\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a34bdd330d1bd34b4e590870c4036f981}{pound\+\_\+mass}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}pound\+\_\+mass\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_adfe97ce2da288bb7c3bce665e0a1ad74}{mps}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mps\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a18488b7a281ad67526a7f80b2591620e}\label{classlarcfm_1_1_units_a18488b7a281ad67526a7f80b2591620e}} 
+static const double {\bfseries meter\+\_\+per\+\_\+second} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}meter\+\_\+per\+\_\+second\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a8677dca3d2a13170a364ad4a7fdd557a}{kph}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kph\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_af4de4047e5d523c003becc3266e3027c}\label{classlarcfm_1_1_units_af4de4047e5d523c003becc3266e3027c}} 
+static const double {\bfseries kilometer\+\_\+per\+\_\+hour} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kilometer\+\_\+per\+\_\+hour\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a6be2329a0b180a691f34b62d20985aa2}{knot}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}knot\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a1f30145e35a9d7f44d482bf7a7e2df05}\label{classlarcfm_1_1_units_a1f30145e35a9d7f44d482bf7a7e2df05}} 
+static const double {\bfseries kn} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kn\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a65251d93e976403604a665ccf68bd470}\label{classlarcfm_1_1_units_a65251d93e976403604a665ccf68bd470}} 
+static const double {\bfseries kts} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kts\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a27923cb24219022ab4bdca52a1f7ad80}{fpm}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}fpm\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_aae8d816c763dec913cc3e7fab9bede2a}{foot\+\_\+per\+\_\+second}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}foot\+\_\+per\+\_\+second\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a393dde40676366ec59fc918d1c9442eb}{nautical\+\_\+mile\+\_\+per\+\_\+second}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}nautical\+\_\+mile\+\_\+per\+\_\+second\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_ac4db6eed8db7b2d7d4ad3240c3ec88c4}{mph}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mph\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a27ac803bd4d75d4fa9e79739121fb56c}\label{classlarcfm_1_1_units_a27ac803bd4d75d4fa9e79739121fb56c}} 
+static const double {\bfseries degreeC} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}degreeC\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a39f9dac9b17cea0f46e89424e6319a2e}\label{classlarcfm_1_1_units_a39f9dac9b17cea0f46e89424e6319a2e}} 
+static const double {\bfseries degreeF} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}degreeF\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_af916110827103d76126cf570c0855a2c}\label{classlarcfm_1_1_units_af916110827103d76126cf570c0855a2c}} 
+static const double {\bfseries K} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}K\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a079effb82ac2906b47060954e6ec11df}\label{classlarcfm_1_1_units_a079effb82ac2906b47060954e6ec11df}} 
+static const double {\bfseries degreeK} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}K\char`\"{})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_a9a5bf35732c819625eac6750d61dced0}\label{classlarcfm_1_1_units_a9a5bf35732c819625eac6750d61dced0}} 
+static const double {\bfseries degreeR} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}degreeR\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}{gn}} = \mbox{\hyperlink{namespacelarcfm_a27146eb08968d5325ae8dd5add91ca40}{\+\_\+\+Formal\+ATM\+\_\+gn}}()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_units_af52a829b0f6c3afa490c42f7deec9c48}\label{classlarcfm_1_1_units_af52a829b0f6c3afa490c42f7deec9c48}} 
+static const double {\bfseries G} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}G\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a5eb002589020f5f3980b91045fc534ce}{meter\+\_\+per\+\_\+second2}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}meter\+\_\+per\+\_\+second2\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a068ba7724efde14295ee9e02d06dc6b5}{newton}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}newton\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_ab5b3683e4f221e2a17b6e82cb4661c3a}{pascal}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}pascal\char`\"{})
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a2891ee74aa30eb65f1f8e3d0b6f76090}{Pa}}
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a7e9fe90b66bfbe5652f316a89c4d22a8}{P0}} = \mbox{\hyperlink{namespacelarcfm_a67c39386e2f7683028d288f13aa1a1de}{\+\_\+\+Formal\+ATM\+\_\+\+P0}}()
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_units_a31f1bd36f28a58d2e8a4724cf3fc4509}{atm}} = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}atm\char`\"{})
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_units_a815c8cadf6b82128b62c65b412c84698}{clean\+Only}} (const std\+::string \&unit)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class defines the conversion factors for various units. Base units are defined for the seven base dimensions\+: length, mass, time, electric current, thermodynamic temperature, amount of substance, and luminous intensity. Together these seven units form a coherent set of units. If all quantities in a program are defined in terms of these seven coherent units, then no unit conversions are required within the program. Unit conversions are only needed when specifying and outputting quantities. This class is designed to facilitate that type of use. 
+
+For example, note there are no unit conversions in the equations\+: 
+
+
+\begin{DoxyPre}
+double one\_mile = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}("{}mi"{}, 1.0);
+double one\_km = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}("{}km"{}, 1.0);
+double time = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}("{}hour"{}, 1.0);
+
+double distance = one\_mile + one\_km;
+double speed = distance / time;
+
+System.out.println("{}The distance should be 2.6 in kilometers and is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}km"{}, distance)); 
+System.out.println("{}The distance should be 1.6 in miles and is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}mi"{}, distance)); 
+System.out.println("{}The distance should be 8560 in feet and is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}ft"{}, distance)); 
+System.out.println("{}The speed should be 1.6 in miles/hour and is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}mph"{}, speed)); 
+System.out.println("{}The speed should be 0.72 in m/s and is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}m/s"{}, speed)); 
+\end{DoxyPre}
+
+
+
+\begin{DoxyItemize}
+\item One important consideration when using the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class is that the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class performs {\bfseries{NO}} consistency checks. The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class trusts that the user will use units with a consistent dimension. This was a deliberate design decision because of the performance penalty associated with checking consistency. An example of this inconsistency is\+: 
+\end{DoxyItemize}
+
+
+\begin{DoxyPre}
+double one\_mile = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}("{}mile"{}, 1.0);
+System.out.println("{}One mile in liters is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}liter"{}, one\_mile));
+\end{DoxyPre}
+
+
+Obviously this makes no sense, but the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class will not flag this as an error; be careful. 
+
+One can determine if two units are compatible by using the \mbox{\hyperlink{classlarcfm_1_1_units_a068af7834d86557e874cd4f7518e186c}{is\+Compatible}} method. \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} are considered compatible if they have the same dimensionality. For instance, the unit \char`\"{}meter\char`\"{} is compatible with the unit \char`\"{}foot\char`\"{} since they are both units of distance. 
+
+
+\begin{DoxyPre}
+if (!isCompatible("{}m"{}, "{}L"{})) \{
+    System.out.println("{}'m' and 'L' are not compatible units!"{});
+\}
+if (isCompatible("{}ft"{}, "{}m"{})) \{
+    System.out.println("{}'ft' and 'm' are compatible units!"{});
+\}
+\end{DoxyPre}
+
+
+
+\begin{DoxyItemize}
+\item One can always correctly convert between compatible units. To get the list of units compatible with a given unit use the \mbox{\hyperlink{}{get\+Compatible\+Units}} method. 
+\end{DoxyItemize}
+
+The user can also create their own composite units with the \mbox{\hyperlink{}{add\+Unit(\+String, double, String)}} method. For example a {\itshape fathom} unit could be defined as\+: 
+
+{\ttfamily Units.\+add\+Unit(\char`\"{}fathom\char`\"{}, 6.\+0, \char`\"{}foot\char`\"{}); }
+
+This method means, define the unit called \char`\"{}fathom\char`\"{}, where one fathom is equal to 6.\+0 feet. This method also states that the new \char`\"{}fathom\char`\"{} unit is compatible with the unit of \char`\"{}foot.\char`\"{} 
+
+To create a new composite unit that has no compatible units, use the \mbox{\hyperlink{}{add\+Unit(\+String, double)}} method. For example a {\itshape linear density} unit could be defined as\+: 
+
+{\ttfamily Units.\+add\+Unit(\char`\"{}kg/m\char`\"{}, \mbox{\hyperlink{classlarcfm_1_1_units_a0217219988003ff26f58d2dec08cbd58}{Units.\+kg}} / Units.\+meter);}
+
+\doxysubsubsection*{Special \mbox{\hyperlink{classlarcfm_1_1_units}{Units}}\+:}
+
+
+\begin{DoxyItemize}
+\item unitless -\/ a name to represent that the quantity has no units. Ratios and percentages are typical examples of unitless quantities.
+
+
+\item unspecified -\/ a name to represent that the units of the quantity that are unknown. The real distinction between a {\itshape unitless} quantity and an {\itshape unspecified} quantity is the notion of units compatibility. Unitless is not compatible with any other unit, and unspecified is is compatible with all units.  
+\end{DoxyItemize}
+
+\doxysubsubsection*{Usage Notes\+:}
+
+
+\begin{DoxyItemize}
+\item 
+
+An alternate way to use the units class is to use constant factors instead of string representations. For example\+: 
+
+
+
+
+\begin{DoxyPre}
+double one\_mile = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}(Units.mile, 1.0);
+double one\_km = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}(Units.kilometer, 1.0);
+double time = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.from}}(\mbox{\hyperlink{classlarcfm_1_1_units_a94f47b552859c673fd991fb6dc8e3fc9}{Units.hour}}, 1.0);
+\end{DoxyPre}
+
+
+
+
+The advantage of this approach is that it is slightly more efficient since a lookup of the string value does not need to be performed. Since this operation only occurs when values are input, it is questionable how much time is really saved.
+
+
+
+
+\item 
+
+The above examples (using either strings or factors) are the preferred use of the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class; however, this notation can become cumbersome--especially when specifying values inside code. An alternate use of the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class is to multiply by the conversion factor when specifying constants. For example\+: 
+
+
+
+
+\begin{DoxyPre}
+double one\_mile = 1.0 * Units.mile;
+System.out.println("{}One mile in kilometers is "{} + \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{Units.to}}("{}km"{}, one\_mile));
+\end{DoxyPre}
+
+
+
+
+The "{}to"{} and "{}from"{} methods are preferred, because some conversions are not simply multiplying a factor, but involve an offset also. Those that involve an offset (currently only degreeC and degreeF), must use the \char`\"{}to\char`\"{} and \char`\"{}from\char`\"{} methods. Forms such as {\ttfamily double temp = 32.\+0 $\ast$ degreeF;} are {\itshape always} wrong.
+
+
+
+
+\item The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class does not define a \char`\"{}pound\char`\"{}. The problem is that in most official standards documents, a pound is a unit of mass; however, in most science and engineering texts, a pound is a unit of force. We avoid the problem by not defining a pound at all, and instead defining a pound\+\_\+mass (lbm) and a pound\+\_\+force (lbf). 
+
+
+\item There are many more units defined as strings in the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class than the number defined as class fields in the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class. To get a complete list of all units defined as a strings call the \mbox{\hyperlink{}{get\+All\+Units()}} method. 
+
+
+\item 
+
+The internal unit for angles is always radians. The SI convention is followed by calling this a dimensionless derived unit, defined as m / m. 
+
+
+
+
+
+Since angles are always represented in radians, a user of the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class does not need to perform unit conversions to get radians for trigonometric functions. Expressions like 
+
+{\ttfamily a = Math.\+cos(\mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.\+from}}(\char`\"{}radian\char`\"{}, pi\+\_\+over\+\_\+2));} 
+
+are not necessary, but are still valid. Expressions that use degrees still need units specified, for example\+: 
+
+{\ttfamily double right\+\_\+angle = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units.\+from}}(\char`\"{}degree\char`\"{}, 90.\+0);}~\newline
+ {\ttfamily a = Math.\+cos(right\+\_\+angle);} 
+
+
+\item The units for thermodynamic temperature are degreeC, degreeF, K, and degreeR, representing Celsius, Farenheit, Kelvin, and Rankin. 
+
+
+\item SI defines the unit of frequency as the reciprocal second and gives this quantity the name {\itshape hertz} and the symbol {\itshape Hz}. The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class defines these quantities as \char`\"{}hertz\char`\"{} and \char`\"{}\+Hz\char`\"{}. Some disciplines use the term {\itshape frequency} to indicate an angular velocity. Specifically, the notion in dynamic systems of {\itshape natural frequency}, often abbreviated with the Greek symbol lower-\/case omega (\&\#969;), is actually an angular velocity. In the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class, the appropriate symbol for angular velocity is \char`\"{}radian\+\_\+per\+\_\+second\char`\"{} or \char`\"{}degree\+\_\+per\+\_\+second\char`\"{}. However, since quantities like {\itshape natural frequency} have frequency in their name, they are often, incorrectly, expressed in \char`\"{}hertz.\char`\"{} To accomodate this type of usage, the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class defines a unit \char`\"{}hertz\+Angular\char`\"{}. \char`\"{}hertz\char`\"{} and \char`\"{}hertz\+Angular\char`\"{} are {\bfseries{NOT}} compatible with each other, the first is a frequency and the second is an angular velocity. 
+
+
+\item Both joules and newton-\/meters are defined. These units are so similar that they could be considered the same. They are kept separate because joules are used to represent energy and newton-\/meters are used to represent torque. Energy is a scalar quantity and torque is a vector. It is rare that they are interchanged. The US Customary unit for energy is the foot-\/pound (ft-\/lbf), and the unit for torque is the pound-\/foot (lbf-\/ft). This last name is our invention. 
+
+
+\item Both names {\itshape metre} and {\itshape meter} and {\itshape litre} and {\itshape liter} are defined. Each pair is identical. In the approved English language version of the SI standard, only the terms \char`\"{}metre\char`\"{} and \char`\"{}litre\char`\"{} are defined. However, in the US version of this document, prepared by the National Institute of Standards and Technology (Special Pub. 330) using current US government policy, the only defined terms are \char`\"{}meter\char`\"{} and \char`\"{}liter.\char`\"{} The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class defines both; however, the reader will observe a bias in the documentation in favor of the US terms. 
+\end{DoxyItemize}
+
+\doxysubsubsection*{Special \mbox{\hyperlink{classlarcfm_1_1_constants}{Constants}}\+:}
+
+
+\begin{DoxyItemize}
+\item 
+
+The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class defines {\itshape gn} as the adopted physical constant of gravity. It is given (out of place) in the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class, due to the fact that the definition of the fundamental US customary unit of mass (slug) depends on this quantity. 
+
+
+
+
+
+This quantity, \mbox{\hyperlink{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}{Units.\+gn}}, is defined in IEEE/\+ASTM SI 10-\/1997 as (exactly) 9.\+80665 m/s$^\wedge$2 \mbox{[}page 25\mbox{]}. The 1962 U.\+S. Standard Atmosphere \mbox{[}page 4\mbox{]} calls this quantity \char`\"{}standard sea-\/level gravity\char`\"{} and describes it as the acceleration due to the combined effects of gravity and the Earth\textquotesingle{}s rotation (i.\+e. the centrifugal relief) at geodetic latitude 45 degrees. This constant was adopted in the US in 1935. 
+
+
+
+
+
+The latitude of 45 degrees was chosen because this is the standard latitude chosen by the World Meteorological Organization to calibrate barometers. As a note, this value is the solution to Lambert\textquotesingle{}s equation (sea-\/level gravity as a function of latitude), when the latitude is 45 degrees 32 minutes and 33 seconds.
+
+
+
+
+\item The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class defines \mbox{\hyperlink{classlarcfm_1_1_units_a7e9fe90b66bfbe5652f316a89c4d22a8}{Units.\+P0}} as the adopted physical constant of standard atmosphere. This quantity equals 101325 Pa. This definition is added to the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class because the definition of an atmosphere unit (\char`\"{}atm\char`\"{}) depends on it. This definition comes from NIST Special Publication 330, the International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI), 1991 edition, p15. 
+\end{DoxyItemize}
+
+\doxysubsubsection*{Implementation Notes\+:}
+
+
+\begin{DoxyItemize}
+\item The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class uses the SI system (with base units\+: meter \mbox{[}distance\mbox{]}, kilogram \mbox{[}mass\mbox{]}, second \mbox{[}time interval\mbox{]}, ampere \mbox{[}electric current\mbox{]}, kelvin \mbox{[}thermodynamic temperature\mbox{]}, mole \mbox{[}amount of substance\mbox{]}, and candela \mbox{[}luminous intensity\mbox{]}) as a coherent set of base units (internal units). 
+
+
+
+Please remember the user of the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class should never {\itshape need} to know how the variables are stored internally. The user need only remember to specifically state the units on input and output and any conversions will occur automatically. 
+
+
+\item The purpose of this class is geared to modeling large engineered systems such as airplanes. As such, many units useful in other disciplines are not defined (such as the \char`\"{}carat\char`\"{} or a \char`\"{}bushel\char`\"{}). However, they may be defined in future versions of this class. 
+
+
+
+Please note that since the complete set of seven base units are defined, any other units needed may be defined by the user with the \mbox{\hyperlink{}{add\+Unit()}} method.
+
+
+\item Much care was used in defining each of these conversion factors. The full precision from appropriate standards documents was used. However, some units are defined as the arithmetic relationship between \textquotesingle{}more fundamental\textquotesingle{} quantities. In these cases, the conversion factors are limited to the resolution of double precision operations. For most engineering purposes (see the point above) this is more than good enough; however, someone working with very precise quantities (\texorpdfstring{$>$}{>} 12 significant digits), should be aware of the possibility of differences.
+
+
+\item The names of many of the conversion factors violate standard naming conventions for class variables. This was deemed acceptable since these names follow the standard capitalization conventions from SI or other standards bodies. 
+
+
+\item The \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class is not {\itshape immutable}. However modification of this class is limited. Specifically, there is no mechanism to {\itshape delete} a unit from the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class, nor is there any ability to {\itshape change} a conversion factor of a unit. These restrictions allow the user to be confident that once a unit is in the \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} class, its definition will never change. The unit {\bfseries{A}} will always be an ampere, it will never become an angstrom.
+
+
+\end{DoxyItemize}
+
+\doxysubsubsection*{References\+:}
+
+
+\begin{DoxyItemize}
+\item National Institute of Standards and Technology (NIST) Special Publication 330, 1991 Edition, The International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI).
+
+
+\item National Institute of Standards and Technology (NIST) Special Publication 811, 1995 Edition, Guide for the Use of the International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI).
+
+
+\item IEEE Standards Coordinating Committee 14 on Quantities, \mbox{\hyperlink{classlarcfm_1_1_units}{Units}}, and Letter Symbols, IEEE/\+ASTM SI 10-\/1997, Standard for Use of the International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI)\+: The Modern Metric System.
+
+
+\item 1962 Standard Atmosphere.
+
+
+\item Bureau International des Poids et Mesures, The International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI), 7th edition, 1998.
+
+
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_units_ae290960c0e417898135eb55463fedcfb}\label{classlarcfm_1_1_units_ae290960c0e417898135eb55463fedcfb}} 
+\index{larcfm::Units@{larcfm::Units}!canonical@{canonical}}
+\index{canonical@{canonical}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{canonical()}{canonical()}}
+{\footnotesize\ttfamily const std\+::string Units\+::canonical (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the canonical name for this unit. For instance, \char`\"{}meter\char`\"{} will return \char`\"{}m\char`\"{} and \char`\"{}m\char`\"{} will return \char`\"{}m\char`\"{}. \mbox{\Hypertarget{classlarcfm_1_1_units_aabca9596e3e076b7b0c365084db737ed}\label{classlarcfm_1_1_units_aabca9596e3e076b7b0c365084db737ed}} 
+\index{larcfm::Units@{larcfm::Units}!clean@{clean}}
+\index{clean@{clean}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{clean()}{clean()}}
+{\footnotesize\ttfamily std\+::string Units\+::clean (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Clean up the unit string that may contain brackets or extra space. For instance, \char`\"{} \mbox{[} feet\mbox{]}\char`\"{} becomes \char`\"{}feet\char`\"{}. If the string in brackets is not a recognized, then \char`\"{}unspecified\char`\"{} is returned. 
+\begin{DoxyParams}{Parameters}
+{\em unit} & a \char`\"{}dirty\char`\"{} string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a cleaned-\/up unit string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_units_a815c8cadf6b82128b62c65b412c84698}\label{classlarcfm_1_1_units_a815c8cadf6b82128b62c65b412c84698}} 
+\index{larcfm::Units@{larcfm::Units}!cleanOnly@{cleanOnly}}
+\index{cleanOnly@{cleanOnly}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{cleanOnly()}{cleanOnly()}}
+{\footnotesize\ttfamily std\+::string Units\+::clean\+Only (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Clean up the unit string that may contain brackets or extra space. For instance, \char`\"{} \mbox{[} feet\mbox{]}\char`\"{} becomes \char`\"{}feet\char`\"{}. However, if the unit is \char`\"{}\mbox{[}  fred\mbox{]}\char`\"{} then \char`\"{}fred\char`\"{} will be returned (unlike the \mbox{\hyperlink{classlarcfm_1_1_units_aabca9596e3e076b7b0c365084db737ed}{clean()}} method). \mbox{\Hypertarget{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}\label{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}} 
+\index{larcfm::Units@{larcfm::Units}!from@{from}}
+\index{from@{from}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double Units\+::from (\begin{DoxyParamCaption}\item[{const double}]{symbol,  }\item[{const double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the value from the given units into internal units \mbox{\Hypertarget{classlarcfm_1_1_units_ad5a546353d4602a3d275a4e6da4b6afe}\label{classlarcfm_1_1_units_ad5a546353d4602a3d275a4e6da4b6afe}} 
+\index{larcfm::Units@{larcfm::Units}!from@{from}}
+\index{from@{from}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{from()}{from()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double Units\+::from (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{units,  }\item[{double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the value from the given units into internal units \mbox{\Hypertarget{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}\label{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}} 
+\index{larcfm::Units@{larcfm::Units}!getFactor@{getFactor}}
+\index{getFactor@{getFactor}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{getFactor()}{getFactor()}}
+{\footnotesize\ttfamily double Units\+::get\+Factor (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Get the unit conversion factor for the given string unit \mbox{\Hypertarget{classlarcfm_1_1_units_a068af7834d86557e874cd4f7518e186c}\label{classlarcfm_1_1_units_a068af7834d86557e874cd4f7518e186c}} 
+\index{larcfm::Units@{larcfm::Units}!isCompatible@{isCompatible}}
+\index{isCompatible@{isCompatible}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{isCompatible()}{isCompatible()}}
+{\footnotesize\ttfamily bool Units\+::is\+Compatible (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit1,  }\item[{const std\+::string \&}]{unit2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if these two units are compatible with one another. That is, if they have the same dimensionality (for instance, both are units of distance) then true is returned. Note, the unit \char`\"{}unspecified\char`\"{} is compatible with all units, including \char`\"{}unitless\char`\"{} which is not compatible with any other units. \mbox{\Hypertarget{classlarcfm_1_1_units_a9bffebe3e8c201ad3cc0c0fca1995d5e}\label{classlarcfm_1_1_units_a9bffebe3e8c201ad3cc0c0fca1995d5e}} 
+\index{larcfm::Units@{larcfm::Units}!isUnit@{isUnit}}
+\index{isUnit@{isUnit}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{isUnit()}{isUnit()}}
+{\footnotesize\ttfamily bool Units\+::is\+Unit (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determine if the given string is a valid unit 
+\begin{DoxyParams}{Parameters}
+{\em unit} & string representation of a unit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if this string is known as a unit in the database of units 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_units_ae2aad0eb13c89bbb39313677fe916461}\label{classlarcfm_1_1_units_ae2aad0eb13c89bbb39313677fe916461}} 
+\index{larcfm::Units@{larcfm::Units}!parse@{parse}}
+\index{parse@{parse}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Units\+::parse (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str,  }\item[{double}]{default\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Parse a string, including an optional units identifier, as a double value. If the string does not contain a (valid) unit, then the value is interpreted as an \char`\"{}unspecified\char`\"{} unit. This version does not parse numbers in exponential notation, e.\+g., \char`\"{}10e-\/4\char`\"{}. (Java does) 
+\begin{DoxyParams}{Parameters}
+{\em str} & string to parse \\
+\hline
+{\em default\+\_\+value} & if the string is not recognized as a valid value, the result to be returned \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_units_a0c72f247b1d1d6f6f2e6b049cd717e28}\label{classlarcfm_1_1_units_a0c72f247b1d1d6f6f2e6b049cd717e28}} 
+\index{larcfm::Units@{larcfm::Units}!parseUnits@{parseUnits}}
+\index{parseUnits@{parseUnits}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{parseUnits()}{parseUnits()}}
+{\footnotesize\ttfamily std\+::string Units\+::parse\+Units (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Parse a string, representing a value and a unit. If the string does not contain a unit, then the unit \char`\"{}unspecified\char`\"{} is returned. This version does not parse numbers in exponential notation, e.\+g., \char`\"{}10e-\/4\char`\"{}. (Java does) 
+\begin{DoxyParams}{Parameters}
+{\em s} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unit string; 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}\label{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}} 
+\index{larcfm::Units@{larcfm::Units}!str@{str}}
+\index{str@{str}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string Units\+::str (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{symbol,  }\item[{double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make a string representation of the value in internal units to the given units \mbox{\Hypertarget{classlarcfm_1_1_units_ac8eeec6fc5f9517e513ea00d937cee07}\label{classlarcfm_1_1_units_ac8eeec6fc5f9517e513ea00d937cee07}} 
+\index{larcfm::Units@{larcfm::Units}!str@{str}}
+\index{str@{str}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{str()}{str()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string Units\+::str (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{symbol,  }\item[{double}]{value,  }\item[{int}]{precision }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make a string representation of the value in internal units to the given units \mbox{\Hypertarget{classlarcfm_1_1_units_a67a9e982c26a3e258dfbe5d3c6309e4b}\label{classlarcfm_1_1_units_a67a9e982c26a3e258dfbe5d3c6309e4b}} 
+\index{larcfm::Units@{larcfm::Units}!strX@{strX}}
+\index{strX@{strX}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{strX()}{strX()}}
+{\footnotesize\ttfamily std\+::string Units\+::strX (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{symbol,  }\item[{double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make a string representation of the value in internal units to the given units. \mbox{\Hypertarget{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}\label{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}} 
+\index{larcfm::Units@{larcfm::Units}!to@{to}}
+\index{to@{to}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{to()}{to()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double Units\+::to (\begin{DoxyParamCaption}\item[{const double}]{symbol,  }\item[{const double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the value in internal units to the given units \mbox{\Hypertarget{classlarcfm_1_1_units_a2fbd64e79587d1a9b4391fafbd4fbdd0}\label{classlarcfm_1_1_units_a2fbd64e79587d1a9b4391fafbd4fbdd0}} 
+\index{larcfm::Units@{larcfm::Units}!to@{to}}
+\index{to@{to}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{to()}{to()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double Units\+::to (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{symbol,  }\item[{double}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the value in internal units to the given units 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_units_a31f1bd36f28a58d2e8a4724cf3fc4509}\label{classlarcfm_1_1_units_a31f1bd36f28a58d2e8a4724cf3fc4509}} 
+\index{larcfm::Units@{larcfm::Units}!atm@{atm}}
+\index{atm@{atm}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{atm}{atm}}
+{\footnotesize\ttfamily const double Units\+::atm = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}atm\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+atmosphere, a unit of pressure, defined as one P0 \mbox{\Hypertarget{classlarcfm_1_1_units_afda99bc5832602c5c1834138e30a5a4d}\label{classlarcfm_1_1_units_afda99bc5832602c5c1834138e30a5a4d}} 
+\index{larcfm::Units@{larcfm::Units}!day@{day}}
+\index{day@{day}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{day}{day}}
+{\footnotesize\ttfamily const double Units\+::day = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}day\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+days \mbox{\Hypertarget{classlarcfm_1_1_units_ae55aa2ca6f98e562382db8aa5f2f9713}\label{classlarcfm_1_1_units_ae55aa2ca6f98e562382db8aa5f2f9713}} 
+\index{larcfm::Units@{larcfm::Units}!deg@{deg}}
+\index{deg@{deg}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{deg}{deg}}
+{\footnotesize\ttfamily const double Units\+::deg = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}deg\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+degrees \mbox{\Hypertarget{classlarcfm_1_1_units_a7bfe65c858d91f26727e324a780962b2}\label{classlarcfm_1_1_units_a7bfe65c858d91f26727e324a780962b2}} 
+\index{larcfm::Units@{larcfm::Units}!degree@{degree}}
+\index{degree@{degree}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{degree}{degree}}
+{\footnotesize\ttfamily const double larcfm\+::\+Units\+::degree\hspace{0.3cm}{\ttfamily [static]}}
+
+degrees \mbox{\Hypertarget{classlarcfm_1_1_units_a1b9a806b6ba11ccde3a26a8818a9fafe}\label{classlarcfm_1_1_units_a1b9a806b6ba11ccde3a26a8818a9fafe}} 
+\index{larcfm::Units@{larcfm::Units}!foot@{foot}}
+\index{foot@{foot}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{foot}{foot}}
+{\footnotesize\ttfamily const double larcfm\+::\+Units\+::foot\hspace{0.3cm}{\ttfamily [static]}}
+
+foot \mbox{\Hypertarget{classlarcfm_1_1_units_aae8d816c763dec913cc3e7fab9bede2a}\label{classlarcfm_1_1_units_aae8d816c763dec913cc3e7fab9bede2a}} 
+\index{larcfm::Units@{larcfm::Units}!foot\_per\_second@{foot\_per\_second}}
+\index{foot\_per\_second@{foot\_per\_second}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{foot\_per\_second}{foot\_per\_second}}
+{\footnotesize\ttfamily const double Units\+::foot\+\_\+per\+\_\+second = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}foot\+\_\+per\+\_\+second\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+feet per second \mbox{\Hypertarget{classlarcfm_1_1_units_a27923cb24219022ab4bdca52a1f7ad80}\label{classlarcfm_1_1_units_a27923cb24219022ab4bdca52a1f7ad80}} 
+\index{larcfm::Units@{larcfm::Units}!fpm@{fpm}}
+\index{fpm@{fpm}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{fpm}{fpm}}
+{\footnotesize\ttfamily const double Units\+::fpm = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}fpm\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+feet per minute \mbox{\Hypertarget{classlarcfm_1_1_units_afb9b2cf35749737585efea8866e955bd}\label{classlarcfm_1_1_units_afb9b2cf35749737585efea8866e955bd}} 
+\index{larcfm::Units@{larcfm::Units}!ft@{ft}}
+\index{ft@{ft}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{ft}{ft}}
+{\footnotesize\ttfamily const double Units\+::ft = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}ft\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+foot \mbox{\Hypertarget{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}\label{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}} 
+\index{larcfm::Units@{larcfm::Units}!gn@{gn}}
+\index{gn@{gn}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{gn}{gn}}
+{\footnotesize\ttfamily const double Units\+::gn = \mbox{\hyperlink{namespacelarcfm_a27146eb08968d5325ae8dd5add91ca40}{\+\_\+\+Formal\+ATM\+\_\+gn}}()\hspace{0.3cm}{\ttfamily [static]}}
+
+gn is the adopted physical constant of gravity. It is given (out of place) here, due to the fact that the definition of the fundamental US customary units of mass (slug and pound-\/mass) depend on this quantity. 
+
+This quantity, \mbox{\hyperlink{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}{Units.\+gn}}, is defined in IEEE/\+ASTM SI 10-\/1997 as (exactly) 9.\+80665 m/s$^\wedge$2 \mbox{[}page 25\mbox{]}. The 1962 U.\+S. Standard Atmosphere \mbox{[}page 4\mbox{]} calls this quantity \char`\"{}standard sea-\/level gravity\char`\"{} and describes it as the acceleration due to the combined effects of gravity and the Earth\textquotesingle{}s rotation (i.\+e. the centrifugal relief) at geodetic latitude 45 degrees. This constant was adopted long before 1962. 
+
+This definition is also in NIST Special Publication 330, the International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI), 1991 edition, p17. \mbox{\Hypertarget{classlarcfm_1_1_units_a94f47b552859c673fd991fb6dc8e3fc9}\label{classlarcfm_1_1_units_a94f47b552859c673fd991fb6dc8e3fc9}} 
+\index{larcfm::Units@{larcfm::Units}!hour@{hour}}
+\index{hour@{hour}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{hour}{hour}}
+{\footnotesize\ttfamily const double Units\+::hour = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}hour\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+hours \mbox{\Hypertarget{classlarcfm_1_1_units_a98ba72fe6a52f0163a2b6bde273f5320}\label{classlarcfm_1_1_units_a98ba72fe6a52f0163a2b6bde273f5320}} 
+\index{larcfm::Units@{larcfm::Units}!internal@{internal}}
+\index{internal@{internal}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{internal}{internal}}
+{\footnotesize\ttfamily const double Units\+::internal = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}internal\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+Use the internal representation for this quantity \mbox{\Hypertarget{classlarcfm_1_1_units_a0217219988003ff26f58d2dec08cbd58}\label{classlarcfm_1_1_units_a0217219988003ff26f58d2dec08cbd58}} 
+\index{larcfm::Units@{larcfm::Units}!kg@{kg}}
+\index{kg@{kg}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{kg}{kg}}
+{\footnotesize\ttfamily const double Units\+::kg = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kg\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+kilograms \mbox{\Hypertarget{classlarcfm_1_1_units_a4b7bd37cdbd3a10dd1c0c3a4ac3913e7}\label{classlarcfm_1_1_units_a4b7bd37cdbd3a10dd1c0c3a4ac3913e7}} 
+\index{larcfm::Units@{larcfm::Units}!km@{km}}
+\index{km@{km}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{km}{km}}
+{\footnotesize\ttfamily const double Units\+::km = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}km\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+kilometer \mbox{\Hypertarget{classlarcfm_1_1_units_a6be2329a0b180a691f34b62d20985aa2}\label{classlarcfm_1_1_units_a6be2329a0b180a691f34b62d20985aa2}} 
+\index{larcfm::Units@{larcfm::Units}!knot@{knot}}
+\index{knot@{knot}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{knot}{knot}}
+{\footnotesize\ttfamily const double Units\+::knot = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}knot\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+knots, (nautical miles per hour) \mbox{\Hypertarget{classlarcfm_1_1_units_a8677dca3d2a13170a364ad4a7fdd557a}\label{classlarcfm_1_1_units_a8677dca3d2a13170a364ad4a7fdd557a}} 
+\index{larcfm::Units@{larcfm::Units}!kph@{kph}}
+\index{kph@{kph}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{kph}{kph}}
+{\footnotesize\ttfamily const double Units\+::kph = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}kph\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+kilometers per hour \mbox{\Hypertarget{classlarcfm_1_1_units_a6e686f06eb2bfea7d965c97fd0de3eef}\label{classlarcfm_1_1_units_a6e686f06eb2bfea7d965c97fd0de3eef}} 
+\index{larcfm::Units@{larcfm::Units}!m@{m}}
+\index{m@{m}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{m}{m}}
+{\footnotesize\ttfamily const double Units\+::m = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}m\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+meter \mbox{\Hypertarget{classlarcfm_1_1_units_a2715c92744f171ac559cfc34666bbd68}\label{classlarcfm_1_1_units_a2715c92744f171ac559cfc34666bbd68}} 
+\index{larcfm::Units@{larcfm::Units}!meter2@{meter2}}
+\index{meter2@{meter2}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{meter2}{meter2}}
+{\footnotesize\ttfamily const double larcfm\+::\+Units\+::meter2\hspace{0.3cm}{\ttfamily [static]}}
+
+meter squared, a unit of area \mbox{\Hypertarget{classlarcfm_1_1_units_a5eb002589020f5f3980b91045fc534ce}\label{classlarcfm_1_1_units_a5eb002589020f5f3980b91045fc534ce}} 
+\index{larcfm::Units@{larcfm::Units}!meter\_per\_second2@{meter\_per\_second2}}
+\index{meter\_per\_second2@{meter\_per\_second2}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{meter\_per\_second2}{meter\_per\_second2}}
+{\footnotesize\ttfamily const double Units\+::meter\+\_\+per\+\_\+second2 = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}meter\+\_\+per\+\_\+second2\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+meters per second$^\wedge$2 \mbox{\Hypertarget{classlarcfm_1_1_units_afed46c17a8280f7917b1a077f6e45bcd}\label{classlarcfm_1_1_units_afed46c17a8280f7917b1a077f6e45bcd}} 
+\index{larcfm::Units@{larcfm::Units}!min@{min}}
+\index{min@{min}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{min}{min}}
+{\footnotesize\ttfamily const double Units\+::min = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}min\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+minutes \mbox{\Hypertarget{classlarcfm_1_1_units_a4f5fc17b241057f6597267de9c7fff30}\label{classlarcfm_1_1_units_a4f5fc17b241057f6597267de9c7fff30}} 
+\index{larcfm::Units@{larcfm::Units}!mm@{mm}}
+\index{mm@{mm}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{mm}{mm}}
+{\footnotesize\ttfamily const double Units\+::mm = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mm\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+millimeter \mbox{\Hypertarget{classlarcfm_1_1_units_ac4db6eed8db7b2d7d4ad3240c3ec88c4}\label{classlarcfm_1_1_units_ac4db6eed8db7b2d7d4ad3240c3ec88c4}} 
+\index{larcfm::Units@{larcfm::Units}!mph@{mph}}
+\index{mph@{mph}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{mph}{mph}}
+{\footnotesize\ttfamily const double Units\+::mph = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mph\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+mile per hour \mbox{\Hypertarget{classlarcfm_1_1_units_adfe97ce2da288bb7c3bce665e0a1ad74}\label{classlarcfm_1_1_units_adfe97ce2da288bb7c3bce665e0a1ad74}} 
+\index{larcfm::Units@{larcfm::Units}!mps@{mps}}
+\index{mps@{mps}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{mps}{mps}}
+{\footnotesize\ttfamily const double Units\+::mps = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}mps\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+Meters per second \mbox{\Hypertarget{classlarcfm_1_1_units_a330ef0745768d563be9b24dc6d18f6a6}\label{classlarcfm_1_1_units_a330ef0745768d563be9b24dc6d18f6a6}} 
+\index{larcfm::Units@{larcfm::Units}!ms@{ms}}
+\index{ms@{ms}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{ms}{ms}}
+{\footnotesize\ttfamily const double Units\+::ms = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}ms\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+milliseconds \mbox{\Hypertarget{classlarcfm_1_1_units_a393dde40676366ec59fc918d1c9442eb}\label{classlarcfm_1_1_units_a393dde40676366ec59fc918d1c9442eb}} 
+\index{larcfm::Units@{larcfm::Units}!nautical\_mile\_per\_second@{nautical\_mile\_per\_second}}
+\index{nautical\_mile\_per\_second@{nautical\_mile\_per\_second}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{nautical\_mile\_per\_second}{nautical\_mile\_per\_second}}
+{\footnotesize\ttfamily const double Units\+::nautical\+\_\+mile\+\_\+per\+\_\+second = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}nautical\+\_\+mile\+\_\+per\+\_\+second\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+nautical mile per second \mbox{\Hypertarget{classlarcfm_1_1_units_a068ba7724efde14295ee9e02d06dc6b5}\label{classlarcfm_1_1_units_a068ba7724efde14295ee9e02d06dc6b5}} 
+\index{larcfm::Units@{larcfm::Units}!newton@{newton}}
+\index{newton@{newton}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{newton}{newton}}
+{\footnotesize\ttfamily const double Units\+::newton = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}newton\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+unit of force \mbox{\Hypertarget{classlarcfm_1_1_units_a57fb0b42e74eff87fea62226d2c4018b}\label{classlarcfm_1_1_units_a57fb0b42e74eff87fea62226d2c4018b}} 
+\index{larcfm::Units@{larcfm::Units}!NM@{NM}}
+\index{NM@{NM}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{NM}{NM}}
+{\footnotesize\ttfamily const double Units\+::\+NM = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}NM\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+nautical mile \mbox{\Hypertarget{classlarcfm_1_1_units_a84a95dc1eea0956629edc8bfbe51e474}\label{classlarcfm_1_1_units_a84a95dc1eea0956629edc8bfbe51e474}} 
+\index{larcfm::Units@{larcfm::Units}!nmi@{nmi}}
+\index{nmi@{nmi}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{nmi}{nmi}}
+{\footnotesize\ttfamily const double Units\+::nmi = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}NM\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+nautical mile \mbox{\Hypertarget{classlarcfm_1_1_units_a7e9fe90b66bfbe5652f316a89c4d22a8}\label{classlarcfm_1_1_units_a7e9fe90b66bfbe5652f316a89c4d22a8}} 
+\index{larcfm::Units@{larcfm::Units}!P0@{P0}}
+\index{P0@{P0}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{P0}{P0}}
+{\footnotesize\ttfamily const double Units\+::\+P0 = \mbox{\hyperlink{namespacelarcfm_a67c39386e2f7683028d288f13aa1a1de}{\+\_\+\+Formal\+ATM\+\_\+\+P0}}()\hspace{0.3cm}{\ttfamily [static]}}
+
+P0, the adopted standard atmosphere. This quanity equals 101325 Pa. This definition comes from NIST Special Publication 330, the International System of \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} (SI), 1991 edition, p15. \mbox{\Hypertarget{classlarcfm_1_1_units_a2891ee74aa30eb65f1f8e3d0b6f76090}\label{classlarcfm_1_1_units_a2891ee74aa30eb65f1f8e3d0b6f76090}} 
+\index{larcfm::Units@{larcfm::Units}!Pa@{Pa}}
+\index{Pa@{Pa}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{Pa}{Pa}}
+{\footnotesize\ttfamily const double larcfm\+::\+Units\+::\+Pa\hspace{0.3cm}{\ttfamily [static]}}
+
+pascal, unit of pressure, defined as a newton per meter squared \mbox{\Hypertarget{classlarcfm_1_1_units_ab5b3683e4f221e2a17b6e82cb4661c3a}\label{classlarcfm_1_1_units_ab5b3683e4f221e2a17b6e82cb4661c3a}} 
+\index{larcfm::Units@{larcfm::Units}!pascal@{pascal}}
+\index{pascal@{pascal}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{pascal}{pascal}}
+{\footnotesize\ttfamily const double Units\+::pascal = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}pascal\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+pascal, a unit of pressure \mbox{\Hypertarget{classlarcfm_1_1_units_a34bdd330d1bd34b4e590870c4036f981}\label{classlarcfm_1_1_units_a34bdd330d1bd34b4e590870c4036f981}} 
+\index{larcfm::Units@{larcfm::Units}!pound\_mass@{pound\_mass}}
+\index{pound\_mass@{pound\_mass}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{pound\_mass}{pound\_mass}}
+{\footnotesize\ttfamily const double Units\+::pound\+\_\+mass = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}pound\+\_\+mass\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+pounds of mass \mbox{\Hypertarget{classlarcfm_1_1_units_abc7e6a70799715191ecbc2dd8ad22d3d}\label{classlarcfm_1_1_units_abc7e6a70799715191ecbc2dd8ad22d3d}} 
+\index{larcfm::Units@{larcfm::Units}!rad@{rad}}
+\index{rad@{rad}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{rad}{rad}}
+{\footnotesize\ttfamily const double Units\+::rad = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}rad\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+radians \mbox{\Hypertarget{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}\label{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}} 
+\index{larcfm::Units@{larcfm::Units}!s@{s}}
+\index{s@{s}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{s}{s}}
+{\footnotesize\ttfamily const double Units\+::s = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}s\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+seconds \mbox{\Hypertarget{classlarcfm_1_1_units_a7d07bb6429eaac570401262a185cbd88}\label{classlarcfm_1_1_units_a7d07bb6429eaac570401262a185cbd88}} 
+\index{larcfm::Units@{larcfm::Units}!sec@{sec}}
+\index{sec@{sec}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{sec}{sec}}
+{\footnotesize\ttfamily const double larcfm\+::\+Units\+::sec\hspace{0.3cm}{\ttfamily [static]}}
+
+seconds \mbox{\Hypertarget{classlarcfm_1_1_units_a5677a40fe3685f3910153360bcc8c316}\label{classlarcfm_1_1_units_a5677a40fe3685f3910153360bcc8c316}} 
+\index{larcfm::Units@{larcfm::Units}!unitless@{unitless}}
+\index{unitless@{unitless}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{unitless}{unitless}}
+{\footnotesize\ttfamily const double Units\+::unitless = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}unitless\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+Quantity without units \mbox{\Hypertarget{classlarcfm_1_1_units_ac44f7395b79e3b95e8c7ee7d0d583085}\label{classlarcfm_1_1_units_ac44f7395b79e3b95e8c7ee7d0d583085}} 
+\index{larcfm::Units@{larcfm::Units}!unspecified@{unspecified}}
+\index{unspecified@{unspecified}!larcfm::Units@{larcfm::Units}}
+\doxysubsubsection{\texorpdfstring{unspecified}{unspecified}}
+{\footnotesize\ttfamily const double Units\+::unspecified = \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{Units\+::get\+Factor}}(\char`\"{}unspecified\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_units}{Units}} were not specified 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Units.\+h\item 
+Modules/\+ACCo\+RD/src/Units.\+cpp\end{DoxyCompactItemize}

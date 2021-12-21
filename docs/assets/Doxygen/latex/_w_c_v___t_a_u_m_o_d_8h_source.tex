@@ -1,0 +1,70 @@
+\hypertarget{_w_c_v___t_a_u_m_o_d_8h_source}{}\doxysection{WCV\+\_\+\+TAUMOD.\+h}
+\label{_w_c_v___t_a_u_m_o_d_8h_source}\index{Modules/ACCoRD/inc/WCV\_TAUMOD.h@{Modules/ACCoRD/inc/WCV\_TAUMOD.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef WCV\_TAUMOD\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define WCV\_TAUMOD\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}WCVTable.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}WCV\_tvar.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{public}:}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_adcabcc2b59552a1e8cf2b69f3f8bb7e4}{WCV\_TAUMOD}}();}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{26   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_adcabcc2b59552a1e8cf2b69f3f8bb7e4}{WCV\_TAUMOD}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tab);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{\string~WCV\_TAUMOD}}() \{\};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_a2a01db7c984b08a617a664d2bd59f60e}{A\_WCV\_TAUMOD}}();}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{39   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_a0e659e387be85056eef6e24ed8b1c86e}{DO\_365\_Phase\_I\_preventive}}();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{45   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_aa597c497bca1d8d20746bb1611239477}{DO\_365\_DWC\_Phase\_I}}();}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_a3fc68106873c9ec0b280981e1c590442}{DO\_365\_DWC\_Phase\_II}}();}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{57   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_a7ecea7716467282fdfff2b2316498387}{DO\_365\_DWC\_Non\_Coop}}();}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{63   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_af56887d29efb4d7d220790e732daeb9f}{Buffered\_Phase\_I\_preventive}}();}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{69   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_afc4aa29f27be013229ee8f3203d69138}{Buffered\_DWC\_Phase\_I}}();}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} horizontal\_tvar(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} horizontal\_WCV\_interval(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d_adc21a416703b417911d9c7707d55accf}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} TAU\_center(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& po, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} TTHR, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keyword}{static} \textcolor{keywordtype}{double} TAU\_radius(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} DTHR, \textcolor{keywordtype}{double} TTHR);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} hazard\_zone\_far\_end(std::vector<Position>\& haz,}
+\DoxyCodeLine{91       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& po, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& pu, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

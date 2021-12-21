@@ -1,0 +1,347 @@
+\hypertarget{classlarcfm_1_1_c_r3_d}{}\doxysection{larcfm\+::CR3D Class Reference}
+\label{classlarcfm_1_1_c_r3_d}\index{larcfm::CR3D@{larcfm::CR3D}}
+
+
+{\ttfamily \#include $<$CR3\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a0b3f94ea413b7160b01326290020593f}{CR3D}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a8f71ceb4212f2faccaeb15ffaf021648}{cr}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const double D, const double H, int epsh, int epsv)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a711d2e4d3faa1958167cc2147957d708}{losr\+\_\+repulsive}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double NMAC\+\_\+D, double NMAC\+\_\+H, double min\+Horiz\+Exit\+Speed\+LoS, double min\+Vert\+Exit\+Speed\+LoS, double min\+Gs, double max\+Gs, double max\+Vs, int epsh, int epsv)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a14ebdfb26a0d4d1f43febd1b38ab0826}{cr3d}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const double D, const double H, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a5d2de0ff4b48248de5d512bee6331524}{cr3d\+\_\+repulsive}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const double D, const double H, const double min\+Horiz\+Exit\+Speed\+LoS, double min\+Vert\+Exit\+Speed\+LoS, const double min\+Gs, const double max\+Gs, double max\+Vs, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a7cb10f5b48a6b5605c8f0497e8544159}\label{classlarcfm_1_1_c_r3_d_a7cb10f5b48a6b5605c8f0497e8544159}} 
+int {\bfseries cr3d\+\_\+repulsive\+\_\+los} (\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vi, double NMAC\+\_\+D, double NMAC\+\_\+H, double min\+Horiz\+Exit\+Speed\+LoS, double min\+Vert\+Exit\+Speed\+LoS, double min\+Gs, double max\+Gs, double max\+Vs, int epsh, int epsv)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a279e6fe2088ec674779f4db3ad590d14}{losr\+\_\+trk\+\_\+iter}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, double minrelgs, double maxtrk, double step, int epsh)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a6a6ff0c0c73db586f2fabf13733882ba}{losr\+\_\+gs\+\_\+iter}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, double minrelgs, double mings, double maxgs, double step, int epsh)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a841a4a66b50aa97507bd3e7dbcc231d0}{losr\+\_\+vs\+\_\+new}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double minrelvs, double maxvs, double caD, double caH, int epsv)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a0a86feb068f1d10fd6734ccd1efb2668}{trk}}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_ae62b2ec79112641d40db0eb5fb7d11e6}{gs}}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_aa2e25fe579b49e9c859ef47f656c63d4}{opt}}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_adb4dfa7a0748c92c934ce91bc1b34689}{vs}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a05f80bcfa7cad5471101e7d7e1998ec0}\label{classlarcfm_1_1_c_r3_d_a05f80bcfa7cad5471101e7d7e1998ec0}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries incr\+\_\+vect} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&nvo, double step, int dir)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_c_r3_d}{CR3D}} is an algorithm for 3-\/D conflict {\itshape resolution} that provides avoidance maneuvers for the ownship
+
+Unit Convention~\newline
+
+
+All units in this file are {\itshape internal}\+: 
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of distance are denoted \mbox{[}d\mbox{]} 
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of time are denoted \mbox{[}t\mbox{]} 
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of speed are denoted \mbox{[}d/t\mbox{]} 
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of turn are radians \mbox{[}rad\mbox{]} 
+\end{DoxyItemize}
+
+REMARK\+: X points to East, Y points to North. Angles are in True North/clockwise convention.
+
+Naming Convention~\newline
+ The intruder is supposed to be fixed at the origin of the coordinate system. 
+\begin{DoxyItemize}
+\item D \+: Diameter of the protected zone \mbox{[}d\mbox{]} 
+\item H \+: Height of the protected zone \mbox{[}d\mbox{]} 
+\item s \+: Relative position of the ownship \mbox{[}d,d,d\mbox{]} 
+\item vo \+: Ownship velocity vector \mbox{[}d/t,d/t,d/t\mbox{]} 
+\item vi \+: Intruder velocity vector \mbox{[}d/t,d/t,d/t\mbox{]} 
+\end{DoxyItemize}
+
+Output class variables~\newline
+ 
+\begin{DoxyItemize}
+\item trk \mbox{[}d/t,d/t\mbox{]} (track resolution) 
+\item gs \mbox{[}d/t,d/t\mbox{]} (ground speed resolution) 
+\item opt \mbox{[}d/t,d/t\mbox{]} (optimal horizontal resolution) 
+\item vs \mbox{[}d/t\mbox{]} (vertical speed resolution) 
+\end{DoxyItemize}
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a0b3f94ea413b7160b01326290020593f}\label{classlarcfm_1_1_c_r3_d_a0b3f94ea413b7160b01326290020593f}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!CR3D@{CR3D}}
+\index{CR3D@{CR3D}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{CR3D()}{CR3D()}}
+{\footnotesize\ttfamily larcfm\+::\+CR3\+D\+::\+CR3D (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Instantiates a new \mbox{\hyperlink{classlarcfm_1_1_c_r3_d}{CR3D}} object. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a8f71ceb4212f2faccaeb15ffaf021648}\label{classlarcfm_1_1_c_r3_d_a8f71ceb4212f2faccaeb15ffaf021648}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!cr@{cr}}
+\index{cr@{cr}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{cr()}{cr()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CR3\+D\+::cr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{H,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})}
+
+Conflict resolution algorithm
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position of the aircraft \\
+\hline
+{\em vo} & the ownship\textquotesingle{}s velocity \\
+\hline
+{\em vi} & the intruder\textquotesingle{}s velocity \\
+\hline
+{\em D} & the minimum horizontal distance \\
+\hline
+{\em H} & the minimum vertical distance\\
+\hline
+\end{DoxyParams}
+If trk is not zero, trk satisfies $\vert$$\vert$ trk $\vert$$\vert$ = $\vert$$\vert$ vo $\vert$$\vert$, and trk is a coordinated track only resolution for the ownship.
+
+If gs is not zero, gs satisfies exists l \texorpdfstring{$>$}{>} 0 such that l$\ast$gs = vo, and gs is a coordinated ground speed only resolution for the ownship.
+
+If opt is not zero, opt is a coordinated optimal horizontal resolution for the ownship.
+
+vs is defined ==\texorpdfstring{$>$}{>} vs is a coordinated vertical only resolution for the ownship.
+
+\begin{DoxyReturn}{Returns}
+true, if at least one resolution was found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a14ebdfb26a0d4d1f43febd1b38ab0826}\label{classlarcfm_1_1_c_r3_d_a14ebdfb26a0d4d1f43febd1b38ab0826}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!cr3d@{cr3d}}
+\index{cr3d@{cr3d}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{cr3d()}{cr3d()}}
+{\footnotesize\ttfamily int larcfm\+::\+CR3\+D\+::cr3d (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{H,  }\item[{std\+::string}]{ownship,  }\item[{std\+::string}]{traffic }\end{DoxyParamCaption})}
+
+Conflict resolution algorithm including loss of separation recovery maneuvers
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position of the aircraft \\
+\hline
+{\em vo} & the ownship\textquotesingle{}s velocity \\
+\hline
+{\em vi} & the intruder\textquotesingle{}s velocity \\
+\hline
+{\em D} & the minimum horizontal distance \\
+\hline
+{\em H} & the minimum vertical distance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the type of resolution maneuver\+: -\/1 \+: None available 0 \+: Conflict resolution 1 \+: Loss of separation resolution 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a5d2de0ff4b48248de5d512bee6331524}\label{classlarcfm_1_1_c_r3_d_a5d2de0ff4b48248de5d512bee6331524}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!cr3d\_repulsive@{cr3d\_repulsive}}
+\index{cr3d\_repulsive@{cr3d\_repulsive}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{cr3d\_repulsive()}{cr3d\_repulsive()}}
+{\footnotesize\ttfamily int larcfm\+::\+CR3\+D\+::cr3d\+\_\+repulsive (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{H,  }\item[{const double}]{min\+Horiz\+Exit\+Speed\+LoS,  }\item[{double}]{min\+Vert\+Exit\+Speed\+LoS,  }\item[{const double}]{min\+Gs,  }\item[{const double}]{max\+Gs,  }\item[{double}]{max\+Vs,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})}
+
+Conflict resolution algorithm including loss of separation recovery maneuvers
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position of the aircraft \\
+\hline
+{\em vo} & the ownship\textquotesingle{}s velocity \\
+\hline
+{\em vi} & the intruder\textquotesingle{}s velocity \\
+\hline
+{\em D} & the minimum horizontal distance \\
+\hline
+{\em H} & the minimum vertical distance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the type of resolution maneuver\+:  Lo\+SDivg (3)-- Loss of separation resolution  Lo\+SConv (2) -- Loss of separation resolution  None (-\/1)-- No resolution available  Conflict (1) -- Conflict resolution  Unnecessary (0) -- Conflict resolution is not needed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a6a6ff0c0c73db586f2fabf13733882ba}\label{classlarcfm_1_1_c_r3_d_a6a6ff0c0c73db586f2fabf13733882ba}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!losr\_gs\_iter@{losr\_gs\_iter}}
+\index{losr\_gs\_iter@{losr\_gs\_iter}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{losr\_gs\_iter()}{losr\_gs\_iter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} larcfm\+::\+CR3\+D\+::losr\+\_\+gs\+\_\+iter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{double}]{minrelgs,  }\item[{double}]{min\+\_\+gs,  }\item[{double}]{max\+\_\+gs,  }\item[{double}]{step,  }\item[{int}]{epsh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Iteratively compute an ABSOLUTE ground speed-\/only loss of separation recovery maneuver for the ownship 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em minrelgs} & minimum relative ground speed \\
+\hline
+{\em mings} & minimum ground speed \\
+\hline
+{\em maxgs} & maximum ground speed \\
+\hline
+{\em step} & ground speed step (postive) \\
+\hline
+{\em epsh} & horizontal epsilon \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a711d2e4d3faa1958167cc2147957d708}\label{classlarcfm_1_1_c_r3_d_a711d2e4d3faa1958167cc2147957d708}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!losr\_repulsive@{losr\_repulsive}}
+\index{losr\_repulsive@{losr\_repulsive}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{losr\_repulsive()}{losr\_repulsive()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CR3\+D\+::losr\+\_\+repulsive (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{NMAC\+\_\+D,  }\item[{double}]{NMAC\+\_\+H,  }\item[{double}]{min\+Horiz\+Exit\+Speed\+LoS,  }\item[{double}]{min\+Vert\+Exit\+Speed\+LoS,  }\item[{double}]{min\+Gs,  }\item[{double}]{max\+Gs,  }\item[{double}]{max\+Vs,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})}
+
+Loss of separation recovery algorithm
+
+If trk is not zero, trk satisfies $\vert$$\vert$ trk $\vert$$\vert$ = $\vert$$\vert$ vo $\vert$$\vert$, and trk is a coordinated track only LoS recovery maneuver for the ownship.
+
+If gs is not zero, gs satisfies exists l \texorpdfstring{$>$}{>} 0 such that l$\ast$gs = vo, and gs is a coordinated ground speed only LoS recovery maneuver for the ownship.
+
+No optimal solution
+
+vs is defined ==\texorpdfstring{$>$}{>} vs is a coordinated vertical only LoS recovery maneuver for the ownship.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position of the aircraft \\
+\hline
+{\em vo} & the ownship\textquotesingle{}s velocity \\
+\hline
+{\em vi} & the intruder\textquotesingle{}s velocity \\
+\hline
+{\em H} & the minimum vertical distance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if at least one recovery maneuver was found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a279e6fe2088ec674779f4db3ad590d14}\label{classlarcfm_1_1_c_r3_d_a279e6fe2088ec674779f4db3ad590d14}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!losr\_trk\_iter@{losr\_trk\_iter}}
+\index{losr\_trk\_iter@{losr\_trk\_iter}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{losr\_trk\_iter()}{losr\_trk\_iter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} larcfm\+::\+CR3\+D\+::losr\+\_\+trk\+\_\+iter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{double}]{minrelgs,  }\item[{double}]{maxtrk,  }\item[{double}]{step,  }\item[{int}]{epsh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Iteratively compute an ABSOLUTE track-\/only loss of separation recovery maneuver for the ownship 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em minrelgs} & minimum relative ground speed \\
+\hline
+{\em maxtrk} & maximum track \mbox{[}rad\mbox{]} \\
+\hline
+{\em step} & track step \mbox{[}rad\mbox{]} (positive) \\
+\hline
+{\em epsh} & horizontal epsilon\\
+\hline
+\end{DoxyParams}
+Iteratively compute an ABSOLUTE track-\/only loss of separation recover maneuver for the ownship 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em minrelgs} & minimum relative ground speed \\
+\hline
+{\em maxtrk} & maximum track \mbox{[}rad\mbox{]} \\
+\hline
+{\em step} & step \mbox{[}rad\mbox{]} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a841a4a66b50aa97507bd3e7dbcc231d0}\label{classlarcfm_1_1_c_r3_d_a841a4a66b50aa97507bd3e7dbcc231d0}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!losr\_vs\_new@{losr\_vs\_new}}
+\index{losr\_vs\_new@{losr\_vs\_new}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{losr\_vs\_new()}{losr\_vs\_new()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} larcfm\+::\+CR3\+D\+::losr\+\_\+vs\+\_\+new (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{minrelvs,  }\item[{double}]{maxvs,  }\item[{double}]{caD,  }\item[{double}]{caH,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute an ABSOLUTE vertical-\/only loss of separation recovery maneuver for the ownship 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em H} & height of protected zone, e.\+g., 1000ft \\
+\hline
+{\em minrelvs} & minimum relative vertical speed \\
+\hline
+{\em maxvs} & maximum absolute vertical speed \\
+\hline
+{\em caD} & diameter of collision avoidance area, e.\+g., 1000 ft \\
+\hline
+{\em caH} & height of collision avoidance area, e.\+g., 200ft \\
+\hline
+{\em epsv} & The epsilon for vertical maneuvers (+1 or -\/1)\\
+\hline
+\end{DoxyParams}
+Compute an ABSOLUTE vertical-\/only loss of separation recovery maneuver for the ownship 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em H} & height of protected zone, e.\+g., 1000ft \\
+\hline
+{\em minrelv} & minimum relative vertical speed \\
+\hline
+{\em caD} & diameter of collision avoidance area, e.\+g., 1000 ft \\
+\hline
+{\em caH} & height of collision avoidance area, e.\+g., 200ft \\
+\hline
+{\em minrelvs} & minimum relative vertical speed \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_ae62b2ec79112641d40db0eb5fb7d11e6}\label{classlarcfm_1_1_c_r3_d_ae62b2ec79112641d40db0eb5fb7d11e6}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!gs@{gs}}
+\index{gs@{gs}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{gs}{gs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} larcfm\+::\+CR3\+D\+::gs}
+
+Ground speed only resolution \mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_aa2e25fe579b49e9c859ef47f656c63d4}\label{classlarcfm_1_1_c_r3_d_aa2e25fe579b49e9c859ef47f656c63d4}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!opt@{opt}}
+\index{opt@{opt}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{opt}{opt}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} larcfm\+::\+CR3\+D\+::opt}
+
+Optimal track/ground speed resolution \mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_a0a86feb068f1d10fd6734ccd1efb2668}\label{classlarcfm_1_1_c_r3_d_a0a86feb068f1d10fd6734ccd1efb2668}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!trk@{trk}}
+\index{trk@{trk}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{trk}{trk}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} larcfm\+::\+CR3\+D\+::trk}
+
+Track only resolution \mbox{\Hypertarget{classlarcfm_1_1_c_r3_d_adb4dfa7a0748c92c934ce91bc1b34689}\label{classlarcfm_1_1_c_r3_d_adb4dfa7a0748c92c934ce91bc1b34689}} 
+\index{larcfm::CR3D@{larcfm::CR3D}!vs@{vs}}
+\index{vs@{vs}!larcfm::CR3D@{larcfm::CR3D}}
+\doxysubsubsection{\texorpdfstring{vs}{vs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} larcfm\+::\+CR3\+D\+::vs}
+
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed resolution 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CR3\+D.\+h\item 
+Modules/\+ACCo\+RD/src/CR3\+D.\+cpp\end{DoxyCompactItemize}

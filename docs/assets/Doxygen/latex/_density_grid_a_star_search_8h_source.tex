@@ -1,0 +1,202 @@
+\hypertarget{_density_grid_a_star_search_8h_source}{}\doxysection{Density\+Grid\+AStar\+Search.\+h}
+\label{_density_grid_a_star_search_8h_source}\index{Modules/ACCoRD/inc/DensityGridAStarSearch.h@{Modules/ACCoRD/inc/DensityGridAStarSearch.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DENSITYGRIDASTARSEARCH\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DENSITYGRIDASTARSEARCH\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}DensityGrid.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}DensityGridSearch.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}DensityGridTimed.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}DensityGridTimedSearch.h"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search}{DensityGridAStarSearch}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_density_grid_search}{DensityGridSearch}}, \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed_search}{DensityGridTimedSearch}} \{}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keywordtype}{double} dirWeight; \textcolor{comment}{//0.5}}
+\DoxyCodeLine{32     \textcolor{keyword}{static} \textcolor{keywordtype}{double} distWeight; \textcolor{comment}{//1.0}}
+\DoxyCodeLine{33     \textcolor{keyword}{static} \textcolor{keywordtype}{double} predDistWeight; \textcolor{comment}{//2.0}}
+\DoxyCodeLine{34     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} fourway;}
+\DoxyCodeLine{35     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} oldHeuristics;}
+\DoxyCodeLine{36     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} gridDistances;}
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} diagonalCost;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search}{DensityGridAStarSearch}}();}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}} \{}
+\DoxyCodeLine{43     \textcolor{keyword}{public}:}
+\DoxyCodeLine{44         \textcolor{keywordtype}{int} x;}
+\DoxyCodeLine{45         \textcolor{keywordtype}{int} y;}
+\DoxyCodeLine{46         \textcolor{keywordtype}{double} t;}
+\DoxyCodeLine{47         \textcolor{keywordtype}{double} actualCost;}
+\DoxyCodeLine{48         \textcolor{keywordtype}{double} predictedCost;}
+\DoxyCodeLine{49         std::vector<std::pair<int,int> > path;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51         \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}}(std::pair<int,int> xy, \textcolor{keywordtype}{double} cc, \textcolor{keywordtype}{double} pc) \{}
+\DoxyCodeLine{52             t = 0;}
+\DoxyCodeLine{53             x = xy.first;}
+\DoxyCodeLine{54             y = xy.second;}
+\DoxyCodeLine{55             actualCost = cc;}
+\DoxyCodeLine{56             predictedCost = pc;}
+\DoxyCodeLine{57             path = std::vector<std::pair<int,int> >();}
+\DoxyCodeLine{58             path.push\_back(xy);}
+\DoxyCodeLine{59         \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61         \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}}(std::pair<int,int> xy, \textcolor{keywordtype}{double} ac, \textcolor{keywordtype}{double} pc, \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}} f) \{}
+\DoxyCodeLine{62             x = xy.first;}
+\DoxyCodeLine{63             y = xy.second;}
+\DoxyCodeLine{64             actualCost = f.actualCost + ac;}
+\DoxyCodeLine{65             predictedCost = pc;}
+\DoxyCodeLine{66             path = std::vector<std::pair<int,int> >();}
+\DoxyCodeLine{67             path.insert( path.end(), f.path.begin(), f.path.end() );}
+\DoxyCodeLine{68             path.push\_back(xy);}
+\DoxyCodeLine{69         \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71         \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}}(\textcolor{keywordtype}{double} t\_d, std::pair<int,int> xy, \textcolor{keywordtype}{double} ac, \textcolor{keywordtype}{double} pc) \{}
+\DoxyCodeLine{72             x = xy.first;}
+\DoxyCodeLine{73             y = xy.second;}
+\DoxyCodeLine{74             t = t\_d;}
+\DoxyCodeLine{75             actualCost = ac;}
+\DoxyCodeLine{76             predictedCost = pc;}
+\DoxyCodeLine{77             path = std::vector<std::pair<int,int> >();}
+\DoxyCodeLine{78             path.push\_back(xy);}
+\DoxyCodeLine{79         \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81         \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}}(\textcolor{keywordtype}{double} t\_d, std::pair<int,int> xy, \textcolor{keywordtype}{double} ac, \textcolor{keywordtype}{double} pc, \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}} f) \{}
+\DoxyCodeLine{82             x = xy.first;}
+\DoxyCodeLine{83             y = xy.second;}
+\DoxyCodeLine{84             t = t\_d;}
+\DoxyCodeLine{85             actualCost = f.actualCost + ac;}
+\DoxyCodeLine{86             predictedCost = pc;}
+\DoxyCodeLine{87             path = std::vector<std::pair<int,int> >();}
+\DoxyCodeLine{88             path.insert( path.end(), f.path.begin(), f.path.end() );}
+\DoxyCodeLine{89             path.push\_back(xy);}
+\DoxyCodeLine{90         \}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92         std::pair<int,int> getCell()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{93             \textcolor{keywordflow}{return} std::pair<int,int>(x, y);}
+\DoxyCodeLine{94         \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96         \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}} getCell3()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{97             \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}}(x, y, (\textcolor{keywordtype}{int})t);}
+\DoxyCodeLine{98         \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100         \textcolor{keywordtype}{double} getActualCost()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{101             \textcolor{keywordflow}{return} actualCost;}
+\DoxyCodeLine{102         \}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104         \textcolor{keywordtype}{double} getPredictedCost()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{105             \textcolor{keywordflow}{return} predictedCost;}
+\DoxyCodeLine{106         \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108         \textcolor{keywordtype}{double} getTotalCost()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{109             \textcolor{keywordflow}{return} actualCost+predictedCost;}
+\DoxyCodeLine{110         \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112         std::vector<std::pair<int,int> > getPath()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{113 \textcolor{comment}{//fpln("{}DensiyGridAstarSearch getpath:"{}+Fobj(path));}}
+\DoxyCodeLine{114             \textcolor{keywordflow}{return} path;}
+\DoxyCodeLine{115         \}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117         std::string toString()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{118             \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}("{}}+\mbox{\hyperlink{namespacelarcfm_a6e8a2a7741c7bc0d39e64e4f67e7b4b3}{Fm0}}(x)+\textcolor{stringliteral}{"{},"{}}+\mbox{\hyperlink{namespacelarcfm_a6e8a2a7741c7bc0d39e64e4f67e7b4b3}{Fm0}}(y)+\textcolor{stringliteral}{"{},"{}}+\mbox{\hyperlink{namespacelarcfm_a33a6c2304aeedc0139b43aac9057121d}{Fm4}}(t)+\textcolor{stringliteral}{"{}) = "{}}+\mbox{\hyperlink{namespacelarcfm_a07510fd7ca3c837f603ef4deeb0943a1}{Fm6}}(actualCost)+\textcolor{stringliteral}{"{}+"{}}+\mbox{\hyperlink{namespacelarcfm_a07510fd7ca3c837f603ef4deeb0943a1}{Fm6}}(predictedCost);}
+\DoxyCodeLine{119         \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121         \textcolor{keywordtype}{bool} operator < (\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{FringeEntry}}\& f2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{122 \textcolor{keyword}{        }\{}
+\DoxyCodeLine{123             \textcolor{keywordflow}{return} (getTotalCost() < f2.getTotalCost());}
+\DoxyCodeLine{124         \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     \};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{keyword}{private}:}
+\DoxyCodeLine{130     \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} std::vector<std::pair<int,int> >\& gPath, \textcolor{keyword}{const} std::pair<int,int>\& pii) \textcolor{keyword}{const};}
+\DoxyCodeLine{131     \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} std::vector<\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}} >\& gPath, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}}\& pii) \textcolor{keyword}{const};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keyword}{public}:}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135     \textcolor{keyword}{static} \textcolor{keywordtype}{double} getDirectionWeight() \{}
+\DoxyCodeLine{136         \textcolor{keywordflow}{return} dirWeight;}
+\DoxyCodeLine{137     \}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setDirectionWeight(\textcolor{keywordtype}{double} dw) \{}
+\DoxyCodeLine{140         dirWeight = dw;}
+\DoxyCodeLine{141     \}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     \textcolor{keyword}{static} \textcolor{keywordtype}{double} getDistanceWeight() \{}
+\DoxyCodeLine{144         \textcolor{keywordflow}{return} distWeight;}
+\DoxyCodeLine{145     \}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setDistanceWeight(\textcolor{keywordtype}{double} dw) \{}
+\DoxyCodeLine{148         distWeight = dw;}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} isFourway() \{}
+\DoxyCodeLine{152         \textcolor{keywordflow}{return} fourway;}
+\DoxyCodeLine{153     \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setFourway(\textcolor{keywordtype}{bool} fw) \{}
+\DoxyCodeLine{156         fourway = fw;}
+\DoxyCodeLine{157     \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} isOldHeuristics() \{}
+\DoxyCodeLine{160         \textcolor{keywordflow}{return} oldHeuristics;}
+\DoxyCodeLine{161     \}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setOldHeuristics(\textcolor{keywordtype}{bool} oh) \{}
+\DoxyCodeLine{164         oldHeuristics = oh;}
+\DoxyCodeLine{165     \}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     \textcolor{keyword}{static} \textcolor{keywordtype}{double} getPredictedDistanceWeight() \{}
+\DoxyCodeLine{168         \textcolor{keywordflow}{return} predDistWeight;}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setPredictedDistanceWeight(\textcolor{keywordtype}{double} pdw) \{}
+\DoxyCodeLine{172         predDistWeight = pdw;}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{comment}{//  bool sameDirection(FringeEntry c, std::pair<int,int> cell2) const;}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178     \textcolor{keywordtype}{double} directionCost(FringeEntry c, \textcolor{keywordtype}{int} x2, \textcolor{keywordtype}{int} y2, \textcolor{keywordtype}{double} directionWeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \textcolor{keywordtype}{double} predictedDistanceCost(std::pair<int,int> cell2, \textcolor{keywordtype}{int} endx, \textcolor{keywordtype}{int} endy, \textcolor{keywordtype}{double} distanceWeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182     std::vector<std::pair<int,int> > astar(DensityGrid\& dg, \textcolor{keywordtype}{int} endx, \textcolor{keywordtype}{int} endy, std::vector<FringeEntry>\& fringe, std::vector<std::pair<int,int> >\& searched, \textcolor{keywordtype}{bool} fourway, \textcolor{keywordtype}{double} directionWeight, \textcolor{keywordtype}{double} distanceWeight, \textcolor{keywordtype}{double} predictedDistanceWeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184     std::vector<std::pair<int,int> > astarT(DensityGridTimed\& dg, \textcolor{keywordtype}{int} endx, \textcolor{keywordtype}{int} endy, \textcolor{keywordtype}{double} gs, std::vector<FringeEntry>\& fringe, std::vector<Triple<int,int,int> >\& searched, \textcolor{keywordtype}{bool} fourway, \textcolor{keywordtype}{double} directionWeight, \textcolor{keywordtype}{double} distanceWeight, \textcolor{keywordtype}{double} predictedDistanceWeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_aed92f11f2dc1ef3ed88f20c041864214}{search}}(DensityGrid\& dg, \textcolor{keyword}{const} Position\& startPos, \textcolor{keyword}{const} Position\& endPos) \textcolor{keyword}{const};}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_ac9bdeaa715dda3b9a534529acab8ad07}{searchT}}(DensityGridTimed\& dg, \textcolor{keyword}{const} Position\& startPos, \textcolor{keyword}{const} Position\& endPos, \textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} gs) \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > optimalPath(DensityGrid\& dg) \textcolor{keyword}{const};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > optimalPathT(DensityGridTimed\& dg) \textcolor{keyword}{const};}
+\DoxyCodeLine{193 \};}
+\DoxyCodeLine{194 \}}
+\DoxyCodeLine{195 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{196 }
+
+\end{DoxyCode}

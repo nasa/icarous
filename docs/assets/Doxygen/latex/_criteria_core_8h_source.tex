@@ -1,0 +1,120 @@
+\hypertarget{_criteria_core_8h_source}{}\doxysection{Criteria\+Core.\+h}
+\label{_criteria_core_8h_source}\index{Modules/ACCoRD/inc/CriteriaCore.h@{Modules/ACCoRD/inc/CriteriaCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CriteriaCore.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * State-\/based Implicit Criteria}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef CRITERIACORE\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define CRITERIACORE\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}CDCylinder.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_criteria_core}{CriteriaCore}} \{}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{public}:}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{45   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a978cae09c2e82dc5b11712eaf6f420bf}{horizontalCoordination}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{57   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a978cae09c2e82dc5b11712eaf6f420bf}{horizontalCoordination}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{75   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a2b5ac5270b1c8d26844e7d33d6a0faad}{verticalCoordination}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{83   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a236e781781ddd248ebdf9a8a3983554c}{horizontal\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& sp, \textcolor{keyword}{const}  \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{int} epsh);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{93   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a76892048e7a723ccf309f048e1fcef4b}{vertical\_criterion}}(\textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nv, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{104   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aacedba0ce036d3b08f7897a6545381e8}{horizontal\_los\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106   \textcolor{keyword}{static} \textcolor{keywordtype}{void} printRepulsiveCriteria2DTerms(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{107   \textcolor{keyword}{static} \textcolor{keywordtype}{void} printRepulsiveCriteriaTerms(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{118   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ad6244252b2f39b947b71dcc68bdf02bc}{horizontalRepulsiveCriteria}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo3, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{129   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ae4e28469e889a264a08cc451a3255a6a}{verticalRepulsiveCriterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nvo,}
+\DoxyCodeLine{130       \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} minrelvs, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{143   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a39d9a00c01fe60f9800453b5bbb7bbba}{criteria}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&  vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&  vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo,}
+\DoxyCodeLine{144       \textcolor{keywordtype}{double} minRelVs, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} incr\_trk\_vect(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148   \textcolor{keyword}{static} \textcolor{keywordtype}{int} losr\_trk\_iter\_dir(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{155   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a980d944252189e1793d70d385b80deff}{trkSearchDirection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   \textcolor{comment}{// Compute a new ground speed only vector that is one step to the dir of vo}}
+\DoxyCodeLine{158   \textcolor{comment}{// dir = 1 is increasing. Velocity vo is non-\/zero.}}
+\DoxyCodeLine{159   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} incr\_gs\_vect(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161   \textcolor{comment}{// Compute an absolute repulsive ground speed direction (or none)}}
+\DoxyCodeLine{162   \textcolor{comment}{// dir = 1 is increasing. Velocity vo is non-\/zero.}}
+\DoxyCodeLine{163   \textcolor{keyword}{static} \textcolor{keywordtype}{int} losr\_gs\_iter\_dir(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi, \textcolor{keywordtype}{double} mings, \textcolor{keywordtype}{double} maxgs, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{169   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ad3ac0e08cda47d29fada4d46e858de7e}{gsSearchDirection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{175   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aca86884ad0d0216bc561ad4ea1e8f445}{vsSearchDirection}}(\textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{186   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aa2e717a5b493aba28f9295ce084a330f}{dataVsRateEpsilon}}(\textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} vsRate);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+\DoxyCodeLine{198   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aaf563185338e3994d523fa0118547483}{dataTurnEpsilon}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{double} trackRate);}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{214   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a1d2f1f623b0222e80cbed63f0492713d}{horizontal\_new\_repulsive\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,  \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{230   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a1d2f1f623b0222e80cbed63f0492713d}{horizontal\_new\_repulsive\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{243   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_af772cf109feff68aaf6a3001de85c912}{vertical\_new\_repulsive\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nvo, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245   \textcolor{keyword}{static} \textcolor{keywordtype}{int} verticalCoordinationLoS(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{keyword}{private}:}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} horizontal\_criterion\_0(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& sp, \textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251   \textcolor{keyword}{static} \textcolor{keywordtype}{int} verticalCoordinationConflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keywordtype}{double} D, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253   \textcolor{comment}{//    static int sign\_vz(const Vect3\& s, const double voz, const double viz, std::string ownship, std::string traffic);}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} criterion\_3D(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& sp, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&  v, \textcolor{keywordtype}{int} epsH, \textcolor{keywordtype}{int} epsV, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&  nv, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257   \textcolor{comment}{// caD and caH are the diameter and height of a collision avoidance zone, e.g., 350ft x 100 ft}}
+\DoxyCodeLine{258   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} vertical\_decision\_vect(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{double} caD, \textcolor{keywordtype}{double} caH);}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260   \textcolor{comment}{// Compute an absolute repulsive vertical direction}}
+\DoxyCodeLine{261   \textcolor{keyword}{static} \textcolor{keywordtype}{int} losr\_vs\_dir(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{double} caD, \textcolor{keywordtype}{double} caH,  std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} vs\_bound\_crit(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nv, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265   \textcolor{keyword}{static} \textcolor{keywordtype}{double} min\_rel\_vert\_speed(\textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{int} eps, \textcolor{keywordtype}{double} minrelvs);}
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} vertical\_los\_criterion(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& nv, \textcolor{keywordtype}{int} eps, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} minrelvs);}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{270   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a4693330834bd880b808fb26abc538af2}{breakSymmetry}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 \};}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 \}}
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

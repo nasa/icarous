@@ -1,0 +1,106 @@
+\hypertarget{_generic_state_bands_8h_source}{}\doxysection{Generic\+State\+Bands.\+h}
+\label{_generic_state_bands_8h_source}\index{Modules/ACCoRD/inc/GenericStateBands.h@{Modules/ACCoRD/inc/GenericStateBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Bands interface}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef GENERICSTATEBANDS\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define GENERICSTATEBANDS\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{19 \textcolor{comment}{//\#include "{}BandsCore.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}GenericBands.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{35 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_generic_state_bands}{GenericStateBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_bands}{GenericBands}} \{}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37  \textcolor{keyword}{public}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands}{\string~GenericStateBands}}() \{\};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{49   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands_ab0ecd5bfb6d33c517af0ca51ddf04c37}{setOwnship}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) = 0;}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{52 \textcolor{comment}{//   * Specify the ownship's position and velocity.  Once the ownship}}
+\DoxyCodeLine{53 \textcolor{comment}{//   * is set, any existing 'band' information is cleared.  This also}}
+\DoxyCodeLine{54 \textcolor{comment}{//   * sets the bands object to the lat/lon coordinate frame.}}
+\DoxyCodeLine{55 \textcolor{comment}{//   *}}
+\DoxyCodeLine{56 \textcolor{comment}{//   * @param lat north latitude [deg] of ownship}}
+\DoxyCodeLine{57 \textcolor{comment}{//   * @param lon east longitude [deg] of ownship}}
+\DoxyCodeLine{58 \textcolor{comment}{//   * @param alt altitude [feet] of ownship}}
+\DoxyCodeLine{59 \textcolor{comment}{//   * @param trk track angle [degrees clockwise from true north] of ownship}}
+\DoxyCodeLine{60 \textcolor{comment}{//   * @param gs ground speed [knot] of ownship}}
+\DoxyCodeLine{61 \textcolor{comment}{//   * @param vs vertical speed [feet/min] of ownship}}
+\DoxyCodeLine{62 \textcolor{comment}{//   */}}
+\DoxyCodeLine{63 \textcolor{comment}{//  virtual void setOwnshipLL(double lat, double lon, const std::string\& hunit, double alt, const std::string\& vunit, double trk, const std::string\& trkunit, double gs, const std::string\& gsunit, double vs, const std::string\& vsunit) = 0;}}
+\DoxyCodeLine{64 \textcolor{comment}{//}}
+\DoxyCodeLine{65 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{66 \textcolor{comment}{//   * Specify the ownship's position and velocity.  Once the ownship}}
+\DoxyCodeLine{67 \textcolor{comment}{//   * is set, any existing 'band' information is cleared.  This also}}
+\DoxyCodeLine{68 \textcolor{comment}{//   * sets the bands object to the Euclidean coordinate frame.}}
+\DoxyCodeLine{69 \textcolor{comment}{//   *}}
+\DoxyCodeLine{70 \textcolor{comment}{//   * @param sx x position [nmi] of ownship}}
+\DoxyCodeLine{71 \textcolor{comment}{//   * @param sy y position [nmi] of ownship}}
+\DoxyCodeLine{72 \textcolor{comment}{//   * @param sz z position [feet] of ownship}}
+\DoxyCodeLine{73 \textcolor{comment}{//   * @param vx x speed component [knot] of ownship}}
+\DoxyCodeLine{74 \textcolor{comment}{//   * @param vy y speed component [knot] of ownship}}
+\DoxyCodeLine{75 \textcolor{comment}{//   * @param vz z speed component [feet/min] of ownship}}
+\DoxyCodeLine{76 \textcolor{comment}{//   */}}
+\DoxyCodeLine{77 \textcolor{comment}{//  virtual void setOwnshipXYZ(double sx, double sy, const std::string\& hpunit, double sz, const std::string\& vpunit, double vx, double vy, const std::string\& hvunit, double vz, const std::string\& vvunit) = 0;}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{88   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands_a0135c52f05378183002f6f1db50fb3d6}{addTraffic}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi) = 0;}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{91 \textcolor{comment}{//   * Add a traffic aircraft to this set of the conflict prevention}}
+\DoxyCodeLine{92 \textcolor{comment}{//   * bands. No traffic aircraft can be added}}
+\DoxyCodeLine{93 \textcolor{comment}{//   * until the ownship is set (see setOwnship()), and traffic coordinates must be in the same frams as the ownship.}}
+\DoxyCodeLine{94 \textcolor{comment}{//   *}}
+\DoxyCodeLine{95 \textcolor{comment}{//   * @param lat north latitude [deg] of the traffic}}
+\DoxyCodeLine{96 \textcolor{comment}{//   * @param lon east longitude [deg] of the traffic}}
+\DoxyCodeLine{97 \textcolor{comment}{//   * @param alt altitude [feet] of the traffic}}
+\DoxyCodeLine{98 \textcolor{comment}{//   * @param trk track angle [degrees clockwise from true north] of the traffic}}
+\DoxyCodeLine{99 \textcolor{comment}{//   * @param gs ground speed [knot] of the traffic}}
+\DoxyCodeLine{100 \textcolor{comment}{//   * @param vs vertical speed [feet/min] of the traffic}}
+\DoxyCodeLine{101 \textcolor{comment}{//   * @return false if no ownship has been set.}}
+\DoxyCodeLine{102 \textcolor{comment}{//   */}}
+\DoxyCodeLine{103 \textcolor{comment}{//  virtual bool addTrafficLL(double lat, double lon, const std::string\& hunit, double alt, const std::string\& vunit, double trk, const std::string\& trkunit, double gs, const std::string\& gsunit, double vs, const std::string\& vsunit) = 0;}}
+\DoxyCodeLine{104 \textcolor{comment}{//}}
+\DoxyCodeLine{105 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{106 \textcolor{comment}{//   * Add a traffic aircraft to this set of the conflict prevention}}
+\DoxyCodeLine{107 \textcolor{comment}{//   * bands.  No traffic aircraft can be added}}
+\DoxyCodeLine{108 \textcolor{comment}{//   * until the ownship is set (see setOwnship()), and traffic coordinates must be in the same frams as the ownship.}}
+\DoxyCodeLine{109 \textcolor{comment}{//   *}}
+\DoxyCodeLine{110 \textcolor{comment}{//   * @param sx x position [nmi] of the traffic}}
+\DoxyCodeLine{111 \textcolor{comment}{//   * @param sy y position [nmi] of the traffic}}
+\DoxyCodeLine{112 \textcolor{comment}{//   * @param sz z position [feet] of the traffic}}
+\DoxyCodeLine{113 \textcolor{comment}{//   * @param vx x speed component [knot] of the traffic}}
+\DoxyCodeLine{114 \textcolor{comment}{//   * @param vy y speed component [knot] of the traffic}}
+\DoxyCodeLine{115 \textcolor{comment}{//   * @param vz z speed component [feet/min] of the traffic}}
+\DoxyCodeLine{116 \textcolor{comment}{//   * @return false if no ownship has been set.}}
+\DoxyCodeLine{117 \textcolor{comment}{//   */}}
+\DoxyCodeLine{118 \textcolor{comment}{//  virtual bool addTrafficXYZ(double sx, double sy, const std::string\& hpunit, double sz, const std::string\& vpunit, double vx, double vy, const std::string\& hvunit, double vz, const std::string\& vvunit) = 0;}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \}}
+\DoxyCodeLine{123 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,375 @@
+\hypertarget{_kinematic_bands_parameters_8h_source}{}\doxysection{Kinematic\+Bands\+Parameters.\+h}
+\label{_kinematic_bands_parameters_8h_source}\index{Modules/ACCoRD/inc/KinematicBandsParameters.h@{Modules/ACCoRD/inc/KinematicBandsParameters.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICBANDSPARAMETERS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICBANDSPARAMETERS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}ParameterAcceptor.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}AlertLevels.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}}, \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{ParameterAcceptor}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22   \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \textcolor{comment}{// Bands}}
+\DoxyCodeLine{25   \textcolor{keywordtype}{double} lookahead\_time\_;}
+\DoxyCodeLine{26   \textcolor{keywordtype}{double} left\_trk\_;}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double} right\_trk\_;}
+\DoxyCodeLine{28   \textcolor{keywordtype}{double} min\_gs\_;}
+\DoxyCodeLine{29   \textcolor{keywordtype}{double} max\_gs\_;}
+\DoxyCodeLine{30   \textcolor{keywordtype}{double} min\_vs\_;}
+\DoxyCodeLine{31   \textcolor{keywordtype}{double} max\_vs\_;}
+\DoxyCodeLine{32   \textcolor{keywordtype}{double} min\_alt\_;}
+\DoxyCodeLine{33   \textcolor{keywordtype}{double} max\_alt\_;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{comment}{// Kinematic bands}}
+\DoxyCodeLine{36   \textcolor{keywordtype}{double} trk\_step\_;}
+\DoxyCodeLine{37   \textcolor{keywordtype}{double} gs\_step\_;}
+\DoxyCodeLine{38   \textcolor{keywordtype}{double} vs\_step\_;}
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} alt\_step\_;}
+\DoxyCodeLine{40   \textcolor{keywordtype}{double} horizontal\_accel\_;}
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} vertical\_accel\_;}
+\DoxyCodeLine{42   \textcolor{keywordtype}{double} turn\_rate\_;}
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} bank\_angle\_;}
+\DoxyCodeLine{44   \textcolor{keywordtype}{double} vertical\_rate\_;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \textcolor{comment}{// Recovery bands}}
+\DoxyCodeLine{47   \textcolor{keywordtype}{double} horizontal\_nmac\_; \textcolor{comment}{// Horizontal Near Mid-\/Air Collision}}
+\DoxyCodeLine{48   \textcolor{keywordtype}{double} vertical\_nmac\_; \textcolor{comment}{// Vertical Near Mid-\/Air Collision}}
+\DoxyCodeLine{49   \textcolor{keywordtype}{double} recovery\_stability\_time\_;}
+\DoxyCodeLine{50   \textcolor{keywordtype}{double} min\_horizontal\_recovery\_;}
+\DoxyCodeLine{51   \textcolor{keywordtype}{double} min\_vertical\_recovery\_;}
+\DoxyCodeLine{52   \textcolor{keywordtype}{bool} conflict\_crit\_; \textcolor{comment}{/* Use criteria for conflict bands */}}
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} recovery\_crit\_; \textcolor{comment}{/* Use criteria for recovery bands */}}
+\DoxyCodeLine{54   \textcolor{comment}{/* Compute recovery bands */}}
+\DoxyCodeLine{55   \textcolor{keywordtype}{bool} recovery\_trk\_;}
+\DoxyCodeLine{56   \textcolor{keywordtype}{bool} recovery\_gs\_;}
+\DoxyCodeLine{57   \textcolor{keywordtype}{bool} recovery\_vs\_;}
+\DoxyCodeLine{58   \textcolor{keywordtype}{bool} recovery\_alt\_;}
+\DoxyCodeLine{59   \textcolor{comment}{/* Compute collision avoidance bands */}}
+\DoxyCodeLine{60   \textcolor{keywordtype}{bool} ca\_bands\_;  \textcolor{comment}{// When true, compute recovery bands until NMAC}}
+\DoxyCodeLine{61   \textcolor{keywordtype}{double} ca\_factor\_; \textcolor{comment}{// Reduction factor when computing CA bands. It;s a value in [0,1]}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{comment}{// Contours}}
+\DoxyCodeLine{64   \textcolor{keywordtype}{double} contour\_thr\_; \textcolor{comment}{// Horizontal threshold, specified as an angle to the left/right of current aircraft direction,}}
+\DoxyCodeLine{65   \textcolor{comment}{// for computing horizontal contours. A value of 0 means only conflict contours. A value of pi means all contours.}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{68   std::vector<std::string> keys\_; \textcolor{comment}{// List of key values}}
+\DoxyCodeLine{69   \textcolor{keywordtype}{bool} set\_turn\_rate(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{70   \textcolor{keywordtype}{bool} set\_bank\_angle(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} addKeyDouble(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& units, \textcolor{keyword}{const} std::string\& msg=\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{72   \textcolor{keywordtype}{void} addKeyBoolean(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{bool} val, \textcolor{keyword}{const} std::string\& msg=\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{public}:}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80   \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a333b749c8cd127c8e1d9997497069d01}{VERSION}};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{85   \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aad83013635714903217f69986f653def}{alertor}};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}();}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{\string~KinematicBandsParameters}}();}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{98   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a9fe949a5872be5777e04d840e11b2476}{setKinematicBandsParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{103   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a73dc8565475a83eb7d47c2fd498a8d2a}{getLookaheadTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{108   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2e3168fdd29470f7b737fb36ce5a4e58}{getLookaheadTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{113   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ab94683bcf9889d5586d51f1176f0e19d}{getLeftTrack}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{118   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2fe2354f8a5f1cf13a3f4d3d32362f42}{getLeftTrack}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{123   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a1ca7f08c715780340c00226dc874517b}{getRightTrack}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{128   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a13064f3a214526ae4f8f9a500c82c22b}{getRightTrack}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ac00f28689595b0bfd14c906c21a4f07e}{getMinGroundSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{138   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a833ad4d493f780d2c074db364df424c9}{getMinGroundSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{143   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad0f0e5c1ee25b0ebdfb850141ebb4947}{getMaxGroundSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{148   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a156015e29f3b3b0400cf110e927a9ddf}{getMaxGroundSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a271dd5594a6f5339454b5e03eb7db0df}{getMinVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{158   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2c996fcffcdcb6108ad5855af65633d4}{getMinVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{163   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7d23deee69a428af83bdf5a171bfec10}{getMaxVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{168   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a43528edc10ddf0a2fc7bc8e9ab690efd}{getMaxVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{173   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_abdaacb2779dde4927a7e55897c702d37}{getMinAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{178   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a6d8a0d3f2d07ea9f9a086d1d8ad38da7}{getMinAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{183   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2a65a2ea84b49690f7715969d79c70ee}{getMaxAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7eb8788e8008b352412abc614a249aaf}{getMaxAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{193   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a416f26e798425b06c2187be2ea9aee58}{getTrackStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{198   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a3b93c03a45ea7aaee15c7224a4809730}{getTrackStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{203   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aa38558e92595ef0d5bb664cb05e563ef}{getGroundSpeedStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{208   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_adc115cbe606b1f439ab0f0e0132ac9f8}{getGroundSpeedStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{213   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0ade51af2dad73358b776aba4cc7bbee}{getVerticalSpeedStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{218   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aaaed74c9a04b8d0f3008f3d834b3b18a}{getVerticalSpeedStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{223   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a1fd162e272353b923ebf179b6eea6895}{getAltitudeStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{228   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a53749854c394f0f5aa14e27250bdacaa}{getAltitudeStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{233   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a94f137f86eb39b3b0d58de61c7a2b243}{getHorizontalAcceleration}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{238   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a3ed457a04d4a5b74a1e25b1068991f8b}{getHorizontalAcceleration}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{243   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a87968e313bd18ba63808595f61ffd7d6}{getVerticalAcceleration}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{248   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a44d29aa4763202235bf2c9c556951798}{getVerticalAcceleration}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{253   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_afa6d6189436deb8ee35bc0975c45a909}{getTurnRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{258   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aa6aa7c739851b769026562b2327670be}{getTurnRate}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{263   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a531a406a31c90282ecb480103069cd6a}{getBankAngle}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{268   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a3b5a6147063e32d62fcb64a304a88a75}{getBankAngle}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{273   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a9ec9df43bcb94f72bb5f5db1e29b9ab5}{getVerticalRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{278   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a80d989a7f74b68f24761431dc0a88725}{getVerticalRate}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{283   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ac52950a437a272cbd708d7304f22674b}{getHorizontalNMAC}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{288   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a41fe7e1228483d88073b5684d914c6bf}{getHorizontalNMAC}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{293   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a66402c971749238c75c2c8d423baa39f}{getVerticalNMAC}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{298   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ab7dae4ceeb4ca982f5cffbb70a2752d0}{getVerticalNMAC}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{303   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ac726762a68ea02e211067547564eb44c}{getRecoveryStabilityTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{308   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_adf2d0ea2c5dd101e8dd22ced8865bd21}{getRecoveryStabilityTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{313   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad6b388c1e8359394601ab998732dc8b8}{getMinHorizontalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{318   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a6e32f74e87554fa201dca9bedb668f0b}{getMinHorizontalRecovery}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{323   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a267300c99dfafc4f6d40b472b69de264}{getMinVerticalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{328   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aefe866d3bcc8c6150247e6eb9b87fdb4}{getMinVerticalRecovery}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{333   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_accdb1a39921111a303cd8b021618b0d4}{setLookaheadTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{338   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0342ade7a36d7126f8ee0671551b90f1}{setLookaheadTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{343   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_abc61d13f1ce83c75e8afc9b09fba30a8}{setLeftTrack}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{348   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a5b46185c79164a4a658b345d5d863ce0}{setLeftTrack}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{353   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a79995aba9f28ba56fbf966fe93845443}{setRightTrack}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{354 }
+\DoxyCodeLine{358   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2653e1ecbadcfad23d45320052207ec6}{setRightTrack}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{364   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_afcafcc9932c7e05922fb774aafdf5ea7}{setMinGroundSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{370   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a8413df222caa4d412e5acb18a90974e0}{setMinGroundSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{371 }
+\DoxyCodeLine{375   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a704247e363957bc86a88d24e10db51dc}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{380   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a8795df874f227cea2c80b7d85ffc7dab}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{385   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ae7afca5d3a6dc623f4130c14147d8b46}{setMinVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{390   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a4198c301ada9cb67c390e734825ff21b}{setMinVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{395   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_acf7f1ab8d315db7a06401649e72fd98e}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{396 }
+\DoxyCodeLine{400   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a676f8ebd037e0ed4f25c232812baf844}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{401 }
+\DoxyCodeLine{405   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a64322698eb9f4cab3672f9f3155bb79b}{setMinAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{410   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a5207c947724832184726a7303b5bb125}{setMinAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{415   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7a8397b6fc6f1d0033da427c634e5d84}{setMaxAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{420   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7f1494c48f5144c103520bffb33be4cb}{setMaxAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{425   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ac1c2c16896980e45e315de0bbdb80494}{setTrackStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{426 }
+\DoxyCodeLine{430   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2590963a6f85946c5db1349910d16ac2}{setTrackStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{435   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_acb17d32038bc4df22b515d02908f48a0}{setGroundSpeedStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{436 }
+\DoxyCodeLine{440   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a5cd2d831a0c26ecedb0977c60a3abb2b}{setGroundSpeedStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{445   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a628839cbe8c179ac2097237a58eb52a0}{setVerticalSpeedStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{446 }
+\DoxyCodeLine{450   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ae0187f30ade068f16c4e336649f059a7}{setVerticalSpeedStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{455   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_abc358b574d9efc56b046cb8135728095}{setAltitudeStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{456 }
+\DoxyCodeLine{460   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_af894ced08b7bf6b649543d22389505da}{setAltitudeStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{461 }
+\DoxyCodeLine{465   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a6059ef029851ba21e97683fbaf2ed173}{setHorizontalAcceleration}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{470   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2b67299172a5a091688c019c35bb797f}{setHorizontalAcceleration}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{471 }
+\DoxyCodeLine{475   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a70794ae407337f6b634f6e50affc3c17}{setVerticalAcceleration}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{476 }
+\DoxyCodeLine{480   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aec1ae928629aa05a237e40f105e30664}{setVerticalAcceleration}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{486   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2cd3989bf03d94a65c23940d00edb468}{setTurnRate}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{487 }
+\DoxyCodeLine{492   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a9617eea3015b17e4ec67fe41fdd82234}{setTurnRate}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{498   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a469cb96cf649f29a253d1d233ad97a79}{setBankAngle}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{504   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ab6ed5eeedf91a0cc438db1f4da1a700e}{setBankAngle}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{505 }
+\DoxyCodeLine{509   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a13a21f6684e87aeac06802d2b2447966}{setVerticalRate}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{514   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a1ca8a7f7222aae86c622eb8878fe5971}{setVerticalRate}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{515 }
+\DoxyCodeLine{519   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ae037f6c3344c778089f2a4a6f8a3321b}{setHorizontalNMAC}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{524   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a01cabcc230f4c306c6b62db9f73f5c7d}{setHorizontalNMAC}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{525 }
+\DoxyCodeLine{529   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a8c35cf6b4d960d8bc3517056414c49b6}{setVerticalNMAC}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{530 }
+\DoxyCodeLine{534   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a5732d8fac21ded8adced83093a15bc73}{setVerticalNMAC}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{535 }
+\DoxyCodeLine{539   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a322c38bff7f0a891bd7237f103509c80}{setRecoveryStabilityTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{540 }
+\DoxyCodeLine{544   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ab92d6003efa8a43b2ca11f36ddb44186}{setRecoveryStabilityTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{549   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad8fec90963404440c086c6ef36fde5ae}{setMinHorizontalRecovery}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{550 }
+\DoxyCodeLine{554   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ac58863aeb58a5c31cc56f1c8b3737d10}{setMinHorizontalRecovery}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{555 }
+\DoxyCodeLine{559   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_af6b3df62357f5ba5ac92ba936303b40b}{setMinVerticalRecovery}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{560 }
+\DoxyCodeLine{564   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7c71d6e28b2e30fea5db5e315af76b8e}{setMinVerticalRecovery}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{565 }
+\DoxyCodeLine{569   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_afd30dd5cdf4ab294480b070c4e2943b6}{isEnabledConflictCriteria}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{570 }
+\DoxyCodeLine{574   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aadb6c61caf4e9892364007f2aaf07b9d}{setConflictCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{575 }
+\DoxyCodeLine{579   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2ca342754755972635ccaf707ce70cbe}{enableConflictCriteria}}();}
+\DoxyCodeLine{580 }
+\DoxyCodeLine{584   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad8594ec464b89573eaaa42bd1327104b}{disableConflictCriteria}}();}
+\DoxyCodeLine{585 }
+\DoxyCodeLine{589   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a820e5e30aa179bb9aa0c9be8fb61fb57}{isEnabledRecoveryCriteria}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{590 }
+\DoxyCodeLine{594   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_afd5bae1d230c5fe24e540c82d28d33f5}{setRecoveryCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{595 }
+\DoxyCodeLine{599   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a46697e8b9c06f5ddffbc40cf78acdf6f}{enableRecoveryCriteria}}();}
+\DoxyCodeLine{603   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad6bea827e3a3339d63335a791a2b544f}{disableRecoveryCriteria}}();}
+\DoxyCodeLine{604 }
+\DoxyCodeLine{608   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a06b0f3446b9e044596940cbc25114e40}{setRepulsiveCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{609 }
+\DoxyCodeLine{613   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a4cb012abde2953a2d4c8d07694093659}{enableRepulsiveCriteria}}();}
+\DoxyCodeLine{614 }
+\DoxyCodeLine{618   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a7109bf08a93fb01e4cece338f39f4356}{disableRepulsiveCriteria}}();}
+\DoxyCodeLine{619 }
+\DoxyCodeLine{623   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0152b1069ae51d985f458026528efd93}{isEnabledRecoveryTrackBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{624 }
+\DoxyCodeLine{628   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad20a8ba5d8a4686718d62478d164d2ad}{isEnabledRecoveryGroundSpeedBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{629 }
+\DoxyCodeLine{633   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a106c7576d374df29328fb18ce85f194f}{isEnabledRecoveryVerticalSpeedBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{634 }
+\DoxyCodeLine{638   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ae4a978fc99f3f85465856222f09bebf1}{isEnabledRecoveryAltitudeBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{639 }
+\DoxyCodeLine{643   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad2434eff98de2bc87d6d7135c67677d2}{setRecoveryBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{644 }
+\DoxyCodeLine{648   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a68d839c0fc6abe5781641caeaf5ed5ba}{enableRecoveryBands}}();}
+\DoxyCodeLine{649 }
+\DoxyCodeLine{653   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a346ec3c48b30c6ac6690515b37f59579}{disableRecoveryBands}}();}
+\DoxyCodeLine{654 }
+\DoxyCodeLine{658   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0bdf114df2cb21bf3df3bb26673307b4}{setRecoveryTrackBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{659 }
+\DoxyCodeLine{663   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a24159edfa300db742860de5aae7a95b1}{setRecoveryGroundSpeedBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{664 }
+\DoxyCodeLine{668   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ab52adbb6b5bba2c014253ca11fa99043}{setRecoveryVerticalSpeedBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{669 }
+\DoxyCodeLine{673   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a425c8ee82fbff5980098f4ab9e7c4cac}{setRecoveryAltitudeBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{674 }
+\DoxyCodeLine{678   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0c2d6cdd08ce567d0791dfb5f533a334}{isEnabledCollisionAvoidanceBands}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{679 }
+\DoxyCodeLine{683   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a39a9d33516a223df4ad6cfb6a6d378e1}{setCollisionAvoidanceBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{684 }
+\DoxyCodeLine{688   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a2247259816673969ba0fcb0ec8120b26}{enableCollisionAvoidanceBands}}();}
+\DoxyCodeLine{689 }
+\DoxyCodeLine{693   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a899415c720cca2f3f95653a4775abb9d}{disableCollisionAvoidanceBands}}();}
+\DoxyCodeLine{694 }
+\DoxyCodeLine{698   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a6459c7d659feb64502f676b437fa419f}{getCollisionAvoidanceBandsFactor}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{699 }
+\DoxyCodeLine{703   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a96df24b0e00cdb269059ef26e83f0abd}{setCollisionAvoidanceBandsFactor}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{710   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ad0516555980ae394625777e934dce633}{getHorizontalContourThreshold}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{711 }
+\DoxyCodeLine{717   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a40740f30674aaa218c3f53b353f8ef6a}{getHorizontalContourThreshold}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{718 }
+\DoxyCodeLine{724   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0ccfac0b85d36064fd4d7cba46a499fd}{setHorizontalContourThreshold}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{725 }
+\DoxyCodeLine{731   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a0c331fd7a73cc0ae2500b86d5f996140}{setHorizontalContourThreshold}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{732 }
+\DoxyCodeLine{736   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a5dcc9bc10b25b790281639ba14371ca2}{setInstantaneousBands}}() ;}
+\DoxyCodeLine{737 }
+\DoxyCodeLine{743   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a344046a6579a47cba0006e4914292c84}{setKinematicBands}}(\textcolor{keywordtype}{bool} type);}
+\DoxyCodeLine{744 }
+\DoxyCodeLine{748   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a98dcb1ab5384d022a5208efecc6e8c12}{loadFromFile}}(\textcolor{keyword}{const} std::string\& file);}
+\DoxyCodeLine{749 }
+\DoxyCodeLine{753   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_ae5d615dc2252b31cc1cdbfc2c025eda3}{saveToFile}}(\textcolor{keyword}{const} std::string\& file) \textcolor{keyword}{const};}
+\DoxyCodeLine{754 }
+\DoxyCodeLine{755   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{756 }
+\DoxyCodeLine{757   std::string toPVS(\textcolor{keywordtype}{int} prec) \textcolor{keyword}{const};}
+\DoxyCodeLine{758 }
+\DoxyCodeLine{759   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{760 }
+\DoxyCodeLine{761   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{762 }
+\DoxyCodeLine{763   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& parameters);}
+\DoxyCodeLine{764 }
+\DoxyCodeLine{765   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{766 }
+\DoxyCodeLine{767   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a9e4d69bb4b52bacc81814531c9fdbda0}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{768 }
+\DoxyCodeLine{769   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a1ab0b1c99714921e2dd8d99e4d67a065}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{770 }
+\DoxyCodeLine{771   std::string \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_a08bcb02da8d6c7cfd3edc7a0cef9990d}{getMessage}}();}
+\DoxyCodeLine{772 }
+\DoxyCodeLine{773   std::string \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters_aa281b1d9b7a2af40248f5a08ed14cbdd}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{774 }
+\DoxyCodeLine{775 \};}
+\DoxyCodeLine{776 }
+\DoxyCodeLine{777 \}}
+\DoxyCodeLine{778 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

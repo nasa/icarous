@@ -1,0 +1,58 @@
+\hypertarget{_kinematic_trk_bands_8h_source}{}\doxysection{Kinematic\+Trk\+Bands.\+h}
+\label{_kinematic_trk_bands_8h_source}\index{Modules/ACCoRD/inc/KinematicTrkBands.h@{Modules/ACCoRD/inc/KinematicTrkBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICTRKBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICTRKBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}KinematicRealBands.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_trk_bands}{KinematicTrkBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{KinematicRealBands}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21   \textcolor{keywordtype}{double} turn\_rate\_;}
+\DoxyCodeLine{22   \textcolor{keywordtype}{double} bank\_angle\_;  \textcolor{comment}{// Only used when turn\_rate is set to 0}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_kinematic_trk_bands}{KinematicTrkBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_kinematic_trk_bands}{KinematicTrkBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_trk_bands}{KinematicTrkBands}}\& b);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \textcolor{keywordtype}{bool} instantaneous\_bands() \textcolor{keyword}{const};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keywordtype}{double} get\_turn\_rate() \textcolor{keyword}{const};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{keywordtype}{void} set\_turn\_rate(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keywordtype}{double} get\_bank\_angle() \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{void} set\_bank\_angle(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   std::pair<Vect3, Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+
+\end{DoxyCode}

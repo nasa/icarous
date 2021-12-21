@@ -1,0 +1,98 @@
+\hypertarget{_detection3_d_8h_source}{}\doxysection{Detection3\+D.\+h}
+\label{_detection3_d_8h_source}\index{Modules/ACCoRD/inc/Detection3D.h@{Modules/ACCoRD/inc/Detection3D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2013-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Detection3D.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *  Created on: Dec 12, 2012}}
+\DoxyCodeLine{11 \textcolor{comment}{ *      Author: ghagen}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef DETECTION3D\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define DETECTION3D\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}ConflictData.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}ParameterAcceptor.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{ParameterAcceptor}} \{}
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{\string~Detection3D}}() = 0;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{comment}{/* Note: this interface might be better (i.e. more efficient and internally consistent) if all parameters are Euclidean Vect3s.}}
+\DoxyCodeLine{33 \textcolor{comment}{   * Internally, doing things like taking the dot product of positions and velocities is somewhat iffy from a type-\/consistency point}}
+\DoxyCodeLine{34 \textcolor{comment}{   * of view, and also potentially less efficient in C++, due to various type conversions (needs testing).}}
+\DoxyCodeLine{35 \textcolor{comment}{   * Externally, we have semantically distinct types as inputs, even though they are actually all just Euclidean triples.}}
+\DoxyCodeLine{36 \textcolor{comment}{   */}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{46   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0bcb3d2578bc6f2a64816fede5d5c43f}{violation}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi) \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{58   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a8f1efd65ea31a974fe32bb0cf3ae5382}{conflict}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{72   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a2ee67971d48e6a8aedce8a2ac44af29d}{conflictDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{81   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_aa2ca0cc23aa820425db5e932e37a6f2b}{violationAtWithTrafficState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{91   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a9f65a5297136257692e5ef909fe172a6}{conflictWithTrafficState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{103   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a06c5d18137ac3a130bcb9ca27a16b06d}{conflictDetectionWithTrafficState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{106   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a38aba03a3b33636dc14091165be54d5c}{copy}}() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{107   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   std::string getCanonicalClassName()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{110     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}gov.nasa.larcfm.ACCoRD."{}}+getSimpleClassName();}
+\DoxyCodeLine{111   \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   std::string getCanonicalSuperClassName()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{114     \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}gov.nasa.larcfm.ACCoRD."{}}+getSimpleSuperClassName();}
+\DoxyCodeLine{115   \}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{118   \textcolor{keyword}{virtual} std::string getSimpleSuperClassName()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{119     \textcolor{keywordflow}{return} getSimpleClassName();}
+\DoxyCodeLine{120   \}}
+\DoxyCodeLine{121   \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{122   \textcolor{keyword}{virtual} std::string toPVS() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124   \textcolor{keyword}{virtual} std::string getIdentifier() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{125   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s) = 0;}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{136   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* o) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \textcolor{keywordtype}{bool} instanceOf(\textcolor{keyword}{const} std::string\& classname)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{141     \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacelarcfm_a70e71904b71bbd150854983eb667a733}{larcfm::equals}}(getCanonicalClassName(), classname);}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{156   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_af0b794e142c772fbaecf9447944596e8}{horizontalContours}}(std::vector<std::vector<Position> >\& blobs, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder,}
+\DoxyCodeLine{157       \textcolor{keywordtype}{double} thr, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{174   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a563197ae6fae4af5fd668ca19dc33bcd}{horizontalHazardZone}}(std::vector<Position>\& haz, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder,}
+\DoxyCodeLine{175       \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 \textcolor{keyword}{private}:}
+\DoxyCodeLine{178   \textcolor{keyword}{static} \textcolor{keywordtype}{void} add\_blob(std::vector<std::vector<Position> >\& blobs, std::vector<Position>\& vin, std::vector<Position>\& vout);}
+\DoxyCodeLine{179 \};}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keyword}{inline} Detection3D::\string~Detection3D()\{\}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{184 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DETECTION3D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

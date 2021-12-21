@@ -1,0 +1,468 @@
+\hypertarget{classlarcfm_1_1_gs_plan}{}\doxysection{larcfm\+::Gs\+Plan Class Reference}
+\label{classlarcfm_1_1_gs_plan}\index{larcfm::GsPlan@{larcfm::GsPlan}}
+
+
+{\ttfamily \#include $<$Gs\+Plan.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a10e12bccd057a537862c21ef6c5616d3}\label{classlarcfm_1_1_gs_plan_a10e12bccd057a537862c21ef6c5616d3}} 
+{\bfseries Gs\+Plan} (double start\+Time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a92b38d35016dec3db467cf2c3c1dbb24}\label{classlarcfm_1_1_gs_plan_a92b38d35016dec3db467cf2c3c1dbb24}} 
+{\bfseries Gs\+Plan} (const std\+::string \&s)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_gs_plan_a637232775af0ecadbc4fbcac7fbdf708}{Gs\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int start, int end)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_gs_plan_a572ee7129e5b1e17a0c5371c13f599f7}{Gs\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_gs_plan_abd1e316aa5620f52328c7a82c88c647e}{Gs\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&gsp)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a7ddcf3502182981d68ff687223f565af}\label{classlarcfm_1_1_gs_plan_a7ddcf3502182981d68ff687223f565af}} 
+{\bfseries Gs\+Plan} (const \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \&r, const std\+::string \&name, double start, double gs\+All)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ac64cc31ce2034fa0f3bc44b03eda6b65}\label{classlarcfm_1_1_gs_plan_ac64cc31ce2034fa0f3bc44b03eda6b65}} 
+int {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_aab506549c4940dd75a36046821f53414}\label{classlarcfm_1_1_gs_plan_aab506549c4940dd75a36046821f53414}} 
+std\+::string {\bfseries get\+ID} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a47a1f4d9e1ac858c9e4bc709fb0b6c51}{set\+ID}} (const std\+::string \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a96f7585a7c6acd20a3692e7d51da44a3}\label{classlarcfm_1_1_gs_plan_a96f7585a7c6acd20a3692e7d51da44a3}} 
+void {\bfseries set\+Info} (int i, const std\+::string \&s)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a4fe3d2860c9d5693580efcd06185972b}{gs}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_adbe081803a2041daa2b776ff3e064d8c}{route}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_abb5a759944b394d15061ab4797fdfc09}\label{classlarcfm_1_1_gs_plan_abb5a759944b394d15061ab4797fdfc09}} 
+void {\bfseries add} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&info, double gs\+Out, double rad)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_ac5ba5386f767cb6246907e59eb4ab330}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&info, double gs\+Out)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a8536001f4db747cdfa865e2bd442dc01}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&info)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a44445e54f71f6be069dcd7dadac7f94a}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&p, int ix)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_ac819aaf4be295b5eb9640a4fd6d9a283}{add\+All}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a2be1c18a08c578d5c45db2540175d73f}{set}} (int ix, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const std\+::string \&label, const std\+::string \&info, double gs\+Out, double radius)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a5575dad9b67c4b91d61b4aff170131f1}\label{classlarcfm_1_1_gs_plan_a5575dad9b67c4b91d61b4aff170131f1}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries position} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_aa1b65df803a2df214abbe351235e9f93}\label{classlarcfm_1_1_gs_plan_aa1b65df803a2df214abbe351235e9f93}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries last} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a8850420d688cbf6a4f8e03aadc4ad8c5}\label{classlarcfm_1_1_gs_plan_a8850420d688cbf6a4f8e03aadc4ad8c5}} 
+std\+::string {\bfseries name} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ad5c53aa482805fcc90d5ec0a59e348f2}\label{classlarcfm_1_1_gs_plan_ad5c53aa482805fcc90d5ec0a59e348f2}} 
+std\+::string {\bfseries info} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ab526fda17b73e98ec239433f0222d815}\label{classlarcfm_1_1_gs_plan_ab526fda17b73e98ec239433f0222d815}} 
+double {\bfseries radius} (int i) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a4ee32a9fd667d2587e1389b10870b705}{set\+Radius}} (int i, double rad)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_aa98cb14637f564e25f51f4f7504df9bd}\label{classlarcfm_1_1_gs_plan_aa98cb14637f564e25f51f4f7504df9bd}} 
+std\+::vector$<$ double $>$ {\bfseries get\+Gs\+Inits} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a954784beb64ead6842524acc3dae05be}{append}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&p2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a41d671e9fa2cc94de849695615ecb091}\label{classlarcfm_1_1_gs_plan_a41d671e9fa2cc94de849695615ecb091}} 
+void {\bfseries remove} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ae81b283cb75383e499244ce3b6735dcf}\label{classlarcfm_1_1_gs_plan_ae81b283cb75383e499244ce3b6735dcf}} 
+void {\bfseries set\+Gs} (int i, double gsin)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_afe6c903e8a496d97192b361e65bfef8b}\label{classlarcfm_1_1_gs_plan_afe6c903e8a496d97192b361e65bfef8b}} 
+double {\bfseries start\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a9c39baef85eec355ff77559ec1e92599}\label{classlarcfm_1_1_gs_plan_a9c39baef85eec355ff77559ec1e92599}} 
+void {\bfseries set\+Start\+Time} (double start\+Time)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a86578072333d6594f255d4b237910987}{find\+Name}} (const std\+::string \&nm) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a55096ed457aa72ba25bbfbe0b99a1fef}\label{classlarcfm_1_1_gs_plan_a55096ed457aa72ba25bbfbe0b99a1fef}} 
+double {\bfseries path\+Distance} (int i, int j, bool linear) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a5d37653172e2b1fd7322a1ef2ef6bd39}{ETA}} (bool linear) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a66935de702c9c98761a404f9e36ae6d5}{linear\+Plan}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a71cdbe97b429b31f599eb127308d7388}{closest\+Segment}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_af89f0e7ba42bc8c26f2fae39906d6ddc}{position\+From\+Distance}} (double dist, double default\+Bank, bool linear) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a6781f859a76ce25132745466f3aa651f}{velocity\+From\+Distance}} (double dist, double default\+Bank, bool linear) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a12aa1adcf19e4671b0bc6980b375137a}{equals}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a2e7afa88643dd7b0f2c9706d5dbb8d0e}\label{classlarcfm_1_1_gs_plan_a2e7afa88643dd7b0f2c9706d5dbb8d0e}} 
+bool {\bfseries almost\+Equals} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&p) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_afdb38b448384e8fdcd6d5f905746f08d}\label{classlarcfm_1_1_gs_plan_afdb38b448384e8fdcd6d5f905746f08d}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_af2ddc7bf064695189162cee92b68e77e}{make\+Gs\+Plan\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&gsp, double gs\+New)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a18193fc50a02f035edcec71fb8336fe3}{mk\+Gs\+Plan\+Bank\+Angle}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, double bank\+Angle)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_acc7db922a54eb77b5bec03b2d568c7f5}\label{classlarcfm_1_1_gs_plan_acc7db922a54eb77b5bec03b2d568c7f5}} 
+\mbox{\hyperlink{classlarcfm_1_1_route}{Route}} {\bfseries rt}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a0fe4be32b4abd5415c134eebd88e069c}\label{classlarcfm_1_1_gs_plan_a0fe4be32b4abd5415c134eebd88e069c}} 
+std\+::vector$<$ double $>$ {\bfseries gs\+Outs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_acbff9184a58a9a0c7805b40678ce646c}\label{classlarcfm_1_1_gs_plan_acbff9184a58a9a0c7805b40678ce646c}} 
+std\+::string {\bfseries id}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a2f35258c5e3183269844286b946e7378}\label{classlarcfm_1_1_gs_plan_a2f35258c5e3183269844286b946e7378}} 
+double {\bfseries starttime}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} -- an alternate yet convenient way to store a linear plan. There are no times stored. Instead the ground speed at each point is specified.
+
+Since there are no times in a \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}, only the order of the points is maintained. This often eliminates the need to continually recalculate times. After an appropriate \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} is constructed it can be converted to a linear plan using the \char`\"{}linear\+Plan\char`\"{} method 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a637232775af0ecadbc4fbcac7fbdf708}\label{classlarcfm_1_1_gs_plan_a637232775af0ecadbc4fbcac7fbdf708}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!GsPlan@{GsPlan}}
+\index{GsPlan@{GsPlan}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{GsPlan()}{GsPlan()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Gs\+Plan\+::\+Gs\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})}
+
+Converts a section of a linear plan into a \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}. The ground speeds correspond to the speeds in the \char`\"{}lcp\char`\"{} linear plan. However, no route radii values are set using this constructor
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em start} & starting index of the section to be used \\
+\hline
+{\em end} & ending index of the section to be used \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a572ee7129e5b1e17a0c5371c13f599f7}\label{classlarcfm_1_1_gs_plan_a572ee7129e5b1e17a0c5371c13f599f7}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!GsPlan@{GsPlan}}
+\index{GsPlan@{GsPlan}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{GsPlan()}{GsPlan()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Gs\+Plan\+::\+Gs\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc }\end{DoxyParamCaption})}
+
+Converts a full linear plan into a \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}. The ground speeds correspond to the speeds in the \char`\"{}lcp\char`\"{} linear plan. However, no route radii values are set using this constructor. 
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_abd1e316aa5620f52328c7a82c88c647e}\label{classlarcfm_1_1_gs_plan_abd1e316aa5620f52328c7a82c88c647e}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!GsPlan@{GsPlan}}
+\index{GsPlan@{GsPlan}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{GsPlan()}{GsPlan()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Gs\+Plan\+::\+Gs\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{gsp }\end{DoxyParamCaption})}
+
+Creates a copy of a \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em gsp} & ground speed plan \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a44445e54f71f6be069dcd7dadac7f94a}\label{classlarcfm_1_1_gs_plan_a44445e54f71f6be069dcd7dadac7f94a}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!add@{add}}
+\index{add@{add}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{p,  }\item[{int}]{ix }\end{DoxyParamCaption})}
+
+add point \char`\"{}ix\char`\"{} from \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \char`\"{}p\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & ground speed plan \\
+\hline
+{\em ix} & index \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a8536001f4db747cdfa865e2bd442dc01}\label{classlarcfm_1_1_gs_plan_a8536001f4db747cdfa865e2bd442dc01}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!add@{add}}
+\index{add@{add}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{info }\end{DoxyParamCaption})}
+
+This method is primarily added to prevent accidental use of lower level \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} method
+
+It makes the ground speed the same as the last one, if there is a previous point, otherwise -\/1.\+0 
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+{\em label} & label for this point \\
+\hline
+{\em info} & info string for this point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ac5ba5386f767cb6246907e59eb4ab330}\label{classlarcfm_1_1_gs_plan_ac5ba5386f767cb6246907e59eb4ab330}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!add@{add}}
+\index{add@{add}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{info,  }\item[{double}]{gs\+Out }\end{DoxyParamCaption})}
+
+Add a position 
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+{\em label} & label for point -- if this equals Gs\+Plan.\+virtual\+Name, then this will become a virtual point when make into a linear plan \\
+\hline
+{\em info} & information for a point \\
+\hline
+{\em gs\+Out} & ground speed out \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_ac819aaf4be295b5eb9640a4fd6d9a283}\label{classlarcfm_1_1_gs_plan_ac819aaf4be295b5eb9640a4fd6d9a283}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!addAll@{addAll}}
+\index{addAll@{addAll}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{addAll()}{addAll()}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::add\+All (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{p }\end{DoxyParamCaption})}
+
+Add all of the points of \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \char`\"{}p\char`\"{} to this plan
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & ground speed plan \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a954784beb64ead6842524acc3dae05be}\label{classlarcfm_1_1_gs_plan_a954784beb64ead6842524acc3dae05be}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!append@{append}}
+\index{append@{append}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{append()}{append()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} larcfm\+::\+Gs\+Plan\+::append (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{p2 }\end{DoxyParamCaption})}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} that is a copy of this one, then add all the elements from p2 to this new \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p2} & point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+groundspeed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a71cdbe97b429b31f599eb127308d7388}\label{classlarcfm_1_1_gs_plan_a71cdbe97b429b31f599eb127308d7388}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!closestSegment@{closestSegment}}
+\index{closestSegment@{closestSegment}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{closestSegment()}{closestSegment()}}
+{\footnotesize\ttfamily int larcfm\+::\+Gs\+Plan\+::closest\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos }\end{DoxyParamCaption}) const}
+
+Return the segment containing the point closest to the given position. 
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+segment number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a12aa1adcf19e4671b0bc6980b375137a}\label{classlarcfm_1_1_gs_plan_a12aa1adcf19e4671b0bc6980b375137a}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!equals@{equals}}
+\index{equals@{equals}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Gs\+Plan\+::equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{fp }\end{DoxyParamCaption}) const}
+
+test equality of Gs\+Plans \mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a5d37653172e2b1fd7322a1ef2ef6bd39}\label{classlarcfm_1_1_gs_plan_a5d37653172e2b1fd7322a1ef2ef6bd39}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!ETA@{ETA}}
+\index{ETA@{ETA}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{ETA()}{ETA()}}
+{\footnotesize\ttfamily double larcfm\+::\+Gs\+Plan\+::\+ETA (\begin{DoxyParamCaption}\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+Calculate ETA for this \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em linear} & false to include kinematic plans \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+estimated final time for this plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a86578072333d6594f255d4b237910987}\label{classlarcfm_1_1_gs_plan_a86578072333d6594f255d4b237910987}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!findName@{findName}}
+\index{findName@{findName}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{findName()}{findName()}}
+{\footnotesize\ttfamily int larcfm\+::\+Gs\+Plan\+::find\+Name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{nm }\end{DoxyParamCaption}) const}
+
+Return the index of first point that has a label equal to the given string -\/1 if there are no matches. 
+\begin{DoxyParams}{Parameters}
+{\em nm} & name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of name 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a4fe3d2860c9d5693580efcd06185972b}\label{classlarcfm_1_1_gs_plan_a4fe3d2860c9d5693580efcd06185972b}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!gs@{gs}}
+\index{gs@{gs}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{gs()}{gs()}}
+{\footnotesize\ttfamily double larcfm\+::\+Gs\+Plan\+::gs (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Get groundspeed 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ground speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a66935de702c9c98761a404f9e36ae6d5}\label{classlarcfm_1_1_gs_plan_a66935de702c9c98761a404f9e36ae6d5}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!linearPlan@{linearPlan}}
+\index{linearPlan@{linearPlan}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{linearPlan()}{linearPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Gs\+Plan\+::linear\+Plan (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Make linear plan from \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}. Note\+: in order to not generate invalid Plans, this ensures each segment has a positive groundspeed (currently {$\ge$} 0.\+001 m/s) \begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_af2ddc7bf064695189162cee92b68e77e}\label{classlarcfm_1_1_gs_plan_af2ddc7bf064695189162cee92b68e77e}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!makeGsPlanConstant@{makeGsPlanConstant}}
+\index{makeGsPlanConstant@{makeGsPlanConstant}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{makeGsPlanConstant()}{makeGsPlanConstant()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} larcfm\+::\+Gs\+Plan\+::make\+Gs\+Plan\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \&}]{gsp,  }\item[{double}]{gs\+New }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} from \char`\"{}gsp\char`\"{} with every segment given a ground speed of \char`\"{}gs\+New\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em gsp} & The source \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} \\
+\hline
+{\em gs\+New} & the ground speed used on every segment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a18193fc50a02f035edcec71fb8336fe3}\label{classlarcfm_1_1_gs_plan_a18193fc50a02f035edcec71fb8336fe3}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!mkGsPlanBankAngle@{mkGsPlanBankAngle}}
+\index{mkGsPlanBankAngle@{mkGsPlanBankAngle}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{mkGsPlanBankAngle()}{mkGsPlanBankAngle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} larcfm\+::\+Gs\+Plan\+::mk\+Gs\+Plan\+Bank\+Angle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a route from a linear plan and calculate radii using \char`\"{}bank\+Angle\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em bank\+Angle} & bank angle used for turn generation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_af89f0e7ba42bc8c26f2fae39906d6ddc}\label{classlarcfm_1_1_gs_plan_af89f0e7ba42bc8c26f2fae39906d6ddc}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!positionFromDistance@{positionFromDistance}}
+\index{positionFromDistance@{positionFromDistance}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{positionFromDistance()}{positionFromDistance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Gs\+Plan\+::position\+From\+Distance (\begin{DoxyParamCaption}\item[{double}]{dist,  }\item[{double}]{default\+Bank,  }\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} at distance 
+\begin{DoxyParams}{Parameters}
+{\em dist} & distance to query \\
+\hline
+{\em default\+Bank} & default bank angle for turns (overridden by radius) \\
+\hline
+{\em linear} & flag to generate turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position at horizontal distance (does not incorporate vertical or ground speed accelerations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_adbe081803a2041daa2b776ff3e064d8c}\label{classlarcfm_1_1_gs_plan_adbe081803a2041daa2b776ff3e064d8c}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!route@{route}}
+\index{route@{route}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{route()}{route()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} larcfm\+::\+Gs\+Plan\+::route (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Provide a copy of the route in this \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{Gs\+Plan}}
+
+\begin{DoxyReturn}{Returns}
+route 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a2be1c18a08c578d5c45db2540175d73f}\label{classlarcfm_1_1_gs_plan_a2be1c18a08c578d5c45db2540175d73f}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!set@{set}}
+\index{set@{set}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::set (\begin{DoxyParamCaption}\item[{int}]{ix,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const std\+::string \&}]{label,  }\item[{const std\+::string \&}]{info,  }\item[{double}]{gs\+Out,  }\item[{double}]{radius }\end{DoxyParamCaption})}
+
+Sets a point 
+\begin{DoxyParams}{Parameters}
+{\em ix} & index of the point \\
+\hline
+{\em pos} & position \\
+\hline
+{\em label} & label for point -- if this equals Gs\+Plan.\+virtual\+Name, then this will become a virtual point when make into a linear plan \\
+\hline
+{\em info} & information for a point \\
+\hline
+{\em gs\+Out} & ground speed out of \char`\"{}ix\char`\"{} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a47a1f4d9e1ac858c9e4bc709fb0b6c51}\label{classlarcfm_1_1_gs_plan_a47a1f4d9e1ac858c9e4bc709fb0b6c51}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!setID@{setID}}
+\index{setID@{setID}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{setID()}{setID()}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::set\+ID (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+set aircraft id 
+\begin{DoxyParams}{Parameters}
+{\em s} & string name \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a4ee32a9fd667d2587e1389b10870b705}\label{classlarcfm_1_1_gs_plan_a4ee32a9fd667d2587e1389b10870b705}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!setRadius@{setRadius}}
+\index{setRadius@{setRadius}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{setRadius()}{setRadius()}}
+{\footnotesize\ttfamily void larcfm\+::\+Gs\+Plan\+::set\+Radius (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{double}]{rad }\end{DoxyParamCaption})}
+
+Set the radius at point \char`\"{}i\char`\"{} to be \char`\"{}rad\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+{\em rad} & radius to be stored \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_gs_plan_a6781f859a76ce25132745466f3aa651f}\label{classlarcfm_1_1_gs_plan_a6781f859a76ce25132745466f3aa651f}} 
+\index{larcfm::GsPlan@{larcfm::GsPlan}!velocityFromDistance@{velocityFromDistance}}
+\index{velocityFromDistance@{velocityFromDistance}!larcfm::GsPlan@{larcfm::GsPlan}}
+\doxysubsubsection{\texorpdfstring{velocityFromDistance()}{velocityFromDistance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Gs\+Plan\+::velocity\+From\+Distance (\begin{DoxyParamCaption}\item[{double}]{dist,  }\item[{double}]{default\+Bank,  }\item[{bool}]{linear }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} at distance 
+\begin{DoxyParams}{Parameters}
+{\em dist} & distance to query \\
+\hline
+{\em default\+Bank} & default bank angle for turns (overridden by radius) \\
+\hline
+{\em linear} & flse to generate turns \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity at horizontal distance (does not incorporate vertical or ground speed accelerations) 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Gs\+Plan.\+h\item 
+Modules/\+ACCo\+RD/src/Gs\+Plan.\+cpp\end{DoxyCompactItemize}

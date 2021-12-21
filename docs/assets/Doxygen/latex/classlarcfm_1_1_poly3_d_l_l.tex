@@ -1,0 +1,226 @@
+\hypertarget{classlarcfm_1_1_poly3_d_l_l}{}\doxysection{larcfm\+::Poly3\+DLL Class Reference}
+\label{classlarcfm_1_1_poly3_d_l_l}\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+
+
+{\ttfamily \#include $<$Poly3\+DLL.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a576383cf8a7e5f9f81edc40c39bafbef}\label{classlarcfm_1_1_poly3_d_l_l_a576383cf8a7e5f9f81edc40c39bafbef}} 
+{\bfseries Poly3\+DLL} (double b, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a5be9d4e772282e477c3804c6b83fb545}\label{classlarcfm_1_1_poly3_d_l_l_a5be9d4e772282e477c3804c6b83fb545}} 
+{\bfseries Poly3\+DLL} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&verts, double b, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ac89ae4e2d70d3676a28bdf4bdaf5ef0c}\label{classlarcfm_1_1_poly3_d_l_l_ac89ae4e2d70d3676a28bdf4bdaf5ef0c}} 
+{\bfseries Poly3\+DLL} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ae6dd6cbeeff7c3a389cd6d99ed76dfe7}\label{classlarcfm_1_1_poly3_d_l_l_ae6dd6cbeeff7c3a389cd6d99ed76dfe7}} 
+void {\bfseries add} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_abd53c234680317f7eb37f59cadf2b021}\label{classlarcfm_1_1_poly3_d_l_l_abd53c234680317f7eb37f59cadf2b021}} 
+void {\bfseries add} (double lat, double lon, double alt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a2dd538889ef891e07c502dd1410c93db}\label{classlarcfm_1_1_poly3_d_l_l_a2dd538889ef891e07c502dd1410c93db}} 
+void {\bfseries insert} (int i, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a205bd7f376b02f325d24691d8b8131d1}{set}} (int n, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a4f1a82f6106a9bb2a81f1f1cc9a54702}\label{classlarcfm_1_1_poly3_d_l_l_a4f1a82f6106a9bb2a81f1f1cc9a54702}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries get} (int i) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ae778b7e5ac39b093565ac6384cd5ea61}{remove}} (int n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_abd945d3f8ee26c3fd3eb22c56d7e4155}\label{classlarcfm_1_1_poly3_d_l_l_abd945d3f8ee26c3fd3eb22c56d7e4155}} 
+int {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a09b68c0b666f01e54d11263ccdc4c7e0}\label{classlarcfm_1_1_poly3_d_l_l_a09b68c0b666f01e54d11263ccdc4c7e0}} 
+double {\bfseries get\+Top} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a45e7a020fea015f8b353cda340d9bcf0}\label{classlarcfm_1_1_poly3_d_l_l_a45e7a020fea015f8b353cda340d9bcf0}} 
+void {\bfseries set\+Top} (double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a53cd8a5df99851683f2fb80a07b16803}\label{classlarcfm_1_1_poly3_d_l_l_a53cd8a5df99851683f2fb80a07b16803}} 
+double {\bfseries get\+Bottom} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a63e39c23da559aaef924dd82fa07f5b7}\label{classlarcfm_1_1_poly3_d_l_l_a63e39c23da559aaef924dd82fa07f5b7}} 
+void {\bfseries set\+Bottom} (double b)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_aed5a9067a30156857d6e4fbf7fb095dc}\label{classlarcfm_1_1_poly3_d_l_l_aed5a9067a30156857d6e4fbf7fb095dc}} 
+bool {\bfseries is\+Clockwise} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ab62061eec708883563219be969d56596}{centroid}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_af668ab3237226aee24eb62f3257307e7}\label{classlarcfm_1_1_poly3_d_l_l_af668ab3237226aee24eb62f3257307e7}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries average\+Point} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ad44d695ea007931b0cd2d2067a349cf4}\label{classlarcfm_1_1_poly3_d_l_l_ad44d695ea007931b0cd2d2067a349cf4}} 
+void {\bfseries recalc\+Bounding\+Rectangle} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a3fefd725e600c2a57fd143ac87f4fe75}\label{classlarcfm_1_1_poly3_d_l_l_a3fefd725e600c2a57fd143ac87f4fe75}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_af50b398924750762d593e920d4a85383}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_abc513d663f8fb430e7256cc114798154}{contains2D}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a069bc913cd230828ea5eba63b4353c72}\label{classlarcfm_1_1_poly3_d_l_l_a069bc913cd230828ea5eba63b4353c72}} 
+bool {\bfseries equals} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ad3de5a07719ebd73f9509bb4007c12c2}{is\+Convex}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a1eea6a3f980b745a4b22bea46ebe3d5b}\label{classlarcfm_1_1_poly3_d_l_l_a1eea6a3f980b745a4b22bea46ebe3d5b}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} {\bfseries reverse\+Order} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_af8108fa71f34b2982647ae3d0cd88c02}\label{classlarcfm_1_1_poly3_d_l_l_af8108fa71f34b2982647ae3d0cd88c02}} 
+double {\bfseries sum\+Angles} (int dir) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a429fb60136e7041e4db93ccd2e6d0c35}{area}} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a30f6dac710a60ae21906cb2b9ef1e0c6}{signed\+Area}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a529cb0a36bf54998e04d9092e9e79c20}\label{classlarcfm_1_1_poly3_d_l_l_a529cb0a36bf54998e04d9092e9e79c20}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries get\+Bounding\+Rectangle} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a8e1c58c5c692c9d8e570968151862a80}\label{classlarcfm_1_1_poly3_d_l_l_a8e1c58c5c692c9d8e570968151862a80}} 
+const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \& {\bfseries get\+Vertices\+Ref} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a50cd10e67e074a63cc9b15e12f98f10a}\label{classlarcfm_1_1_poly3_d_l_l_a50cd10e67e074a63cc9b15e12f98f10a}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ {\bfseries vertices}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a0a655402fa05fde0d059b49132dbe2b8}\label{classlarcfm_1_1_poly3_d_l_l_a0a655402fa05fde0d059b49132dbe2b8}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries bounding\+Rect}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_acb9d93290cf020b3d0cdd6271d5d243e}\label{classlarcfm_1_1_poly3_d_l_l_acb9d93290cf020b3d0cdd6271d5d243e}} 
+bool {\bfseries bounding\+Rectangle\+Defined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_af4045abfb0aa18207c29a23ba294634c}\label{classlarcfm_1_1_poly3_d_l_l_af4045abfb0aa18207c29a23ba294634c}} 
+double {\bfseries top}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a1c4771a16167649cafe0f75d9c8f99bb}\label{classlarcfm_1_1_poly3_d_l_l_a1c4771a16167649cafe0f75d9c8f99bb}} 
+double {\bfseries bottom}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a974eeb26f50b2b139e84de0495fb3a7b}\label{classlarcfm_1_1_poly3_d_l_l_a974eeb26f50b2b139e84de0495fb3a7b}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries cpos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a9a1bb0363a3557cb746364993806fa93}\label{classlarcfm_1_1_poly3_d_l_l_a9a1bb0363a3557cb746364993806fa93}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries last\+Add}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Euclidean space representation of polygon with height info. This extends \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} (temporarily) in order to take advantage to polymorphism of detection algorithms. If treated as a normal \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} point, this ignores the polygon information. Only functions that are aware of Poly3\+DLLs will have access to its full definition. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a429fb60136e7041e4db93ccd2e6d0c35}\label{classlarcfm_1_1_poly3_d_l_l_a429fb60136e7041e4db93ccd2e6d0c35}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!area@{area}}
+\index{area@{area}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly3\+DLL\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This returns the approximate area of the polyon in square meters. Calculation for area is a standard formula extending Girard\textquotesingle{}s Theorem for the area of a triangle on a sphere (A = (E-\/\+PI)$\ast$\+R$^\wedge$2) Considering this is based on the angular excess of the triangles in question, and polygons are generally very small compared to the radius of the Earth, this is very sensitive to minor inaccuracies in the interior angle calculations. \begin{DoxyReturn}{Returns}
+area 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ab62061eec708883563219be969d56596}\label{classlarcfm_1_1_poly3_d_l_l_ab62061eec708883563219be969d56596}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!centroid@{centroid}}
+\index{centroid@{centroid}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{centroid()}{centroid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Poly3\+DLL\+::centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Note that the calculations used here are Euclidean, and only return the approximate centroid for polygons on a sphere. \begin{DoxyReturn}{Returns}
+the geometric centroid.
+
+the geometric centroid. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_af50b398924750762d593e920d4a85383}\label{classlarcfm_1_1_poly3_d_l_l_af50b398924750762d593e920d4a85383}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!contains@{contains}}
+\index{contains@{contains}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly3\+DLL\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms. 
+\begin{DoxyParams}{Parameters}
+{\em lla} & point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if contains
+\end{DoxyReturn}
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms. \mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_abc513d663f8fb430e7256cc114798154}\label{classlarcfm_1_1_poly3_d_l_l_abc513d663f8fb430e7256cc114798154}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!contains2D@{contains2D}}
+\index{contains2D@{contains2D}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{contains2D()}{contains2D()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly3\+DLL\+::contains2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms. 
+\begin{DoxyParams}{Parameters}
+{\em lla} & point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if contains
+\end{DoxyReturn}
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms. \mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ad3de5a07719ebd73f9509bb4007c12c2}\label{classlarcfm_1_1_poly3_d_l_l_ad3de5a07719ebd73f9509bb4007c12c2}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!isConvex@{isConvex}}
+\index{isConvex@{isConvex}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{isConvex()}{isConvex()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly3\+DLL\+::is\+Convex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if this polygon is convex \begin{DoxyReturn}{Returns}
+true, if convex 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_ae778b7e5ac39b093565ac6384cd5ea61}\label{classlarcfm_1_1_poly3_d_l_l_ae778b7e5ac39b093565ac6384cd5ea61}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!remove@{remove}}
+\index{remove@{remove}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly3\+DLL\+::remove (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+Remove a point from this Simple\+Poly\+New. 
+\begin{DoxyParams}{Parameters}
+{\em n} & Index (in order added) of the point to be removed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a205bd7f376b02f325d24691d8b8131d1}\label{classlarcfm_1_1_poly3_d_l_l_a205bd7f376b02f325d24691d8b8131d1}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!set@{set}}
+\index{set@{set}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly3\+DLL\+::set (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p }\end{DoxyParamCaption})}
+
+Change the position of a point already added to the Simple\+Poly\+New, indicated by its index. This currently does NOT set the Z component of the point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an invalid vertex is detected, true otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly3_d_l_l_a30f6dac710a60ae21906cb2b9ef1e0c6}\label{classlarcfm_1_1_poly3_d_l_l_a30f6dac710a60ae21906cb2b9ef1e0c6}} 
+\index{larcfm::Poly3DLL@{larcfm::Poly3DLL}!signedArea@{signedArea}}
+\index{signedArea@{signedArea}!larcfm::Poly3DLL@{larcfm::Poly3DLL}}
+\doxysubsubsection{\texorpdfstring{signedArea()}{signedArea()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly3\+DLL\+::signed\+Area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Planar geometric area of a {\bfseries{simple}} polygon. It is positive if the vertices are ordered counterclockwise and negative if clockwise. This returns the area in square radians (used for centroid calculation) Note that the area calculations used here are Euclidean, and do not return the actual area occupied by the polygon.
+
+\begin{DoxyReturn}{Returns}
+the signed area of the polygon
+\end{DoxyReturn}
+Planar geometric area of a {\bfseries{simple}} polygon. It is positive if the vertices are ordered counterclockwise and negative if clockwise.
+
+\begin{DoxyReturn}{Returns}
+the signed area of the polygon 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Poly3\+DLL.\+h\item 
+Modules/\+ACCo\+RD/src/Poly3\+DLL.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,112 @@
+\hypertarget{classlarcfm_1_1_loss_data}{}\doxysection{larcfm\+::Loss\+Data Class Reference}
+\label{classlarcfm_1_1_loss_data}\index{larcfm::LossData@{larcfm::LossData}}
+Inheritance diagram for larcfm\+::Loss\+Data\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_loss_data}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_loss_data_a3da24652f17f6ec2de6136c78e8a87b3}{to\+String}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_loss_data_aee01df28a38708b4c2482eb63d4da4e1}\label{classlarcfm_1_1_loss_data_aee01df28a38708b4c2482eb63d4da4e1}} 
+{\bfseries Loss\+Data} (double time\+\_\+in, double time\+\_\+out)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_loss_data_ac54e345fab08ef7e8384090f2474dc3f}{conflict}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_loss_data_a5dd79c0007956989d567bdab4691d58f}{conflict\+Before}} (double t) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_loss_data_a61b1c5ad508a9d3aee4b96e2994ffbce}{conflict\+Last\+More\+Than}} (double thr) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_loss_data_a1234f8337d82a265070c5fb77af31be6}{conflict}} (double thr) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_loss_data_a2cc7986f41e7964ec498c0cacb7a4663}{get\+Time\+In}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_loss_data_add24aa1e2f23b579be2465ab80d3d5cc}{get\+Time\+Out}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_loss_data_a23db372ebc066bedfa40a182f3fa7206}{get\+Time\+Interval}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_loss_data_ac2549c5711f495128f8e272b372cc3cf}\label{classlarcfm_1_1_loss_data_ac2549c5711f495128f8e272b372cc3cf}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} \& {\bfseries EMPTY} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_loss_data_af498ba94dbdf2d5626ed23ccb29a2321}\label{classlarcfm_1_1_loss_data_af498ba94dbdf2d5626ed23ccb29a2321}} 
+double {\bfseries time\+\_\+in}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_loss_data_a979800ef27d640e7b93f80a059fedabf}\label{classlarcfm_1_1_loss_data_a979800ef27d640e7b93f80a059fedabf}} 
+double {\bfseries time\+\_\+out}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_loss_data_ac54e345fab08ef7e8384090f2474dc3f}\label{classlarcfm_1_1_loss_data_ac54e345fab08ef7e8384090f2474dc3f}} 
+\index{larcfm::LossData@{larcfm::LossData}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Loss\+Data\+::conflict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if loss \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a1234f8337d82a265070c5fb77af31be6}\label{classlarcfm_1_1_loss_data_a1234f8337d82a265070c5fb77af31be6}} 
+\index{larcfm::LossData@{larcfm::LossData}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Loss\+Data\+::conflict (\begin{DoxyParamCaption}\item[{double}]{thr }\end{DoxyParamCaption}) const}
+
+DEPRECATED -- Use conflict\+Last\+More\+Than instead \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a5dd79c0007956989d567bdab4691d58f}\label{classlarcfm_1_1_loss_data_a5dd79c0007956989d567bdab4691d58f}} 
+\index{larcfm::LossData@{larcfm::LossData}!conflictBefore@{conflictBefore}}
+\index{conflictBefore@{conflictBefore}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{conflictBefore()}{conflictBefore()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Loss\+Data\+::conflict\+Before (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Returns true if loss occurs before t in seconds \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a61b1c5ad508a9d3aee4b96e2994ffbce}\label{classlarcfm_1_1_loss_data_a61b1c5ad508a9d3aee4b96e2994ffbce}} 
+\index{larcfm::LossData@{larcfm::LossData}!conflictLastMoreThan@{conflictLastMoreThan}}
+\index{conflictLastMoreThan@{conflictLastMoreThan}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{conflictLastMoreThan()}{conflictLastMoreThan()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Loss\+Data\+::conflict\+Last\+More\+Than (\begin{DoxyParamCaption}\item[{double}]{thr }\end{DoxyParamCaption}) const}
+
+Returns true if loss last more than thr in seconds \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a2cc7986f41e7964ec498c0cacb7a4663}\label{classlarcfm_1_1_loss_data_a2cc7986f41e7964ec498c0cacb7a4663}} 
+\index{larcfm::LossData@{larcfm::LossData}!getTimeIn@{getTimeIn}}
+\index{getTimeIn@{getTimeIn}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{getTimeIn()}{getTimeIn()}}
+{\footnotesize\ttfamily double larcfm\+::\+Loss\+Data\+::get\+Time\+In (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns time to first loss in seconds. Note\+: this returns positive infinity if there is not a conflict!
+
+Returns time to first loss in seconds. \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a23db372ebc066bedfa40a182f3fa7206}\label{classlarcfm_1_1_loss_data_a23db372ebc066bedfa40a182f3fa7206}} 
+\index{larcfm::LossData@{larcfm::LossData}!getTimeInterval@{getTimeInterval}}
+\index{getTimeInterval@{getTimeInterval}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{getTimeInterval()}{getTimeInterval()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} larcfm\+::\+Loss\+Data\+::get\+Time\+Interval (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns time interval to loss in seconds.
+
+Returns time interval to loss in seconds \mbox{\Hypertarget{classlarcfm_1_1_loss_data_add24aa1e2f23b579be2465ab80d3d5cc}\label{classlarcfm_1_1_loss_data_add24aa1e2f23b579be2465ab80d3d5cc}} 
+\index{larcfm::LossData@{larcfm::LossData}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}}
+{\footnotesize\ttfamily double larcfm\+::\+Loss\+Data\+::get\+Time\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns time to last loss in seconds. Note\+: this returns negative infinity if there is not a conflict!
+
+Returns time to last loss in seconds. \mbox{\Hypertarget{classlarcfm_1_1_loss_data_a3da24652f17f6ec2de6136c78e8a87b3}\label{classlarcfm_1_1_loss_data_a3da24652f17f6ec2de6136c78e8a87b3}} 
+\index{larcfm::LossData@{larcfm::LossData}!toString@{toString}}
+\index{toString@{toString}!larcfm::LossData@{larcfm::LossData}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Loss\+Data\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlarcfm_1_1_conflict_data_ac32ca305f06d35caa79c8547b439ad3f}{larcfm\+::\+Conflict\+Data}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Loss\+Data.\+h\item 
+Modules/\+ACCo\+RD/src/Loss\+Data.\+cpp\end{DoxyCompactItemize}

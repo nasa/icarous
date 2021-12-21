@@ -1,0 +1,247 @@
+\hypertarget{_t_c_a_s_table_8h_source}{}\doxysection{TCASTable.\+h}
+\label{_t_c_a_s_table_8h_source}\index{Modules/ACCoRD/inc/TCASTable.h@{Modules/ACCoRD/inc/TCASTable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2012-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef TCASTABLE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define TCASTABLE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ParameterTable.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{20 \textcolor{comment}{//\#include <numeric\_limits>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_table}{ParameterTable}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{private}:}
+\DoxyCodeLine{27   \textcolor{comment}{/* Default levels in internal units */}}
+\DoxyCodeLine{28   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& default\_levels(); \textcolor{comment}{// default 7}}
+\DoxyCodeLine{29   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{30   \textcolor{comment}{//      Units::from(Units::ft,0),     // Upper bound of TCAS Level 1}}
+\DoxyCodeLine{31   \textcolor{comment}{//      Units::from(Units::ft,1000),  // Upper bound of TCAS Level 2}}
+\DoxyCodeLine{32   \textcolor{comment}{//      Units::from(Units::ft,2350),  // Upper bound of TCAS Level 3}}
+\DoxyCodeLine{33   \textcolor{comment}{//      Units::from(Units::ft,5000),  // Upper bound of TCAS Level 4}}
+\DoxyCodeLine{34   \textcolor{comment}{//      Units::from(Units::ft,10000), // Upper bound of TCAS Level 5}}
+\DoxyCodeLine{35   \textcolor{comment}{//      Units::from(Units::ft,20000), // Upper bound of TCAS Level 6}}
+\DoxyCodeLine{36   \textcolor{comment}{//      Units::from(Units::ft,42000)  // Upper bound of TCAS Level 7}}
+\DoxyCodeLine{37   \textcolor{comment}{//  \}; // Note that this array has only 7 entries.}}
+\DoxyCodeLine{38   \textcolor{comment}{//It is understood that there is one additional level with an infinite upper bound.}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{comment}{/* TA TAU Threshold in seconds */}}
+\DoxyCodeLine{41   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& TA\_TAU(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{42   \textcolor{comment}{// 1  2  3  4  5  6  7  8 (0 i N/A)}}
+\DoxyCodeLine{43   \textcolor{comment}{// = \{0.0,20.0,25.0,30.0,40.0,45.0,48.0,48.0\};}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{comment}{/* RA TAU Threshold in seconds */}}
+\DoxyCodeLine{46   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& RA\_TAU(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{47   \textcolor{comment}{// 1  2  3  4  5  6  7  8 (0 i N/A)}}
+\DoxyCodeLine{48   \textcolor{comment}{// = \{0.0,0.0,15.0,20.0,25.0,30.0,35.0,35.0\};}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{comment}{/* TA DMOD in internal units (0 if N/A) */}}
+\DoxyCodeLine{51   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& TA\_DMOD(); \textcolor{comment}{//default 8}}
+\DoxyCodeLine{52   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{53   \textcolor{comment}{//      0,                                                       // 1}}
+\DoxyCodeLine{54   \textcolor{comment}{//      Units::from(Units::NM,0.30),                       // 2}}
+\DoxyCodeLine{55   \textcolor{comment}{//      Units::from(Units::NM,0.33),                       // 3}}
+\DoxyCodeLine{56   \textcolor{comment}{//      Units::from(Units::NM,0.48),                       // 4}}
+\DoxyCodeLine{57   \textcolor{comment}{//      Units::from(Units::NM,0.75),                       // 5}}
+\DoxyCodeLine{58   \textcolor{comment}{//      Units::from(Units::NM,1.0),                        // 6}}
+\DoxyCodeLine{59   \textcolor{comment}{//      Units::from(Units::NM,1.3),                        // 7}}
+\DoxyCodeLine{60   \textcolor{comment}{//      Units::from(Units::NM,1.3)\};                       // 8}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{comment}{/* RA DMOD in internal units (0 if N/A) */}}
+\DoxyCodeLine{63   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& RA\_DMOD(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{64   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{65   \textcolor{comment}{//      0,                                                    // 1}}
+\DoxyCodeLine{66   \textcolor{comment}{//      0,                                                  // 2}}
+\DoxyCodeLine{67   \textcolor{comment}{//      Units::from(Units::NM,0.2),               // 3}}
+\DoxyCodeLine{68   \textcolor{comment}{//      Units::from(Units::NM,0.35),              // 4}}
+\DoxyCodeLine{69   \textcolor{comment}{//      Units::from(Units::NM,0.55),              // 5}}
+\DoxyCodeLine{70   \textcolor{comment}{//      Units::from(Units::NM,0.8),               // 6}}
+\DoxyCodeLine{71   \textcolor{comment}{//      Units::from(Units::NM,1.1),               // 7}}
+\DoxyCodeLine{72   \textcolor{comment}{//      Units::from(Units::NM,1.1)\};              // 8}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \textcolor{comment}{/* TA ZTHR in internal units (0 if N/A) */}}
+\DoxyCodeLine{75   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& TA\_ZTHR(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{76   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{77   \textcolor{comment}{//      0,                                                  // 1}}
+\DoxyCodeLine{78   \textcolor{comment}{//      Units::from(Units::ft,850),               // 2}}
+\DoxyCodeLine{79   \textcolor{comment}{//      Units::from(Units::ft,850),               // 3}}
+\DoxyCodeLine{80   \textcolor{comment}{//      Units::from(Units::ft,850),               // 4}}
+\DoxyCodeLine{81   \textcolor{comment}{//      Units::from(Units::ft,850),               // 5}}
+\DoxyCodeLine{82   \textcolor{comment}{//      Units::from(Units::ft,850),               // 6}}
+\DoxyCodeLine{83   \textcolor{comment}{//      Units::from(Units::ft,850),               // 7}}
+\DoxyCodeLine{84   \textcolor{comment}{//      Units::from(Units::ft,1200)\};             // 8}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \textcolor{comment}{/* RA ZTHR in internal units (0 if N/A) */}}
+\DoxyCodeLine{87   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& RA\_ZTHR(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{88   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{89   \textcolor{comment}{//      0,                                                      // 1}}
+\DoxyCodeLine{90   \textcolor{comment}{//      0,                                                      // 2}}
+\DoxyCodeLine{91   \textcolor{comment}{//      Units::from(Units::ft,600),               // 3}}
+\DoxyCodeLine{92   \textcolor{comment}{//      Units::from(Units::ft,600),               // 4}}
+\DoxyCodeLine{93   \textcolor{comment}{//      Units::from(Units::ft,600),               // 5}}
+\DoxyCodeLine{94   \textcolor{comment}{//      Units::from(Units::ft,600),               // 6}}
+\DoxyCodeLine{95   \textcolor{comment}{//      Units::from(Units::ft,700),               // 7}}
+\DoxyCodeLine{96   \textcolor{comment}{//      Units::from(Units::ft,800)\};              // 8}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98   \textcolor{comment}{/* RA HMD in internal units (0 if N/A) */}}
+\DoxyCodeLine{99   \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<double>\& RA\_HMD(); \textcolor{comment}{// default 8}}
+\DoxyCodeLine{100   \textcolor{comment}{//  = \{}}
+\DoxyCodeLine{101   \textcolor{comment}{//      0,                                                      // 1}}
+\DoxyCodeLine{102   \textcolor{comment}{//      0,                                                      // 2}}
+\DoxyCodeLine{103   \textcolor{comment}{//      Units::from(Units::ft,1215),              // 3}}
+\DoxyCodeLine{104   \textcolor{comment}{//      Units::from(Units::ft,2126),              // 4}}
+\DoxyCodeLine{105   \textcolor{comment}{//      Units::from(Units::ft,3342),              // 5}}
+\DoxyCodeLine{106   \textcolor{comment}{//      Units::from(Units::ft,4861),              // 6}}
+\DoxyCodeLine{107   \textcolor{comment}{//      Units::from(Units::ft,6683),              // 7}}
+\DoxyCodeLine{108   \textcolor{comment}{//      Units::from(Units::ft,6683)\};             // 8}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110   \textcolor{keywordtype}{bool} HMDFilter\_;}
+\DoxyCodeLine{111   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{112   std::vector<double> TAU\_;}
+\DoxyCodeLine{113   std::vector<double> TCOA\_;}
+\DoxyCodeLine{114   std::vector<double> DMOD\_;}
+\DoxyCodeLine{115   std::vector<double> ZTHR\_;}
+\DoxyCodeLine{116   std::vector<double> HMD\_;}
+\DoxyCodeLine{117   std::vector<double> levels\_; \textcolor{comment}{// this is the upper end for each level, indexed from 1.}}
+\DoxyCodeLine{118   \textcolor{comment}{// This list has one less element than the other lists.}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{keywordtype}{void} add\_zeros();}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{void} default\_units();}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{public}:}
+\DoxyCodeLine{125   \textcolor{comment}{// Returns an empty TCASTable}}
+\DoxyCodeLine{126   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}(); \textcolor{comment}{//TODO make this private}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128   \textcolor{comment}{// TCASII RA Table}}
+\DoxyCodeLine{129   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& TCASII\_RA();}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131   \textcolor{comment}{// TCASII RA Table}}
+\DoxyCodeLine{132   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& TCASII\_TA();}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} make\_TCASII\_Table(\textcolor{keywordtype}{bool} ra);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{141   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ac8b48cb011155d9a3d4fa6f88e0d2c94}{make\_Empty\_TCASTable}}();}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   \textcolor{comment}{// Clear all inputs in TCASTable}}
+\DoxyCodeLine{144   \textcolor{keywordtype}{void} clear();}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{150   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a9a5d85fdd4c90e1d741f6b711c55a0d6}{getSensitivityLevel}}(\textcolor{keywordtype}{double} alt) \textcolor{keyword}{const};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a9a5d85fdd4c90e1d741f6b711c55a0d6}{getSensitivityLevel}}(\textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{158   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a736f7d97704e3d008ad8f39b43a6b41a}{isValidSensitivityLevel}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{163   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_addae31aedb2c2f3e3ff48e7c78e09de0}{getMaxSensitivityLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{170   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ad5db7aebf37611ece9ecbda60c1195a3}{getLevelAltitudeLowerBound}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{177   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ad5db7aebf37611ece9ecbda60c1195a3}{getLevelAltitudeLowerBound}}(\textcolor{keywordtype}{int} sl, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{184   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a159856b77fe5771b10aa7e23691e1d47}{getLevelAltitudeUpperBound}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{191   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a159856b77fe5771b10aa7e23691e1d47}{getLevelAltitudeUpperBound}}(\textcolor{keywordtype}{int} sl, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{keyword}{private}:}
+\DoxyCodeLine{194   \textcolor{keywordtype}{void} setTCASIILevels();}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{public}:}
+\DoxyCodeLine{200   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a47daf5816c73c1dffe83aabdda482d95}{setDefaultTCASIIThresholds}}(\textcolor{keywordtype}{bool} ra);}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{206   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_af28e11c7e264c8b752d857d3690d6f57}{getTAU}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{212   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ab1cd5d007833450fe4c6357cea0a55fd}{getTCOA}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{218   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a9bcfde16e9f8fff5bcec791f26f3b2a9}{getDMOD}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{224   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a9bcfde16e9f8fff5bcec791f26f3b2a9}{getDMOD}}(\textcolor{keywordtype}{int} sl, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{230   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a1920430e8db2ee67a9db34a54bda1332}{getZTHR}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{236   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a1920430e8db2ee67a9db34a54bda1332}{getZTHR}}(\textcolor{keywordtype}{int} sl,std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{242   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_aac0822e5fb860852fa52013d747baaeb}{getHMD}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{248   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_aac0822e5fb860852fa52013d747baaeb}{getHMD}}(\textcolor{keywordtype}{int} sl, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{253   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a94987919a22e0680594f7ab0f1dcf68d}{setTAU}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{258   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a94987919a22e0680594f7ab0f1dcf68d}{setTAU}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, std::string u);}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{263   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_adb962707de021c701b60f24c0599e657}{setTCOA}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{268   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_adb962707de021c701b60f24c0599e657}{setTCOA}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, std::string u);}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{273   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_af1f7580602f6e39d9612841716f308a7}{setDMOD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{278   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_af1f7580602f6e39d9612841716f308a7}{setDMOD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, std::string u);}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{283   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a658c030c97b8dc3588349d6258704df9}{setZTHR}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{288   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_a658c030c97b8dc3588349d6258704df9}{setZTHR}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, std::string u);}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{294   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ae94c3a652fbf323f9bfe8edbd1e933b6}{setHMD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 }
+\DoxyCodeLine{301   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_ae94c3a652fbf323f9bfe8edbd1e933b6}{setHMD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, std::string u);}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{309   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_afff6aaf5ec1f966a2de64e72144305f7}{addSensitivityLevel}}(\textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{310 }
+\DoxyCodeLine{316   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_afff6aaf5ec1f966a2de64e72144305f7}{addSensitivityLevel}}();}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{324   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_afff6aaf5ec1f966a2de64e72144305f7}{addSensitivityLevel}}(\textcolor{keywordtype}{double} alt,std::string u);}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326   \textcolor{keywordtype}{void} setHMDFilter(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328   \textcolor{keywordtype}{bool} getHMDFilter() \textcolor{keyword}{const};}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{331   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_aad3d953019d1311947f7a89c6e3f426a}{isRAStandard}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{334   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table_aae612125eb7951342aeee8b5cfa8c24a}{isTAStandard}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 \textcolor{keyword}{private}:}
+\DoxyCodeLine{337   \textcolor{keyword}{static} std::string list\_units(\textcolor{keyword}{const} std::string\& units, \textcolor{keyword}{const} std::vector<double>\& v);}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339 \textcolor{keyword}{public}:}
+\DoxyCodeLine{340   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342 \textcolor{keyword}{private}:}
+\DoxyCodeLine{343   std::string pvs\_list(\textcolor{keyword}{const} std::vector<double>\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{345 \textcolor{keyword}{public}:}
+\DoxyCodeLine{346   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350   \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& t) \textcolor{keyword}{const};}
+\DoxyCodeLine{351 }
+\DoxyCodeLine{352   \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& tab) \textcolor{keyword}{const};}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 }
+\DoxyCodeLine{355   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{356   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{357   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 \};}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 \}}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

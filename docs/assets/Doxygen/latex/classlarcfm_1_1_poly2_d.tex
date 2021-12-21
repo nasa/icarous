@@ -1,0 +1,265 @@
+\hypertarget{classlarcfm_1_1_poly2_d}{}\doxysection{larcfm\+::Poly2D Class Reference}
+\label{classlarcfm_1_1_poly2_d}\index{larcfm::Poly2D@{larcfm::Poly2D}}
+
+
+{\ttfamily \#include $<$Poly2\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aff00db87b32259dea6e848a6ffcdd3c3}\label{classlarcfm_1_1_poly2_d_aff00db87b32259dea6e848a6ffcdd3c3}} 
+{\bfseries Poly2D} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&verts)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly2_d_af8d710f3f2c584cb8fc68fd748bfa4b7}{Poly2D}} (const \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \&polygon)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aea5275f2e2f0073e8703bed141b0dd10}\label{classlarcfm_1_1_poly2_d_aea5275f2e2f0073e8703bed141b0dd10}} 
+int {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a733293e27db5aef1494ffb0541320c6f}\label{classlarcfm_1_1_poly2_d_a733293e27db5aef1494ffb0541320c6f}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} {\bfseries linear} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a3c6ccd58fcb338548e77d3bd1da22dbe}\label{classlarcfm_1_1_poly2_d_a3c6ccd58fcb338548e77d3bd1da22dbe}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} {\bfseries linear} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&v, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_ac0df6335460cac9f4c36a491402a303d}\label{classlarcfm_1_1_poly2_d_ac0df6335460cac9f4c36a491402a303d}} 
+void {\bfseries add} (double x, double y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a86220d579a61de971eb561f601590a6b}\label{classlarcfm_1_1_poly2_d_a86220d579a61de971eb561f601590a6b}} 
+void {\bfseries add} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a1bd8d9a367acb38f17b16b283e00d964}\label{classlarcfm_1_1_poly2_d_a1bd8d9a367acb38f17b16b283e00d964}} 
+void {\bfseries insert} (int i, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a6961a1ceb94788c4048f56d00a4a8c9f}{get}} (int i) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a7671932bf241806a90f21f9bb3afb4fa}{set}} (int i, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a0f1d90438275e0c3477faa08075505a1}{remove}} (int n)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a68b4b87942cf8e3ae96ac0090313da63}{contains}} (double a, double b) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a13de1952a81a3516a7e28583389397cc}\label{classlarcfm_1_1_poly2_d_a13de1952a81a3516a7e28583389397cc}} 
+bool {\bfseries contains} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aa096c8b8a2965509fa6ee13a4a3d08a6}\label{classlarcfm_1_1_poly2_d_aa096c8b8a2965509fa6ee13a4a3d08a6}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries get\+Vertices\+Ref} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly2_d_afd75f3440907a26141cfafb59ec26c53}{signed\+Area}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a4a65bce9b10f318143963c4c7bedfab5}{area}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a310eb3ab51c4bd664d553cf95f559d22}{centroid}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_ae5807d7006f6f836dfe97fb45147b9eb}{average\+Point}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a619e45492a763ed1856c34c4ead1e571}{inner\+Diameter}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aaaec2a3573591b207833c97ee7981aef}\label{classlarcfm_1_1_poly2_d_aaaec2a3573591b207833c97ee7981aef}} 
+double {\bfseries outer\+Diameter} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_ae19af466e95fdacbea591ac676cf2b1b}\label{classlarcfm_1_1_poly2_d_ae19af466e95fdacbea591ac676cf2b1b}} 
+bool {\bfseries is\+Clockwise} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_aa2de9ce0cb6f0676b26eca71aae795f8}{reverse\+Order}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a069f89f7682c8b89900ea3dc02fcfb5c}{ap\+Bounding\+Radius}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_ac938641e6e17fe29317e525e909aecf0}\label{classlarcfm_1_1_poly2_d_ac938641e6e17fe29317e525e909aecf0}} 
+void {\bfseries recalc\+Bounding\+Rectangle} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly2_d_abdb1ad94b7663601133ad6676d39432a}{str\+Vect\+Array}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&verts) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a65a5556e359550cb2615d9fea13a3221}\label{classlarcfm_1_1_poly2_d_a65a5556e359550cb2615d9fea13a3221}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a354dd211d37763a4a45bb8e476c4cbca}\label{classlarcfm_1_1_poly2_d_a354dd211d37763a4a45bb8e476c4cbca}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries vertices}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a2bb73baf9566697ee03c00c0b7f17309}\label{classlarcfm_1_1_poly2_d_a2bb73baf9566697ee03c00c0b7f17309}} 
+double {\bfseries minX}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aa958ef69ba5fa019200697a38e056fde}\label{classlarcfm_1_1_poly2_d_aa958ef69ba5fa019200697a38e056fde}} 
+double {\bfseries minY}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a2a9cbddad33560faa57863f23d69c7c9}\label{classlarcfm_1_1_poly2_d_a2a9cbddad33560faa57863f23d69c7c9}} 
+double {\bfseries maxX}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a3f76ebbca18e3f2741e262b06df7e08d}\label{classlarcfm_1_1_poly2_d_a3f76ebbca18e3f2741e262b06df7e08d}} 
+double {\bfseries maxY}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a2e3c023bf50e574e8a6717d9dfb255df}\label{classlarcfm_1_1_poly2_d_a2e3c023bf50e574e8a6717d9dfb255df}} 
+static const double {\bfseries vertex\+Perturb} = 1E-\/10
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a80dea7437bc160db6c69ebd8c9d9ca0c}\label{classlarcfm_1_1_poly2_d_a80dea7437bc160db6c69ebd8c9d9ca0c}} 
+static const double {\bfseries perturb\+Amount} = 2E-\/10
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. This implementation assumes a simply connected polygon. The Polygon is otherwise quite general allowing multiply connected regions. The class provides a containment test for points and uses bounding rectangles to speed up computations. ~\newline
+
+
+Note\+: It does not use the \char`\"{}\+Bounding\+Rectangle\char`\"{} class to avoid importing Lat/\+Lon classes such as \mbox{\hyperlink{classlarcfm_1_1_great_circle}{Great\+Circle}}. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_af8d710f3f2c584cb8fc68fd748bfa4b7}\label{classlarcfm_1_1_poly2_d_af8d710f3f2c584cb8fc68fd748bfa4b7}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!Poly2D@{Poly2D}}
+\index{Poly2D@{Poly2D}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{Poly2D()}{Poly2D()}}
+{\footnotesize\ttfamily larcfm\+::\+Poly2\+D\+::\+Poly2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \&}]{polygon }\end{DoxyParamCaption})}
+
+Constructor for creating a copy of a Polygon
+
+
+\begin{DoxyParams}{Parameters}
+{\em polygon} & The polygon to be copied \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a069f89f7682c8b89900ea3dc02fcfb5c}\label{classlarcfm_1_1_poly2_d_a069f89f7682c8b89900ea3dc02fcfb5c}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!apBoundingRadius@{apBoundingRadius}}
+\index{apBoundingRadius@{apBoundingRadius}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{apBoundingRadius()}{apBoundingRadius()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly2\+D\+::ap\+Bounding\+Radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Distance from average\+Point to farthest vertex \begin{DoxyReturn}{Returns}
+radius 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a4a65bce9b10f318143963c4c7bedfab5}\label{classlarcfm_1_1_poly2_d_a4a65bce9b10f318143963c4c7bedfab5}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!area@{area}}
+\index{area@{area}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly2\+D\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the horizontal area (in m$^\wedge$2) of this \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. \begin{DoxyReturn}{Returns}
+area
+\end{DoxyReturn}
+Return the horizontal area (in m$^\wedge$2) of this \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. \mbox{\Hypertarget{classlarcfm_1_1_poly2_d_ae5807d7006f6f836dfe97fb45147b9eb}\label{classlarcfm_1_1_poly2_d_ae5807d7006f6f836dfe97fb45147b9eb}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!averagePoint@{averagePoint}}
+\index{averagePoint@{averagePoint}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{averagePoint()}{averagePoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Poly2\+D\+::average\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the average of all vertices. Note this is not the same as the centroid, and will be weighted towards concentrations of vertices instead of concentrations of area/mass. This will, however, have the nice property of having a constant linear velocity between two polygons, even if they morph shape.
+
+\begin{DoxyReturn}{Returns}
+point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a310eb3ab51c4bd664d553cf95f559d22}\label{classlarcfm_1_1_poly2_d_a310eb3ab51c4bd664d553cf95f559d22}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!centroid@{centroid}}
+\index{centroid@{centroid}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{centroid()}{centroid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Poly2\+D\+::centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the geometric centroid. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a68b4b87942cf8e3ae96ac0090313da63}\label{classlarcfm_1_1_poly2_d_a68b4b87942cf8e3ae96ac0090313da63}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!contains@{contains}}
+\index{contains@{contains}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly2\+D\+::contains (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption}) const}
+
+Determines if the supplied point lies within this polygon. Uses the \char`\"{}crossing number\char`\"{} algorithm This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ x coordinate of the point \\
+\hline
+{\em b} & -\/ y coordinate of the point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the Polygon contains the point (a, b), otherwise false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a6961a1ceb94788c4048f56d00a4a8c9f}\label{classlarcfm_1_1_poly2_d_a6961a1ceb94788c4048f56d00a4a8c9f}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!get@{get}}
+\index{get@{get}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Poly2\+D\+::get (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Return vertex, or INVALID if out of bounds. 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vertex 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a619e45492a763ed1856c34c4ead1e571}\label{classlarcfm_1_1_poly2_d_a619e45492a763ed1856c34c4ead1e571}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!innerDiameter@{innerDiameter}}
+\index{innerDiameter@{innerDiameter}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{innerDiameter()}{innerDiameter()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly2\+D\+::inner\+Diameter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the horizontal area (in m$^\wedge$2) of this \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. \mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a0f1d90438275e0c3477faa08075505a1}\label{classlarcfm_1_1_poly2_d_a0f1d90438275e0c3477faa08075505a1}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!remove@{remove}}
+\index{remove@{remove}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly2\+D\+::remove (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+Remove a point from this Simple\+Poly\+New. 
+\begin{DoxyParams}{Parameters}
+{\em n} & Index (in order added) of the point to be removed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_aa2de9ce0cb6f0676b26eca71aae795f8}\label{classlarcfm_1_1_poly2_d_aa2de9ce0cb6f0676b26eca71aae795f8}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!reverseOrder@{reverseOrder}}
+\index{reverseOrder@{reverseOrder}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{reverseOrder()}{reverseOrder()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} larcfm\+::\+Poly2\+D\+::reverse\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Reverse order of vertices \begin{DoxyReturn}{Returns}
+polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_a7671932bf241806a90f21f9bb3afb4fa}\label{classlarcfm_1_1_poly2_d_a7671932bf241806a90f21f9bb3afb4fa}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!set@{set}}
+\index{set@{set}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly2\+D\+::set (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v }\end{DoxyParamCaption})}
+
+Determines if the supplied point lies within this polygon. Uses the \char`\"{}crossing number\char`\"{} algorithm This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+{\em v} & vector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_afd75f3440907a26141cfafb59ec26c53}\label{classlarcfm_1_1_poly2_d_afd75f3440907a26141cfafb59ec26c53}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!signedArea@{signedArea}}
+\index{signedArea@{signedArea}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{signedArea()}{signedArea()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly2\+D\+::signed\+Area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Planar geometric area of a {\bfseries{simple}} polygon. It is positive if the vertices are ordered counterclockwise and negative if clockwise.
+
+\begin{DoxyReturn}{Returns}
+the signed area of the polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_abdb1ad94b7663601133ad6676d39432a}\label{classlarcfm_1_1_poly2_d_abdb1ad94b7663601133ad6676d39432a}} 
+\index{larcfm::Poly2D@{larcfm::Poly2D}!strVectArray@{strVectArray}}
+\index{strVectArray@{strVectArray}!larcfm::Poly2D@{larcfm::Poly2D}}
+\doxysubsubsection{\texorpdfstring{strVectArray()}{strVectArray()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Poly2\+D\+::str\+Vect\+Array (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&}]{verts }\end{DoxyParamCaption}) const}
+
+Returns a General\+Path representation for testing purposes.
+
+\begin{DoxyReturn}{Returns}
+this polygon as a General\+Path 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Poly2\+D.\+h\item 
+Modules/\+ACCo\+RD/src/Poly2\+D.\+cpp\end{DoxyCompactItemize}

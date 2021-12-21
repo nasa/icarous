@@ -1,0 +1,297 @@
+\hypertarget{classlarcfm_1_1_general_state_reader}{}\doxysection{larcfm\+::General\+State\+Reader Class Reference}
+\label{classlarcfm_1_1_general_state_reader}\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+
+
+{\ttfamily \#include $<$General\+State\+Reader.\+h$>$}
+
+Inheritance diagram for larcfm\+::General\+State\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_general_state_reader}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a0027dca90388fd595a5f25bda3be3d11}{General\+State\+Reader}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_ab8d288f5b01f9836edf91bc9b537fed0}{open}} (const std\+::string \&filename)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_adeb134a3616518571cd4f242400fde6d}{open}} (std\+::istream $\ast$ins)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_acadc64f1de0825d3be003b336c5c0435}{size}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_af50446f49d885751a9df2f387f243e8b}\label{classlarcfm_1_1_general_state_reader_af50446f49d885751a9df2f387f243e8b}} 
+int {\bfseries num\+Aircraft} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a5cda2b183cf59627b3523c572236ca7b}\label{classlarcfm_1_1_general_state_reader_a5cda2b183cf59627b3523c572236ca7b}} 
+int {\bfseries num\+Polygons} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a2a9345b95a60c9d60a88efa901426a24}{get\+General\+State}} (int ac) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a95bf3c628c90ae944771f88cfcab8903}\label{classlarcfm_1_1_general_state_reader_a95bf3c628c90ae944771f88cfcab8903}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} $>$ {\bfseries get\+General\+State\+List} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ae21dcebb17ba08ccc9289be5ba461f66}\label{classlarcfm_1_1_general_state_reader_ae21dcebb17ba08ccc9289be5ba461f66}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_af9244fd9fec5c13c3a4dbcb0e6e927a9}\label{classlarcfm_1_1_general_state_reader_af9244fd9fec5c13c3a4dbcb0e6e927a9}} 
+std\+::string {\bfseries get\+Filename} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a4142f41fc62879b77b8c04325ee64233}{get\+Parameters}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \& \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a0400e917b335d878906175df36f404b3}{get\+Parameters\+Ref}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a4cf2eb3b5416f1f18c516cffeb275142}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a5d48af8339f8d5bbf36b172db2f4304d}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_ad0f3d1d1b4dd31634de4a4abd4aada65}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a8f5b550a26a1276a549852a2574ac353}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_ad321b74b504ff46870b750eca2ebc7c4}{get\+Message\+No\+Clear}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a1fa6b538b57ca4282bd06ab679aa60c6}\label{classlarcfm_1_1_general_state_reader_a1fa6b538b57ca4282bd06ab679aa60c6}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a5ae83ada3da06a1f3d762dfcc3e02419}\label{classlarcfm_1_1_general_state_reader_a5ae83ada3da06a1f3d762dfcc3e02419}} 
+enum \{ \newline
+{\bfseries NAME}
+, {\bfseries LAT\+\_\+\+SX}
+, {\bfseries LON\+\_\+\+SY}
+, {\bfseries ALT\+\_\+\+SZ}
+, \newline
+{\bfseries TRK\+\_\+\+VX}
+, {\bfseries GS\+\_\+\+VY}
+, {\bfseries VS\+\_\+\+VZ}
+, {\bfseries TM\+\_\+\+CLK}
+, \newline
+{\bfseries SZ2}
+ \}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a9f28cb01ad15a4e5fe9ba6847e267566}\label{classlarcfm_1_1_general_state_reader_a9f28cb01ad15a4e5fe9ba6847e267566}} 
+enum \{ {\bfseries POLY}
+, {\bfseries UNKNOWN}
+, {\bfseries STATE}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a957fbff0ed97b5275db062403282a4f1}\label{classlarcfm_1_1_general_state_reader_a957fbff0ed97b5275db062403282a4f1}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3, const std\+::string \&s4) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a6c8b830d42b187120154ea28cd69123f}\label{classlarcfm_1_1_general_state_reader_a6c8b830d42b187120154ea28cd69123f}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a6542cc3438416f032bc7c627b4d8ddcc}\label{classlarcfm_1_1_general_state_reader_a6542cc3438416f032bc7c627b4d8ddcc}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a00c77b7ac027f7fe7b625530ba5b73ab}{parse\+Clock\+Time}} (const std\+::string \&s) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ae439e6c74d4de02e9638d80ebe7a15b2}\label{classlarcfm_1_1_general_state_reader_ae439e6c74d4de02e9638d80ebe7a15b2}} 
+int {\bfseries get\+Index} (const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a6d9e185eca075fe2aaf483f83b94f077}\label{classlarcfm_1_1_general_state_reader_a6d9e185eca075fe2aaf483f83b94f077}} 
+int {\bfseries alt\+Headings5} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3, const std\+::string \&s4, const std\+::string \&s5) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a894c8d1d6634dc61d0a64506e461165e}\label{classlarcfm_1_1_general_state_reader_a894c8d1d6634dc61d0a64506e461165e}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a6ec479345de0438d83d26eb80388ddee}\label{classlarcfm_1_1_general_state_reader_a6ec479345de0438d83d26eb80388ddee}} 
+\mbox{\hyperlink{classlarcfm_1_1_separated_input}{Separated\+Input}} {\bfseries input}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a9681e0735d00ab6d2c2a6e1ce26eb428}\label{classlarcfm_1_1_general_state_reader_a9681e0735d00ab6d2c2a6e1ce26eb428}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} $>$ {\bfseries states}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a1a0c5be92c4c4ad1c40a11ae967f324a}\label{classlarcfm_1_1_general_state_reader_a1a0c5be92c4c4ad1c40a11ae967f324a}} 
+bool {\bfseries has\+Read}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a5d53508f0a44ea275983a0f8f6ab1555}\label{classlarcfm_1_1_general_state_reader_a5d53508f0a44ea275983a0f8f6ab1555}} 
+bool {\bfseries latlon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ad44c71f3f8055986fcca2aae831ab018}\label{classlarcfm_1_1_general_state_reader_ad44c71f3f8055986fcca2aae831ab018}} 
+bool {\bfseries trkgsvs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a7dc6cc258d4cb1f0835ca727669ad817}\label{classlarcfm_1_1_general_state_reader_a7dc6cc258d4cb1f0835ca727669ad817}} 
+bool {\bfseries clock}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a0cf304d7097a87061f13e0113ab2d583}\label{classlarcfm_1_1_general_state_reader_a0cf304d7097a87061f13e0113ab2d583}} 
+int {\bfseries head} \mbox{[}head\+\_\+length\mbox{]}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a62fc8fcea4655ac2d57712b76ed98eea}\label{classlarcfm_1_1_general_state_reader_a62fc8fcea4655ac2d57712b76ed98eea}} 
+std\+::string {\bfseries fname}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ac81e79cb5c527232b970f2d4326a9dfb}\label{classlarcfm_1_1_general_state_reader_ac81e79cb5c527232b970f2d4326a9dfb}} 
+static const int {\bfseries head\+\_\+length} = SZ2 + 1
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a57982ee62b530ecf02bfed70b7f41074}\label{classlarcfm_1_1_general_state_reader_a57982ee62b530ecf02bfed70b7f41074}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a68086809cb443c5223b8b804f25c65ab}\label{classlarcfm_1_1_general_state_reader_a68086809cb443c5223b8b804f25c65ab}} 
+void {\bfseries loadfile} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This reads in and stores a set of aircraft and polygon states, possibly over time, (and parameters) from a file The aircraft states are stored in an Array\+List\texorpdfstring{$<$}{<}\mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}}\texorpdfstring{$>$}{>}. A state file consists of comma or space-\/separated values, with one position and velocity per line. Required columns include aircraft name, 3 position columns (either x\mbox{[}NM\mbox{]}/y\mbox{[}NM\mbox{]}/z\mbox{[}ft\mbox{]} or latitude\mbox{[}deg\mbox{]}/longitude\mbox{[}deg\mbox{]}/altitude\mbox{[}ft\mbox{]}) and 3 velocity columns (either vx\mbox{[}kn\mbox{]}/vy\mbox{[}kn\mbox{]}/vz\mbox{[}fpm\mbox{]} or track\mbox{[}deg\mbox{]}/gs\mbox{[}kn\mbox{]}/vs\mbox{[}fpm\mbox{]}). All empty lines or comment lines (starting with a hash sign (\#)) are ignored. Polygon information is one vertex per line, with an additional \char`\"{}top\char`\"{} column to denote the polygon\textquotesingle{}s upper altitude. 
+
+While this reader allows for a time column, only the last entry for an aircraft or polygon will be stored. The General\+Sequence\+Reader is needed to allow for multiple state-\/time data points. If consecutive position and velocity lines are for the same aircraft, subsequent name fields may be replaced with a double quotation mark ("{}). The aircraft name is case sensitive, so US54A != Us54a != us54a. 
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above). 
+
+Files may also include parameter definitions prior to other data. Parameter definitions are of the form \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} = \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}, one per line, where \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} is a case-\/insensitive alphanumeric word and \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} is either a numeral or string. The \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}. Note that parameters require a space on either side of the equals sign. Note that it is possible to also update the stored parameter values (or store additional ones) through API calls. Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type. However, something reasonable will come out, for instance a double value read as a string will come out as the string representation of the value. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a0027dca90388fd595a5f25bda3be3d11}\label{classlarcfm_1_1_general_state_reader_a0027dca90388fd595a5f25bda3be3d11}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!GeneralStateReader@{GeneralStateReader}}
+\index{GeneralStateReader@{GeneralStateReader}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{GeneralStateReader()}{GeneralStateReader()}}
+{\footnotesize\ttfamily larcfm\+::\+General\+State\+Reader\+::\+General\+State\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+A new, empty \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. After you have a \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}} object then use the \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_ab8d288f5b01f9836edf91bc9b537fed0}{open()}} method. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a2a9345b95a60c9d60a88efa901426a24}\label{classlarcfm_1_1_general_state_reader_a2a9345b95a60c9d60a88efa901426a24}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!getGeneralState@{getGeneralState}}
+\index{getGeneralState@{getGeneralState}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{getGeneralState()}{getGeneralState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} larcfm\+::\+General\+State\+Reader\+::get\+General\+State (\begin{DoxyParamCaption}\item[{int}]{ac }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th aircraft state in the file. This will be a deep copy. \mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a8f5b550a26a1276a549852a2574ac353}\label{classlarcfm_1_1_general_state_reader_a8f5b550a26a1276a549852a2574ac353}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+General\+State\+Reader\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ad321b74b504ff46870b750eca2ebc7c4}\label{classlarcfm_1_1_general_state_reader_ad321b74b504ff46870b750eca2ebc7c4}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+General\+State\+Reader\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_general_state_reader_a5d48af8339f8d5bbf36b172db2f4304d}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a4142f41fc62879b77b8c04325ee64233}\label{classlarcfm_1_1_general_state_reader_a4142f41fc62879b77b8c04325ee64233}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+General\+State\+Reader\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a0400e917b335d878906175df36f404b3}\label{classlarcfm_1_1_general_state_reader_a0400e917b335d878906175df36f404b3}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!getParametersRef@{getParametersRef}}
+\index{getParametersRef@{getParametersRef}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{getParametersRef()}{getParametersRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \& larcfm\+::\+General\+State\+Reader\+::get\+Parameters\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{larcfm\+::\+Parameter\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a5d48af8339f8d5bbf36b172db2f4304d}\label{classlarcfm_1_1_general_state_reader_a5d48af8339f8d5bbf36b172db2f4304d}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+State\+Reader\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ad0f3d1d1b4dd31634de4a4abd4aada65}\label{classlarcfm_1_1_general_state_reader_ad0f3d1d1b4dd31634de4a4abd4aada65}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+General\+State\+Reader\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_ab8d288f5b01f9836edf91bc9b537fed0}\label{classlarcfm_1_1_general_state_reader_ab8d288f5b01f9836edf91bc9b537fed0}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!open@{open}}
+\index{open@{open}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+State\+Reader\+::open (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+Read a new file into an existing \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. Parameters are preserved if they are not specified in the file. \mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_adeb134a3616518571cd4f242400fde6d}\label{classlarcfm_1_1_general_state_reader_adeb134a3616518571cd4f242400fde6d}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!open@{open}}
+\index{open@{open}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+State\+Reader\+::open (\begin{DoxyParamCaption}\item[{std\+::istream $\ast$}]{in }\end{DoxyParamCaption})}
+
+Read a new file into an existing \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. Parameters are preserved if they are not specified in the file. \mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a00c77b7ac027f7fe7b625530ba5b73ab}\label{classlarcfm_1_1_general_state_reader_a00c77b7ac027f7fe7b625530ba5b73ab}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!parseClockTime@{parseClockTime}}
+\index{parseClockTime@{parseClockTime}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{parseClockTime()}{parseClockTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+General\+State\+Reader\+::parse\+Clock\+Time (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+Return the string as a single value in seconds. If the column is labeled \char`\"{}clock,\char`\"{} then it is expected in a \char`\"{}\+HH\+:\+MM\+:\+SS\char`\"{} format. If the column is labeled \char`\"{}time\char`\"{} then just read it as a value. If the string cannot be parsed, return 0.\+0; 
+\begin{DoxyParams}{Parameters}
+{\em s} & the string to be parsed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_acadc64f1de0825d3be003b336c5c0435}\label{classlarcfm_1_1_general_state_reader_acadc64f1de0825d3be003b336c5c0435}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!size@{size}}
+\index{size@{size}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+General\+State\+Reader\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of Aircraft\+States in the file \mbox{\Hypertarget{classlarcfm_1_1_general_state_reader_a4cf2eb3b5416f1f18c516cffeb275142}\label{classlarcfm_1_1_general_state_reader_a4cf2eb3b5416f1f18c516cffeb275142}} 
+\index{larcfm::GeneralStateReader@{larcfm::GeneralStateReader}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::GeneralStateReader@{larcfm::GeneralStateReader}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+General\+State\+Reader\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/General\+State\+Reader.\+h\item 
+Modules/\+ACCo\+RD/src/General\+State\+Reader.\+cpp\end{DoxyCompactItemize}

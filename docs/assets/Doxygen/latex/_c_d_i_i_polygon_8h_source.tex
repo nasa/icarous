@@ -1,0 +1,109 @@
+\hypertarget{_c_d_i_i_polygon_8h_source}{}\doxysection{CDIIPolygon.\+h}
+\label{_c_d_i_i_polygon_8h_source}\index{Modules/ACCoRD/inc/CDIIPolygon.h@{Modules/ACCoRD/inc/CDIIPolygon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CDIICore -\/ the core algorithm for conflict detection between two aircraft with intent information for each.}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef CDIIPOLYGON\_H}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define CDIIPOLYGON\_H}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}CDSIPolygon.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}DetectionPolygonAcceptor.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{46 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}}, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_acceptor}{DetectionPolygonAcceptor}} \{}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{private}:}
+\DoxyCodeLine{49   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}} def;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   std::vector<double> tin;}
+\DoxyCodeLine{52   std::vector<double> tout;}
+\DoxyCodeLine{53   std::vector<double> tcpa;}
+\DoxyCodeLine{54   std::vector<double> dist\_tca;}
+\DoxyCodeLine{55   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_polygon}{CDSIPolygon}} cdsi;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keyword}{public}:}
+\DoxyCodeLine{65   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* cd);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}}();}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{72   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a259283ae9ad6ad4c19bf63d66269593c}{conflict}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{82   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ab15c1ea636d558e7d757c48f8639eecc}{getTimeIn}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{89   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8a2ed89a3ecaf08f53933e7f4bdaea49}{getTimeOut}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{101   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a65eb0f7b5a02042554430300b490dc24}{getTimeClosest}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{107   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a94a25579304c4d77978c1144bde6d3fb}{getDistanceClosest}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{119   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_af2233305a1a50e62e90bdd071ce984e3}{conflictBetween}}(\textcolor{keywordtype}{double} start, \textcolor{keywordtype}{double} end) \textcolor{keyword}{const};}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{133   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8d1edec047d6305d0ffe927f329d4491}{cdiicore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{143   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_adc20fb37b2c92b3476c59fef46e9bc40}{violation}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} tm) \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{156   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,  \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{163   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a7996449d96c815c7219ba4eaa82d41e6}{detectionExtended}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,  \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{174   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a23667ba2ef31a23212282e4a9d76a54a}{conflictDetectionOnly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,\mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{175   \textcolor{keywordtype}{bool} conflictOnlyXYZ(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,\mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{176   \textcolor{keywordtype}{bool} conflictOnlyLL(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,\mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keyword}{private}:}
+\DoxyCodeLine{191   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aa62b06afefa1d1b003050e2dc25ed669}{detectionXYZ}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,  \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pp, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{204   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a60b44ca60a45c2123328a24c4fc55543}{detectionLL}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& ownship,  \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pp, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206   \textcolor{keywordtype}{void} captureOutput(\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_polygon}{CDSIPolygon}} cdsi);}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208   \textcolor{keywordtype}{void} merge();}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{keyword}{public}:}
+\DoxyCodeLine{211   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213   \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ac24de2248790efce7029f00ce34c6e3f}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{216   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aee8afa37917f6fb439f317090f90f6a3}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{217   std::string \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aaf40ab156dd32740606cd3367c5bf742}{getMessage}}();}
+\DoxyCodeLine{218   std::string \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_afc3e11274ba071adcf0137fbe133e732}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ad98281f83f519b0d6119ac8a93a495e3}{setCorePolygonDetectionPtr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* d);}
+\DoxyCodeLine{221   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a65e4ba3f04f6c9ce883a6a8e63706d75}{setCorePolygonDetectionRef}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}\& d);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a9eea674b1735d3468b957167020994c4}{getCorePolygonDetectionPtr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{224   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}\& \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a3577403f4fed338a668d7fef90c6deb8}{getCorePolygonDetectionRef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 \};}
+\DoxyCodeLine{227 \}}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

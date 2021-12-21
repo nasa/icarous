@@ -1,0 +1,171 @@
+\hypertarget{classlarcfm_1_1_criteria}{}\doxysection{larcfm\+::Criteria Class Reference}
+\label{classlarcfm_1_1_criteria}\index{larcfm::Criteria@{larcfm::Criteria}}
+
+
+{\ttfamily \#include $<$Criteria.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_a63e2c82044934ad7c0d572ed66125a05}{check}} (double sox, double soy, double soz, double vox, double voy, double voz, double six, double siy, double siz, double vix, double viy, double viz, double nvox, double nvoy, double nvoz, double min\+Rel\+Vs, double D, double H, int epsh, int epsv)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_aa89683c5f370540a62735288e89c8844}{check\+LL}} (double lato, double lono, double alto, double trko, double gso, double vso, double lati, double loni, double alti, double trki, double gsi, double vsi, double ntrko, double ngso, double nvso, double min\+Rel\+Vs, double D, double H, int epsh, int epsv)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_a6dc2513ba9d6a3f730a7852c57b9fca6}{check}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, double min\+Rel\+Vs, double D, double H, int epsh, int epsv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Determines if a given velocity vector is within the implicit coordination criteria, both vertically and horizontally.
+
+If a resolution velocity v\textquotesingle{} only changes vertical speed, it is recommended that v\textquotesingle{} be constructed using \mbox{\hyperlink{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}{Velocity.\+make\+Vxyz()}}. \mbox{\hyperlink{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}{Velocity.\+make\+Trk\+Gs\+Vs()}} may introduce obvious numeric instability in this case. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_a6dc2513ba9d6a3f730a7852c57b9fca6}\label{classlarcfm_1_1_criteria_a6dc2513ba9d6a3f730a7852c57b9fca6}} 
+\index{larcfm::Criteria@{larcfm::Criteria}!check@{check}}
+\index{check@{check}!larcfm::Criteria@{larcfm::Criteria}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Criteria\+::check (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{double}]{min\+Rel\+Vs,  }\item[{double}]{D,  }\item[{double}]{H,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_criteria}{Criteria}} (covers both conflict and loss of separation cases).
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship \\
+\hline
+{\em si} & position of the traffic aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & NEW velocity of the ownship \\
+\hline
+{\em min\+Rel\+Vs} & minimum relative vertical speed \\
+\hline
+{\em D} & The diameter of the protection zone in (nmi) \\
+\hline
+{\em H} & The height of the protection zone (ft) \\
+\hline
+{\em epsh} & The epsilon for horizontal (+1 or -\/1) \\
+\hline
+{\em epsv} & The epsilon for vertical (+1 or -\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the proposed velocity satisfies the criteria 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_a63e2c82044934ad7c0d572ed66125a05}\label{classlarcfm_1_1_criteria_a63e2c82044934ad7c0d572ed66125a05}} 
+\index{larcfm::Criteria@{larcfm::Criteria}!check@{check}}
+\index{check@{check}!larcfm::Criteria@{larcfm::Criteria}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Criteria\+::check (\begin{DoxyParamCaption}\item[{double}]{sox,  }\item[{double}]{soy,  }\item[{double}]{soz,  }\item[{double}]{vox,  }\item[{double}]{voy,  }\item[{double}]{voz,  }\item[{double}]{six,  }\item[{double}]{siy,  }\item[{double}]{siz,  }\item[{double}]{vix,  }\item[{double}]{viy,  }\item[{double}]{viz,  }\item[{double}]{nvox,  }\item[{double}]{nvoy,  }\item[{double}]{nvoz,  }\item[{double}]{min\+Rel\+Vs,  }\item[{double}]{D,  }\item[{double}]{H,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_criteria}{Criteria}} (covers both conflict and loss of separation cases).
+
+
+\begin{DoxyParams}{Parameters}
+{\em sox} & The ownship position components in (nmi) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em soy} & The ownship position components in (nmi) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em soz} & The ownship position components in (ft) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em vox} & The ownship velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em voy} & The ownship velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em voz} & The ownship velocity components in (fpm) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em six} & The traffic position components in (nmi) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em siy} & The traffic position components in (nmi) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em siz} & The traffic position components in (ft) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em vix} & The traffic velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em viy} & The traffic velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em viz} & The traffic velocity components in (fpm) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em nvox} & The NEW ownship velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em nvoy} & The NEW ownship velocity components in (knots) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em nvoz} & The NEW ownship velocity components in (fpm) \mbox{[}Euclidean\mbox{]} \\
+\hline
+{\em min\+Rel\+Vs} & minimum relative vertical speed \\
+\hline
+{\em D} & The diameter of the protection zone in (nm) \\
+\hline
+{\em H} & The height of the protection zone (ft) \\
+\hline
+{\em epsh} & The epsilon for horizontal (+1 or -\/1) \\
+\hline
+{\em epsv} & The epsilon for vertical (+1 or -\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the proposed velocity satisfies the criteria 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_aa89683c5f370540a62735288e89c8844}\label{classlarcfm_1_1_criteria_aa89683c5f370540a62735288e89c8844}} 
+\index{larcfm::Criteria@{larcfm::Criteria}!checkLL@{checkLL}}
+\index{checkLL@{checkLL}!larcfm::Criteria@{larcfm::Criteria}}
+\doxysubsubsection{\texorpdfstring{checkLL()}{checkLL()}}
+{\footnotesize\ttfamily bool Criteria\+::check\+LL (\begin{DoxyParamCaption}\item[{double}]{lato,  }\item[{double}]{lono,  }\item[{double}]{alto,  }\item[{double}]{trko,  }\item[{double}]{gso,  }\item[{double}]{vso,  }\item[{double}]{lati,  }\item[{double}]{loni,  }\item[{double}]{alti,  }\item[{double}]{trki,  }\item[{double}]{gsi,  }\item[{double}]{vsi,  }\item[{double}]{ntrko,  }\item[{double}]{ngso,  }\item[{double}]{nvso,  }\item[{double}]{min\+Rel\+Vs,  }\item[{double}]{D,  }\item[{double}]{H,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_criteria}{Criteria}} (covers both conflict and loss of separation cases).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lato} & The ownship latitude \mbox{[}deg, north\mbox{]} \\
+\hline
+{\em lono} & The ownship longitude \mbox{[}deg, east\mbox{]} \\
+\hline
+{\em alto} & The ownship altitude \mbox{[}ft\mbox{]} \\
+\hline
+{\em trko} & The ownship track, in \mbox{[}deg\mbox{]} from true north \\
+\hline
+{\em gso} & The ownship ground speed \mbox{[}knot\mbox{]} \\
+\hline
+{\em vso} & The ownship vertical speed \\
+\hline
+{\em lati} & The traffic latitude \mbox{[}deg, north\mbox{]} \\
+\hline
+{\em loni} & The traffic longitude \mbox{[}deg, east\mbox{]} \\
+\hline
+{\em alti} & The traffic altitude \mbox{[}ft\mbox{]} \\
+\hline
+{\em trki} & The traffic track, in \mbox{[}deg\mbox{]} from true north \\
+\hline
+{\em gsi} & The traffic ground speed \mbox{[}knot\mbox{]} \\
+\hline
+{\em vsi} & The traffic vertical speed \\
+\hline
+{\em ntrko} & The NEW ownship track, in \mbox{[}deg\mbox{]} from true north \\
+\hline
+{\em ngso} & The NEW ownship ground speed \mbox{[}knot\mbox{]} \\
+\hline
+{\em nvso} & The NEW ownship vertical speed \\
+\hline
+{\em min\+Rel\+Vs} & minimum relative vertical speed \\
+\hline
+{\em D} & The diameter of the protection zone in (nmi) \\
+\hline
+{\em H} & The height of the protection zone (ft) \\
+\hline
+{\em epsh} & The epsilon for horizontal (+1 or -\/1) \\
+\hline
+{\em epsv} & The epsilon for vertical (+1 or -\/1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the proposed velocity satisfies the criteria 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Criteria.\+h\item 
+Modules/\+ACCo\+RD/src/Criteria.\+cpp\end{DoxyCompactItemize}

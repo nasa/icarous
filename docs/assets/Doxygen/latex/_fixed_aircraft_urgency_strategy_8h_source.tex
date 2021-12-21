@@ -1,0 +1,43 @@
+\hypertarget{_fixed_aircraft_urgency_strategy_8h_source}{}\doxysection{Fixed\+Aircraft\+Urgency\+Strategy.\+h}
+\label{_fixed_aircraft_urgency_strategy_8h_source}\index{Modules/ACCoRD/inc/FixedAircraftUrgencyStrategy.h@{Modules/ACCoRD/inc/FixedAircraftUrgencyStrategy.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * FixedAircraftUrgencyStrategy.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Most urgent aircraft strategy where the aircraft is fixed}}
+\DoxyCodeLine{11 \textcolor{comment}{ *}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef FIXEDAIRCRAFTURGENCYSTRATEGY\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define FIXEDAIRCRAFTURGENCYSTRATEGY\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}UrgencyStrategy.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_fixed_aircraft_urgency_strategy}{FixedAircraftUrgencyStrategy}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{private}:}
+\DoxyCodeLine{24   std::string ac\_;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_fixed_aircraft_urgency_strategy}{FixedAircraftUrgencyStrategy}}();}
+\DoxyCodeLine{28   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_fixed_aircraft_urgency_strategy}{FixedAircraftUrgencyStrategy}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{29   std::string getFixedAircraftId() \textcolor{keyword}{const};}
+\DoxyCodeLine{30   \textcolor{keywordtype}{void} setFixedAircraftId(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{34   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_fixed_aircraft_urgency_strategy_a28411cc51f29ddc96931ffe46ddddf00}{mostUrgentAircraft}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* copy() \textcolor{keyword}{const};}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FIXEDAIRCRAFTURGENCYSTRATEGY\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

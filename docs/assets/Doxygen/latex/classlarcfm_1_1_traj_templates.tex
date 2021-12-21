@@ -1,0 +1,39 @@
+\hypertarget{classlarcfm_1_1_traj_templates}{}\doxysection{larcfm\+::Traj\+Templates Class Reference}
+\label{classlarcfm_1_1_traj_templates}\index{larcfm::TrajTemplates@{larcfm::TrajTemplates}}
+
+
+{\ttfamily \#include $<$Traj\+Templates.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_a8a3c37130eeeab7a9bb1e266f51b9f48}\label{classlarcfm_1_1_traj_templates_a8a3c37130eeeab7a9bb1e266f51b9f48}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+LPC} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs, double cruise\+Alt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_adf05080c5ca177fdfb1fe240ab9fea11}\label{classlarcfm_1_1_traj_templates_adf05080c5ca177fdfb1fe240ab9fea11}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+KPC} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs, double cruise\+Alt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_a8bc0c1abf27bef4866efdec9fcec1f40}\label{classlarcfm_1_1_traj_templates_a8bc0c1abf27bef4866efdec9fcec1f40}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+LPC\+\_\+\+Turn} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs, double cruise\+Alt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_a70f3f0c52dc2d0124d0d40c56f9fd34d}\label{classlarcfm_1_1_traj_templates_a70f3f0c52dc2d0124d0d40c56f9fd34d}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+KPC\+\_\+\+Turn} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs, double cruise\+Alt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_ab393c6fcfde651410ec790d89ac6f00b}\label{classlarcfm_1_1_traj_templates_ab393c6fcfde651410ec790d89ac6f00b}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+LPC\+\_\+\+FLC} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_abb7da09882006d736700e1b13ded36ce}\label{classlarcfm_1_1_traj_templates_abb7da09882006d736700e1b13ded36ce}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries make\+KPC\+\_\+\+FLC} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&end, double gs, double vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_templates_ae270ebb239401d6251a0d5a237217ee6}\label{classlarcfm_1_1_traj_templates_ae270ebb239401d6251a0d5a237217ee6}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries add\+Climb\+Descent} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} lpc, double vs, double cruise\+Alt)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Trajectory generation functionality. This class translates between Linear and Kinematic plans. Note that the translations are not currently robust. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Traj\+Templates.\+h\item 
+Modules/\+ACCo\+RD/src/Traj\+Templates.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,87 @@
+\hypertarget{_kinematic_alt_bands_8h_source}{}\doxysection{Kinematic\+Alt\+Bands.\+h}
+\label{_kinematic_alt_bands_8h_source}\index{Modules/ACCoRD/inc/KinematicAltBands.h@{Modules/ACCoRD/inc/KinematicAltBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICALTBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICALTBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}KinematicRealBands.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_alt_bands}{KinematicAltBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{KinematicRealBands}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23   \textcolor{keywordtype}{double} vertical\_rate\_;  \textcolor{comment}{// Climb/descend rate for altitude band}}
+\DoxyCodeLine{24   \textcolor{comment}{/* When vertical\_rate = 0, instantaneous climb/descend is assumed */}}
+\DoxyCodeLine{25   \textcolor{keywordtype}{double} vertical\_accel\_; \textcolor{comment}{// Climb/descend acceleration}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \mbox{\hyperlink{classlarcfm_1_1_kinematic_alt_bands}{KinematicAltBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& parameters);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_kinematic_alt_bands}{KinematicAltBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_alt_bands}{KinematicAltBands}}\& b);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keywordtype}{bool} instantaneous\_bands() \textcolor{keyword}{const};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keywordtype}{double} get\_vertical\_rate() \textcolor{keyword}{const};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keywordtype}{void} set\_vertical\_rate(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keywordtype}{double} get\_vertical\_accel() \textcolor{keyword}{const};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{keywordtype}{void} set\_vertical\_accel(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   std::pair<Vect3, Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{keywordtype}{void} none\_bands(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{49       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{bool} any\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{52       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54   \textcolor{keywordtype}{bool} all\_red(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{55       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{comment}{// dir=false is down, dir=true is up. Return NaN if there is not a resolution}}
+\DoxyCodeLine{58   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_alt_bands_a0ce5077d6a978d444abcb155abe0c8b1}{resolution}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& repac,}
+\DoxyCodeLine{59       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{private}:}
+\DoxyCodeLine{62   \textcolor{keywordtype}{bool} conflict\_free\_traj\_step(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{63       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{64       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   \textcolor{keywordtype}{void} alt\_bands\_generic(std::vector<Integerval>\& l,}
+\DoxyCodeLine{67       \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{68       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{69       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{int} first\_nat(\textcolor{keywordtype}{int} mini, \textcolor{keywordtype}{int} maxi, \textcolor{keywordtype}{bool} dir, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{72       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{73       \textcolor{keywordtype}{bool} green);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keywordtype}{int} first\_band\_alt\_generic(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{76       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} B2, \textcolor{keywordtype}{double} T2,}
+\DoxyCodeLine{77       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{bool} green);}
+\DoxyCodeLine{78 \};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

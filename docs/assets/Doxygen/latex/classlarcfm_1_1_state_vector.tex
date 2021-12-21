@@ -1,0 +1,54 @@
+\hypertarget{classlarcfm_1_1_state_vector}{}\doxysection{larcfm\+::State\+Vector Class Reference}
+\label{classlarcfm_1_1_state_vector}\index{larcfm::StateVector@{larcfm::StateVector}}
+
+
+{\ttfamily \#include $<$State\+Vector.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_a143d918c8f3fc50995e7b6ffc75f9a90}\label{classlarcfm_1_1_state_vector_a143d918c8f3fc50995e7b6ffc75f9a90}} 
+{\bfseries State\+Vector} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ss=\mbox{\hyperlink{classlarcfm_1_1_vect3_aa4b584e343aa48e58c2ee22048c8adb8}{Vect3\+::\+ZERO}}(), const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vv=\mbox{\hyperlink{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}{Velocity\+::\+ZEROV}}(), const double tt=0)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_ad7b01b9845985fd00ad150ac8841850d}\label{classlarcfm_1_1_state_vector_ad7b01b9845985fd00ad150ac8841850d}} 
+{\bfseries State\+Vector} (const std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \&sv, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_ad34ed156160addcaad987ae61b942fbd}\label{classlarcfm_1_1_state_vector_ad34ed156160addcaad987ae61b942fbd}} 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries pair} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_a6f9bfd218046c8925caf406d77d6e53f}\label{classlarcfm_1_1_state_vector_a6f9bfd218046c8925caf406d77d6e53f}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries s} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_af0f3b243ba7f65a76bb5f7499375a615}\label{classlarcfm_1_1_state_vector_af0f3b243ba7f65a76bb5f7499375a615}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries v} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_a4985778e0821e9e7583dffa919419894}\label{classlarcfm_1_1_state_vector_a4985778e0821e9e7583dffa919419894}} 
+double {\bfseries t} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_acfb4baa56def7582383f0ba8c3099978}\label{classlarcfm_1_1_state_vector_acfb4baa56def7582383f0ba8c3099978}} 
+static \mbox{\hyperlink{classlarcfm_1_1_state_vector}{State\+Vector}} {\bfseries make\+XYZ} (double x, double y, double z, double trk, double gs, double vs, double t)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_a562ab19dcad58c4caa7370ab29b8d6f4}\label{classlarcfm_1_1_state_vector_a562ab19dcad58c4caa7370ab29b8d6f4}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries ss}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_aeb7548729bd8f307d270488e1b7d7754}\label{classlarcfm_1_1_state_vector_aeb7548729bd8f307d270488e1b7d7754}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries vv}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_vector_aa72bf62d169b5fad0f198698804fbea5}\label{classlarcfm_1_1_state_vector_aa72bf62d169b5fad0f198698804fbea5}} 
+double {\bfseries tt}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Captures the position and velocity at a certain point in time. This class requires the position and velocity are already in a Cartesian frame. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/State\+Vector.\+h\item 
+Modules/\+ACCo\+RD/src/State\+Vector.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,262 @@
+\hypertarget{classlarcfm_1_1_projected_kinematics}{}\doxysection{larcfm\+::Projected\+Kinematics Class Reference}
+\label{classlarcfm_1_1_projected_kinematics}\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+
+
+{\ttfamily \#include $<$Projected\+Kinematics.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a2732b3e15db71412d9db615a97ff65ee}{turn\+Angle}} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2, double R)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a58e9a32594b96a52e00d4070bf157aea}{turn\+Distance}} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2, double R)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a7d0540a1357cf02d44c9cccf6ff2e9ff}{clockwise}} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_af10c0ceafdce7ce4e118ba48b2a87e81}{closest\+Dist\+On\+Turn}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&turnstart, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v1, double R, int dir, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&x, double end\+Dist)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a8b62b2fcc54db641ac13bc276df68e71}\label{classlarcfm_1_1_projected_kinematics_a8b62b2fcc54db641ac13bc276df68e71}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries turn} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double R, bool turn\+Right)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_aeb9b809afc67230c88db7ed015309781}\label{classlarcfm_1_1_projected_kinematics_aeb9b809afc67230c88db7ed015309781}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries gs\+Accel} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double accel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a571fd7b08221170b03b3764fb543220e}\label{classlarcfm_1_1_projected_kinematics_a571fd7b08221170b03b3764fb543220e}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries gs\+Accel\+Until} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double goal\+Gs, double a)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_af8ae7c0637b3cc4c405049aeb20e90fe}\label{classlarcfm_1_1_projected_kinematics_af8ae7c0637b3cc4c405049aeb20e90fe}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries vs\+Accel} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double accel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a44b04034103b790ebcfe87821ee6009e}\label{classlarcfm_1_1_projected_kinematics_a44b04034103b790ebcfe87821ee6009e}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries vs\+Accel\+Until} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double goal\+Vs, double accel)
+\item 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a70b4a14db44bc438cf62d77495db99f1}{turn\+Omega}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double omega)
+\item 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a318d5619480ebb28671d35682b38a7af}{turn\+Omega}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double omega, const Euclidean\+Projection \&proj)
+\item 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_ac28ce32a9b301e39c1d7b429241fe557}{turn\+Until}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double goal\+Track, double bank\+Angle)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ab6b4825b4103b483c354d5122da70676}\label{classlarcfm_1_1_projected_kinematics_ab6b4825b4103b483c354d5122da70676}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries turn\+Until} (std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ sv, double t, double goal\+Track, double bank\+Angle)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_afef3fd81799918e018e7275b88bceebb}\label{classlarcfm_1_1_projected_kinematics_afef3fd81799918e018e7275b88bceebb}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries linear} (std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ p, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ab3a9a94051423cc6c30757c5bb9df113}\label{classlarcfm_1_1_projected_kinematics_ab3a9a94051423cc6c30757c5bb9df113}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries linear} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&p, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a47973429004c1616249e692197f59160}\label{classlarcfm_1_1_projected_kinematics_a47973429004c1616249e692197f59160}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ {\bfseries intersection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ab874e4c476647ac92925c7201e147247}\label{classlarcfm_1_1_projected_kinematics_ab874e4c476647ac92925c7201e147247}} 
+static double {\bfseries time\+Ofintersection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad}}$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}, double, int $>$ \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_ad35f995e78f4990343575f8f9cf8a3ca}{direct\+To\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&wp, double R)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double, double $>$ \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a1d8a13678c4dee2ed2336861cda29563}{gen\+Direct\+To\+Vertex}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sop, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&wpp, double bank\+Angle, double time\+Before\+Turn)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a9b737cd37054cc71bc03445ccf4bd533}\label{classlarcfm_1_1_projected_kinematics_a9b737cd37054cc71bc03445ccf4bd533}} 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}, double $>$ {\bfseries vs\+Level\+Out\+Final} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double climb\+Rate, double target\+Alt, double a)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ab30125b06c6cf29dc194a1bf8ed6e249}\label{classlarcfm_1_1_projected_kinematics_ab30125b06c6cf29dc194a1bf8ed6e249}} 
+static double {\bfseries vs\+Level\+Out\+Time} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double climb\+Rate, double target\+Alt, double a)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a605fecacaa9843db01c673f9d4591d1c}\label{classlarcfm_1_1_projected_kinematics_a605fecacaa9843db01c673f9d4591d1c}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries vs\+Level\+Out} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double t, double climb\+Rate, double target\+Alt, double a)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains versions of the \mbox{\hyperlink{classlarcfm_1_1_kinematics}{Kinematics}} functions that have been lifted to deal with \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} objects instead of \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} objects. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a7d0540a1357cf02d44c9cccf6ff2e9ff}\label{classlarcfm_1_1_projected_kinematics_a7d0540a1357cf02d44c9cccf6ff2e9ff}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!clockwise@{clockwise}}
+\index{clockwise@{clockwise}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{clockwise()}{clockwise()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Projected\+Kinematics\+::clockwise (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}}]{v1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point, returning true if that relative direction is to the right
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & \\
+\hline
+{\em v1} & \\
+\hline
+{\em s2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if clockwise turn
+\end{DoxyReturn}
+Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point, returning true if that relative direction is to the right \mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_af10c0ceafdce7ce4e118ba48b2a87e81}\label{classlarcfm_1_1_projected_kinematics_af10c0ceafdce7ce4e118ba48b2a87e81}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!closestDistOnTurn@{closestDistOnTurn}}
+\index{closestDistOnTurn@{closestDistOnTurn}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{closestDistOnTurn()}{closestDistOnTurn()}}
+{\footnotesize\ttfamily double larcfm\+::\+Projected\+Kinematics\+::closest\+Dist\+On\+Turn (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{turnstart,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v1,  }\item[{double}]{R,  }\item[{int}]{dir,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{x,  }\item[{double}]{end\+Dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return distance along turn where x is closest to. This returns -\/1 if x is at the turn\textquotesingle{}s center
+
+
+\begin{DoxyParams}{Parameters}
+{\em turnstart} & starting position of turn \\
+\hline
+{\em v1} & velocity \\
+\hline
+{\em R} & turn radius \\
+\hline
+{\em dir} & +1 = turn right, -\/1 turn left \\
+\hline
+{\em x} & a position \\
+\hline
+{\em end\+Dist} & end distance of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance along turn 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ad35f995e78f4990343575f8f9cf8a3ca}\label{classlarcfm_1_1_projected_kinematics_ad35f995e78f4990343575f8f9cf8a3ca}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!directToPoint@{directToPoint}}
+\index{directToPoint@{directToPoint}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{directToPoint()}{directToPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad}}$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}, double, int $>$ larcfm\+::\+Projected\+Kinematics\+::direct\+To\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{wp,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Wrapper around Kinematic.\+turn\+Time\+Direc\+To() Returns a triple\+: end of turn point, velocity at that point, time at that point \mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a1d8a13678c4dee2ed2336861cda29563}\label{classlarcfm_1_1_projected_kinematics_a1d8a13678c4dee2ed2336861cda29563}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!genDirectToVertex@{genDirectToVertex}}
+\index{genDirectToVertex@{genDirectToVertex}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{genDirectToVertex()}{genDirectToVertex()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double, double $>$ larcfm\+::\+Projected\+Kinematics\+::gen\+Direct\+To\+Vertex (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sop,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{wpp,  }\item[{double}]{bank\+Angle,  }\item[{double}]{time\+Before\+Turn }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Wrapper around Kinematic.\+gen\+Direct\+To\+Vertex Returns the vertex point (in a linear plan sense) between current point and direct\+To point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em wp} & first point (in a flight plan) that you are trying to connect to \\
+\hline
+{\em bank\+Angle} & turn bank angle \\
+\hline
+{\em time\+Before\+Turn} & time to continue in current direction before beginning turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+(so,t0,t1) vertex point and delta time to reach the vertex point and delta time (from so) to reach end of turn If no result is possible this will return an invalid position and negative times. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a2732b3e15db71412d9db615a97ff65ee}\label{classlarcfm_1_1_projected_kinematics_a2732b3e15db71412d9db615a97ff65ee}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!turnAngle@{turnAngle}}
+\index{turnAngle@{turnAngle}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{turnAngle()}{turnAngle()}}
+{\footnotesize\ttfamily double larcfm\+::\+Projected\+Kinematics\+::turn\+Angle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s2,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the angle of a constant-\/radius turn from two points and the radius
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & \\
+\hline
+{\em s2} & \\
+\hline
+{\em R} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the turn angle
+\end{DoxyReturn}
+Calculate the angle of a constant-\/radius turn from two points and the radius \mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a58e9a32594b96a52e00d4070bf157aea}\label{classlarcfm_1_1_projected_kinematics_a58e9a32594b96a52e00d4070bf157aea}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!turnDistance@{turnDistance}}
+\index{turnDistance@{turnDistance}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{turnDistance()}{turnDistance()}}
+{\footnotesize\ttfamily double larcfm\+::\+Projected\+Kinematics\+::turn\+Distance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{s2,  }\item[{double}]{R }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} distance covered in a turn
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & \\
+\hline
+{\em s2} & \\
+\hline
+{\em R} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the turn distance
+\end{DoxyReturn}
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} distance covered in a turn \mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a70b4a14db44bc438cf62d77495db99f1}\label{classlarcfm_1_1_projected_kinematics_a70b4a14db44bc438cf62d77495db99f1}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!turnOmega@{turnOmega}}
+\index{turnOmega@{turnOmega}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{turnOmega()}{turnOmega()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Projected\+Kinematics\+::turn\+Omega (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{t,  }\item[{double}]{omega }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and velocity after t time units turning in direction \char`\"{}dir\char`\"{} with radius R. This is a wrapper around turn\+Position and turn\+Velocity for \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} objects,and uses the projection defined in the static \mbox{\hyperlink{classlarcfm_1_1_projection}{Projection}} class. 
+\begin{DoxyParams}{Parameters}
+{\em so} & starting position \\
+\hline
+{\em vo} & initial velocity \\
+\hline
+{\em R} & turn radius \\
+\hline
+{\em t} & time of turn \mbox{[}secs\mbox{]} \\
+\hline
+{\em turn\+Right} & true iff only turn direction is to the right \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} after t time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_a318d5619480ebb28671d35682b38a7af}\label{classlarcfm_1_1_projected_kinematics_a318d5619480ebb28671d35682b38a7af}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!turnOmega@{turnOmega}}
+\index{turnOmega@{turnOmega}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{turnOmega()}{turnOmega()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Projected\+Kinematics\+::turn\+Omega (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{t,  }\item[{double}]{omega,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and velocity after t time units turning in direction \char`\"{}dir\char`\"{} with radius R. This is a wrapper around turn\+Position and turn\+Velocity for \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} objects,and uses the projection defined in the static \mbox{\hyperlink{classlarcfm_1_1_projection}{Projection}} class. 
+\begin{DoxyParams}{Parameters}
+{\em so} & starting position \\
+\hline
+{\em vo} & initial velocity \\
+\hline
+{\em R} & turn radius \\
+\hline
+{\em t} & time of turn \mbox{[}secs\mbox{]} \\
+\hline
+{\em turn\+Right} & true iff only turn direction is to the right \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} after t time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_projected_kinematics_ac28ce32a9b301e39c1d7b429241fe557}\label{classlarcfm_1_1_projected_kinematics_ac28ce32a9b301e39c1d7b429241fe557}} 
+\index{larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}!turnUntil@{turnUntil}}
+\index{turnUntil@{turnUntil}!larcfm::ProjectedKinematics@{larcfm::ProjectedKinematics}}
+\doxysubsubsection{\texorpdfstring{turnUntil()}{turnUntil()}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Projected\+Kinematics\+::turn\+Until (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{t,  }\item[{double}]{goal\+Track,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and velocity after t time units turning in direction \char`\"{}dir\char`\"{} with radius R. This is a wrapper around turn\+Until and uses the projection defined in the static \mbox{\hyperlink{classlarcfm_1_1_projection}{Projection}} class. 
+\begin{DoxyParams}{Parameters}
+{\em so} & starting position \\
+\hline
+{\em vo} & initial velocity \\
+\hline
+{\em goal\+Track} & the target track angle \\
+\hline
+{\em bank\+Angle} & the aircraft\textquotesingle{}s bank angle \\
+\hline
+{\em t} & time of turn \mbox{[}secs\mbox{]} \\
+\hline
+{\em turn\+Right} & true iff only turn direction is to the right \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} and \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} after t time 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Projected\+Kinematics.\+h\item 
+Modules/\+ACCo\+RD/src/Projected\+Kinematics.\+cpp\end{DoxyCompactItemize}

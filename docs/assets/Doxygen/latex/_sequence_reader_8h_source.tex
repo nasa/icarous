@@ -1,0 +1,109 @@
+\hypertarget{_sequence_reader_8h_source}{}\doxysection{Sequence\+Reader.\+h}
+\label{_sequence_reader_8h_source}\index{Modules/ACCoRD/inc/SequenceReader.h@{Modules/ACCoRD/inc/SequenceReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * StateReader}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ * }}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef SEQUENCEREADER\_H}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define SEQUENCEREADER\_H}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}StateReader.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}AircraftState.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{65 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_sequence_reader}{SequenceReader}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_state_reader}{StateReader}} \{}
+\DoxyCodeLine{66 \textcolor{keyword}{private}:}
+\DoxyCodeLine{67     \textcolor{keyword}{typedef} std::pair<Position, Velocity> DataPoint;}
+\DoxyCodeLine{68     \textcolor{keyword}{typedef} std::map<std::string, DataPoint> SequenceEntry;}
+\DoxyCodeLine{69     \textcolor{keyword}{typedef} std::map<double, SequenceEntry> SequenceEntryMap;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{int} windowSize;}
+\DoxyCodeLine{72     SequenceEntryMap sequenceTable;}
+\DoxyCodeLine{73     std::vector<std::string> nameIndex;}
+\DoxyCodeLine{74     std::set<std::string> names;}
+\DoxyCodeLine{75     }
+\DoxyCodeLine{76     \textcolor{keyword}{typedef} std::map<Triple<double,std::string,int>,\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<double,bool,std::string>}} > allExtraTblType;}
+\DoxyCodeLine{77     allExtraTblType allExtracolumnValues;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{void} loadfile();}
+\DoxyCodeLine{82     \textcolor{keywordtype}{void} buildActive(\textcolor{keywordtype}{double} tm);}
+\DoxyCodeLine{83     }
+\DoxyCodeLine{84 \textcolor{keyword}{public}:}
+\DoxyCodeLine{86     \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad434c2aadff122f572d5305fe4b5b972}{SequenceReader}}();}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad434c2aadff122f572d5305fe4b5b972}{SequenceReader}}(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{91     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a37607e7e79d15a994634b4d03e70d790}{open}}(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a37607e7e79d15a994634b4d03e70d790}{open}}(std::istream* in);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{98     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad874bcf0ce2dba240dfd00babe263985}{sequenceSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{99     }
+\DoxyCodeLine{104     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_abd03f860ace0de61cf0731e22dc9c93f}{setWindowSize}}(\textcolor{keywordtype}{int} s);}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{110     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_af88b1caab7d29f4fce7a6fa69676539b}{getWindowSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{111     }
+\DoxyCodeLine{112     }
+\DoxyCodeLine{117     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a472badbfbbce6a9a034f2a095dd49bbb}{setActive}}(\textcolor{keywordtype}{double} tm);}
+\DoxyCodeLine{118     }
+\DoxyCodeLine{122     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_af4e971da541dc97f83c1a005f4abd9ec}{setFirstActive}}();}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afcb2cb30dd5845d0aa4e2b0e82bb48ba}{setLastActive}}();}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{134     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a99eb9af93506cb548ba5253b0fe358b3}{hasEntry}}(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{135     }
+\DoxyCodeLine{141     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_abb0ffc4da7b944714f85e10a218b29b1}{getSequencePosition}}(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{148     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_adac5f43f2f74f976b95b8e1b7f41b141}{getSequenceVelocity}}(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{156     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afea5dcaaf625ea947b88b2bf4741d942}{setEntry}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{159     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a15113cc8b8950c0d95eff706e4e05358}{clearSingletons}}();}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{166     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a86c59139f733beb382b3444bec7d156f}{removeAircraft}}(\textcolor{keyword}{const} std::vector<std::string>\& alist);}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{171     std::vector<double> \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad04498813e68162836907af256c7f924}{sequenceKeys}}();}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{174     std::vector<double> \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a0653fa534dd4e55f874c32dba10d2353}{sequenceKeysUpTo}}(\textcolor{keywordtype}{int} n, \textcolor{keywordtype}{double} tm);}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176     \textcolor{comment}{// otherwise the StateReader versions are hidden, despite having distinct signatures.}}
+\DoxyCodeLine{177     \textcolor{keyword}{using} \mbox{\hyperlink{classlarcfm_1_1_state_reader_a5b4fa4eb083c9f49f78064e809cace4e}{StateReader::hasExtraColumnData}};}
+\DoxyCodeLine{178     \textcolor{keyword}{using} \mbox{\hyperlink{classlarcfm_1_1_state_reader_acdb304c80d5feecfda075674d6962d32}{StateReader::getExtraColumnValue}};}
+\DoxyCodeLine{179     \textcolor{keyword}{using} \mbox{\hyperlink{classlarcfm_1_1_state_reader_a07d0ea7892f42402e55193b38faa4270}{StateReader::getExtraColumnBool}};}
+\DoxyCodeLine{180     \textcolor{keyword}{using} \mbox{\hyperlink{classlarcfm_1_1_state_reader_a1e5616f1ee020334673c71c401f5fdc7}{StateReader::getExtraColumnString}};}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{189     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afb6a25fb2d25436d135f1329f7d9de60}{hasExtraColumnData}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& acName, \textcolor{keyword}{const} std::string\& colname) \textcolor{keyword}{const};}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{198     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a12627c0290de57b747c29138e4c05918}{getExtraColumnValue}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& acName, \textcolor{keyword}{const} std::string\& colname) \textcolor{keyword}{const};}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a810ad6a4555970aba54898373433ed51}{getExtraColumnBool}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& acName, \textcolor{keyword}{const} std::string\& colname) \textcolor{keyword}{const};}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{216     std::string \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a89ee96a6b745bc82a756e66e280388d5}{getExtraColumnString}}(\textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& acName, \textcolor{keyword}{const} std::string\& colname) \textcolor{keyword}{const};}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 \textcolor{comment}{//    std::string toString() const;}}
+\DoxyCodeLine{220 \};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 \}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

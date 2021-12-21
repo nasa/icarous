@@ -1,0 +1,37 @@
+\hypertarget{_integerval_8h_source}{}\doxysection{Integerval.\+h}
+\label{_integerval_8h_source}\index{Modules/ACCoRD/inc/Integerval.h@{Modules/ACCoRD/inc/Integerval.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef INTEGERVAL\_H}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define INTEGERVAL\_H}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18   \textcolor{keywordtype}{int} lb;}
+\DoxyCodeLine{19   \textcolor{keywordtype}{int} ub;}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21   \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}}(\textcolor{keywordtype}{int} lb, \textcolor{keywordtype}{int} ub);}
+\DoxyCodeLine{22   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \textcolor{keyword}{static} std::string FmVector(\textcolor{keyword}{const} std::vector<Integerval>\& l);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{31 }
+
+\end{DoxyCode}

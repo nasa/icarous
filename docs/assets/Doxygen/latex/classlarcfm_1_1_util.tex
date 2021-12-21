@@ -1,0 +1,943 @@
+\hypertarget{classlarcfm_1_1_util}{}\doxysection{larcfm\+::Util Class Reference}
+\label{classlarcfm_1_1_util}\index{larcfm::Util@{larcfm::Util}}
+
+
+{\ttfamily \#include $<$Util.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}} (int x, int y)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a6c85ce2687e3b0756d09e25dc0a4ca6a}{almost\+\_\+less}} (double a, double b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_ac9f07e140824dd1935598cca51be48ec}{almost\+\_\+less}} (double a, double b, INT64\+FM max\+Ulps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_ac58d2039f25fe2ac02c554c346b515ed}{almost\+\_\+greater}} (double a, double b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a46f20332dee899f6413a28b1132c54fa}{almost\+\_\+greater}} (double a, double b, INT64\+FM max\+Ulps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_aee0d4d038b435aeec6408869d1ffb826}{almost\+\_\+geq}} (double a, double b, INT64\+FM max\+Ulps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_ad45dfc9bfabcfd80e842ba511e0b3239}{almost\+\_\+geq}} (double a, double b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_abe2265047d9043f3ac44d3747e8c1e56}{almost\+\_\+leq}} (double a, double b, INT64\+FM max\+Ulps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_ad3995d3f201804b3c6d1a6f0adfd614b}{almost\+\_\+leq}} (double a, double b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}{almost\+\_\+equals}} (double a, double b, INT64\+FM max\+Ulps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_acde4d3c4705fef2b563f2284ff244494}{almost\+\_\+equals}} (double a, double b)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a1ab0960625fefe8e33a215019c87135c}{within\+\_\+epsilon}} (double a, double b, double epsilon)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a2ca3858525253fd33190be3afcd9e0d6}{within\+\_\+epsilon}} (double a, double epsilon)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_aff13dc4fdc87fc154d006ad85bdc7f46}{discretize\+Dir}} (double voz, double nvoz, double discrete\+Units)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a8a21a4f52cbfce0b696a4ca5f5bee11b}{sq}} (const double x)
+\item 
+static INT64\+FM \mbox{\hyperlink{classlarcfm_1_1_util_ac6198e6580f41bd74007149ac877e660}{llabs}} (const INT64\+FM x)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a2772af0dc8a38cb0688d591ecf5e5709}{sqrt\+\_\+safe}} (const double x)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_adea0bb95db5ee056ebe08ce471488a90}{atan2\+\_\+safe}} (const double y, const double x)
+\begin{DoxyCompactList}\small\item\em $\ast$$\ast$ \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a14b53f54f0171f6669e3abca21455ceb}{asin\+\_\+safe}} (double x)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_aca839349f1f1f3c9a36c6a6ccafde0a8}{acos\+\_\+safe}} (double x)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_aeaca41cc20bd593e15ff315b19a50518}{discr}} (const double a, const double b, const double c)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a1ea3d717bd97668873dae589341e6a1b}{root}} (const double a, const double b, const double c, int eps)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a038550309ea0232328ebbd2263f83785}{root2b}} (const double a, const double b, const double c, const int eps)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_util_a09cf32d4c046c7d7c9f72c5e09fccd81}{sign}} (const double x)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_util_aa42e3c90f234d97f4a70699c98bebac8}{sign\+Triple}} (const double x)
+\item 
+static const double \& \mbox{\hyperlink{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}{min}} (const double \&x, const double \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_ae71d5778ad5d34ca1de23965ad00b38d}\label{classlarcfm_1_1_util_ae71d5778ad5d34ca1de23965ad00b38d}} 
+static const float \& {\bfseries min} (const float \&x, const float \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_af597796008e25677314f4c1b8c611d5a}\label{classlarcfm_1_1_util_af597796008e25677314f4c1b8c611d5a}} 
+static const int \& {\bfseries min} (const int \&x, const int \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_afc463be17651351102a9d99741e6c0af}\label{classlarcfm_1_1_util_afc463be17651351102a9d99741e6c0af}} 
+static const long \& {\bfseries min} (const long \&x, const long \&y)
+\item 
+static const double \& \mbox{\hyperlink{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}{max}} (const double \&x, const double \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_a9703592e2bbda7f6e811d646dca18a66}\label{classlarcfm_1_1_util_a9703592e2bbda7f6e811d646dca18a66}} 
+static const float \& {\bfseries max} (const float \&x, const float \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_a315a2406065568ab8437988d5958b51b}\label{classlarcfm_1_1_util_a315a2406065568ab8437988d5958b51b}} 
+static const int \& {\bfseries max} (const int \&x, const int \&y)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_a8169b4cbdbedd48eb68bb71a565d422c}\label{classlarcfm_1_1_util_a8169b4cbdbedd48eb68bb71a565d422c}} 
+static const long \& {\bfseries max} (const long \&x, const long \&y)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a001d867ad4596b71c563c1764e6d2248}{modulo}} (double val, double \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}})
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a334a512e70ad879d672fa1261c48de0e}{safe\+\_\+modulo}} (double val, double \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}})
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a54cd33b77244807ee83460803720d14c}{to\+\_\+pi}} (double rad)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_ac52f23096443f641a34251869366a7a3}{to\+\_\+360}} (double deg)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a3d9b5c15ae483e12909b1c0a924f9513}{to\+\_\+2pi}} (double rad)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a9acde405b87081e41e899b277afdf2a3}{to\+\_\+pi2\+\_\+cont}} (double rad)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a78bbb8e1517f402aa35d7655ccfa381e}{to\+\_\+180}} (double deg)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_aa207168d37c54d02fcc93b94ead5299a}{less\+\_\+or\+\_\+equal}} (std\+::string s1, std\+::string s2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a61b224d34153ed9c6cf50fbf47fc3007}{clockwise}} (double alpha, double beta)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_util_a6349e43f3121173f79ed861bb6e62c11}{turn\+Dir}} (double init\+Track, double goal\+Track)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}{turn\+Delta}} (double alpha, double beta)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a1eb058d709230c185c4318a19490b2bd}{signed\+Turn\+Delta}} (double alpha, double beta)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_adf6e807c736c2f30cf8551a7dd41d33d}{turn\+Delta}} (double alpha, double beta, bool turn\+Right)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_af21ba3e78539d75c5a2259d51c1a1516}{turn\+Delta}} (double alpha, double beta, int dir)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_util_adf9c986522e3bb2fed1493942839cb5c}\label{classlarcfm_1_1_util_adf9c986522e3bb2fed1493942839cb5c}} 
+static bool {\bfseries is\+\_\+double} (const std\+::string \&str)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_util_a3356a84c93936628c4dd11fb1d825b18}{is\+\_\+boolean}} (const std\+::string \&s)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a1cb644b1c8727f365ad4d23147eb2dc8}{parse\+\_\+double}} (const std\+::string \&str)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_a0cead3262f51fcb55aca712e4e24b2af}{decimal\+Degrees}} (const std\+::string \&deg\+Min\+Sec)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_util_aced8fdea449125a5edf97782c8a269b9}{parse\+\_\+time}} (const std\+::string \&s)
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_util_a39f85ba7e70be9046b7cbcb3cd58ab84}{hours\+Minutes\+Seconds}} (double t)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A broad collection of utility functions 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aca839349f1f1f3c9a36c6a6ccafde0a8}\label{classlarcfm_1_1_util_aca839349f1f1f3c9a36c6a6ccafde0a8}} 
+\index{larcfm::Util@{larcfm::Util}!acos\_safe@{acos\_safe}}
+\index{acos\_safe@{acos\_safe}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{acos\_safe()}{acos\_safe()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::acos\+\_\+safe (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+a safe (won\textquotesingle{}t return NaN or throw exceptions) version of arc-\/cosine
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the arc-\/cosine of x, between \mbox{[}0,pi) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_acde4d3c4705fef2b563f2284ff244494}\label{classlarcfm_1_1_util_acde4d3c4705fef2b563f2284ff244494}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_equals@{almost\_equals}}
+\index{almost\_equals@{almost\_equals}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_equals()}{almost\_equals()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+equals (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Are these two numbers almost equal, given the PRECISION\+\_\+\+DEFAULT
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}\label{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_equals@{almost\_equals}}
+\index{almost\_equals@{almost\_equals}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_equals()}{almost\_equals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+equals (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if these two doubles, relative to each other, are almost equal. The \char`\"{}nearness\char`\"{} metric is captured in max\+Ulps. Mathematically, a == b is the same as a -\/ b == 0. Due to quirks in floating point, generally almost\+Equals(a, b) is not the same as almost\+Equals(a -\/ b, 0). The form without the subtraction is preferred. 
+
+Consistent with the IEEE-\/754 floating point specification, \char`\"{}not a number\char`\"{} (NaN) won\textquotesingle{}t compare as equal to anything (including itself or another NaN). 
+
+If two doubles are \mbox{\hyperlink{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}{almost\+\_\+equals()}} with a max\+Ulps parameter of 16348, then this means there can be at most 16347 floating point numbers between them. A value of 16348 for \char`\"{}units of least precision\char`\"{} (ulps) corresponds to a and b agreeing to about 13 decimal places. Said another way, the two numbers have an absolute difference of (approximately) 1e-\/13 if the two floating point numbers are near 1. 
+
+The max\+Ulps parameter must be positive and smaller than 2$^\wedge$50 
+
+The implementation is based on the discussion (but not the code) in (google\+: comparing floats cygnus)
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em max\+Ulps} & the precision, or more specifically, the maximum units of least precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ad45dfc9bfabcfd80e842ba511e0b3239}\label{classlarcfm_1_1_util_ad45dfc9bfabcfd80e842ba511e0b3239}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_geq@{almost\_geq}}
+\index{almost\_geq@{almost\_geq}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_geq()}{almost\_geq()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+geq (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a is greater than or almost equal to b, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost great or equal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aee0d4d038b435aeec6408869d1ffb826}\label{classlarcfm_1_1_util_aee0d4d038b435aeec6408869d1ffb826}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_geq@{almost\_geq}}
+\index{almost\_geq@{almost\_geq}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_geq()}{almost\_geq()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+geq (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a is greater than or almost equal to b, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em max\+Ulps} & maximum units of least precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost greater or equal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ac58d2039f25fe2ac02c554c346b515ed}\label{classlarcfm_1_1_util_ac58d2039f25fe2ac02c554c346b515ed}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_greater@{almost\_greater}}
+\index{almost\_greater@{almost\_greater}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_greater()}{almost\_greater()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+greater (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a \texorpdfstring{$>$}{>} b, without being almost equal, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost\+\_\+greater 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a46f20332dee899f6413a28b1132c54fa}\label{classlarcfm_1_1_util_a46f20332dee899f6413a28b1132c54fa}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_greater@{almost\_greater}}
+\index{almost\_greater@{almost\_greater}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_greater()}{almost\_greater()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+greater (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a \texorpdfstring{$>$}{>} b, without being almost equal, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em max\+Ulps} & maximum units of least precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost\+\_\+greater 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ad3995d3f201804b3c6d1a6f0adfd614b}\label{classlarcfm_1_1_util_ad3995d3f201804b3c6d1a6f0adfd614b}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_leq@{almost\_leq}}
+\index{almost\_leq@{almost\_leq}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_leq()}{almost\_leq()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+leq (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a is less than or almost equal to b, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost less or equal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_abe2265047d9043f3ac44d3747e8c1e56}\label{classlarcfm_1_1_util_abe2265047d9043f3ac44d3747e8c1e56}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_leq@{almost\_leq}}
+\index{almost\_leq@{almost\_leq}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_leq()}{almost\_leq()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+leq (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a is less than or almost equal to b, according to the definition of the almost\+Equals() method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em max\+Ulps} & maximum units of least precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost less or equal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a6c85ce2687e3b0756d09e25dc0a4ca6a}\label{classlarcfm_1_1_util_a6c85ce2687e3b0756d09e25dc0a4ca6a}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_less@{almost\_less}}
+\index{almost\_less@{almost\_less}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_less()}{almost\_less()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+less (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a \texorpdfstring{$<$}{<} b, without being almost equal, according to the definition of the almost\+Equals() method..
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost\+\_\+less 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ac9f07e140824dd1935598cca51be48ec}\label{classlarcfm_1_1_util_ac9f07e140824dd1935598cca51be48ec}} 
+\index{larcfm::Util@{larcfm::Util}!almost\_less@{almost\_less}}
+\index{almost\_less@{almost\_less}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{almost\_less()}{almost\_less()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::almost\+\_\+less (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if a \texorpdfstring{$<$}{<} b, without being almost equal, according to the definition of the almost\+Equals() method..
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em max\+Ulps} & maximum units of least precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost\+\_\+less 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a14b53f54f0171f6669e3abca21455ceb}\label{classlarcfm_1_1_util_a14b53f54f0171f6669e3abca21455ceb}} 
+\index{larcfm::Util@{larcfm::Util}!asin\_safe@{asin\_safe}}
+\index{asin\_safe@{asin\_safe}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{asin\_safe()}{asin\_safe()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::asin\+\_\+safe (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+a safe (won\textquotesingle{}t return NaN or throw exceptions) version of arc-\/sine 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+arc-\/sine of value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_adea0bb95db5ee056ebe08ce471488a90}\label{classlarcfm_1_1_util_adea0bb95db5ee056ebe08ce471488a90}} 
+\index{larcfm::Util@{larcfm::Util}!atan2\_safe@{atan2\_safe}}
+\index{atan2\_safe@{atan2\_safe}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{atan2\_safe()}{atan2\_safe()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::atan2\+\_\+safe (\begin{DoxyParamCaption}\item[{const double}]{y,  }\item[{const double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+a safe (won\textquotesingle{}t return NaN or throw exceptions) version of arc-\/tangent
+
+
+\begin{DoxyParams}{Parameters}
+{\em y} & ordinate coordinate \\
+\hline
+{\em x} & abscissa coordinate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+arc-\/tangent 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a61b224d34153ed9c6cf50fbf47fc3007}\label{classlarcfm_1_1_util_a61b224d34153ed9c6cf50fbf47fc3007}} 
+\index{larcfm::Util@{larcfm::Util}!clockwise@{clockwise}}
+\index{clockwise@{clockwise}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{clockwise()}{clockwise()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::clockwise (\begin{DoxyParamCaption}\item[{double}]{alpha,  }\item[{double}]{beta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns true if a turn from track angle alpha to track angle beta is clockwise (by the shortest path). If the two angles are equal, then this function returns true.
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & one angle \\
+\hline
+{\em beta} & another angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if clockwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a0cead3262f51fcb55aca712e4e24b2af}\label{classlarcfm_1_1_util_a0cead3262f51fcb55aca712e4e24b2af}} 
+\index{larcfm::Util@{larcfm::Util}!decimalDegrees@{decimalDegrees}}
+\index{decimalDegrees@{decimalDegrees}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{decimalDegrees()}{decimalDegrees()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::decimal\+Degrees (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{deg\+Min\+Sec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em deg\+Min\+Sec} & Lat/\+Lon String of the form \char`\"{}46\+:55\+:00\char`\"{} or \char`\"{}-\/111\+:57\+:00\char`\"{} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+numbers of degrees in decimal form
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em deg\+Min\+Sec} & Lat/\+Lon string of the form \char`\"{}46\+:55\+:00\char`\"{} or \char`\"{}-\/111\+:57\+:00\char`\"{} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+numbers of degrees decimal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aeaca41cc20bd593e15ff315b19a50518}\label{classlarcfm_1_1_util_aeaca41cc20bd593e15ff315b19a50518}} 
+\index{larcfm::Util@{larcfm::Util}!discr@{discr}}
+\index{discr@{discr}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{discr()}{discr()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::discr (\begin{DoxyParamCaption}\item[{const double}]{a,  }\item[{const double}]{b,  }\item[{const double}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Discriminant of a quadratic
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & a coefficient of quadratic \\
+\hline
+{\em b} & b coefficient of quadratic \\
+\hline
+{\em c} & c coefficient of quadratic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+discriminant 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aff13dc4fdc87fc154d006ad85bdc7f46}\label{classlarcfm_1_1_util_aff13dc4fdc87fc154d006ad85bdc7f46}} 
+\index{larcfm::Util@{larcfm::Util}!discretizeDir@{discretizeDir}}
+\index{discretizeDir@{discretizeDir}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{discretizeDir()}{discretizeDir()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::discretize\+Dir (\begin{DoxyParamCaption}\item[{double}]{voz,  }\item[{double}]{nvoz,  }\item[{double}]{discrete\+Units }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Discretize the value of nvoz in the direction from voz in units of discrete\+Units 
+\begin{DoxyParams}{Parameters}
+{\em voz} & The value nvoz was derived from \\
+\hline
+{\em nvoz} & The value to be discretized \\
+\hline
+{\em discrete\+Units} & the size of discretization, e.\+g. 0.\+1, 1.\+0, 10.\+0, 100.\+0 etc \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nvoz discretized to units if discrete\+Units 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a39f85ba7e70be9046b7cbcb3cd58ab84}\label{classlarcfm_1_1_util_a39f85ba7e70be9046b7cbcb3cd58ab84}} 
+\index{larcfm::Util@{larcfm::Util}!hoursMinutesSeconds@{hoursMinutesSeconds}}
+\index{hoursMinutesSeconds@{hoursMinutesSeconds}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{hoursMinutesSeconds()}{hoursMinutesSeconds()}}
+{\footnotesize\ttfamily string larcfm\+::\+Util\+::hours\+Minutes\+Seconds (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the decimal time (in seconds) into a 0\+:00\+:00 string. This prints as many digits as necessary for the hours (one or two, typically). See \mbox{\hyperlink{}{time\+\_\+str(double)}} for an alternate format.
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & time in seconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String of hours\+:mins\+:secs
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & time in seconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String of hours\+:mins\+:secs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a3356a84c93936628c4dd11fb1d825b18}\label{classlarcfm_1_1_util_a3356a84c93936628c4dd11fb1d825b18}} 
+\index{larcfm::Util@{larcfm::Util}!is\_boolean@{is\_boolean}}
+\index{is\_boolean@{is\_boolean}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{is\_boolean()}{is\_boolean()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::is\+\_\+boolean (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns true if the stored value for key is likely a boolean 
+\begin{DoxyParams}{Parameters}
+{\em s} & name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if string value is true/false/t/f, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aa207168d37c54d02fcc93b94ead5299a}\label{classlarcfm_1_1_util_aa207168d37c54d02fcc93b94ead5299a}} 
+\index{larcfm::Util@{larcfm::Util}!less\_or\_equal@{less\_or\_equal}}
+\index{less\_or\_equal@{less\_or\_equal}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{less\_or\_equal()}{less\_or\_equal()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::less\+\_\+or\+\_\+equal (\begin{DoxyParamCaption}\item[{std\+::string}]{s1,  }\item[{std\+::string}]{s2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns true if string s1 is less than or equal to string s2.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & one string \\
+\hline
+{\em s2} & another string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if s1 is less or equals to s2 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ac6198e6580f41bd74007149ac877e660}\label{classlarcfm_1_1_util_ac6198e6580f41bd74007149ac877e660}} 
+\index{larcfm::Util@{larcfm::Util}!llabs@{llabs}}
+\index{llabs@{llabs}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{llabs()}{llabs()}}
+{\footnotesize\ttfamily INT64\+FM larcfm\+::\+Util\+::llabs (\begin{DoxyParamCaption}\item[{const INT64\+FM}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+return the absolute value \mbox{\Hypertarget{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}\label{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}} 
+\index{larcfm::Util@{larcfm::Util}!max@{max}}
+\index{max@{max}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{max()}{max()}}
+{\footnotesize\ttfamily const double \& larcfm\+::\+Util\+::max (\begin{DoxyParamCaption}\item[{const double \&}]{x,  }\item[{const double \&}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+A maximum function that has the same behavior as the Java Math.\+max function\+: NaN is propagated for both x and y, and -\/0.\+0 is \char`\"{}less than\char`\"{} +0.\+0 Note that std\+::max(double,double) does NOT have the same behavior, especially if NaN is involved! \mbox{\Hypertarget{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}\label{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}} 
+\index{larcfm::Util@{larcfm::Util}!min@{min}}
+\index{min@{min}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{min()}{min()}}
+{\footnotesize\ttfamily const double \& larcfm\+::\+Util\+::min (\begin{DoxyParamCaption}\item[{const double \&}]{x,  }\item[{const double \&}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+A minimum function that has the same behavior as the Java Math.\+min function\+: NaN is propagated for both x and y, and -\/0.\+0 is \char`\"{}less than\char`\"{} +0.\+0 Note that std\+::min(double,double) does NOT have the same behavior, especially if NaN is involved! \mbox{\Hypertarget{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}\label{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}} 
+\index{larcfm::Util@{larcfm::Util}!mod@{mod}}
+\index{mod@{mod}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{mod()}{mod()}}
+{\footnotesize\ttfamily int larcfm\+::\+Util\+::mod (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+The behavior of the xy operator is different between Java and C++ if either x or y is negative. Use this to always return a value between 0 and y. 
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+{\em y} & range \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+x mod y, having the same sign as y (Java behavior) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a001d867ad4596b71c563c1764e6d2248}\label{classlarcfm_1_1_util_a001d867ad4596b71c563c1764e6d2248}} 
+\index{larcfm::Util@{larcfm::Util}!modulo@{modulo}}
+\index{modulo@{modulo}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{modulo()}{modulo()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::modulo (\begin{DoxyParamCaption}\item[{double}]{val,  }\item[{double}]{mod }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Computes the modulo of val and mod. The returned value is in the range \mbox{[}0,mod)
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & numerator \\
+\hline
+{\em mod} & denominator, assumed/required to be non-\/zero \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+modulo value
+\end{DoxyReturn}
+Computes the modulo of val and mod. The returned value is in the range \mbox{[}0,mod)
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & numerator \\
+\hline
+{\em mod} & denominator \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+modulo value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a1cb644b1c8727f365ad4d23147eb2dc8}\label{classlarcfm_1_1_util_a1cb644b1c8727f365ad4d23147eb2dc8}} 
+\index{larcfm::Util@{larcfm::Util}!parse\_double@{parse\_double}}
+\index{parse\_double@{parse\_double}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{parse\_double()}{parse\_double()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::parse\+\_\+double (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns a double value which is a representation of the given string. If the string does not represent a number, an arbitrary value is returned. In many cases, but not all, if the string is not a number then 0.\+0 is returned. However, on some platforms, \char`\"{}1abc\char`\"{} will return 1. If one wants to know the fact that the string is not a number, then use Util.\+is\+\_\+double() method. \mbox{\Hypertarget{classlarcfm_1_1_util_aced8fdea449125a5edf97782c8a269b9}\label{classlarcfm_1_1_util_aced8fdea449125a5edf97782c8a269b9}} 
+\index{larcfm::Util@{larcfm::Util}!parse\_time@{parse\_time}}
+\index{parse\_time@{parse\_time}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{parse\_time()}{parse\_time()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::parse\+\_\+time (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Reads in a clock string and converts it to seconds. Accepts hh\+:mm\+:ss, mm\+:ss, and ss.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time in \mbox{[}s\mbox{]}
+\end{DoxyReturn}
+Reads in a clock string and converts it to seconds. Accepts hh\+:mm\+:ss, mm\+:ss, and ss. \mbox{\Hypertarget{classlarcfm_1_1_util_a1ea3d717bd97668873dae589341e6a1b}\label{classlarcfm_1_1_util_a1ea3d717bd97668873dae589341e6a1b}} 
+\index{larcfm::Util@{larcfm::Util}!root@{root}}
+\index{root@{root}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{root()}{root()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::root (\begin{DoxyParamCaption}\item[{const double}]{a,  }\item[{const double}]{b,  }\item[{const double}]{c,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Quadratic equation, eps = -\/1 or +1
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & a coefficient of quadratic \\
+\hline
+{\em b} & b coefficient of quadratic \\
+\hline
+{\em c} & c coefficient of quadratic \\
+\hline
+{\em eps} & -\/1 or +1 (to indicate which solution you want) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+root of quadratic 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a038550309ea0232328ebbd2263f83785}\label{classlarcfm_1_1_util_a038550309ea0232328ebbd2263f83785}} 
+\index{larcfm::Util@{larcfm::Util}!root2b@{root2b}}
+\index{root2b@{root2b}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{root2b()}{root2b()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::root2b (\begin{DoxyParamCaption}\item[{const double}]{a,  }\item[{const double}]{b,  }\item[{const double}]{c,  }\item[{const int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+root2b(a,b,c,eps) = root(a,2$\ast$b,c,eps) , eps = -\/1 or +1
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & a coefficient of quadratic \\
+\hline
+{\em b} & b coefficient of quadratic \\
+\hline
+{\em c} & c coefficient of quadratic \\
+\hline
+{\em eps} & -\/1 or +1 (to indicate which solution you want) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+root of quadratic 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a334a512e70ad879d672fa1261c48de0e}\label{classlarcfm_1_1_util_a334a512e70ad879d672fa1261c48de0e}} 
+\index{larcfm::Util@{larcfm::Util}!safe\_modulo@{safe\_modulo}}
+\index{safe\_modulo@{safe\_modulo}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{safe\_modulo()}{safe\_modulo()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::safe\+\_\+modulo (\begin{DoxyParamCaption}\item[{double}]{val,  }\item[{double}]{mod }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Computes the modulo of val and mod. If mod \texorpdfstring{$>$}{>} 0, the returned value is in the r ange \mbox{[}0,mod). Otherwise, returns val.
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & numerator \\
+\hline
+{\em mod} & denominator \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+modulo value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a09cf32d4c046c7d7c9f72c5e09fccd81}\label{classlarcfm_1_1_util_a09cf32d4c046c7d7c9f72c5e09fccd81}} 
+\index{larcfm::Util@{larcfm::Util}!sign@{sign}}
+\index{sign@{sign}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{sign()}{sign()}}
+{\footnotesize\ttfamily int larcfm\+::\+Util\+::sign (\begin{DoxyParamCaption}\item[{const double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns +1 if the argument is positive or 0, -\/1 otherwise. Note\+: This is not the classic signum function from mathematics that returns 0 when a 0 is supplied.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sign of value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a1eb058d709230c185c4318a19490b2bd}\label{classlarcfm_1_1_util_a1eb058d709230c185c4318a19490b2bd}} 
+\index{larcfm::Util@{larcfm::Util}!signedTurnDelta@{signedTurnDelta}}
+\index{signedTurnDelta@{signedTurnDelta}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{signedTurnDelta()}{signedTurnDelta()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::signed\+Turn\+Delta (\begin{DoxyParamCaption}\item[{double}]{alpha,  }\item[{double}]{beta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the smallest angle between two track angles \mbox{[}-\/PI,PI\mbox{]}. The sign indicates the direction of the turn, positive is clockwise, negative counterclockwise.
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & one angle \\
+\hline
+{\em beta} & another angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle difference 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_aa42e3c90f234d97f4a70699c98bebac8}\label{classlarcfm_1_1_util_aa42e3c90f234d97f4a70699c98bebac8}} 
+\index{larcfm::Util@{larcfm::Util}!signTriple@{signTriple}}
+\index{signTriple@{signTriple}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{signTriple()}{signTriple()}}
+{\footnotesize\ttfamily int larcfm\+::\+Util\+::sign\+Triple (\begin{DoxyParamCaption}\item[{const double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return +1 if the value is greater than 0, -\/1 if it is less than 0, or 0. 
+\begin{DoxyParams}{Parameters}
+{\em x} & value to be checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sign as a number (including 0) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a8a21a4f52cbfce0b696a4ca5f5bee11b}\label{classlarcfm_1_1_util_a8a21a4f52cbfce0b696a4ca5f5bee11b}} 
+\index{larcfm::Util@{larcfm::Util}!sq@{sq}}
+\index{sq@{sq}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{sq()}{sq()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::sq (\begin{DoxyParamCaption}\item[{const double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Square
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+square of value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a2772af0dc8a38cb0688d591ecf5e5709}\label{classlarcfm_1_1_util_a2772af0dc8a38cb0688d591ecf5e5709}} 
+\index{larcfm::Util@{larcfm::Util}!sqrt\_safe@{sqrt\_safe}}
+\index{sqrt\_safe@{sqrt\_safe}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{sqrt\_safe()}{sqrt\_safe()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::sqrt\+\_\+safe (\begin{DoxyParamCaption}\item[{const double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+a safe (won\textquotesingle{}t return NaN or throw exceptions) version of square root
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+square root of value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a78bbb8e1517f402aa35d7655ccfa381e}\label{classlarcfm_1_1_util_a78bbb8e1517f402aa35d7655ccfa381e}} 
+\index{larcfm::Util@{larcfm::Util}!to\_180@{to\_180}}
+\index{to\_180@{to\_180}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{to\_180()}{to\_180()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::to\+\_\+180 (\begin{DoxyParamCaption}\item[{double}]{deg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts {\ttfamily deg} degrees to the range ({\ttfamily -\/180}, {\ttfamily 180}\mbox{]}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em deg} & Degrees\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily deg} in the range ({\ttfamily -\/180}, {\ttfamily 180}\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a3d9b5c15ae483e12909b1c0a924f9513}\label{classlarcfm_1_1_util_a3d9b5c15ae483e12909b1c0a924f9513}} 
+\index{larcfm::Util@{larcfm::Util}!to\_2pi@{to\_2pi}}
+\index{to\_2pi@{to\_2pi}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{to\_2pi()}{to\_2pi()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::to\+\_\+2pi (\begin{DoxyParamCaption}\item[{double}]{rad }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts {\ttfamily rad} radians to the range \mbox{[}{\ttfamily 0}, {\ttfamily 2$\ast$pi}\mbox{]}. 
+
+Note\+: this should {\bfseries{not}} be used for argument reduction for trigonometric functions (Math.\+sin(to\+\_\+2pi(x)). Bad roundoff errors could occur.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rad} & Radians\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily rad} in the range \mbox{[}{\ttfamily 0}, {\ttfamily 2$\ast$pi}). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_ac52f23096443f641a34251869366a7a3}\label{classlarcfm_1_1_util_ac52f23096443f641a34251869366a7a3}} 
+\index{larcfm::Util@{larcfm::Util}!to\_360@{to\_360}}
+\index{to\_360@{to\_360}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{to\_360()}{to\_360()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::to\+\_\+360 (\begin{DoxyParamCaption}\item[{double}]{deg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts {\ttfamily deg} degrees to the range \mbox{[}{\ttfamily 0}, {\ttfamily 360}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em deg} & Degrees\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily deg} in the range \mbox{[}{\ttfamily 0}, {\ttfamily 360}). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a54cd33b77244807ee83460803720d14c}\label{classlarcfm_1_1_util_a54cd33b77244807ee83460803720d14c}} 
+\index{larcfm::Util@{larcfm::Util}!to\_pi@{to\_pi}}
+\index{to\_pi@{to\_pi}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{to\_pi()}{to\_pi()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::to\+\_\+pi (\begin{DoxyParamCaption}\item[{double}]{rad }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts {\ttfamily rad} radians to the range (-\/{\ttfamily pi}, {\ttfamily pi}\mbox{]}. 
+
+Note\+: this should not be used for argument reduction for trigonometric functions (Math.\+sin(to\+\_\+pi(x))
+
+
+\begin{DoxyParams}{Parameters}
+{\em rad} & Radians\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily rad} in the range (-\/{\ttfamily pi}, {\ttfamily pi}\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a9acde405b87081e41e899b277afdf2a3}\label{classlarcfm_1_1_util_a9acde405b87081e41e899b277afdf2a3}} 
+\index{larcfm::Util@{larcfm::Util}!to\_pi2\_cont@{to\_pi2\_cont}}
+\index{to\_pi2\_cont@{to\_pi2\_cont}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{to\_pi2\_cont()}{to\_pi2\_cont()}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::to\+\_\+pi2\+\_\+cont (\begin{DoxyParamCaption}\item[{double}]{rad }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts {\ttfamily rad} radians to the range \mbox{[}{\ttfamily -\/\+Math.\+PI/2}, {\ttfamily Math.\+PI/2}). This function is continuous, so to\+\_\+pi2\+\_\+cont(PI/2+eps) equals PI/2-\/eps.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rad} & Radians\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily rad} in the range \mbox{[}{\ttfamily -\/\+Math.\+PI/2}, {\ttfamily Math.\+PI/2}). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}\label{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}} 
+\index{larcfm::Util@{larcfm::Util}!turnDelta@{turnDelta}}
+\index{turnDelta@{turnDelta}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{turnDelta()}{turnDelta()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::turn\+Delta (\begin{DoxyParamCaption}\item[{double}]{alpha,  }\item[{double}]{beta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the smallest angle between two track angles \mbox{[}0,PI\mbox{]}. Reminder\+: This is also the angle from BOT to EOT from the point of view of the turn center. ~\newline
+ It is not angle between two segments from the vertex\textquotesingle{}s point of view. ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & one angle \\
+\hline
+{\em beta} & another angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+non-\/negative difference in angle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_adf6e807c736c2f30cf8551a7dd41d33d}\label{classlarcfm_1_1_util_adf6e807c736c2f30cf8551a7dd41d33d}} 
+\index{larcfm::Util@{larcfm::Util}!turnDelta@{turnDelta}}
+\index{turnDelta@{turnDelta}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{turnDelta()}{turnDelta()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::turn\+Delta (\begin{DoxyParamCaption}\item[{double}]{alpha,  }\item[{double}]{beta,  }\item[{bool}]{turn\+Right }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the angle between two tracks when turning in direction indicated by turn\+Right flag \mbox{[}0,2PI\mbox{]} Note\+: this function can return an angle larger than PI!
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & one angle \\
+\hline
+{\em beta} & another angle \\
+\hline
+{\em turn\+Right} & when true, measure angles from the right \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle difference 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_af21ba3e78539d75c5a2259d51c1a1516}\label{classlarcfm_1_1_util_af21ba3e78539d75c5a2259d51c1a1516}} 
+\index{larcfm::Util@{larcfm::Util}!turnDelta@{turnDelta}}
+\index{turnDelta@{turnDelta}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{turnDelta()}{turnDelta()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Util\+::turn\+Delta (\begin{DoxyParamCaption}\item[{double}]{alpha,  }\item[{double}]{beta,  }\item[{int}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the angle between two tracks when turning in direction indicated by turn\+Right flag \mbox{[}0,2PI\mbox{]} Note\+: this function can return an angle larger than PI!
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & one angle \\
+\hline
+{\em beta} & another angle \\
+\hline
+{\em dir} & = +/-\/ 1 + right, -\/ left \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle difference 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a6349e43f3121173f79ed861bb6e62c11}\label{classlarcfm_1_1_util_a6349e43f3121173f79ed861bb6e62c11}} 
+\index{larcfm::Util@{larcfm::Util}!turnDir@{turnDir}}
+\index{turnDir@{turnDir}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{turnDir()}{turnDir()}}
+{\footnotesize\ttfamily int larcfm\+::\+Util\+::turn\+Dir (\begin{DoxyParamCaption}\item[{double}]{init\+Track,  }\item[{double}]{goal\+Track }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns 1 if the minimal turn to goal\+Track (i.\+e. less than pi) is to the right, else -\/1 
+\begin{DoxyParams}{Parameters}
+{\em init\+Track} & initial track \mbox{[}rad\mbox{]} \\
+\hline
+{\em goal\+Track} & target track \mbox{[}rad\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+direction of turn 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a1ab0960625fefe8e33a215019c87135c}\label{classlarcfm_1_1_util_a1ab0960625fefe8e33a215019c87135c}} 
+\index{larcfm::Util@{larcfm::Util}!within\_epsilon@{within\_epsilon}}
+\index{within\_epsilon@{within\_epsilon}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{within\_epsilon()}{within\_epsilon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::within\+\_\+epsilon (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{epsilon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Comparison of two values to determine if their absolute difference is within a value epsilon. If the epsilon value is too small relative to the a and b values in question, then this is essentially the same as ==. Epsilon must be positive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one number \\
+\hline
+{\em b} & another number \\
+\hline
+{\em epsilon} & maximum difference \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if values are within epsilon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_util_a2ca3858525253fd33190be3afcd9e0d6}\label{classlarcfm_1_1_util_a2ca3858525253fd33190be3afcd9e0d6}} 
+\index{larcfm::Util@{larcfm::Util}!within\_epsilon@{within\_epsilon}}
+\index{within\_epsilon@{within\_epsilon}!larcfm::Util@{larcfm::Util}}
+\doxysubsubsection{\texorpdfstring{within\_epsilon()}{within\_epsilon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Util\+::within\+\_\+epsilon (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{epsilon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns true if the magnitude of a is less than epsilon. Epsilon must be positive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & a number \\
+\hline
+{\em epsilon} & maximum value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value is within epsilon 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Util.\+h\item 
+Modules/\+ACCo\+RD/src/Util.\+cpp\end{DoxyCompactItemize}

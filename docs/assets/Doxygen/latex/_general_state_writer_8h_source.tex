@@ -1,0 +1,182 @@
+\hypertarget{_general_state_writer_8h_source}{}\doxysection{General\+State\+Writer.\+h}
+\label{_general_state_writer_8h_source}\index{Modules/ACCoRD/inc/GeneralStateWriter.h@{Modules/ACCoRD/inc/GeneralStateWriter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifndef GENERALSTATEWRITER\_H\_}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define GENERALSTATEWRITER\_H\_}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}GeneralState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}SeparatedOutput.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}SimplePoly.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}SimpleMovingPoly.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{61 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_general_state_writer}{GeneralStateWriter}} : \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{62 \textcolor{keyword}{private}:}
+\DoxyCodeLine{63     \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{64     \mbox{\hyperlink{classlarcfm_1_1_separated_output}{SeparatedOutput}} output;}
+\DoxyCodeLine{65     \textcolor{keywordtype}{bool} velocity;}
+\DoxyCodeLine{66     \textcolor{keywordtype}{bool} latlon;}
+\DoxyCodeLine{67     \textcolor{keywordtype}{bool} trkgsvs;}
+\DoxyCodeLine{68     \textcolor{keywordtype}{bool} display\_time;}
+\DoxyCodeLine{69     \textcolor{keywordtype}{bool} first\_line;}
+\DoxyCodeLine{70     \textcolor{keywordtype}{bool} display\_units;}
+\DoxyCodeLine{71     \textcolor{keywordtype}{bool} polygons; \textcolor{comment}{// includes polygons (needs extra header)}}
+\DoxyCodeLine{72     \textcolor{keywordtype}{int} precision;}
+\DoxyCodeLine{73     \textcolor{keywordtype}{int} lines\_i;}
+\DoxyCodeLine{74     \textcolor{keywordtype}{int} num;}
+\DoxyCodeLine{75     std::string fname;}
+\DoxyCodeLine{76     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} default\_time;}
+\DoxyCodeLine{77     std::ostream* fw;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keyword}{public}:}
+\DoxyCodeLine{81     \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_ae1365c05ff9c0f18cff1e406c4a6a2b5}{GeneralStateWriter}}();}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{84     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a522776bc0130b56db0bd86ab1aa280fd}{open}}(\textcolor{keyword}{const} std::string\& filename);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a522776bc0130b56db0bd86ab1aa280fd}{open}}(std::ostream* writer);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{keywordtype}{void} close();}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{comment}{//  bool isVelocity() const;}}
+\DoxyCodeLine{91 \textcolor{comment}{//}}
+\DoxyCodeLine{92 \textcolor{comment}{//  void setVelocity(bool velocity);}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{bool} isTrkGsVs() \textcolor{keyword}{const};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} setTrkGsVs(\textcolor{keywordtype}{bool} trkgsvs);}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{keywordtype}{int} getPrecision() \textcolor{keyword}{const};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keywordtype}{void} setPrecision(\textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{103     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_aa7d2f1e965578edafdd791074e1db00e}{isOutputTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{106     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a17b3c1e2cdfa1e0fb56693c1bdd071df}{setOutputTime}}(\textcolor{keywordtype}{bool} display\_time);}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{109     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_adbde82a4f9566224f5b705ed036d8225}{isOutputUnits}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{112     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_acf7b414215b385d27c36694d424d2f03}{setOutputUnits}}(\textcolor{keywordtype}{bool} display\_units);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a99c67d0b5057af5372574f06ea05ac45}{setColumnDelimiterTab}}();}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a4e17048a2eef2cd597faac421016d105}{setColumnDelimiterComma}}();}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a0c331984d50099d998f24cd4d40ec466}{setColumnDelimiterSpace}}();}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{132     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a52076462b5ec38e655a386f1967b7176}{addComment}}(\textcolor{keyword}{const} std::string\& comment);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{137     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a861c2be0ba8b77b8b951dda2e031d695}{setParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pr);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_state}{GeneralState}}\& gs, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, std::pair<Position,Velocity> pv, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np);}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_state}{GeneralState}}\& gs);}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp);}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist);}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{SimpleMovingPoly}}\& smp, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& vlist, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{void} writeState(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{211     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_ac74d60499f30fe66cf440d0523beae4d}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{216     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_ab8c066b5a6ab49e3ec69dd585be2ad42}{lines}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218     \textcolor{keywordtype}{bool} isLatLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a8afa9a9bca8b5b8ae0167675e6fb9455}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{226     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_ac6bb9ca3e2ebc2488f19a3b4854bb89c}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{227     std::string \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_a845136d45f9add9ce68e7b8cb21ebcdc}{getMessage}}();}
+\DoxyCodeLine{228     std::string \mbox{\hyperlink{classlarcfm_1_1_general_state_writer_acb291c2d67a4a546200a294b9539a9f9}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 \};}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_GENERALSTATEWRITER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,96 @@
+\hypertarget{_c_d_s_s_8h_source}{}\doxysection{CDSS.\+h}
+\label{_c_d_s_s_8h_source}\index{Modules/ACCoRD/inc/CDSS.h@{Modules/ACCoRD/inc/CDSS.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CDSS.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ * }}
+\DoxyCodeLine{9 \textcolor{comment}{ * Conflict detection between an ownship and traffic aircraft using state information.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *   }}
+\DoxyCodeLine{11 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{12 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{13 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{14 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{15 \textcolor{comment}{ */}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#ifndef CDSS\_H\_}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define CDSS\_H\_}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}CD3D.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}CDSSCore.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}CDCylinder.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}WCV\_TAUMOD.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{38 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}} \{}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40  \textcolor{keyword}{public}:}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}();}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}(\mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}}\& cdsscore);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}(\mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}\& cdCyl);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}(\mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}\& cdCyl, \textcolor{keywordtype}{double} filterTm, \textcolor{keyword}{const} std::string\& ut);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{62   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}(\textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& ud, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& uh);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}(\mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}}\& wcv\_TAUMOD);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}} makeCyl(\textcolor{keyword}{const} std::string\& cyid, \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& ud, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& uh);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}} mkCyl(\textcolor{keyword}{const} std::string\& cyid, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} filter);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}} mkTauMOD(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} DTHR, \textcolor{keywordtype}{double} ZTHR, \textcolor{keywordtype}{double} TTHR, \textcolor{keywordtype}{double} TCOA);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keywordtype}{void} setFilterTime(\textcolor{keywordtype}{double} filter);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77   \textcolor{comment}{// needed because of pointer}}
+\DoxyCodeLine{79 \textcolor{comment}{}  \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_a7e37ead9d0413855704be658e62edd17}{CDSS}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}\& cdss);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{\string~CDSS}}();}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{comment}{// needed because of pointer}}
+\DoxyCodeLine{84   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s}{CDSS}}\& cdss);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{97   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_afc3503e1350ab3c98289cfffea54fb95}{lossOfSeparation}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sop, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi) \textcolor{keyword}{const};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_afd7d837a392167b1b0b1c14d8e77ef2a}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sop, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\&vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} std::string\& ut);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{114   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_a033793fc914f92b6bda58549883739fa}{conflict}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{125   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_ab4ddd74a0a768e481c4a7e9c92cda386}{getTimeIn}}(\textcolor{keyword}{const} std::string\& ut) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_a5e0c15765983324ffda7fef118660e60}{getCriticalTime}}(\textcolor{keyword}{const} std::string\& ut) \textcolor{keyword}{const};}
+\DoxyCodeLine{135   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_ac62509c2730e247db269ff4534a68b56}{getTimeOut}}(\textcolor{keyword}{const} std::string\& ut) \textcolor{keyword}{const};}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}}* getCorePtr();}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   std::string toString();}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{keyword}{private}:}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_core}{CDSSCore}} cdsscore;}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CDSS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

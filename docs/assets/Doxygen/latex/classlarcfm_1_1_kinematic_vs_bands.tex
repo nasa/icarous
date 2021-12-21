@@ -1,0 +1,86 @@
+\hypertarget{classlarcfm_1_1_kinematic_vs_bands}{}\doxysection{larcfm\+::Kinematic\+Vs\+Bands Class Reference}
+\label{classlarcfm_1_1_kinematic_vs_bands}\index{larcfm::KinematicVsBands@{larcfm::KinematicVsBands}}
+Inheritance diagram for larcfm\+::Kinematic\+Vs\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_kinematic_vs_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a04cbc66db5fbe0ffcdf017283b0f61a0}\label{classlarcfm_1_1_kinematic_vs_bands_a04cbc66db5fbe0ffcdf017283b0f61a0}} 
+{\bfseries Kinematic\+Vs\+Bands} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{Kinematic\+Bands\+Parameters}} \&parameters)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a2f3582ffab4477357275df1061042725}\label{classlarcfm_1_1_kinematic_vs_bands_a2f3582ffab4477357275df1061042725}} 
+{\bfseries Kinematic\+Vs\+Bands} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands}{Kinematic\+Vs\+Bands}} \&b)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands_a10b5a8d2546bcac104109165c90a0c01}{instantaneous\+\_\+bands}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a2cccd069d6ffcbd1bab85f06c71195fc}\label{classlarcfm_1_1_kinematic_vs_bands_a2cccd069d6ffcbd1bab85f06c71195fc}} 
+double {\bfseries get\+\_\+vertical\+\_\+accel} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a113a46cfb0a5809abd1703fcb7be17d3}\label{classlarcfm_1_1_kinematic_vs_bands_a113a46cfb0a5809abd1703fcb7be17d3}} 
+void {\bfseries set\+\_\+vertical\+\_\+accel} (double val)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands_a1292064eb04a1044664553403a2e6e11}{own\+\_\+val}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands_a8d3867e7a94848c027f2f826c66ae2dc}{time\+\_\+step}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_kinematic_vs_bands_a06a8dc38104ff1363f508a115c0ca6f0}{trajectory}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, double time, bool dir) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_ac1fa3a44b14dc3377c2f2865aca88b6b}\label{classlarcfm_1_1_kinematic_vs_bands_ac1fa3a44b14dc3377c2f2865aca88b6b}} 
+double {\bfseries vertical\+\_\+accel\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a10b5a8d2546bcac104109165c90a0c01}\label{classlarcfm_1_1_kinematic_vs_bands_a10b5a8d2546bcac104109165c90a0c01}} 
+\index{larcfm::KinematicVsBands@{larcfm::KinematicVsBands}!instantaneous\_bands@{instantaneous\_bands}}
+\index{instantaneous\_bands@{instantaneous\_bands}!larcfm::KinematicVsBands@{larcfm::KinematicVsBands}}
+\doxysubsubsection{\texorpdfstring{instantaneous\_bands()}{instantaneous\_bands()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Kinematic\+Vs\+Bands\+::instantaneous\+\_\+bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{larcfm\+::\+Kinematic\+Real\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a1292064eb04a1044664553403a2e6e11}\label{classlarcfm_1_1_kinematic_vs_bands_a1292064eb04a1044664553403a2e6e11}} 
+\index{larcfm::KinematicVsBands@{larcfm::KinematicVsBands}!own\_val@{own\_val}}
+\index{own\_val@{own\_val}!larcfm::KinematicVsBands@{larcfm::KinematicVsBands}}
+\doxysubsubsection{\texorpdfstring{own\_val()}{own\_val()}}
+{\footnotesize\ttfamily double larcfm\+::\+Kinematic\+Vs\+Bands\+::own\+\_\+val (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{larcfm\+::\+Kinematic\+Real\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a8d3867e7a94848c027f2f826c66ae2dc}\label{classlarcfm_1_1_kinematic_vs_bands_a8d3867e7a94848c027f2f826c66ae2dc}} 
+\index{larcfm::KinematicVsBands@{larcfm::KinematicVsBands}!time\_step@{time\_step}}
+\index{time\_step@{time\_step}!larcfm::KinematicVsBands@{larcfm::KinematicVsBands}}
+\doxysubsubsection{\texorpdfstring{time\_step()}{time\_step()}}
+{\footnotesize\ttfamily double larcfm\+::\+Kinematic\+Vs\+Bands\+::time\+\_\+step (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_kinematic_real_bands}{larcfm\+::\+Kinematic\+Real\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_vs_bands_a06a8dc38104ff1363f508a115c0ca6f0}\label{classlarcfm_1_1_kinematic_vs_bands_a06a8dc38104ff1363f508a115c0ca6f0}} 
+\index{larcfm::KinematicVsBands@{larcfm::KinematicVsBands}!trajectory@{trajectory}}
+\index{trajectory@{trajectory}!larcfm::KinematicVsBands@{larcfm::KinematicVsBands}}
+\doxysubsubsection{\texorpdfstring{trajectory()}{trajectory()}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Kinematic\+Vs\+Bands\+::trajectory (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{double}]{time,  }\item[{bool}]{dir }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_kinematic_integer_bands}{larcfm\+::\+Kinematic\+Integer\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Kinematic\+Vs\+Bands.\+h\end{DoxyCompactItemize}

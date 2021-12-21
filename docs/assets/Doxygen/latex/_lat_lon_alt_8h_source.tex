@@ -1,0 +1,132 @@
+\hypertarget{_lat_lon_alt_8h_source}{}\doxysection{Lat\+Lon\+Alt.\+h}
+\label{_lat_lon_alt_8h_source}\index{Modules/ACCoRD/inc/LatLonAlt.h@{Modules/ACCoRD/inc/LatLonAlt.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* A Lat/Lon/Alt position}}
+\DoxyCodeLine{2 \textcolor{comment}{ * }}
+\DoxyCodeLine{3 \textcolor{comment}{ * Authors:  George Hagen              NASA Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ *           Ricky Butler              NASA Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *           Jeff Maddalon             NASA Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef LATLONALT\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define LATLONALT\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \{}
+\DoxyCodeLine{34 \textcolor{keyword}{private}:}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} lati;}
+\DoxyCodeLine{37     \textcolor{keywordtype}{double} longi;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} alti;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a047fe11efebffb8ccf863da82283d338}{LatLonAlt}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y, \textcolor{keywordtype}{double} z);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{48     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a047fe11efebffb8ccf863da82283d338}{LatLonAlt}}();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{51     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a3d2e1c489ab0c630c054453319503666}{operator == }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{53     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a04956e52b474919e88dadc8d6faf4abd}{operator != }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{58     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a3fecba2564485a8fbdb98768a777782f}{equals}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{59     \textcolor{keywordtype}{bool} equals2D(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{76     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a99f6d2561ec5ae5acedb6191603178c6}{decimal\_angle}}(\textcolor{keywordtype}{double} degrees, \textcolor{keywordtype}{double} minutes, \textcolor{keywordtype}{double} seconds, \textcolor{keywordtype}{bool} north\_east);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aadb186a607f9743081454f507cc804de}{latitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{86     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a951020ad2ef8f1fb9a1177cb86dd29a9}{longitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{91     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aa38f9b83ebff2c1f0f4832e2c61038ad}{altitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{96     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{100     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{104     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     \textcolor{keywordtype}{double} distanceH(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla2) \textcolor{keyword}{const};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{109     std::string \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a28ecf95a6cf50144b8f69312a11a2dcc}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{114     std::string \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a28ecf95a6cf50144b8f69312a11a2dcc}{toString}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{124     std::string \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a28ecf95a6cf50144b8f69312a11a2dcc}{toString}}(\textcolor{keyword}{const} std::string\& latunit, \textcolor{keyword}{const} std::string\& lonunit, \textcolor{keyword}{const} std::string\& zunit) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{135     std::string \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a28ecf95a6cf50144b8f69312a11a2dcc}{toString}}(\textcolor{keyword}{const} std::string\& latunit, \textcolor{keyword}{const} std::string\& lonunit, \textcolor{keyword}{const} std::string\& zunit, \textcolor{keywordtype}{int} p) \textcolor{keyword}{const};}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{140     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a7595f909eb2b49441ffa84b68aa6731e}{make}}();}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{148     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aaab009eb03d2bf91fd887504e81277cc}{mk}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& v);}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{158     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a7595f909eb2b49441ffa84b68aa6731e}{make}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}});}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{171     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a7595f909eb2b49441ffa84b68aa6731e}{make}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}, std::string lat\_unit, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}}, std::string lon\_unit, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}}, std::string alt\_unit);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{182     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aaab009eb03d2bf91fd887504e81277cc}{mk}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}});}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{190     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_ae98411adab26367537edf52d437d0cfa}{mkAlt}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{198     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a9249053ef11f25841fd3d4954f5cf17b}{makeAlt}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{206     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a7e63742719a9d62a7be40f3c8361af37}{zeroAlt}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{212     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a20ebf964aa48e4b4635ea6bdc6f09d2a}{isInvalid}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{216 \textcolor{comment}{//   * Perform a linear projection of the current Position with given velocity and time.}}
+\DoxyCodeLine{217 \textcolor{comment}{//   * A great circle route is followed and the velocity}}
+\DoxyCodeLine{218 \textcolor{comment}{//   * represents the initial velocity along the great circle.}}
+\DoxyCodeLine{219 \textcolor{comment}{//   *}}
+\DoxyCodeLine{220 \textcolor{comment}{//   * Reminder: If this is used in a stepwise fashion over lat/lon, be careful when passing}}
+\DoxyCodeLine{221 \textcolor{comment}{//   * over or near the poles and keep the velocity track in mind.}}
+\DoxyCodeLine{222 \textcolor{comment}{//   *}}
+\DoxyCodeLine{223 \textcolor{comment}{//   *  @param v the velocity}}
+\DoxyCodeLine{224 \textcolor{comment}{//   *  @param time the time from the current point}}
+\DoxyCodeLine{225 \textcolor{comment}{//   *  Note: using a negative time value is the same a velocity moving in the opposite direction (along the great circle, if appropriate)}}
+\DoxyCodeLine{226 \textcolor{comment}{//   * @return linear projection of the position}}
+\DoxyCodeLine{227 \textcolor{comment}{//   */}}
+\DoxyCodeLine{228     \textcolor{comment}{//TODO: circular definition with GreatCircle?}}
+\DoxyCodeLine{229 \textcolor{comment}{//  const LatLonAlt linear(const Velocity\& v, double time);}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{238     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a2c58e773fcb79bec3923a1274cd412aa}{linearEst}}(\textcolor{keywordtype}{double} dn, \textcolor{keywordtype}{double} de) \textcolor{keyword}{const};}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{247     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a2c58e773fcb79bec3923a1274cd412aa}{linearEst}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} tm) \textcolor{keyword}{const};}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 }
+\DoxyCodeLine{251     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a9e62dc3bb950b63f1c90a9facbdd32e3}{ZERO}}();}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{254     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_add87f990fd8be5c5bb5ec93f96afe603}{INVALID}}();}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{266     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a09e4109aed633c3a7326ae6b51f8aff7}{parse}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 }
+\DoxyCodeLine{279     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a96a037e28b96fe17c7a56bbe53a7dcd2}{normalize}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a8e26d169e1fd54c9813b4cb7f1b700e1}{alt}});}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{291     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a96a037e28b96fe17c7a56bbe53a7dcd2}{normalize}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_aef6dbde31059ad2d80d7033c8cc62a03}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a88f0b4db6c1aaeb1cae0ea46c66eac93}{lon}});}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{301     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_a96a037e28b96fe17c7a56bbe53a7dcd2}{normalize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 }
+\DoxyCodeLine{309     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt_adce64de1cecb472cb97fcbc80dc7d643}{isWest}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& a) \textcolor{keyword}{const};}
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311     \textcolor{keywordtype}{double} track(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{312 \};}
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 \}}
+\DoxyCodeLine{316 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

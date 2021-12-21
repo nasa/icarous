@@ -1,0 +1,425 @@
+\hypertarget{_kinematics_8h_source}{}\doxysection{Kinematics.\+h}
+\label{_kinematics_8h_source}\index{Modules/ACCoRD/inc/Kinematics.h@{Modules/ACCoRD/inc/Kinematics.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Kinematics.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * }}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef KINEMATICS\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define KINEMATICS\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{14 \textcolor{comment}{//\#include "{}Vect4.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}StateVector.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematics}{Kinematics}} \{}
+\DoxyCodeLine{34 \textcolor{keyword}{public}:}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{44     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a2464c20ea92ac0123b3a0883d9aa54c2}{turnRadius}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} bank, \textcolor{keywordtype}{double} g);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{53     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a2464c20ea92ac0123b3a0883d9aa54c2}{turnRadius}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} bank);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keyword}{static} \textcolor{keywordtype}{double} turnRadiusByRate(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{64     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a3f02057c9a7627e53f498aaa00f8cb8b}{speedOfTurn}}(\textcolor{keywordtype}{double} R, \textcolor{keywordtype}{double} bank);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{74     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a19d5396567e5a38da2a17c9b3ba7c78c}{turnRate}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{85     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a9ee0ff729b8d87935f9c76501a346289}{bankAngleRadius}}(\textcolor{keywordtype}{double} R, \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{95       \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a9ee0ff729b8d87935f9c76501a346289}{bankAngleRadius}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{104     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a19d5396567e5a38da2a17c9b3ba7c78c}{turnRate}});}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{114       \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a880fd10da9337f7a8e95b6db07ad3587}{bankAngleGoal}}(\textcolor{keywordtype}{double} track, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{124       \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a084f003f9348e5012a5bbbc7baa2840e}{turnRateGoal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{137     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a735a741cc7e0e02a83239121284c33e7}{turnDone}}(\textcolor{keywordtype}{double} currentTrack, \textcolor{keywordtype}{double} targetTrack, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{147     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{156     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{166     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}(\textcolor{keywordtype}{double} groundSpeed, \textcolor{keywordtype}{double} deltaTrack, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}});}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}(\textcolor{keywordtype}{double} deltaTrack, \textcolor{keywordtype}{double} trackRate);}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{175     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} goalTrack);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{178 \textcolor{comment}{//   * Position after t time units turning right or left with radius R}}
+\DoxyCodeLine{179 \textcolor{comment}{//   * @param s0  starting position}}
+\DoxyCodeLine{180 \textcolor{comment}{//   * @param v0  initial velocity}}
+\DoxyCodeLine{181 \textcolor{comment}{//   * @param R   turn radius}}
+\DoxyCodeLine{182 \textcolor{comment}{//   * @param t   time of turn}}
+\DoxyCodeLine{183 \textcolor{comment}{//   * @param turnRight true iff only turn direction is to the right}}
+\DoxyCodeLine{184 \textcolor{comment}{//   * @return Position after t time}}
+\DoxyCodeLine{185 \textcolor{comment}{//   */}}
+\DoxyCodeLine{186 \textcolor{comment}{//  static Vect3 turnPos(const Vect3\& s0, const Velocity\& v0, double t, double R, bool turnRight);}}
+\DoxyCodeLine{187 \textcolor{comment}{//}}
+\DoxyCodeLine{188 \textcolor{comment}{//}}
+\DoxyCodeLine{189 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{190 \textcolor{comment}{//   * Velocity after t time units in direction "{}turnRight"{} with radius R}}
+\DoxyCodeLine{191 \textcolor{comment}{//   * @param v0  initial velocity}}
+\DoxyCodeLine{192 \textcolor{comment}{//   * @param R   turn radius}}
+\DoxyCodeLine{193 \textcolor{comment}{//   * @param t   time of turn}}
+\DoxyCodeLine{194 \textcolor{comment}{//   * @param turnRight true iff only turn direction is to the right}}
+\DoxyCodeLine{195 \textcolor{comment}{//   * @return Velocity after t}}
+\DoxyCodeLine{196 \textcolor{comment}{//   */}}
+\DoxyCodeLine{197 \textcolor{comment}{//  static Velocity turnVel(const Velocity\& v0, double t, double R, bool turnRight);}}
+\DoxyCodeLine{198 \textcolor{comment}{//}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{206     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a69281e6f37c9008e063fe2a9d8547b35}{linear}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a69281e6f37c9008e063fe2a9d8547b35}{linear}}(\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} so, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{219     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a378babf19f4cdb393ca09b9af1d48088}{turnOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} center(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a619fee9b906616b2dd9e7a0f42670ba9}{turnByDist2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& center, \textcolor{keywordtype}{int} dir, \textcolor{keywordtype}{double} d, \textcolor{keywordtype}{double} gsAt\_d);}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{237     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a619fee9b906616b2dd9e7a0f42670ba9}{turnByDist2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& center, \textcolor{keywordtype}{int} dir, \textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{249     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a88cb5bc752cb61980d5487df0ba80abf}{turnByAngle2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& center, \textcolor{keywordtype}{double} alpha);}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{258     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a378babf19f4cdb393ca09b9af1d48088}{turnOmega}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{269     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a3d380fcf96f3787e2b9b3d0ce573250e}{turn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} R,  \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{279     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a3d380fcf96f3787e2b9b3d0ce573250e}{turn}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} R,  \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{288     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a3d380fcf96f3787e2b9b3d0ce573250e}{turn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} bank);}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 \textcolor{comment}{//}}
+\DoxyCodeLine{291 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{292 \textcolor{comment}{//   * 2D Position after t time units turning right or left with radius R}}
+\DoxyCodeLine{293 \textcolor{comment}{//   * @param s0  starting position}}
+\DoxyCodeLine{294 \textcolor{comment}{//   * @param v0  initial velocity}}
+\DoxyCodeLine{295 \textcolor{comment}{//   * @param R   turn radius}}
+\DoxyCodeLine{296 \textcolor{comment}{//   * @param t   time of turn}}
+\DoxyCodeLine{297 \textcolor{comment}{//   * @param turnRight true iff only turn direction is to the right}}
+\DoxyCodeLine{298 \textcolor{comment}{//   * @return 2D Position after t time}}
+\DoxyCodeLine{299 \textcolor{comment}{//   */}}
+\DoxyCodeLine{300 \textcolor{comment}{//  static Vect2 turnPosition2D(const Vect2\& s0, const Vect2\& v0, double R, double t, bool turnRight);}}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 \textcolor{comment}{//}}
+\DoxyCodeLine{304 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{305 \textcolor{comment}{//   *  Position after t time units turning in direction "{}turnRight"{}  until goalTrack is reached, after that}}
+\DoxyCodeLine{306 \textcolor{comment}{//   *  continue in a straight line}}
+\DoxyCodeLine{307 \textcolor{comment}{//   * @param so         starting position}}
+\DoxyCodeLine{308 \textcolor{comment}{//   * @param vo         initial velocity}}
+\DoxyCodeLine{309 \textcolor{comment}{//   * @param goalTrack  the track angle where the turn stops}}
+\DoxyCodeLine{310 \textcolor{comment}{//   * @param bankAngle    the bank angle of the aircraft making the turn}}
+\DoxyCodeLine{311 \textcolor{comment}{//   * @param t          time of turn [secs]}}
+\DoxyCodeLine{312 \textcolor{comment}{//   * @param turnRight  true iff only turn direction is to the right}}
+\DoxyCodeLine{313 \textcolor{comment}{//   * @return Position after time t}}
+\DoxyCodeLine{314 \textcolor{comment}{//   */}}
+\DoxyCodeLine{315 \textcolor{comment}{//  static Vect3 turnUntilPosition(const Vect3\& so, const Velocity\& vo, double goalTrack, double bankAngle, double t, bool turnRight);}}
+\DoxyCodeLine{316 \textcolor{comment}{//}}
+\DoxyCodeLine{317 \textcolor{comment}{//}}
+\DoxyCodeLine{318 \textcolor{comment}{//}}
+\DoxyCodeLine{319 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{320 \textcolor{comment}{//   *  Position after t time units turning in direction "{}turnRight"{}  until goalTrack is reached, after that}}
+\DoxyCodeLine{321 \textcolor{comment}{//   *  continue in a straight line}}
+\DoxyCodeLine{322 \textcolor{comment}{//   * @param vo         initial velocity}}
+\DoxyCodeLine{323 \textcolor{comment}{//   * @param goalTrack  the track angle where the turn stops}}
+\DoxyCodeLine{324 \textcolor{comment}{//   * @param bankAngle    the bank angle of the aircraft making the turn}}
+\DoxyCodeLine{325 \textcolor{comment}{//   * @param t          time of turn [secs]}}
+\DoxyCodeLine{326 \textcolor{comment}{//   * @param turnRight  true iff only turn direction is to the right}}
+\DoxyCodeLine{327 \textcolor{comment}{//   * @return Position after time t}}
+\DoxyCodeLine{328 \textcolor{comment}{//   */}}
+\DoxyCodeLine{329 \textcolor{comment}{//  static Velocity turnUntilVelocity(const Velocity\& vo, double goalTrack, double bankAngle, double t, bool turnRight);}}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 }
+\DoxyCodeLine{343     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a725a899681850fadc120b94a2940d577}{turnUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{354     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a725a899681850fadc120b94a2940d577}{turnUntil}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{367       \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_af5c71b02842119e5e8878ed0ff2bbe7c}{turnUntilTimeRadius}}(std::pair<Vect3,Velocity> svo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{380     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a1a3fd734be24c959ee46a4d7992a9c93}{turnUntilTimeOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{382 }
+\DoxyCodeLine{392     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a1a3fd734be24c959ee46a4d7992a9c93}{turnUntilTimeOmega}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& svo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad4fe51d8b086bebcf9b71c85d1796f5c}{turnTime}}, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396 }
+\DoxyCodeLine{405     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a750539dec7ddc27190030fb6e80b623b}{positionAfterTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}});}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{417     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4e86b2176064fc09c2968ef22c698e88}{closestTimeOnTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} omega, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& x, \textcolor{keywordtype}{double} endTime);}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{430     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a647401992dadae5c87cf080b43a3ce27}{closestDistOnTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& x, \textcolor{keywordtype}{double} maxDist);}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432 }
+\DoxyCodeLine{441     \textcolor{keyword}{static} std::pair<Vect2,Vect2> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a71854e9819b7905eeb91aae3c7fab3e2}{directTo}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& bot, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& goal, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{442 }
+\DoxyCodeLine{443     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<Vect3,Velocity,double,int>}} directToPoint(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& wp, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446     \textcolor{comment}{/*  Finds end of turn where aircraft is heading directly towards a specified waypoint wp}}
+\DoxyCodeLine{447 \textcolor{comment}{     *  @param so  current position}}
+\DoxyCodeLine{448 \textcolor{comment}{     *  @param vo  current velocity}}
+\DoxyCodeLine{449 \textcolor{comment}{     *  @param wp  the aircraft is turning to point to this point}}
+\DoxyCodeLine{450 \textcolor{comment}{     *  @param R   turn radius}}
+\DoxyCodeLine{451 \textcolor{comment}{     *}}
+\DoxyCodeLine{452 \textcolor{comment}{     *  returns a triple: (end of turn, velocity at end of turn, time to reach end of turn)}}
+\DoxyCodeLine{453 \textcolor{comment}{     *  If no result is possible (for example the point lies within the given turn radius), this will return a negative time.}}
+\DoxyCodeLine{454 \textcolor{comment}{     */}}
+\DoxyCodeLine{455     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Vect3,double,double>}} genDirectToVertex(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& wp, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}}, \textcolor{keywordtype}{double} timeBeforeTurn) ;}
+\DoxyCodeLine{456 }
+\DoxyCodeLine{457 }
+\DoxyCodeLine{466     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a8db36980f123dee1308a8a9ea3241c29}{centerOfTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{476     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a8db36980f123dee1308a8a9ea3241c29}{centerOfTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4012958ac71dd6a760da52116a6184a2}{bankAngle}}, \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478 }
+\DoxyCodeLine{493     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7313e87bfc7f94d9889b02ad562ed137}{testLoSTrk}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{494             \textcolor{keywordtype}{double} bankAngleOwn, \textcolor{keywordtype}{double} stopTime, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{495 }
+\DoxyCodeLine{496 }
+\DoxyCodeLine{497     \textcolor{comment}{// ****************************** Ground Speed KINEMATIC CALCULATIONS *******************************}}
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499 }
+\DoxyCodeLine{509     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7cdf865c46724bb5a6ae562f571fc670}{gsAccelPos}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{510 }
+\DoxyCodeLine{520     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{521 }
+\DoxyCodeLine{530     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a45ff51ce2a773d2d04015090f5674ed4}{gsAccelTime}}(\textcolor{keywordtype}{double} gs0,\textcolor{keywordtype}{double} goalGs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{540     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a45ff51ce2a773d2d04015090f5674ed4}{gsAccelTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo,\textcolor{keywordtype}{double} goalGs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{541 }
+\DoxyCodeLine{542     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Vect3,Velocity,double>}} gsAccelGoal(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} goalGs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{543 }
+\DoxyCodeLine{544 }
+\DoxyCodeLine{556         \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7e57c421a9b37893ef26412662ecb9e1}{gsAccelUntilRWB}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGS, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{557     \textcolor{keyword}{static} std::pair<Vect3,Velocity> gsAccelUntil(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGS, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{558     \textcolor{keyword}{static} std::pair<Vect3,Velocity> gsAccelUntil(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGS, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{559 }
+\DoxyCodeLine{560 }
+\DoxyCodeLine{569     \textcolor{keyword}{static} std::pair<double,double> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a632f7112463b2ef208cafdc64c3beb89}{gsAccelToRTA}}(\textcolor{keywordtype}{double} gsIn, \textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} rta, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571 }
+\DoxyCodeLine{572     \textcolor{keyword}{static} std::pair<double,double> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a0766fb2f0b22f602a9bbf35dc6686d9e}{gsAccelToDist}}(\textcolor{keywordtype}{double} gsIn, \textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{573 }
+\DoxyCodeLine{585     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a1b9435431da0120da385c708565a0d89}{distanceToGsAccelTime}}(\textcolor{keywordtype}{double} gs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}}, \textcolor{keywordtype}{double} dist);}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{599     \textcolor{keyword}{static} std::pair<double, double> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a9e7f0348cd1c46363af6c00326246218}{distanceWithGsAccel}}(\textcolor{keywordtype}{double} gs0, \textcolor{keywordtype}{double} gsTarget, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}}, \textcolor{keywordtype}{double} dt);}
+\DoxyCodeLine{600 }
+\DoxyCodeLine{611     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a5f1da3e62764b1d3984ea8d9ae690ce2}{neededDistGsAccel}}(\textcolor{keywordtype}{double} gsIn, \textcolor{keywordtype}{double} gsTarget, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a220a737191839529499b3f6bd2e1e5a3}{gsAccel}});}
+\DoxyCodeLine{612 }
+\DoxyCodeLine{622     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ac4094a8e5ede6be167e6d6acfe02dc30}{gsAccelDist}}(\textcolor{keywordtype}{double} gs1, \textcolor{keywordtype}{double} gs2, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{623 }
+\DoxyCodeLine{624 }
+\DoxyCodeLine{638     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ae0abc2484009cf4f07c4634c8e4536c3}{testLoSGs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{639             \textcolor{keywordtype}{double} gsAccelOwn, \textcolor{keywordtype}{double} stopTime, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{640 }
+\DoxyCodeLine{641 }
+\DoxyCodeLine{642 }
+\DoxyCodeLine{643 }
+\DoxyCodeLine{644     \textcolor{comment}{// ****************************** Vertical Speed KINEMATIC CALCULATIONS *******************************}}
+\DoxyCodeLine{645 }
+\DoxyCodeLine{651     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ae52ee4cf461c6496952aaa3cdd6feed8}{elevationAngle}}(\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v);}
+\DoxyCodeLine{652 }
+\DoxyCodeLine{653 }
+\DoxyCodeLine{663     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a449edc7d72a44e9d24d04e1373255f57}{vsAccelPos}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{664 }
+\DoxyCodeLine{665 }
+\DoxyCodeLine{675     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so3, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo3,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{676 }
+\DoxyCodeLine{677     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{678 }
+\DoxyCodeLine{687     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_adcbf886a4b603d3750b6662bc1f777d6}{vsAccelTime}}(\textcolor{keywordtype}{double} vs, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}});}
+\DoxyCodeLine{688 }
+\DoxyCodeLine{697     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_adcbf886a4b603d3750b6662bc1f777d6}{vsAccelTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}});}
+\DoxyCodeLine{698 }
+\DoxyCodeLine{699 }
+\DoxyCodeLine{700     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Vect3,Velocity,double>}} vsAccelGoal(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}});}
+\DoxyCodeLine{701 }
+\DoxyCodeLine{702 }
+\DoxyCodeLine{703 }
+\DoxyCodeLine{704 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{705 \textcolor{comment}{//   *  Position after t time units where there is first an acceleration or deceleration to the target}}
+\DoxyCodeLine{706 \textcolor{comment}{//   *  vertical speed goalVs and then continuing at that speed for the remainder of the time, if any.}}
+\DoxyCodeLine{707 \textcolor{comment}{//   *}}
+\DoxyCodeLine{708 \textcolor{comment}{//   * @param so         starting position}}
+\DoxyCodeLine{709 \textcolor{comment}{//   * @param vo         initial velocity}}
+\DoxyCodeLine{710 \textcolor{comment}{//   * @param goalVs     vertical speed where the acceleration stops}}
+\DoxyCodeLine{711 \textcolor{comment}{//   * @param vsAccel    vertical speed acceleration (a positive value)}}
+\DoxyCodeLine{712 \textcolor{comment}{//   * @param t          time of acceleration [secs]}}
+\DoxyCodeLine{713 \textcolor{comment}{//   * @return           Position after time t}}
+\DoxyCodeLine{714 \textcolor{comment}{//   */}}
+\DoxyCodeLine{715 \textcolor{comment}{//     //   static Vect3 vsAccelUntilPos(const Vect3\& so, const Velocity\& vo, double t, double goalVs, double vsAccel);}}
+\DoxyCodeLine{716 }
+\DoxyCodeLine{717 }
+\DoxyCodeLine{728     \textcolor{comment}{//static Velocity vsAccelUntilVel(const Velocity\& vo, double t, double goalVs, double vsAccel);}}
+\DoxyCodeLine{729 }
+\DoxyCodeLine{730     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a670b5e7a12750ed62af294a6129369f3}{vsAccelUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}});}
+\DoxyCodeLine{731     \textcolor{keyword}{static} std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a670b5e7a12750ed62af294a6129369f3}{vsAccelUntil}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a7db4740cec2c89761d79f73a246c98b3}{vsAccel}});}
+\DoxyCodeLine{732 }
+\DoxyCodeLine{746     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad33e290b7b4b51fdd4da4f2b2959412b}{testLoSVs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{747             \textcolor{keywordtype}{double} vsAccelOwn, \textcolor{keywordtype}{double} stopTime, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{748 }
+\DoxyCodeLine{749 \textcolor{comment}{//  static double vsLevelOutTimeRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt, double a, bool allowClimbRateReduction);}}
+\DoxyCodeLine{750 \textcolor{comment}{//}}
+\DoxyCodeLine{751 \textcolor{comment}{//  /** Computes time for the vsLevelOut method,}}
+\DoxyCodeLine{752 \textcolor{comment}{//   *  Note: if T2 < T1, there is no constant vertical speed phase, If T1 < 0, target altitude is not achieveable}}
+\DoxyCodeLine{753 \textcolor{comment}{//   *}}
+\DoxyCodeLine{754 \textcolor{comment}{//   * @param sv0          initial position and velocity}}
+\DoxyCodeLine{755 \textcolor{comment}{//   * @param t            time point}}
+\DoxyCodeLine{756 \textcolor{comment}{//   * @param climbRate    desired vertical speed for the climb/descent (positive), sign calculated in code}}
+\DoxyCodeLine{757 \textcolor{comment}{//   * @param targetAlt    target altitude}}
+\DoxyCodeLine{758 \textcolor{comment}{//   * @param a            maximum acceleration (positive), sign calculated in code}}
+\DoxyCodeLine{759 \textcolor{comment}{//   * @param allowClimbRateReduction   if true, the climbRate can be reduced, otherwise T1 might be set to -\/1, which}}
+\DoxyCodeLine{760 \textcolor{comment}{//   *                                  indicates failure}}
+\DoxyCodeLine{761 \textcolor{comment}{//   * @return <T1 = end of first accel ,T2 = end of constant vertical speed phase, T3 = end of deceleration, climbRate'>}}
+\DoxyCodeLine{762 \textcolor{comment}{//   */}}
+\DoxyCodeLine{763 \textcolor{comment}{//  static Quad<double,double,double,double> vsLevelOutTimesRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt,}}
+\DoxyCodeLine{764 \textcolor{comment}{//          double a1, double a2, bool allowClimbRateIncrease, bool allowClimbRateDecrease);}}
+\DoxyCodeLine{765 \textcolor{comment}{//}}
+\DoxyCodeLine{766 \textcolor{comment}{//  static Quad<double,double,double,double> vsLevelOutTimesRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt,}}
+\DoxyCodeLine{767 \textcolor{comment}{//                 double a, bool allowClimbRateChange);}}
+\DoxyCodeLine{768 \textcolor{comment}{//}}
+\DoxyCodeLine{769 \textcolor{comment}{//  static Quad<double,double,double,double> vsLevelOutTimesRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt,}}
+\DoxyCodeLine{770 \textcolor{comment}{//                 double a);}}
+\DoxyCodeLine{771 \textcolor{comment}{//}}
+\DoxyCodeLine{772 \textcolor{comment}{//  static std::pair<Vect3, Velocity> vsLevelOutCalculationRWB(const std::pair<Vect3,Velocity>\& sv0, double t,  double T1, double T2,}}
+\DoxyCodeLine{773 \textcolor{comment}{//          double T3, double climbRate, double targetAlt, double a1, double a2);}}
+\DoxyCodeLine{774 \textcolor{comment}{//}}
+\DoxyCodeLine{775 \textcolor{comment}{//  /** Generates trajectory as a function of time t, for a climb and level out.   The specified climb rate may not be}}
+\DoxyCodeLine{776 \textcolor{comment}{//   *  achievable if the level-\/out altitude is not much greter than the current altitude.}}
+\DoxyCodeLine{777 \textcolor{comment}{//   *}}
+\DoxyCodeLine{778 \textcolor{comment}{//   * @param sv0          initial position and velocity}}
+\DoxyCodeLine{779 \textcolor{comment}{//   * @param t            time point}}
+\DoxyCodeLine{780 \textcolor{comment}{//   * @param climbRate    desired vertical speed for the climb/descent (positive), sign calculated in code}}
+\DoxyCodeLine{781 \textcolor{comment}{//   * @param targetAlt    target altitude}}
+\DoxyCodeLine{782 \textcolor{comment}{//   * @param a            maximum acceleration (positive), sign calculated in code}}
+\DoxyCodeLine{783 \textcolor{comment}{//   * @return             position, velocity at time t}}
+\DoxyCodeLine{784 \textcolor{comment}{//   */}}
+\DoxyCodeLine{785 \textcolor{comment}{//  static std::pair<Vect3,Velocity> vsLevelOutRWB(const std::pair<Vect3,Velocity>\& sv0, double t, double climbRate, double targetAlt, double a, bool allowClimbRateReduction);}}
+\DoxyCodeLine{786 \textcolor{comment}{//}}
+\DoxyCodeLine{787 \textcolor{comment}{//}}
+\DoxyCodeLine{788 \textcolor{comment}{//  static StateVector vsLevelOutFinalRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt, double a, bool allowClimbRateReduction);}}
+\DoxyCodeLine{789 \textcolor{comment}{//}}
+\DoxyCodeLine{790 \textcolor{comment}{//  static StateVector vsLevelOutFinalRWB(const std::pair<Vect3,Velocity>\& sv0, double climbRate, double targetAlt, double a);}}
+\DoxyCodeLine{791 \textcolor{comment}{//}}
+\DoxyCodeLine{792 \textcolor{comment}{//}}
+\DoxyCodeLine{793 \textcolor{comment}{//  static double vsLevelOutClimbRateRWB(const std::pair<Vect3, Velocity>\& svo, double climbRate, double targetAlt,}}
+\DoxyCodeLine{794 \textcolor{comment}{//          double a1, double a2, bool allowClimbRateChange);}}
+\DoxyCodeLine{795 }
+\DoxyCodeLine{796 }
+\DoxyCodeLine{806     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad0729589dc98bc10c6d6d2f9a4f1cd63}{vsLevelOutFinal}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{807 }
+\DoxyCodeLine{808     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ad0729589dc98bc10c6d6d2f9a4f1cd63}{vsLevelOutFinal}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{809 }
+\DoxyCodeLine{810     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} overShoot(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& svo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} accelup,}
+\DoxyCodeLine{811                                    \textcolor{keywordtype}{double} acceldown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{812 }
+\DoxyCodeLine{813 }
+\DoxyCodeLine{814 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{815 \textcolor{comment}{//   * Returns true if time t is within the constant velocity segment of the climb}}
+\DoxyCodeLine{816 \textcolor{comment}{//   * All values are in internal units}}
+\DoxyCodeLine{817 \textcolor{comment}{//   */}}
+\DoxyCodeLine{818 \textcolor{comment}{//  static bool inConstantClimb(double sz, double vz, double t, double climbRate, double targetAlt, double a);}}
+\DoxyCodeLine{819 }
+\DoxyCodeLine{820 }
+\DoxyCodeLine{821     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<double,double,double,double,double>}} vsLevelOutTimes(\textcolor{keywordtype}{double} s0z, \textcolor{keywordtype}{double} v0z, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt,}
+\DoxyCodeLine{822              \textcolor{keywordtype}{double} accelup, \textcolor{keywordtype}{double} acceldown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824 }
+\DoxyCodeLine{825     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<double,double,double,double,double>}} vsLevelOutTimes(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& svo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt,}
+\DoxyCodeLine{826              \textcolor{keywordtype}{double} accelup, \textcolor{keywordtype}{double} acceldown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{827 }
+\DoxyCodeLine{828     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<double,double,double,double,double>}} vsLevelOutTimes(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& svo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt,}
+\DoxyCodeLine{829              \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{830 }
+\DoxyCodeLine{831     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<double,double,double,double,double>}} vsLevelOutTimes(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& svo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{832 }
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834     \textcolor{keyword}{static} \textcolor{keywordtype}{double} vsLevelOutClimbRate(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& svo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt,}
+\DoxyCodeLine{835             \textcolor{keywordtype}{double} accelup, \textcolor{keywordtype}{double} acceldown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{836 }
+\DoxyCodeLine{837     \textcolor{keyword}{static} \textcolor{keywordtype}{double} vsLevelOutTime(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} allowClimbRateChange) ;}
+\DoxyCodeLine{838 }
+\DoxyCodeLine{839 }
+\DoxyCodeLine{840     \textcolor{keyword}{static} \textcolor{keywordtype}{double} vsLevelOutTime(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{842     \textcolor{keyword}{static} std::pair<double, double> vsLevelOutCalc(\textcolor{keywordtype}{double} soz, \textcolor{keywordtype}{double} voz, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2, \textcolor{keywordtype}{double} t1, \textcolor{keywordtype}{double} t2, \textcolor{keywordtype}{double} t3,  \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{843 }
+\DoxyCodeLine{855     \textcolor{keyword}{static} std::pair<Vect3, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a59af0490851e3278e7fe3e1ebb61b8e1}{vsLevelOutCalculation}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0,}
+\DoxyCodeLine{856                                           \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2, \textcolor{keywordtype}{double} t1, \textcolor{keywordtype}{double} t2, \textcolor{keywordtype}{double} t3,  \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{857 }
+\DoxyCodeLine{858     \textcolor{keyword}{static} std::pair<Vect3, Velocity> vsLevelOut(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{859                                         \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} accelUp, \textcolor{keywordtype}{double} accelDown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{860 }
+\DoxyCodeLine{861     \textcolor{keyword}{static} std::pair<Vect3, Velocity> vsLevelOut(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{862             \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{863 }
+\DoxyCodeLine{864     \textcolor{keyword}{static} std::pair<Vect3, Velocity> vsLevelOut(\textcolor{keyword}{const} std::pair<Vect3, Velocity>\& sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{865             \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{866 }
+\DoxyCodeLine{867 }
+\DoxyCodeLine{868 }
+\DoxyCodeLine{869     \textcolor{comment}{// ******************************* Other **************************}}
+\DoxyCodeLine{870 }
+\DoxyCodeLine{877     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_acfadb697cec2da68e910163c903b3127}{tau}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi);}
+\DoxyCodeLine{878 }
+\DoxyCodeLine{888     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_ae0b3b41379fdbe8e786822299c4fd45d}{distAtTau}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{bool} futureOnly);}
+\DoxyCodeLine{889 }
+\DoxyCodeLine{890 \textcolor{keyword}{private}:}
+\DoxyCodeLine{891 }
+\DoxyCodeLine{892  \textcolor{keyword}{static} \textcolor{keywordtype}{double} dirSign(\textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a4c1e5bd04ad53837b6ecea650bee68a3}{turnRight}});}
+\DoxyCodeLine{893 }
+\DoxyCodeLine{894 \textcolor{comment}{//}}
+\DoxyCodeLine{895 \textcolor{comment}{//  static double antiDer1(double voz, double t, double a);}}
+\DoxyCodeLine{896 \textcolor{comment}{//  static double antiDer2(double climbRate, double t, double a);}}
+\DoxyCodeLine{897 \textcolor{comment}{//  static double antiDer3(double climbRate, double t, double a);}}
+\DoxyCodeLine{898 }
+\DoxyCodeLine{899     \textcolor{keyword}{static} std::pair<Vect3, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_a59af0490851e3278e7fe3e1ebb61b8e1}{vsLevelOutCalculation}}(\textcolor{keyword}{const} std::pair<Vect3,Velocity>\& sv0, \textcolor{keywordtype}{double} t,}
+\DoxyCodeLine{900          \textcolor{keywordtype}{double} T1, \textcolor{keywordtype}{double} T2, \textcolor{keywordtype}{double} T3, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2);}
+\DoxyCodeLine{901 }
+\DoxyCodeLine{902 }
+\DoxyCodeLine{903 }
+\DoxyCodeLine{904 \textcolor{comment}{//static double V1(double voz, double a1, double t);}}
+\DoxyCodeLine{905 \textcolor{comment}{//}}
+\DoxyCodeLine{906 \textcolor{comment}{//static double S1(double voz, double a1, double t);}}
+\DoxyCodeLine{907 \textcolor{comment}{//}}
+\DoxyCodeLine{908 \textcolor{comment}{//static double T3(double voz, double a1) ;}}
+\DoxyCodeLine{909 \textcolor{comment}{//}}
+\DoxyCodeLine{910 \textcolor{comment}{//static double S3(double voz, double a1);}}
+\DoxyCodeLine{911 }
+\DoxyCodeLine{928 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<double,double,double,double,double>}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_a20c24f574f3d62f13a29ea2030bfe2cf}{vsLevelOutTimesBase}}(\textcolor{keywordtype}{double} s0z, \textcolor{keywordtype}{double} v0z, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt,}
+\DoxyCodeLine{929              \textcolor{keywordtype}{double} accelup, \textcolor{keywordtype}{double} acceldown, \textcolor{keywordtype}{bool} allowClimbRateChange) ;}
+\DoxyCodeLine{930 }
+\DoxyCodeLine{931 }
+\DoxyCodeLine{932 }
+\DoxyCodeLine{933 }
+\DoxyCodeLine{934 \};}
+\DoxyCodeLine{935 }
+\DoxyCodeLine{936 \}}
+\DoxyCodeLine{937 }
+\DoxyCodeLine{938 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//KINEMATICS\_H\_}}
+
+\end{DoxyCode}

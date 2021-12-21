@@ -1,0 +1,53 @@
+\hypertarget{_c_r_s_s_config_8h_source}{}\doxysection{CRSSConfig.\+h}
+\label{_c_r_s_s_config_8h_source}\index{Modules/ACCoRD/inc/CRSSConfig.h@{Modules/ACCoRD/inc/CRSSConfig.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CRSSConfig.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef CRSSConfig\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define CRSSConfig\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}CDSSCyl.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}CRSS.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}StateReader.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_config}{CRSSConfig}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \textcolor{keyword}{public}:}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{comment}{//static bool debugPrintTime;   // ************* bCRSS has an option "{}-\/t"{} to print the time}}
+\DoxyCodeLine{27     \textcolor{keyword}{static} ProjectionType CRSSProjType;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{keyword}{static} \textcolor{keywordtype}{double} D\_default;}
+\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keywordtype}{double} H\_default;}
+\DoxyCodeLine{32     \textcolor{keyword}{static} \textcolor{keywordtype}{double} T\_default;}
+\DoxyCodeLine{33     \textcolor{keyword}{static} \textcolor{keywordtype}{double} Th\_default;}
+\DoxyCodeLine{34     \textcolor{keyword}{static} \textcolor{keywordtype}{double} Tv\_default;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setDefaultsForParameters(\mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{ParameterReader}}\& sRdr);}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \textcolor{keywordtype}{void} load\_parameters(\mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{ParameterReader}}\& sRdr, \mbox{\hyperlink{classlarcfm_1_1_c_d_s_s_cyl}{CDSSCyl}}\& cdss, \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s}{CRSS}}\& crss);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keyword}{private}:}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CRSSConfig\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

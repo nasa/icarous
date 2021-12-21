@@ -1,0 +1,32 @@
+\hypertarget{_polycarp_edge_proximity_8h_source}{}\doxysection{Polycarp\+Edge\+Proximity.\+h}
+\label{_polycarp_edge_proximity_8h_source}\index{Modules/ACCoRD/inc/PolycarpEdgeProximity.h@{Modules/ACCoRD/inc/PolycarpEdgeProximity.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpEdgeProximity -\/ Determining if a point is near a line segment or if two line segments are near each other}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYCARPEDGEPROXIMITY\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYCARPEDGEPROXIMITY\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_edge_proximity}{PolycarpEdgeProximity}} \{}
+\DoxyCodeLine{21     \textcolor{keyword}{public}:}
+\DoxyCodeLine{22         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} near\_edge(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{23         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} segments\_2D\_close(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend2, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{24         \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} closest\_point(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keywordtype}{double} BUFFER);}
+\DoxyCodeLine{25     \};}
+\DoxyCodeLine{26 \}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+
+\end{DoxyCode}

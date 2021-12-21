@@ -1,0 +1,440 @@
+\hypertarget{classlarcfm_1_1_criteria_core}{}\doxysection{larcfm\+::Criteria\+Core Class Reference}
+\label{classlarcfm_1_1_criteria_core}\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+
+
+{\ttfamily \#include $<$Criteria\+Core.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a978cae09c2e82dc5b11712eaf6f420bf}{horizontal\+Coordination}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a1d4b42fc2c684b817a3374f75eff918e}{horizontal\+Coordination}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a2b5ac5270b1c8d26844e7d33d6a0faad}{vertical\+Coordination}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, double D, double H, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a236e781781ddd248ebdf9a8a3983554c}{horizontal\+\_\+criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&sp, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double D, int epsh)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a76892048e7a723ccf309f048e1fcef4b}{vertical\+\_\+criterion}} (int eps, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nv, double D, double H)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aacedba0ce036d3b08f7897a6545381e8}{horizontal\+\_\+los\+\_\+criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&nvo, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a22c9e5fc031c7270abd58b2590612398}\label{classlarcfm_1_1_criteria_core_a22c9e5fc031c7270abd58b2590612398}} 
+static void {\bfseries print\+Repulsive\+Criteria2\+DTerms} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&nvo, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a69cbca2e9415e10306c426bcf9d3334e}\label{classlarcfm_1_1_criteria_core_a69cbca2e9415e10306c426bcf9d3334e}} 
+static void {\bfseries print\+Repulsive\+Criteria\+Terms} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nvo, int eps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ad6244252b2f39b947b71dcc68bdf02bc}{horizontal\+Repulsive\+Criteria}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi3, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo3, int eps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ae4e28469e889a264a08cc451a3255a6a}{vertical\+Repulsive\+Criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nvo, double H, double minrelvs, int epsv)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a39d9a00c01fe60f9800453b5bbb7bbba}{criteria}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nvo, double min\+Rel\+Vs, double D, double H, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a9504407e17cab8642e312a1ab3a21f4d}\label{classlarcfm_1_1_criteria_core_a9504407e17cab8642e312a1ab3a21f4d}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries incr\+\_\+trk\+\_\+vect} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, double step, int dir)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_adb5d872a6d2241c1965173283d00f37b}\label{classlarcfm_1_1_criteria_core_adb5d872a6d2241c1965173283d00f37b}} 
+static int {\bfseries losr\+\_\+trk\+\_\+iter\+\_\+dir} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, double step, int eps)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a980d944252189e1793d70d385b80deff}{trk\+Search\+Direction}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a5b6a2b58a0cdd391cfd4a64b95ada98c}\label{classlarcfm_1_1_criteria_core_a5b6a2b58a0cdd391cfd4a64b95ada98c}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries incr\+\_\+gs\+\_\+vect} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, double step, int dir)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_ad1977ecdfba9ca4762b8e517368008ef}\label{classlarcfm_1_1_criteria_core_ad1977ecdfba9ca4762b8e517368008ef}} 
+static int {\bfseries losr\+\_\+gs\+\_\+iter\+\_\+dir} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, double mings, double maxgs, double step, int eps)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_ad3ac0e08cda47d29fada4d46e858de7e}{gs\+Search\+Direction}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, int eps)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aca86884ad0d0216bc561ad4ea1e8f445}{vs\+Search\+Direction}} (int epsv)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aa2e717a5b493aba28f9295ce084a330f}{data\+Vs\+Rate\+Epsilon}} (int epsv, double vs\+Rate)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_aaf563185338e3994d523fa0118547483}{data\+Turn\+Epsilon}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, int epsh, double track\+Rate)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a1d2f1f623b0222e80cbed63f0492713d}{horizontal\+\_\+new\+\_\+repulsive\+\_\+criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&nvo, int eps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a5ca0948ba890a063d484e9264ab688c7}{horizontal\+\_\+new\+\_\+repulsive\+\_\+criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nvo, int eps)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_criteria_core_af772cf109feff68aaf6a3001de85c912}{vertical\+\_\+new\+\_\+repulsive\+\_\+criterion}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nvo, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a9500fcf954353f7db0ee3877093aba81}\label{classlarcfm_1_1_criteria_core_a9500fcf954353f7db0ee3877093aba81}} 
+static int {\bfseries vertical\+Coordination\+LoS} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a12b4ebe6b679231e3a297b46e9dabf85}\label{classlarcfm_1_1_criteria_core_a12b4ebe6b679231e3a297b46e9dabf85}} 
+static bool {\bfseries horizontal\+\_\+criterion\+\_\+0} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&sp, int eps, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double D)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_ad85f90622ce9abe4c4477ff89caa2cfd}\label{classlarcfm_1_1_criteria_core_ad85f90622ce9abe4c4477ff89caa2cfd}} 
+static int {\bfseries vertical\+Coordination\+Conflict} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v, double D, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_add96b720e579140b59eb254c41af7d4f}\label{classlarcfm_1_1_criteria_core_add96b720e579140b59eb254c41af7d4f}} 
+static bool {\bfseries criterion\+\_\+3D} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&sp, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, int epsH, int epsV, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&nv, double D, double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a3700df0ad58ad93c4e64be3dc266494f}\label{classlarcfm_1_1_criteria_core_a3700df0ad58ad93c4e64be3dc266494f}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries vertical\+\_\+decision\+\_\+vect} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, double caD, double caH)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_abfe0ad32a87341359d7fb0da9a18c759}\label{classlarcfm_1_1_criteria_core_abfe0ad32a87341359d7fb0da9a18c759}} 
+static int {\bfseries losr\+\_\+vs\+\_\+dir} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, double caD, double caH, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_afcf9016490b67c3897ac9715af34d981}\label{classlarcfm_1_1_criteria_core_afcf9016490b67c3897ac9715af34d981}} 
+static bool {\bfseries vs\+\_\+bound\+\_\+crit} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nv, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a994541b1b09186554249519eedfcc75a}\label{classlarcfm_1_1_criteria_core_a994541b1b09186554249519eedfcc75a}} 
+static double {\bfseries min\+\_\+rel\+\_\+vert\+\_\+speed} (double vz, int eps, double minrelvs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_aebd5860484b94bf171b3248b4d6bea46}\label{classlarcfm_1_1_criteria_core_aebd5860484b94bf171b3248b4d6bea46}} 
+static bool {\bfseries vertical\+\_\+los\+\_\+criterion} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&nv, int eps, double H, double minrelvs)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_criteria_core_a4693330834bd880b808fb26abc538af2}{break\+Symmetry}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, std\+::string ownship, std\+::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class provides criteria for \begin{DoxyVerb} horizontal conflict               (See ACCoRD PVS theory: horizontal_criterion.pvs)
+ vertical conflict                 (See ACCoRD PVS theory: vertical_criterion.pvs)
+ horizontal loss of separation     (See ACCoRD PVS theory: repulsive.pvs)
+ vertical loss of separation       (See ACCoRD PVS Theory: vertical_los_generic.pvs)
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a4693330834bd880b808fb26abc538af2}\label{classlarcfm_1_1_criteria_core_a4693330834bd880b808fb26abc538af2}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!breakSymmetry@{breakSymmetry}}
+\index{breakSymmetry@{breakSymmetry}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{breakSymmetry()}{breakSymmetry()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::break\+Symmetry (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{std\+::string}]{ownship,  }\item[{std\+::string}]{traffic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Perform a symmetry calculation \mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a39d9a00c01fe60f9800453b5bbb7bbba}\label{classlarcfm_1_1_criteria_core_a39d9a00c01fe60f9800453b5bbb7bbba}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!criteria@{criteria}}
+\index{criteria@{criteria}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{criteria()}{criteria()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::criteria (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo,  }\item[{double}]{min\+Rel\+Vs,  }\item[{double}]{D,  }\item[{double}]{H,  }\item[{int}]{epsh,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+true iff the velocity vector nvo satisfies the implicit coordination criteria 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & velocity vector to be checked \\
+\hline
+{\em min\+Rel\+Vs} & desired minimum relative exit ground speed (used in LoS only) \\
+\hline
+{\em D} & diameter of the protection zone \\
+\hline
+{\em H} & height of the protection zone \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_aaf563185338e3994d523fa0118547483}\label{classlarcfm_1_1_criteria_core_aaf563185338e3994d523fa0118547483}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!dataTurnEpsilon@{dataTurnEpsilon}}
+\index{dataTurnEpsilon@{dataTurnEpsilon}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{dataTurnEpsilon()}{dataTurnEpsilon()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::data\+Turn\+Epsilon (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{int}]{epsh,  }\item[{double}]{track\+Rate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of track\+Rate
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position \\
+\hline
+{\em vo} & velocity of ownship \\
+\hline
+{\em vi} & velocity of intruder \\
+\hline
+{\em epsh} & horizontal epsilon \\
+\hline
+{\em track\+Rate} & track\+Rate of traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+horizontal epsilon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_aa2e717a5b493aba28f9295ce084a330f}\label{classlarcfm_1_1_criteria_core_aa2e717a5b493aba28f9295ce084a330f}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!dataVsRateEpsilon@{dataVsRateEpsilon}}
+\index{dataVsRateEpsilon@{dataVsRateEpsilon}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{dataVsRateEpsilon()}{dataVsRateEpsilon()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::data\+Vs\+Rate\+Epsilon (\begin{DoxyParamCaption}\item[{int}]{epsv,  }\item[{double}]{vs\+Rate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of track\+Rate
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position \\
+\hline
+{\em vo} & velocity of ownship \\
+\hline
+{\em vi} & velocity of intruder \\
+\hline
+{\em epsh} & horizontal epsilon \\
+\hline
+{\em track\+Rate} & track\+Rate of traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+horizontal epsilon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_ad3ac0e08cda47d29fada4d46e858de7e}\label{classlarcfm_1_1_criteria_core_ad3ac0e08cda47d29fada4d46e858de7e}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!gsSearchDirection@{gsSearchDirection}}
+\index{gsSearchDirection@{gsSearchDirection}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{gsSearchDirection()}{gsSearchDirection()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::gs\+Search\+Direction (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return an absolute repulsive ground speed search direction (or none) Assumes \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo is non-\/zero. \begin{DoxyReturn}{Returns}
++1 search is increasing, -\/1 search is decreasing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a236e781781ddd248ebdf9a8a3983554c}\label{classlarcfm_1_1_criteria_core_a236e781781ddd248ebdf9a8a3983554c}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontal\_criterion@{horizontal\_criterion}}
+\index{horizontal\_criterion@{horizontal\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontal\_criterion()}{horizontal\_criterion()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::horizontal\+\_\+criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{sp,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v,  }\item[{double}]{D,  }\item[{int}]{epsh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The fundamental horizontal criterion (Conflict Case) 
+\begin{DoxyParams}{Parameters}
+{\em sp} & relative position assumed to be horizontally separated (Sp\+\_\+vect2 \+: TYPE = (horizontal\+\_\+sep?)) \\
+\hline
+{\em v} & relative velocity \\
+\hline
+{\em D} & protection zone diameter \\
+\hline
+{\em epsh} & +1 or -\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_aacedba0ce036d3b08f7897a6545381e8}\label{classlarcfm_1_1_criteria_core_aacedba0ce036d3b08f7897a6545381e8}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontal\_los\_criterion@{horizontal\_los\_criterion}}
+\index{horizontal\_los\_criterion@{horizontal\_los\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontal\_los\_criterion()}{horizontal\_los\_criterion()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::horizontal\+\_\+los\+\_\+criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{nvo,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Checks whether a horizontal solution is repulsive or divergent in the turn direction indicated by nvo (2D geometry) 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & resolution velocity of the traffic aircraft \\
+\hline
+{\em eps} & horizontal\+Coordination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a1d2f1f623b0222e80cbed63f0492713d}\label{classlarcfm_1_1_criteria_core_a1d2f1f623b0222e80cbed63f0492713d}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontal\_new\_repulsive\_criterion@{horizontal\_new\_repulsive\_criterion}}
+\index{horizontal\_new\_repulsive\_criterion@{horizontal\_new\_repulsive\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontal\_new\_repulsive\_criterion()}{horizontal\_new\_repulsive\_criterion()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::horizontal\+\_\+new\+\_\+repulsive\+\_\+criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{nvo,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{[}CAM\mbox{]} This method replaces horizontal\+\_\+old\+\_\+repulsive\+\_\+criterion. This definition is independent and coordinated for both state-\/based and iterative algorithms. This method is intended to be used with kinematic solvers, that is it is called iteratively with nvo progressing with each iteration.
+
+Checks whether a horizontal solution is repulsive or divergent in the turn direction indicated by nvo (2D geometry). Derived from PVS predicate\+: repulsive.\+repulsive\+\_\+criteria(s,v,eps)(nv)\+: bool 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & resolution velocity of the traffic aircraft \\
+\hline
+{\em eps} & horizontal\+Coordination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a5ca0948ba890a063d484e9264ab688c7}\label{classlarcfm_1_1_criteria_core_a5ca0948ba890a063d484e9264ab688c7}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontal\_new\_repulsive\_criterion@{horizontal\_new\_repulsive\_criterion}}
+\index{horizontal\_new\_repulsive\_criterion@{horizontal\_new\_repulsive\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontal\_new\_repulsive\_criterion()}{horizontal\_new\_repulsive\_criterion()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::horizontal\+\_\+new\+\_\+repulsive\+\_\+criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{nvo,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{[}CAM\mbox{]} This method replaces horizontal\+\_\+old\+\_\+repulsive\+\_\+criterion. This definition is independent and coordinated for both state-\/based and iterative algorithms. This method is intended to be used with kinematic solvers, that is it is called iteratively with nvo progressing with each iteration.
+
+Checks whether a horizontal solution is repulsive or divergent in the turn direction indicated by nvo (2D geometry). Derived from PVS predicate\+: repulsive.\+repulsive\+\_\+criteria(s,v,eps)(nv)\+: bool 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & resolution velocity of the traffic aircraft \\
+\hline
+{\em eps} & horizontal\+Coordination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a978cae09c2e82dc5b11712eaf6f420bf}\label{classlarcfm_1_1_criteria_core_a978cae09c2e82dc5b11712eaf6f420bf}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontalCoordination@{horizontalCoordination}}
+\index{horizontalCoordination@{horizontalCoordination}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontalCoordination()}{horizontalCoordination()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::horizontal\+Coordination (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} coordination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position \\
+\hline
+{\em v} & the relative velocity\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the horizontal coordination sign -\/1 corresponds to turning right in the relative system +1 corresponds to turing left in the relative system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a1d4b42fc2c684b817a3374f75eff918e}\label{classlarcfm_1_1_criteria_core_a1d4b42fc2c684b817a3374f75eff918e}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontalCoordination@{horizontalCoordination}}
+\index{horizontalCoordination@{horizontalCoordination}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontalCoordination()}{horizontalCoordination()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::horizontal\+Coordination (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} coordination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position \\
+\hline
+{\em v} & the relative velocity\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the horizontal coordination sign -\/1 corresponds to turning right in the relative system +1 corresponds to turning left in the relative system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_ad6244252b2f39b947b71dcc68bdf02bc}\label{classlarcfm_1_1_criteria_core_ad6244252b2f39b947b71dcc68bdf02bc}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!horizontalRepulsiveCriteria@{horizontalRepulsiveCriteria}}
+\index{horizontalRepulsiveCriteria@{horizontalRepulsiveCriteria}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{horizontalRepulsiveCriteria()}{horizontalRepulsiveCriteria()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::horizontal\+Repulsive\+Criteria (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s3,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo3,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi3,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{nvo3,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Checks whether a horizontal solution is repulsive or divergent in the turn direction indicated by nvo3 
+\begin{DoxyParams}{Parameters}
+{\em s3} & relative position of the ownship \\
+\hline
+{\em vo3} & velocity of the ownship aircraft \\
+\hline
+{\em vi3} & velocity of the traffic aircraft \\
+\hline
+{\em nvo3} & resolution velocity of the traffic aircraft \\
+\hline
+{\em eps} & horizontal\+Coordination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a980d944252189e1793d70d385b80deff}\label{classlarcfm_1_1_criteria_core_a980d944252189e1793d70d385b80deff}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!trkSearchDirection@{trkSearchDirection}}
+\index{trkSearchDirection@{trkSearchDirection}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{trkSearchDirection()}{trkSearchDirection()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::trk\+Search\+Direction (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return an absolute repulsive track search direction (or none) Assumes velocity vo is non-\/zero. \begin{DoxyReturn}{Returns}
++1 search is increasing, -\/1 search is decreasing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a76892048e7a723ccf309f048e1fcef4b}\label{classlarcfm_1_1_criteria_core_a76892048e7a723ccf309f048e1fcef4b}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!vertical\_criterion@{vertical\_criterion}}
+\index{vertical\_criterion@{vertical\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{vertical\_criterion()}{vertical\_criterion()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::vertical\+\_\+criterion (\begin{DoxyParamCaption}\item[{int}]{eps,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{nv,  }\item[{double}]{D,  }\item[{double}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+vertical criterion (Conflict Case) (currently only used in Visual\+Criteria\+Core) 
+\begin{DoxyParams}{Parameters}
+{\em epsv} & vertical coordination parameter \\
+\hline
+{\em s} & relative position \\
+\hline
+{\em v} & relative velocity \\
+\hline
+{\em nv} & new relative velocity \\
+\hline
+{\em D} & protection zone diameter \\
+\hline
+{\em H} & protection zone height \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_af772cf109feff68aaf6a3001de85c912}\label{classlarcfm_1_1_criteria_core_af772cf109feff68aaf6a3001de85c912}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!vertical\_new\_repulsive\_criterion@{vertical\_new\_repulsive\_criterion}}
+\index{vertical\_new\_repulsive\_criterion@{vertical\_new\_repulsive\_criterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{vertical\_new\_repulsive\_criterion()}{vertical\_new\_repulsive\_criterion()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::vertical\+\_\+new\+\_\+repulsive\+\_\+criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{nvo,  }\item[{int}]{eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{[}CAM\mbox{]} This method replaces vertical\+\_\+old\+\_\+repulsive\+\_\+criterion. It\textquotesingle{}s intended to be used for kinematic, iterative maneuvers. This criterion is like vs\+\_\+bound\+\_\+crit? but removes the else branch that restricts some vertical maneuvers.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & resolution velocity of the traffic aircraft \\
+\hline
+{\em eps} & \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} coordination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_a2b5ac5270b1c8d26844e7d33d6a0faad}\label{classlarcfm_1_1_criteria_core_a2b5ac5270b1c8d26844e7d33d6a0faad}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!verticalCoordination@{verticalCoordination}}
+\index{verticalCoordination@{verticalCoordination}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{verticalCoordination()}{verticalCoordination()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::vertical\+Coordination (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{double}]{D,  }\item[{double}]{H,  }\item[{std\+::string}]{ownship,  }\item[{std\+::string}]{traffic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} coordination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the relative position \\
+\hline
+{\em vo} & the ownship velocity \\
+\hline
+{\em vi} & the traffic aircraft velocity \\
+\hline
+{\em D} & the horizontal distance \\
+\hline
+{\em H} & the vertical distance \\
+\hline
+{\em ownship} & the name of the ownship \\
+\hline
+{\em traffic} & the name of the traffic aircraft\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the vertical coordination sign. -\/1 corresponds to reducing current vertical speed, +1 corresponds to increasing current vertical speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_ae4e28469e889a264a08cc451a3255a6a}\label{classlarcfm_1_1_criteria_core_ae4e28469e889a264a08cc451a3255a6a}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!verticalRepulsiveCriterion@{verticalRepulsiveCriterion}}
+\index{verticalRepulsiveCriterion@{verticalRepulsiveCriterion}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{verticalRepulsiveCriterion()}{verticalRepulsiveCriterion()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Criteria\+Core\+::vertical\+Repulsive\+Criterion (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{nvo,  }\item[{double}]{H,  }\item[{double}]{minrelvs,  }\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Checks whether a velocity vector satisfies the repulsive LoS criteria 
+\begin{DoxyParams}{Parameters}
+{\em s} & relative position of the ownship \\
+\hline
+{\em vo} & velocity of the ownship aircraft \\
+\hline
+{\em vi} & velocity of the traffic aircraft \\
+\hline
+{\em nvo} & resolution velocity of the traffic aircraft \\
+\hline
+{\em H} & protection zone height \\
+\hline
+{\em minrelvs} & minimum relative exit speed \\
+\hline
+{\em epsv} & vertical coordination parameter \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_criteria_core_aca86884ad0d0216bc561ad4ea1e8f445}\label{classlarcfm_1_1_criteria_core_aca86884ad0d0216bc561ad4ea1e8f445}} 
+\index{larcfm::CriteriaCore@{larcfm::CriteriaCore}!vsSearchDirection@{vsSearchDirection}}
+\index{vsSearchDirection@{vsSearchDirection}!larcfm::CriteriaCore@{larcfm::CriteriaCore}}
+\doxysubsubsection{\texorpdfstring{vsSearchDirection()}{vsSearchDirection()}}
+{\footnotesize\ttfamily int larcfm\+::\+Criteria\+Core\+::vs\+Search\+Direction (\begin{DoxyParamCaption}\item[{int}]{epsv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return an absolute repulsive vertical speed search direction (or none) Assumes \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo is non-\/zero. \begin{DoxyReturn}{Returns}
++1 search is increasing, -\/1 search is decreasing 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Criteria\+Core.\+h\item 
+Modules/\+ACCo\+RD/src/Criteria\+Core.\+cpp\end{DoxyCompactItemize}

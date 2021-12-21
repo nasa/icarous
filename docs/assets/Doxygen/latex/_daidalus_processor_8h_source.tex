@@ -1,0 +1,44 @@
+\hypertarget{_daidalus_processor_8h_source}{}\doxysection{Daidalus\+Processor.\+h}
+\label{_daidalus_processor_8h_source}\index{Modules/ACCoRD/inc/DaidalusProcessor.h@{Modules/ACCoRD/inc/DaidalusProcessor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * DaidalusProcessor.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ *  Created on: Aug 14, 2015}}
+\DoxyCodeLine{5 \textcolor{comment}{ *      Author: cmunoz}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DAIDALUSPROCESSOR\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DAIDALUSPROCESSOR\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Daidalus.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{class }\mbox{\hyperlink{class_daidalus_processor}{DaidalusProcessor}} \{}
+\DoxyCodeLine{15 \textcolor{keyword}{private}:}
+\DoxyCodeLine{16     \textcolor{keywordtype}{double} from\_;}
+\DoxyCodeLine{17     \textcolor{keywordtype}{double} to\_;}
+\DoxyCodeLine{18     \textcolor{keywordtype}{double} relative\_;}
+\DoxyCodeLine{19     std::string options\_;}
+\DoxyCodeLine{20     std::string ownship\_;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23     \mbox{\hyperlink{class_daidalus_processor}{DaidalusProcessor}}(\textcolor{keyword}{const} std::string\& own);}
+\DoxyCodeLine{24     \mbox{\hyperlink{class_daidalus_processor}{DaidalusProcessor}}();}
+\DoxyCodeLine{25     \textcolor{keywordtype}{void} setOwnship(\textcolor{keyword}{const} std::string\& own);}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double} getFrom() \textcolor{keyword}{const};}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} getTo() \textcolor{keyword}{const};}
+\DoxyCodeLine{28     std::string getOwnship() \textcolor{keyword}{const};}
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \mbox{\hyperlink{class_daidalus_processor}{\string~DaidalusProcessor}}() \{ \}}
+\DoxyCodeLine{30     \textcolor{keyword}{static} \textcolor{keywordtype}{void} getFileNames(std::vector<std::string>\& txtFiles, \textcolor{keyword}{const} std::vector<std::string>\& names, \textcolor{keyword}{const} std::string\& ext, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{31     \textcolor{keyword}{static} std::string getHelpString();}
+\DoxyCodeLine{32     \textcolor{keywordtype}{bool} processOptions(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* args[], \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{33     std::string getOptionsString();}
+\DoxyCodeLine{34     \textcolor{keywordtype}{void} processFile(\textcolor{keyword}{const} std::string\& filename, \mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm::Daidalus}}\& daa);}
+\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} processTime(\mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm::Daidalus}}\& daa, \textcolor{keyword}{const} std::string\& filename) = 0;}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DAIDALUSPROCESSOR\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

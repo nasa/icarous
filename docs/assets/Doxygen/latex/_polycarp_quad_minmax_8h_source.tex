@@ -1,0 +1,27 @@
+\hypertarget{_polycarp_quad_minmax_8h_source}{}\doxysection{Polycarp\+Quad\+Minmax.\+h}
+\label{_polycarp_quad_minmax_8h_source}\index{Modules/ACCoRD/inc/PolycarpQuadMinmax.h@{Modules/ACCoRD/inc/PolycarpQuadMinmax.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpQuadMinmax -\/ determining if a univariate quadratic passes below a threshold on an interval}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYCARPQUADMINMAX\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYCARPQUADMINMAX\_H\_}}
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_quad_minmax}{PolycarpQuadMinmax}} \{}
+\DoxyCodeLine{18     \textcolor{keyword}{public}:}
+\DoxyCodeLine{19         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quadratic(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{20         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quad\_min\_int(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} xl,\textcolor{keywordtype}{double} xu);}
+\DoxyCodeLine{21         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} quad\_min\_le\_D\_int(\textcolor{keywordtype}{double} ap,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} xl,\textcolor{keywordtype}{double} xu,\textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{22     \};}
+\DoxyCodeLine{23 \}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

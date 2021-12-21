@@ -1,0 +1,121 @@
+\hypertarget{_poly3_d_l_l_8h_source}{}\doxysection{Poly3\+DLL.\+h}
+\label{_poly3_d_l_l_8h_source}\index{Modules/ACCoRD/inc/Poly3DLL.h@{Modules/ACCoRD/inc/Poly3DLL.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Poly3DLL.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * }}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef Poly3DLL\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define Poly3DLL\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Poly2DLLCore.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{private}:}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     std::vector<LatLonAlt> vertices;         \textcolor{comment}{// The altitude is superfluous -\/-\/ should be ignored}}
+\DoxyCodeLine{32     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} boundingRect;}
+\DoxyCodeLine{33     \textcolor{keywordtype}{bool} boundingRectangleDefined;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keywordtype}{double} top;}
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} bottom;}
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} cpos;}
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} lastAdd;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}();}
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}(\textcolor{keyword}{const} std::vector<LatLonAlt>\& verts, \textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{comment}{//  Poly3DLL(Vect3 v) \{}}
+\DoxyCodeLine{49 \textcolor{comment}{//      //super(v.x,v.y,v.z);}}
+\DoxyCodeLine{50 \textcolor{comment}{//      p2d = new Poly2DLL();}}
+\DoxyCodeLine{51 \textcolor{comment}{//  \}}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}\& p) ;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{keywordtype}{void} add(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keywordtype}{void} insert(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a205bd7f376b02f325d24691d8b8131d1}{set}}(\textcolor{keywordtype}{int} n, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} get(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ae778b7e5ac39b093565ac6384cd5ea61}{remove}}(\textcolor{keywordtype}{int} n) ;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{keywordtype}{double} getTop() \textcolor{keyword}{const};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87     \textcolor{keywordtype}{void} setTop(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{keywordtype}{double} getBottom() \textcolor{keyword}{const};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} setBottom(\textcolor{keywordtype}{double} b) ;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{keywordtype}{bool} isClockwise();}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{99     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ab62061eec708883563219be969d56596}{centroid}}();}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} averagePoint();}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103     \textcolor{keywordtype}{void} recalcBoundingRectangle();}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     std::string toString() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{113     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_af50b398924750762d593e920d4a85383}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{121     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_abc513d663f8fb430e7256cc114798154}{contains2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{130     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_ad3de5a07719ebd73f9509bb4007c12c2}{isConvex}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}} reverseOrder();}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135     \textcolor{keywordtype}{double} sumAngles(\textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{144     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a429fb60136e7041e4db93ccd2e6d0c35}{area}}();}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{154     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l_a30f6dac710a60ae21906cb2b9ef1e0c6}{signedArea}}();}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} getBoundingRectangle();}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158     \textcolor{keyword}{const} std::vector<LatLonAlt>\& getVerticesRef() \textcolor{keyword}{const};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 \};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* Poly3DLL\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

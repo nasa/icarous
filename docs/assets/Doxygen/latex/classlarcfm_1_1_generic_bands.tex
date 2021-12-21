@@ -1,0 +1,281 @@
+\hypertarget{classlarcfm_1_1_generic_bands}{}\doxysection{larcfm\+::Generic\+Bands Class Reference}
+\label{classlarcfm_1_1_generic_bands}\index{larcfm::GenericBands@{larcfm::GenericBands}}
+
+
+{\ttfamily \#include $<$Generic\+Bands.\+h$>$}
+
+Inheritance diagram for larcfm\+::Generic\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.309278cm]{classlarcfm_1_1_generic_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_generic_bands_adcf3d3103b7fa3e19fae2cfe3f873cb3}{is\+Lat\+Lon}} () const =0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a85ed420937cd866152ae4d3c37782a4f}{set\+Lookahead\+Time}} (double t, const std\+::string \&unit)=0
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_generic_bands_aff80021d43fef2b99625a5b5f2c6f3aa}{get\+Lookahead\+Time}} (const std\+::string \&unit) const =0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a3e5bc7dcb2e28ffe5bbc0c2966d91f81}{set\+Max\+Ground\+Speed}} (double gs, const std\+::string \&unit)=0
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_generic_bands_af806b21b02ea79bff3c1b21573e03102}{get\+Max\+Ground\+Speed}} (const std\+::string \&unit) const =0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a78d99d33ef540c91249cf1eac66c8bef}{set\+Max\+Vertical\+Speed}} (double vs, const std\+::string \&unit)=0
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a4f0d050a9409ce5b1d19a757ad9e7d59}{get\+Max\+Vertical\+Speed}} (const std\+::string \&unit) const =0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a49bb3aff4c3edd0537fa47f1b3f2b5ec}{clear}} ()=0
+\item 
+virtual int \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a7e27b1ffc4a6a64dc5bb9261c0b32a82}{track\+Length}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_generic_bands_ae2fef081f1210811dddaf4818dd8a454}{track}} (int i, const std\+::string \&unit)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_abf411f64bb0596e75d1fc72a9a58b802}{track\+Region}} (int i)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a15d65d1993006f092f775184dcf26bd1}{region\+Of\+Track}} (double trk, const std\+::string \&unit)=0
+\item 
+virtual int \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a1669747961d0a2f759fa6dab6005f999}{ground\+Speed\+Length}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_generic_bands_af1085294b21155945bf6526f0b44533a}{ground\+Speed}} (int i, const std\+::string \&unit)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a82e341630a248c3bd748a9a66cf7c8ec}{ground\+Speed\+Region}} (int i)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a881bd8cf8f5e20140b47cf2f88a2d3de}{region\+Of\+Ground\+Speed}} (double gs, const std\+::string \&unit)=0
+\item 
+virtual int \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a69f35b69ee7a9479d134ab96dc0bae7e}{vertical\+Speed\+Length}} ()=0
+\item 
+virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a3ed2c7d20987e35f706f6bf0fa4a6649}{vertical\+Speed}} (int i, const std\+::string \&unit)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_ac19cb40b8925bcbdeb0d2202ef810747}{vertical\+Speed\+Region}} (int i)=0
+\item 
+virtual Bands\+Region\+::\+Region \mbox{\hyperlink{classlarcfm_1_1_generic_bands_a7d5b0dc8068af94b1238b9bbfaf01a50}{region\+Of\+Vertical\+Speed}} (double vs, const std\+::string \&unit)=0
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_generic_bands_acbdd4c37ca8914918c6ff17ff9805a1c}{to\+String}} () const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This provides an interface to classes for various conflict prevention bands. The input to these objects is the position and velocity of the ownship, the output is ranges of guidance maneuvers\+: track angles, ground speeds, and vertical speeds. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a49bb3aff4c3edd0537fa47f1b3f2b5ec}\label{classlarcfm_1_1_generic_bands_a49bb3aff4c3edd0537fa47f1b3f2b5ec}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!clear@{clear}}
+\index{clear@{clear}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Bands\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Clear all bands information. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a136e1024f621ffed0fb9158fbaea5e8c}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a07a707ad13d23256eb52a1200b7441ec}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a24a9ccbc7296ebca69ca1bb9daf4fdc3}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ac37af67571db91665cf716d8472ef3e4}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a66a609bb975473c5b51df9e915b9d7b1}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_af3e26c681f167515cabe97a93bf8d495}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_aff80021d43fef2b99625a5b5f2c6f3aa}\label{classlarcfm_1_1_generic_bands_aff80021d43fef2b99625a5b5f2c6f3aa}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!getLookaheadTime@{getLookaheadTime}}
+\index{getLookaheadTime@{getLookaheadTime}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{getLookaheadTime()}{getLookaheadTime()}}
+{\footnotesize\ttfamily virtual double larcfm\+::\+Generic\+Bands\+::get\+Lookahead\+Time (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns the lookahead time \mbox{[}s\mbox{]}. If there are more than one lookahead times, this gets the nearest time. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac3eaa074d7e8b27210ad000611b43369}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_abfc1b6a22379fe226fb3b34cbb9d5a0c}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a0a68d23903ca8f782cadeeab82ab1a57}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a47de39b498636a3402e081ba565e2bfa}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ae2351868d98d9768f34334945d1bd216}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_afabf6fdfa096e812c8f83e9758d7131f}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_af806b21b02ea79bff3c1b21573e03102}\label{classlarcfm_1_1_generic_bands_af806b21b02ea79bff3c1b21573e03102}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!getMaxGroundSpeed@{getMaxGroundSpeed}}
+\index{getMaxGroundSpeed@{getMaxGroundSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{getMaxGroundSpeed()}{getMaxGroundSpeed()}}
+{\footnotesize\ttfamily virtual double larcfm\+::\+Generic\+Bands\+::get\+Max\+Ground\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns the maximum ground speed that is output by \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} in knots. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a9130e8a37bc8d2ad323e5be83a6ec98e}{larcfm\+::\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3d8e989371d6b7c1e54dde44cf5cde18}{larcfm\+::\+Daidalus}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a4f0d050a9409ce5b1d19a757ad9e7d59}\label{classlarcfm_1_1_generic_bands_a4f0d050a9409ce5b1d19a757ad9e7d59}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!getMaxVerticalSpeed@{getMaxVerticalSpeed}}
+\index{getMaxVerticalSpeed@{getMaxVerticalSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{getMaxVerticalSpeed()}{getMaxVerticalSpeed()}}
+{\footnotesize\ttfamily virtual double larcfm\+::\+Generic\+Bands\+::get\+Max\+Vertical\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns the range of vertical speeds output by \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} \mbox{[}fpm\mbox{]}. Any existing bands information is cleared. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae726142e8e4f6e9158e3a8ed556e3af6}{larcfm\+::\+Daidalus}}, and \mbox{\hyperlink{classlarcfm_1_1_bands_afcdac37f303c08c0f7716cc0b6a28547}{larcfm\+::\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_af1085294b21155945bf6526f0b44533a}\label{classlarcfm_1_1_generic_bands_af1085294b21155945bf6526f0b44533a}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!groundSpeed@{groundSpeed}}
+\index{groundSpeed@{groundSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{groundSpeed()}{groundSpeed()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} larcfm\+::\+Generic\+Bands\+::ground\+Speed (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return i-\/th interval of the ground speed bands in the given unit. ~\newline
+ 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a0741717b543f659c04f53a0503b457cc}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a1fd9b739a1b3d40ed17e77643f2312b0}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_af9b3ebceb02f0633a53460b887a0ab70}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a76e7893a78fe73221c355aafdf13ad72}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a3c732e116ef43998e290b4d5ed7ed492}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ae2e5752c443c49612218ec65e042391e}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a1669747961d0a2f759fa6dab6005f999}\label{classlarcfm_1_1_generic_bands_a1669747961d0a2f759fa6dab6005f999}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!groundSpeedLength@{groundSpeedLength}}
+\index{groundSpeedLength@{groundSpeedLength}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{groundSpeedLength()}{groundSpeedLength()}}
+{\footnotesize\ttfamily virtual int larcfm\+::\+Generic\+Bands\+::ground\+Speed\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the number of bands of ground speeds 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a79b54b62c948b70c275eb8333e655dde}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_abf233f31d655ce40a773334d2b13e9e4}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab05a01205be47de2dd2263e1403845c9}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a0642eaa7246debf49d9463dc6de0bfac}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a2398b7b56b5b003f9c92949cd21d6c2e}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ad8bf02f4536fd3b2610da770a373523d}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a82e341630a248c3bd748a9a66cf7c8ec}\label{classlarcfm_1_1_generic_bands_a82e341630a248c3bd748a9a66cf7c8ec}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!groundSpeedRegion@{groundSpeedRegion}}
+\index{groundSpeedRegion@{groundSpeedRegion}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{groundSpeedRegion()}{groundSpeedRegion()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::ground\+Speed\+Region (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the i-\/th ground speed band. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_aa6642d92613d653dc70d97ffc163961e}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_aa22426c121622d707b2951312c766dc2}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1b34d2bea71fedf79cea298cfcaf9c49}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a3d544890eb459c482fd33d1baec50227}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_aae40c6f9116dc342a8104f3c5763c91c}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a9603eea159f27c769a08fb6c7768357b}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_adcf3d3103b7fa3e19fae2cfe3f873cb3}\label{classlarcfm_1_1_generic_bands_adcf3d3103b7fa3e19fae2cfe3f873cb3}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily virtual bool larcfm\+::\+Generic\+Bands\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Returns whether the aircraft positions are specified in latitude/longitude or Euclidean coordinates. If the ownship has not been set, then this value is undefined. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_ac858ce5e4931b0d40d6dddcf295e8797}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_aebc5fac39f8a6c1a2f241673c0953405}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fee64326e290734f99c9c765a80580f}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ada3d4eeecfbcfb9984f0b5a71638502a}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a5fa4ed969ded36cd4b8c8f1c76c1bb9b}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a9891060149b40cd224daf82b9d167dab}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a881bd8cf8f5e20140b47cf2f88a2d3de}\label{classlarcfm_1_1_generic_bands_a881bd8cf8f5e20140b47cf2f88a2d3de}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!regionOfGroundSpeed@{regionOfGroundSpeed}}
+\index{regionOfGroundSpeed@{regionOfGroundSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{regionOfGroundSpeed()}{regionOfGroundSpeed()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::region\+Of\+Ground\+Speed (\begin{DoxyParamCaption}\item[{double}]{gs,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the given ground speed in knots, out of range speeds are returned as NEAR. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a6b97e392256d3a96535ed4e410c33842}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_ae2bf36d568f9a1d99bcc22b0785a01b0}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a477953b5f07887c734f3d6646d7fd48e}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a260d970287e21dc6fa1c87677709621a}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a19f6227f48f33d6deb62725dd1a36bac}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ad3d6a65fb339a533586a91b29ea365c7}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a15d65d1993006f092f775184dcf26bd1}\label{classlarcfm_1_1_generic_bands_a15d65d1993006f092f775184dcf26bd1}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!regionOfTrack@{regionOfTrack}}
+\index{regionOfTrack@{regionOfTrack}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{regionOfTrack()}{regionOfTrack()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::region\+Of\+Track (\begin{DoxyParamCaption}\item[{double}]{trk,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the given track angle \mbox{[}degrees, clockwise from true north\mbox{]}. An angle outside of a 0..360 degree range returns NEAR. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_ab086242852eacfcde72240102ef0c1c6}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a12cb04a27e1c6fbc2edfc7ab3224bd48}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_aa2a8f3a4a25f1cfe34915b55fdf86074}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a90736e650ed7ea5f2a22ba7a9fb82ba1}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a5f988ad3c6200fed370db747b4f3db7d}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a61fe18140c2eb806ed3aacf3ba99e3d8}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a7d5b0dc8068af94b1238b9bbfaf01a50}\label{classlarcfm_1_1_generic_bands_a7d5b0dc8068af94b1238b9bbfaf01a50}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!regionOfVerticalSpeed@{regionOfVerticalSpeed}}
+\index{regionOfVerticalSpeed@{regionOfVerticalSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{regionOfVerticalSpeed()}{regionOfVerticalSpeed()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::region\+Of\+Vertical\+Speed (\begin{DoxyParamCaption}\item[{double}]{vs,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the given vertical speed \mbox{[}feet/min\mbox{]}, out of range speeds are returned as red. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7bdc35120a9926ec5b4527e6bd2e8703}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a531725c1f4bc37a9cabfc4041ab1a522}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a4f40f89f49694dff448efe16ee022755}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_abecd3dd67c3d897d41164b05f7ac9b4b}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ac841fc419266f7dd804ad6a5b441c39d}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_abe79a2b074509846c2a3602da6833025}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a85ed420937cd866152ae4d3c37782a4f}\label{classlarcfm_1_1_generic_bands_a85ed420937cd866152ae4d3c37782a4f}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!setLookaheadTime@{setLookaheadTime}}
+\index{setLookaheadTime@{setLookaheadTime}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{setLookaheadTime()}{setLookaheadTime()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Bands\+::set\+Lookahead\+Time (\begin{DoxyParamCaption}\item[{double}]{t,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Set the lookahead time \mbox{[}s\mbox{]}. Any existing bands information is cleared. If there are more than one lookahead times, this sets the nearest time. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac288245c401fcaa71b05a05d3dbe4b09}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a75a113a6a2c4aa634f72ba711d8dd166}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a23aa28a26ee0e1860b563a49273a8548}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_af8c235f6bce615f5864c280b3bf76e3d}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ab522b41f4b66f7e8eb1656aae1faec1f}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa760eec7037428ef778e06d5b195e534}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a3e5bc7dcb2e28ffe5bbc0c2966d91f81}\label{classlarcfm_1_1_generic_bands_a3e5bc7dcb2e28ffe5bbc0c2966d91f81}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!setMaxGroundSpeed@{setMaxGroundSpeed}}
+\index{setMaxGroundSpeed@{setMaxGroundSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{setMaxGroundSpeed()}{setMaxGroundSpeed()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Bands\+::set\+Max\+Ground\+Speed (\begin{DoxyParamCaption}\item[{double}]{gs,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Sets the maximum ground speed that is output by \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}, the minimum is 0 \mbox{[}knots\mbox{]}. When this parameter is set any existing band information is cleared. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a533b2f371b86f8bfe8a1c59b96adfd28}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a5140bbac4d19c898c4e9238427c2905c}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a03044da785c72f49bf35cdf5656b9b86}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a6447db2ba8b008e6c34a79023ff2df9d}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a65c847dd6bc56b5de3b5b1007b1b9bee}{larcfm\+::\+Triple\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a4b6fc32d60322fa3bc8cc67352bf7453}{larcfm\+::\+Kinematic\+Multi\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a78d99d33ef540c91249cf1eac66c8bef}\label{classlarcfm_1_1_generic_bands_a78d99d33ef540c91249cf1eac66c8bef}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!setMaxVerticalSpeed@{setMaxVerticalSpeed}}
+\index{setMaxVerticalSpeed@{setMaxVerticalSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{setMaxVerticalSpeed()}{setMaxVerticalSpeed()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Bands\+::set\+Max\+Vertical\+Speed (\begin{DoxyParamCaption}\item[{double}]{vs,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Sets the range of vertical speeds output by \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}, -\/max\+\_\+vs to max\+\_\+vs \mbox{[}fpm\mbox{]}. When this parameter is set any existing band information is cleared. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5514874f1a12f3e10f7ab24259ac1b95}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a003b9edaf4f9d136d13e4f7d1fb3165d}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_aa33b18611dc0f6b5a179c3429f3f5ff2}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a7be96b15fef2959db7771a513e05609f}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a800aaac51524ac9dceac42c1c2d0d83d}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a40cde42db38d592fdf8c053121850b1a}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_acbdd4c37ca8914918c6ff17ff9805a1c}\label{classlarcfm_1_1_generic_bands_acbdd4c37ca8914918c6ff17ff9805a1c}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!toString@{toString}}
+\index{toString@{toString}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily virtual std\+::string larcfm\+::\+Generic\+Bands\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return a string representing this object. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_ad2c9531f9435d6de14fb776498251cb9}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a8359688627a825684dbacff8df26b7d6}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a26d200740c65e0d6b4b8721037e67cf0}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a28b039d1c4d155b1d375190de4167fd1}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a495e21b73018ce3d1db76feeeb34aa7e}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3a15165a24de29b030081b71cdeffb59}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_ae2fef081f1210811dddaf4818dd8a454}\label{classlarcfm_1_1_generic_bands_ae2fef081f1210811dddaf4818dd8a454}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!track@{track}}
+\index{track@{track}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} larcfm\+::\+Generic\+Bands\+::track (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the i-\/th interval of the track bands in the given unit. ~\newline
+ 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_afd7d0bf5069d8afe91babe59adb023ea}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a6d3a8f146a3985734a97196f03cd955d}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a45888017620ccc7db5891ce3e99c50e2}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a42b2ce151f12d9fa50f04015106eb944}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_ae419a690e1ac5cc6c1c44ccb6ef2231d}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3ecbd4ba9ea871ef402c7f3fac284019}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a7e27b1ffc4a6a64dc5bb9261c0b32a82}\label{classlarcfm_1_1_generic_bands_a7e27b1ffc4a6a64dc5bb9261c0b32a82}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!trackLength@{trackLength}}
+\index{trackLength@{trackLength}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{trackLength()}{trackLength()}}
+{\footnotesize\ttfamily virtual int larcfm\+::\+Generic\+Bands\+::track\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the number of bands of track angles 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_af7bc86bcac8c7ace2c69bfa16fd462fc}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_aeae6f70fdef5fd5dea598eeebecdec64}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a883d4d19fdacb5c7ee6903f34941f449}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_acf41a2a6e29a06ef40cf8c27ae9658e9}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_ae7f02991fa3943e153d4bfda22a401d0}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_adc5c23ff57b1c992274f893abe6dfd55}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_abf411f64bb0596e75d1fc72a9a58b802}\label{classlarcfm_1_1_generic_bands_abf411f64bb0596e75d1fc72a9a58b802}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!trackRegion@{trackRegion}}
+\index{trackRegion@{trackRegion}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{trackRegion()}{trackRegion()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::track\+Region (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the i-\/th track band. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_ac9d69c812877eaf812804554f3c75596}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a8d17e5dce3083aab97287f19efd89bf5}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa6b099db4d43e22767d3cd150bed2049}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a634def498329f57795a10bcac85a122d}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_aec776db6a8fcc43f872dd5c02620d852}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa8c99631388f4d03f7c4c8ae16e64605}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a3ed2c7d20987e35f706f6bf0fa4a6649}\label{classlarcfm_1_1_generic_bands_a3ed2c7d20987e35f706f6bf0fa4a6649}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} larcfm\+::\+Generic\+Bands\+::vertical\+Speed (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the i-\/th interval of the vertical speed band in the given unit. ~\newline
+ 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_af4072c225e02b494e747bb1d0a65df0c}{larcfm\+::\+Kinematic\+Multi\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_bands_a6a1ea6becf1fbacf7389cf14f0ec0bd3}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_ac042dda78d1a92a5edde1f1f7115c394}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1f7946b90baaaa502130979c4377a8a4}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_abc072b5fc72db12be235518aab26c782}{larcfm\+::\+Intent\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab9ff47fd2258f314d2baa51e5ad8bf04}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_a69f35b69ee7a9479d134ab96dc0bae7e}\label{classlarcfm_1_1_generic_bands_a69f35b69ee7a9479d134ab96dc0bae7e}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!verticalSpeedLength@{verticalSpeedLength}}
+\index{verticalSpeedLength@{verticalSpeedLength}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{verticalSpeedLength()}{verticalSpeedLength()}}
+{\footnotesize\ttfamily virtual int larcfm\+::\+Generic\+Bands\+::vertical\+Speed\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the number of bands of vertical speeds 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a981df3ea7c25d703f418c1105e6d7aff}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_a4d76cc1e3bbd5e3d2524b8f0907fbdc3}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9890c2eb6370612396bec757d0458d47}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a88c34f9d40ed37473c51bf99309306e3}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_ad3d91037f45a7e0789a19fe8ea8ef399}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aba38be397c666ff0840b3af30083f79c}{larcfm\+::\+Triple\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_bands_ac19cb40b8925bcbdeb0d2202ef810747}\label{classlarcfm_1_1_generic_bands_ac19cb40b8925bcbdeb0d2202ef810747}} 
+\index{larcfm::GenericBands@{larcfm::GenericBands}!verticalSpeedRegion@{verticalSpeedRegion}}
+\index{verticalSpeedRegion@{verticalSpeedRegion}!larcfm::GenericBands@{larcfm::GenericBands}}
+\doxysubsubsection{\texorpdfstring{verticalSpeedRegion()}{verticalSpeedRegion()}}
+{\footnotesize\ttfamily virtual Bands\+Region\+::\+Region larcfm\+::\+Generic\+Bands\+::vertical\+Speed\+Region (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Return the region type of the i-\/th vertical speed band. If a single time version of bands is used, then \mbox{[}NEAR$\vert$\+NONE\mbox{]} is returned. If a version of bands with two times is used, then \mbox{[}NEAR$\vert$\+MID$\vert$\+NONE\mbox{]} is returned. 
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_bands_a91c92cc4abcc82c716ae99ec2063dda7}{larcfm\+::\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_conflict_bands_two_times_af3ce333d5fa89a4715fb3d2a9ac209b8}{larcfm\+::\+Conflict\+Bands\+Two\+Times}}, \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1f8ea98f2b1ecbedfd49db4ed1c3c507}{larcfm\+::\+Daidalus}}, \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a4e6a851538dd6c979bce2be2a2279023}{larcfm\+::\+Intent\+Bands}}, \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a4d29628cc81777d7fb8d99bd8eba258b}{larcfm\+::\+Kinematic\+Multi\+Bands}}, and \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a22fd9105a26c8ea14b75a1f77bc8eee7}{larcfm\+::\+Triple\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Generic\+Bands.\+h\end{DoxyCompactItemize}

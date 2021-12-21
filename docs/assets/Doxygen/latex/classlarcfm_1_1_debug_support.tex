@@ -1,0 +1,51 @@
+\hypertarget{classlarcfm_1_1_debug_support}{}\doxysection{larcfm\+::Debug\+Support Class Reference}
+\label{classlarcfm_1_1_debug_support}\index{larcfm::DebugSupport@{larcfm::DebugSupport}}
+
+
+{\ttfamily \#include $<$Debug\+Support.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_support_a2a2cfb1333e944b0479ec64eb95405f2}{dump\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan, std\+::string str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a91724cd240e3d74cadd49862f18c17d9}\label{classlarcfm_1_1_debug_support_a91724cd240e3d74cadd49862f18c17d9}} 
+static void {\bfseries dump\+Plan\+And\+Poly} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&sp, std\+::string str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_aad12e6decc25804c1f7fc482d32aed59}\label{classlarcfm_1_1_debug_support_aad12e6decc25804c1f7fc482d32aed59}} 
+static void {\bfseries dump\+Plan\+And\+Poly\+Paths} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ \&paths, std\+::string str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a5cbbe040844c6b8b5be74537b81e451e}\label{classlarcfm_1_1_debug_support_a5cbbe040844c6b8b5be74537b81e451e}} 
+static void {\bfseries dump\+Plan\+And\+Poly\+Paths} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ \&paths, bool write\+\_\+tcp, std\+::string str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a343b784bd1513c89bac5413a8006e8ff}\label{classlarcfm_1_1_debug_support_a343b784bd1513c89bac5413a8006e8ff}} 
+static void {\bfseries dump\+As\+Unit\+Test} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a987a2bd3433d90f6f8e8b4044e966b9f}\label{classlarcfm_1_1_debug_support_a987a2bd3433d90f6f8e8b4044e966b9f}} 
+static void {\bfseries dump\+As\+Nav\+Point\+Asserts} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a1f7dcd9c6c30284a76f2fcff9f023d47}\label{classlarcfm_1_1_debug_support_a1f7dcd9c6c30284a76f2fcff9f023d47}} 
+static void {\bfseries halt} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The class includes a collection of utilities that aid debugging. In general, these methods should not be called in \char`\"{}production\char`\"{} code. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_support_a2a2cfb1333e944b0479ec64eb95405f2}\label{classlarcfm_1_1_debug_support_a2a2cfb1333e944b0479ec64eb95405f2}} 
+\index{larcfm::DebugSupport@{larcfm::DebugSupport}!dumpPlan@{dumpPlan}}
+\index{dumpPlan@{dumpPlan}!larcfm::DebugSupport@{larcfm::DebugSupport}}
+\doxysubsubsection{\texorpdfstring{dumpPlan()}{dumpPlan()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+Support\+::dump\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{plan,  }\item[{std\+::string}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the base (no path) file name. a/b/c.\+txt = c.\+txt a.\+txt = a.\+txt a/b/ = \char`\"{}\char`\"{} 
+\begin{DoxyParams}{Parameters}
+{\em filename} & filename string \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Debug\+Support.\+h\end{DoxyCompactItemize}

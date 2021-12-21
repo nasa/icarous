@@ -1,0 +1,195 @@
+\hypertarget{_daidalus_integer_bands_8h_source}{}\doxysection{Daidalus\+Integer\+Bands.\+h}
+\label{_daidalus_integer_bands_8h_source}\index{Modules/ACCoRD/inc/DaidalusIntegerBands.h@{Modules/ACCoRD/inc/DaidalusIntegerBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DAIDALUSINTEGERBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DAIDALUSINTEGERBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Integerval.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}CriteriaCore.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}DaidalusParameters.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands}{DaidalusIntegerBands}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \textcolor{comment}{// This class computes NONE bands}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \textcolor{comment}{// trajdir == false is left/down}}
+\DoxyCodeLine{33   \textcolor{comment}{// target\_step is used by instantaneous\_bands and altitude\_bands}}
+\DoxyCodeLine{34   \textcolor{keyword}{virtual} std::pair<Vect3,Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship,}
+\DoxyCodeLine{35       \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands}{\string~DaidalusIntegerBands}}() \{\}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{comment}{/*}}
+\DoxyCodeLine{40 \textcolor{comment}{   * In PVS: int\_bands@CD\_future\_traj}}
+\DoxyCodeLine{41 \textcolor{comment}{   */}}
+\DoxyCodeLine{42   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands_a92adc7a2619c9eeb7f2c45c5633553ac}{CD\_future\_traj}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk,}
+\DoxyCodeLine{43       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands_a609f28e4f9f2f592ea1af3b1fd886f1b}{no\_CD\_future\_traj}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,  \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk,}
+\DoxyCodeLine{50       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_integer_bands_a2b45cec4f68b15a06a58e031578ec71d}{LOS\_at}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{double} tsk,}
+\DoxyCodeLine{60       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{private}:}
+\DoxyCodeLine{63   \textcolor{comment}{// In PVS: int\_bands@first\_los\_step}}
+\DoxyCodeLine{64   \textcolor{keywordtype}{int} kinematic\_first\_los\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir,}
+\DoxyCodeLine{65       \textcolor{keywordtype}{int} min, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{comment}{// In PVS: kinematic\_bands@first\_los\_search\_index}}
+\DoxyCodeLine{68   \textcolor{keywordtype}{int} kinematic\_first\_los\_search\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{69       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max,}
+\DoxyCodeLine{70       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \textcolor{comment}{// In PVS: kinematic\_bands@bands\_search\_index}}
+\DoxyCodeLine{73   \textcolor{comment}{// epsh == epsv == 0, if traffic is not the repulsive aircraft}}
+\DoxyCodeLine{74   \textcolor{keywordtype}{int} kinematic\_bands\_search\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{75       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{76       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{comment}{// In PVS: int\_bands@traj\_conflict\_only\_band, int\_bands@nat\_bands, and int\_bands@nat\_bands\_rec}}
+\DoxyCodeLine{79   \textcolor{keywordtype}{void} kinematic\_traj\_conflict\_only\_bands(std::vector<Integerval>\& l,}
+\DoxyCodeLine{80       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{81       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})  \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{comment}{// In PVS: kinematic\_bands@kinematic\_bands}}
+\DoxyCodeLine{84   \textcolor{keywordtype}{void} kinematic\_bands(std::vector<Integerval>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{85       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{86       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{87       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   \textcolor{comment}{// In PVS: kinematic\_bands\_exist@first\_green}}
+\DoxyCodeLine{90   \textcolor{keywordtype}{int} first\_kinematic\_green(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{91       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{92       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{93       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} kinematic\_linvel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k) \textcolor{keyword}{const};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97   \textcolor{comment}{// In PVS: int\_bands@repulsive\_at}}
+\DoxyCodeLine{98   \textcolor{keywordtype}{bool} kinematic\_repulsive\_at(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} epsh) \textcolor{keyword}{const};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \textcolor{comment}{// In PVS: int\_bands@first\_nonrepulsive\_step}}
+\DoxyCodeLine{101   \textcolor{keywordtype}{int} kinematic\_first\_nonrepulsive\_step(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} epsh) \textcolor{keyword}{const};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103   \textcolor{comment}{// In PVS: int\_bands@vert\_repul\_at}}
+\DoxyCodeLine{104   \textcolor{keywordtype}{bool} kinematic\_vert\_repul\_at(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} k, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106   \textcolor{comment}{// In PVS: int\_bands@first\_nonvert\_repul\_step}}
+\DoxyCodeLine{107   \textcolor{keywordtype}{int} kinematic\_first\_nonvert\_repul\_step(\textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   \textcolor{comment}{// In PVS: first\_conflict\_step(CD,B,T,traj,0,ts,si,vi,MaxN) >= 0}}
+\DoxyCodeLine{110   \textcolor{keywordtype}{bool} kinematic\_any\_conflict\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} tstep, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max,}
+\DoxyCodeLine{111       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   \textcolor{comment}{// In PVS: kinematic\_bands\_exist@red\_band\_exist}}
+\DoxyCodeLine{114   \textcolor{keywordtype}{bool} kinematic\_red\_band\_exist(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{115       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{116       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{117       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119   \textcolor{keywordtype}{int} first\_instantaneous\_green(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{120       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{121       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{122       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124   \textcolor{comment}{//In PVS: inst\_bands@conflict\_free\_track\_step, inst\_bands@conflict\_free\_gs\_step, inst\_bands@conflict\_free\_vs\_step}}
+\DoxyCodeLine{125   \textcolor{keywordtype}{bool} no\_instantaneous\_conflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{126       \textcolor{keywordtype}{bool} trajdir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{127       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} target\_step) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129   \textcolor{comment}{//In PVS: int\_bands@nat\_bands, int\_bands@nat\_bands\_rec}}
+\DoxyCodeLine{130   \textcolor{keywordtype}{void} instantaneous\_bands(std::vector<Integerval>\& l,}
+\DoxyCodeLine{131       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{132       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{133       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135   \textcolor{keywordtype}{bool} instantaneous\_red\_band\_exist(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{136       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{137       \textcolor{keywordtype}{bool} trajdir, \textcolor{keywordtype}{int} max, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{138       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \textcolor{comment}{// In PVS: combine\_bands@kinematic\_bands\_combine}}
+\DoxyCodeLine{141   \textcolor{keywordtype}{void} kinematic\_bands\_combine(std::vector<Integerval>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{142       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{143       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{144       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147   \textcolor{comment}{// In PVS: inst\_bands@instant\_track\_bands, inst\_bands@instant\_gs\_bands, inst\_bands@instant\_vs\_bands}}
+\DoxyCodeLine{148   \textcolor{keywordtype}{void} instantaneous\_bands\_combine(std::vector<Integerval>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{149       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{150       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{151       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{bool} all\_kinematic\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{154       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{155       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{156       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158   \textcolor{keywordtype}{bool} all\_instantaneous\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{159       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{160       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{161       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163   \textcolor{keywordtype}{bool} any\_kinematic\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{164       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{165       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{166       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168   \textcolor{keywordtype}{bool} any\_instantaneous\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{169       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{170       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{171       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 \textcolor{keyword}{public}:}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175   \textcolor{keyword}{static} \textcolor{keywordtype}{void} append\_intband(std::vector<Integerval>\& l, std::vector<Integerval>\& r);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177   \textcolor{keyword}{static} \textcolor{keywordtype}{void} neg(std::vector<Integerval>\& l);}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179   \textcolor{comment}{// INTERFACE FUNCTIONS}}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   \textcolor{keywordtype}{void} integer\_bands\_combine(std::vector<Integerval>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{182       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{183       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{184       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv) \textcolor{keyword}{const};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186   \textcolor{keywordtype}{bool} all\_integer\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{187       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{188       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{189       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{keywordtype}{bool} any\_integer\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} tstep,}
+\DoxyCodeLine{192       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{193       \textcolor{keywordtype}{int} maxl, \textcolor{keywordtype}{int} maxr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{194       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{int} dir) \textcolor{keyword}{const};}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \};}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

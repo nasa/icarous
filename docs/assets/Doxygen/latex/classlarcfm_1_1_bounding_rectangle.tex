@@ -1,0 +1,567 @@
+\hypertarget{classlarcfm_1_1_bounding_rectangle}{}\doxysection{larcfm\+::Bounding\+Rectangle Class Reference}
+\label{classlarcfm_1_1_bounding_rectangle}\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+
+
+{\ttfamily \#include $<$Bounding\+Rectangle.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}{Bounding\+Rectangle}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_adb73d2289578e16c669a59f3230e612d}{Bounding\+Rectangle}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&vertices)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aa112dc155c864a93000a5b5aa39da395}{Bounding\+Rectangle}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&br)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a984a59d75bcb0105585d2bd4efc81324}{clear}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}{add}} (double x, double y)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae59d746070513cd1a7f037eb16f0ba16}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a03dbebacd99b7c089ab0a6a8263efa1e}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&br)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aeabdced3d69a33e8ed6b8da726018b4f}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aa254f5cba93e4906926ed05f8908f126}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae28d031fdb51224f553f9c0998ab7b26}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla2)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a1c5ea5b53b14e595d9743fe0f955adf6}{fix\+Lon\+Wrap}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aed66f879d389d90848477c66dd582205}{fix\+Lon\+Wrap}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}{contains}} (double x, double y) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ad28ca5b7fb6701f1699f9beb45369d08}\label{classlarcfm_1_1_bounding_rectangle_ad28ca5b7fb6701f1699f9beb45369d08}} 
+bool {\bfseries contains} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a85a9ce2ee8f5eef7f1fd6c5f00905cca}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_af473b82fcabc185911be8955f712ae5f}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a3a3b36fa0fd6cf3b915f918d2566e399}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ac7612da2229685b0575b7843c117e998}{intersects}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&rect) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a478789128291006e24345626951d5748}{intersects}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&rect, double buffer) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a19453118d90a9bcefee7745c5810acbe}{get\+MinX}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a90595f4f314fdcd32557b9e7844e2c57}{get\+MaxX}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae3a91c4ae378f6daabf538660b5b5c5e}{get\+MinY}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aff1cc9548362ebb560f5ee10e26f1dd5}{get\+MaxY}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a4439af21839a9c3646d7c7ea585a8b9d}\label{classlarcfm_1_1_bounding_rectangle_a4439af21839a9c3646d7c7ea585a8b9d}} 
+double {\bfseries get\+Min\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a5ff448f424f0c3d77062898692efcde5}\label{classlarcfm_1_1_bounding_rectangle_a5ff448f424f0c3d77062898692efcde5}} 
+double {\bfseries get\+Max\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ab7f94e40a779672cdecc241d99f2ce50}\label{classlarcfm_1_1_bounding_rectangle_ab7f94e40a779672cdecc241d99f2ce50}} 
+double {\bfseries get\+Min\+Lat} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a60706046d4c521a835bfe558b71a32ef}\label{classlarcfm_1_1_bounding_rectangle_a60706046d4c521a835bfe558b71a32ef}} 
+double {\bfseries get\+Max\+Lat} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_adb09ca5e650b4c4425dd724488b9a40f}{center\+Vect}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a72ab8374095acf842d45f7fabd16e67d}{center\+Pos}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a0ed3f1702b65abc416a8a2ec0e77cda0}{lower\+Left}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ad9b22c3533d2dd34d8c538603de8ba98}{upper\+Right}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a25f85a16735d6a2764cf4878da6d7eea}\label{classlarcfm_1_1_bounding_rectangle_a25f85a16735d6a2764cf4878da6d7eea}} 
+double {\bfseries getx\+Center} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_adf9ca7bc670ab35ca7ad73266f6176e7}{is\+Lat\+Lon}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a74f6d029849c3c832d391292593f1f1d}\label{classlarcfm_1_1_bounding_rectangle_a74f6d029849c3c832d391292593f1f1d}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_a17c27b38b1a2251f9785cd3515eb6c71}{make\+Path}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&vertices)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_ae6b2ce631053b8db051a13dc6ebce5fd}{make\+Poly}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&vertices)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle_aa9e89edba9d21f47f8d9c6daff93b999}{make\+Unconnected}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&vertices)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a4f25a0e3b2d8f561bbc68e52bc8b4022}\label{classlarcfm_1_1_bounding_rectangle_a4f25a0e3b2d8f561bbc68e52bc8b4022}} 
+double {\bfseries fix\+\_\+lon} (double lon) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ab949c63b6d969181b40dd589e2f58b22}\label{classlarcfm_1_1_bounding_rectangle_ab949c63b6d969181b40dd589e2f58b22}} 
+double {\bfseries x\+Min}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a955436870ab7ad5489972e28750fcb7b}\label{classlarcfm_1_1_bounding_rectangle_a955436870ab7ad5489972e28750fcb7b}} 
+double {\bfseries x\+Max}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ab467bc80e986e5a6ed5a941c28cb8f37}\label{classlarcfm_1_1_bounding_rectangle_ab467bc80e986e5a6ed5a941c28cb8f37}} 
+double {\bfseries y\+Min}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_accaaecdbb09ea5437f7c0e3bb54910a5}\label{classlarcfm_1_1_bounding_rectangle_accaaecdbb09ea5437f7c0e3bb54910a5}} 
+double {\bfseries y\+Max}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aec91e5af249fae07d1863e83e6beff03}\label{classlarcfm_1_1_bounding_rectangle_aec91e5af249fae07d1863e83e6beff03}} 
+double {\bfseries x\+Center}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_abdf924c6203ae24d0435ea615bf72efb}\label{classlarcfm_1_1_bounding_rectangle_abdf924c6203ae24d0435ea615bf72efb}} 
+static const double {\bfseries null\+Alt} = -\/MAXDOUBLE
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A bounding rectangle for a (horizontal) 2-\/dimensional polygon. The bounding rectangle is the smallest rectangle that encloses a set of points. A point is contained in the rectangle if it lies within its boundary or on one of its edges. Thus, the bounding rectangle includes its boundary.
+
+Special processing is conducted for \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} objects (including those embedded in \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} objects. The special processing includes (1) altitude information is captured as a bound, but not used in the \char`\"{}contains\char`\"{} operation, and (2) proper handling when the longitude \char`\"{}wraps around\char`\"{} at -\/180/180. This second special processing means that a bounding rectangle for \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} is limited to 180 degrees (half the earth). Very erratic results will come from a bounding rectangle that has both \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points and normal euclidean points.
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}\label{classlarcfm_1_1_bounding_rectangle_aee43f65e3046cd171484b449cd702343}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!BoundingRectangle@{BoundingRectangle}}
+\index{BoundingRectangle@{BoundingRectangle}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{BoundingRectangle()}{BoundingRectangle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Rectangle\+::\+Bounding\+Rectangle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create a bounding rectangle with invalid values. When the first point is added, valid values are obtained. \mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_adb73d2289578e16c669a59f3230e612d}\label{classlarcfm_1_1_bounding_rectangle_adb73d2289578e16c669a59f3230e612d}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!BoundingRectangle@{BoundingRectangle}}
+\index{BoundingRectangle@{BoundingRectangle}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{BoundingRectangle()}{BoundingRectangle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Rectangle\+::\+Bounding\+Rectangle (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&}]{vertices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Create a bounding rectangle with the list of given points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices\\
+\hline
+\end{DoxyParams}
+Create a bounding rectangle with the list of given points. \mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aa112dc155c864a93000a5b5aa39da395}\label{classlarcfm_1_1_bounding_rectangle_aa112dc155c864a93000a5b5aa39da395}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!BoundingRectangle@{BoundingRectangle}}
+\index{BoundingRectangle@{BoundingRectangle}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{BoundingRectangle()}{BoundingRectangle()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Rectangle\+::\+Bounding\+Rectangle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{br }\end{DoxyParamCaption})}
+
+Copy a bounding rectangle from an existing bounding rectangle
+
+
+\begin{DoxyParams}{Parameters}
+{\em br} & rectangle to copy\\
+\hline
+\end{DoxyParams}
+Copy a bounding rectangle from an existing bounding rectangle 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a03dbebacd99b7c089ab0a6a8263efa1e}\label{classlarcfm_1_1_bounding_rectangle_a03dbebacd99b7c089ab0a6a8263efa1e}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{br }\end{DoxyParamCaption})}
+
+Add another bounding rectangle to this bounding rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em br} & the other bounding rectangle (this rest is not changed). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aeabdced3d69a33e8ed6b8da726018b4f}\label{classlarcfm_1_1_bounding_rectangle_aeabdced3d69a33e8ed6b8da726018b4f}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla2 }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle. Note that when adding \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points, great circle paths may fall outside the defined bounding rectangle! Therefore this should only be used by the GUI software! Use add(lla,lla) instead!
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & point\\
+\hline
+\end{DoxyParams}
+Add a point to this bounding rectangle. Note that when adding \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points, great circle paths may fall outside the defined bounding rectangle!
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ae28d031fdb51224f553f9c0998ab7b26}\label{classlarcfm_1_1_bounding_rectangle_ae28d031fdb51224f553f9c0998ab7b26}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla2 }\end{DoxyParamCaption})}
+
+Add a great circle edge to this bounding rectangle. This is the safe way to add latlon points to the volume. 
+\begin{DoxyParams}{Parameters}
+{\em lla1} & point 1 \\
+\hline
+{\em lla2} & point 2\\
+\hline
+\end{DoxyParams}
+Add a great circle edge to this bounding rectangle. This is the safe way to add latlon points to the volume. 
+\begin{DoxyParams}{Parameters}
+{\em lat} & x coordinate \\
+\hline
+{\em lon} & y coordinate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aa254f5cba93e4906926ed05f8908f126}\label{classlarcfm_1_1_bounding_rectangle_aa254f5cba93e4906926ed05f8908f126}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle. Note that when adding \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points, great circle paths may fall outside the defined bounding rectangle!
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & point\\
+\hline
+\end{DoxyParams}
+Add a point to this bounding rectangle. Note that when adding \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points, great circle paths may fall outside the defined bounding rectangle!
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ae59d746070513cd1a7f037eb16f0ba16}\label{classlarcfm_1_1_bounding_rectangle_ae59d746070513cd1a7f037eb16f0ba16}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector\\
+\hline
+\end{DoxyParams}
+Add a point to this bounding rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}\label{classlarcfm_1_1_bounding_rectangle_a43e1f5c87c77208d74b0f521a0726008}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!add@{add}}
+\index{add@{add}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::add (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle. 
+\begin{DoxyParams}{Parameters}
+{\em x} & x coordinate \\
+\hline
+{\em y} & y coordinate\\
+\hline
+\end{DoxyParams}
+Add a point to this bounding rectangle. 
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a72ab8374095acf842d45f7fabd16e67d}\label{classlarcfm_1_1_bounding_rectangle_a72ab8374095acf842d45f7fabd16e67d}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!centerPos@{centerPos}}
+\index{centerPos@{centerPos}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{centerPos()}{centerPos()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Bounding\+Rectangle\+::center\+Pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return center \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} for this \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}}. If any \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} values were input to the \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}}, this will be a normalized (within \mbox{[}-\/pi,+pi\mbox{]}) \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} position. \begin{DoxyReturn}{Returns}
+center 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_adb09ca5e650b4c4425dd724488b9a40f}\label{classlarcfm_1_1_bounding_rectangle_adb09ca5e650b4c4425dd724488b9a40f}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!centerVect@{centerVect}}
+\index{centerVect@{centerVect}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{centerVect()}{centerVect()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Bounding\+Rectangle\+::center\+Vect (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return center vector value for this \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \begin{DoxyReturn}{Returns}
+center 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a984a59d75bcb0105585d2bd4efc81324}\label{classlarcfm_1_1_bounding_rectangle_a984a59d75bcb0105585d2bd4efc81324}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!clear@{clear}}
+\index{clear@{clear}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Rectangle\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reset this bounding rectangle to a structure with invalid values. When the first point is added, valid values are obtained. \mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a3a3b36fa0fd6cf3b915f918d2566e399}\label{classlarcfm_1_1_bounding_rectangle_a3a3b36fa0fd6cf3b915f918d2566e399}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!contains@{contains}}
+\index{contains@{contains}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Is this \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} in the contained area? (using only the latitude and longitude coordinates)
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & a position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is contained 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_af473b82fcabc185911be8955f712ae5f}\label{classlarcfm_1_1_bounding_rectangle_af473b82fcabc185911be8955f712ae5f}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!contains@{contains}}
+\index{contains@{contains}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Is this position in the contained area? (using only the X and Y coordinates)
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & a position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is contained 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a85a9ce2ee8f5eef7f1fd6c5f00905cca}\label{classlarcfm_1_1_bounding_rectangle_a85a9ce2ee8f5eef7f1fd6c5f00905cca}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!contains@{contains}}
+\index{contains@{contains}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Is this \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} in the contained area? (using only the X and Y coordinates)
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is contained 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}\label{classlarcfm_1_1_bounding_rectangle_a2f3031bffa27914329c881bceea983c6}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!contains@{contains}}
+\index{contains@{contains}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::contains (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption}) const}
+
+Determines if the given point is within the bounding rectangle. A point on the edges of this rectangle is also within the rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x coordinate of the point in question \\
+\hline
+{\em y} & the y coordinate of the point in question \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the point is within the bounding rectangle or on any of its edges. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a1c5ea5b53b14e595d9743fe0f955adf6}\label{classlarcfm_1_1_bounding_rectangle_a1c5ea5b53b14e595d9743fe0f955adf6}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!fixLonWrap@{fixLonWrap}}
+\index{fixLonWrap@{fixLonWrap}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{fixLonWrap()}{fixLonWrap()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Bounding\+Rectangle\+::fix\+Lon\+Wrap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla2 }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object that is consistent with this bounding rectangle. This \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object may have a longitude greater than 180 degrees or less than -\/180 degrees. 
+\begin{DoxyParams}{Parameters}
+{\em lla} & a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object with (possibly) non-\/standard longitude. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aed66f879d389d90848477c66dd582205}\label{classlarcfm_1_1_bounding_rectangle_aed66f879d389d90848477c66dd582205}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!fixLonWrap@{fixLonWrap}}
+\index{fixLonWrap@{fixLonWrap}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{fixLonWrap()}{fixLonWrap()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Bounding\+Rectangle\+::fix\+Lon\+Wrap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object that is consistent with this bounding rectangle. If this bounding rectangle contains latitude/longitude points, then the returned \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object may have a longitude greater than 180 degrees or less than -\/180 degrees.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object with (possibly) non-\/standard longitude. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a90595f4f314fdcd32557b9e7844e2c57}\label{classlarcfm_1_1_bounding_rectangle_a90595f4f314fdcd32557b9e7844e2c57}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!getMaxX@{getMaxX}}
+\index{getMaxX@{getMaxX}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{getMaxX()}{getMaxX()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Rectangle\+::get\+MaxX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+right bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aff1cc9548362ebb560f5ee10e26f1dd5}\label{classlarcfm_1_1_bounding_rectangle_aff1cc9548362ebb560f5ee10e26f1dd5}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!getMaxY@{getMaxY}}
+\index{getMaxY@{getMaxY}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{getMaxY()}{getMaxY()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Rectangle\+::get\+MaxY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+top bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a19453118d90a9bcefee7745c5810acbe}\label{classlarcfm_1_1_bounding_rectangle_a19453118d90a9bcefee7745c5810acbe}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!getMinX@{getMinX}}
+\index{getMinX@{getMinX}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{getMinX()}{getMinX()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Rectangle\+::get\+MinX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+left bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ae3a91c4ae378f6daabf538660b5b5c5e}\label{classlarcfm_1_1_bounding_rectangle_ae3a91c4ae378f6daabf538660b5b5c5e}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!getMinY@{getMinY}}
+\index{getMinY@{getMinY}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{getMinY()}{getMinY()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Rectangle\+::get\+MinY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+bottom bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ac7612da2229685b0575b7843c117e998}\label{classlarcfm_1_1_bounding_rectangle_ac7612da2229685b0575b7843c117e998}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!intersects@{intersects}}
+\index{intersects@{intersects}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{intersects()}{intersects()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::intersects (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{rect }\end{DoxyParamCaption}) const}
+
+Does the given rectangle share any points with this rectangle? Only two dimensions are used.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & the \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} to be tested for intersection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the supplied \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} intersects this one 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a478789128291006e24345626951d5748}\label{classlarcfm_1_1_bounding_rectangle_a478789128291006e24345626951d5748}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!intersects@{intersects}}
+\index{intersects@{intersects}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{intersects()}{intersects()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::intersects (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{rect,  }\item[{double}]{buffer }\end{DoxyParamCaption}) const}
+
+Return true if any point in rect is within buffer of any point in this bounding rectangle. Only two dimensions are used
+
+
+\begin{DoxyParams}{Parameters}
+{\em rect} & another rectangle \\
+\hline
+{\em buffer} & maximum distance and still considered an overlap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the supplied \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} intersects this one
+\end{DoxyReturn}
+Return true if any point in rect is within buffer of any point in this bounding rectangle. Only two dimensions are used \begin{DoxyReturn}{Returns}
+true, if the supplied \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} intersects this one 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_adf9ca7bc670ab35ca7ad73266f6176e7}\label{classlarcfm_1_1_bounding_rectangle_adf9ca7bc670ab35ca7ad73266f6176e7}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Bounding\+Rectangle\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if a latlonalt position has been added to this rectangle. \begin{DoxyReturn}{Returns}
+true if lat/lon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a0ed3f1702b65abc416a8a2ec0e77cda0}\label{classlarcfm_1_1_bounding_rectangle_a0ed3f1702b65abc416a8a2ec0e77cda0}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!lowerLeft@{lowerLeft}}
+\index{lowerLeft@{lowerLeft}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{lowerLeft()}{lowerLeft()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Bounding\+Rectangle\+::lower\+Left (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the lower left (southwest most) corner position of this rectangle \begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_a17c27b38b1a2251f9785cd3515eb6c71}\label{classlarcfm_1_1_bounding_rectangle_a17c27b38b1a2251f9785cd3515eb6c71}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!makePath@{makePath}}
+\index{makePath@{makePath}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{makePath()}{makePath()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} larcfm\+::\+Bounding\+Rectangle\+::make\+Path (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{vertices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a bounding rectangle with the list of connected points that do not loop back on them selves, such as in a path.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+rectangle
+\end{DoxyReturn}
+Create a bounding rectangle with the list of given points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ae6b2ce631053b8db051a13dc6ebce5fd}\label{classlarcfm_1_1_bounding_rectangle_ae6b2ce631053b8db051a13dc6ebce5fd}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!makePoly@{makePoly}}
+\index{makePoly@{makePoly}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{makePoly()}{makePoly()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} larcfm\+::\+Bounding\+Rectangle\+::make\+Poly (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{vertices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a bounding rectangle with the list of connected points that do loop back on themselves, so the last point is connected to the first point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+rectangle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_aa9e89edba9d21f47f8d9c6daff93b999}\label{classlarcfm_1_1_bounding_rectangle_aa9e89edba9d21f47f8d9c6daff93b999}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!makeUnconnected@{makeUnconnected}}
+\index{makeUnconnected@{makeUnconnected}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{makeUnconnected()}{makeUnconnected()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} larcfm\+::\+Bounding\+Rectangle\+::make\+Unconnected (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{vertices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a bounding rectangle with the list of unconnected points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+rectangle
+\end{DoxyReturn}
+Create a bounding rectangle with the list of unconnected points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertices} & list of vertices \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_rectangle_ad9b22c3533d2dd34d8c538603de8ba98}\label{classlarcfm_1_1_bounding_rectangle_ad9b22c3533d2dd34d8c538603de8ba98}} 
+\index{larcfm::BoundingRectangle@{larcfm::BoundingRectangle}!upperRight@{upperRight}}
+\index{upperRight@{upperRight}!larcfm::BoundingRectangle@{larcfm::BoundingRectangle}}
+\doxysubsubsection{\texorpdfstring{upperRight()}{upperRight()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Bounding\+Rectangle\+::upper\+Right (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the upper right (northeast most) corner position of this rectangle \begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bounding\+Rectangle.\+h\item 
+Modules/\+ACCo\+RD/src/Bounding\+Rectangle.\+cpp\end{DoxyCompactItemize}

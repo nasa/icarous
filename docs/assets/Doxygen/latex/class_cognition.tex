@@ -10,7 +10,7 @@ void \mbox{\hyperlink{class_cognition_ac270521c2ea11590f04b18c80a39e44f}{Read\+P
 \mbox{\Hypertarget{class_cognition_aa3347c50fb9e895f7439ebd9db358a36}\label{class_cognition_aa3347c50fb9e895f7439ebd9db358a36}} 
 void {\bfseries Reset} ()
 \begin{DoxyCompactList}\small\item\em Reset event management framework. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_cognition_aa6cea9736284d76ad3f166095eba6027}{Input\+Vehicle\+State}} (const larcfm\+::\+Position \&pos, const larcfm\+::\+Velocity \&vel, const double heading)
+void \mbox{\hyperlink{class_cognition_aa6cea9736284d76ad3f166095eba6027}{Input\+Vehicle\+State}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&vel, const double heading)
 \begin{DoxyCompactList}\small\item\em Input current aircraft state data. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_cognition_affcbfdca38a2306aba13d726186a9092}{Input\+Flight\+Plan\+Data}} (const std\+::string \&plan\+\_\+id, const std\+::list$<$ \mbox{\hyperlink{structwaypoint__t}{waypoint\+\_\+t}} $>$ \&waypoints, const double init\+Heading, bool repair, double repair\+Turn\+Rate)
 \begin{DoxyCompactList}\small\item\em Input flightplan data. \end{DoxyCompactList}\item 
@@ -18,7 +18,7 @@ void \mbox{\hyperlink{class_cognition_acc15030adf673c22573b6c7698a75659}{Input\+
 \begin{DoxyCompactList}\small\item\em Input trajectory monitoring data. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_cognition_ae9e506b76993a176a98b376fd7e29050}{Input\+Parameters}} (const \mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} \&new\+\_\+params)
 \begin{DoxyCompactList}\small\item\em Input paramaters directly. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_cognition_a736e8977902097a1bb45b499a8c156bf}{Input\+Ditch\+Status}} (const larcfm\+::\+Position \&ditch\+\_\+site, const double tod\+Altitude, const bool ditch\+\_\+requested)
+void \mbox{\hyperlink{class_cognition_a736e8977902097a1bb45b499a8c156bf}{Input\+Ditch\+Status}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&ditch\+\_\+site, const double tod\+Altitude, const bool ditch\+\_\+requested)
 \begin{DoxyCompactList}\small\item\em Input ditch status. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_cognition_a17115253c12fa1f8aa163c1148e93635}{Input\+Merge\+Status}} (const int merge\+\_\+status)
 \begin{DoxyCompactList}\small\item\em Input merging status. \end{DoxyCompactList}\item 
@@ -126,7 +126,7 @@ Ditching related triggers\mbox{\Hypertarget{class_cognition_a33120ca09d581c337b9
 \index{Cognition@{Cognition}!InputDitchStatus@{InputDitchStatus}}
 \index{InputDitchStatus@{InputDitchStatus}!Cognition@{Cognition}}
 \doxysubsubsection{\texorpdfstring{InputDitchStatus()}{InputDitchStatus()}}
-{\footnotesize\ttfamily void Cognition\+::\+Input\+Ditch\+Status (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{ditch\+\_\+site,  }\item[{const double}]{tod\+Altitude,  }\item[{const bool}]{ditch\+\_\+requested }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Ditch\+Status (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{ditch\+\_\+site,  }\item[{const double}]{tod\+Altitude,  }\item[{const bool}]{ditch\+\_\+requested }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -237,7 +237,7 @@ Ditching related triggers\mbox{\Hypertarget{class_cognition_a33120ca09d581c337b9
 \index{Cognition@{Cognition}!InputVehicleState@{InputVehicleState}}
 \index{InputVehicleState@{InputVehicleState}!Cognition@{Cognition}}
 \doxysubsubsection{\texorpdfstring{InputVehicleState()}{InputVehicleState()}}
-{\footnotesize\ttfamily void Cognition\+::\+Input\+Vehicle\+State (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{pos,  }\item[{const larcfm\+::\+Velocity \&}]{vel,  }\item[{const double}]{heading }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Cognition\+::\+Input\+Vehicle\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{vel,  }\item[{const double}]{heading }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

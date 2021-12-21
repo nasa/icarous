@@ -1,0 +1,94 @@
+\hypertarget{_moving_polygon3_d_8h_source}{}\doxysection{Moving\+Polygon3\+D.\+h}
+\label{_moving_polygon3_d_8h_source}\index{Modules/ACCoRD/inc/MovingPolygon3D.h@{Modules/ACCoRD/inc/MovingPolygon3D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef MOVINGPOLYGON3D\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define MOVINGPOLYGON3D\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}MovingPolygon2D.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}} horizpoly; \textcolor{comment}{// = MovingPolygon2D();}}
+\DoxyCodeLine{28     \textcolor{keywordtype}{double} vspeed;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} minalt;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double} maxalt;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}();}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& horizpoly, \textcolor{keywordtype}{double} vspeed, \textcolor{keywordtype}{double} minalt, \textcolor{keywordtype}{double} maxalt);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} end);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& p, \textcolor{keyword}{const} std::vector<Velocity>\& v, \textcolor{keywordtype}{double} end);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{45     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a2b5756f77cd3efd80cebf2fe5707042b}{position}}(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{52     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a91f0c4f22cb9dabd4e782887d9123513}{velocity}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{59     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a79831e1ebbedd4cb770695dca15906fd}{averageVelocity}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} linear(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     \textcolor{keywordtype}{bool} isStable() \textcolor{keyword}{const};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} reverseOrder() \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& getHorizpoly()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{72         \textcolor{keywordflow}{return} horizpoly;}
+\DoxyCodeLine{73     \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keywordtype}{void} setHorizpoly(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& horizpoly) \{}
+\DoxyCodeLine{76         this-\/>horizpoly = horizpoly;}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keywordtype}{double} getMaxalt()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{80         \textcolor{keywordflow}{return} maxalt;}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     \textcolor{keywordtype}{void} setMaxalt(\textcolor{keywordtype}{double} maxalt) \{}
+\DoxyCodeLine{84         this-\/>maxalt = maxalt;}
+\DoxyCodeLine{85     \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87     \textcolor{keywordtype}{double} getMinalt()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{88         \textcolor{keywordflow}{return} minalt;}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} setMinalt(\textcolor{keywordtype}{double} minalt) \{}
+\DoxyCodeLine{92         this-\/>minalt = minalt;}
+\DoxyCodeLine{93     \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95     \textcolor{keywordtype}{double} getVspeed()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{96         \textcolor{keywordflow}{return} vspeed;}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} setVspeed(\textcolor{keywordtype}{double} vspeed) \{}
+\DoxyCodeLine{100         this-\/>vspeed = vspeed;}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* MOVINGPOLYGON3D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,43 @@
+\hypertarget{_coordination_filter_8h_source}{}\doxysection{Coordination\+Filter.\+h}
+\label{_coordination_filter_8h_source}\index{Modules/ACCoRD/inc/CoordinationFilter.h@{Modules/ACCoRD/inc/CoordinationFilter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Filter}}
+\DoxyCodeLine{2 \textcolor{comment}{ *}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * manages a history of aircraft state information}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ *}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef COORDINATIONFILTER\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define COORDINATIONFILTER\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_coordination_filter}{CoordinationFilter}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{private}:}
+\DoxyCodeLine{27     \textcolor{keywordtype}{int} Tolerance;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{int} intern;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \mbox{\hyperlink{classlarcfm_1_1_coordination_filter_a58a02fac24766e053a792efa858b493d}{CoordinationFilter}}();}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{39   \mbox{\hyperlink{classlarcfm_1_1_coordination_filter_a58a02fac24766e053a792efa858b493d}{CoordinationFilter}}(\textcolor{keywordtype}{int} tolerance);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_coordination_filter_a09537eaf0c868c37ce907bf8ed1f8b5f}{reset}}();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{50   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_coordination_filter_ad2ccdd0e14a2fa5e04596bdc722b0d31}{filter}}(\textcolor{keywordtype}{int} input);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

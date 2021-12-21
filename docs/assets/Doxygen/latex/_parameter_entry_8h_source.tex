@@ -1,0 +1,56 @@
+\hypertarget{_parameter_entry_8h_source}{}\doxysection{Parameter\+Entry.\+h}
+\label{_parameter_entry_8h_source}\index{Modules/ACCoRD/inc/ParameterEntry.h@{Modules/ACCoRD/inc/ParameterEntry.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2014-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef PARAMETERENTRY\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define PARAMETERENTRY\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} \{}
+\DoxyCodeLine{16 \textcolor{keyword}{public}:}
+\DoxyCodeLine{17     std::string  sval; \textcolor{comment}{// String value}}
+\DoxyCodeLine{18     \textcolor{keywordtype}{double}       dval; \textcolor{comment}{// Double value (internal units)}}
+\DoxyCodeLine{19     std::string  units; \textcolor{comment}{// Unit}}
+\DoxyCodeLine{20     \textcolor{keywordtype}{bool}         bval; \textcolor{comment}{// Boolean value}}
+\DoxyCodeLine{21     std::string  comment; \textcolor{comment}{// Comment for printing}}
+\DoxyCodeLine{22     \textcolor{keywordtype}{long}         order; \textcolor{comment}{// entry ordering}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}}();}
+\DoxyCodeLine{25     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{\string~ParameterEntry}}();}
+\DoxyCodeLine{26     \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}}(\textcolor{keyword}{const} std::string\& s, \textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{bool} b, \textcolor{keyword}{const} std::string\& msg, \textcolor{keywordtype}{long} order);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} make(\textcolor{keyword}{const} std::string\& s, \textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{bool} b, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{29     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} \mbox{\hyperlink{namespacelarcfm_a8ee5fbc52da2bf46d0f5aa1065c5d9d5}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}}\& pe);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{comment}{// Make bool entry}}
+\DoxyCodeLine{32     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} makeBoolEntry(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{comment}{// New double entry}}
+\DoxyCodeLine{35     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} makeDoubleEntry(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{int} p);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{comment}{// New integer entry}}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}} makeIntEntry(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{comment}{//void set\_sval();}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{private}:}
+\DoxyCodeLine{43     \textcolor{keyword}{static} std::string format(\textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{double} d, \textcolor{keywordtype}{int} p);}
+\DoxyCodeLine{44     \textcolor{keyword}{static} \textcolor{keywordtype}{long} count;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* PARAMETERENTRY\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

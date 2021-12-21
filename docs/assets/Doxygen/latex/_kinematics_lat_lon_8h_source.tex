@@ -1,0 +1,116 @@
+\hypertarget{_kinematics_lat_lon_8h_source}{}\doxysection{Kinematics\+Lat\+Lon.\+h}
+\label{_kinematics_lat_lon_8h_source}\index{Modules/ACCoRD/inc/KinematicsLatLon.h@{Modules/ACCoRD/inc/KinematicsLatLon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * KinematicsLatLon.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * }}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef KINEMATICS\_LATLON\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define KINEMATICS\_LATLON\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}StateVector.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Kinematics.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{34 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon}{KinematicsLatLon}} \{}
+\DoxyCodeLine{35 \textcolor{keyword}{public}:}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chordalSemantics;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{46     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_aba4e47184f91bbf1bdaa0d61bea65da8}{linear}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{54     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_aba4e47184f91bbf1bdaa0d61bea65da8}{linear}}(std::pair<LatLonAlt,Velocity> sv0, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{62     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_ae02d52fa221a2ea8bc8d22b884bcf634}{turnRadiusByRate}}(\textcolor{keywordtype}{double} speed, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     }
+\DoxyCodeLine{73     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_acbab9200afc85776a1321324a1c8d050}{turnOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{83     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_acbab9200afc85776a1321324a1c8d050}{turnOmega}}(std::pair<LatLonAlt,Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega) ;}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{comment}{//  static std::pair<LatLonAlt,Velocity> turnRadius(const LatLonAlt\& so, const Velocity\& vo, double t, double signedRadius);}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87     }
+\DoxyCodeLine{98     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a395ed110ebed9dd057fc9e6b52bd57ea}{turnByDist2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7bb3284a7e53e4ecbd14778cbd2e3bb1}{center}}, \textcolor{keywordtype}{int} dir, \textcolor{keywordtype}{double} d, \textcolor{keywordtype}{double} gsAtd);}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{111     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a395ed110ebed9dd057fc9e6b52bd57ea}{turnByDist2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7bb3284a7e53e4ecbd14778cbd2e3bb1}{center}}, \textcolor{keywordtype}{int} dir, \textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{123     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_aebf95de6b78a88b03c4cf49ea5372238}{turnByAngle2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7bb3284a7e53e4ecbd14778cbd2e3bb1}{center}}, \textcolor{keywordtype}{double} alpha);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{134     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a0a8a9b69b8270d4e70efb1b88047146c}{turn}}(\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} s0, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} turnRight);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{144     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a0a8a9b69b8270d4e70efb1b88047146c}{turn}}(std::pair<LatLonAlt,Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} turnRight);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{155     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a69b364c76c2b3046d77cb50f5bab55f7}{turnUntilTimeOmega}}(std::pair<LatLonAlt,Velocity> svo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} turnTime, \textcolor{keywordtype}{double} omega) ;}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{167     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a69b364c76c2b3046d77cb50f5bab55f7}{turnUntilTimeOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} turnTime, \textcolor{keywordtype}{double} omega) ;}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{179     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a42b96e47f81bb2b3b645973afb6a85e2}{turnUntil}}(std::pair<LatLonAlt,Velocity> svo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 }
+\DoxyCodeLine{192     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a42b96e47f81bb2b3b645973afb6a85e2}{turnUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} maxBank);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{205     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_aae8e98ac37a36cd1f3fcbced727effa8}{turnUntilTimeRadius}}(\textcolor{keyword}{const} std::pair<LatLonAlt,Velocity>\& svo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} turnTime, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} turnRight);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{215     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7bb3284a7e53e4ecbd14778cbd2e3bb1}{center}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& s0, \textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} radius, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{223     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7bb3284a7e53e4ecbd14778cbd2e3bb1}{center}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{235     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a35d78f2c2c5386c1ccf9623cbef3d20b}{closestTimeOnTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} omega, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& x, \textcolor{keywordtype}{double} endTime);}
+\DoxyCodeLine{248     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a073ad73d77bfde1043b820116df202d7}{closestDistOnTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& s0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v0, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& x, \textcolor{keywordtype}{double} maxDist);}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251     \textcolor{comment}{// ****************************** Ground Speed KINEMATIC CALCULATIONS *******************************}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{262     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7513b0f54138184e10d8ec787c7a180c}{gsAccel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a) ;}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 }
+\DoxyCodeLine{276     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a67e9c9e9258664e7b8872b818a1570e5}{gsAccelUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGS, \textcolor{keywordtype}{double} gsAccel\_d);}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{288     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a67e9c9e9258664e7b8872b818a1570e5}{gsAccelUntil}}(std::pair<LatLonAlt,Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a7513b0f54138184e10d8ec787c7a180c}{gsAccel}});}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290     \textcolor{comment}{// ****************************** Vertical Speed KINEMATIC CALCULATIONS *******************************}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{301     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a57c97712ed8e1cebfd2cf207d5218bf1}{vsAccel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a) ;}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a57c97712ed8e1cebfd2cf207d5218bf1}{vsAccel}}(std::pair<LatLonAlt,Velocity> svo,  \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{315     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a64d549d169b3d49cc0183a3b816e95d7}{vsAccelUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a57c97712ed8e1cebfd2cf207d5218bf1}{vsAccel}});}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317     \textcolor{keyword}{static} std::pair<LatLonAlt,Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a64d549d169b3d49cc0183a3b816e95d7}{vsAccelUntil}}(std::pair<LatLonAlt,Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalVs, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a57c97712ed8e1cebfd2cf207d5218bf1}{vsAccel}});}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 }
+\DoxyCodeLine{331     \textcolor{keyword}{static} std::pair<LatLonAlt, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_adddec55844c0fc3c9c0c7ac24be0df6f}{vsLevelOut}}(std::pair<LatLonAlt, Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{332             \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} accelUp, \textcolor{keywordtype}{double} accelDown, \textcolor{keywordtype}{bool} allowClimbRateChange);}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334     \textcolor{keyword}{static} std::pair<LatLonAlt, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_adddec55844c0fc3c9c0c7ac24be0df6f}{vsLevelOut}}(std::pair<LatLonAlt, Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{335             \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} allowClimbRateChange) ;}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337     \textcolor{keyword}{static} std::pair<LatLonAlt, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_adddec55844c0fc3c9c0c7ac24be0df6f}{vsLevelOut}}(std::pair<LatLonAlt, Velocity> sv0, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate,}
+\DoxyCodeLine{338             \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a) ;}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340 }
+\DoxyCodeLine{341 \textcolor{keyword}{private}:}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{354     \textcolor{keyword}{static} std::pair<LatLonAlt, Velocity> \mbox{\hyperlink{classlarcfm_1_1_kinematics_lat_lon_a77b80281ec251b592215eafa6d3db80f}{vsLevelOutCalculation}}(std::pair<LatLonAlt,Velocity> sv0,}
+\DoxyCodeLine{355                                                \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2, \textcolor{keywordtype}{double} t1, \textcolor{keywordtype}{double} t2, \textcolor{keywordtype}{double} t3,  \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358 \};}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 \}}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//KINEMATICS\_LATLON\_H\_}}
+
+\end{DoxyCode}

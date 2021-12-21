@@ -1,0 +1,50 @@
+\hypertarget{_debug_8h_source}{}\doxysection{Debug.\+h}
+\label{_debug_8h_source}\index{Modules/ACCoRD/inc/Debug.h@{Modules/ACCoRD/inc/Debug.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DEBUG\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DEBUG\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}}\{}
+\DoxyCodeLine{69 \textcolor{keyword}{private}:}
+\DoxyCodeLine{70     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} FAIL\_FAST;}
+\DoxyCodeLine{71     \textcolor{keyword}{static} \textcolor{keywordtype}{int} VERBOSE;}
+\DoxyCodeLine{72     \textcolor{keyword}{static} \textcolor{keywordtype}{void} output(\textcolor{keyword}{const} std::string\& tag, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{73 \textcolor{keyword}{public}:}
+\DoxyCodeLine{74     }
+\DoxyCodeLine{75     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setUserDebugFlag(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{comment}{// For compatibility with Java}}
+\DoxyCodeLine{89 \textcolor{comment}{}    \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a01168a31471432854a69ea2d2c4e0ad5}{setVerbose}}(\textcolor{keywordtype}{int} level);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{100     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{pln}}(\textcolor{keyword}{const} std::string\& tag, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{101     \textcolor{keyword}{static} \textcolor{keywordtype}{void} pln2(\textcolor{keyword}{const} std::string\& msg, \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{110     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_afb758d8527905b25bc8713816a56448a}{pln}}(\textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{119     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a51c660bbad661861f23a5ac8aace3c0c}{pln}}(\textcolor{keyword}{const} std::string\& tag, \textcolor{keyword}{const} std::string\& msg, \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{120     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{pln}}(\textcolor{keywordtype}{int} lvl, \textcolor{keyword}{const} std::string\& tag, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{121     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{pln}}(\textcolor{keywordtype}{int} lvl, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{130     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a92e38028b0f4f8bc4a9b1a1532b8d2b2}{warning}}(\textcolor{keyword}{const} std::string\& tag, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{137     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a8ecd28548c8a5e3f9004cafab9002fb2}{warning}}(\textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{145     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_ab65e803d04af3727844294668e3e105b}{error}}(\textcolor{keyword}{const} std::string\& msg, \textcolor{keywordtype}{bool} fail\_fast);}
+\DoxyCodeLine{153     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a225b65f1b8c1ee837e5ee690b245cc14}{error}}(\textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{158     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_a6c17c7992a4280ecd428918f012f58a7}{printStack}}();}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{164     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_af073297d3defaa82d969404166a4a255}{halt}}();}
+\DoxyCodeLine{165 \};}
+\DoxyCodeLine{166 \}}
+\DoxyCodeLine{167 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

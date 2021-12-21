@@ -1,0 +1,71 @@
+\hypertarget{_traffic_core_state_8h_source}{}\doxysection{Traffic\+Core\+State.\+h}
+\label{_traffic_core_state_8h_source}\index{Modules/ACCoRD/inc/TrafficCoreState.h@{Modules/ACCoRD/inc/TrafficCoreState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2016 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef TRAFFICCORESTATE\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define TRAFFICCORESTATE\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22   std::string id\_;}
+\DoxyCodeLine{23   \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} pos\_;}
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vel\_;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}();}
+\DoxyCodeLine{29   \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel);}
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}\& ac);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}} INVALIDC;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keywordtype}{bool} isValid() \textcolor{keyword}{const};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   std::string getId() \textcolor{keyword}{const};}
+\DoxyCodeLine{37   \textcolor{keywordtype}{bool} isLatLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{38   \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \textcolor{keyword}{const} \& getPosition() \textcolor{keyword}{const};}
+\DoxyCodeLine{39   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \textcolor{keyword}{const} \& getVelocity() \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a13fd0507c16657bce94b0f1467f63865}{track}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a13fd0507c16657bce94b0f1467f63865}{track}}(\textcolor{keyword}{const} std::string\& utrk) \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a74ff621cd657be36d604038fdb6ea509}{groundSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a74ff621cd657be36d604038fdb6ea509}{groundSpeed}}(\textcolor{keyword}{const} std::string\& ugs) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{64   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a0c46e04b8a0e088e57cbc2ba66b95305}{verticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a0c46e04b8a0e088e57cbc2ba66b95305}{verticalSpeed}}(\textcolor{keyword}{const} std::string\& uvs) \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_aef6b4605498e941269413197d962c586}{altitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{79   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_aef6b4605498e941269413197d962c586}{altitude}}(\textcolor{keyword}{const} std::string\& ualt) \textcolor{keyword}{const};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   \textcolor{keywordtype}{bool} sameId(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a6a2dce4e496905966ddaeadde89ad8a7}{operator<}}( \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}\& lhs , \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{TrafficCoreState}}\& rhs );}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

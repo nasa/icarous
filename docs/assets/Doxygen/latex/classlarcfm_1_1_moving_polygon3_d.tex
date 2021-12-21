@@ -1,0 +1,131 @@
+\hypertarget{classlarcfm_1_1_moving_polygon3_d}{}\doxysection{larcfm\+::Moving\+Polygon3D Class Reference}
+\label{classlarcfm_1_1_moving_polygon3_d}\index{larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}}
+
+
+{\ttfamily \#include $<$Moving\+Polygon3\+D.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_ad03c154198fa94eb7dbe3c1a31f90e73}\label{classlarcfm_1_1_moving_polygon3_d_ad03c154198fa94eb7dbe3c1a31f90e73}} 
+{\bfseries Moving\+Polygon3D} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&horizpoly, double vspeed, double minalt, double maxalt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a8e0fc69b36a0e45fd6effec7ef46cb90}\label{classlarcfm_1_1_moving_polygon3_d_a8e0fc69b36a0e45fd6effec7ef46cb90}} 
+{\bfseries Moving\+Polygon3D} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double end)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_af0ecac301fe8a5de8e252f729671120d}\label{classlarcfm_1_1_moving_polygon3_d_af0ecac301fe8a5de8e252f729671120d}} 
+{\bfseries Moving\+Polygon3D} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&p, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \&v, double end)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a2b5756f77cd3efd80cebf2fe5707042b}{position}} (double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a91f0c4f22cb9dabd4e782887d9123513}{velocity}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d_a79831e1ebbedd4cb770695dca15906fd}{average\+Velocity}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a62a56f0b263cab61953a48a421e37762}\label{classlarcfm_1_1_moving_polygon3_d_a62a56f0b263cab61953a48a421e37762}} 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} {\bfseries linear} (double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_af6d4cd7f866dcd764b9c6fab9b3cc432}\label{classlarcfm_1_1_moving_polygon3_d_af6d4cd7f866dcd764b9c6fab9b3cc432}} 
+bool {\bfseries is\+Stable} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a0252c4774adf6fbc12f8e3b12b04223f}\label{classlarcfm_1_1_moving_polygon3_d_a0252c4774adf6fbc12f8e3b12b04223f}} 
+int {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a3a7c410ffa5d15f20b62ee00c2341c60}\label{classlarcfm_1_1_moving_polygon3_d_a3a7c410ffa5d15f20b62ee00c2341c60}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a11ccdd61d46991772ad7590f0cc05055}\label{classlarcfm_1_1_moving_polygon3_d_a11ccdd61d46991772ad7590f0cc05055}} 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} {\bfseries reverse\+Order} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a02466707ced93c3464ec30441b34cdb4}\label{classlarcfm_1_1_moving_polygon3_d_a02466707ced93c3464ec30441b34cdb4}} 
+const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \& {\bfseries get\+Horizpoly} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_af7dfc3d74ca92ce5124d5362cf4aa95b}\label{classlarcfm_1_1_moving_polygon3_d_af7dfc3d74ca92ce5124d5362cf4aa95b}} 
+void {\bfseries set\+Horizpoly} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&horizpoly)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a21db7b4db7831541e3d5c30bf64ebfa2}\label{classlarcfm_1_1_moving_polygon3_d_a21db7b4db7831541e3d5c30bf64ebfa2}} 
+double {\bfseries get\+Maxalt} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a67bcc3095dff04c0b82f42ef80f64124}\label{classlarcfm_1_1_moving_polygon3_d_a67bcc3095dff04c0b82f42ef80f64124}} 
+void {\bfseries set\+Maxalt} (double maxalt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a10ef70fdd7701f2c1d7cec5278b30c41}\label{classlarcfm_1_1_moving_polygon3_d_a10ef70fdd7701f2c1d7cec5278b30c41}} 
+double {\bfseries get\+Minalt} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a6d317c058f2326431990f62bd67d49a3}\label{classlarcfm_1_1_moving_polygon3_d_a6d317c058f2326431990f62bd67d49a3}} 
+void {\bfseries set\+Minalt} (double minalt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a9fc8f133f6e0d8b1cc4bb920d7919a45}\label{classlarcfm_1_1_moving_polygon3_d_a9fc8f133f6e0d8b1cc4bb920d7919a45}} 
+double {\bfseries get\+Vspeed} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_aa2fbe03d9cc4c1bbe89ce1962ad8d8c2}\label{classlarcfm_1_1_moving_polygon3_d_aa2fbe03d9cc4c1bbe89ce1962ad8d8c2}} 
+void {\bfseries set\+Vspeed} (double vspeed)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a90055d6c4e386dad1981ea16082ce216}\label{classlarcfm_1_1_moving_polygon3_d_a90055d6c4e386dad1981ea16082ce216}} 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} {\bfseries horizpoly}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a035ba4082bfa9098d5d81a9622ce8b61}\label{classlarcfm_1_1_moving_polygon3_d_a035ba4082bfa9098d5d81a9622ce8b61}} 
+double {\bfseries vspeed}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_add21e8893bfaa95437ccf800c7167e50}\label{classlarcfm_1_1_moving_polygon3_d_add21e8893bfaa95437ccf800c7167e50}} 
+double {\bfseries minalt}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_ab73755d878129a0ba2f830d1f4c9e1f0}\label{classlarcfm_1_1_moving_polygon3_d_ab73755d878129a0ba2f830d1f4c9e1f0}} 
+double {\bfseries maxalt}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} contains a \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} (list of \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vertices) and vertical information. It is structured to interface well with other PVS-\/oriented code 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a79831e1ebbedd4cb770695dca15906fd}\label{classlarcfm_1_1_moving_polygon3_d_a79831e1ebbedd4cb770695dca15906fd}} 
+\index{larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}!averageVelocity@{averageVelocity}}
+\index{averageVelocity@{averageVelocity}!larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}}
+\doxysubsubsection{\texorpdfstring{averageVelocity()}{averageVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Moving\+Polygon3\+D\+::average\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the average \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (at time 0).
+
+\begin{DoxyReturn}{Returns}
+velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a2b5756f77cd3efd80cebf2fe5707042b}\label{classlarcfm_1_1_moving_polygon3_d_a2b5756f77cd3efd80cebf2fe5707042b}} 
+\index{larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}!position@{position}}
+\index{position@{position}!larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} larcfm\+::\+Moving\+Polygon3\+D\+::position (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Polygon \char`\"{}location\char`\"{} at time t
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & time of interest \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a polygon at time t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_moving_polygon3_d_a91f0c4f22cb9dabd4e782887d9123513}\label{classlarcfm_1_1_moving_polygon3_d_a91f0c4f22cb9dabd4e782887d9123513}} 
+\index{larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}!velocity@{velocity}}
+\index{velocity@{velocity}!larcfm::MovingPolygon3D@{larcfm::MovingPolygon3D}}
+\doxysubsubsection{\texorpdfstring{velocity()}{velocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Moving\+Polygon3\+D\+::velocity (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Initial velocity for vertex i 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Moving\+Polygon3\+D.\+h\item 
+Modules/\+ACCo\+RD/src/Moving\+Polygon3\+D.\+cpp\end{DoxyCompactItemize}

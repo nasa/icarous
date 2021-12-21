@@ -1,0 +1,60 @@
+\hypertarget{classlarcfm_1_1_detection3_d_parameter_reader}{}\doxysection{larcfm\+::Detection3\+DParameter\+Reader Class Reference}
+\label{classlarcfm_1_1_detection3_d_parameter_reader}\index{larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}}
+
+
+{\ttfamily \#include $<$Detection3\+DParameter\+Reader.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_a4fb6db0efe7b109ad399fe2d1acacdde}{register\+Defaults}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_a4f47bdcbef664c2a617a3d397c5d59b6}{register\+Detection3D}} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a5ea8b777fe22754428d51726adb504b9}\label{classlarcfm_1_1_detection3_d_parameter_reader_a5ea8b777fe22754428d51726adb504b9}} 
+static void {\bfseries register\+Detection3D} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd, const std\+::string \&aternate\+\_\+name)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_reader_aa1b67e2cd4b35e710dfc655708b37a8c}{read\+Core\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&params)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a5be6e145fd4b3c2503ee437d16fb36e2}\label{classlarcfm_1_1_detection3_d_parameter_reader_a5be6e145fd4b3c2503ee437d16fb36e2}} 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ {\bfseries read\+Core\+Detection} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&params, bool verbose)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a20bb1dbd0da2f70535733910e71d0a91}\label{classlarcfm_1_1_detection3_d_parameter_reader_a20bb1dbd0da2f70535733910e71d0a91}} 
+static std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ {\bfseries registered\+Detection3\+DClasses}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a3244cede3456a09b747db6b9b10e8223}\label{classlarcfm_1_1_detection3_d_parameter_reader_a3244cede3456a09b747db6b9b10e8223}} 
+static bool {\bfseries registered} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains static methods to read in \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance definitions from a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object in a format consistent with a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object created by Detection\+Parameter\+Writer. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_aa1b67e2cd4b35e710dfc655708b37a8c}\label{classlarcfm_1_1_detection3_d_parameter_reader_aa1b67e2cd4b35e710dfc655708b37a8c}} 
+\index{larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}!readCoreDetection@{readCoreDetection}}
+\index{readCoreDetection@{readCoreDetection}!larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}}
+\doxysubsubsection{\texorpdfstring{readCoreDetection()}{readCoreDetection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ larcfm\+::\+Detection3\+DParameter\+Reader\+::read\+Core\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The user is responsible for deleting the entries in the list (which will contain the second and third tuple elements). \mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a4fb6db0efe7b109ad399fe2d1acacdde}\label{classlarcfm_1_1_detection3_d_parameter_reader_a4fb6db0efe7b109ad399fe2d1acacdde}} 
+\index{larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}!registerDefaults@{registerDefaults}}
+\index{registerDefaults@{registerDefaults}!larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}}
+\doxysubsubsection{\texorpdfstring{registerDefaults()}{registerDefaults()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection3\+DParameter\+Reader\+::register\+Defaults (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Register standard Formal\+ATM classes. This may also be done through explicit calls to register\+Detection3D and register\+Detection\+Polygon, below. Nonstandard classed need to be registered individually. \mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_reader_a4f47bdcbef664c2a617a3d397c5d59b6}\label{classlarcfm_1_1_detection3_d_parameter_reader_a4f47bdcbef664c2a617a3d397c5d59b6}} 
+\index{larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}!registerDetection3D@{registerDetection3D}}
+\index{registerDetection3D@{registerDetection3D}!larcfm::Detection3DParameterReader@{larcfm::Detection3DParameterReader}}
+\doxysubsubsection{\texorpdfstring{registerDetection3D()}{registerDetection3D()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection3\+DParameter\+Reader\+::register\+Detection3D (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Register a new \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} class with this reader. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Detection3\+DParameter\+Reader.\+h\item 
+Modules/\+ACCo\+RD/src/Detection3\+DParameter\+Reader.\+cpp\end{DoxyCompactItemize}

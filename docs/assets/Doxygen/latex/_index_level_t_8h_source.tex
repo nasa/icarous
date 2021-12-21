@@ -1,0 +1,42 @@
+\hypertarget{_index_level_t_8h_source}{}\doxysection{Index\+Level\+T.\+h}
+\label{_index_level_t_8h_source}\index{Modules/ACCoRD/inc/IndexLevelT.h@{Modules/ACCoRD/inc/IndexLevelT.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2018-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef INDEXLEVELT\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define INDEXLEVELT\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_index_level_t}{IndexLevelT}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18   \textcolor{keywordtype}{int} index; \textcolor{comment}{// Aircraft 0-\/Index}}
+\DoxyCodeLine{19   \textcolor{keywordtype}{int} level; \textcolor{comment}{// Alert level}}
+\DoxyCodeLine{20   \textcolor{keywordtype}{double} time\_horizon;}
+\DoxyCodeLine{21   \textcolor{comment}{// Time horizon for computation of bands, either lookahead time for conflict bands}}
+\DoxyCodeLine{22   \textcolor{comment}{// or alerting time for peripheral bands}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_index_level_t}{IndexLevelT}}(\textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{int} lvl, \textcolor{keywordtype}{double} th);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_index_level_t_a6e6a4fa492a4d87a4b2078c0b3757cf3}{toStringList}}(std::vector<std::string>\& acs, \textcolor{keyword}{const} std::vector<IndexLevelT>\& idxs, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{36   \textcolor{keyword}{static} std::string toString(\textcolor{keyword}{const} std::vector<IndexLevelT>\& ilts);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

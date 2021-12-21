@@ -1,0 +1,129 @@
+\hypertarget{classlarcfm_1_1_c_d2_d}{}\doxysection{larcfm\+::CD2D Class Reference}
+\label{classlarcfm_1_1_c_d2_d}\index{larcfm::CD2D@{larcfm::CD2D}}
+
+
+{\ttfamily \#include $<$CD2\+D.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D, const double B, const double T)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a194c7f6e6ec038919109e6a1e1d55c6e}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D, const double T)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_abb733b88de7ae0a0d1c434e260ef1d35}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ab5f74dac153809145e99e9a947a4c6e4}{violation}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const double D)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}{cd2d}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D, const double B, const double T)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_aef15a9c451ab5db6fcfbfef7855215d6}{cd2d}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D, const double T)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_af5cc4d2f0a6e2facbba57e7bdc60a7cc}{cd2d}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double D)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}{tcpa}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double B, const double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a83f9c8f906b4b44b6af164815388a55b}{tcpa}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi, const double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_c_d2_d_a7288b3309e123e2a420919e711c955b6}{tcpa}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_c_d2_d}{CD2D}} is an algorithm for 2-\/D conflict {\itshape detection}.
+
+All units in this file are {\itshape internal}\+: 
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of distance are denoted \mbox{[}d\mbox{]} 
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of time are denoted \mbox{[}t\mbox{]} 
+\item \mbox{\hyperlink{classlarcfm_1_1_units}{Units}} of speed are denoted \mbox{[}d/t\mbox{]} 
+\end{DoxyItemize}
+
+REMARK\+: X points to East, Y points to North.
+
+Naming Convention~\newline
+ The intruder is fixed at the origin of the coordinate system. 
+\begin{DoxyItemize}
+\item D \+: Diameter of the protected zone \mbox{[}d\mbox{]} 
+\item B \+: Lower bound of lookahed time interval \mbox{[}t\mbox{]} (B \texorpdfstring{$>$}{>}= 0) 
+\item T \+: Upper bound of lookahead time interval \mbox{[}t\mbox{]} (B \texorpdfstring{$<$}{<} T) 
+\item s \+: Relative 2-\/D position of the ownship \mbox{[}d,d\mbox{]} 
+\item vo \+: Ownship velocity vector \mbox{[}d/t,d/t\mbox{]} 
+\item vi \+: Traffic velocity vector \mbox{[}d/t,d/t\mbox{]} 
+\end{DoxyItemize}
+
+Functions ~\newline
+ 
+\begin{DoxyItemize}
+\item violation \+: Check for 2-\/D loss of separation 
+\item detection \+: 2-\/D conflict detection with calculation of conflict interval 
+\item cd2d \+: Check for predicted conflict 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_af5cc4d2f0a6e2facbba57e7bdc60a7cc}\label{classlarcfm_1_1_c_d2_d_af5cc4d2f0a6e2facbba57e7bdc60a7cc}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!cd2d@{cd2d}}
+\index{cd2d@{cd2d}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{cd2d()}{cd2d()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CD2\+D\+::cd2d (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+cd2d(s,vo,vi,\+D) IFF there is an horizontal conflict in the time interval \mbox{[}0,...). \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}\label{classlarcfm_1_1_c_d2_d_a04b8bd315e82d14ff59d1f00e041c0ac}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!cd2d@{cd2d}}
+\index{cd2d@{cd2d}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{cd2d()}{cd2d()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CD2\+D\+::cd2d (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{B,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+cd2d(s,vo,vi,\+D,\+B,\+T) IFF there is an horizontal conflict in the time interval \mbox{[}B,T\mbox{]}, where 0 \texorpdfstring{$<$}{<}= B \texorpdfstring{$<$}{<} T. \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_aef15a9c451ab5db6fcfbfef7855215d6}\label{classlarcfm_1_1_c_d2_d_aef15a9c451ab5db6fcfbfef7855215d6}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!cd2d@{cd2d}}
+\index{cd2d@{cd2d}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{cd2d()}{cd2d()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+CD2\+D\+::cd2d (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+cd2d(s,vo,vi,\+D,\+T) IFF there is an horizontal conflict in the time interval \mbox{[}0,T\mbox{]}, where T \texorpdfstring{$>$}{>} 0. \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_abb733b88de7ae0a0d1c434e260ef1d35}\label{classlarcfm_1_1_c_d2_d_abb733b88de7ae0a0d1c434e260ef1d35}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!detection@{detection}}
+\index{detection@{detection}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} larcfm\+::\+CD2\+D\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+detection(s,vo,vi,\+D) computes the horizontal conflict time interval (t\+\_\+in,t\+\_\+out) in \mbox{[}0,...). \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}\label{classlarcfm_1_1_c_d2_d_a6ed2ee473076470c67901837552e5cfa}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!detection@{detection}}
+\index{detection@{detection}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} larcfm\+::\+CD2\+D\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{B,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+detection(s,vo,vi,\+D,\+B,\+T) computes the horizontal conflict time interval (t\+\_\+in,t\+\_\+out) in \mbox{[}B,T\mbox{]}, where 0 \texorpdfstring{$<$}{<}= B \texorpdfstring{$<$}{<} T \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_a194c7f6e6ec038919109e6a1e1d55c6e}\label{classlarcfm_1_1_c_d2_d_a194c7f6e6ec038919109e6a1e1d55c6e}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!detection@{detection}}
+\index{detection@{detection}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_loss_data}{Loss\+Data}} larcfm\+::\+CD2\+D\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{D,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+detection(s,vo,vi,\+D,\+T) computes the horizontal conflict time interval (t\+\_\+in,t\+\_\+out) in \mbox{[}0,T\mbox{]}, where 0 \texorpdfstring{$<$}{<}= B \texorpdfstring{$<$}{<} T. \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_a7288b3309e123e2a420919e711c955b6}\label{classlarcfm_1_1_c_d2_d_a7288b3309e123e2a420919e711c955b6}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!tcpa@{tcpa}}
+\index{tcpa@{tcpa}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{tcpa()}{tcpa()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+CD2\+D\+::tcpa (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the time to horizontal closest point of approach for s,vo,vi, for interval \mbox{[}0,...). \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}\label{classlarcfm_1_1_c_d2_d_ae2004b6f913c232d0bee09a177628b79}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!tcpa@{tcpa}}
+\index{tcpa@{tcpa}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{tcpa()}{tcpa()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+CD2\+D\+::tcpa (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{B,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the time to horizontal closest point of approach for s,vo,vi during the interval \mbox{[}B,T\mbox{]}, where 0 \texorpdfstring{$<$}{<}= B \texorpdfstring{$<$}{<} T. \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_a83f9c8f906b4b44b6af164815388a55b}\label{classlarcfm_1_1_c_d2_d_a83f9c8f906b4b44b6af164815388a55b}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!tcpa@{tcpa}}
+\index{tcpa@{tcpa}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{tcpa()}{tcpa()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+CD2\+D\+::tcpa (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{vi,  }\item[{const double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the time to horizontal closest point of approach for s,vo,vi, for interval \mbox{[}0,T\mbox{]}, where T \texorpdfstring{$>$}{>} 0. \mbox{\Hypertarget{classlarcfm_1_1_c_d2_d_ab5f74dac153809145e99e9a947a4c6e4}\label{classlarcfm_1_1_c_d2_d_ab5f74dac153809145e99e9a947a4c6e4}} 
+\index{larcfm::CD2D@{larcfm::CD2D}!violation@{violation}}
+\index{violation@{violation}!larcfm::CD2D@{larcfm::CD2D}}
+\doxysubsubsection{\texorpdfstring{violation()}{violation()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CD2\+D\+::violation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{s,  }\item[{const double}]{D }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+violation(s,\+D) IFF there is an horizontal loss of separation at current time 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CD2\+D.\+h\item 
+Modules/\+ACCo\+RD/src/CD2\+D.\+cpp\end{DoxyCompactItemize}

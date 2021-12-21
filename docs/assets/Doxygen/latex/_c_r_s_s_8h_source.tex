@@ -1,0 +1,179 @@
+\hypertarget{_c_r_s_s_8h_source}{}\doxysection{CRSS.\+h}
+\label{_c_r_s_s_8h_source}\index{Modules/ACCoRD/inc/CRSS.h@{Modules/ACCoRD/inc/CRSS.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CRSS.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{7 \textcolor{comment}{ * }}
+\DoxyCodeLine{8 \textcolor{comment}{ * Conflict resolution between an ownship and traffic aircraft using state information.}}
+\DoxyCodeLine{9 \textcolor{comment}{ *   }}
+\DoxyCodeLine{10 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{11 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{12 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{13 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{14 \textcolor{comment}{ */}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef CRSS\_H\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define CRSS\_H\_}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}CDCylinder.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}CR3D.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{41   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_r_s_s}{CRSS}} \{}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keyword}{public}:}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{50      \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a9abf6565e5b91132907fa68eca6950cb}{CRSS}}();}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{58     \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a9abf6565e5b91132907fa68eca6950cb}{CRSS}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s}{CRSS}} make(\textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} std::string\& dStr, \textcolor{keywordtype}{double} height, \textcolor{keyword}{const} std::string\& hStr);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s}{CRSS}} mk(\textcolor{keywordtype}{double} distance, \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{70     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a149e319110d24da6b567b6ff8420ca65}{getDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a7f14d7e1f15d2a79539bc4f3926c9ff8}{getHeight}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{84     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a6b581872d96d2c7e727abbf27f5b3f3f}{setDistance}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} distance);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a8d2685d26e77335c295bd2bf8584aadf}{setHeight}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{comment}{/*}}
+\DoxyCodeLine{94 \textcolor{comment}{     * sets the minimum ground speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{95 \textcolor{comment}{     */}}
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a4eb0a7905e970ee4f89fcf651411de2e}{setMinGs}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     \textcolor{comment}{/*}}
+\DoxyCodeLine{102 \textcolor{comment}{     * sets the maximum ground speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{103 \textcolor{comment}{     */}}
+\DoxyCodeLine{107     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a0e70d6f6dcac12f60e480d139398f69b}{setMaxGs}}(\textcolor{keywordtype}{double} gs) ;}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{comment}{/*}}
+\DoxyCodeLine{110 \textcolor{comment}{     * sets the maximum vertical speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{111 \textcolor{comment}{     */}}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a70af620e92a41f3046cbd82e72807263}{setMaxVs}}(\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{comment}{/*}}
+\DoxyCodeLine{118 \textcolor{comment}{     * gets the minimum relative ground speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{119 \textcolor{comment}{     */}}
+\DoxyCodeLine{123     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a945ab1954416ed998b14a04540c5fc45}{setMinHorizExitSpeed}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{comment}{/*}}
+\DoxyCodeLine{126 \textcolor{comment}{     * gets the minimum relative vertical speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{127 \textcolor{comment}{     */}}
+\DoxyCodeLine{131     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_aacdc9e835071099ab2ffd9a422efcdca}{setMinVertExitSpeed}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{138      \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a996d9078091a0d36b2f2a1dcea44a23f}{setVsDiscretization}}(\textcolor{keywordtype}{double} vD);}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141     \textcolor{comment}{/*}}
+\DoxyCodeLine{142 \textcolor{comment}{     * returns the minimum ground speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{143 \textcolor{comment}{     */}}
+\DoxyCodeLine{147      \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_adc289d2eeabc036a0a871a6372d42503}{getMinGs}}() ;}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149      \textcolor{comment}{/*}}
+\DoxyCodeLine{150 \textcolor{comment}{      * returns the maximum ground speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{151 \textcolor{comment}{      */}}
+\DoxyCodeLine{155      \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_aca1f55b2ba532d277d5db825eaf39cfb}{getMaxGs}}();}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157      \textcolor{comment}{/*}}
+\DoxyCodeLine{158 \textcolor{comment}{      * returns the maximum vertical speed used while searching for a loss of separation solution}}
+\DoxyCodeLine{159 \textcolor{comment}{      */}}
+\DoxyCodeLine{163      \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a2c96b390e17f980d917843b8efb1018c}{getMaxVs}}();}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{168      \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a5ef3eea7f694ec9071171bf7a1dd8172}{getMinHorizExitSpeed}}();}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{190      \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a462a6e5a0ec40f0e91dc8f4e5b3d40cf}{resolution}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 }
+\DoxyCodeLine{202      \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a462a6e5a0ec40f0e91dc8f4e5b3d40cf}{resolution}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{210     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a9b641d752385a58ffb92857c602b72d4}{hasTrkOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{217     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a7ea3cfe0f44315c66165f37669d0c3bf}{hasGsOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{224     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a7f5fe25c7af766ae6b58e36b3ad27dae}{hasVsOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{231     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a59b8028f913852b4790b3887a5139b98}{hasOptTrkGs}}() \textcolor{keyword}{const}; }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{238     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a15192fedf3592d3be30069d951816b12}{trkOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{245     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a163bb5ed8aae60b093b822fe7833ee8a}{gsOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{252     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a84b8de2b8116d5f4d7ffece8e760e206}{optTrk}}() \textcolor{keyword}{const}; }
+\DoxyCodeLine{253 }
+\DoxyCodeLine{259     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a6d9e0a16996f66722c60927faaf7ca3f}{optGs}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{267     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_ae2d070bae3ad8c405ebaf229be5327c9}{vsOnly}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271     \textcolor{comment}{// The following methods are deprecated now that Chorus is the preferred interface to ACCoRD functions}}
+\DoxyCodeLine{272     \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a9abf6565e5b91132907fa68eca6950cb}{CRSS}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} std::string\& ud, \textcolor{keyword}{const} \textcolor{keywordtype}{double} height, \textcolor{keyword}{const} std::string\& uh);}
+\DoxyCodeLine{273     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a149e319110d24da6b567b6ff8420ca65}{getDistance}}(\textcolor{keyword}{const} std::string\& ud) \textcolor{keyword}{const};}
+\DoxyCodeLine{274     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a7f14d7e1f15d2a79539bc4f3926c9ff8}{getHeight}}(\textcolor{keyword}{const} std::string\& uh) \textcolor{keyword}{const};}
+\DoxyCodeLine{275     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a6b581872d96d2c7e727abbf27f5b3f3f}{setDistance}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} std::string\& ud);}
+\DoxyCodeLine{276     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a8d2685d26e77335c295bd2bf8584aadf}{setHeight}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} height, \textcolor{keyword}{const} std::string\& uh);}
+\DoxyCodeLine{277     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a4eb0a7905e970ee4f89fcf651411de2e}{setMinGs}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& us);}
+\DoxyCodeLine{278     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a0e70d6f6dcac12f60e480d139398f69b}{setMaxGs}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& us) ;}
+\DoxyCodeLine{279     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a945ab1954416ed998b14a04540c5fc45}{setMinHorizExitSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& us);}
+\DoxyCodeLine{280     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_adc289d2eeabc036a0a871a6372d42503}{getMinGs}}(\textcolor{keyword}{const} std::string\& us) ;}
+\DoxyCodeLine{281     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_aca1f55b2ba532d277d5db825eaf39cfb}{getMaxGs}}(\textcolor{keyword}{const} std::string\& us);}
+\DoxyCodeLine{282     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a5ef3eea7f694ec9071171bf7a1dd8172}{getMinHorizExitSpeed}}(\textcolor{keyword}{const} std::string\& us);}
+\DoxyCodeLine{286     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a14bcd73c838fddd4db71aa5e16e7c244}{getMinVertExitSpeed}}();}
+\DoxyCodeLine{292     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_aa7adfc58701fad64c030d120d95ccb2b}{getVsDiscretization}}();}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a15192fedf3592d3be30069d951816b12}{trkOnly}}(\textcolor{keyword}{const} std::string\& utrk) \textcolor{keyword}{const};}
+\DoxyCodeLine{295     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a163bb5ed8aae60b093b822fe7833ee8a}{gsOnly}}(\textcolor{keyword}{const} std::string\& ugs) \textcolor{keyword}{const};}
+\DoxyCodeLine{296     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_ae2d070bae3ad8c405ebaf229be5327c9}{vsOnly}}(\textcolor{keyword}{const} std::string\& uvs) \textcolor{keyword}{const};}
+\DoxyCodeLine{297     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a84b8de2b8116d5f4d7ffece8e760e206}{optTrk}}(\textcolor{keyword}{const} std::string\& utrk) \textcolor{keyword}{const};}
+\DoxyCodeLine{298     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a6d9e0a16996f66722c60927faaf7ca3f}{optGs}}(\textcolor{keyword}{const} std::string\& ugs) \textcolor{keyword}{const};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300     std::string strResolutions(\textcolor{keywordtype}{int} res);}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302   \textcolor{keyword}{private}:}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{305     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_a747180f94188b4ac6e82cfe537c68a76}{D}};}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{308     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_r_s_s_abbb273efe41ecd15eb3b997d14fa91b4}{H}};}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311     \textcolor{keywordtype}{double} vsDiscretization;}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313     \mbox{\hyperlink{classlarcfm_1_1_c_r3_d}{CR3D}}   cr;}
+\DoxyCodeLine{314     \textcolor{keywordtype}{double} trk\_only;}
+\DoxyCodeLine{315     \textcolor{keywordtype}{double} gs\_only;}
+\DoxyCodeLine{316     \textcolor{keywordtype}{double} opt\_trk;}
+\DoxyCodeLine{317     \textcolor{keywordtype}{double} opt\_gs;}
+\DoxyCodeLine{318     \textcolor{keywordtype}{double} vs\_only;}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320     \textcolor{keywordtype}{double} minHorizExitSpeedLoS; \textcolor{comment}{// = Units.from("{}kn"{},100.0);}}
+\DoxyCodeLine{321     \textcolor{keywordtype}{double} minVertExitSpeedLoS; \textcolor{comment}{// = Units.from("{}kn"{},100.0);}}
+\DoxyCodeLine{322     \textcolor{keywordtype}{double} maxGs; \textcolor{comment}{// = Units.from("{}kn"{},700.0);}}
+\DoxyCodeLine{323     \textcolor{keywordtype}{double} minGs; \textcolor{comment}{// = Units.from("{}kn"{},150.0);       // must be greater than 0}}
+\DoxyCodeLine{324     \textcolor{keywordtype}{double} maxVs;}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327     \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \textcolor{keywordtype}{double} d, \textcolor{keyword}{const} \textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329   \};}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 \}}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CRSS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

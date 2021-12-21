@@ -1,0 +1,104 @@
+\hypertarget{_triple_8h_source}{}\doxysection{Triple.\+h}
+\label{_triple_8h_source}\index{Modules/ACCoRD/inc/Triple.h@{Modules/ACCoRD/inc/Triple.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Triple.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * a three element tuple}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef TRIPLE\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define TRIPLE\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{26 \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}} \{}
+\DoxyCodeLine{28  \textcolor{keyword}{public}:}
+\DoxyCodeLine{30     L \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}};}
+\DoxyCodeLine{32     C \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}};}
+\DoxyCodeLine{34     R \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{35     }
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_triple_a22ce85a4648b2bb65b55339197c499ff}{Triple}}(): \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}}(L()), \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}}(C()), \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}}(R()) \{\}}
+\DoxyCodeLine{38  }
+\DoxyCodeLine{40  \mbox{\hyperlink{classlarcfm_1_1_triple_ade4e6285ea1903ce3f9d4304e7073049}{Triple}}(\textcolor{keyword}{const} L\& left, \textcolor{keyword}{const} C\& center, \textcolor{keyword}{const} R\& right) : \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}}(left), \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}}(center), \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}}(right) \{}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{46     L \mbox{\hyperlink{classlarcfm_1_1_triple_af9733dd54618bc9e58360fb750005c52}{getLeft}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{47         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}};}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49  }
+\DoxyCodeLine{53     C \mbox{\hyperlink{classlarcfm_1_1_triple_a070f5fe4ffe3d5149cb6a4777550f59d}{getCenter}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{54          \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}};}
+\DoxyCodeLine{55     \}}
+\DoxyCodeLine{56  }
+\DoxyCodeLine{60     R \mbox{\hyperlink{classlarcfm_1_1_triple_a365b3a8f43ce2d756161d0349a6d5e82}{getRight}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{61          \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68     L \mbox{\hyperlink{classlarcfm_1_1_triple_a56843dea6f59a2433e62500258ee3ec9}{getFirst}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{69         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}};}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71  }
+\DoxyCodeLine{75     C \mbox{\hyperlink{classlarcfm_1_1_triple_a6a490d85d3f1d57efdd585f5d93e8d85}{getSecond}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{76          \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}};}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78  }
+\DoxyCodeLine{82     R \mbox{\hyperlink{classlarcfm_1_1_triple_a745adc8f3301707f60f602b91ee31da5}{getThird}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{83          \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{84     \}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{87     \textcolor{keyword}{template} <\textcolor{keyword}{typename} L1, \textcolor{keyword}{typename} C1, \textcolor{keyword}{typename} R1> }
+\DoxyCodeLine{88     \mbox{\hyperlink{classlarcfm_1_1_triple_a1aaa020fea284909cea61786abf1b27a}{Triple}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L1,C1, R1>}}\& t): \mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}}(t.left), \mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}}(t.center), \mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}}(t.right) \{\}}
+\DoxyCodeLine{89  \};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{101  \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{102  \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L, C, R>}} \mbox{\hyperlink{namespacelarcfm_a8ee5fbc52da2bf46d0f5aa1065c5d9d5}{make}}(\textcolor{keyword}{const} L\& left, \textcolor{keyword}{const} C\& center, \textcolor{keyword}{const} R\& right) \{}
+\DoxyCodeLine{103    \textcolor{keywordflow}{return} \textcolor{keyword}{new} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L, C, R>}}(left, center, right);}
+\DoxyCodeLine{104  \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{107   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{108   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ae714da719acb7ee9047444b14eafe7e9}{operator== }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t2) \{}
+\DoxyCodeLine{109     \textcolor{keywordflow}{return} t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}} == t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}} \&\& t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}} == t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}} \&\& t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}} == t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{113   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{114   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a9532427b324c671f7e0dd98d4f3711c2}{operator!= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t2) \{}
+\DoxyCodeLine{115     \textcolor{keywordflow}{return} !(t1==t2);}
+\DoxyCodeLine{116   \}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{119   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R>}
+\DoxyCodeLine{120   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a6a2dce4e496905966ddaeadde89ad8a7}{operator< }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t2) \{}
+\DoxyCodeLine{121     \textcolor{keywordflow}{if} (t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}} == t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}}) \{}
+\DoxyCodeLine{122         \textcolor{keywordflow}{if} (t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}} == t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}}) \{}
+\DoxyCodeLine{123             \textcolor{keywordflow}{return} t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}} < t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{124         \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{125             \textcolor{keywordflow}{return} t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}} < t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}};}
+\DoxyCodeLine{126         \}}
+\DoxyCodeLine{127     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{128         \textcolor{keywordflow}{return} t1.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}} < t2.\mbox{\hyperlink{classlarcfm_1_1_triple_a9c6e0d4737cc93c0ac11c0f76cddd685}{first}};}
+\DoxyCodeLine{129     \}}
+\DoxyCodeLine{130   \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{133   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} C, \textcolor{keyword}{typename} R>}
+\DoxyCodeLine{134   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a7882c413c0a6083b364c11ca158a4cdf}{operator> }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<L,R,C>}}\& t2) \{}
+\DoxyCodeLine{135       \textcolor{keywordflow}{return} t1 != t2 \&\& !(t1 < t2);}
+\DoxyCodeLine{136   \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* TRIPLE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

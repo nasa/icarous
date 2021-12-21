@@ -1,0 +1,167 @@
+\hypertarget{classlarcfm_1_1_density_grid_a_star_search}{}\doxysection{larcfm\+::Density\+Grid\+AStar\+Search Class Reference}
+\label{classlarcfm_1_1_density_grid_a_star_search}\index{larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}}
+Inheritance diagram for larcfm\+::Density\+Grid\+AStar\+Search\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_density_grid_a_star_search}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{Fringe\+Entry}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a4e80649761dd6bf533936c736c1099de}\label{classlarcfm_1_1_density_grid_a_star_search_a4e80649761dd6bf533936c736c1099de}} 
+double {\bfseries direction\+Cost} (\mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{Fringe\+Entry}} c, int x2, int y2, double direction\+Weight) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a4df138833a622f68fd42a5e8ab2eb37b}\label{classlarcfm_1_1_density_grid_a_star_search_a4df138833a622f68fd42a5e8ab2eb37b}} 
+double {\bfseries predicted\+Distance\+Cost} (std\+::pair$<$ int, int $>$ cell2, int endx, int endy, double distance\+Weight) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a5abf870bb5dd10045207d970fe3d4802}\label{classlarcfm_1_1_density_grid_a_star_search_a5abf870bb5dd10045207d970fe3d4802}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries astar} (\mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} \&dg, int endx, int endy, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{Fringe\+Entry}} $>$ \&fringe, std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&searched, bool fourway, double direction\+Weight, double distance\+Weight, double predicted\+Distance\+Weight) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_ab8de4c2df6fe62bb8e247e8e0a28f47a}\label{classlarcfm_1_1_density_grid_a_star_search_ab8de4c2df6fe62bb8e247e8e0a28f47a}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries astarT} (\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{Density\+Grid\+Timed}} \&dg, int endx, int endy, double gs, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_1_1_fringe_entry}{Fringe\+Entry}} $>$ \&fringe, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ $>$ \&searched, bool fourway, double direction\+Weight, double distance\+Weight, double predicted\+Distance\+Weight) const
+\item 
+virtual std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_aed92f11f2dc1ef3ed88f20c041864214}{search}} (\mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} \&dg, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&start\+Pos, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&end\+Pos) const
+\item 
+virtual std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_ac9bdeaa715dda3b9a534529acab8ad07}{searchT}} (\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{Density\+Grid\+Timed}} \&dg, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&start\+Pos, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&end\+Pos, double start\+Time, double gs) const
+\item 
+virtual std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_a809d361ba1ca1c9248dbf2d8ffb735ee}{optimal\+Path}} (\mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} \&dg) const
+\item 
+virtual std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{classlarcfm_1_1_density_grid_a_star_search_a3e4370d4b7ab4ea0340e75d0abefdb49}{optimal\+PathT}} (\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{Density\+Grid\+Timed}} \&dg) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a1c1c8f2327c268e2112eee082565b85c}\label{classlarcfm_1_1_density_grid_a_star_search_a1c1c8f2327c268e2112eee082565b85c}} 
+static double {\bfseries get\+Direction\+Weight} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_ada91046ca805e759b3bcc2386c29a243}\label{classlarcfm_1_1_density_grid_a_star_search_ada91046ca805e759b3bcc2386c29a243}} 
+static void {\bfseries set\+Direction\+Weight} (double dw)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_acc77f8ff2ce4fb7af28f3c88251f2f4f}\label{classlarcfm_1_1_density_grid_a_star_search_acc77f8ff2ce4fb7af28f3c88251f2f4f}} 
+static double {\bfseries get\+Distance\+Weight} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_ab2c37c761a704007a4164da556acec3d}\label{classlarcfm_1_1_density_grid_a_star_search_ab2c37c761a704007a4164da556acec3d}} 
+static void {\bfseries set\+Distance\+Weight} (double dw)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a35a77e5c3392c53f5f8fd0b7f726f09d}\label{classlarcfm_1_1_density_grid_a_star_search_a35a77e5c3392c53f5f8fd0b7f726f09d}} 
+static bool {\bfseries is\+Fourway} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a496d9dfa5d5dfd8927997062461aa320}\label{classlarcfm_1_1_density_grid_a_star_search_a496d9dfa5d5dfd8927997062461aa320}} 
+static void {\bfseries set\+Fourway} (bool fw)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a7c978f0d29605a1d0d5f9e1c836b06dc}\label{classlarcfm_1_1_density_grid_a_star_search_a7c978f0d29605a1d0d5f9e1c836b06dc}} 
+static bool {\bfseries is\+Old\+Heuristics} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a5920170bdb900b9d1028fc8c3f6bdf9c}\label{classlarcfm_1_1_density_grid_a_star_search_a5920170bdb900b9d1028fc8c3f6bdf9c}} 
+static void {\bfseries set\+Old\+Heuristics} (bool oh)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a58bc905670826f7b3356f912e0178da6}\label{classlarcfm_1_1_density_grid_a_star_search_a58bc905670826f7b3356f912e0178da6}} 
+static double {\bfseries get\+Predicted\+Distance\+Weight} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a47ad4f5d41f91b28249aeac6e5ae0b6a}\label{classlarcfm_1_1_density_grid_a_star_search_a47ad4f5d41f91b28249aeac6e5ae0b6a}} 
+static void {\bfseries set\+Predicted\+Distance\+Weight} (double pdw)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a2e3069197fb20401ce216a3d047d2d7a}\label{classlarcfm_1_1_density_grid_a_star_search_a2e3069197fb20401ce216a3d047d2d7a}} 
+static double {\bfseries dir\+Weight} = 0.\+5
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a1435b5a14ccdf4c710fb3716eac6bb1c}\label{classlarcfm_1_1_density_grid_a_star_search_a1435b5a14ccdf4c710fb3716eac6bb1c}} 
+static double {\bfseries dist\+Weight} = 1.\+0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a2a60470d0934cf8acd01c42a557b1db9}\label{classlarcfm_1_1_density_grid_a_star_search_a2a60470d0934cf8acd01c42a557b1db9}} 
+static double {\bfseries pred\+Dist\+Weight} = 2.\+0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a462a66c7c97652ab9f3c95857f8e7e1c}\label{classlarcfm_1_1_density_grid_a_star_search_a462a66c7c97652ab9f3c95857f8e7e1c}} 
+static bool {\bfseries fourway} = false
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_aff30fe8892c40d88d9877986817baf8c}\label{classlarcfm_1_1_density_grid_a_star_search_aff30fe8892c40d88d9877986817baf8c}} 
+static bool {\bfseries old\+Heuristics} = false
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a567093bb48ac39702cc445054dd44658}\label{classlarcfm_1_1_density_grid_a_star_search_a567093bb48ac39702cc445054dd44658}} 
+static bool {\bfseries grid\+Distances}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a973c0aca1abe5880e61648055defe010}\label{classlarcfm_1_1_density_grid_a_star_search_a973c0aca1abe5880e61648055defe010}} 
+static const double {\bfseries diagonal\+Cost} = sqrt(2.\+0)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_ac6861cd039b46aec52902b7e8529fc58}\label{classlarcfm_1_1_density_grid_a_star_search_ac6861cd039b46aec52902b7e8529fc58}} 
+bool {\bfseries contains} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path, const std\+::pair$<$ int, int $>$ \&pii) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a12fe28dbed5b8b6fea04cb8fe42e4ab7}\label{classlarcfm_1_1_density_grid_a_star_search_a12fe28dbed5b8b6fea04cb8fe42e4ab7}} 
+bool {\bfseries contains} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ $>$ \&g\+Path, const \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ \&pii) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a809d361ba1ca1c9248dbf2d8ffb735ee}\label{classlarcfm_1_1_density_grid_a_star_search_a809d361ba1ca1c9248dbf2d8ffb735ee}} 
+\index{larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}!optimalPath@{optimalPath}}
+\index{optimalPath@{optimalPath}!larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}}
+\doxysubsubsection{\texorpdfstring{optimalPath()}{optimalPath()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ larcfm\+::\+Density\+Grid\+AStar\+Search\+::optimal\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} \&}]{dg }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_density_grid_search}{larcfm\+::\+Density\+Grid\+Search}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_a3e4370d4b7ab4ea0340e75d0abefdb49}\label{classlarcfm_1_1_density_grid_a_star_search_a3e4370d4b7ab4ea0340e75d0abefdb49}} 
+\index{larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}!optimalPathT@{optimalPathT}}
+\index{optimalPathT@{optimalPathT}!larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}}
+\doxysubsubsection{\texorpdfstring{optimalPathT()}{optimalPathT()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ larcfm\+::\+Density\+Grid\+AStar\+Search\+::optimal\+PathT (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{Density\+Grid\+Timed}} \&}]{dg }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed_search}{larcfm\+::\+Density\+Grid\+Timed\+Search}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_aed92f11f2dc1ef3ed88f20c041864214}\label{classlarcfm_1_1_density_grid_a_star_search_aed92f11f2dc1ef3ed88f20c041864214}} 
+\index{larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}!search@{search}}
+\index{search@{search}!larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}}
+\doxysubsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ larcfm\+::\+Density\+Grid\+AStar\+Search\+::search (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} \&}]{dg,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{start\+Pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{end\+Pos }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Perform an astar search through the given Densit\+Grid, starting at start\+Pos and ending at end\+Pos. This assumes the grid has a set of static polygons Returns a std\+::vector of grid coordinates defining a path, or null if no path found. This has the side effect of setting the searched\+Weights values in the \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} for display or analysis purposes. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_density_grid_search}{larcfm\+::\+Density\+Grid\+Search}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a_star_search_ac9bdeaa715dda3b9a534529acab8ad07}\label{classlarcfm_1_1_density_grid_a_star_search_ac9bdeaa715dda3b9a534529acab8ad07}} 
+\index{larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}!searchT@{searchT}}
+\index{searchT@{searchT}!larcfm::DensityGridAStarSearch@{larcfm::DensityGridAStarSearch}}
+\doxysubsubsection{\texorpdfstring{searchT()}{searchT()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ larcfm\+::\+Density\+Grid\+AStar\+Search\+::searchT (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{Density\+Grid\+Timed}} \&}]{dg,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{start\+Pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{end\+Pos,  }\item[{double}]{start\+Time,  }\item[{double}]{gs }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Perform a search on the given densitygrid, assuming a constant groundspeed. Polygons may be static or moving. 
+\begin{DoxyParams}{Parameters}
+{\em dg} & Timed density grid with polygon and initial weight information. Polygons may be mosing or static. \\
+\hline
+{\em start\+Pos} & Start position for search. \\
+\hline
+{\em end\+Pos} & Ending \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} for search. \\
+\hline
+{\em start\+Time} & Absolute time to start the search at start\+Pos \\
+\hline
+{\em gs} & ground speed of aircraft \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector of grid coordinates for a successful path, or null if no path found. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed_search}{larcfm\+::\+Density\+Grid\+Timed\+Search}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Density\+Grid\+AStar\+Search.\+h\item 
+Modules/\+ACCo\+RD/src/Density\+Grid\+AStar\+Search.\+cpp\end{DoxyCompactItemize}

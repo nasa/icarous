@@ -1,0 +1,432 @@
+\hypertarget{classlarcfm_1_1_sequence_reader}{}\doxysection{larcfm\+::Sequence\+Reader Class Reference}
+\label{classlarcfm_1_1_sequence_reader}\index{larcfm::SequenceReader@{larcfm::SequenceReader}}
+
+
+{\ttfamily \#include $<$Sequence\+Reader.\+h$>$}
+
+Inheritance diagram for larcfm\+::Sequence\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_sequence_reader}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad434c2aadff122f572d5305fe4b5b972}{Sequence\+Reader}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a7497ed74e9e8ebb9fdb13d35af0058a5}\label{classlarcfm_1_1_sequence_reader_a7497ed74e9e8ebb9fdb13d35af0058a5}} 
+{\bfseries Sequence\+Reader} (const std\+::string \&filename)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a37607e7e79d15a994634b4d03e70d790}{open}} (const std\+::string \&filename)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a854236fa5ab07f66ac4d615c06090b03}{open}} (std\+::istream $\ast$in)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad874bcf0ce2dba240dfd00babe263985}{sequence\+Size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_abd03f860ace0de61cf0731e22dc9c93f}{set\+Window\+Size}} (int s)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_af88b1caab7d29f4fce7a6fa69676539b}{get\+Window\+Size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a472badbfbbce6a9a034f2a095dd49bbb}{set\+Active}} (double tm)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_af4e971da541dc97f83c1a005f4abd9ec}{set\+First\+Active}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afcb2cb30dd5845d0aa4e2b0e82bb48ba}{set\+Last\+Active}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a99eb9af93506cb548ba5253b0fe358b3}{has\+Entry}} (const std\+::string \&name, double time)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_abb0ffc4da7b944714f85e10a218b29b1}{get\+Sequence\+Position}} (const std\+::string \&name, double time)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_adac5f43f2f74f976b95b8e1b7f41b141}{get\+Sequence\+Velocity}} (const std\+::string \&name, double time)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afea5dcaaf625ea947b88b2bf4741d942}{set\+Entry}} (double time, const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a15113cc8b8950c0d95eff706e4e05358}{clear\+Singletons}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a86c59139f733beb382b3444bec7d156f}{remove\+Aircraft}} (const std\+::vector$<$ std\+::string $>$ \&alist)
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_ad04498813e68162836907af256c7f924}{sequence\+Keys}} ()
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a0653fa534dd4e55f874c32dba10d2353}{sequence\+Keys\+Up\+To}} (int n, double tm)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_afb6a25fb2d25436d135f1329f7d9de60}{has\+Extra\+Column\+Data}} (double time, const std\+::string \&ac\+Name, const std\+::string \&colname) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a12627c0290de57b747c29138e4c05918}{get\+Extra\+Column\+Value}} (double time, const std\+::string \&ac\+Name, const std\+::string \&colname) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a810ad6a4555970aba54898373433ed51}{get\+Extra\+Column\+Bool}} (double time, const std\+::string \&ac\+Name, const std\+::string \&colname) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a89ee96a6b745bc82a756e66e280388d5}{get\+Extra\+Column\+String}} (double time, const std\+::string \&ac\+Name, const std\+::string \&colname) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a5b4fa4eb083c9f49f78064e809cace4e}{has\+Extra\+Column\+Data}} (int ac, const std\+::string \&colname) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_acdb304c80d5feecfda075674d6962d32}{get\+Extra\+Column\+Value}} (int ac, const std\+::string \&colname) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a07d0ea7892f42402e55193b38faa4270}{get\+Extra\+Column\+Bool}} (int ac, const std\+::string \&colname) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_sequence_reader_a1e5616f1ee020334673c71c401f5fdc7}{get\+Extra\+Column\+String}} (int ac, const std\+::string \&colname) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a7f03098b88fb7311ce503f9516f2ea50}\label{classlarcfm_1_1_sequence_reader_a7f03098b88fb7311ce503f9516f2ea50}} 
+typedef std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries Data\+Point}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a0a732a5948b5f7317f37d59806efb816}\label{classlarcfm_1_1_sequence_reader_a0a732a5948b5f7317f37d59806efb816}} 
+typedef std\+::map$<$ std\+::string, Data\+Point $>$ {\bfseries Sequence\+Entry}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a641eb5c8a782022e2990a22da0d44405}\label{classlarcfm_1_1_sequence_reader_a641eb5c8a782022e2990a22da0d44405}} 
+typedef std\+::map$<$ double, Sequence\+Entry $>$ {\bfseries Sequence\+Entry\+Map}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a7bc18a1a7d51dc27d5c3c386d6f44422}\label{classlarcfm_1_1_sequence_reader_a7bc18a1a7d51dc27d5c3c386d6f44422}} 
+typedef std\+::map$<$ \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, std\+::string, int $>$, \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, bool, std\+::string $>$ $>$ {\bfseries all\+Extra\+Tbl\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_ae9c3c939a436f21906c954f61653f830}\label{classlarcfm_1_1_sequence_reader_ae9c3c939a436f21906c954f61653f830}} 
+void {\bfseries loadfile} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a3d9945f9751b63da56b9b4b214a47f0e}\label{classlarcfm_1_1_sequence_reader_a3d9945f9751b63da56b9b4b214a47f0e}} 
+void {\bfseries build\+Active} (double tm)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a0f0bb70d499a9ee203befa50d83c4e5d}\label{classlarcfm_1_1_sequence_reader_a0f0bb70d499a9ee203befa50d83c4e5d}} 
+int {\bfseries window\+Size}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_aa93f631cb7de4bde3a5e903541346041}\label{classlarcfm_1_1_sequence_reader_aa93f631cb7de4bde3a5e903541346041}} 
+Sequence\+Entry\+Map {\bfseries sequence\+Table}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a3163e2828e904ee306d6c6c24c9cb40f}\label{classlarcfm_1_1_sequence_reader_a3163e2828e904ee306d6c6c24c9cb40f}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries name\+Index}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a4ebaf5379d9a6dea41d71a41627874a6}\label{classlarcfm_1_1_sequence_reader_a4ebaf5379d9a6dea41d71a41627874a6}} 
+std\+::set$<$ std\+::string $>$ {\bfseries names}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_abbdcd653aebcf397759d21e0c7530d0e}\label{classlarcfm_1_1_sequence_reader_abbdcd653aebcf397759d21e0c7530d0e}} 
+all\+Extra\+Tbl\+Type {\bfseries all\+Extracolumn\+Values}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+This reads in and stores a set of aircraft states, possibly over time, (and parameters) from a file The Aircraft states are stored in an Array\+List\texorpdfstring{$<$}{<}\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{Aircraft\+State}}\texorpdfstring{$>$}{>}.
+
+This can read state/history files as well as sequence files (slight variations on history files).
+
+State files consist of comma or space-\/separated values, with one point per line. Required columns include aircraft name, 3 position columns (either x\mbox{[}nmi\mbox{]}/y\mbox{[}nmi\mbox{]}/z\mbox{[}ft\mbox{]} or latitude\mbox{[}deg\mbox{]}/longitude\mbox{[}deg\mbox{]}/altitude\mbox{[}ft\mbox{]}) and 3 velocity columns (either vx\mbox{[}kn\mbox{]}/vy\mbox{[}kn\mbox{]}/vz\mbox{[}fpm\mbox{]} or track\mbox{[}deg\mbox{]}/gs\mbox{[}kn\mbox{]}/vs\mbox{[}fpm\mbox{]}).
+
+An optional column is time \mbox{[}s\mbox{]}. If it is included, a \char`\"{}history\char`\"{} will be build if an aircraft has more than one entry. If it is not included, only the last entry for an aircraft will be stored.
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above).
+
+If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark ("{}). The aircraft name is case sensitive, so US54A != Us54a != us54a.
+
+Any empty line or any line starting with a hash sign (\#) is ignored.
+
+Files may also include parameter definitions prior to other data. Parameter definitions are of the form \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} = \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}, one per line, where \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} is a case-\/insensitive alphanumeric word and \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} is either a numeral or string. The \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}. Note that parameters require a space on either side of the equals sign. Note that it is possible to also update the stored parameter values (or store additional ones) through API calls.
+
+Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type.
+
+If the optional parameter \char`\"{}filetype\char`\"{} is specified, its value must be \char`\"{}state\char`\"{}, \char`\"{}history\char`\"{}, or \char`\"{}sequence\char`\"{} for this reader to accept the file without error.
+
+This allows for arbitrary additional user-\/defined columns. New columns\textquotesingle{} information may be accessed by the get get\+New\+Column\+Value(), get\+New\+Column\+Boolean(), or get\+New\+Column\+String() methods. The 2-\/parameter versions (index, column) inherited from \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}} will only return the last active values for a given aircraft (which may be blank). To retrieve values at arbitrary times, use the 3-\/parameter versions (time, name, column). New columns are assumed unitless unless units are specified.
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_ad434c2aadff122f572d5305fe4b5b972}\label{classlarcfm_1_1_sequence_reader_ad434c2aadff122f572d5305fe4b5b972}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!SequenceReader@{SequenceReader}}
+\index{SequenceReader@{SequenceReader}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{SequenceReader()}{SequenceReader()}}
+{\footnotesize\ttfamily larcfm\+::\+Sequence\+Reader\+::\+Sequence\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+A new, empty \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. This may be used to store parameters, but nothing else. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a15113cc8b8950c0d95eff706e4e05358}\label{classlarcfm_1_1_sequence_reader_a15113cc8b8950c0d95eff706e4e05358}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!clearSingletons@{clearSingletons}}
+\index{clearSingletons@{clearSingletons}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{clearSingletons()}{clearSingletons()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::clear\+Singletons (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+remove any time-\/point entries for which there is only one aircraft (and so no chance of conflict) \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a810ad6a4555970aba54898373433ed51}\label{classlarcfm_1_1_sequence_reader_a810ad6a4555970aba54898373433ed51}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnBool@{getExtraColumnBool}}
+\index{getExtraColumnBool@{getExtraColumnBool}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnBool()}{getExtraColumnBool()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Sequence\+Reader\+::get\+Extra\+Column\+Bool (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const std\+::string \&}]{ac\+Name,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft at a given time, interpreted as a boolean, or false if there is no info ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em ac\+Name} & \\
+\hline
+{\em colname} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+information
+\end{DoxyReturn}
+Returns the column value associated with a given aircraft at a given time, interpreted as a boolean, or false if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a07d0ea7892f42402e55193b38faa4270}\label{classlarcfm_1_1_sequence_reader_a07d0ea7892f42402e55193b38faa4270}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnBool@{getExtraColumnBool}}
+\index{getExtraColumnBool@{getExtraColumnBool}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnBool()}{getExtraColumnBool()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Reader\+::get\+Extra\+Column\+Bool (\begin{DoxyParamCaption}\item[{int}]{ac,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft, interpreted as a boolean, or false if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a89ee96a6b745bc82a756e66e280388d5}\label{classlarcfm_1_1_sequence_reader_a89ee96a6b745bc82a756e66e280388d5}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnString@{getExtraColumnString}}
+\index{getExtraColumnString@{getExtraColumnString}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnString()}{getExtraColumnString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Sequence\+Reader\+::get\+Extra\+Column\+String (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const std\+::string \&}]{ac\+Name,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft at a given time, interpreted as a string, or the empty string if there is no info ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em ac\+Name} & \\
+\hline
+{\em colname} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+information
+\end{DoxyReturn}
+Returns the column value associated with a given aircraft at a given time, interpreted as a string, or the empty string if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a1e5616f1ee020334673c71c401f5fdc7}\label{classlarcfm_1_1_sequence_reader_a1e5616f1ee020334673c71c401f5fdc7}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnString@{getExtraColumnString}}
+\index{getExtraColumnString@{getExtraColumnString}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnString()}{getExtraColumnString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+State\+Reader\+::get\+Extra\+Column\+String (\begin{DoxyParamCaption}\item[{int}]{ac,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft, interpreted as a string, or the empty string if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a12627c0290de57b747c29138e4c05918}\label{classlarcfm_1_1_sequence_reader_a12627c0290de57b747c29138e4c05918}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnValue@{getExtraColumnValue}}
+\index{getExtraColumnValue@{getExtraColumnValue}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnValue()}{getExtraColumnValue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Sequence\+Reader\+::get\+Extra\+Column\+Value (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const std\+::string \&}]{ac\+Name,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft at a given time, interpreted as a double, or NaN if there is no info ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em ac\+Name} & \\
+\hline
+{\em colname} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+information
+\end{DoxyReturn}
+Returns the column value associated with a given aircraft at a given time, interpreted as a double, or NaN if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_acdb304c80d5feecfda075674d6962d32}\label{classlarcfm_1_1_sequence_reader_acdb304c80d5feecfda075674d6962d32}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getExtraColumnValue@{getExtraColumnValue}}
+\index{getExtraColumnValue@{getExtraColumnValue}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getExtraColumnValue()}{getExtraColumnValue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+State\+Reader\+::get\+Extra\+Column\+Value (\begin{DoxyParamCaption}\item[{int}]{ac,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Returns the column value associated with a given aircraft, interpreted as a double, or NaN if there is no info \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_abb0ffc4da7b944714f85e10a218b29b1}\label{classlarcfm_1_1_sequence_reader_abb0ffc4da7b944714f85e10a218b29b1}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getSequencePosition@{getSequencePosition}}
+\index{getSequencePosition@{getSequencePosition}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getSequencePosition()}{getSequencePosition()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Sequence\+Reader\+::get\+Sequence\+Position (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+Returns the \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} entry for a given name and time. If no entry for this name and time, returns a zero position and sets a warning. 
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+{\em time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position
+\end{DoxyReturn}
+Returns the \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} entry for a given name and time. If no entry for this name and time, returns a zero position and sets a warning. \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_adac5f43f2f74f976b95b8e1b7f41b141}\label{classlarcfm_1_1_sequence_reader_adac5f43f2f74f976b95b8e1b7f41b141}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getSequenceVelocity@{getSequenceVelocity}}
+\index{getSequenceVelocity@{getSequenceVelocity}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getSequenceVelocity()}{getSequenceVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Sequence\+Reader\+::get\+Sequence\+Velocity (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+Returns the \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} entry for a given name and time. If no entry for this name and time, returns a zero velocity and sets a warning. 
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+{\em time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity
+\end{DoxyReturn}
+Returns the \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} entry for a given name and time. If no entry for this name and time, returns a zero velocity and sets a warning. \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_af88b1caab7d29f4fce7a6fa69676539b}\label{classlarcfm_1_1_sequence_reader_af88b1caab7d29f4fce7a6fa69676539b}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!getWindowSize@{getWindowSize}}
+\index{getWindowSize@{getWindowSize}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{getWindowSize()}{getWindowSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Sequence\+Reader\+::get\+Window\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the current window size \begin{DoxyReturn}{Returns}
+size
+\end{DoxyReturn}
+Returns the current window size \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a99eb9af93506cb548ba5253b0fe358b3}\label{classlarcfm_1_1_sequence_reader_a99eb9af93506cb548ba5253b0fe358b3}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!hasEntry@{hasEntry}}
+\index{hasEntry@{hasEntry}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{hasEntry()}{hasEntry()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Sequence\+Reader\+::has\+Entry (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+Returns true if an entry exists for the given name and time 
+\begin{DoxyParams}{Parameters}
+{\em name} & \\
+\hline
+{\em time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if aircraft exists
+\end{DoxyReturn}
+Returns true if an entry exists for the given name and time \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_afb6a25fb2d25436d135f1329f7d9de60}\label{classlarcfm_1_1_sequence_reader_afb6a25fb2d25436d135f1329f7d9de60}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!hasExtraColumnData@{hasExtraColumnData}}
+\index{hasExtraColumnData@{hasExtraColumnData}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{hasExtraColumnData()}{hasExtraColumnData()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Sequence\+Reader\+::has\+Extra\+Column\+Data (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const std\+::string \&}]{ac\+Name,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Return true if the given aircraft has data for the indicated column at the inicated time. 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em ac\+Name} & \\
+\hline
+{\em colname} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if extra data is available
+\end{DoxyReturn}
+Updates a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} with new parameters based on user columns for a given aircraft at a given time. \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a5b4fa4eb083c9f49f78064e809cace4e}\label{classlarcfm_1_1_sequence_reader_a5b4fa4eb083c9f49f78064e809cace4e}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!hasExtraColumnData@{hasExtraColumnData}}
+\index{hasExtraColumnData@{hasExtraColumnData}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{hasExtraColumnData()}{hasExtraColumnData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Reader\+::has\+Extra\+Column\+Data (\begin{DoxyParamCaption}\item[{int}]{ac,  }\item[{const std\+::string \&}]{colname }\end{DoxyParamCaption}) const}
+
+Return true if the given aircraft has data for the indicated column. 
+\begin{DoxyParams}{Parameters}
+{\em ac} & \\
+\hline
+{\em colname} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a37607e7e79d15a994634b4d03e70d790}\label{classlarcfm_1_1_sequence_reader_a37607e7e79d15a994634b4d03e70d790}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!open@{open}}
+\index{open@{open}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Sequence\+Reader\+::open (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Read a new file into an existing \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. Parameters are preserved if they are not specified in the file. 
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_state_reader_a73324e16f9f8db7ed4be646039377b17}{larcfm\+::\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a854236fa5ab07f66ac4d615c06090b03}\label{classlarcfm_1_1_sequence_reader_a854236fa5ab07f66ac4d615c06090b03}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!open@{open}}
+\index{open@{open}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::open (\begin{DoxyParamCaption}\item[{std\+::istream $\ast$}]{ins }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Read a new stream into an existing \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}}. Parameters are preserved if they are not specified in the file. 
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_state_reader_a80c794469325322c4103067bd1c78c1a}{larcfm\+::\+State\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a86c59139f733beb382b3444bec7d156f}\label{classlarcfm_1_1_sequence_reader_a86c59139f733beb382b3444bec7d156f}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!removeAircraft@{removeAircraft}}
+\index{removeAircraft@{removeAircraft}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{removeAircraft()}{removeAircraft()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::remove\+Aircraft (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{alist }\end{DoxyParamCaption})}
+
+This purges all references of a given set of aircraft from this reader. This then resets the active time to the last time in the list 
+\begin{DoxyParams}{Parameters}
+{\em alist} & List of aircraft identifiers \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_ad04498813e68162836907af256c7f924}\label{classlarcfm_1_1_sequence_reader_ad04498813e68162836907af256c7f924}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!sequenceKeys@{sequenceKeys}}
+\index{sequenceKeys@{sequenceKeys}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{sequenceKeys()}{sequenceKeys()}}
+{\footnotesize\ttfamily vector$<$ double $>$ larcfm\+::\+Sequence\+Reader\+::sequence\+Keys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns a sorted list of all sequence keys \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a0653fa534dd4e55f874c32dba10d2353}\label{classlarcfm_1_1_sequence_reader_a0653fa534dd4e55f874c32dba10d2353}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!sequenceKeysUpTo@{sequenceKeysUpTo}}
+\index{sequenceKeysUpTo@{sequenceKeysUpTo}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{sequenceKeysUpTo()}{sequenceKeysUpTo()}}
+{\footnotesize\ttfamily vector$<$ double $>$ larcfm\+::\+Sequence\+Reader\+::sequence\+Keys\+Up\+To (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{double}]{tm }\end{DoxyParamCaption})}
+
+a list of n \texorpdfstring{$>$}{>} 0 sequence keys, stopping at the given time (inclusive) \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_ad874bcf0ce2dba240dfd00babe263985}\label{classlarcfm_1_1_sequence_reader_ad874bcf0ce2dba240dfd00babe263985}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!sequenceSize@{sequenceSize}}
+\index{sequenceSize@{sequenceSize}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{sequenceSize()}{sequenceSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Sequence\+Reader\+::sequence\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of sequence entries in the file \begin{DoxyReturn}{Returns}
+size
+\end{DoxyReturn}
+Return the number of sequence entries in the file \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_a472badbfbbce6a9a034f2a095dd49bbb}\label{classlarcfm_1_1_sequence_reader_a472badbfbbce6a9a034f2a095dd49bbb}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!setActive@{setActive}}
+\index{setActive@{setActive}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{setActive()}{setActive()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::set\+Active (\begin{DoxyParamCaption}\item[{double}]{tm }\end{DoxyParamCaption})}
+
+Given a sequence key, set the active set of states. If no such key exists, the active set is left empty. 
+\begin{DoxyParams}{Parameters}
+{\em tm} & Sequence key (time) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_afea5dcaaf625ea947b88b2bf4741d942}\label{classlarcfm_1_1_sequence_reader_afea5dcaaf625ea947b88b2bf4741d942}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!setEntry@{setEntry}}
+\index{setEntry@{setEntry}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{setEntry()}{setEntry()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::set\+Entry (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const std\+::string \&}]{name,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption})}
+
+sets a particular entry without reading in from a file 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+{\em name} & \\
+\hline
+{\em p} & \\
+\hline
+{\em v} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_af4e971da541dc97f83c1a005f4abd9ec}\label{classlarcfm_1_1_sequence_reader_af4e971da541dc97f83c1a005f4abd9ec}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!setFirstActive@{setFirstActive}}
+\index{setFirstActive@{setFirstActive}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{setFirstActive()}{setFirstActive()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::set\+First\+Active (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set the first entry to be the active one. \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_afcb2cb30dd5845d0aa4e2b0e82bb48ba}\label{classlarcfm_1_1_sequence_reader_afcb2cb30dd5845d0aa4e2b0e82bb48ba}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!setLastActive@{setLastActive}}
+\index{setLastActive@{setLastActive}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{setLastActive()}{setLastActive()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::set\+Last\+Active (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set the last entry to be the active one. \mbox{\Hypertarget{classlarcfm_1_1_sequence_reader_abd03f860ace0de61cf0731e22dc9c93f}\label{classlarcfm_1_1_sequence_reader_abd03f860ace0de61cf0731e22dc9c93f}} 
+\index{larcfm::SequenceReader@{larcfm::SequenceReader}!setWindowSize@{setWindowSize}}
+\index{setWindowSize@{setWindowSize}!larcfm::SequenceReader@{larcfm::SequenceReader}}
+\doxysubsubsection{\texorpdfstring{setWindowSize()}{setWindowSize()}}
+{\footnotesize\ttfamily void larcfm\+::\+Sequence\+Reader\+::set\+Window\+Size (\begin{DoxyParamCaption}\item[{int}]{s }\end{DoxyParamCaption})}
+
+Sets the window size for the active sequence set 
+\begin{DoxyParams}{Parameters}
+{\em s} & new window size\\
+\hline
+\end{DoxyParams}
+Sets the window size for the active sequence set 
+\begin{DoxyParams}{Parameters}
+{\em s} & \texorpdfstring{$>$}{>} 0 \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Sequence\+Reader.\+h\item 
+Modules/\+ACCo\+RD/src/Sequence\+Reader.\+cpp\end{DoxyCompactItemize}

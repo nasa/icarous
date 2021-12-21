@@ -1,0 +1,72 @@
+\hypertarget{_priority_core_8h_source}{}\doxysection{Priority\+Core.\+h}
+\label{_priority_core_8h_source}\index{Modules/ACCoRD/inc/PriorityCore.h@{Modules/ACCoRD/inc/PriorityCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Core Priority Rules Computation }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Authors: Alwyn Goodloe, Cesar Munoz, and Anthony Narkawicz}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{6 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{7 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{9 \textcolor{comment}{ */}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef PRIORITYCORE\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define PRIORITYCORE\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}CDSSCore.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_priority_core}{PriorityCore}}  \{}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{private}:}
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_priority_core}{PriorityCore}}() \{}
+\DoxyCodeLine{37         \textcolor{comment}{// disallow creation of objects of this type.}}
+\DoxyCodeLine{38     \}}
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{45     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}{TC}}; }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{54     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}{CRUISE\_DEF}};}
+\DoxyCodeLine{61     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}{VERTICAL\_DEADBAND}};}
+\DoxyCodeLine{68     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}{LATERAL\_DEADBAND}};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{keyword}{static} \textcolor{keywordtype}{double} LATERAL\_RELATIVE\_DEADBAND;  }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{private}:}
+\DoxyCodeLine{80     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a844bc017cf395fbf16e26e246c75ad35}{isDescending}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{86     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a4462e50ac979faecacba41cf72c79e49}{isNotDescending}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{92     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_af24737ca831cf0fe0a04600a588b7ff0}{isCruising}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{98     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a847fe15249a3e60acb71b113bb5d8e8b}{isAscending}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{104     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_af1c0538357798e479a67e3450fd725f1}{isNotAscending}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{110     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a05d56a8da7ddc58a779ffc398ff6936a}{isNotCruising}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{116     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a1c59de30e7bfe5bf51ec5cef1a81ed09}{PossiblyDescendingORCruising}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{122     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a37b71b67863959e315d7217e62803a89}{PossiblyCruisingORAscending}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{129     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a4af5a31dccc3df732b0f5ea71df40290}{HorizontalRulesApply}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ao\_V, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ai\_V);}
+\DoxyCodeLine{136     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_afcd4fecc30a8b489eb9efcac6b7497c1}{VerticalRulesApply}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\&  ao\_V, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ai\_V);}
+\DoxyCodeLine{145     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_aeae18c80fc25287f5e991859fff0fa62}{VelComponent}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi);}
+\DoxyCodeLine{155     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_aabc224819ae05c52774763f54f24c91f}{VelComponentAt}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi);}
+\DoxyCodeLine{164     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a94b6c61cd419df7787e797b9c41433ef}{EntryComponent}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi);}
+\DoxyCodeLine{173     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_ab9473fc75fac831b1ef9743331bedd0f}{HorizontalDeadband}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ao\_S, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ao\_V, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ai\_S, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ai\_V);}
+\DoxyCodeLine{180     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_adc5b5b392423b1beb244630a9acf0338}{VerticalDeadband}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\&  ao\_V, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& ai\_V);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{keyword}{public}:}
+\DoxyCodeLine{193     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a9c9fcd57eb53420c3c28d52827211bc3}{lateral\_only}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\&  so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi);}
+\DoxyCodeLine{194     }
+\DoxyCodeLine{206     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_priority_core_a538c6e705ce794bd95ef0bc716e58fdc}{check}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keywordtype}{bool} mo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{bool} mi);}
+\DoxyCodeLine{207     }
+\DoxyCodeLine{208     }
+\DoxyCodeLine{209 \};}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* PRIORITYCORE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

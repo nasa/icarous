@@ -20,8 +20,8 @@
 \DoxyCodeLine{16     \textcolor{keywordtype}{int} source;}
 \DoxyCodeLine{17     \textcolor{keywordtype}{int} id;}
 \DoxyCodeLine{18     \textcolor{keywordtype}{double} time;}
-\DoxyCodeLine{19     larcfm::Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};}
-\DoxyCodeLine{20     larcfm::Velocity velocity;}
+\DoxyCodeLine{19     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}};}
+\DoxyCodeLine{20     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} velocity;}
 \DoxyCodeLine{21     \textcolor{keywordtype}{double} posSigma[6];}
 \DoxyCodeLine{22     \textcolor{keywordtype}{double} velSigma[6];}
 \DoxyCodeLine{23 \}\mbox{\hyperlink{structobject}{object}};}
@@ -29,20 +29,20 @@
 \DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{class_traffic_monitor}{TrafficMonitor}}\{}
 \DoxyCodeLine{26   \textcolor{keyword}{protected}:}
 \DoxyCodeLine{27     std::map<std::string,object> trafficList;}
-\DoxyCodeLine{28     larcfm::Position position;}
-\DoxyCodeLine{29     larcfm::Velocity velocity;}
+\DoxyCodeLine{28     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} position;}
+\DoxyCodeLine{29     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} velocity;}
 \DoxyCodeLine{30     \textcolor{keywordtype}{double} elapsedTime;}
 \DoxyCodeLine{31     \textcolor{keywordtype}{double} posSigma[6];}
 \DoxyCodeLine{32     \textcolor{keywordtype}{double} velSigma[6];}
 \DoxyCodeLine{33   \textcolor{keyword}{public}:}
 \DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} InputIntruderData(\textcolor{keyword}{const} \textcolor{keywordtype}{object} obj)\{trafficList[obj.callsign] = obj; \textcolor{keywordflow}{return} trafficList.size();\}}
-\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} InputOwnshipData(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} larcfm::Velocity vel,\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} sigPos[6],\textcolor{keywordtype}{double} sigVel[6])\{}
+\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} InputOwnshipData(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} pos,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} vel,\textcolor{keywordtype}{double} time,\textcolor{keywordtype}{double} sigPos[6],\textcolor{keywordtype}{double} sigVel[6])\{}
 \DoxyCodeLine{36         \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}} = pos; velocity = vel; elapsedTime = time; }
 \DoxyCodeLine{37         std::memcpy(posSigma,sigPos,\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*6);}
 \DoxyCodeLine{38         std::memcpy(velSigma,sigVel,\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})*6);}
 \DoxyCodeLine{39     \}}
-\DoxyCodeLine{40     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} MonitorTraffic(larcfm::Velocity windfrom)=0;}
-\DoxyCodeLine{41     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed) = 0;}
+\DoxyCodeLine{40     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} MonitorTraffic(\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} windfrom)=0;}
+\DoxyCodeLine{41     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed) = 0;}
 \DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} UpdateParameters(std::string params) = 0;}
 \DoxyCodeLine{43     \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} GetTrafficAlerts(\textcolor{keywordtype}{int} index,std::string\& trafficID,\textcolor{keywordtype}{int}\& alertLevel)=0;}
 \DoxyCodeLine{44     \textcolor{keyword}{virtual} bands\_t GetTrackBands(\textcolor{keywordtype}{void}) = 0;}

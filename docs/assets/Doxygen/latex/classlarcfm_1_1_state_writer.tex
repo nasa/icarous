@@ -1,0 +1,296 @@
+\hypertarget{classlarcfm_1_1_state_writer}{}\doxysection{larcfm\+::State\+Writer Class Reference}
+\label{classlarcfm_1_1_state_writer}\index{larcfm::StateWriter@{larcfm::StateWriter}}
+
+
+{\ttfamily \#include $<$State\+Writer.\+h$>$}
+
+Inheritance diagram for larcfm\+::State\+Writer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_state_writer}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_state_writer_a52cbe78c20b26e13d3bc776052080cd4}{State\+Writer}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a5a79c977c714209786ea78069a77bb7a}{open}} (const std\+::string \&filename)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a799d4058372b7e7343a13f7d8a1a679e}\label{classlarcfm_1_1_state_writer_a799d4058372b7e7343a13f7d8a1a679e}} 
+void {\bfseries open} (std\+::ostream $\ast$writer)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a9d01f1ccfe433b3b07e9450bfc308690}\label{classlarcfm_1_1_state_writer_a9d01f1ccfe433b3b07e9450bfc308690}} 
+void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a0088ae3634fb654fff626e2a3aa01384}\label{classlarcfm_1_1_state_writer_a0088ae3634fb654fff626e2a3aa01384}} 
+bool {\bfseries is\+Velocity} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_ad9e8fc7aac0aa7c180d847a2fd12d4a3}\label{classlarcfm_1_1_state_writer_ad9e8fc7aac0aa7c180d847a2fd12d4a3}} 
+void {\bfseries set\+Velocity} (bool velocity)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a10e38aab1af16ebb53725b524c60fd00}\label{classlarcfm_1_1_state_writer_a10e38aab1af16ebb53725b524c60fd00}} 
+bool {\bfseries is\+Trk\+Gs\+Vs} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_ab160e9c428b8a523280245edfc0f102e}\label{classlarcfm_1_1_state_writer_ab160e9c428b8a523280245edfc0f102e}} 
+void {\bfseries set\+Trk\+Gs\+Vs} (bool trkgsvs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_ac5fb870613efe6437d822c3d48533018}\label{classlarcfm_1_1_state_writer_ac5fb870613efe6437d822c3d48533018}} 
+int {\bfseries get\+Precision} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a792d73bf8099a5297b0d98ee0e3202c5}\label{classlarcfm_1_1_state_writer_a792d73bf8099a5297b0d98ee0e3202c5}} 
+void {\bfseries set\+Precision} (int precision)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_state_writer_ae4bcfbc0171d768b2b82307814e17d1c}{is\+Output\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a0f01ac1ba0a4df472b23dd426e5f2419}{set\+Output\+Time}} (bool display\+\_\+time)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_state_writer_ac65fc969ec2bbefbcbaa57257a050ad5}{is\+Output\+Units}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a6c30d8ac3c8ba5d508171b84523258aa}{set\+Output\+Units}} (bool display\+\_\+units)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a222886b0f5f05c3d74177aa5f54c069d}{set\+Column\+Delimiter\+Tab}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a1bf08672baec2ce9ee7cc67118f91774}{set\+Column\+Delimiter\+Comma}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_afd63c4db1ebe8b601266e28fd3e2840a}{set\+Column\+Delimiter\+Space}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_aa3510fd4542cc92e168be05cef6f9d63}{add\+Comment}} (std\+::string comment)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_state_writer_a7a6d71b853d3ce0a969b2b62c2425d78}{set\+Parameters}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} pr)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a2631875cd221b135f095a0fc13a50bdc}\label{classlarcfm_1_1_state_writer_a2631875cd221b135f095a0fc13a50bdc}} 
+void {\bfseries write\+State} (const std\+::string \&name, double time, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a24902edf800d13aba005d0a71b83e796}\label{classlarcfm_1_1_state_writer_a24902edf800d13aba005d0a71b83e796}} 
+void {\bfseries write\+State} (const std\+::string \&name, double time, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a9a47eb865370ae73e336980358b67d7f}\label{classlarcfm_1_1_state_writer_a9a47eb865370ae73e336980358b67d7f}} 
+void {\bfseries write\+State} (const std\+::string \&name, double time, const std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \&pv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a7346b933f1713d8773babeba3e930f3c}\label{classlarcfm_1_1_state_writer_a7346b933f1713d8773babeba3e930f3c}} 
+void {\bfseries write\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a13214ff2ec3403badb4724a061367344}\label{classlarcfm_1_1_state_writer_a13214ff2ec3403badb4724a061367344}} 
+void {\bfseries write\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_state_writer_a2432112e1e4acef5c4f5f473daa02d57}{size}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a32300afb0cdfec90cad1180fadff5654}\label{classlarcfm_1_1_state_writer_a32300afb0cdfec90cad1180fadff5654}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_acbdcb38b1650b28bfcb14c0b7f933499}\label{classlarcfm_1_1_state_writer_acbdcb38b1650b28bfcb14c0b7f933499}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_state_writer_a70b9fb3aa82d4071344077c235a7e384}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_state_writer_a661cf6a9c929a42d5eba8ea254bbfbb8}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_state_writer_a9faef5964ce81bba9da2e0d328477485}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_state_writer_a48449c596e366060b8bb153198c1e08f}{get\+Message\+No\+Clear}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_afc69007d9d187792d32649ad02570485}\label{classlarcfm_1_1_state_writer_afc69007d9d187792d32649ad02570485}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_aefa16521b536d000ad32cf0feef99435}\label{classlarcfm_1_1_state_writer_aefa16521b536d000ad32cf0feef99435}} 
+\mbox{\hyperlink{classlarcfm_1_1_separated_output}{Separated\+Output}} {\bfseries output}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a130be4360f1a0d6202f7441f39f51ea2}\label{classlarcfm_1_1_state_writer_a130be4360f1a0d6202f7441f39f51ea2}} 
+bool {\bfseries velocity}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a4f96fd6a1e628bf2a185ceab4d790623}\label{classlarcfm_1_1_state_writer_a4f96fd6a1e628bf2a185ceab4d790623}} 
+bool {\bfseries latlon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_aa06be1f5ffe44ae4ee34b7d4b910c4e4}\label{classlarcfm_1_1_state_writer_aa06be1f5ffe44ae4ee34b7d4b910c4e4}} 
+bool {\bfseries trkgsvs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a2a3649c64dda8f23322cc919a19c2836}\label{classlarcfm_1_1_state_writer_a2a3649c64dda8f23322cc919a19c2836}} 
+bool {\bfseries display\+\_\+time}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a8c2200972074fc269cd8c9ccc97c6d11}\label{classlarcfm_1_1_state_writer_a8c2200972074fc269cd8c9ccc97c6d11}} 
+bool {\bfseries first\+\_\+line}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a549771851434a8b6b3506b5263f95e12}\label{classlarcfm_1_1_state_writer_a549771851434a8b6b3506b5263f95e12}} 
+bool {\bfseries display\+\_\+units}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_af7da74095cfd2b49bfd5bc590a80e8cd}\label{classlarcfm_1_1_state_writer_af7da74095cfd2b49bfd5bc590a80e8cd}} 
+int {\bfseries precision}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a8e52d250ce130553c82b4835c9da3156}\label{classlarcfm_1_1_state_writer_a8e52d250ce130553c82b4835c9da3156}} 
+int {\bfseries lines}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_aef50897a40c9b2a2eb2282ded4b42418}\label{classlarcfm_1_1_state_writer_aef50897a40c9b2a2eb2282ded4b42418}} 
+std\+::string {\bfseries fname}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_ac73eef8cbe2f0c6a766acb6b06685cf5}\label{classlarcfm_1_1_state_writer_ac73eef8cbe2f0c6a766acb6b06685cf5}} 
+std\+::ostream $\ast$ {\bfseries fw}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a14ca85e6362b2b11233838d9bd4959ff}\label{classlarcfm_1_1_state_writer_a14ca85e6362b2b11233838d9bd4959ff}} 
+static const double {\bfseries default\+\_\+time} = 0.\+0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This object writes a set of aircraft states, possibly over time, (and parameters) from a file The Aircraft states are stored in an Array\+List$<$\+Aircraft\+State$>$.
+
+State files consist of comma or space-\/separated values, with one point per line. Required columns include aircraft name, 3 position columns (either x\mbox{[}nmi\mbox{]}/y\mbox{[}nmi\mbox{]}/z\mbox{[}ft\mbox{]} or latitude\mbox{[}deg\mbox{]}/longitude\mbox{[}deg\mbox{]}/altitude\mbox{[}ft\mbox{]}) and 3 velocity columns (either vx\mbox{[}knot\mbox{]}/vy\mbox{[}knot\mbox{]}/vz\mbox{[}fpm\mbox{]} or track\mbox{[}deg\mbox{]}/gs\mbox{[}knot\mbox{]}/vs\mbox{[}fpm\mbox{]}).
+
+An optional column is time \mbox{[}s\mbox{]}. If it is included, a \char`\"{}history\char`\"{} will be build if an aircraft has more than one entry. If it is not included, only the last entry for an aircraft will be stored.
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above).
+
+If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (\&quot). The aircraft name is case sensitive, so US54A != Us54a != us54a.
+
+Any empty line or any line starting with a hash sign (\#) is ignored.
+
+Files may also include parameter definitions prior to other data. Parameter definitions are of the form \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} = \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}, one per line, where \texorpdfstring{$<$}{<}key\texorpdfstring{$>$}{>} is a case-\/insensitive alphanumeric word and \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} is either a numeral or string. The \texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>} may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}. Note that parameters require a space on either side of the equals sign. Note that it is possible to also update the stored parameter values (or store additional ones) through API calls.
+
+Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type.
+
+If the optional parameter \char`\"{}filetype\char`\"{} is specified, its value must be \char`\"{}state\char`\"{} or \char`\"{}history\char`\"{} (no quotes) for this reader to accept the file without error. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a52cbe78c20b26e13d3bc776052080cd4}\label{classlarcfm_1_1_state_writer_a52cbe78c20b26e13d3bc776052080cd4}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!StateWriter@{StateWriter}}
+\index{StateWriter@{StateWriter}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{StateWriter()}{StateWriter()}}
+{\footnotesize\ttfamily larcfm\+::\+State\+Writer\+::\+State\+Writer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+A new \mbox{\hyperlink{classlarcfm_1_1_state_writer}{State\+Writer}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_aa3510fd4542cc92e168be05cef6f9d63}\label{classlarcfm_1_1_state_writer_aa3510fd4542cc92e168be05cef6f9d63}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!addComment@{addComment}}
+\index{addComment@{addComment}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{addComment()}{addComment()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::add\+Comment (\begin{DoxyParamCaption}\item[{std\+::string}]{comment }\end{DoxyParamCaption})}
+
+Adds a comment line to the file. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a9faef5964ce81bba9da2e0d328477485}\label{classlarcfm_1_1_state_writer_a9faef5964ce81bba9da2e0d328477485}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+State\+Writer\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a48449c596e366060b8bb153198c1e08f}\label{classlarcfm_1_1_state_writer_a48449c596e366060b8bb153198c1e08f}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+State\+Writer\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_state_writer_a70b9fb3aa82d4071344077c235a7e384}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a70b9fb3aa82d4071344077c235a7e384}\label{classlarcfm_1_1_state_writer_a70b9fb3aa82d4071344077c235a7e384}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Writer\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_a661cf6a9c929a42d5eba8ea254bbfbb8}\label{classlarcfm_1_1_state_writer_a661cf6a9c929a42d5eba8ea254bbfbb8}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Writer\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_state_writer_ae4bcfbc0171d768b2b82307814e17d1c}\label{classlarcfm_1_1_state_writer_ae4bcfbc0171d768b2b82307814e17d1c}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!isOutputTime@{isOutputTime}}
+\index{isOutputTime@{isOutputTime}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{isOutputTime()}{isOutputTime()}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Writer\+::is\+Output\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Will the time be added to the file \mbox{\Hypertarget{classlarcfm_1_1_state_writer_ac65fc969ec2bbefbcbaa57257a050ad5}\label{classlarcfm_1_1_state_writer_ac65fc969ec2bbefbcbaa57257a050ad5}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!isOutputUnits@{isOutputUnits}}
+\index{isOutputUnits@{isOutputUnits}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{isOutputUnits()}{isOutputUnits()}}
+{\footnotesize\ttfamily bool larcfm\+::\+State\+Writer\+::is\+Output\+Units (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Will the units be displayed? \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a5a79c977c714209786ea78069a77bb7a}\label{classlarcfm_1_1_state_writer_a5a79c977c714209786ea78069a77bb7a}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!open@{open}}
+\index{open@{open}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::open (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+A new \mbox{\hyperlink{classlarcfm_1_1_state_reader}{State\+Reader}} based on the given file. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a1bf08672baec2ce9ee7cc67118f91774}\label{classlarcfm_1_1_state_writer_a1bf08672baec2ce9ee7cc67118f91774}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setColumnDelimiterComma@{setColumnDelimiterComma}}
+\index{setColumnDelimiterComma@{setColumnDelimiterComma}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterComma()}{setColumnDelimiterComma()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Column\+Delimiter\+Comma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a comma. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_afd63c4db1ebe8b601266e28fd3e2840a}\label{classlarcfm_1_1_state_writer_afd63c4db1ebe8b601266e28fd3e2840a}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setColumnDelimiterSpace@{setColumnDelimiterSpace}}
+\index{setColumnDelimiterSpace@{setColumnDelimiterSpace}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterSpace()}{setColumnDelimiterSpace()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Column\+Delimiter\+Space (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a space. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a222886b0f5f05c3d74177aa5f54c069d}\label{classlarcfm_1_1_state_writer_a222886b0f5f05c3d74177aa5f54c069d}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setColumnDelimiterTab@{setColumnDelimiterTab}}
+\index{setColumnDelimiterTab@{setColumnDelimiterTab}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setColumnDelimiterTab()}{setColumnDelimiterTab()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Column\+Delimiter\+Tab (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the column delimiter to a tab. This method can only be used before the first \char`\"{}write\+State\char`\"{} method. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a0f01ac1ba0a4df472b23dd426e5f2419}\label{classlarcfm_1_1_state_writer_a0f01ac1ba0a4df472b23dd426e5f2419}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setOutputTime@{setOutputTime}}
+\index{setOutputTime@{setOutputTime}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setOutputTime()}{setOutputTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Output\+Time (\begin{DoxyParamCaption}\item[{bool}]{display\+\_\+time }\end{DoxyParamCaption})}
+
+Should the time be added to the file \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a6c30d8ac3c8ba5d508171b84523258aa}\label{classlarcfm_1_1_state_writer_a6c30d8ac3c8ba5d508171b84523258aa}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setOutputUnits@{setOutputUnits}}
+\index{setOutputUnits@{setOutputUnits}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setOutputUnits()}{setOutputUnits()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Output\+Units (\begin{DoxyParamCaption}\item[{bool}]{displayunits }\end{DoxyParamCaption})}
+
+Should the units be displayed? \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a7a6d71b853d3ce0a969b2b62c2425d78}\label{classlarcfm_1_1_state_writer_a7a6d71b853d3ce0a969b2b62c2425d78}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+State\+Writer\+::set\+Parameters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}}}]{pr }\end{DoxyParamCaption})}
+
+Set parameters. Use all the parameters in the reader. \mbox{\Hypertarget{classlarcfm_1_1_state_writer_a2432112e1e4acef5c4f5f473daa02d57}\label{classlarcfm_1_1_state_writer_a2432112e1e4acef5c4f5f473daa02d57}} 
+\index{larcfm::StateWriter@{larcfm::StateWriter}!size@{size}}
+\index{size@{size}!larcfm::StateWriter@{larcfm::StateWriter}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+State\+Writer\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of states added to the file 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/State\+Writer.\+h\item 
+Modules/\+ACCo\+RD/src/State\+Writer.\+cpp\end{DoxyCompactItemize}

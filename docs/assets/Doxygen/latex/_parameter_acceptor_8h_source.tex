@@ -1,0 +1,39 @@
+\hypertarget{_parameter_acceptor_8h_source}{}\doxysection{Parameter\+Acceptor.\+h}
+\label{_parameter_acceptor_8h_source}\index{Modules/ACCoRD/inc/ParameterAcceptor.h@{Modules/ACCoRD/inc/ParameterAcceptor.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef PARAMETERACCEPTOR\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define PARAMETERACCEPTOR\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}ParameterProvider.h"{}}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{ParameterAcceptor}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{ParameterProvider}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18   \textcolor{keyword}{public}:}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{\string~ParameterAcceptor}}() = 0;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{//    virtual ParameterData getParameters() const = 0; // from ParameterProvider}}
+\DoxyCodeLine{23 \textcolor{comment}{//    virtual void updateParameterData(ParameterData\& p) const = 0;}}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) = 0;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{inline} ParameterAcceptor::\string~ParameterAcceptor()\{\}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PARAMETERACCEPTOR\_H\_}}
+
+\end{DoxyCode}

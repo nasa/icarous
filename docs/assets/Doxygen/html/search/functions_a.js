@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['lineplanintersection_0',['LinePlanIntersection',['../class_dubins_planner.html#a0a67f8803f0581b35920af29077b6d47',1,'DubinsPlanner']]],
-  ['loginput_1',['LogInput',['../class_traj_manager.html#a257756133fde7a93afe1a324b78fc15f',1,'TrajManager']]],
-  ['logmessage_2',['LogMessage',['../_cognition_8hpp.html#ad8559541fb7ac99c310ac951b7199b86',1,'CognitionUtil.cpp']]],
-  ['logsentence_3',['logSentence',['../flarm_8c.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c'],['../flarm_8h.html#aed3b08cc47b8bb0f94e7350cda2f1d7e',1,'logSentence(char *recvbuffer, nmea_pflaa_s *pflaa):&#160;flarm.c']]]
+  ['kinematicbands_0',['KinematicBands',['../classlarcfm_1_1_kinematic_bands.html#a559a82b7aafbd33415ba5699cd99e159',1,'larcfm::KinematicBands::KinematicBands(const Detection3D *detector)'],['../classlarcfm_1_1_kinematic_bands.html#aa4b118580db09ed798276ea43ad09d0c',1,'larcfm::KinematicBands::KinematicBands()'],['../classlarcfm_1_1_kinematic_bands.html#ae31104acd15350d6fcbfb28f5d3e8b4a',1,'larcfm::KinematicBands::KinematicBands(const KinematicBands &amp;b)']]],
+  ['kinematicmultibands_1',['KinematicMultiBands',['../classlarcfm_1_1_kinematic_multi_bands.html#a39fc3a022427372b277622caf4121e1d',1,'larcfm::KinematicMultiBands::KinematicMultiBands(const KinematicBandsParameters &amp;parameters)'],['../classlarcfm_1_1_kinematic_multi_bands.html#a1916358f33ec425f672880d5c01866e8',1,'larcfm::KinematicMultiBands::KinematicMultiBands()'],['../classlarcfm_1_1_kinematic_multi_bands.html#a684c959b7ebe9179064c36dee08de7b5',1,'larcfm::KinematicMultiBands::KinematicMultiBands(const KinematicMultiBands &amp;b)']]]
 ];

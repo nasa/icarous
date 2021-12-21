@@ -95,7 +95,7 @@ $(function() {
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#include &quot;Plan.h&quot;</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#include &quot;math.h&quot;</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">using namespace </span>larcfm;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacelarcfm.html">larcfm</a>;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">class </span>fence{</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
@@ -113,37 +113,37 @@ $(function() {
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">bool</span> conflict;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">bool</span> projectedViolation;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    EuclideanProjection proj;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    SimplePoly geoPoly0;          <span class="comment">// Original polygon in lat,lon</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    SimplePoly geoPoly1;          <span class="comment">// Expanded/Contracted polygon in lat,lon</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    Poly3D geoPoly3D;             <span class="comment">// 3D polygon in cartesian coordinates</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    CDPolycarp geoPolyCarp;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    PolycarpResolution geoPolyResolution;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    PolycarpDetection geoPolyDetect;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    CDIIPolygon geoCDIIPolygon;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_class" href="classlarcfm_1_1_simple_poly.html">SimplePoly</a> geoPoly0;          <span class="comment">// Original polygon in lat,lon</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_class" href="classlarcfm_1_1_simple_poly.html">SimplePoly</a> geoPoly1;          <span class="comment">// Expanded/Contracted polygon in lat,lon</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_class" href="classlarcfm_1_1_poly3_d.html">Poly3D</a> geoPoly3D;             <span class="comment">// 3D polygon in cartesian coordinates</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_class" href="classlarcfm_1_1_c_d_polycarp.html">CDPolycarp</a> geoPolyCarp;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_class" href="classlarcfm_1_1_polycarp_resolution.html">PolycarpResolution</a> geoPolyResolution;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_class" href="classlarcfm_1_1_polycarp_detection.html">PolycarpDetection</a> geoPolyDetect;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <a class="code hl_class" href="classlarcfm_1_1_c_d_i_i_polygon.html">CDIIPolygon</a> geoCDIIPolygon;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::vector&lt;Vect2&gt; fenceVertices0; <span class="comment">// Cartesian coordinates of vertices of geoPoly0</span></div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::vector&lt;Vect2&gt; fenceVertices1; <span class="comment">//Cartesian coordinates of vertices of geoPoly1</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    Position recoveryPoint;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    PolyPath geoPolyPath;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <a class="code hl_class" href="classlarcfm_1_1_position.html">Position</a> recoveryPoint;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_class" href="classlarcfm_1_1_poly_path.html">PolyPath</a> geoPolyPath;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    fence(){};</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    fence(<span class="keywordtype">int</span> ID, FENCE_TYPE ftype, uint16_t nVert, <span class="keywordtype">double</span> infloor, <span class="keywordtype">double</span> inCeiling);</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordtype">void</span> AddVertex(<span class="keywordtype">int</span> index, <span class="keywordtype">double</span> lat, <span class="keywordtype">double</span> lon,<span class="keywordtype">double</span> ResolBUFF);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">void</span> CheckViolation(AircraftState acState,<span class="keywordtype">double</span> elapsedTime,Plan fp);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">bool</span> CollisionDetection(Position pos, Vect2 v,<span class="keywordtype">double</span> startTime, <span class="keywordtype">double</span> stopTime);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">bool</span> CheckWPFeasibility(Position current, Position nextWP);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">void</span> CheckViolation(<a class="code hl_class" href="classlarcfm_1_1_aircraft_state.html">AircraftState</a> acState,<span class="keywordtype">double</span> elapsedTime,<a class="code hl_class" href="classlarcfm_1_1_plan.html">Plan</a> fp);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">bool</span> CollisionDetection(<a class="code hl_class" href="classlarcfm_1_1_position.html">Position</a> pos, <a class="code hl_class" href="classlarcfm_1_1_vect2.html">Vect2</a> v,<span class="keywordtype">double</span> startTime, <span class="keywordtype">double</span> stopTime);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">bool</span> CheckWPFeasibility(<a class="code hl_class" href="classlarcfm_1_1_position.html">Position</a> current, <a class="code hl_class" href="classlarcfm_1_1_position.html">Position</a> nextWP);</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    int16_t GetID();</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    uint16_t GetSize();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    Poly3D* GetPoly3D();</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    Position GetRecoveryPoint();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <a class="code hl_class" href="classlarcfm_1_1_poly3_d.html">Poly3D</a>* GetPoly3D();</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <a class="code hl_class" href="classlarcfm_1_1_position.html">Position</a> GetRecoveryPoint();</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">bool</span> GetConflictStatus();</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">bool</span> GetProjectedStatus();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">bool</span> GetViolationStatus();</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    FENCE_TYPE GetType();</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">void</span> GetEntryExitTime(<span class="keywordtype">double</span>&amp; in, <span class="keywordtype">double</span>&amp; out);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    SimplePoly* GetPoly();</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    SimplePoly* GetPolyMod();</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    PolyPath* GetPolyPath();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_class" href="classlarcfm_1_1_simple_poly.html">SimplePoly</a>* GetPoly();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <a class="code hl_class" href="classlarcfm_1_1_simple_poly.html">SimplePoly</a>* GetPolyMod();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <a class="code hl_class" href="classlarcfm_1_1_poly_path.html">PolyPath</a>* GetPolyPath();</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    EuclideanProjection* GetProjection();</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">double</span> GetCeiling();</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">void</span> clear(){<span class="keywordtype">id</span> = -1;};</div>
@@ -155,6 +155,18 @@ $(function() {
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#endif </span><span class="comment">/* _FENCE_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclasslarcfm_1_1_aircraft_state_html"><div class="ttname"><a href="classlarcfm_1_1_aircraft_state.html">larcfm::AircraftState</a></div><div class="ttdef"><b>Definition:</b> AircraftState.h:47</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_c_d_i_i_polygon_html"><div class="ttname"><a href="classlarcfm_1_1_c_d_i_i_polygon.html">larcfm::CDIIPolygon</a></div><div class="ttdef"><b>Definition:</b> CDIIPolygon.h:46</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_c_d_polycarp_html"><div class="ttname"><a href="classlarcfm_1_1_c_d_polycarp.html">larcfm::CDPolycarp</a></div><div class="ttdef"><b>Definition:</b> CDPolycarp.h:29</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_plan_html"><div class="ttname"><a href="classlarcfm_1_1_plan.html">larcfm::Plan</a></div><div class="ttdef"><b>Definition:</b> Plan.h:83</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_poly3_d_html"><div class="ttname"><a href="classlarcfm_1_1_poly3_d.html">larcfm::Poly3D</a></div><div class="ttdef"><b>Definition:</b> Poly3D.h:27</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_poly_path_html"><div class="ttname"><a href="classlarcfm_1_1_poly_path.html">larcfm::PolyPath</a></div><div class="ttdef"><b>Definition:</b> PolyPath.h:60</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_polycarp_detection_html"><div class="ttname"><a href="classlarcfm_1_1_polycarp_detection.html">larcfm::PolycarpDetection</a></div><div class="ttdef"><b>Definition:</b> PolycarpDetection.h:23</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_polycarp_resolution_html"><div class="ttname"><a href="classlarcfm_1_1_polycarp_resolution.html">larcfm::PolycarpResolution</a></div><div class="ttdef"><b>Definition:</b> PolycarpResolution.h:29</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_position_html"><div class="ttname"><a href="classlarcfm_1_1_position.html">larcfm::Position</a></div><div class="ttdef"><b>Definition:</b> Position.h:40</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_simple_poly_html"><div class="ttname"><a href="classlarcfm_1_1_simple_poly.html">larcfm::SimplePoly</a></div><div class="ttdef"><b>Definition:</b> SimplePoly.h:44</div></div>
+<div class="ttc" id="aclasslarcfm_1_1_vect2_html"><div class="ttname"><a href="classlarcfm_1_1_vect2.html">larcfm::Vect2</a></div><div class="ttdef"><b>Definition:</b> Vect2.h:30</div></div>
+<div class="ttc" id="anamespacelarcfm_html"><div class="ttname"><a href="namespacelarcfm.html">larcfm</a></div><div class="ttdef"><b>Definition:</b> ACCoRDConfig.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,0 +1,75 @@
+\hypertarget{_vertical_8h_source}{}\doxysection{Vertical.\+h}
+\label{_vertical_8h_source}\index{Modules/ACCoRD/inc/Vertical.h@{Modules/ACCoRD/inc/Vertical.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Vertical.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef VERTICAL\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define VERTICAL\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Consts.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \{}
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{28   \textcolor{keywordtype}{double}  \mbox{\hyperlink{classlarcfm_1_1_vertical_ac71d355972b755ae7f23c3fe2dee9b70}{z}};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_vertical_a1fe6dba962fef303d941aee357f30c72}{Vertical}}();}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{34   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_vertical_a1fe6dba962fef303d941aee357f30c72}{Vertical}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_vertical_a9a853f8c373ac7710d4ae19e283d7e61}{undef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{40   \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_vertical_ae1913f52383ee7517e61c8f01e542b20}{add\_this}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_vertical_ac28d7647806e8e7ec21a317d3aa794e9}{operator == }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{45   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_vertical_a5ebe81bcc36a9a14406b93bcf746b20b}{operator != }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}}\& \mbox{\hyperlink{classlarcfm_1_1_vertical_a9b2c8a6d7bef473494c520f50b711191}{NoVerticalSolution}}();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{51   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} almost\_vertical\_los(\textcolor{keyword}{const} \textcolor{keywordtype}{double} sz,\textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{54   \textcolor{keyword}{static} \textcolor{keywordtype}{double} Theta\_H(\textcolor{keyword}{const} \textcolor{keywordtype}{double} sz, \textcolor{keyword}{const} \textcolor{keywordtype}{double} v, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56   \textcolor{keyword}{static} \textcolor{keywordtype}{double} time\_coalt(\textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{comment}{/* Vertical miss distance within lookahead time */}}
+\DoxyCodeLine{59   \textcolor{keyword}{static} \textcolor{keywordtype}{double} vmd(\textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{67   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_vertical_aae736da628299c52c1065c6eaa433d25}{vs\_circle}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{68       \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{71   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} vs\_circle\_at(\textcolor{keyword}{const} \textcolor{keywordtype}{double} sz, \textcolor{keyword}{const} \textcolor{keywordtype}{double} viz,}
+\DoxyCodeLine{72       \textcolor{keyword}{const} \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps, \textcolor{keyword}{const} \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} vs\_los\_recovery(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{76       \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   std::string toString();}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{private}:}
+\DoxyCodeLine{81   \textcolor{keywordtype}{bool} udef;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* VERTICAL\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

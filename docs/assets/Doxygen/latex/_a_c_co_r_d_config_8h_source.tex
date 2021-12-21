@@ -1,0 +1,49 @@
+\hypertarget{_a_c_co_r_d_config_8h_source}{}\doxysection{ACCo\+RDConfig.\+h}
+\label{_a_c_co_r_d_config_8h_source}\index{Modules/ACCoRD/inc/ACCoRDConfig.h@{Modules/ACCoRD/inc/ACCoRDConfig.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* ====================================================================}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Authors:      George Hagen, Rick Butler and Jeff Maddalon,}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Website:      http://shemesh.larc.nasa.gov/fm/}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ * ====================================================================}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef ACCORDCONFIG\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define ACCORDCONFIG\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_a_c_co_r_d_config}{ACCoRDConfig}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} minHorizExitSpeedLoS\_default;   \textcolor{comment}{//  = Units.from("{}kn"{},100.0);}}
+\DoxyCodeLine{29   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} minVertExitSpeedLoS\_default;}
+\DoxyCodeLine{30   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxGs\_default;                  \textcolor{comment}{//  = Units.from("{}kn"{},700.0);}}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} minGs\_default;                  \textcolor{comment}{// = Units.from("{}kn"{},150.0);       // must be greater than 0}}
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxVs\_default;}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keywordtype}{double} gsSearchLosDiscard;     \textcolor{comment}{// = Units.from("{}nm"{},1.5);}}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \textcolor{keywordtype}{double} vsDiscretization\_default; \textcolor{comment}{//  = Units::from("{}fpm"{},10.0);}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NMAC\_D; \textcolor{comment}{// Defined in RTCA SC-\/147}}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} NMAC\_H; \textcolor{comment}{// Defined in RTCA SC-\/147}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{static} \textcolor{keywordtype}{void} setLosRepulsiveCrit(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{40   \textcolor{keyword}{static} \textcolor{keywordtype}{void} setNewCesarAlgorithm(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keyword}{static} \textcolor{keywordtype}{void} setGsSearchLosDiscard(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \}; \textcolor{comment}{// ACCORDCONFIG}}
+\DoxyCodeLine{45 \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ACCORDCONFIG\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

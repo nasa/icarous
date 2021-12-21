@@ -1,0 +1,184 @@
+\hypertarget{_c_d_s_i_8h_source}{}\doxysection{CDSI.\+h}
+\label{_c_d_s_i_8h_source}\index{Modules/ACCoRD/inc/CDSI.h@{Modules/ACCoRD/inc/CDSI.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CDSI -\/ Conflict detection between an ownship state vector and a}}
+\DoxyCodeLine{3 \textcolor{comment}{ * traffic aircraft with a flight plan.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ *Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{9 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef CDSI\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define CDSI\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}CDSICore.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}Detection3DAcceptor.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{43   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}}, \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor}{Detection3DAcceptor}} \{}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{private}:}
+\DoxyCodeLine{46     \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core}{CDSICore}} core;}
+\DoxyCodeLine{47     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{56     \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}}(\textcolor{keywordtype}{double} distance, \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{65     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{68     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aad5a04d33fd9b23ab393f6f76abf99d8}{getDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{71     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a23b293d4de5167a1f7fca6187d58fcc3}{getHeight}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a47c4024243e7137f9112e01803a025ca}{setDistance}}(\textcolor{keywordtype}{double} distance);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ae0276b49a20f65fc1319257605de0500}{setHeight}}(\textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   \textcolor{keyword}{public}:}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}}();}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{90     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa064a956db0b7892bfdc332d85aa8d6c}{make}}(\textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} std::string\& dStr, \textcolor{keywordtype}{double} height, \textcolor{keyword}{const} std::string\& hStr);}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa064a956db0b7892bfdc332d85aa8d6c}{make}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{100      \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a20cb3abc750e83c285e2202bb6a0f31e}{mk}}(\textcolor{keywordtype}{double} distance, \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{comment}{//    /** Returns the minimum horizontal separation distance in [nmi] */}}
+\DoxyCodeLine{104 \textcolor{comment}{//    double getDistance(const std::string\& dStr) const;}}
+\DoxyCodeLine{105 \textcolor{comment}{//}}
+\DoxyCodeLine{106 \textcolor{comment}{//    /** Returns the minimum vertical separation distance in [ft] */}}
+\DoxyCodeLine{107 \textcolor{comment}{//    double getHeight(const std::string\& dStr) const;}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{115     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a33aba5c70e0ecc51946e17704e111833}{getFilterTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{comment}{//    /** Sets the minimum horizontal separation distance in specified units */}}
+\DoxyCodeLine{119 \textcolor{comment}{//    void setDistance(double distance, const std::string\& units);}}
+\DoxyCodeLine{120 \textcolor{comment}{//}}
+\DoxyCodeLine{121 \textcolor{comment}{//    /** Sets the minimum vertical separation distance in specified units*/}}
+\DoxyCodeLine{122 \textcolor{comment}{//    void setHeight(double height,  const std::string\& units);}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{130     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa5d84c1fb034c70175eaa2797f902144}{setFilterTime}}(\textcolor{keywordtype}{double} cdfilter);}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{133     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{136     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_af74568c1136741d6cd009ee63746b3f0}{conflict}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{143     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_acd037915203e17a34d212ae5d772cb16}{getTimeIn}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{150     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a16d487bf93993daba33f06f8616678bd}{getTimeOut}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{157     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aeb1e9b3f96bc0cfe994fc58fe0dcb6ee}{getSegmentIn}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_af25dbcdedbb8a715a2d8b3220f7e4eba}{getSegmentOut}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166      \textcolor{keywordtype}{double} getCriticalTime(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     \textcolor{keywordtype}{double} getDistanceAtCriticalTime(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{191     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ac8846bfdde9eb4786389e696dfb5f8d2}{detectionXYZ}}(\textcolor{keywordtype}{double} sx, \textcolor{keywordtype}{double} sy, \textcolor{keywordtype}{double} sz, }
+\DoxyCodeLine{192               \textcolor{keywordtype}{double} vx, \textcolor{keywordtype}{double} vy, \textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{double} t0, \textcolor{keywordtype}{double} horizon, }
+\DoxyCodeLine{193               \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& intent, \textcolor{keywordtype}{double} startT, \textcolor{keywordtype}{double} endT);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{216     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a029d7963d75922caea38f885c7b12de9}{detectionLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt, }
+\DoxyCodeLine{217              \textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} gs, \textcolor{keywordtype}{double} vs, \textcolor{keywordtype}{double} t0, \textcolor{keywordtype}{double} horizon,}
+\DoxyCodeLine{218              \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& intent, \textcolor{keywordtype}{double} startT, \textcolor{keywordtype}{double} endT);}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{221 \textcolor{comment}{//   * Returns if there is a conflict between two aircraft: the state}}
+\DoxyCodeLine{222 \textcolor{comment}{//   * aircraft and the intent aircraft.  The state aircraft is}}
+\DoxyCodeLine{223 \textcolor{comment}{//   * assumed to move linearly from it position.  The intent aircraft}}
+\DoxyCodeLine{224 \textcolor{comment}{//   * is assumed to move according to the given flight plan.  Both}}
+\DoxyCodeLine{225 \textcolor{comment}{//   * aircraft are assumed to be represented in a cartesian reference}}
+\DoxyCodeLine{226 \textcolor{comment}{//   * frame. <p>}}
+\DoxyCodeLine{227 \textcolor{comment}{//   *}}
+\DoxyCodeLine{228 \textcolor{comment}{//   * @param sx the x position of the state aircraft in [nmi]}}
+\DoxyCodeLine{229 \textcolor{comment}{//   * @param sy the y position of the state aircraft in [nmi]}}
+\DoxyCodeLine{230 \textcolor{comment}{//   * @param sz the z position of the state aircraft in [feet]}}
+\DoxyCodeLine{231 \textcolor{comment}{//   * @param vx the x component of velocity of the state aircraft in [knot]}}
+\DoxyCodeLine{232 \textcolor{comment}{//   * @param vy the y component of velocity of the state aircraft in [knot]}}
+\DoxyCodeLine{233 \textcolor{comment}{//   * @param vz the z component of velocity of the state aircraft in [ft/min]}}
+\DoxyCodeLine{234 \textcolor{comment}{//   * @param t0 the time, in [s], of the state aircraft when located at (sx,sy,sz).  This can be 0.0 to represent "{}now"{}}}
+\DoxyCodeLine{235 \textcolor{comment}{//   * @param intent the flight plan of the intent aircraft}}
+\DoxyCodeLine{236 \textcolor{comment}{//   * @param distance the minimum horizontal separation distance in [nmi]}}
+\DoxyCodeLine{237 \textcolor{comment}{//   * @param height the minimum vertical separation distance in [ft]}}
+\DoxyCodeLine{238 \textcolor{comment}{//   * @param startT the time, in [s], to start looking for conflicts relative to t0. This can be 0.0.}}
+\DoxyCodeLine{239 \textcolor{comment}{//   * @param endT the time, in [s], to end looking for conflicts relative to t0}}
+\DoxyCodeLine{240 \textcolor{comment}{//   * @return true if there is a conflict}}
+\DoxyCodeLine{241 \textcolor{comment}{//   */}}
+\DoxyCodeLine{242 \textcolor{comment}{//     static bool cdsi\_xyz(double sx, double sy, double sz,}}
+\DoxyCodeLine{243 \textcolor{comment}{//            double vx, double vy, double vz, double t0,}}
+\DoxyCodeLine{244 \textcolor{comment}{//            const Plan\& intent, double distance, double height, double startT, double endT);}}
+\DoxyCodeLine{245 \textcolor{comment}{//}}
+\DoxyCodeLine{246 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{247 \textcolor{comment}{//   * Returns if there is a conflict between two aircraft: the state}}
+\DoxyCodeLine{248 \textcolor{comment}{//   * aircraft and the intent aircraft.  The state aircraft is}}
+\DoxyCodeLine{249 \textcolor{comment}{//   * assumed to move linearly from it position.  The intent aircraft}}
+\DoxyCodeLine{250 \textcolor{comment}{//   * is assumed to move according to the given flight plan.  Both}}
+\DoxyCodeLine{251 \textcolor{comment}{//   * aircraft are assumed to be represented in a latitude/longitude reference}}
+\DoxyCodeLine{252 \textcolor{comment}{//   * frame. <p>}}
+\DoxyCodeLine{253 \textcolor{comment}{//   *}}
+\DoxyCodeLine{254 \textcolor{comment}{//   * @param lat the latitude of the state aircraft in [deg]}}
+\DoxyCodeLine{255 \textcolor{comment}{//   * @param lon the longitude of the state aircraft in [deg]}}
+\DoxyCodeLine{256 \textcolor{comment}{//   * @param alt the altitude of the state aircraft in [feet]}}
+\DoxyCodeLine{257 \textcolor{comment}{//   * @param trk the track angle of the velocity of the state aircraft in [deg from true north]}}
+\DoxyCodeLine{258 \textcolor{comment}{//   * @param gs the ground speed of velocity of the state aircraft in [knot]}}
+\DoxyCodeLine{259 \textcolor{comment}{//   * @param vs the vertical speed of velocity of the state aircraft in [ft/min]}}
+\DoxyCodeLine{260 \textcolor{comment}{//   * @param t0 the time, in [s], of the state aircraft when located at (lat, lon, alt).  This can be 0.0 to represent "{}now"{}}}
+\DoxyCodeLine{261 \textcolor{comment}{//   * @param intent the flight plan of the intent aircraft}}
+\DoxyCodeLine{262 \textcolor{comment}{//   * @param distance the minimum horizontal separation distance in [nmi]}}
+\DoxyCodeLine{263 \textcolor{comment}{//   * @param height the minimum vertical separation distance in [ft]}}
+\DoxyCodeLine{264 \textcolor{comment}{//   * @param startT the time, in [s], to start looking for conflicts relative to t0. This can be 0.0.}}
+\DoxyCodeLine{265 \textcolor{comment}{//   * @param endT the time, in [s], to end looking for conflicts relative to t0}}
+\DoxyCodeLine{266 \textcolor{comment}{//   * @return true if there is a conflict}}
+\DoxyCodeLine{267 \textcolor{comment}{//   */}}
+\DoxyCodeLine{268 \textcolor{comment}{//    static bool cdsi\_ll(double lat, double lon, double alt,}}
+\DoxyCodeLine{269 \textcolor{comment}{//             double trk, double gs, double vs, double t0,}}
+\DoxyCodeLine{270 \textcolor{comment}{//             const Plan\& intent, double distance, double height, double startT, double endT);}}
+\DoxyCodeLine{271 \textcolor{comment}{//}}
+\DoxyCodeLine{272 \textcolor{comment}{//}}
+\DoxyCodeLine{274 \textcolor{comment}{}    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ada314cd0c241bdf04a86db279806363e}{setCoreDetectionPtr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* c);}
+\DoxyCodeLine{275     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a7e5b7696e1c22280e81c94dc225cb8f1}{setCoreDetectionRef}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}\& c);}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277     \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ad60bd64deaee6eeb437fc3db3eb4cbf9}{getCoreDetectionPtr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{278     \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}\& \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a6d6970fbf24268bbdcefc32e5ea6e889}{getCoreDetectionRef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ac2963051f3da114ca4d6ec4649c15f2b}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{283       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}() || core.\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core_a13280e2a9ec174d7ed10465d4a553c1b}{hasError}}();}
+\DoxyCodeLine{284     \}}
+\DoxyCodeLine{285     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a1427a195cb0e20eacd52f8984626bab2}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{286       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}() || core.\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core_ad6ce82f8ebff7ac69e95ac081c8b2361}{hasMessage}}();}
+\DoxyCodeLine{287     \}}
+\DoxyCodeLine{288     std::string \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa4444c7d4746261313803ca8426358b6}{getMessage}}() \{}
+\DoxyCodeLine{289       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}() + core.\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core_a833e4c987447a1fb2a52368233688c89}{getMessage}}();}
+\DoxyCodeLine{290     \}}
+\DoxyCodeLine{291     std::string \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a340b546564d226063aa3b96a7cbf9656}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{292       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}() + core.\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core_ace5eec3f881da05d4d5e80105c7e74af}{getMessageNoClear}}();}
+\DoxyCodeLine{293     \}}
+\DoxyCodeLine{294   \};}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 \}}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CDSI\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

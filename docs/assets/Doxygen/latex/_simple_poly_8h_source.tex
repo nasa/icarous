@@ -1,0 +1,191 @@
+\hypertarget{_simple_poly_8h_source}{}\doxysection{Simple\+Poly.\+h}
+\label{_simple_poly_8h_source}\index{Modules/ACCoRD/inc/SimplePoly.h@{Modules/ACCoRD/inc/SimplePoly.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef SIMPLEPOLY\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define SIMPLEPOLY\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Poly3DLL.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{44 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \{}
+\DoxyCodeLine{45 \textcolor{keyword}{private}:}
+\DoxyCodeLine{46     \textcolor{keywordtype}{bool} isLatLon\_b;}
+\DoxyCodeLine{47     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} p3d;}
+\DoxyCodeLine{48     \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}} p3dll;}
+\DoxyCodeLine{49 \textcolor{comment}{//  mutable bool boundingCircleDefined; // = false;}}
+\DoxyCodeLine{50     \textcolor{keyword}{mutable} \textcolor{keywordtype}{bool} centroidDefined; \textcolor{comment}{// = false;}}
+\DoxyCodeLine{51     \textcolor{keyword}{mutable} \textcolor{keywordtype}{bool} averagePointDefined; \textcolor{comment}{// = false;}}
+\DoxyCodeLine{52     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} cPos;         \textcolor{comment}{// cached centroid}}
+\DoxyCodeLine{53 \textcolor{comment}{//  Position bPos;         // cached boundingCircle}}
+\DoxyCodeLine{54     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} aPos;         \textcolor{comment}{// cached averagePoint}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{keyword}{mutable} \textcolor{keywordtype}{double} clockwiseSum; \textcolor{comment}{// sum of all angles in order (measured in a clockwise manner), if (approx) 2PI then it is clockwise, , if (approx) -\/2PI, then counterclockwise;}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} move\_constant\_shape;}
+\DoxyCodeLine{60     \textcolor{comment}{//static const double nullAlt;// = -\/MAXDOUBLE;}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{64     \textcolor{keywordtype}{void} calcCentroid() \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a31cad1ffb4d1eb415228d32da6fbf2df}{signedArea}}(\textcolor{keywordtype}{double} dx, \textcolor{keywordtype}{double} dy) \textcolor{keyword}{const};}
+\DoxyCodeLine{70     }
+\DoxyCodeLine{71   \textcolor{keyword}{public}:}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{76     \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}{SimplePoly}}();}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{84     \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}{SimplePoly}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{93     \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}{SimplePoly}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& units);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{100     \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}{SimplePoly}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104     \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{115     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a2f7589fa1d918dababf013f0173ad1d3}{getVertex}}(\textcolor{keywordtype}{int} n) \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     std::vector<Position> getVertices() \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{124     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& p3);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{131     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3DLL}}\& p3);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{140     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& p3, \textcolor{keyword}{const} EuclideanProjection\& proj);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{150     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}{make}}(std::vector<LatLonAlt> pList, \textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{159     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8c930950ddcaec0320af83715bf2b1e0}{mk}}(std::vector<Position> pList, \textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{165     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0f9cf7aa3d23cb39e3eee043ae0487b4}{poly3D}}(\textcolor{keyword}{const} EuclideanProjection\& proj) \textcolor{keyword}{const};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     \textcolor{keyword}{static} std::vector<LatLonAlt> rip(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& sPoly);}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{174     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac18f5e77c6199bc97fd46f53d2d06098}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176     \textcolor{keywordtype}{bool} isClockwise() \textcolor{keyword}{const};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178     \textcolor{keywordtype}{void} reverseOrder();}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a6913035a9831aa2719719e57c006b9af}{distanceFromEdge}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aba89a55cb4237c38837005f8ddd90d23}{distanceV}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{199     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a1789fcbc0ddbbcf1d53f6e94e8f0fc17}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ad1a574a67b4ac5cc27850858cd34d174}{contains2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{214     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ab9011b03c25f9b562a59f2b6e6ba8730}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{221     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ad17f3f81bd1373ed70650ac2f07af0a3}{increaseVertices}}(\textcolor{keywordtype}{int} sz);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223         }
+\DoxyCodeLine{229     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aa9f540c6e1ddea130f58ab537dc0669a}{centroid}}() ;}
+\DoxyCodeLine{230     }
+\DoxyCodeLine{231   \textcolor{keyword}{private}:}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} avgPos(\textcolor{keyword}{const} std::vector<Position>\& points, \textcolor{keyword}{const} std::vector<double>\& wgts) ;}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235   \textcolor{keyword}{public}:}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{241     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0f48a628cb35ae1393a485862ca2a429}{area}}();}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{248     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5d0ea7c92afac800360833fd1cc835f7}{averagePoint}}()  ;}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250     \textcolor{keywordtype}{double} apBoundingRadius();}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 }
+\DoxyCodeLine{257     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a3bcadcadd0caa2ca05196422f1b12277}{boundingCircleCenter}}();}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{262     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8c28bdf4886d8a4633757339df27c0d2}{isConvex}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{268     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a2375b3b72c31ff448586b425516a4102}{boundingCircleRadius}}();}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} maxDistPair(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{276     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac06065ece12723a78807cc3adbd97860}{maxRadius}}();}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278     \textcolor{keywordtype}{bool} insert(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{286     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p);}
+\DoxyCodeLine{287     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p);}
+\DoxyCodeLine{294     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& p);}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 }
+\DoxyCodeLine{301     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_af67fd674534afb18f290d11095506c49}{remove}}(\textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{311     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aa5a76932e86bd6fd9e412ebd26eee8d6}{set}}(\textcolor{keywordtype}{int} n, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p);}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{317     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a4beb80887a373b45272fd17d58f0bba2}{setTop}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{323     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a247c922f601b22b7de8480eb36e1e1b6}{getTop}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{329     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac053b5e19c4fa56a9a986ce8f8f1dc8d}{setBottom}}(\textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{335     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aeee45906d23d97dc45a501d1e5e52cdf}{getBottom}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+\DoxyCodeLine{345     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a184054a7eb6d30e96cf094e1e50efcfe}{getTopPoint}}(\textcolor{keywordtype}{int} n) \textcolor{keyword}{const};}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{352     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8b40fd4d56ed19cd4664d6cda0926f59}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{358     \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0f9cf7aa3d23cb39e3eee043ae0487b4}{poly3D}}(\textcolor{keyword}{const} EuclideanProjection\& proj);}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{365     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a4cdef7b0916b889e0687780a3ecb2bea}{translate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& off);}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} linear(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{368     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} linearAllVerts(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{375     \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a3cb6400c36550204c1c452243d2a1595}{linearFixedShape}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378     \textcolor{keywordtype}{bool} validate() \textcolor{keyword}{const};}
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380     \textcolor{keywordtype}{bool} validate(\mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}}* error) \textcolor{keyword}{const};}
+\DoxyCodeLine{381 }
+\DoxyCodeLine{382     \textcolor{keywordtype}{int} maxInRange(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keywordtype}{double} a1, \textcolor{keywordtype}{double} a2) \textcolor{keyword}{const};}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384     \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}} getBoundingRectangle();}
+\DoxyCodeLine{385 }
+\DoxyCodeLine{393     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a9cdf196dcf5092c457d79660985230ec}{perpSide}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395   \textcolor{keyword}{private}:}
+\DoxyCodeLine{396     \textcolor{keywordtype}{bool} vertexConvex(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p2);}
+\DoxyCodeLine{397 }
+\DoxyCodeLine{398   \textcolor{keyword}{public}:}
+\DoxyCodeLine{406     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ab1643291a7cea7f059ca1ca66ec92d4f}{vertexAngle}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{407 }
+\DoxyCodeLine{408     std::string toOutput(\textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{int} precision, \textcolor{keywordtype}{int} numberTcpColumns) \textcolor{keyword}{const};}
+\DoxyCodeLine{409 }
+\DoxyCodeLine{413     std::string \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a7ad66d79a4fdd48754e97879a6557d52}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415     std::vector<std::string> toStringList(\textcolor{keywordtype}{int} vertex, \textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418 \}; \textcolor{comment}{//class}}
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420 \}\textcolor{comment}{// namespace}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

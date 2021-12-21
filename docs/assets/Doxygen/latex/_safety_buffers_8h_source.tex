@@ -1,0 +1,45 @@
+\hypertarget{_safety_buffers_8h_source}{}\doxysection{Safety\+Buffers.\+h}
+\label{_safety_buffers_8h_source}\index{Modules/ACCoRD/inc/SafetyBuffers.h@{Modules/ACCoRD/inc/SafetyBuffers.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef SAFETYBUFFERS\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define SAFETYBUFFERS\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_safety_buffers}{SafetyBuffers}} \{}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{43   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ac730582edda8d4d4db2656617163be4a}{psiHorizNAC}}(\textcolor{keywordtype}{double} relHDist, \textcolor{keywordtype}{double} relGS, \textcolor{keywordtype}{int} NACpOwn, \textcolor{keywordtype}{int} NACvOwn, \textcolor{keywordtype}{int} NACpIntr, \textcolor{keywordtype}{int} NACvIntr, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{57   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a80aa5a7acc0230c573373f5e3dd099df}{psiHorizNIC}}(\textcolor{keywordtype}{double} relHDist, \textcolor{keywordtype}{double} relGS, \textcolor{keywordtype}{int} NICOwn, \textcolor{keywordtype}{int} NACvOwn, \textcolor{keywordtype}{int} NICIntr, \textcolor{keywordtype}{int} NACvIntr, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{71   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ac38c07b2b9300ed3f9d2235cdbe5bec9}{psiVertNAC}}(\textcolor{keywordtype}{double} relVDist, \textcolor{keywordtype}{double} relVS, \textcolor{keywordtype}{int} NACpOwn, \textcolor{keywordtype}{int} NACvOwn, \textcolor{keywordtype}{int} NACpIntr, \textcolor{keywordtype}{int} NACvIntr, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{85   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a34f0f3687e117322447d632404b7eef9}{psiVertNIC}}(\textcolor{keywordtype}{double} relVDist, \textcolor{keywordtype}{double} relVS, \textcolor{keywordtype}{int} NICOwn, \textcolor{keywordtype}{int} NACvOwn, \textcolor{keywordtype}{int} NICIntr, \textcolor{keywordtype}{int} NACvIntr, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{101   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ae0096cac45e39ecdb160af201cf3ccee}{psi}}(\textcolor{keywordtype}{double} relDist, \textcolor{keywordtype}{double} relV, \textcolor{keywordtype}{double} ao, \textcolor{keywordtype}{double} ai, \textcolor{keywordtype}{double} bo, \textcolor{keywordtype}{double} bi, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{102  }
+\DoxyCodeLine{117   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a93240e287fd7feafa7049a5577c3fd17}{psiH}}(\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} sm, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vm, \textcolor{keywordtype}{double} ao, \textcolor{keywordtype}{double} ai, \textcolor{keywordtype}{double} bo, \textcolor{keywordtype}{double} bi, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{138     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ac730582edda8d4d4db2656617163be4a}{psiHorizNAC}}(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} po, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} pi, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vi, \textcolor{keywordtype}{int} NACpOwn, \textcolor{keywordtype}{int} NACvOwn, \textcolor{keywordtype}{int} NACpIntr, \textcolor{keywordtype}{int} NACvIntr, \textcolor{keywordtype}{double} lambda, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \}}
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// SAFETYBUFFERS\_H\_}}
+
+\end{DoxyCode}

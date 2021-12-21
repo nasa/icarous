@@ -1,0 +1,58 @@
+\hypertarget{classlarcfm_1_1_bands_range}{}\doxysection{larcfm\+::Bands\+Range Class Reference}
+\label{classlarcfm_1_1_bands_range}\index{larcfm::BandsRange@{larcfm::BandsRange}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_a4be365d3c2f75a0c179e83b2e669f174}\label{classlarcfm_1_1_bands_range_a4be365d3c2f75a0c179e83b2e669f174}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$\+::size\+\_\+type {\bfseries nat}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_aef45a43572a74c76517dd8fae5fa5a26}\label{classlarcfm_1_1_bands_range_aef45a43572a74c76517dd8fae5fa5a26}} 
+{\bfseries Bands\+Range} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&i, Bands\+Region\+::\+Region r)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_abe4fd6ac8f4a18514e9a474f887b83f4}\label{classlarcfm_1_1_bands_range_abe4fd6ac8f4a18514e9a474f887b83f4}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_a4373b97c842ad0fdae2fe3c00138d967}\label{classlarcfm_1_1_bands_range_a4373b97c842ad0fdae2fe3c00138d967}} 
+std\+::string {\bfseries to\+PVS} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_aa972db7c99645e83ee6da7a9127ff6a1}\label{classlarcfm_1_1_bands_range_aa972db7c99645e83ee6da7a9127ff6a1}} 
+static void {\bfseries make\+Ranges\+From\+Color\+Values} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_color_value}{Color\+Value}} $>$ \&l, bool recovery)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_bands_range_a106b1572117b4d6cb093864520692473}{index\+\_\+of}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, double val, double mod)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_a7b40e2b63d9fb5f68fa62e9634c6d03d}\label{classlarcfm_1_1_bands_range_a7b40e2b63d9fb5f68fa62e9634c6d03d}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries interval}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_ace6ef994ab33438c64250a27eddea056}\label{classlarcfm_1_1_bands_range_ace6ef994ab33438c64250a27eddea056}} 
+Bands\+Region\+::\+Region {\bfseries region}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_ad9a91e74bdc668884a8fa8cd35748cb7}\label{classlarcfm_1_1_bands_range_ad9a91e74bdc668884a8fa8cd35748cb7}} 
+static Bands\+Region\+::\+Region {\bfseries resolution\+\_\+region} (Bands\+Region\+::\+Region region, bool recovery)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_range_a106b1572117b4d6cb093864520692473}\label{classlarcfm_1_1_bands_range_a106b1572117b4d6cb093864520692473}} 
+\index{larcfm::BandsRange@{larcfm::BandsRange}!index\_of@{index\_of}}
+\index{index\_of@{index\_of}!larcfm::BandsRange@{larcfm::BandsRange}}
+\doxysubsubsection{\texorpdfstring{index\_of()}{index\_of()}}
+{\footnotesize\ttfamily int larcfm\+::\+Bands\+Range\+::index\+\_\+of (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&}]{ranges,  }\item[{double}]{val,  }\item[{double}]{mod }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return index in ranges\+\_\+ where val is found, -\/1 if invalid input or not found. Notice that values at the limits may be included or not depending on the regions. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bands\+Range.\+h\item 
+Modules/\+ACCo\+RD/src/Bands\+Range.\+cpp\end{DoxyCompactItemize}

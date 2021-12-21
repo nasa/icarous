@@ -1,0 +1,118 @@
+\hypertarget{_kinematic_bands_core_8h_source}{}\doxysection{Kinematic\+Bands\+Core.\+h}
+\label{_kinematic_bands_core_8h_source}\index{Modules/ACCoRD/inc/KinematicBandsCore.h@{Modules/ACCoRD/inc/KinematicBandsCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef KINEMATICBANDSCORE\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define KINEMATICBANDSCORE\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}AlertLevels.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Detection3DAcceptor.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}TCASTable.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}KinematicBandsParameters.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} RA;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{comment}{/* Absolute ownship state */}}
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} ownship;}
+\DoxyCodeLine{32   \textcolor{comment}{/* Absolute list of traffic states */}}
+\DoxyCodeLine{33   std::vector<TrafficState> traffic;}
+\DoxyCodeLine{34   \textcolor{comment}{/* Kinematic bands parameters */}}
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}} parameters;}
+\DoxyCodeLine{36   \textcolor{comment}{/* Most urgent aircraft */}}
+\DoxyCodeLine{37   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} most\_urgent\_ac;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{private}:}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{comment}{/* Boolean to control re-\/computation of cached values */}}
+\DoxyCodeLine{42   \textcolor{keywordtype}{bool} outdated\_;}
+\DoxyCodeLine{43   \textcolor{comment}{/* Cached horizontal epsilon for implicit coordination */}}
+\DoxyCodeLine{44   \textcolor{keywordtype}{int} epsh\_;}
+\DoxyCodeLine{45   \textcolor{comment}{/* Cached vertical epsilon for implicit coordination */}}
+\DoxyCodeLine{46   \textcolor{keywordtype}{int} epsv\_;}
+\DoxyCodeLine{47   \textcolor{comment}{/* The length of conflict\_acs\_ is greater than or equal to the length of the alert levels. */}}
+\DoxyCodeLine{48   \textcolor{comment}{/* Cached list of conflict aircraft per alert level */}}
+\DoxyCodeLine{49   std::vector< std::vector<TrafficState> > conflict\_acs\_;}
+\DoxyCodeLine{50   \textcolor{comment}{/* Cached list of time intervals of violation per alert level */}}
+\DoxyCodeLine{51   std::vector<Interval> tiov\_; \textcolor{comment}{//}}
+\DoxyCodeLine{52   \textcolor{comment}{/* Current alert level */}}
+\DoxyCodeLine{53   \textcolor{keywordtype}{int} current\_alert\_;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{58   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a1e4a61be9552dd2e3f18d054104ed2b5}{update}}();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{64   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_aaa108270fa3c8171125ab269b51c69a1}{conflict\_aircraft}}(\textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{public}:}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_parameters}{KinematicBandsParameters}}\& params);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}\& core);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{\string~KinematicBandsCore}}();}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \textcolor{comment}{// needed because of pointer}}
+\DoxyCodeLine{75   \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}\& core);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a621540e32926519248a7a6256152edf0}{setKinematicBandsCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core}{KinematicBandsCore}}\& core);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{85   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a70c990459119791ac5b52975b271dc6b}{clear}}();}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{90   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a3331ec797f524caf7bee3ea5c343439a}{reset}}();}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a4a88b397f7a9205e2483b3d1b58d5c4f}{currentAlertLevel}}();}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{100   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_afa13a29ecb5434161263374a1760d513}{epsilonH}}();}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{105   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a833495a71efdf6da010e0d41f8117031}{epsilonV}}();}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{110   std::vector<TrafficState> \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_af30805dfffa44d4c5c1bc2aa8b81ed9b}{correctiveAircraft}}();}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{115   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a448192e71172a171da102f1f5e626a0a}{minHorizontalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{120   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a25de7cd9102741c32f6efefbddf830cc}{minVerticalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{bool} hasOwnship() \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} intruder(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{keywordtype}{bool} hasTraffic() \textcolor{keyword}{const};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{132   std::vector<TrafficState> \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_abdb4af46d8b4e393121413258ee5caaa}{conflictAircraft}}(\textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{138   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a01a6cfc8dd9e2a287ab7ed8d66830cba}{timeIntervalOfViolation}}(\textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_afa13a29ecb5434161263374a1760d513}{epsilonH}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_core_a833495a71efdf6da010e0d41f8117031}{epsilonV}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \textcolor{keyword}{const} \& criteria\_ac() \textcolor{keyword}{const};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \textcolor{keyword}{const} \& recovery\_ac() \textcolor{keyword}{const};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \}}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

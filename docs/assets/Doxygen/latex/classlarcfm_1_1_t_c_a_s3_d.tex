@@ -1,0 +1,481 @@
+\hypertarget{classlarcfm_1_1_t_c_a_s3_d}{}\doxysection{larcfm\+::TCAS3D Class Reference}
+\label{classlarcfm_1_1_t_c_a_s3_d}\index{larcfm::TCAS3D@{larcfm::TCAS3D}}
+Inheritance diagram for larcfm\+::TCAS3D\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlarcfm_1_1_t_c_a_s3_d}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ab25908a4dda14ace7a8b0e0b94130e6c}{TCAS3D}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_adec610358019da649940b7a181ee2232}{TCAS3D}} (const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \&tables)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a19e6813d543b69f83da9d2e1163ea2e3}{get\+TCASTable}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aedda8796e353462a8f600ebdb9be0fd9}{set\+Default\+TCASIIThresholds}} (bool ra)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7c57484bbc6e75d89a21a3d613c874dd}{set\+TCASTable}} (const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \&tables)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ae53e1abb56f73b72f90a3bf6ad5ff14e}\label{classlarcfm_1_1_t_c_a_s3_d_ae53e1abb56f73b72f90a3bf6ad5ff14e}} 
+bool {\bfseries TCASII\+\_\+\+RA} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a827236a6b5501b86ec1512ef5e554141}\label{classlarcfm_1_1_t_c_a_s3_d_a827236a6b5501b86ec1512ef5e554141}} 
+\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ {\bfseries RA3\+D\+\_\+interval} (int sl, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&so2, double soz, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vo2, double voz, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&si2, double siz, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&vi2, double viz, double B, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aee0d8814be3d79c146d385234be8d97d}\label{classlarcfm_1_1_t_c_a_s3_d_aee0d8814be3d79c146d385234be8d97d}} 
+\mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} {\bfseries RA3D} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a3a8d6dae893c5108d0e51160ca02faeb}{conflict\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7ce395fecc3e754abd4fa77609508306}{copy}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a1377bf2332f412c29de0213699f79830}{make}} () const
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aa7b3d20022331f0bee7a7610df996299}{get\+Simple\+Class\+Name}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a6bc2d23d65c4713d1bf0e957b9d47148}{get\+TAU}} (int sl) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a127719a179856e786a992397e94bdcfd}{get\+TCOA}} (int sl) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad65e8ce5c68d500a11123e71536a1a3a}{get\+DMOD}} (int sl) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a919ceba6169755399c3719a1a5abdd5d}{get\+DMOD}} (int sl, const std\+::string \&u) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a5084a31988abc7c812ba6a4244d3ba6d}{get\+ZTHR}} (int sl) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_af473e57de22a92cd854a4c21280d1e69}{get\+ZTHR}} (int sl, const std\+::string \&u) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad56de1e48205f71d904be4bcb234d923}{get\+HMD}} (int sl) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a90c8ea659e632fc05232a14827f53409}{get\+HMD}} (int sl, const std\+::string \&u) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac797714472f66a1d17d0e442a24dde61}{set\+TAU}} (int sl, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ae85428294c003f1ea66fcb4438fa64b1}{set\+TCOA}} (int sl, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad99cb6b9be3fb7a07436838b6fbec2bf}{set\+DMOD}} (int sl, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a25ee48227560aa0fe461b68b15b66eb5}{set\+DMOD}} (int sl, double val, const std\+::string \&u)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aadee58226ee6619393c1323eef1493c7}{set\+ZTHR}} (int sl, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a4037b6869e5b565400a92e7073e61cb9}{set\+ZTHR}} (int sl, double val, const std\+::string \&u)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_afe62a353e330cf6cb71158cce672058b}{set\+HMD}} (int sl, double val)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_adb2a316802b92d8480bde83f7474dd98}{set\+HMD}} (int sl, double val, const std\+::string \&u)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_af4e0a155fa9d58f9ab807c858b13ee9d}\label{classlarcfm_1_1_t_c_a_s3_d_af4e0a155fa9d58f9ab807c858b13ee9d}} 
+void {\bfseries set\+HMDFilter} (bool flag)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_af640372f8fa7903ad2fb3f9fbcd932f4}\label{classlarcfm_1_1_t_c_a_s3_d_af640372f8fa7903ad2fb3f9fbcd932f4}} 
+bool {\bfseries get\+HMDFilter} ()
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aa257bd20e47683a0e2df19a76430f3d5}{to\+String}} () const
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7fdd7e3169e630a9539d364b425e8aaf}{to\+PVS}} () const
+\item 
+virtual std\+::string \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_af00f903089a5f02582f780682c3ca76e}{get\+Identifier}} () const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a9db4fa84b4e69f1a0e6bb54655db3b4c}{set\+Identifier}} (const std\+::string \&id)
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}{equals}} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$d) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aaba0fb9016982eddcc2068fb99786f99}{get\+Parameters}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aa42dab4318389a2342493b216aaf3910}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_af72146a43c5684569a4b080d4866f2ea}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a1f80fa498a66893d95940b634e449209}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd) const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_acada7dc7e792f05c628eecd53d336ee3}{horizontal\+Hazard\+Zone}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&haz, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, double T) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a31061e55da0aaa975e091f54d3dc742e}{A\+\_\+\+TCAS3D}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a1f46b63874a91c066bb0e51d3b3a2621}{TCASII\+\_\+\+RA}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a779f234862fdcc11e56b83a74eb7b51d}{TCASII\+\_\+\+TA}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a70be823b0ce37e72ee15f5b8f8b853a3}{make\+\_\+\+Empty}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a4f7934d48991edef26337fae91d61035}{make\+\_\+\+TCASII\+\_\+\+RA}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac1466eaf229644baedf8515601f4c743}{make\+\_\+\+TCASII\+\_\+\+TA}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a38b7ef39c940267e58156f855133a69c}\label{classlarcfm_1_1_t_c_a_s3_d_a38b7ef39c940267e58156f855133a69c}} 
+static bool {\bfseries vertical\+\_\+\+RA} (double sz, double vz, double ZTHR, double TCOA)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a08a25c78634b96216e3814a689c66ee9}\label{classlarcfm_1_1_t_c_a_s3_d_a08a25c78634b96216e3814a689c66ee9}} 
+static bool {\bfseries cd2d\+\_\+\+TCAS\+\_\+after} (double HMD, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} s, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vo, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vi, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a8632ddc806373457a606e2acf1132058}\label{classlarcfm_1_1_t_c_a_s3_d_a8632ddc806373457a606e2acf1132058}} 
+static bool {\bfseries cd2d\+\_\+\+TCAS} (double HMD, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} s, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vo, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vi)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a8524349ac873e388636a9a20feb9922f}\label{classlarcfm_1_1_t_c_a_s3_d_a8524349ac873e388636a9a20feb9922f}} 
+\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} {\bfseries table\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a59d134685e55947ba115d9e2af3fed67}\label{classlarcfm_1_1_t_c_a_s3_d_a59d134685e55947ba115d9e2af3fed67}} 
+std\+::string {\bfseries id}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ab25908a4dda14ace7a8b0e0b94130e6c}\label{classlarcfm_1_1_t_c_a_s3_d_ab25908a4dda14ace7a8b0e0b94130e6c}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!TCAS3D@{TCAS3D}}
+\index{TCAS3D@{TCAS3D}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{TCAS3D()}{TCAS3D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+TCAS3\+D\+::\+TCAS3D (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor that uses the default TCAS tables. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_adec610358019da649940b7a181ee2232}\label{classlarcfm_1_1_t_c_a_s3_d_adec610358019da649940b7a181ee2232}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!TCAS3D@{TCAS3D}}
+\index{TCAS3D@{TCAS3D}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{TCAS3D()}{TCAS3D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+TCAS3\+D\+::\+TCAS3D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \&}]{tables }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Constructor that specifies a particular instance of the TCAS tables. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a31061e55da0aaa975e091f54d3dc742e}\label{classlarcfm_1_1_t_c_a_s3_d_a31061e55da0aaa975e091f54d3dc742e}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!A\_TCAS3D@{A\_TCAS3D}}
+\index{A\_TCAS3D@{A\_TCAS3D}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{A\_TCAS3D()}{A\_TCAS3D()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& larcfm\+::\+TCAS3\+D\+::\+A\+\_\+\+TCAS3D (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+one static \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a3a8d6dae893c5108d0e51160ca02faeb}\label{classlarcfm_1_1_t_c_a_s3_d_a3a8d6dae893c5108d0e51160ca02faeb}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!conflictDetection@{conflictDetection}}
+\index{conflictDetection@{conflictDetection}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{conflictDetection()}{conflictDetection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} larcfm\+::\+TCAS3\+D\+::conflict\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This functional call returns a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict between times B and T from now (relative), if any. 
+\begin{DoxyParams}{Parameters}
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+{\em si} & intruder position \\
+\hline
+{\em vi} & intruder velocity \\
+\hline
+{\em D} & horizontal separation \\
+\hline
+{\em H} & vertical separation \\
+\hline
+{\em B} & beginning of detection time (\texorpdfstring{$>$}{>}=0) \\
+\hline
+{\em T} & end of detection time (if T \texorpdfstring{$<$}{<} 0 then use an \char`\"{}infinite\char`\"{} lookahead time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{Conflict\+Data}} object detailing the conflict 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a2ee67971d48e6a8aedce8a2ac44af29d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a1f80fa498a66893d95940b634e449209}\label{classlarcfm_1_1_t_c_a_s3_d_a1f80fa498a66893d95940b634e449209}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!contains@{contains}}
+\index{contains@{contains}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+TCAS3\+D\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{cd }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a7ce395fecc3e754abd4fa77609508306}\label{classlarcfm_1_1_t_c_a_s3_d_a7ce395fecc3e754abd4fa77609508306}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!copy@{copy}}
+\index{copy@{copy}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} $\ast$ larcfm\+::\+TCAS3\+D\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+This returns a pointer to a new instance of this type of Detector3D. You are responsible for destroying this instance when it is no longer needed. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a38aba03a3b33636dc14091165be54d5c}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}\label{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!equals@{equals}}
+\index{equals@{equals}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool larcfm\+::\+TCAS3\+D\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{o }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return true if two instances have identical parameters (including identifiers). Use address equality (\&x == \&y) to distinguish instances. A generic implementation, assuming the identifier is included in the \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object, would be virtual bool \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}{equals(\+Detection3\+D$\ast$ o) const }}\{ if (!larcfm\mbox{\hyperlink{namespacelarcfm_a70e71904b71bbd150854983eb667a733}{equals}}(get\+Class\+Name(), o-\/\texorpdfstring{$>$}{>}get\+Class\+Name())) return false; if (!get\+Parameter\+Data().equals(o-\/\texorpdfstring{$>$}{>}get\+Parameter\+Data())) return false; return true; \} 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a0cb947b8ebe2974ecc862caafa32e461}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ad65e8ce5c68d500a11123e71536a1a3a}\label{classlarcfm_1_1_t_c_a_s3_d_ad65e8ce5c68d500a11123e71536a1a3a}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getDMOD@{getDMOD}}
+\index{getDMOD@{getDMOD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getDMOD()}{getDMOD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+DMOD (\begin{DoxyParamCaption}\item[{int}]{sl }\end{DoxyParamCaption}) const}
+
+Returns DMOD for sensitivity level sl in internal units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a919ceba6169755399c3719a1a5abdd5d}\label{classlarcfm_1_1_t_c_a_s3_d_a919ceba6169755399c3719a1a5abdd5d}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getDMOD@{getDMOD}}
+\index{getDMOD@{getDMOD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getDMOD()}{getDMOD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+DMOD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+Returns DMOD for sensitivity level sl in u units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ad56de1e48205f71d904be4bcb234d923}\label{classlarcfm_1_1_t_c_a_s3_d_ad56de1e48205f71d904be4bcb234d923}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getHMD@{getHMD}}
+\index{getHMD@{getHMD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getHMD()}{getHMD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+HMD (\begin{DoxyParamCaption}\item[{int}]{sl }\end{DoxyParamCaption}) const}
+
+Returns HMD for sensitivity level sl in internal units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a90c8ea659e632fc05232a14827f53409}\label{classlarcfm_1_1_t_c_a_s3_d_a90c8ea659e632fc05232a14827f53409}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getHMD@{getHMD}}
+\index{getHMD@{getHMD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getHMD()}{getHMD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+HMD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+Returns HMD for sensitivity level sl in u units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_af00f903089a5f02582f780682c3ca76e}\label{classlarcfm_1_1_t_c_a_s3_d_af00f903089a5f02582f780682c3ca76e}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getIdentifier@{getIdentifier}}
+\index{getIdentifier@{getIdentifier}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getIdentifier()}{getIdentifier()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+TCAS3\+D\+::get\+Identifier (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aaba0fb9016982eddcc2068fb99786f99}\label{classlarcfm_1_1_t_c_a_s3_d_aaba0fb9016982eddcc2068fb99786f99}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+TCAS3\+D\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aa7b3d20022331f0bee7a7610df996299}\label{classlarcfm_1_1_t_c_a_s3_d_aa7b3d20022331f0bee7a7610df996299}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getSimpleClassName@{getSimpleClassName}}
+\index{getSimpleClassName@{getSimpleClassName}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getSimpleClassName()}{getSimpleClassName()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+TCAS3\+D\+::get\+Simple\+Class\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a6bc2d23d65c4713d1bf0e957b9d47148}\label{classlarcfm_1_1_t_c_a_s3_d_a6bc2d23d65c4713d1bf0e957b9d47148}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getTAU@{getTAU}}
+\index{getTAU@{getTAU}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getTAU()}{getTAU()}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+TAU (\begin{DoxyParamCaption}\item[{int}]{sl }\end{DoxyParamCaption}) const}
+
+Returns TAU threshold for sensitivity level sl in seconds \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a19e6813d543b69f83da9d2e1163ea2e3}\label{classlarcfm_1_1_t_c_a_s3_d_a19e6813d543b69f83da9d2e1163ea2e3}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getTCASTable@{getTCASTable}}
+\index{getTCASTable@{getTCASTable}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getTCASTable()}{getTCASTable()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \& larcfm\+::\+TCAS3\+D\+::get\+TCASTable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This returns a copy of the internal TCAS table \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a127719a179856e786a992397e94bdcfd}\label{classlarcfm_1_1_t_c_a_s3_d_a127719a179856e786a992397e94bdcfd}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getTCOA@{getTCOA}}
+\index{getTCOA@{getTCOA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getTCOA()}{getTCOA()}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+TCOA (\begin{DoxyParamCaption}\item[{int}]{sl }\end{DoxyParamCaption}) const}
+
+Returns TCOA threshold for sensitivity level sl in seconds \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a5084a31988abc7c812ba6a4244d3ba6d}\label{classlarcfm_1_1_t_c_a_s3_d_a5084a31988abc7c812ba6a4244d3ba6d}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getZTHR@{getZTHR}}
+\index{getZTHR@{getZTHR}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getZTHR()}{getZTHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+ZTHR (\begin{DoxyParamCaption}\item[{int}]{sl }\end{DoxyParamCaption}) const}
+
+Returns Z threshold for sensitivity level sl in internal units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_af473e57de22a92cd854a4c21280d1e69}\label{classlarcfm_1_1_t_c_a_s3_d_af473e57de22a92cd854a4c21280d1e69}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!getZTHR@{getZTHR}}
+\index{getZTHR@{getZTHR}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{getZTHR()}{getZTHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+TCAS3\+D\+::get\+ZTHR (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+Returns Z threshold for sensitivity level sl in u units. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_acada7dc7e792f05c628eecd53d336ee3}\label{classlarcfm_1_1_t_c_a_s3_d_acada7dc7e792f05c628eecd53d336ee3}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!horizontalHazardZone@{horizontalHazardZone}}
+\index{horizontalHazardZone@{horizontalHazardZone}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{horizontalHazardZone()}{horizontalHazardZone()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::horizontal\+Hazard\+Zone (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&}]{haz,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a list of points (polygon) that approximates the horizontal hazard zone around the ownship, with respect to a traffic aircraft. A polygon is a list of points in counter-\/clockwise direction, where the last point is connected to the first one. 
+\begin{DoxyParams}{Parameters}
+{\em T} & This time represents a time horizon in seconds. When T is 0, the polygon represents the hazard zone. Otherwise, the are represents the hazard zone with time horizon T.\\
+\hline
+\end{DoxyParams}
+NOTE 1\+: This polygon should only be used for display purposes since it\textquotesingle{}s merely an approximation of the actual hazard zone defined by the violation and detection methods.
+
+NOTE 2\+: This method has to be redefined as appropriate for every specific hazard zone. 
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_detection3_d_a563197ae6fae4af5fd668ca19dc33bcd}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a1377bf2332f412c29de0213699f79830}\label{classlarcfm_1_1_t_c_a_s3_d_a1377bf2332f412c29de0213699f79830}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!make@{make}}
+\index{make@{make}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} $\ast$ larcfm\+::\+TCAS3\+D\+::make (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a70be823b0ce37e72ee15f5b8f8b853a3}\label{classlarcfm_1_1_t_c_a_s3_d_a70be823b0ce37e72ee15f5b8f8b853a3}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!make\_Empty@{make\_Empty}}
+\index{make\_Empty@{make\_Empty}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{make\_Empty()}{make\_Empty()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} larcfm\+::\+TCAS3\+D\+::make\+\_\+\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} object with empty Table \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a4f7934d48991edef26337fae91d61035}\label{classlarcfm_1_1_t_c_a_s3_d_a4f7934d48991edef26337fae91d61035}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!make\_TCASII\_RA@{make\_TCASII\_RA}}
+\index{make\_TCASII\_RA@{make\_TCASII\_RA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{make\_TCASII\_RA()}{make\_TCASII\_RA()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} larcfm\+::\+TCAS3\+D\+::make\+\_\+\+TCASII\+\_\+\+RA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} object with an RA Table \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ac1466eaf229644baedf8515601f4c743}\label{classlarcfm_1_1_t_c_a_s3_d_ac1466eaf229644baedf8515601f4c743}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!make\_TCASII\_TA@{make\_TCASII\_TA}}
+\index{make\_TCASII\_TA@{make\_TCASII\_TA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{make\_TCASII\_TA()}{make\_TCASII\_TA()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} larcfm\+::\+TCAS3\+D\+::make\+\_\+\+TCASII\+\_\+\+TA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} objec with a TA Table \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aedda8796e353462a8f600ebdb9be0fd9}\label{classlarcfm_1_1_t_c_a_s3_d_aedda8796e353462a8f600ebdb9be0fd9}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setDefaultTCASIIThresholds@{setDefaultTCASIIThresholds}}
+\index{setDefaultTCASIIThresholds@{setDefaultTCASIIThresholds}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setDefaultTCASIIThresholds()}{setDefaultTCASIIThresholds()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+Default\+TCASIIThresholds (\begin{DoxyParamCaption}\item[{bool}]{ra }\end{DoxyParamCaption})}
+
+Set table to TCASII Thresholds (RA Table when ra is true, TA Table when ra is false) \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ad99cb6b9be3fb7a07436838b6fbec2bf}\label{classlarcfm_1_1_t_c_a_s3_d_ad99cb6b9be3fb7a07436838b6fbec2bf}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setDMOD@{setDMOD}}
+\index{setDMOD@{setDMOD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setDMOD()}{setDMOD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+DMOD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Modify the value of DMOD for a given sensitivity level (2-\/8) Parameter val is given in internal units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a25ee48227560aa0fe461b68b15b66eb5}\label{classlarcfm_1_1_t_c_a_s3_d_a25ee48227560aa0fe461b68b15b66eb5}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setDMOD@{setDMOD}}
+\index{setDMOD@{setDMOD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setDMOD()}{setDMOD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+DMOD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption})}
+
+Modify the value of DMOD for a given sensitivity level (2-\/8) Parameter val is given in u units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_afe62a353e330cf6cb71158cce672058b}\label{classlarcfm_1_1_t_c_a_s3_d_afe62a353e330cf6cb71158cce672058b}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setHMD@{setHMD}}
+\index{setHMD@{setHMD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setHMD()}{setHMD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+HMD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Modify the value of HMD for a given sensitivity level (2-\/8) Parameter val is given in internal units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_adb2a316802b92d8480bde83f7474dd98}\label{classlarcfm_1_1_t_c_a_s3_d_adb2a316802b92d8480bde83f7474dd98}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setHMD@{setHMD}}
+\index{setHMD@{setHMD}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setHMD()}{setHMD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+HMD (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption})}
+
+Modify the value of HMD for a given sensitivity level (2-\/8) Parameter val is given in u units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a9db4fa84b4e69f1a0e6bb54655db3b4c}\label{classlarcfm_1_1_t_c_a_s3_d_a9db4fa84b4e69f1a0e6bb54655db3b4c}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setIdentifier@{setIdentifier}}
+\index{setIdentifier@{setIdentifier}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setIdentifier()}{setIdentifier()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+Identifier (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_af72146a43c5684569a4b080d4866f2ea}\label{classlarcfm_1_1_t_c_a_s3_d_af72146a43c5684569a4b080d4866f2ea}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{larcfm\+::\+Parameter\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ac797714472f66a1d17d0e442a24dde61}\label{classlarcfm_1_1_t_c_a_s3_d_ac797714472f66a1d17d0e442a24dde61}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setTAU@{setTAU}}
+\index{setTAU@{setTAU}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setTAU()}{setTAU()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+TAU (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Modify the value of Tau Threshold for a given sensitivity level (2-\/8) Parameter val is given in seconds \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a7c57484bbc6e75d89a21a3d613c874dd}\label{classlarcfm_1_1_t_c_a_s3_d_a7c57484bbc6e75d89a21a3d613c874dd}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setTCASTable@{setTCASTable}}
+\index{setTCASTable@{setTCASTable}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setTCASTable()}{setTCASTable()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+TCASTable (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} \&}]{tables }\end{DoxyParamCaption})}
+
+This sets the internal table to be a deep copy of the supplied one. Any previous links will be broken. \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_ae85428294c003f1ea66fcb4438fa64b1}\label{classlarcfm_1_1_t_c_a_s3_d_ae85428294c003f1ea66fcb4438fa64b1}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setTCOA@{setTCOA}}
+\index{setTCOA@{setTCOA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setTCOA()}{setTCOA()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+TCOA (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Modify the value of TCOA Threshold for a given sensitivity level (2-\/8) Parameter val is given in seconds \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aadee58226ee6619393c1323eef1493c7}\label{classlarcfm_1_1_t_c_a_s3_d_aadee58226ee6619393c1323eef1493c7}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setZTHR@{setZTHR}}
+\index{setZTHR@{setZTHR}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setZTHR()}{setZTHR()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+ZTHR (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Modify the value of ZTHR for a given sensitivity level (2-\/8) Parameter val is given in internal units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a4037b6869e5b565400a92e7073e61cb9}\label{classlarcfm_1_1_t_c_a_s3_d_a4037b6869e5b565400a92e7073e61cb9}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!setZTHR@{setZTHR}}
+\index{setZTHR@{setZTHR}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{setZTHR()}{setZTHR()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::set\+ZTHR (\begin{DoxyParamCaption}\item[{int}]{sl,  }\item[{double}]{val,  }\item[{const std\+::string \&}]{u }\end{DoxyParamCaption})}
+
+Modify the value of ZTHR for a given sensitivity level (2-\/8) Parameter val is given in u units \mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a1f46b63874a91c066bb0e51d3b3a2621}\label{classlarcfm_1_1_t_c_a_s3_d_a1f46b63874a91c066bb0e51d3b3a2621}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!TCASII\_RA@{TCASII\_RA}}
+\index{TCASII\_RA@{TCASII\_RA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{TCASII\_RA()}{TCASII\_RA()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& larcfm\+::\+TCAS3\+D\+::\+TCASII\+\_\+\+RA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+one static TCASII\+\_\+\+RA 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a779f234862fdcc11e56b83a74eb7b51d}\label{classlarcfm_1_1_t_c_a_s3_d_a779f234862fdcc11e56b83a74eb7b51d}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!TCASII\_TA@{TCASII\_TA}}
+\index{TCASII\_TA@{TCASII\_TA}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{TCASII\_TA()}{TCASII\_TA()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \& larcfm\+::\+TCAS3\+D\+::\+TCASII\+\_\+\+TA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+one static TCASII\+\_\+\+TA 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_a7fdd7e3169e630a9539d364b425e8aaf}\label{classlarcfm_1_1_t_c_a_s3_d_a7fdd7e3169e630a9539d364b425e8aaf}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!toPVS@{toPVS}}
+\index{toPVS@{toPVS}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{toPVS()}{toPVS()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+TCAS3\+D\+::to\+PVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aa257bd20e47683a0e2df19a76430f3d5}\label{classlarcfm_1_1_t_c_a_s3_d_aa257bd20e47683a0e2df19a76430f3d5}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!toString@{toString}}
+\index{toString@{toString}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+TCAS3\+D\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{larcfm\+::\+Detection3D}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_t_c_a_s3_d_aa42dab4318389a2342493b216aaf3910}\label{classlarcfm_1_1_t_c_a_s3_d_aa42dab4318389a2342493b216aaf3910}} 
+\index{larcfm::TCAS3D@{larcfm::TCAS3D}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::TCAS3D@{larcfm::TCAS3D}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+TCAS3\+D\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/TCAS3\+D.\+h\item 
+Modules/\+ACCo\+RD/src/TCAS3\+D.\+cpp\end{DoxyCompactItemize}

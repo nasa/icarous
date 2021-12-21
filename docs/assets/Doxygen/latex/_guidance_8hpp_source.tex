@@ -26,11 +26,11 @@
 \DoxyCodeLine{30     std::map<std::string,int> \mbox{\hyperlink{class_guidance_a87378fb2c5414eaaaa22005745a81079}{nextWpId}};               }
 \DoxyCodeLine{31     std::string \mbox{\hyperlink{class_guidance_a392887ef5cb0a67063ebb6d8b5caa9cc}{activePlanId}};                         }
 \DoxyCodeLine{32     std::string \mbox{\hyperlink{class_guidance_aec677ab96bcdd5432d24a57994c4af2a}{prevPlan}};                             }
-\DoxyCodeLine{33     larcfm::Plan* \mbox{\hyperlink{class_guidance_a747324c9ea535bbdc0b0b05eb50be855}{currentPlan}};                        }
-\DoxyCodeLine{34     larcfm::Position \mbox{\hyperlink{class_guidance_a50450dacd698e9da0be6b593858bcef2}{currentPos}};                      }
-\DoxyCodeLine{35     larcfm::Velocity \mbox{\hyperlink{class_guidance_a8b993d81fec5384ad4f12944b459bfec}{currentAirspeed}};                 }
-\DoxyCodeLine{36     larcfm::Velocity \mbox{\hyperlink{class_guidance_a118ce9bd01ef62ba59b3f8208e43e2cc}{currentGroundSpeed}};              }
-\DoxyCodeLine{37     larcfm::Velocity \mbox{\hyperlink{class_guidance_a5524351858d155338c1e0c7cdb608980}{outputCmd}};                       }
+\DoxyCodeLine{33     \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}}* \mbox{\hyperlink{class_guidance_a747324c9ea535bbdc0b0b05eb50be855}{currentPlan}};                        }
+\DoxyCodeLine{34     \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \mbox{\hyperlink{class_guidance_a50450dacd698e9da0be6b593858bcef2}{currentPos}};                      }
+\DoxyCodeLine{35     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_guidance_a8b993d81fec5384ad4f12944b459bfec}{currentAirspeed}};                 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_guidance_a118ce9bd01ef62ba59b3f8208e43e2cc}{currentGroundSpeed}};              }
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_guidance_a5524351858d155338c1e0c7cdb608980}{outputCmd}};                       }
 \DoxyCodeLine{38     \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{GuidanceMode}} \mbox{\hyperlink{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}{mode}};                                }
 \DoxyCodeLine{39     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_abfa772a0dd17f1a3c07e63f535a7663e}{currTime}};                                  }
 \DoxyCodeLine{40     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_guidance_a4ae6cc43e93ec637a300f3611cae5559}{wpReached}};                                   }
@@ -41,13 +41,13 @@
 \DoxyCodeLine{45     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a092ba8b68be90cb8f690d14e9ee1a640}{xtrackDist}};                                }
 \DoxyCodeLine{46     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a27e9c7af4a8512565d9e81cbacd1cc74}{prevTrackControllerTime}};                   }
 \DoxyCodeLine{47     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_aed1fecd9865fe9331db26d2bb7d01513}{prevTrackControllerTarget}};                 }
-\DoxyCodeLine{48     larcfm::Velocity \mbox{\hyperlink{class_guidance_a1942a98a0e540bac5732463566562098}{wind}};                            }
+\DoxyCodeLine{48     \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \mbox{\hyperlink{class_guidance_a1942a98a0e540bac5732463566562098}{wind}};                            }
 \DoxyCodeLine{49     }
 \DoxyCodeLine{50     \mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}} \mbox{\hyperlink{class_guidance_a408c2efa5f9e118e6336559651f23f02}{params}};                          }
 \DoxyCodeLine{51 }
-\DoxyCodeLine{61     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a09cde1ef1e07435eb9b51cef679e7e72}{ComputeOffSetPositionOnPlan}}(larcfm::Plan* fp,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{double} guidance\_radius,larcfm::Position \&pos);}
+\DoxyCodeLine{61     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a09cde1ef1e07435eb9b51cef679e7e72}{ComputeOffSetPositionOnPlan}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}}* fp,\textcolor{keywordtype}{int} nextWP,\textcolor{keywordtype}{double} guidance\_radius,\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \&pos);}
 \DoxyCodeLine{62 }
-\DoxyCodeLine{72     larcfm::Vect3 \mbox{\hyperlink{class_guidance_acaf0febbd3b74f90045eca72c3ac466e}{GetCorrectIntersectionPoint}}(\textcolor{keyword}{const} larcfm::Vect3 \&wpA,\textcolor{keyword}{const} larcfm::Vect3 \&wpB,\textcolor{keyword}{const} \textcolor{keywordtype}{double} r);}
+\DoxyCodeLine{72     \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \mbox{\hyperlink{class_guidance_acaf0febbd3b74f90045eca72c3ac466e}{GetCorrectIntersectionPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \&wpA,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm::Vect3}} \&wpB,\textcolor{keyword}{const} \textcolor{keywordtype}{double} r);}
 \DoxyCodeLine{73 }
 \DoxyCodeLine{83     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a7d5f0b2939acbd54aeb1d0394d292e48}{distance}}(\textcolor{keywordtype}{double} x1,\textcolor{keywordtype}{double} y1,\textcolor{keywordtype}{double} x2,\textcolor{keywordtype}{double} y2);}
 \DoxyCodeLine{84 }
@@ -57,9 +57,9 @@
 \DoxyCodeLine{99 }
 \DoxyCodeLine{106     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_aa2b54e794e2ce943f60c85e52f2e5f95}{ComputeNewHeading}}(\textcolor{keywordtype}{double}\& speedRef);}
 \DoxyCodeLine{107 }
-\DoxyCodeLine{116     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a6eb0f998b75786d65b6c009b99ce709c}{GetApproachPrecision}}(\textcolor{keyword}{const} larcfm::Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}},\textcolor{keyword}{const} larcfm::Velocity \&velocity, \textcolor{keyword}{const} larcfm::Position \&waypoint);}
+\DoxyCodeLine{116     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_guidance_a6eb0f998b75786d65b6c009b99ce709c}{GetApproachPrecision}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}},\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \&velocity, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \&waypoint);}
 \DoxyCodeLine{117 }
-\DoxyCodeLine{124     larcfm::Plan* \mbox{\hyperlink{class_guidance_a6a1adb5833bec5563805c903343a4a76}{GetPlan}}(\textcolor{keyword}{const} std::string \&plan\_id);}
+\DoxyCodeLine{124     \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm::Plan}}* \mbox{\hyperlink{class_guidance_a6a1adb5833bec5563805c903343a4a76}{GetPlan}}(\textcolor{keyword}{const} std::string \&plan\_id);}
 \DoxyCodeLine{125 }
 \DoxyCodeLine{133     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_ac5fe2f4655823439df58f6e13695f784}{FilterCommand}}(\textcolor{keywordtype}{double} \&refHeading, \textcolor{keywordtype}{double} \&refSpeed, \textcolor{keywordtype}{double} \&refVS);}
 \DoxyCodeLine{134 }
@@ -74,7 +74,7 @@
 \DoxyCodeLine{161 }
 \DoxyCodeLine{167     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a59574093df3c470814eab4130a3f05a0}{SetGuidanceParams}}(\textcolor{keyword}{const} \mbox{\hyperlink{struct_guidance_params__t}{GuidanceParams\_t}}* \mbox{\hyperlink{class_guidance_a408c2efa5f9e118e6336559651f23f02}{params}});}
 \DoxyCodeLine{168 }
-\DoxyCodeLine{175     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a80e367c673156c2b0dcbf74306e01d38}{SetAircraftState}}(\textcolor{keyword}{const} larcfm::Position \&pos,\textcolor{keyword}{const} larcfm::Velocity \&groundSpeed);}
+\DoxyCodeLine{175     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a80e367c673156c2b0dcbf74306e01d38}{SetAircraftState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} \&pos,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \&groundSpeed);}
 \DoxyCodeLine{176 }
 \DoxyCodeLine{183     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a2fc86c190cb04814294e5c461291d8bd}{SetWindData}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} windFrom,\textcolor{keyword}{const} \textcolor{keywordtype}{double} windSpeed);}
 \DoxyCodeLine{184 }
@@ -92,7 +92,7 @@
 \DoxyCodeLine{234 }
 \DoxyCodeLine{243     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a425dd495bb750034b8f823affe3735c5}{ChangeWaypointETA}}(\textcolor{keyword}{const} std::string planID,\textcolor{keyword}{const} \textcolor{keywordtype}{int} wpID,\textcolor{keyword}{const} \textcolor{keywordtype}{double} value,\textcolor{keyword}{const} \textcolor{keywordtype}{bool} updateAll);}
 \DoxyCodeLine{244 }
-\DoxyCodeLine{250     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}{SetVelocityCommands}}(\textcolor{keyword}{const} larcfm::Velocity \&inputs);}
+\DoxyCodeLine{250     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}{SetVelocityCommands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} \&inputs);}
 \DoxyCodeLine{251 }
 \DoxyCodeLine{257     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_guidance_ac5d309f7a536bc055e2f3bd349059c44}{GetOutput}}(\mbox{\hyperlink{struct_guidance_output__t}{GuidanceOutput\_t}}\& output);}
 \DoxyCodeLine{258 }

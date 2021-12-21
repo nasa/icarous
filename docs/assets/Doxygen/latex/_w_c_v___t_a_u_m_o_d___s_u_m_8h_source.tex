@@ -1,0 +1,177 @@
+\hypertarget{_w_c_v___t_a_u_m_o_d___s_u_m_8h_source}{}\doxysection{WCV\+\_\+\+TAUMOD\+\_\+\+SUM.\+h}
+\label{_w_c_v___t_a_u_m_o_d___s_u_m_8h_source}\index{Modules/ACCoRD/inc/WCV\_TAUMOD\_SUM.h@{Modules/ACCoRD/inc/WCV\_TAUMOD\_SUM.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef WCV\_TAUMOD\_SUM\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define WCV\_TAUMOD\_SUM\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}WCV\_TAUMOD.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}DaidalusParameters.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{public}:}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{21   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a6896bf272ee48ebd37ee750b88fd693b}{WCV\_TAUMOD\_SUM}}();}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{24   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a6896bf272ee48ebd37ee750b88fd693b}{WCV\_TAUMOD\_SUM}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tab);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{\string~WCV\_TAUMOD\_SUM}}() \{\};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_acf50e9143b9341aa1a7ac62e5910b4bd}{A\_WCV\_TAUMOD\_SUM}}();}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a778ebe3d891d108df89c75a564521ce6}{DO\_365\_Phase\_I\_preventive}}();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{43   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_afce52d09b10942dbebce88b39e7ba989}{DO\_365\_DWC\_Phase\_I}}();}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{49   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a1c1ce91c3bb7aef2feec04fef1040e55}{DO\_365\_DWC\_Phase\_II}}();}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{55   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a4c0b941100e7d11caa9d63bd5d2bcf83}{DO\_365\_DWC\_Non\_Coop}}();}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a5f61b6a4864a67036d5a02ed4dfb1fd3}{conflictDetectionWithTrafficState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder,}
+\DoxyCodeLine{58       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{private}:}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{keywordtype}{double}  h\_pos\_z\_score\_;          \textcolor{comment}{// Number of horizontal position standard deviations}}
+\DoxyCodeLine{63   \textcolor{keywordtype}{bool} h\_pos\_z\_score\_enabled\_;     \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{64   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{65   \textcolor{keywordtype}{double}  h\_vel\_z\_score\_min\_;      \textcolor{comment}{// Minimum number of horizontal velocity standard deviations}}
+\DoxyCodeLine{66   \textcolor{keywordtype}{bool} h\_vel\_z\_score\_min\_enabled\_; \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{67   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{68   \textcolor{keywordtype}{double}  h\_vel\_z\_score\_max\_;      \textcolor{comment}{// Maximum number of horizontal velocity standard deviations}}
+\DoxyCodeLine{69   \textcolor{keywordtype}{bool} h\_vel\_z\_score\_max\_enabled\_; \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{70   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{71   \textcolor{keywordtype}{double}  h\_vel\_z\_distance\_;       \textcolor{comment}{// Distance at which h\_vel\_z\_score scales from min to max as range decreases}}
+\DoxyCodeLine{72   std::string  h\_vel\_z\_distance\_units\_;    \textcolor{comment}{// Units of distance at which h\_vel\_z\_score scales from min to max as range decreases}}
+\DoxyCodeLine{73   \textcolor{keywordtype}{bool} h\_vel\_z\_distance\_enabled\_;  \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{74   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{75   \textcolor{keywordtype}{double}  v\_pos\_z\_score\_;          \textcolor{comment}{// Number of vertical position standard deviations}}
+\DoxyCodeLine{76   \textcolor{keywordtype}{bool} v\_pos\_z\_score\_enabled\_;     \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{77   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{78   \textcolor{keywordtype}{double}  v\_vel\_z\_score\_;          \textcolor{comment}{// Number of vertical velocity standard deviations}}
+\DoxyCodeLine{79   \textcolor{keywordtype}{bool} v\_vel\_z\_score\_enabled\_;     \textcolor{comment}{// True if value has been set independently. Otherwise,}}
+\DoxyCodeLine{80   \textcolor{comment}{// value will be overwritten using global parameter}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \textcolor{keyword}{static} \textcolor{keywordtype}{double} MinError;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   \textcolor{keywordtype}{void} initSUM();}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \textcolor{keywordtype}{void} copyFrom(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& wcv);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keywordtype}{bool} sumof(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w) \textcolor{keyword}{const};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90   \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} average\_direction(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v2) \textcolor{keyword}{const};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92   std::pair<Vect2,Vect2> optimal\_pair(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w2) \textcolor{keyword}{const};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94   std::pair<Vect2,Vect2> optimal\_wcv\_pair\_comp\_init(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v2, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   std::pair<Vect2,Vect2> optimal\_wcv\_pair(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{int} eps1, \textcolor{keywordtype}{int} eps2) \textcolor{keyword}{const};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98   \textcolor{keywordtype}{bool} horizontal\_wcv\_taumod\_uncertain(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \textcolor{keywordtype}{bool} vertical\_WCV\_uncertain(\textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102   \textcolor{keywordtype}{double} horizontal\_wcv\_taumod\_uncertain\_entry(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104   \textcolor{keywordtype}{double} Theta\_D\_uncertain(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{int} eps) \textcolor{keyword}{const};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106   \textcolor{keywordtype}{double} horizontal\_wcv\_taumod\_uncertain\_exit(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v,\textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} horizontal\_wcv\_taumod\_uncertain\_interval(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v,\textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} vertical\_WCV\_uncertain\_full\_interval\_szpos\_vzpos(\textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} minsz\textcolor{comment}{/*,double maxsz*/}, \textcolor{keywordtype}{double} minvz\textcolor{comment}{/*, double maxvz*/}) \textcolor{keyword}{const};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} vertical\_WCV\_uncertain\_full\_interval\_szpos\_vzneg(\textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} minsz,\textcolor{keywordtype}{double} maxsz, \textcolor{keywordtype}{double} minvz, \textcolor{keywordtype}{double} maxvz) \textcolor{keyword}{const};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} vertical\_WCV\_uncertain\_full\_interval\_szpos(\textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} minsz,\textcolor{keywordtype}{double} maxsz, \textcolor{keywordtype}{double} minvz, \textcolor{keywordtype}{double} maxvz) \textcolor{keyword}{const};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} vertical\_WCV\_uncertain\_full\_interval\_split(\textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} minsz,\textcolor{keywordtype}{double} maxsz, \textcolor{keywordtype}{double} minvz, \textcolor{keywordtype}{double} maxvz) \textcolor{keyword}{const};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} vertical\_WCV\_uncertain\_interval(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{keywordtype}{bool} containsSUM(\mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}* wcv) \textcolor{keyword}{const};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{double} relativeHorizontalPositionError(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& own, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124   \textcolor{keywordtype}{double} relativeVerticalPositionError(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& own, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{keywordtype}{double} weighted\_z\_score(\textcolor{keywordtype}{double} range) \textcolor{keyword}{const};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128   \textcolor{keywordtype}{double} relativeHorizontalSpeedError(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& own, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac, \textcolor{keywordtype}{double} s\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   \textcolor{keywordtype}{double} relativeVerticalSpeedError(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& own, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{keyword}{public}:}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}} \& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m}{WCV\_TAUMOD\_SUM}}\& wcv);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{141   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a1f4390ce86a967bb884bc431d5395f9a}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145   \textcolor{keywordtype}{bool} WCV\_taumod\_uncertain(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} WCV\_taumod\_uncertain\_interval(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v,}
+\DoxyCodeLine{148       \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150   \textcolor{keywordtype}{bool} WCV\_taumod\_uncertain\_detection(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v,}
+\DoxyCodeLine{151       \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{162   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a0306d79065898f76482d3a020312249d}{getHorizontalPositionZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{167   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_ac1c1281399f70c2ec7b2c2cd7d544776}{setHorizontalPositionZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{172   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a05206f746de1f346b45dafec9a21d966}{getHorizontalVelocityZScoreMin}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{177   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a075a1a986be6d0291f52924e2d5329b4}{setHorizontalVelocityZScoreMin}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{182   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_aa28b902f5da523ac26fa2f7e4fbc226f}{getHorizontalVelocityZScoreMax}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{187   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a79da55fe92fb5e610a0e671433fa8a40}{setHorizontalVelocityZScoreMax}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{192   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a5cb6a45b2958cdb1dfc7117fdb9893b1}{getHorizontalVelocityZDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{197   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a786a064687792759ef68d3e446b99502}{setHorizontalVelocityZDistance}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{202   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a5cb6a45b2958cdb1dfc7117fdb9893b1}{getHorizontalVelocityZDistance}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{207   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_a786a064687792759ef68d3e446b99502}{setHorizontalVelocityZDistance}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{212   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_ad70178ac8e28e118ad5ab0ef4e327421}{getVerticalPositionZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{217   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_aaf3f695393dabd83cb4dbe088157839a}{setVerticalPositionZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{222   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_aaf80a2d76a09b236695a0e82c1a4c812}{getVerticalSpeedZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{227   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d___s_u_m_af6e698020341b1ca5ec9fe45b9ecdb0d}{setVerticalSpeedZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233   \textcolor{keywordtype}{void} set\_global\_SUM\_parameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& p);}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \};}
+\DoxyCodeLine{236 \}}
+\DoxyCodeLine{237 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

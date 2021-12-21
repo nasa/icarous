@@ -1,0 +1,46 @@
+\hypertarget{_color_value_8h_source}{}\doxysection{Color\+Value.\+h}
+\label{_color_value_8h_source}\index{Modules/ACCoRD/inc/ColorValue.h@{Modules/ACCoRD/inc/ColorValue.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef COLORVALUE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define COLORVALUE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_color_value}{ColorValue}} \{}
+\DoxyCodeLine{19 \textcolor{keyword}{public}:}
+\DoxyCodeLine{20   \textcolor{keywordtype}{double} val;}
+\DoxyCodeLine{21   BandsRegion::Region color\_left;}
+\DoxyCodeLine{22   BandsRegion::Region color\_right;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_color_value}{ColorValue}}(BandsRegion::Region l, \textcolor{keywordtype}{double} v, BandsRegion::Region r);}
+\DoxyCodeLine{25   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{26   \textcolor{keyword}{static} std::string listToString(\textcolor{keyword}{const} std::vector<ColorValue>\& l);}
+\DoxyCodeLine{27   \textcolor{keyword}{static} \textcolor{keywordtype}{void} init(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} min, \textcolor{keywordtype}{double} max, BandsRegion::Region int\_color);}
+\DoxyCodeLine{28   \textcolor{keyword}{static} \textcolor{keywordtype}{void} init(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} min, \textcolor{keywordtype}{double} max, \textcolor{keywordtype}{double} min\_val, \textcolor{keywordtype}{double} max\_val, BandsRegion::Region int\_color);}
+\DoxyCodeLine{29   \textcolor{keyword}{static} \textcolor{keywordtype}{void} init\_with\_mod(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} mod, BandsRegion::Region int\_color);}
+\DoxyCodeLine{30   \textcolor{keyword}{static} \textcolor{keywordtype}{void} init\_with\_mod(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} min, \textcolor{keywordtype}{double} max, \textcolor{keywordtype}{double} mod, BandsRegion::Region int\_color);}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keywordtype}{void} insert(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub, BandsRegion::Region int\_color);}
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keywordtype}{void} insert\_with\_mod(std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub, \textcolor{keywordtype}{double} mod, BandsRegion::Region int\_color);}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keywordtype}{void} insertNoneSetToColorValues(std::vector<ColorValue>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& none\_set, BandsRegion::Region bg\_color);}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \textcolor{keywordtype}{void} insertRecoverySetToColorValues(std::vector<ColorValue>\& l, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& recovery\_set);}
+\DoxyCodeLine{35   \textcolor{keyword}{static} BandsRegion::Region region\_of(\textcolor{keyword}{const} std::vector<ColorValue>\& l, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

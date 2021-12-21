@@ -1,0 +1,156 @@
+\hypertarget{_separated_output_8h_source}{}\doxysection{Separated\+Output.\+h}
+\label{_separated_output_8h_source}\index{Modules/ACCoRD/inc/SeparatedOutput.h@{Modules/ACCoRD/inc/SeparatedOutput.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * SeparatedOutput}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2014-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef SEPARATEDOUTPUT\_H}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define SEPARATEDOUTPUT\_H}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ParameterReader.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{38 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_separated_output}{SeparatedOutput}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{39 \textcolor{keyword}{private}:}
+\DoxyCodeLine{40     std::ostream* writer;}
+\DoxyCodeLine{41     \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{42     }
+\DoxyCodeLine{43     \textcolor{keywordtype}{bool} header;         \textcolor{comment}{// has header line been written?}}
+\DoxyCodeLine{44     std::vector<std::string> header\_str;    \textcolor{comment}{// header line}}
+\DoxyCodeLine{45     \textcolor{keywordtype}{bool} bunits;          \textcolor{comment}{// Should units line be written?}}
+\DoxyCodeLine{46     std::vector<std::string> units\_str;     \textcolor{comment}{// Units type}}
+\DoxyCodeLine{47     std::vector<std::string> line\_str;      \textcolor{comment}{// raw line}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{long}   size\_l;}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int}    column\_count;}
+\DoxyCodeLine{50     \textcolor{keywordtype}{int}    header\_count;}
+\DoxyCodeLine{51     \textcolor{keywordtype}{char}   delim;}
+\DoxyCodeLine{52     std::string space;}
+\DoxyCodeLine{53     std::string comment\_char;}
+\DoxyCodeLine{54     std::string empty;}
+\DoxyCodeLine{55     std::vector<std::string> comments;}
+\DoxyCodeLine{56     std::vector<std::string> params;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{public}:}
+\DoxyCodeLine{62     \mbox{\hyperlink{classlarcfm_1_1_separated_output_a2c52f00f3fcbb3e7108eae444bc88050}{SeparatedOutput}}();}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{67     \mbox{\hyperlink{classlarcfm_1_1_separated_output_a2c52f00f3fcbb3e7108eae444bc88050}{SeparatedOutput}}(std::ostream* w);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{comment}{//    /** Copy Constructor.  This should not be used. */}}
+\DoxyCodeLine{71 \textcolor{comment}{//    SeparatedOutput(const SeparatedOutput\& x);}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74     \mbox{\hyperlink{classlarcfm_1_1_separated_output}{SeparatedOutput}}\& \mbox{\hyperlink{classlarcfm_1_1_separated_output_a90a182c11d2b95cffd82754e39d5dc27}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_separated_output}{SeparatedOutput}}\& x);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keywordtype}{void} close();}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{83     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_ad4c45df7d46460cd16d0c10334d698b6}{getHeading}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{84  }
+\DoxyCodeLine{88     \textcolor{keywordtype}{long} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a7ad9056f865d4606424f2c6f57f5fe9e}{length}}();}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{93     \textcolor{keywordtype}{long} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a655a1bf77bcbbf82f64a2284281b9d9d}{size}}();}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a1e4855fd67ea69e53ec774f6c596d1c9}{setOutputUnits}}(\textcolor{keywordtype}{bool} output);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{107     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9ac8b571b1507da1cf72578ab6a5f078}{setHeading}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{114     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}{addHeading}}(\textcolor{keyword}{const} std::string\& name, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}{addHeading}}(\textcolor{keyword}{const} std::vector<std::string>\& names, \textcolor{keyword}{const} std::vector<std::string>\& units);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{127     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a9e177972a3cdf885604c8d824686ff72}{addHeading}}(\textcolor{keyword}{const} std::vector<std::string>\& names\_and\_units);}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{137     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}{findHeading}}(\textcolor{keyword}{const} std::string\& heading, \textcolor{keywordtype}{bool} caseSensitive);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{150     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}{findHeading}}(\textcolor{keyword}{const} std::string\& heading1, \textcolor{keyword}{const} std::string\& heading2, \textcolor{keywordtype}{bool} caseSensitive);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}{findHeading}}(\textcolor{keyword}{const} std::string\& heading1, \textcolor{keyword}{const} std::string\& heading2, \textcolor{keyword}{const} std::string\& heading3, \textcolor{keywordtype}{bool} caseSensitive);}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{179     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a925df1010c4c5e8253a77c366aee40a6}{findHeading}}(\textcolor{keyword}{const} std::string\& heading1, \textcolor{keyword}{const} std::string\& heading2, \textcolor{keyword}{const} std::string\& heading3, \textcolor{keyword}{const} std::string\& heading4, \textcolor{keywordtype}{bool} caseSensitive);}
+\DoxyCodeLine{180     }
+\DoxyCodeLine{187     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_a782b417a1d19fa9188a63686c16230f4}{getUnit}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{188     }
+\DoxyCodeLine{192     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}{setColumn}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{193     }
+\DoxyCodeLine{197     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}{setColumn}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{204     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ac7fe36984eeea58a1ea6e1a84b8a2523}{setColumn}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& val);}
+\DoxyCodeLine{205     }
+\DoxyCodeLine{210     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ae090962572bf50e646287391fa5d1666}{addColumn}}(\textcolor{keyword}{const} std::string\& val);}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{comment}{//    /**}}
+\DoxyCodeLine{213 \textcolor{comment}{//     * Adds each of the given values to the next columns.}}
+\DoxyCodeLine{214 \textcolor{comment}{//     */}}
+\DoxyCodeLine{215 \textcolor{comment}{//  void addColumn(OutputList ol);}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{221     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ae090962572bf50e646287391fa5d1666}{addColumn}}(\textcolor{keyword}{const} std::vector<std::string>\& vals);}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{226    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_ae29f6ecd6b1fbe1232f9ca53c97c110c}{setColumnDelimiterTab}}();}
+\DoxyCodeLine{227    }
+\DoxyCodeLine{231    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a1f37b53717900e6c9e4373c26f4f5e5a}{setColumnDelimiterComma}}();}
+\DoxyCodeLine{232    }
+\DoxyCodeLine{237    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a0497e2e219887006706f97186dd8a611}{setColumnDelimiterSpace}}();}
+\DoxyCodeLine{238    }
+\DoxyCodeLine{243    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a538fdcfbaaf57b83c4cf407cc779dbbe}{setColumnSpace}}(\textcolor{keywordtype}{int} num);}
+\DoxyCodeLine{244    }
+\DoxyCodeLine{249    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a2e4ea345afd965e155ff2d501261d5c5}{setEmptyValue}}(std::string e);}
+\DoxyCodeLine{250    }
+\DoxyCodeLine{255    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a29fe69f5bcda22232683139202b25c5b}{setCommentCharacter}}(\textcolor{keyword}{const} std::string\& c);}
+\DoxyCodeLine{256    }
+\DoxyCodeLine{261    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a423fd72cf136e4a0acac2816624c81ab}{setParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pr);}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263    \textcolor{keywordtype}{void} setParameter(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::string\& value);}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{269    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a7e69d9afb2edc5f0bb630f7489bf0821}{clearParameters}}();}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{275    \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a09f62a31b127543adc4e3e9494f8da40}{addComment}}(\textcolor{keyword}{const} std::string\& c);}
+\DoxyCodeLine{276    }
+\DoxyCodeLine{280     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a4e7f98495a749c99bc9ef44a1258e2ac}{writeLine}}();}
+\DoxyCodeLine{281     }
+\DoxyCodeLine{282     \textcolor{keywordtype}{void} flush();}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 \textcolor{keyword}{private}:}
+\DoxyCodeLine{285     \textcolor{keywordtype}{void} print\_line(std::vector<std::string> vals); \textcolor{comment}{// throws IOException;}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 \textcolor{keyword}{public}:}
+\DoxyCodeLine{288     std::string toString();}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290     }
+\DoxyCodeLine{291     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a6ad8926d19b4fc96cc3a6ad309ab3cdb}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{294     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_separated_output_a99d7710ae0acaa5cb9e1030878575504}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{295     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_af42393e4eed3561f1fd8754376f102d3}{getMessage}}();}
+\DoxyCodeLine{296     std::string \mbox{\hyperlink{classlarcfm_1_1_separated_output_a4cfc8d0a529267aa3d39ff41407dd229}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{297    }
+\DoxyCodeLine{298 \};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300 \}}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//SEPARATEDOUTPUT\_H}}
+
+\end{DoxyCode}

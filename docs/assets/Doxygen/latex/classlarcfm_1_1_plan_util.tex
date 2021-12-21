@@ -1,0 +1,1079 @@
+\hypertarget{classlarcfm_1_1_plan_util}{}\doxysection{larcfm\+::Plan\+Util Class Reference}
+\label{classlarcfm_1_1_plan_util}\index{larcfm::PlanUtil@{larcfm::PlanUtil}}
+
+
+{\ttfamily \#include $<$Plan\+Util.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_aed6b3e3076872be4223a07b71ed90fd5}{prev\+Track\+Change}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, int i\+Now)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a4020c9cdfe17a316a84e4021d18de9d7}{next\+Track\+Change}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, int i\+Now)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_ab535fd64e0e1a77f0caa914abea4cc52}{prev\+Vs\+Change}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int i\+Now)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_ace1d5d3a0db1c9f9de2844d43b522837}{next\+Vs\+Change}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int i\+Now)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ab17eaaf6ee8fa359548c90b4fc15cf79}\label{classlarcfm_1_1_plan_util_ab17eaaf6ee8fa359548c90b4fc15cf79}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, int $>$ {\bfseries position\+From\+Distance} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double current\+Time, double advance\+Dist, bool linear)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_plan_util_a2f76f09b3d45b00ee94f5f8ac5c195c5}{time\+From\+Gs}} (double gs\+Init, double gs\+Accel, double dist)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a213b5608bc812f9592a2be20129dc58b}\label{classlarcfm_1_1_plan_util_a213b5608bc812f9592a2be20129dc58b}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries apply\+Wind\+Field} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pin, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_af7f32573d791404e1190a8a6ccbfe46c}{is\+Current\+Position\+Unchanged}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&solution, double current\+Time, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&current\+Pos)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_a6f793a037f3437480a1da51d85b10621}{check\+My\+Solution}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&solution, double current\+Time, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&current\+Pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&current\+Vel)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_plan_util_ad817ba4961eee159958a6bac791c7b8c}{distance\+Between}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&A, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&B)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a4ff79168eda3b49295a33e7463acb7b0}\label{classlarcfm_1_1_plan_util_a4ff79168eda3b49295a33e7463acb7b0}} 
+static double {\bfseries lon\+Cross} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, int i, double lat3)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a1cc7ff018dad0f3aeef145b1b6255fda}\label{classlarcfm_1_1_plan_util_a1cc7ff018dad0f3aeef145b1b6255fda}} 
+static double {\bfseries lat\+Max} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_af8cb3b2055cd2eca7734d5df1a590dff}\label{classlarcfm_1_1_plan_util_af8cb3b2055cd2eca7734d5df1a590dff}} 
+static int {\bfseries add\+Local\+Max\+Lat} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a5f9f12fd8abe8826ccd30378d4881db8}\label{classlarcfm_1_1_plan_util_a5f9f12fd8abe8826ccd30378d4881db8}} 
+static void {\bfseries insert\+Local\+Max} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a85375cbac9df5b51b9113cc9aa597fa7}\label{classlarcfm_1_1_plan_util_a85375cbac9df5b51b9113cc9aa597fa7}} 
+static int {\bfseries insert\+Virtual} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a27f4682ae78df26ef4685176d7fe7b73}\label{classlarcfm_1_1_plan_util_a27f4682ae78df26ef4685176d7fe7b73}} 
+static double {\bfseries get\+Leg\+Dist} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, int i, double accuracy, double mindist)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_ace8199b62c773b20aac179667b35a402}{interpolate\+Virtuals}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, double accuracy, double start\+Tm, double end\+Tm)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a423de119a0f21edb47a1412040f66643}\label{classlarcfm_1_1_plan_util_a423de119a0f21edb47a1412040f66643}} 
+static void {\bfseries interpolate\+Virtuals} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, double accuracy)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_abb7d0f635ce601c1056c2e2ac9d090cf}\label{classlarcfm_1_1_plan_util_abb7d0f635ce601c1056c2e2ac9d090cf}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries revert\+All\+TCPs} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a3756eae5f27dad175543f99ad9c5b0f9}{revert\+All\+TCPs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, bool mark\+Indices)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ab7ddebba2eda82a011ce65e3bb6b9ec1}\label{classlarcfm_1_1_plan_util_ab7ddebba2eda82a011ce65e3bb6b9ec1}} 
+static bool {\bfseries remove\+Virtuals\+Range} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac, double start\+Tm, double end\+Tm, bool all)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ac726d6c3e6bf6d2833005b7095cb6aa7}\label{classlarcfm_1_1_plan_util_ac726d6c3e6bf6d2833005b7095cb6aa7}} 
+static bool {\bfseries remove\+Virtuals} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ac)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a1e60e34e549277a8537b9d4b88bbdc16}{revert\+Group\+Of\+TCPs}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, int ix)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_aeb801f4142d5211e577f29f3fb48be00}{revert\+Gs\+TCP}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pln, int ix, bool revert\+Previous\+Turn)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ab8f4cc16328a1692ed50280021c9903f}\label{classlarcfm_1_1_plan_util_ab8f4cc16328a1692ed50280021c9903f}} 
+static void {\bfseries make\+Well\+Formed\+Ends} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a958384b0f5246b5b80cd954e15f5926c}{cut\+Down\+Linear}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan, double start\+Time, double end\+Time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_aa29dd47c18a7d5446087d6444d52b03b}{cut\+Down\+To}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan, double time\+Of\+Current\+Position, double intent\+Threshold, double t\+Extend)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a968af9c4ddb00d48615b08453c8a8f10}{cut\+Down\+To}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan, double time\+Of\+Current\+Position, double intent\+Threshold)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a65d0543f5c2a060709322d0c05204062}\label{classlarcfm_1_1_plan_util_a65d0543f5c2a060709322d0c05204062}} 
+static std\+::pair$<$ bool, double $>$ {\bfseries enough\+Distance\+For\+Accel} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int ix, double max\+Accel, double M)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_ad6c275f68a6d09d382d56b0b07d88b4d}{fix\+Gs\+Accel\+At}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int ix, double max\+Accel, bool check\+TCP, double M)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a2046282321d9903e472447bfa599a9d7}\label{classlarcfm_1_1_plan_util_a2046282321d9903e472447bfa599a9d7}} 
+static int {\bfseries has\+Points\+Too\+Close} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_plan_util_a2f7505fe00e9a22969517f76bd2b09fb}{diff\+Metric}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a4e1e956a9f1d6d6776286b2f7cc5e566}\label{classlarcfm_1_1_plan_util_a4e1e956a9f1d6d6776286b2f7cc5e566}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries un\+Zig\+Zag} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pp)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a67e4cc06069ae4d38e3df25e3998a71c}\label{classlarcfm_1_1_plan_util_a67e4cc06069ae4d38e3df25e3998a71c}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries un\+Zig\+Zag} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pp, double max\+Leg\+Size)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a76f2c64e0b8e74d999b9f5310fa60ec1}\label{classlarcfm_1_1_plan_util_a76f2c64e0b8e74d999b9f5310fa60ec1}} 
+static bool {\bfseries about\+The\+Same\+Trk} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v1, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v2, double same\+Track\+Bound)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a3330d18c8c027ab3e330866c220e2b70}\label{classlarcfm_1_1_plan_util_a3330d18c8c027ab3e330866c220e2b70}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries remove\+Collinear\+Trk} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&pp, double same\+Track\+Bound)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_ae39150c8a75c5374c4a7c812419fade5}{mk\+Gs\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int i, int j, double gs)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a05bcc3b24f96abf11c6e8f052801cfed}{mk\+Gs\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double gs)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a9a3dfada708d8fa3a96897d8fb122e08}{mk\+Gs\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a00b45b0da335cbf23802cb5fa4a28372}{mk\+Gs\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int wp1, int wp2)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_a667a372a66802bd730ed03ceea871349}{mk\+Vs\+Constant}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int wp1, int wp2, double vs)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_ae84097ba5d352cdf31b75dfea71fb03c}{mk\+Vs\+Constant}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int start, int end)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_a587a35cd1669a11fc2c34d0e4ae96650}{mk\+Vs\+Constant}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_plan_util_aa754b89ce5a9f6e88ca1e3b6c352e698}{mk\+Vs\+Constant}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double vs)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a78228266d4fc0c718f18c46b665169b4}{mk\+Vs\+Short\+Legs\+Continuous}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int start, int end, double vs\+Accel, bool allow\+Fix\+Gs0, double aggressive\+Factor, bool inhibit\+Fix\+Vs0)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_acc863756db415e30b6951db6c8e12d09}\label{classlarcfm_1_1_plan_util_acc863756db415e30b6951db6c8e12d09}} 
+static int {\bfseries mk\+Vs\+Short\+Legs\+Continuous} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double vs\+Accel, bool allow\+Fix\+Gs0, double aggressive\+Factor, bool inhibit\+Fix\+Gs0)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a0450e9ce21f9d58ba9a4486a16061e23}{mk\+Vs\+Continuous\+At}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int i)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a2042a772213ba2540655efd302aa1496}{repair\+Short\+Vs\+Legs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double vs\+Accel)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a58a7430ac1760bebabc59fd00fe4b308}{share\+Segment}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_af4a0098ac832d8b4929ffcd0c666d313}\label{classlarcfm_1_1_plan_util_af4a0098ac832d8b4929ffcd0c666d313}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}}, \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} $>$ {\bfseries make\+Midpoint} (\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&tcp, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a357ac5a5044cdcc5f5dbd9cf107a4402}{project\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, const Euclidean\+Projection \&proj)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_ae53c5ce74ff65f8ff5efbbf89c9d7e56}{basic\+Check}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, double maxlast\+Dt)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_plan_util_a04367a0d25b204f5f4edcef067616914}{infeasible\+Turns}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int start\+Ix, int end\+Ix, double default\+\_\+bank\+\_\+angle, bool repair)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a416fcea81048ee8914e4637ae336939d}\label{classlarcfm_1_1_plan_util_a416fcea81048ee8914e4637ae336939d}} 
+static int {\bfseries fix\+Bad\+Turns} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int start\+Ix, int end\+Ix, double default\+\_\+bank\+\_\+angle)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a5e8242b5352764f8919a70b62135db56}\label{classlarcfm_1_1_plan_util_a5e8242b5352764f8919a70b62135db56}} 
+static int {\bfseries fix\+Bad\+Turns} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, double default\+\_\+bank\+\_\+angle)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a9b4f84a22ea2a0b25c60e72095d40c55}\label{classlarcfm_1_1_plan_util_a9b4f84a22ea2a0b25c60e72095d40c55}} 
+static int {\bfseries count\+Bad\+Turns} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, double default\+\_\+bank\+\_\+angle)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_aafeade48ddf3d5b017dc8233df834c98}{fix\+Infeasible\+Turn\+At}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int ix, bool allow\+Repair\+By\+Intersection)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_ab94d540f7cc4745f83be351697822240}{fix\+Infeasible\+Turn\+At\+Via\+Intersection}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int ix)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a21ffb725f29390f555c5d6be1fea907e}\label{classlarcfm_1_1_plan_util_a21ffb725f29390f555c5d6be1fea907e}} 
+static bool {\bfseries check\+Reversion} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, bool verbose)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a45a5ee3fbd543fef19bb4120ee72ad9e}\label{classlarcfm_1_1_plan_util_a45a5ee3fbd543fef19bb4120ee72ad9e}} 
+static bool {\bfseries check\+Reversion} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_abfaf83b83f0dd2be2cbc1d61ba2330ef}{check\+Names\+Info\+Retained}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, bool verbose)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aeef96c5f2ad23ff93a83adc74811ff0c}\label{classlarcfm_1_1_plan_util_aeef96c5f2ad23ff93a83adc74811ff0c}} 
+static void {\bfseries create\+And\+Add\+MOT} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, int ix\+BOT, int ix\+EOT)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_plan_util_a702486e107c5b4e45e729aa0ab21774f}{is\+Velocity\+Cont\+At\+Tcps}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, bool silent)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a4bd164f39cd062edff51ecf60c19a920}\label{classlarcfm_1_1_plan_util_a4bd164f39cd062edff51ecf60c19a920}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries repair\+Small\+Negative\+GS} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a2a4c799c5433f5ce08ad6a51634e5f67}\label{classlarcfm_1_1_plan_util_a2a4c799c5433f5ce08ad6a51634e5f67}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries fix\+Accel\+Consistency} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a45b6979c01c47deae8acf3b5f816f5cc}{closest\+Point3D}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&plan, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double max\+Leg\+Length)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_acbc24d837940a33d86603838085f76fd}\label{classlarcfm_1_1_plan_util_acbc24d837940a33d86603838085f76fd}} 
+static const double {\bfseries max\+Turn\+Delta\+Straight} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units\+::from}}(\char`\"{}deg\char`\"{},1.\+0)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a947642da6af726cbe96361b4f004d8df}\label{classlarcfm_1_1_plan_util_a947642da6af726cbe96361b4f004d8df}} 
+static const double {\bfseries maximum\+Interpolation\+Number} = 900
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ad67a8acb015fd28f382c77e7ea718b9f}\label{classlarcfm_1_1_plan_util_ad67a8acb015fd28f382c77e7ea718b9f}} 
+static const double {\bfseries minimum\+Interpolation\+Leg\+Size} = 1000.\+0
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a39d30ab7c2ce1ef369b34271b1a3b0e4}{position\+From\+Distance\+In\+Seg}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double cur\+Tm, double adv\+Distance, bool linear)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a46b75da04730a5df03d8d4a6226e3d77}{set\+Alt\+Preserve\+By\+Delta}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_af4353805e4fd01fc2f949898c8666e66}\label{classlarcfm_1_1_plan_util_af4353805e4fd01fc2f949898c8666e66}} 
+static double {\bfseries find\+Vs\+Accel} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a0e7a4f1df8b3db44209579affb63c4ed}\label{classlarcfm_1_1_plan_util_a0e7a4f1df8b3db44209579affb63c4ed}} 
+static int {\bfseries turn\+Dir} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} lpc, int i)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \mbox{\hyperlink{classlarcfm_1_1_plan_util_a3e1fb6347d5e32cee4a3d10fbeb2a5e6}{intersection}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} lpc, int i)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Utilities to operate on Plans 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ae53c5ce74ff65f8ff5efbbf89c9d7e56}\label{classlarcfm_1_1_plan_util_ae53c5ce74ff65f8ff5efbbf89c9d7e56}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!basicCheck@{basicCheck}}
+\index{basicCheck@{basicCheck}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{basicCheck()}{basicCheck()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::basic\+Check (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{kpc,  }\item[{double}]{maxlast\+Dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Check that first and last points are almost the same. Same means, same time, same latitude, longitude, and altitude.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & a plan \\
+\hline
+{\em kpc} & another plan \\
+\hline
+{\em maxlast\+Dt} & Maximum distance allowed at the last point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True, if the first and last points are almost the same. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a6f793a037f3437480a1da51d85b10621}\label{classlarcfm_1_1_plan_util_a6f793a037f3437480a1da51d85b10621}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!checkMySolution@{checkMySolution}}
+\index{checkMySolution@{checkMySolution}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{checkMySolution()}{checkMySolution()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::check\+My\+Solution (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{solution,  }\item[{double}]{current\+Time,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{current\+Pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{current\+Vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Used in Unit tests to make sure that a resolution does not change current position or velocity of vehicle
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & plan \\
+\hline
+{\em current\+Time} & time \\
+\hline
+{\em current\+Pos} & position \\
+\hline
+{\em current\+Vel} & velocity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if correct 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_abfaf83b83f0dd2be2cbc1d61ba2330ef}\label{classlarcfm_1_1_plan_util_abfaf83b83f0dd2be2cbc1d61ba2330ef}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!checkNamesInfoRetained@{checkNamesInfoRetained}}
+\index{checkNamesInfoRetained@{checkNamesInfoRetained}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{checkNamesInfoRetained()}{checkNamesInfoRetained()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::check\+Names\+Info\+Retained (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{kpc,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{bool}]{verbose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Test to make sure that all name and info in plan lpc is also in kpc
+
+
+\begin{DoxyParams}{Parameters}
+{\em kpc} & kinematic plan \\
+\hline
+{\em lpc} & linear plan \\
+\hline
+{\em verbose} & true for verbose mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if correct
+\end{DoxyReturn}
+Test to make sure that all name and info in plan lpc is also in kpc
+
+
+\begin{DoxyParams}{Parameters}
+{\em kpc} & \\
+\hline
+{\em lpc} & \\
+\hline
+{\em verbose} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a45b6979c01c47deae8acf3b5f816f5cc}\label{classlarcfm_1_1_plan_util_a45b6979c01c47deae8acf3b5f816f5cc}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!closestPoint3D@{closestPoint3D}}
+\index{closestPoint3D@{closestPoint3D}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{closestPoint3D()}{closestPoint3D()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} larcfm\+::\+Plan\+Util\+::closest\+Point3D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{plan,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{double}]{max\+Leg\+Length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Experimental Return the closest geometric point on a plan to a reference point, as measured as a Euclidean 3D norm from each linear segment. For latlon plans, perform linear interpolation on any legs longer then the given amount. (Kinematic turns are somewhat accounted for in this distance calculation, via linear interpolation.)
+
+Choosing a shorter max\+Leg\+Length can increase the accuracy of the closest point calculation, but it can significantly increase the computational expense of the operation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan} & base plan \\
+\hline
+{\em p} & reference point \\
+\hline
+{\em max\+Leg\+Length} & linearly interpolate any latlon legs longer than this amount \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a958384b0f5246b5b80cd954e15f5926c}\label{classlarcfm_1_1_plan_util_a958384b0f5246b5b80cd954e15f5926c}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!cutDownLinear@{cutDownLinear}}
+\index{cutDownLinear@{cutDownLinear}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{cutDownLinear()}{cutDownLinear()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::cut\+Down\+Linear (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{plan,  }\item[{double}]{start\+Time,  }\item[{double}]{end\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+make a new plan that is identical to plan from start\+Time to end\+Time It assumes that start\+Time and end\+Time are in linear segments. See also \mbox{\hyperlink{classlarcfm_1_1_plan_a4bf0e9016e4fec4489014d7152addd92}{Plan.\+cut}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan} & source plan \\
+\hline
+{\em start\+Time} & absolute time of start time \\
+\hline
+{\em end\+Time} & absolute time of end time\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+truncated plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a968af9c4ddb00d48615b08453c8a8f10}\label{classlarcfm_1_1_plan_util_a968af9c4ddb00d48615b08453c8a8f10}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!cutDownTo@{cutDownTo}}
+\index{cutDownTo@{cutDownTo}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{cutDownTo()}{cutDownTo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::cut\+Down\+To (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{plan,  }\item[{double}]{time\+Of\+Current\+Position,  }\item[{double}]{intent\+Threshold }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create new \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} from time \char`\"{}time\+Of\+Current\+Position\char`\"{} to time \char`\"{}intent\+Threshold\char`\"{}
+
+NOTE\+: currently only being used in Unit Tests
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan} & plan \\
+\hline
+{\em time\+Of\+Current\+Position} & time \\
+\hline
+{\em intent\+Threshold} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aa29dd47c18a7d5446087d6444d52b03b}\label{classlarcfm_1_1_plan_util_aa29dd47c18a7d5446087d6444d52b03b}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!cutDownTo@{cutDownTo}}
+\index{cutDownTo@{cutDownTo}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{cutDownTo()}{cutDownTo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::cut\+Down\+To (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{plan,  }\item[{double}]{t1,  }\item[{double}]{t2,  }\item[{double}]{t\+Extend }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Cut down a plan so that it only contains points between time\+Of\+Current\+Position and intent\+Threshold. This method cuts a \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} so that the acceleration information after intent\+Threshold is discarded. The plan is continued linearly to time t\+Extend. The first time point of the new plan is the \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} before time\+Of\+Current\+Position in the plan. The intent\+Threshold and t\+Extend times are absolute.
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} file to be cut \\
+\hline
+{\em time\+Of\+Current\+Position} & Current location of aircraft in the plan file \\
+\hline
+{\em intent\+Threshold} & the absolute lookahead time -- all acceleration information after this time is not copied \\
+\hline
+{\em t\+Extend} & After the intent\+Threshold, the plan is extended linearly to this time (absolute time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan
+\end{DoxyReturn}
+Cut down a plan to the region between t1 and t2. The plan is continued linearly to time t\+Extend. A new point is created at t1 and t2 if necessary. The t1, t2 and t\+Extend times are absolute.
+
+
+\begin{DoxyParams}{Parameters}
+{\em plan} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} file to be cut \\
+\hline
+{\em t1} & Location to start cut out. If before first point or negative, first point is used \\
+\hline
+{\em t2} & The absolute lookahead time -- all plan information after this time is not copied \\
+\hline
+{\em t\+Extend} & After the intent\+Threshold, the plan is extended linearly to this time (absolute time) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan cut down to times \mbox{[}t1,t2\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a2f7505fe00e9a22969517f76bd2b09fb}\label{classlarcfm_1_1_plan_util_a2f7505fe00e9a22969517f76bd2b09fb}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!diffMetric@{diffMetric}}
+\index{diffMetric@{diffMetric}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{diffMetric()}{diffMetric()}}
+{\footnotesize\ttfamily double larcfm\+::\+Plan\+Util\+::diff\+Metric (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{kpc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This calculates a heuristic measure of the difference between two plans. Currently only used in \mbox{\hyperlink{classlarcfm_1_1_kinematics_position}{Kinematics\+Position}} test
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & plan 1 \\
+\hline
+{\em kpc} & plan 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+metric 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ad817ba4961eee159958a6bac791c7b8c}\label{classlarcfm_1_1_plan_util_ad817ba4961eee159958a6bac791c7b8c}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!distanceBetween@{distanceBetween}}
+\index{distanceBetween@{distanceBetween}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{distanceBetween()}{distanceBetween()}}
+{\footnotesize\ttfamily double larcfm\+::\+Plan\+Util\+::distance\+Between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{A,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{B }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate a distance difference between two plans
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & plan A \\
+\hline
+{\em B} & plan B \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ad6c275f68a6d09d382d56b0b07d88b4d}\label{classlarcfm_1_1_plan_util_ad6c275f68a6d09d382d56b0b07d88b4d}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!fixGsAccelAt@{fixGsAccelAt}}
+\index{fixGsAccelAt@{fixGsAccelAt}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{fixGsAccelAt()}{fixGsAccelAt()}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::fix\+Gs\+Accel\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{ix,  }\item[{double}]{max\+Accel,  }\item[{bool}]{check\+TCP,  }\item[{double}]{M }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Fix \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} p at ix if there is not enough distance for the current speed and specified acceleration (max\+Accel) It makes the new ground speed as close to the original as possible (that is achievable over the distance)
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em ix} & index of ground speed change \\
+\hline
+{\em max\+Accel} & maximum ground speed acceleration (non-\/negative) \\
+\hline
+{\em check\+TCP} & if true, do not alter time if point and it is an EOT or EVS \\
+\hline
+{\em M} & max time \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aafeade48ddf3d5b017dc8233df834c98}\label{classlarcfm_1_1_plan_util_aafeade48ddf3d5b017dc8233df834c98}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!fixInfeasibleTurnAt@{fixInfeasibleTurnAt}}
+\index{fixInfeasibleTurnAt@{fixInfeasibleTurnAt}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{fixInfeasibleTurnAt()}{fixInfeasibleTurnAt()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::fix\+Infeasible\+Turn\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{ix,  }\item[{bool}]{allow\+Repair\+By\+Intersection }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Repairs turn problem at index ix using several different strategies\+: -- create a new vertex point (that makes one turn our of two) -- removing the vertex point -- moving the vertex point
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & semi-\/linear plan (no GS or VS TCPs) \\
+\hline
+{\em ix} & index\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if point removed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ab94d540f7cc4745f83be351697822240}\label{classlarcfm_1_1_plan_util_ab94d540f7cc4745f83be351697822240}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!fixInfeasibleTurnAtViaIntersection@{fixInfeasibleTurnAtViaIntersection}}
+\index{fixInfeasibleTurnAtViaIntersection@{fixInfeasibleTurnAtViaIntersection}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{fixInfeasibleTurnAtViaIntersection()}{fixInfeasibleTurnAtViaIntersection()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::fix\+Infeasible\+Turn\+At\+Via\+Intersection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{ix }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create an intersection point between ix-\/1 and ix
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} to be repaired \\
+\hline
+{\em ix} & index of problem turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if plan was successfully repaired 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a04367a0d25b204f5f4edcef067616914}\label{classlarcfm_1_1_plan_util_a04367a0d25b204f5f4edcef067616914}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!infeasibleTurns@{infeasibleTurns}}
+\index{infeasibleTurns@{infeasibleTurns}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{infeasibleTurns()}{infeasibleTurns()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::infeasible\+Turns (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{start\+Ix,  }\item[{int}]{end\+Ix,  }\item[{double}]{default\+\_\+bank\+\_\+angle,  }\item[{bool}]{repair }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Repair turns for semi-\/linear plan. Removes vertex point if turn is infeasible.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} that needs repair \\
+\hline
+{\em start\+Ix} & Starting index \\
+\hline
+{\em end\+Ix} & Ending index \\
+\hline
+{\em default\+\_\+bank\+\_\+angle} & Default bank angle \\
+\hline
+{\em repair} & If true, attempt repair. If false, only determine the number of bad turns remaining. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of repaired or infeasible vertices
+\end{DoxyReturn}
+Note\+: This assumes that there are no GS or VS TCPs in lpc and no existing turns in the repair range
+
+Repair turns for semi-\/linear plan. Removes vertex point if turn is infeasible.
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} that needs repair \\
+\hline
+{\em bank\+Angle} & default bank angle \\
+\hline
+{\em repair} & if true, attempt repair. If false, only determine the number of bad turns remaining. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of repaired or infeasible vertices
+\end{DoxyReturn}
+Note\+: This assumes that there are no GS or VS TCPs in lpc and no existing turns in the repair range \mbox{\Hypertarget{classlarcfm_1_1_plan_util_ace8199b62c773b20aac179667b35a402}\label{classlarcfm_1_1_plan_util_ace8199b62c773b20aac179667b35a402}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!interpolateVirtuals@{interpolateVirtuals}}
+\index{interpolateVirtuals@{interpolateVirtuals}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{interpolateVirtuals()}{interpolateVirtuals()}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::interpolate\+Virtuals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ac,  }\item[{double}]{accuracy,  }\item[{double}]{start\+Tm,  }\item[{double}]{end\+Tm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+this adds virtual points int the plan starting at or before start\+Tm, and ending before or at end\+Tm 
+\begin{DoxyParams}{Parameters}
+{\em ac} & plan \\
+\hline
+{\em accuracy} & accuracy of projections \\
+\hline
+{\em start\+Tm} & starting segment \\
+\hline
+{\em end\+Tm} & ending segment \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a3e1fb6347d5e32cee4a3d10fbeb2a5e6}\label{classlarcfm_1_1_plan_util_a3e1fb6347d5e32cee4a3d10fbeb2a5e6}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!intersection@{intersection}}
+\index{intersection@{intersection}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{intersection()}{intersection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} larcfm\+::\+Plan\+Util\+::intersection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}}]{lpc,  }\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Create intersection point between (i-\/1) and i
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point
+\end{DoxyReturn}
+Create intersection point between (i-\/1) and i
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & \\
+\hline
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_af7f32573d791404e1190a8a6ccbfe46c}\label{classlarcfm_1_1_plan_util_af7f32573d791404e1190a8a6ccbfe46c}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!isCurrentPositionUnchanged@{isCurrentPositionUnchanged}}
+\index{isCurrentPositionUnchanged@{isCurrentPositionUnchanged}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{isCurrentPositionUnchanged()}{isCurrentPositionUnchanged()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::is\+Current\+Position\+Unchanged (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{solution,  }\item[{double}]{current\+Time,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{current\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Simple check that current position (current\+Pos) is where it should be according to plan \char`\"{}solution\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & the trajectory \\
+\hline
+{\em current\+Time} & current time \\
+\hline
+{\em current\+Pos} & current position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if position is almost equal to current\+Pos.\+position(current\+Time) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a702486e107c5b4e45e729aa0ab21774f}\label{classlarcfm_1_1_plan_util_a702486e107c5b4e45e729aa0ab21774f}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!isVelocityContAtTcps@{isVelocityContAtTcps}}
+\index{isVelocityContAtTcps@{isVelocityContAtTcps}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{isVelocityContAtTcps()}{isVelocityContAtTcps()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Util\+::is\+Velocity\+Cont\+At\+Tcps (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{bool}]{silent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Only tests velocity continuity at TCPs.
+
+Note\+: If given a linear plan as input, Stratway will only generate a kinematic subplan over the conflict region. The output can still be linear elsewhere. This test is appropriate for Stratway output.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} to be tested \\
+\hline
+{\em silent} & if true, output is suppressed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a9a3dfada708d8fa3a96897d8fb122e08}\label{classlarcfm_1_1_plan_util_a9a3dfada708d8fa3a96897d8fb122e08}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkGsConstant@{mkGsConstant}}
+\index{mkGsConstant@{mkGsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkGsConstant()}{mkGsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::mk\+Gs\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make ground speed constant gs between wp1 and wp2.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & a plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new plan with constant ground speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a05bcc3b24f96abf11c6e8f052801cfed}\label{classlarcfm_1_1_plan_util_a05bcc3b24f96abf11c6e8f052801cfed}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkGsConstant@{mkGsConstant}}
+\index{mkGsConstant@{mkGsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkGsConstant()}{mkGsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::mk\+Gs\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make ground speed constant gs for entire plan.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em gs} & ground speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ae39150c8a75c5374c4a7c812419fade5}\label{classlarcfm_1_1_plan_util_ae39150c8a75c5374c4a7c812419fade5}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkGsConstant@{mkGsConstant}}
+\index{mkGsConstant@{mkGsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkGsConstant()}{mkGsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::mk\+Gs\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{i,  }\item[{int}]{j,  }\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make a new plan with constant ground speed from wp1 to wp2. Assumes input plan is linear.
+
+
+\begin{DoxyPre}
+
+      200     200     200     200     200
+   0 -\/-\/-\/-\/-\/ 1 -\/-\/-\/-\/-\/ 2 -\/-\/-\/-\/-\/ 3 -\/-\/-\/-\/-\/ 4 -\/-\/-\/-\/-\/ 5
+
+   mkGSConstant(p, 1, 3, 500)
+
+     200     500     500     200     200     200
+   0 -\/-\/-\/-\/-\/ 1 -\/-\/-\/-\/-\/ 2 -\/-\/-\/-\/-\/ 3 -\/-\/-\/-\/-\/ 4 -\/-\/-\/-\/-\/ 5
+
+   Note that if wp1 == wp2 no change is made.
+\end{DoxyPre}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em i} & index of waypoint 1 \\
+\hline
+{\em j} & index of waypoint 2 \\
+\hline
+{\em gs} & ground speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a00b45b0da335cbf23802cb5fa4a28372}\label{classlarcfm_1_1_plan_util_a00b45b0da335cbf23802cb5fa4a28372}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkGsConstant@{mkGsConstant}}
+\index{mkGsConstant@{mkGsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkGsConstant()}{mkGsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::mk\+Gs\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{wp1,  }\item[{int}]{wp2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make ground speed constant between wp1 and wp2 as an average of the total distance and time travelled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & trajectory \\
+\hline
+{\em wp1} & starting waypoint \\
+\hline
+{\em wp2} & starting waypoint \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+trajectory revised so that ground speed is constant on \mbox{[}wp1,wp2\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a587a35cd1669a11fc2c34d0e4ae96650}\label{classlarcfm_1_1_plan_util_a587a35cd1669a11fc2c34d0e4ae96650}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsConstant@{mkVsConstant}}
+\index{mkVsConstant@{mkVsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsConstant()}{mkVsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::mk\+Vs\+Constant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make vertical speed constant vs over plan with vs being the average speed. 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aa754b89ce5a9f6e88ca1e3b6c352e698}\label{classlarcfm_1_1_plan_util_aa754b89ce5a9f6e88ca1e3b6c352e698}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsConstant@{mkVsConstant}}
+\index{mkVsConstant@{mkVsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsConstant()}{mkVsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::mk\+Vs\+Constant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make vertical speed constant vs for full plan. 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em vs} & vertical speed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ae84097ba5d352cdf31b75dfea71fb03c}\label{classlarcfm_1_1_plan_util_ae84097ba5d352cdf31b75dfea71fb03c}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsConstant@{mkVsConstant}}
+\index{mkVsConstant@{mkVsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsConstant()}{mkVsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::mk\+Vs\+Constant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make vertical speed constant vs between wp1 and wp2, with vs being the average speed. 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a667a372a66802bd730ed03ceea871349}\label{classlarcfm_1_1_plan_util_a667a372a66802bd730ed03ceea871349}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsConstant@{mkVsConstant}}
+\index{mkVsConstant@{mkVsConstant}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsConstant()}{mkVsConstant()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Util\+::mk\+Vs\+Constant (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{wp1,  }\item[{int}]{wp2,  }\item[{double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make vertical speed constant vs between wp1 and wp2. Assumes plan does not contain any vertical speed accel regions \mbox{\Hypertarget{classlarcfm_1_1_plan_util_a0450e9ce21f9d58ba9a4486a16061e23}\label{classlarcfm_1_1_plan_util_a0450e9ce21f9d58ba9a4486a16061e23}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsContinuousAt@{mkVsContinuousAt}}
+\index{mkVsContinuousAt@{mkVsContinuousAt}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsContinuousAt()}{mkVsContinuousAt()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::mk\+Vs\+Continuous\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Repair Method\+: make the vertical speed continuous at index i (i.\+e. vs\+In(i) = vs\+Out(i). Accomplish this by changing the altitude at index i. If the new altitude makes the point redundant, then remove it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & trajectory \\
+\hline
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+revised trajectory 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a78228266d4fc0c718f18c46b665169b4}\label{classlarcfm_1_1_plan_util_a78228266d4fc0c718f18c46b665169b4}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!mkVsShortLegsContinuous@{mkVsShortLegsContinuous}}
+\index{mkVsShortLegsContinuous@{mkVsShortLegsContinuous}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{mkVsShortLegsContinuous()}{mkVsShortLegsContinuous()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::mk\+Vs\+Short\+Legs\+Continuous (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{start,  }\item[{int}]{end,  }\item[{double}]{vs\+Accel,  }\item[{bool}]{inhibit\+Fix\+Gs0,  }\item[{double}]{aggressive\+Factor,  }\item[{bool}]{inhibit\+Fix\+Vs0 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Examine each vertical segment \mbox{[}i,i+1\mbox{]} over the specified range. Calculate needed time for the vertical accelerations at each end. If the sum of half of each of these accels is longer in time than the segment dt, then smooth away this segment vertically. Either side could be potentially smooth. This method smooths the side with the smallest delta vs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} to be modified \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+{\em vs\+Accel} & vertical speed acceleration \\
+\hline
+{\em inhibit\+Fix\+Gs0} & if true will NOT attempt to repair on segments with gs\+Out = 0 \\
+\hline
+{\em inhibit\+Fix\+Vs0} & if true will NOT attempt to repair level segments (i.\+e. vertical speed = 0) \\
+\hline
+{\em aggressive\+Factor} & a factor in the interval (0,1\mbox{]} that determines how aggressively the repair is done\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of segments that were smoothed
+\end{DoxyReturn}
+Examine each vertical segment \mbox{[}i,i+1\mbox{]} over the range. Calculate needed time for the vertical accelerations at each end. If the sum of half of each of these accels is longer in time than the segment dt, then smooth away this segment vertically. Either side could be potentially smooth. This method smooths the side with the smallest delta vs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} to be modified \\
+\hline
+{\em start} & starting index \\
+\hline
+{\em end} & ending index \\
+\hline
+{\em vs\+Accel} & vertical speed acceleration\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of segments that were smoothed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a4020c9cdfe17a316a84e4021d18de9d7}\label{classlarcfm_1_1_plan_util_a4020c9cdfe17a316a84e4021d18de9d7}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!nextTrackChange@{nextTrackChange}}
+\index{nextTrackChange@{nextTrackChange}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{nextTrackChange()}{nextTrackChange()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::next\+Track\+Change (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{int}]{i\+Now }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns an index after i\+Now where there is a significant enough track change to bother with This is used to move forward through collinear points in order to get a reasonable sized leg to work with.
+
+If there is not next track change it returns fp.\+size()-\/1 
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+{\em i\+Now} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of next track change 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ace1d5d3a0db1c9f9de2844d43b522837}\label{classlarcfm_1_1_plan_util_ace1d5d3a0db1c9f9de2844d43b522837}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!nextVsChange@{nextVsChange}}
+\index{nextVsChange@{nextVsChange}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{nextVsChange()}{nextVsChange()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::next\+Vs\+Change (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{i\+Now }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns an index after i\+Now where there is a significant enough vertical speed change to bother with This is used to move forward through collinear points in order to get a reasonable sized leg to work with.
+
+If there is not a next vs change it returns fp.\+size()-\/1 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em i\+Now} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of next vertical speed change 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a39d30ab7c2ce1ef369b34271b1a3b0e4}\label{classlarcfm_1_1_plan_util_a39d30ab7c2ce1ef369b34271b1a3b0e4}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!positionFromDistanceInSeg@{positionFromDistanceInSeg}}
+\index{positionFromDistanceInSeg@{positionFromDistanceInSeg}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{positionFromDistanceInSeg()}{positionFromDistanceInSeg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Plan\+Util\+::position\+From\+Distance\+In\+Seg (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{cur\+Tm,  }\item[{double}]{adv\+Distance,  }\item[{bool}]{linear }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Advance forward in plan \char`\"{}p\char`\"{} starting at time \char`\"{}cur\+Tm\char`\"{} a distance of \char`\"{}adv\+Distance\char`\"{} within a single segment
+
+Note \+: assumes the advance by distance will not leave current segment Note \+: this can be used before there is a ground speed profile -- it does not depend upon correct velocities
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan of interest \\
+\hline
+{\em cur\+Tm} & current\+Time of so \\
+\hline
+{\em adv\+Distance} & distance to advance \\
+\hline
+{\em linear} & if true, treat plan as a linear plan (i.\+e. path is not curved) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \char`\"{}adv\+Distance\char`\"{} ahead of \char`\"{}cur\+Tm\char`\"{} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aed6b3e3076872be4223a07b71ed90fd5}\label{classlarcfm_1_1_plan_util_aed6b3e3076872be4223a07b71ed90fd5}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!prevTrackChange@{prevTrackChange}}
+\index{prevTrackChange@{prevTrackChange}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{prevTrackChange()}{prevTrackChange()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::prev\+Track\+Change (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{int}]{i\+Now }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns an index before i\+Now where there is a significant enough track change to bother with. This is used to \char`\"{}backtrack\char`\"{} through collinear points in order to get a reasonable sized leg to work with. If there is not previous track change it returns 0
+
+Note\+: must use both trk\+In and Trk\+Out because of large great circles 
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+{\em i\+Now} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of track change 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_ab535fd64e0e1a77f0caa914abea4cc52}\label{classlarcfm_1_1_plan_util_ab535fd64e0e1a77f0caa914abea4cc52}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!prevVsChange@{prevVsChange}}
+\index{prevVsChange@{prevVsChange}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{prevVsChange()}{prevVsChange()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::prev\+Vs\+Change (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{i\+Now }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns an index after i\+Now where there is a significant enough vertical speed change to bother with This is used to move forward through collinear points in order to get a reasonable sized leg to work with.
+
+If there is not a next vs change it returns fp.\+size()-\/1 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em i\+Now} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of vertical speed change 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a357ac5a5044cdcc5f5dbd9cf107a4402}\label{classlarcfm_1_1_plan_util_a357ac5a5044cdcc5f5dbd9cf107a4402}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!projectPlan@{projectPlan}}
+\index{projectPlan@{projectPlan}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{projectPlan()}{projectPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::project\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Project plan from latlonalt to Euclidean. Note\+: some tcp turn information may no longer be valid. 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a2042a772213ba2540655efd302aa1496}\label{classlarcfm_1_1_plan_util_a2042a772213ba2540655efd302aa1496}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!repairShortVsLegs@{repairShortVsLegs}}
+\index{repairShortVsLegs@{repairShortVsLegs}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{repairShortVsLegs()}{repairShortVsLegs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::repair\+Short\+Vs\+Legs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{vs\+Accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Attempts to repair plan with infeasible vertical points by averaging vertical speeds over 2 segments. Assumes linear plan input. 
+\begin{DoxyParams}{Parameters}
+{\em fp} & \\
+\hline
+{\em vs\+Accel} & \\
+\hline
+{\em min\+Vs\+Change\+Required} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a3756eae5f27dad175543f99ad9c5b0f9}\label{classlarcfm_1_1_plan_util_a3756eae5f27dad175543f99ad9c5b0f9}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!revertAllTCPs@{revertAllTCPs}}
+\index{revertAllTCPs@{revertAllTCPs}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{revertAllTCPs()}{revertAllTCPs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::revert\+All\+TCPs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{pln,  }\item[{bool}]{mark\+Indices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Revert all TCPs in the plan, i.\+e. remove all acceleration zones and replace with instantaneous velocity changes. This undoes Traj\+Gen.\+make\+Kinematic\+Plans.
+
+Note\+: This retains the acceleration values in the resulting linear plan.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pln} & kinematic plan to be reverted to a linear plan \\
+\hline
+{\em mark\+Indices} & if true, add \+:ksrc-\/\#\+: to each point\textquotesingle{}s info (original behavior is \char`\"{}false\char`\"{}) This may include multiple flags in a single point. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a1e60e34e549277a8537b9d4b88bbdc16}\label{classlarcfm_1_1_plan_util_a1e60e34e549277a8537b9d4b88bbdc16}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!revertGroupOfTCPs@{revertGroupOfTCPs}}
+\index{revertGroupOfTCPs@{revertGroupOfTCPs}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{revertGroupOfTCPs()}{revertGroupOfTCPs()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::revert\+Group\+Of\+TCPs (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{pln,  }\item[{int}]{ix }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Used in STRATWAY to structurally revert all TCPS \char`\"{}near\char`\"{} ix. Note that this function will timeshift the points after ix to regain original ground speed into the point after ix. ~\newline
+
+
+NOTE\+: This method does not depend upon source time or source position
+
+
+\begin{DoxyParams}{Parameters}
+{\em pln} & plan \\
+\hline
+{\em ix} & The index of one of the TCPs created together that should be reverted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the reverted point
+\end{DoxyReturn}
+Structurally revert all TCPS that create acceleration zones containing ix if the point is a not a TCP do nothing. Note that this function will timeshift the points after ix to regain original ground speed into the point after ix.
+
+NOTE This method does not depend upon source time!!
+
+
+\begin{DoxyParams}{Parameters}
+{\em ix} & The index of one of the TCPs created together that should be reverted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the reverted point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_aeb801f4142d5211e577f29f3fb48be00}\label{classlarcfm_1_1_plan_util_aeb801f4142d5211e577f29f3fb48be00}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!revertGsTCP@{revertGsTCP}}
+\index{revertGsTCP@{revertGsTCP}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{revertGsTCP()}{revertGsTCP()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::revert\+Gs\+TCP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{pln,  }\item[{int}]{ix,  }\item[{bool}]{revert\+Previous\+Turn }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+if \char`\"{}ix\char`\"{} is a BGS, then it reverts the BGS-\/\+EGS pair back to a single linear point Note\+: It (does not depend upon source time or source position!)
+
+
+\begin{DoxyParams}{Parameters}
+{\em pln} & plan \\
+\hline
+{\em ix} & index of BGS \\
+\hline
+{\em revert\+Previous\+Turn} & if true then if this GS segment is right after a turn then revert the turn as well ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of reverted point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a46b75da04730a5df03d8d4a6226e3d77}\label{classlarcfm_1_1_plan_util_a46b75da04730a5df03d8d4a6226e3d77}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!setAltPreserveByDelta@{setAltPreserveByDelta}}
+\index{setAltPreserveByDelta@{setAltPreserveByDelta}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{setAltPreserveByDelta()}{setAltPreserveByDelta()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Util\+::set\+Alt\+Preserve\+By\+Delta (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Called after revert\+Vs\+TCPs to set Alt\+Preserve. Assumes that vs\+Accels have been saved in reverted \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}
+
+Note\+: this is very similar to \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aa1e877d03c90423997e4ac49be45a38a}{Traj\+Gen.\+mark\+Vs\+Changes}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & \\
+\hline
+{\em vs\+Accel} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a58a7430ac1760bebabc59fd00fe4b308}\label{classlarcfm_1_1_plan_util_a58a7430ac1760bebabc59fd00fe4b308}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!shareSegment@{shareSegment}}
+\index{shareSegment@{shareSegment}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{shareSegment()}{shareSegment()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Util\+::share\+Segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the index of p1 that shares a segment (has same start and end positions) as p2, or -\/1 if there are none This returns the last such shared segment 
+\begin{DoxyParams}{Parameters}
+{\em p1} & point 1 \\
+\hline
+{\em p2} & point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+segment number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_util_a2f76f09b3d45b00ee94f5f8ac5c195c5}\label{classlarcfm_1_1_plan_util_a2f76f09b3d45b00ee94f5f8ac5c195c5}} 
+\index{larcfm::PlanUtil@{larcfm::PlanUtil}!timeFromGs@{timeFromGs}}
+\index{timeFromGs@{timeFromGs}!larcfm::PlanUtil@{larcfm::PlanUtil}}
+\doxysubsubsection{\texorpdfstring{timeFromGs()}{timeFromGs()}}
+{\footnotesize\ttfamily double larcfm\+::\+Plan\+Util\+::time\+From\+Gs (\begin{DoxyParamCaption}\item[{double}]{gs\+Init,  }\item[{double}]{gs\+Accel,  }\item[{double}]{dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+time required to cover distance \char`\"{}dist\char`\"{} if initial speed is \char`\"{}gs\+Init\char`\"{} and acceleration is \char`\"{}gs\+Accel\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em gs\+Accel} & ground speed acceleration \\
+\hline
+{\em gs\+Init} & initial ground speed \\
+\hline
+{\em dist} & distance travelled \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time
+\end{DoxyReturn}
+time required to cover distance \char`\"{}dist\char`\"{} if initial speed is \char`\"{}gs\+Init\char`\"{} and acceleration is \char`\"{}gs\+Accel\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em gs\+Accel} & ground speed acceleration \\
+\hline
+{\em gs\+Init} & initial ground speed \\
+\hline
+{\em dist} & distance travelled \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Plan\+Util.\+h\item 
+Modules/\+ACCo\+RD/src/Plan\+Util.\+cpp\end{DoxyCompactItemize}

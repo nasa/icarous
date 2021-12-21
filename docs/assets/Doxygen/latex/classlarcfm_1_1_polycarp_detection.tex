@@ -1,0 +1,57 @@
+\hypertarget{classlarcfm_1_1_polycarp_detection}{}\doxysection{larcfm\+::Polycarp\+Detection Class Reference}
+\label{classlarcfm_1_1_polycarp_detection}\index{larcfm::PolycarpDetection@{larcfm::PolycarpDetection}}
+
+
+{\ttfamily \#include $<$Polycarp\+Detection.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_ada546b2c0b39ea16d7d04e6f2b06a59d}\label{classlarcfm_1_1_polycarp_detection_ada546b2c0b39ea16d7d04e6f2b06a59d}} 
+static \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries dot\+\_\+nneg\+\_\+linear\+\_\+2\+D\+\_\+alg} (double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&b, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a98c3b92885434d0502f551a54aa90438}\label{classlarcfm_1_1_polycarp_detection_a98c3b92885434d0502f551a54aa90438}} 
+static \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries dot\+\_\+nneg\+\_\+spec} (double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&b, int eps, int eps2, double Fac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a5a4aa01dd087bdcc34f2c20d74a900b5}\label{classlarcfm_1_1_polycarp_detection_a5a4aa01dd087bdcc34f2c20d74a900b5}} 
+static bool {\bfseries edge\+\_\+detect\+\_\+simple} (double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&b, double Fac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a42e39d59a1b8f2e8a6babb124d5ffa45}\label{classlarcfm_1_1_polycarp_detection_a42e39d59a1b8f2e8a6babb124d5ffa45}} 
+static bool {\bfseries edge\+\_\+detect} (double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segstart, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segend, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&startvel, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&endvel, double Fac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_afa5407ad6bc50127c47ce1bfba0b9b8b}\label{classlarcfm_1_1_polycarp_detection_afa5407ad6bc50127c47ce1bfba0b9b8b}} 
+static bool {\bfseries Collision\+\_\+\+Detector} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mp, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double BUFF, double Fac, bool inside\+Bad)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a9319c4261feff897ef61be937a449c44}\label{classlarcfm_1_1_polycarp_detection_a9319c4261feff897ef61be937a449c44}} 
+static bool {\bfseries Static\+\_\+\+Collision\+\_\+\+Detector} (double B, double T, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&pv, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double BUFF, bool inside\+Bad)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a2ee451a777de61bbbd50134620ea84e6}\label{classlarcfm_1_1_polycarp_detection_a2ee451a777de61bbbd50134620ea84e6}} 
+static std\+::vector$<$ double $>$ {\bfseries collision\+Times\+In\+Out} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mp, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, double BUFF, double Fac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a3fc6d39d34a4463387d6240813e81ef8}\label{classlarcfm_1_1_polycarp_detection_a3fc6d39d34a4463387d6240813e81ef8}} 
+static bool {\bfseries nice\+\_\+moving\+\_\+polygon\+\_\+2D} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mp, double BUFF, double Fac)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_ad9f62a437f5681f9e1b364f65ae81777}\label{classlarcfm_1_1_polycarp_detection_ad9f62a437f5681f9e1b364f65ae81777}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries polygon\+\_\+2\+D\+\_\+at} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&pv, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a205c963d4eadf373b7eb236ca89b68b3}\label{classlarcfm_1_1_polycarp_detection_a205c963d4eadf373b7eb236ca89b68b3}} 
+static double {\bfseries dot\+\_\+zero\+\_\+linear\+\_\+2\+D\+\_\+alg} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&b, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_a1fe1e5fc537281cd8a0cedc9c723fe1e}\label{classlarcfm_1_1_polycarp_detection_a1fe1e5fc537281cd8a0cedc9c723fe1e}} 
+static double {\bfseries lookahead\+\_\+proj} (double B, double T, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_detection_ab31f2ccdd9ffa0cbd34fc3ea86f1b419}\label{classlarcfm_1_1_polycarp_detection_ab31f2ccdd9ffa0cbd34fc3ea86f1b419}} 
+static std\+::vector$<$ double $>$ {\bfseries swap\+\_\+times} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segstart, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segend, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&startvel, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&endvel)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_polycarp_detection}{Polycarp\+Detection}} -\/ collision detection between and point and a 2D polygon 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Polycarp\+Detection.\+h\item 
+Modules/\+ACCo\+RD/src/Polycarp\+Detection.\+cpp\end{DoxyCompactItemize}

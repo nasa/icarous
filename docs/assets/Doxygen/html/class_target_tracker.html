@@ -84,7 +84,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aca88bb2f0c0866e2336e43a747303fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#aca88bb2f0c0866e2336e43a747303fb4">ReadParamFromFile</a> (std::string configFile)</td></tr>
 <tr class="memdesc:aca88bb2f0c0866e2336e43a747303fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read parameters from file.  <a href="class_target_tracker.html#aca88bb2f0c0866e2336e43a747303fb4">More...</a><br /></td></tr>
 <tr class="separator:aca88bb2f0c0866e2336e43a747303fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">SetHomePosition</a> (larcfm::Position &amp;home)</td></tr>
+<tr class="memitem:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">SetHomePosition</a> (<a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;home)</td></tr>
 <tr class="memdesc:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Home Position object.  <a href="class_target_tracker.html#af0ad8a42233bca42e8f1ed17dfe4d666">More...</a><br /></td></tr>
 <tr class="separator:af0ad8a42233bca42e8f1ed17dfe4d666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a316c2ab73b39c4c47a32e249966bf2ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a316c2ab73b39c4c47a32e249966bf2ab">SetGateThresholds</a> (double p, double v)</td></tr>
@@ -96,7 +96,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a228b18fa3aefddb50d67d92296c0553c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a228b18fa3aefddb50d67d92296c0553c">SetModelUncertainty</a> (double sigmaP[6], double sigmaV[6])</td></tr>
 <tr class="memdesc:a228b18fa3aefddb50d67d92296c0553c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Model Uncertainty.  <a href="class_target_tracker.html#a228b18fa3aefddb50d67d92296c0553c">More...</a><br /></td></tr>
 <tr class="separator:a228b18fa3aefddb50d67d92296c0553c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">InputCurrentState</a> (double time, larcfm::Position &amp;pos, larcfm::Velocity &amp;vel, double sigmaP[6], double sigmaV[6])</td></tr>
+<tr class="memitem:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">InputCurrentState</a> (double time, <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;pos, <a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> &amp;vel, double sigmaP[6], double sigmaV[6])</td></tr>
 <tr class="memdesc:a8cda79a58cdf5cc179573106ebf4a15a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input ownship information.  <a href="class_target_tracker.html#a8cda79a58cdf5cc179573106ebf4a15a">More...</a><br /></td></tr>
 <tr class="separator:a8cda79a58cdf5cc179573106ebf4a15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af15330be6db6419158e806456b04b3af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_target_tracker.html#af15330be6db6419158e806456b04b3af">InputMeasurement</a> (<a class="el" href="structmeasurement.html">measurement</a> &amp;<a class="el" href="arducopter_8h.html#af658750d9926b54e48a492c3cf3f446b">traffic</a>)</td></tr>
@@ -156,7 +156,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>vThreshold</b></td>
 <tr class="memdesc:a959ba09db8db4ef38b7e04238d6e1724"><td class="mdescLeft">&#160;</td><td class="mdescRight">chi2 threshold for mahalanobis distance - velocity error <br /></td></tr>
 <tr class="separator:a959ba09db8db4ef38b7e04238d6e1724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac298a903710c3327ef24eacc83e0b375"><td class="memItemLeft" align="right" valign="top"><a id="ac298a903710c3327ef24eacc83e0b375" name="ac298a903710c3327ef24eacc83e0b375"></a>
-larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>homePos</b></td></tr>
+<a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>homePos</b></td></tr>
 <tr class="memdesc:ac298a903710c3327ef24eacc83e0b375"><td class="mdescLeft">&#160;</td><td class="mdescRight">initial position - use to produce NED projections <br /></td></tr>
 <tr class="separator:ac298a903710c3327ef24eacc83e0b375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3dfb9abb31cb4d6b06ad029a191903a"><td class="memItemLeft" align="right" valign="top"><a id="af3dfb9abb31cb4d6b06ad029a191903a" name="af3dfb9abb31cb4d6b06ad029a191903a"></a>
@@ -333,13 +333,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>prevLogTime</b></td
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;&#160;</td>
           <td class="paramname"><em>pos</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">larcfm::Velocity &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> &amp;&#160;</td>
           <td class="paramname"><em>vel</em>, </td>
         </tr>
         <tr>
@@ -466,7 +466,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>prevLogTime</b></td
         <tr>
           <td class="memname">void TargetTracker::SetHomePosition </td>
           <td>(</td>
-          <td class="paramtype">larcfm::Position &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> &amp;&#160;</td>
           <td class="paramname"><em>home</em></td><td>)</td>
           <td></td>
         </tr>

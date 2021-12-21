@@ -1,0 +1,120 @@
+\hypertarget{_poly2_d_8h_source}{}\doxysection{Poly2\+D.\+h}
+\label{_poly2_d_8h_source}\index{Modules/ACCoRD/inc/Poly2D.h@{Modules/ACCoRD/inc/Poly2D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Poly2D.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef POLY2D\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define POLY2D\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{comment}{//\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{19 \textcolor{comment}{//\#include "{}GeneralPath.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{31 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \{}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{private}:}
+\DoxyCodeLine{34     std::vector<Vect2> vertices;}
+\DoxyCodeLine{35 \textcolor{comment}{//  BoundingRectangle boundingRect;}}
+\DoxyCodeLine{36 \textcolor{comment}{//  bool boundingRectangleDefined;}}
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} vertexPerturb;}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} perturbAmount;}
+\DoxyCodeLine{39     \textcolor{keywordtype}{double} minX;}
+\DoxyCodeLine{40     \textcolor{keywordtype}{double} minY;}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double} maxX;}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double} maxY;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{public}:}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}();}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}(\textcolor{keyword}{const} std::vector<Vect2>\& verts);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{55     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}\& polygon);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{comment}{//  static Poly2D copy(const Poly2D\& polygon);}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} linear(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} linear(\textcolor{keyword}{const} std::vector<Vect2>\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     \textcolor{keywordtype}{void} add(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{double} y);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \textcolor{keywordtype}{void} insert(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{77     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a6961a1ceb94788c4048f56d00a4a8c9f}{get}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{88     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a7671932bf241806a90f21f9bb3afb4fa}{set}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a0f1d90438275e0c3477faa08075505a1}{remove}}(\textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{105     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a68b4b87942cf8e3ae96ac0090313da63}{contains}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b) \textcolor{keyword}{const};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a68b4b87942cf8e3ae96ac0090313da63}{contains}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     std::vector<Vect2> getVerticesRef() \textcolor{keyword}{const};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{comment}{//  BoundingRectangle getBoundingRectangle() const;}}
+\DoxyCodeLine{113 \textcolor{comment}{//}}
+\DoxyCodeLine{114 \textcolor{comment}{//  void setBoundingRectangle(BoundingRectangle boundingRectangle);}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{123     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_afd75f3440907a26141cfafb59ec26c53}{signedArea}}() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{129     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a4a65bce9b10f318143963c4c7bedfab5}{area}}() \textcolor{keyword}{const};   \textcolor{comment}{// not const !!}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{134     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a310eb3ab51c4bd664d553cf95f559d22}{centroid}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{143     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_ae5807d7006f6f836dfe97fb45147b9eb}{averagePoint}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{comment}{// area and centroid courtesy of Paul Bourke (1988) http://paulbourke.net/geometry/polyarea/}}
+\DoxyCodeLine{146     \textcolor{comment}{// these are for non self-\/intersecting polygons}}
+\DoxyCodeLine{147     \textcolor{comment}{// this calculation assumes that point 0 = point n (or the start point is counted twice)}}
+\DoxyCodeLine{151 \textcolor{comment}{}    \textcolor{comment}{//double area() const;}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a619e45492a763ed1856c34c4ead1e571}{innerDiameter}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     \textcolor{keywordtype}{double} outerDiameter() \textcolor{keyword}{const};}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157     \textcolor{keywordtype}{bool} isClockwise() \textcolor{keyword}{const};}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{163     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_aa2de9ce0cb6f0676b26eca71aae795f8}{reverseOrder}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{169     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly2_d_a069f89f7682c8b89900ea3dc02fcfb5c}{apBoundingRadius}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171     \textcolor{keywordtype}{void} recalcBoundingRectangle();}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{178     \textcolor{comment}{//GeneralPath getGeneralPath() ;}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     std::string \mbox{\hyperlink{classlarcfm_1_1_poly2_d_abdb1ad94b7663601133ad6676d39432a}{strVectArray}}(\textcolor{keyword}{const} std::vector<Vect2>\& verts) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* POLY2D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,248 @@
+\hypertarget{_aircraft_state_8h_source}{}\doxysection{Aircraft\+State.\+h}
+\label{_aircraft_state_8h_source}\index{Modules/ACCoRD/inc/AircraftState.h@{Modules/ACCoRD/inc/AircraftState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifndef AIRCRAFTSTATE\_H\_}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define AIRCRAFTSTATE\_H\_}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Projection.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}StateVector.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keyword}{private}:}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   }
+\DoxyCodeLine{53     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0f032d9d9ce5e7748e1d9e9bbd4197cb}{MAX\_RELATIVE\_DIFF}};}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55     \textcolor{keyword}{static} \textcolor{keywordtype}{double} minClimbVelocity;    \textcolor{comment}{// used to determine when a climb/descent occurs}}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57     \textcolor{keywordtype}{int} bufferSize;    \textcolor{comment}{// the number of possible elements}}
+\DoxyCodeLine{58     \textcolor{keywordtype}{int} oldest;        \textcolor{comment}{// the internal index to the oldest element}}
+\DoxyCodeLine{59     \textcolor{keywordtype}{int} sz;          \textcolor{comment}{// the number of elements currently in list}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{62     }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     std::string id;         \textcolor{comment}{// Store Aircraft id (name)}}
+\DoxyCodeLine{65     }
+\DoxyCodeLine{66     \textcolor{comment}{// internal data structure, users use s(), v()}}
+\DoxyCodeLine{67     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}* s\_list;}
+\DoxyCodeLine{68     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}* v\_list;}
+\DoxyCodeLine{69     \textcolor{keywordtype}{double}* t\_list;}
+\DoxyCodeLine{70     }
+\DoxyCodeLine{71     \textcolor{comment}{// Euclidean positions and velocities created by a projection function  }}
+\DoxyCodeLine{72     EuclideanProjection sp;}
+\DoxyCodeLine{73     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}* projS2;}
+\DoxyCodeLine{74     \textcolor{keywordtype}{double}* projH;}
+\DoxyCodeLine{75     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}* projV2;}
+\DoxyCodeLine{76     \textcolor{keywordtype}{double}* projVZ;}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double}* projT;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{bool} projection\_initialized;}
+\DoxyCodeLine{79     \textcolor{keywordtype}{bool} projection\_done;}
+\DoxyCodeLine{80     \textcolor{keywordtype}{bool} regression\_done;}
+\DoxyCodeLine{81     }
+\DoxyCodeLine{82     \textcolor{comment}{// Regression parameters}}
+\DoxyCodeLine{83     \textcolor{keywordtype}{int}    recentInd;               \textcolor{comment}{// Index of most recent time from the aircraft}}
+\DoxyCodeLine{84     \textcolor{keywordtype}{double} horizvelintercept;}
+\DoxyCodeLine{85     \textcolor{keywordtype}{double} horizvelslope;}
+\DoxyCodeLine{86     \textcolor{keywordtype}{double} vertvelintercept;}
+\DoxyCodeLine{87     \textcolor{keywordtype}{double} vertvelslope;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{keywordtype}{double} ls\_t;}
+\DoxyCodeLine{90     \textcolor{keywordtype}{double} ls\_trk;}
+\DoxyCodeLine{91     \textcolor{keywordtype}{double} lastZeroTrackRateThreshold;}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} init(std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}}, \textcolor{keywordtype}{int} buffer\_size);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   \textcolor{comment}{// This inserts the given data at point i-\/-\/no questions asked.  Everything}}
+\DoxyCodeLine{97   \textcolor{comment}{// from index 0..i is shifted down one place. i is an external index}}
+\DoxyCodeLine{98   \textcolor{comment}{//}}
+\DoxyCodeLine{99   \textcolor{comment}{// Assumes:}}
+\DoxyCodeLine{100   \textcolor{comment}{// 1. 0 <= i < size}}
+\DoxyCodeLine{101   \textcolor{comment}{// 2. i is the correct place to insert the data; time is correctly ordered: t(i) < tm < t(i+1)}}
+\DoxyCodeLine{102   \textcolor{comment}{// 3. the projection\_done flag is set by somewhere else}}
+\DoxyCodeLine{103   \textcolor{keywordtype}{void} insertAt(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& ss, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vv, \textcolor{keywordtype}{double} tm); }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{comment}{// assumes that all arrays are the same length and have at least "{}length"{} elements}}
+\DoxyCodeLine{106   \textcolor{comment}{// assumes the arrays are sorted in increasing time order.}}
+\DoxyCodeLine{107   \textcolor{keywordtype}{void} calc(\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}* vel2, \textcolor{keywordtype}{double}* velZ, \textcolor{keywordtype}{double}* timevar, \textcolor{keywordtype}{int} length);}
+\DoxyCodeLine{108     }
+\DoxyCodeLine{109   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} predS(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} predV(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keywordtype}{int} ext2int(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keyword}{public}:}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{118     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aec48c40e2ad4a190b77f25d1c7f3e2cc}{DEFAULT\_BUFFER\_SIZE}} = 10;}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} projectVelocity;                                        \textcolor{comment}{// DEBUG -\/-\/> will eventually be removed}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{127     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4caf782bee927f085698de8a2f7d0afe}{AircraftState}}(\textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}}, \textcolor{keywordtype}{int} buffer\_size);}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{130     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aa72c555a763b51b55c15fc33cc0dace6}{AircraftState}}();}
+\DoxyCodeLine{131     }
+\DoxyCodeLine{134     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ac2bf600250425d4b1e22a4e266d12184}{AircraftState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{135     }
+\DoxyCodeLine{136     \textcolor{comment}{// copy constructor, needed because of explicit destructor}}
+\DoxyCodeLine{137     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aa72c555a763b51b55c15fc33cc0dace6}{AircraftState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}} \&orig);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{comment}{// assignment operator, needed because of explicit destructor}}
+\DoxyCodeLine{140     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}} \& rhs);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{\string~AircraftState}}();}
+\DoxyCodeLine{143     }
+\DoxyCodeLine{148     std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad3753e158fda8e70aa5557c3a9c7d145}{name}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{149     }
+\DoxyCodeLine{158     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae04edaffeaf6cda3782891a9d2c3b54d}{checkLatLon}}(\textcolor{keywordtype}{bool} ll) \textcolor{keyword}{const};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae21cf69ca868548bc443be313cabcdaf}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{169     \mbox{\hyperlink{classlarcfm_1_1_aircraft_state}{AircraftState}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_abb743a76c75b5923186e648e814ee5b0}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{170     }
+\DoxyCodeLine{171             }
+\DoxyCodeLine{178     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a9ac9c71202c37d09a4650547387e2ffb}{getBufferSize}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{181     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a128bbf3e8481be47e8bfc21192c87d88}{clear}}();}
+\DoxyCodeLine{182     }
+\DoxyCodeLine{190     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a9daed8ad031895d125087008cf5beb0f}{find}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{191     }
+\DoxyCodeLine{195     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a89b08a958ae14fb52637ca87706f69fd}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 }
+\DoxyCodeLine{210     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a366f786b806296dd6ce0bc7d79615927}{add}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& ss, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vv, \textcolor{keywordtype}{double} tm);}
+\DoxyCodeLine{211     }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{223     \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a1ce86b67bc55d527035805a336025c74}{get}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{231     \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aa1a14b5dc001deffdd87c309244d2327}{getLast}}();}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{240     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_aea538edb532477053eb9f59aa7deaf7c}{position}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{241     }
+\DoxyCodeLine{247     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a43694b43006e8380e9b9c83037d17360}{velocity}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{257     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{266     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a8503cc3a9300d6b740cc5e645c2410cf}{positionLast}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{275     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_affeeee5e051f8a0f0000a39ea88969fc}{velocityLast}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{282     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae0eb12bf16ca883abbe10f7e55c0ff57}{timeLast}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{283     }
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285 }
+\DoxyCodeLine{289     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a6c3a9fc18feda992e5d4881df6c4d829}{remove}}(\textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{293     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad87093d794e6ff5797144b31c2a4f58e}{removeUpToTime}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a27078322591e43c799bf94ab639747e6}{time}});}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{296     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_adfe85cc5762a2435892cb0143729b0eb}{removeLast}}();}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{304     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a0ba0bea029c7901e417d1a46e36be0ea}{setProjection}}(\textcolor{keyword}{const} EuclideanProjection\& p);}
+\DoxyCodeLine{305 }
+\DoxyCodeLine{306 \textcolor{comment}{//    /**}}
+\DoxyCodeLine{307 \textcolor{comment}{//     * Set the new projection and reproject all the points}}
+\DoxyCodeLine{308 \textcolor{comment}{//   * @param sp the new projection object}}
+\DoxyCodeLine{309 \textcolor{comment}{//     */}}
+\DoxyCodeLine{310 \textcolor{comment}{//  void updateProjection(const EuclideanProjection sp);}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{315     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae4c4f0e56d7db0d18b5e3cc9bd251233}{updateProjection}}();}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{322     EuclideanProjection \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a43bb38ee2d4fcb114a12a686ddaab86e}{getProjection}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{323     }
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326     }
+\DoxyCodeLine{337     \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ab0a44deea55eb2d8720814c41585e2e3}{pred}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339 }
+\DoxyCodeLine{352    \mbox{\hyperlink{classlarcfm_1_1_state_vector}{StateVector}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a2982f9af0bb11d23c3488bd2644e877a}{predLinear}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354     \textcolor{comment}{/*}}
+\DoxyCodeLine{355 \textcolor{comment}{     * Return a Position for a given time, linearly projected, based on the most recent data at or before time t.}}
+\DoxyCodeLine{356 \textcolor{comment}{     * This does not perform any explicit projection into the Euclidean frame if the original Position was geodetic.}}
+\DoxyCodeLine{357 \textcolor{comment}{     *}}
+\DoxyCodeLine{358 \textcolor{comment}{     * A warning is generated if all data points are at times greater than t and an INVALID position is returned.}}
+\DoxyCodeLine{359 \textcolor{comment}{     */}}
+\DoxyCodeLine{360     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} positionLinear(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{369     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_afeca97b4ec23f92441659449d0d0c071}{velocityAt}}(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371     \textcolor{comment}{//}}
+\DoxyCodeLine{372     \textcolor{comment}{// Methods to check the "{}integrity"{} of the data}}
+\DoxyCodeLine{373     \textcolor{comment}{//}}
+\DoxyCodeLine{374 }
+\DoxyCodeLine{379     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a74fdefddd862ad1d805ff1ba8f0d0f6d}{inLevelFlight}}();}
+\DoxyCodeLine{380     }
+\DoxyCodeLine{387     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a77f93cd864e368086790cd93348c4ffd}{closeEnough}}(\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v1, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v2);}
+\DoxyCodeLine{388 }
+\DoxyCodeLine{393     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_af390b20f1cc776516bdc5ff1016b8d59}{lastStraightTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395 }
+\DoxyCodeLine{400     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4ecbcda589eff355b56456657e4d2e58}{trackRate}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{401 }
+\DoxyCodeLine{407     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ab9007ecab011bdfe1f0dbed84fec26f3}{timeLastZeroTrackRate}}();}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409 }
+\DoxyCodeLine{416     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_affee3f56c8e25588624352c900add830}{avgTrackRate}}(\textcolor{keywordtype}{int} numPtsTrkRateCalc);}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{424     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ad93acddcbf314aa8bb49582adc7d00ba}{avgVsRate}}(\textcolor{keywordtype}{int} numPtsVsRateCalc);}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{429     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a4b7b4886c7e0978c0e5effc92157d9cd}{prune}}();}
+\DoxyCodeLine{430 }
+\DoxyCodeLine{431     \textcolor{comment}{//}}
+\DoxyCodeLine{432     \textcolor{comment}{// Utility methods}}
+\DoxyCodeLine{433     \textcolor{comment}{//}}
+\DoxyCodeLine{434     }
+\DoxyCodeLine{437     std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a71d60b314f85c1e905b4114f9cb693dc}{dump}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{442     std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a3e7a4dadda7334454ba6364bd2dfde09}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{443    }
+\DoxyCodeLine{448     std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a1a1537b867aa3cd78b28b1e6109f9d79}{toOutput}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{449     }
+\DoxyCodeLine{450   \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{451   }
+\DoxyCodeLine{452   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_a3742b015f3d277c83bd2726675307403}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{453     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}();}
+\DoxyCodeLine{454   \}}
+\DoxyCodeLine{455   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_adcecfb0f39fdd9fdfc459d6dbf846116}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{456     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}();}
+\DoxyCodeLine{457   \}}
+\DoxyCodeLine{458   std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ae99e799e007d2e7faa692d5ad0e6e41a}{getMessage}}() \{}
+\DoxyCodeLine{459     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}();}
+\DoxyCodeLine{460   \}}
+\DoxyCodeLine{461   std::string \mbox{\hyperlink{classlarcfm_1_1_aircraft_state_ac7e122ba99d805d7bb88bbd0cad6c35d}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{462     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}();}
+\DoxyCodeLine{463   \}    }
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465     }
+\DoxyCodeLine{466 \};}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 \}}
+\DoxyCodeLine{469 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

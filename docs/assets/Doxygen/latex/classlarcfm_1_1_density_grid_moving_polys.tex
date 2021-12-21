@@ -1,0 +1,69 @@
+\hypertarget{classlarcfm_1_1_density_grid_moving_polys}{}\doxysection{larcfm\+::Density\+Grid\+Moving\+Polys Class Reference}
+\label{classlarcfm_1_1_density_grid_moving_polys}\index{larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}}
+Inheritance diagram for larcfm\+::Density\+Grid\+Moving\+Polys\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_density_grid_moving_polys}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_a455a667f7e5e3126d9b4b09ba824e6dc}\label{classlarcfm_1_1_density_grid_moving_polys_a455a667f7e5e3126d9b4b09ba824e6dc}} 
+{\bfseries Density\+Grid\+Moving\+Polys} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int buffer, double square\+Size, double gs, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ \&ps, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ \&cs)
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_density_grid_moving_polys_aff150377138addb14a26717cbb69c533}{get\+WeightT}} (int x, int y, double t) const
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_density_grid_moving_polys_a33cbea9034278c1dce07a7d5f56c12fa}{get\+WeightT}} (const std\+::pair$<$ int, int $>$ \&xy, double t) const
+\item 
+virtual double \mbox{\hyperlink{classlarcfm_1_1_density_grid_moving_polys_ab6738368736e65d33ac2831323eea9f4}{get\+WeightT}} (const \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ \&pii) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_a4452b9467cf0630ae2f85d83fc5e54de}\label{classlarcfm_1_1_density_grid_moving_polys_a4452b9467cf0630ae2f85d83fc5e54de}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries paths}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_a999d56daee60e87b251532df2423d1a8}\label{classlarcfm_1_1_density_grid_moving_polys_a999d56daee60e87b251532df2423d1a8}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries contains}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_a33cbea9034278c1dce07a7d5f56c12fa}\label{classlarcfm_1_1_density_grid_moving_polys_a33cbea9034278c1dce07a7d5f56c12fa}} 
+\index{larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}!getWeightT@{getWeightT}}
+\index{getWeightT@{getWeightT}!larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}}
+\doxysubsubsection{\texorpdfstring{getWeightT()}{getWeightT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Density\+Grid\+Moving\+Polys\+::get\+WeightT (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ int, int $>$ \&}]{xy,  }\item[{double}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{larcfm\+::\+Density\+Grid\+Timed}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_ab6738368736e65d33ac2831323eea9f4}\label{classlarcfm_1_1_density_grid_moving_polys_ab6738368736e65d33ac2831323eea9f4}} 
+\index{larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}!getWeightT@{getWeightT}}
+\index{getWeightT@{getWeightT}!larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}}
+\doxysubsubsection{\texorpdfstring{getWeightT()}{getWeightT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Density\+Grid\+Moving\+Polys\+::get\+WeightT (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ int, int, int $>$ \&}]{pii }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{larcfm\+::\+Density\+Grid\+Timed}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_moving_polys_aff150377138addb14a26717cbb69c533}\label{classlarcfm_1_1_density_grid_moving_polys_aff150377138addb14a26717cbb69c533}} 
+\index{larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}!getWeightT@{getWeightT}}
+\index{getWeightT@{getWeightT}!larcfm::DensityGridMovingPolys@{larcfm::DensityGridMovingPolys}}
+\doxysubsubsection{\texorpdfstring{getWeightT()}{getWeightT()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily double larcfm\+::\+Density\+Grid\+Moving\+Polys\+::get\+WeightT (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{double}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{larcfm\+::\+Density\+Grid\+Timed}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Density\+Grid\+Moving\+Polys.\+h\item 
+Modules/\+ACCo\+RD/src/Density\+Grid\+Moving\+Polys.\+cpp\end{DoxyCompactItemize}

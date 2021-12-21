@@ -1,0 +1,134 @@
+\hypertarget{classlarcfm_1_1_vertical}{}\doxysection{larcfm\+::Vertical Class Reference}
+\label{classlarcfm_1_1_vertical}\index{larcfm::Vertical@{larcfm::Vertical}}
+
+
+{\ttfamily \#include $<$Vertical.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vertical_a1fe6dba962fef303d941aee357f30c72}{Vertical}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vertical_a545acf57a58ac481071bed2f6bb52eb3}{Vertical}} (const double vz)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vertical_a9a853f8c373ac7710d4ae19e283d7e61}{undef}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_vertical_ae1913f52383ee7517e61c8f01e542b20}{add\+\_\+this}} (const double vz)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vertical_ac28d7647806e8e7ec21a317d3aa794e9}{operator==}} (const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vertical_a5ebe81bcc36a9a14406b93bcf746b20b}{operator!=}} (const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a03a5f75e2a35dc3894a1081ffc98d387}\label{classlarcfm_1_1_vertical_a03a5f75e2a35dc3894a1081ffc98d387}} 
+std\+::string {\bfseries to\+String} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \& \mbox{\hyperlink{classlarcfm_1_1_vertical_a9b2c8a6d7bef473494c520f50b711191}{No\+Vertical\+Solution}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a0dc11cca24b306922c01c89d226733e7}\label{classlarcfm_1_1_vertical_a0dc11cca24b306922c01c89d226733e7}} 
+static bool {\bfseries almost\+\_\+vertical\+\_\+los} (const double sz, const double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a265f49434b6c03b40c244442e7ef0175}\label{classlarcfm_1_1_vertical_a265f49434b6c03b40c244442e7ef0175}} 
+static double {\bfseries Theta\+\_\+H} (const double sz, const double v, const int eps, const double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_ab7247df8e49586d7117d017d02de4852}\label{classlarcfm_1_1_vertical_ab7247df8e49586d7117d017d02de4852}} 
+static double {\bfseries time\+\_\+coalt} (double sz, double vz)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a49409135397190eb642fa55eddd9a616}\label{classlarcfm_1_1_vertical_a49409135397190eb642fa55eddd9a616}} 
+static double {\bfseries vmd} (double sz, double vz, double T)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_vertical_aae736da628299c52c1065c6eaa433d25}{vs\+\_\+circle}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const int eps, const double D, const double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a7fec2d149a15e2cc3bf68b1acacb77a4}\label{classlarcfm_1_1_vertical_a7fec2d149a15e2cc3bf68b1acacb77a4}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} {\bfseries vs\+\_\+circle\+\_\+at} (const double sz, const double viz, const double t, const int eps, const int dir, const double H)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a149469ce68b99a8d82bab73c85fd9ec4}\label{classlarcfm_1_1_vertical_a149469ce68b99a8d82bab73c85fd9ec4}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} {\bfseries vs\+\_\+los\+\_\+recovery} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, const double H, const double t, int epsv)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vertical_ac71d355972b755ae7f23c3fe2dee9b70}{z}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_af843ae3cb9185ebaafd6a504b9cd66da}\label{classlarcfm_1_1_vertical_af843ae3cb9185ebaafd6a504b9cd66da}} 
+bool {\bfseries udef}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} solution 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_a1fe6dba962fef303d941aee357f30c72}\label{classlarcfm_1_1_vertical_a1fe6dba962fef303d941aee357f30c72}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!Vertical@{Vertical}}
+\index{Vertical@{Vertical}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{Vertical()}{Vertical()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Vertical\+::\+Vertical (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct a vertical solution \mbox{\Hypertarget{classlarcfm_1_1_vertical_a545acf57a58ac481071bed2f6bb52eb3}\label{classlarcfm_1_1_vertical_a545acf57a58ac481071bed2f6bb52eb3}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!Vertical@{Vertical}}
+\index{Vertical@{Vertical}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{Vertical()}{Vertical()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Vertical\+::\+Vertical (\begin{DoxyParamCaption}\item[{const double}]{vz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Construct a vertical solution 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_ae1913f52383ee7517e61c8f01e542b20}\label{classlarcfm_1_1_vertical_ae1913f52383ee7517e61c8f01e542b20}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!add\_this@{add\_this}}
+\index{add\_this@{add\_this}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{add\_this()}{add\_this()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} larcfm\+::\+Vertical\+::add\+\_\+this (\begin{DoxyParamCaption}\item[{const double}]{vz }\end{DoxyParamCaption})}
+
+method \mbox{\Hypertarget{classlarcfm_1_1_vertical_a9b2c8a6d7bef473494c520f50b711191}\label{classlarcfm_1_1_vertical_a9b2c8a6d7bef473494c520f50b711191}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!NoVerticalSolution@{NoVerticalSolution}}
+\index{NoVerticalSolution@{NoVerticalSolution}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{NoVerticalSolution()}{NoVerticalSolution()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \& larcfm\+::\+Vertical\+::\+No\+Vertical\+Solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\char`\"{}\+Solution\char`\"{} indicating no solution \mbox{\Hypertarget{classlarcfm_1_1_vertical_a5ebe81bcc36a9a14406b93bcf746b20b}\label{classlarcfm_1_1_vertical_a5ebe81bcc36a9a14406b93bcf746b20b}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vertical\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Is any component not exactly equal \mbox{\Hypertarget{classlarcfm_1_1_vertical_ac28d7647806e8e7ec21a317d3aa794e9}\label{classlarcfm_1_1_vertical_ac28d7647806e8e7ec21a317d3aa794e9}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!operator==@{operator==}}
+\index{operator==@{operator==}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vertical\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Exact equality \mbox{\Hypertarget{classlarcfm_1_1_vertical_a9a853f8c373ac7710d4ae19e283d7e61}\label{classlarcfm_1_1_vertical_a9a853f8c373ac7710d4ae19e283d7e61}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!undef@{undef}}
+\index{undef@{undef}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{undef()}{undef()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vertical\+::undef (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Is this solution undefined? \mbox{\Hypertarget{classlarcfm_1_1_vertical_aae736da628299c52c1065c6eaa433d25}\label{classlarcfm_1_1_vertical_aae736da628299c52c1065c6eaa433d25}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!vs\_circle@{vs\_circle}}
+\index{vs\_circle@{vs\_circle}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{vs\_circle()}{vs\_circle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} larcfm\+::\+Vertical\+::vs\+\_\+circle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{const int}]{eps,  }\item[{const double}]{D,  }\item[{const double}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Solve the following equation on vz\+: sz+t$\ast$vz = eps$\ast$H,
+
+where t = Theta\+\_\+\+D(s,v,eps). eps determines the bottom, i.\+e.,-\/1, or top, i.\+e., 1, circle. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vertical_ac71d355972b755ae7f23c3fe2dee9b70}\label{classlarcfm_1_1_vertical_ac71d355972b755ae7f23c3fe2dee9b70}} 
+\index{larcfm::Vertical@{larcfm::Vertical}!z@{z}}
+\index{z@{z}!larcfm::Vertical@{larcfm::Vertical}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double larcfm\+::\+Vertical\+::z}
+
+z solution 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Vertical.\+h\item 
+Modules/\+ACCo\+RD/src/Vertical.\+cpp\end{DoxyCompactItemize}

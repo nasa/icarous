@@ -1,0 +1,240 @@
+\hypertarget{classlarcfm_1_1_debug}{}\doxysection{larcfm\+::Debug Class Reference}
+\label{classlarcfm_1_1_debug}\index{larcfm::Debug@{larcfm::Debug}}
+
+
+{\ttfamily \#include $<$Debug.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_af067fa36c717efba32dee7d54d04aae5}\label{classlarcfm_1_1_debug_af067fa36c717efba32dee7d54d04aae5}} 
+static void {\bfseries set\+User\+Debug\+Flag} (bool b)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a01168a31471432854a69ea2d2c4e0ad5}{set\+Verbose}} (int level)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{pln}} (const std\+::string \&tag, const std\+::string \&msg)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_ad49696dfe5feda0e6c692baf325b4abc}\label{classlarcfm_1_1_debug_ad49696dfe5feda0e6c692baf325b4abc}} 
+static void {\bfseries pln2} (const std\+::string \&msg, bool verbose)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_afb758d8527905b25bc8713816a56448a}{pln}} (const std\+::string \&msg)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a51c660bbad661861f23a5ac8aace3c0c}{pln}} (const std\+::string \&tag, const std\+::string \&msg, bool verbose)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_aab8d56dcd69836bef3813514c8ee3f0c}\label{classlarcfm_1_1_debug_aab8d56dcd69836bef3813514c8ee3f0c}} 
+static void {\bfseries pln} (int lvl, const std\+::string \&tag, const std\+::string \&msg)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_aab6f21a3efc05326ec2a70ad43c9852f}\label{classlarcfm_1_1_debug_aab6f21a3efc05326ec2a70ad43c9852f}} 
+static void {\bfseries pln} (int lvl, const std\+::string \&msg)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a92e38028b0f4f8bc4a9b1a1532b8d2b2}{warning}} (const std\+::string \&tag, const std\+::string \&msg)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a8ecd28548c8a5e3f9004cafab9002fb2}{warning}} (const std\+::string \&msg)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_ab65e803d04af3727844294668e3e105b}{error}} (const std\+::string \&msg, bool fail\+\_\+fast)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a225b65f1b8c1ee837e5ee690b245cc14}{error}} (const std\+::string \&msg)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_a6c17c7992a4280ecd428918f012f58a7}{print\+Stack}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_debug_af073297d3defaa82d969404166a4a255}{halt}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_aed6940dee5800597720229f0a6e6d66b}\label{classlarcfm_1_1_debug_aed6940dee5800597720229f0a6e6d66b}} 
+static void {\bfseries output} (const std\+::string \&tag, const std\+::string \&msg)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_ae4af906cdf8c557b6459e3557dac6e65}\label{classlarcfm_1_1_debug_ae4af906cdf8c557b6459e3557dac6e65}} 
+static const bool {\bfseries FAIL\+\_\+\+FAST}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a16cbd189eb44afd5742266224d2043e4}\label{classlarcfm_1_1_debug_a16cbd189eb44afd5742266224d2043e4}} 
+static int {\bfseries VERBOSE}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains a small set of tools to help in debugging. First is a set of tools to instrument the code each type of instrumentation attempts to address a different type of bug. Any messages go to the Standard output channel. messages come out in the format \char`\"{}$<$code$>$<tag> message$<$/code$>$\char`\"{} so they can easily be found. For errors, the tag is pre-\/populated with \char`\"{}\+ERROR!\char`\"{}, for warnings the tag is user specified. For Status messages, the tag is optional.
+
+Unfortunately, this implementation every \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}} method added still costs execution time, regardless if the given verbosity level means no message will be produced. So \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{Debug.\+pln}}(lvl, big-\/complicated-\/string-\/operation) means the big string operation will be computed every time, even when the \mbox{\hyperlink{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}{Debug.\+pln}} is never triggered.
+
+Each of these debugging messages approximately means
+
+
+\begin{DoxyItemize}
+\item Error -\/ Usually indicates a software error. Something where the program is confused. The requested operation will need to be ignored (or perhaps the program must exit). 
+\item Warning -\/ Usually indicates a condition that should not be reached, but the software can \char`\"{}fix\char`\"{} the situation. ~\newline
+ The fix may or may not be the intent, hence the warning. 
+\item Status -\/ Anything else 
+\end{DoxyItemize}
+
+The main instrumentation methods are 
+\begin{DoxyItemize}
+\item {\ttfamily check\+Error(condition, msg)} If the condition is violated, then the message is output. If the {\itshape FAIL\+\_\+\+FAST} flag is true, the program will exit. 
+\item {\ttfamily error(msg)} This method will always display the {\itshape msg} to the console. This should be reserved for true errors, not curious or questionable situations. If the {\itshape FAIL\+\_\+\+FAST} flag is true, then this method will force an immediate program exit. 
+\item {\ttfamily check\+Warning(condition, tag, msg)} If the condition is violated, then the message is displayed to the console. 
+\item {\ttfamily warning(tag, msg)} Writes the message to the console (in the format described above). ~\newline
+ 
+\item {\ttfamily pln(tag, msg)} This provides intermediate program state information. If the \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}} class is in \char`\"{}verbose\char`\"{} mode, then these messages will be output, if \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}} is in \char`\"{}silent\char`\"{} mode, then these messages will be suppressed. ~\newline
+ 
+\item {\ttfamily pln(msg)} This provides intermediate program state information. Only the message comes out, there is no \char`\"{}tag\char`\"{} 
+\item {\ttfamily pln(msg, verbose)} Same as above, except it does not rely \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}}\textquotesingle{}s notion of a verbosity level. If the verbose flag is true, then the message is output. 
+\item {\ttfamily pln(lvl, msg)} This provides information at a user-\/specified level (\texorpdfstring{$>$}{>}= 2). Only the message comes out, there is no \char`\"{}tag\char`\"{} 
+\item {\ttfamily pln(lvl, tag, msg)} Same as above, along with a user-\/specified tag. 
+\end{DoxyItemize}
+
+Usage scenarios 
+\begin{DoxyItemize}
+\item Ensure that conditions that should \char`\"{}never happen\char`\"{} truly never happen. Instrument the areas of the code that should never be reached with {\ttfamily check\+Error} or {\ttfamily error} methods. While in development the {\itshape FAIL\+\_\+\+FAST} flag should be true. When the software is ready for distribution, it should be set to true. If a field report comes back with unusual behavior, search the log for any messages that start with \char`\"{}<\+ERROR!>\char`\"{}. 
+\item An external user can\textquotesingle{}t get the software to work. Instruct them to call {\ttfamily set\+Verbose(2)}. (I presume you will have some way in the user interface to set this flag). Then let them examine the log to see if they can determine the issue, and likewise the log can be sent to developers. 
+\end{DoxyItemize}
+
+Future work 
+\begin{DoxyItemize}
+\item Send this information to log files instead of the console. 
+\item Store the previous message in a string so a GUI can pick it up 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a225b65f1b8c1ee837e5ee690b245cc14}\label{classlarcfm_1_1_debug_a225b65f1b8c1ee837e5ee690b245cc14}} 
+\index{larcfm::Debug@{larcfm::Debug}!error@{error}}
+\index{error@{error}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{error()}{error()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Output the message {\itshape msg}, indicating that an error has occurred. If in fail-\/fast mode, then the program will exit (perhaps with a stack trace).
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_ab65e803d04af3727844294668e3e105b}\label{classlarcfm_1_1_debug_ab65e803d04af3727844294668e3e105b}} 
+\index{larcfm::Debug@{larcfm::Debug}!error@{error}}
+\index{error@{error}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{error()}{error()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{bool}]{fail\+\_\+fast }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Output the message {\itshape msg}, indicating that an error has occurred. ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message \\
+\hline
+{\em fail\+\_\+fast} & if true, then halt program. If false, continue. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_af073297d3defaa82d969404166a4a255}\label{classlarcfm_1_1_debug_af073297d3defaa82d969404166a4a255}} 
+\index{larcfm::Debug@{larcfm::Debug}!halt@{halt}}
+\index{halt@{halt}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{halt()}{halt()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::halt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Indicate than something bad has happened and the program to needs to end now. On some platforms, print backtrace. In general, this method should not be used, use \mbox{\hyperlink{classlarcfm_1_1_debug_ab65e803d04af3727844294668e3e105b}{error}} instead. \mbox{\Hypertarget{classlarcfm_1_1_debug_afb758d8527905b25bc8713816a56448a}\label{classlarcfm_1_1_debug_afb758d8527905b25bc8713816a56448a}} 
+\index{larcfm::Debug@{larcfm::Debug}!pln@{pln}}
+\index{pln@{pln}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{pln()}{pln()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::pln (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Print out a status message {\itshape msg}. The output will only come out if 2 is below the \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}} verbosity level. Note\+: There is a (small) performance penalty for every call, even if the VERBOSE level indicates no message will come out.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & the status message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}\label{classlarcfm_1_1_debug_ac6bfad384ec6d167973565976b710d2f}} 
+\index{larcfm::Debug@{larcfm::Debug}!pln@{pln}}
+\index{pln@{pln}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{pln()}{pln()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::pln (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{tag,  }\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Print out a status message {\itshape msg}, with each line prepended with tag. The output will only come out if \mbox{\hyperlink{classlarcfm_1_1_debug}{Debug}} is in \char`\"{}verbose\char`\"{} mode. Note\+: There is a (small) performance penalty for every call, even if the VERBOSE level indicates no message will come out.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & the tag to indicate the location of this debug message. \\
+\hline
+{\em msg} & the status message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a51c660bbad661861f23a5ac8aace3c0c}\label{classlarcfm_1_1_debug_a51c660bbad661861f23a5ac8aace3c0c}} 
+\index{larcfm::Debug@{larcfm::Debug}!pln@{pln}}
+\index{pln@{pln}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{pln()}{pln()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::pln (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{tag,  }\item[{const std\+::string \&}]{msg,  }\item[{bool}]{verbose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Print out a status message {\itshape msg}, with each line prepended with tag. The output will only if \char`\"{}verbose\char`\"{} is true. ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & the tag to indicate the location of this debug message. \\
+\hline
+{\em msg} & the status message \\
+\hline
+{\em verbose} & if true, then display status message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a6c17c7992a4280ecd428918f012f58a7}\label{classlarcfm_1_1_debug_a6c17c7992a4280ecd428918f012f58a7}} 
+\index{larcfm::Debug@{larcfm::Debug}!printStack@{printStack}}
+\index{printStack@{printStack}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{printStack()}{printStack()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::print\+Stack (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+backtrace will only work under gcc \mbox{\Hypertarget{classlarcfm_1_1_debug_a01168a31471432854a69ea2d2c4e0ad5}\label{classlarcfm_1_1_debug_a01168a31471432854a69ea2d2c4e0ad5}} 
+\index{larcfm::Debug@{larcfm::Debug}!setVerbose@{setVerbose}}
+\index{setVerbose@{setVerbose}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{setVerbose()}{setVerbose()}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::set\+Verbose (\begin{DoxyParamCaption}\item[{int}]{level }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set the verbosity level for debuggging 
+\begin{DoxyItemize}
+\item 0 -\/ Errors only 
+\item 1 -\/ Errors and Warnings 
+\item 2 -\/ Errors, Warnings, and Status 
+\item \texorpdfstring{$>$}{>}2 -\/ All the above, plus user-\/specified levels 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & verbosity level \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a8ecd28548c8a5e3f9004cafab9002fb2}\label{classlarcfm_1_1_debug_a8ecd28548c8a5e3f9004cafab9002fb2}} 
+\index{larcfm::Debug@{larcfm::Debug}!warning@{warning}}
+\index{warning@{warning}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{warning()}{warning()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::warning (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Output the {\itshape msg} to the console with the prepended {\itshape WARNING} tag. Warnings are always output and never cause a program termination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to indicate what has gone wrong. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_debug_a92e38028b0f4f8bc4a9b1a1532b8d2b2}\label{classlarcfm_1_1_debug_a92e38028b0f4f8bc4a9b1a1532b8d2b2}} 
+\index{larcfm::Debug@{larcfm::Debug}!warning@{warning}}
+\index{warning@{warning}!larcfm::Debug@{larcfm::Debug}}
+\doxysubsubsection{\texorpdfstring{warning()}{warning()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void larcfm\+::\+Debug\+::warning (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{tag,  }\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Output the {\itshape msg} to the console with the prepended {\itshape tag}. Warnings are always output and never cause a program termination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tag} & the tag to indicate the location of this debug message. \\
+\hline
+{\em msg} & message to indicate what has gone wrong. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Debug.\+h\end{DoxyCompactItemize}

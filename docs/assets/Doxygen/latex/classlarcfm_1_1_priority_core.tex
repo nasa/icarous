@@ -1,0 +1,400 @@
+\hypertarget{classlarcfm_1_1_priority_core}{}\doxysection{larcfm\+::Priority\+Core Class Reference}
+\label{classlarcfm_1_1_priority_core}\index{larcfm::PriorityCore@{larcfm::PriorityCore}}
+
+
+{\ttfamily \#include $<$Priority\+Core.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a9c9fcd57eb53420c3c28d52827211bc3}{lateral\+\_\+only}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a538c6e705ce794bd95ef0bc716e58fdc}{check}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, bool mo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi, bool mi)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}{TC}}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}{CRUISE\+\_\+\+DEF}}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}{VERTICAL\+\_\+\+DEADBAND}}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}{LATERAL\+\_\+\+DEADBAND}}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_adda269d54d05e1c19c2494aa3515f8fe}\label{classlarcfm_1_1_priority_core_adda269d54d05e1c19c2494aa3515f8fe}} 
+static double {\bfseries LATERAL\+\_\+\+RELATIVE\+\_\+\+DEADBAND}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a844bc017cf395fbf16e26e246c75ad35}{is\+Descending}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a4462e50ac979faecacba41cf72c79e49}{is\+Not\+Descending}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_af24737ca831cf0fe0a04600a588b7ff0}{is\+Cruising}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a847fe15249a3e60acb71b113bb5d8e8b}{is\+Ascending}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_af1c0538357798e479a67e3450fd725f1}{is\+Not\+Ascending}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a05d56a8da7ddc58a779ffc398ff6936a}{is\+Not\+Cruising}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a1c59de30e7bfe5bf51ec5cef1a81ed09}{Possibly\+Descending\+ORCruising}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a37b71b67863959e315d7217e62803a89}{Possibly\+Cruising\+ORAscending}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_a4af5a31dccc3df732b0f5ea71df40290}{Horizontal\+Rules\+Apply}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ao\+\_\+V, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ai\+\_\+V)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_afcd4fecc30a8b489eb9efcac6b7497c1}{Vertical\+Rules\+Apply}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ao\+\_\+V, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ai\+\_\+V)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_aeae18c80fc25287f5e991859fff0fa62}{Vel\+Component}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_aabc224819ae05c52774763f54f24c91f}{Vel\+Component\+At}} (const double t, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_priority_core_a94b6c61cd419df7787e797b9c41433ef}{Entry\+Component}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&vi)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_ab9473fc75fac831b1ef9743331bedd0f}{Horizontal\+Deadband}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ao\+\_\+S, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ao\+\_\+V, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ai\+\_\+S, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ai\+\_\+V)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_priority_core_adc5b5b392423b1beb244630a9acf0338}{Vertical\+Deadband}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ao\+\_\+V, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&ai\+\_\+V)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is a collection of functions to determine if one aircraft has priority over another aircraft. It is an encapsulation of the \char`\"{}right of way\char`\"{} rules.
+
+All values are in internal units.
+
+Disclaimer\+: The current rules have been verified to have certain safety and liveness properties, but they have not been validated, that is, they may not behave \char`\"{}naturally.\char`\"{} As we learn more about what is expected, these rules may evolve in the future. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a538c6e705ce794bd95ef0bc716e58fdc}\label{classlarcfm_1_1_priority_core_a538c6e705ce794bd95ef0bc716e58fdc}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!check@{check}}
+\index{check@{check}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::check (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{bool}]{mo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi,  }\item[{bool}]{mi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority over the given traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & a 3D vector representing the position vector of ownship \\
+\hline
+{\em vo} & a 3D vector representing the velocity vector of the ownship \\
+\hline
+{\em mo} & true if the ownship is managed \\
+\hline
+{\em si} & a 3D vector representing the position vector of the traffic aircraft \\
+\hline
+{\em vi} & a 3D vector representing the velocity vector of the traffic aircraft \\
+\hline
+{\em mi} & true if the traffic aircraft is managed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a94b6c61cd419df7787e797b9c41433ef}\label{classlarcfm_1_1_priority_core_a94b6c61cd419df7787e797b9c41433ef}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!EntryComponent@{EntryComponent}}
+\index{EntryComponent@{EntryComponent}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{EntryComponent()}{EntryComponent()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+Core\+::\+Entry\+Component (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & a 3D vector representing the position vector of the ownship \\
+\hline
+{\em si} & a 3D vector representing the position vector of the traffic \\
+\hline
+{\em vo} & a 3D vector representing the velocity vector of the ownship \\
+\hline
+{\em vi} & a 3D vector representing the velocity vector of the traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_ab9473fc75fac831b1ef9743331bedd0f}\label{classlarcfm_1_1_priority_core_ab9473fc75fac831b1ef9743331bedd0f}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!HorizontalDeadband@{HorizontalDeadband}}
+\index{HorizontalDeadband@{HorizontalDeadband}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{HorizontalDeadband()}{HorizontalDeadband()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Horizontal\+Deadband (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ao\+\_\+S,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ao\+\_\+V,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ai\+\_\+S,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ai\+\_\+V }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ao\+\_\+S} & a 3D vector representing the position vector of ownship \\
+\hline
+{\em ao\+\_\+V} & a 3D vector representing the velocity vector of the ownship \\
+\hline
+{\em ai\+\_\+S} & a 3D vector representing the position vector of traffic \\
+\hline
+{\em ai\+\_\+V} & a 3D vector representing the velocity vector of traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a4af5a31dccc3df732b0f5ea71df40290}\label{classlarcfm_1_1_priority_core_a4af5a31dccc3df732b0f5ea71df40290}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!HorizontalRulesApply@{HorizontalRulesApply}}
+\index{HorizontalRulesApply@{HorizontalRulesApply}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{HorizontalRulesApply()}{HorizontalRulesApply()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Horizontal\+Rules\+Apply (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ao\+\_\+V,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ai\+\_\+V }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ao\+\_\+V} & a 3D vector representing ownship aircraft velocity vector \\
+\hline
+{\em ai\+\_\+V} & a 3D vector representing traffic aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a847fe15249a3e60acb71b113bb5d8e8b}\label{classlarcfm_1_1_priority_core_a847fe15249a3e60acb71b113bb5d8e8b}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isAscending@{isAscending}}
+\index{isAscending@{isAscending}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isAscending()}{isAscending()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Ascending (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+trune if the aircraft is ascending 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_af24737ca831cf0fe0a04600a588b7ff0}\label{classlarcfm_1_1_priority_core_af24737ca831cf0fe0a04600a588b7ff0}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isCruising@{isCruising}}
+\index{isCruising@{isCruising}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isCruising()}{isCruising()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Cruising (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a844bc017cf395fbf16e26e246c75ad35}\label{classlarcfm_1_1_priority_core_a844bc017cf395fbf16e26e246c75ad35}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isDescending@{isDescending}}
+\index{isDescending@{isDescending}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isDescending()}{isDescending()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Descending (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the aircraft is descending 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_af1c0538357798e479a67e3450fd725f1}\label{classlarcfm_1_1_priority_core_af1c0538357798e479a67e3450fd725f1}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isNotAscending@{isNotAscending}}
+\index{isNotAscending@{isNotAscending}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isNotAscending()}{isNotAscending()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Not\+Ascending (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the aircraft is not descending 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a05d56a8da7ddc58a779ffc398ff6936a}\label{classlarcfm_1_1_priority_core_a05d56a8da7ddc58a779ffc398ff6936a}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isNotCruising@{isNotCruising}}
+\index{isNotCruising@{isNotCruising}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isNotCruising()}{isNotCruising()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Not\+Cruising (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a4462e50ac979faecacba41cf72c79e49}\label{classlarcfm_1_1_priority_core_a4462e50ac979faecacba41cf72c79e49}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!isNotDescending@{isNotDescending}}
+\index{isNotDescending@{isNotDescending}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{isNotDescending()}{isNotDescending()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::is\+Not\+Descending (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+return true if the aircraft is not descending 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a9c9fcd57eb53420c3c28d52827211bc3}\label{classlarcfm_1_1_priority_core_a9c9fcd57eb53420c3c28d52827211bc3}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!lateral\_only@{lateral\_only}}
+\index{lateral\_only@{lateral\_only}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{lateral\_only()}{lateral\_only()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::lateral\+\_\+only (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the ownship has priority (in the lateral dimension only) over the traffic aircraft.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & a 3D vector representing the position vector of ownship \\
+\hline
+{\em vo} & a 3D veector representing the velocity vector of the ownship \\
+\hline
+{\em si} & a 3D vector representing the position vector of the traffic aircraft \\
+\hline
+{\em vi} & a 3D vector representing the velocity vector of the traffic aircraft \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the ownship has priority over the traffic aircraft 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a37b71b67863959e315d7217e62803a89}\label{classlarcfm_1_1_priority_core_a37b71b67863959e315d7217e62803a89}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!PossiblyCruisingORAscending@{PossiblyCruisingORAscending}}
+\index{PossiblyCruisingORAscending@{PossiblyCruisingORAscending}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{PossiblyCruisingORAscending()}{PossiblyCruisingORAscending()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Possibly\+Cruising\+ORAscending (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns true if the aircraft is cruising or ascending 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_a1c59de30e7bfe5bf51ec5cef1a81ed09}\label{classlarcfm_1_1_priority_core_a1c59de30e7bfe5bf51ec5cef1a81ed09}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!PossiblyDescendingORCruising@{PossiblyDescendingORCruising}}
+\index{PossiblyDescendingORCruising@{PossiblyDescendingORCruising}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{PossiblyDescendingORCruising()}{PossiblyDescendingORCruising()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Possibly\+Descending\+ORCruising (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & a 3D vector representing an aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the aircraft is descending or cruising 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_aeae18c80fc25287f5e991859fff0fa62}\label{classlarcfm_1_1_priority_core_aeae18c80fc25287f5e991859fff0fa62}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!VelComponent@{VelComponent}}
+\index{VelComponent@{VelComponent}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{VelComponent()}{VelComponent()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+Core\+::\+Vel\+Component (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & a 3D vector representing the position vector of the ownship \\
+\hline
+{\em si} & a 3D vector representing the position vector of the traffic \\
+\hline
+{\em vo} & a 3D vector representing the velocity vector of the ownship \\
+\hline
+{\em vi} & a 3D vector representing the velocity vector of the traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity component 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_aabc224819ae05c52774763f54f24c91f}\label{classlarcfm_1_1_priority_core_aabc224819ae05c52774763f54f24c91f}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!VelComponentAt@{VelComponentAt}}
+\index{VelComponentAt@{VelComponentAt}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{VelComponentAt()}{VelComponentAt()}}
+{\footnotesize\ttfamily static double larcfm\+::\+Priority\+Core\+::\+Vel\+Component\+At (\begin{DoxyParamCaption}\item[{const double}]{t,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & t (should be tca) \\
+\hline
+{\em so} & a 3D vector representing the position vector of the ownship \\
+\hline
+{\em si} & a 3D vector representing the position vector of the traffic \\
+\hline
+{\em vo} & a 3D vector representing the velocity vector of the ownship \\
+\hline
+{\em vi} & a 3D vector representing the velocity vector of the traffic \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity component at time t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_adc5b5b392423b1beb244630a9acf0338}\label{classlarcfm_1_1_priority_core_adc5b5b392423b1beb244630a9acf0338}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!VerticalDeadband@{VerticalDeadband}}
+\index{VerticalDeadband@{VerticalDeadband}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{VerticalDeadband()}{VerticalDeadband()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Vertical\+Deadband (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ao\+\_\+V,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ai\+\_\+V }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ao\+\_\+V} & \\
+\hline
+{\em ai\+\_\+V} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_afcd4fecc30a8b489eb9efcac6b7497c1}\label{classlarcfm_1_1_priority_core_afcd4fecc30a8b489eb9efcac6b7497c1}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!VerticalRulesApply@{VerticalRulesApply}}
+\index{VerticalRulesApply@{VerticalRulesApply}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{VerticalRulesApply()}{VerticalRulesApply()}}
+{\footnotesize\ttfamily static bool larcfm\+::\+Priority\+Core\+::\+Vertical\+Rules\+Apply (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ao\+\_\+V,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{ai\+\_\+V }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ao\+\_\+V} & a 3D vector representing ownship aircraft velocity vector \\
+\hline
+{\em ai\+\_\+V} & a 3D vector representing traffic aircraft velocity vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}\label{classlarcfm_1_1_priority_core_ad4d9a17c5ea4d1d3f8649ffab553f1d3}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!CRUISE\_DEF@{CRUISE\_DEF}}
+\index{CRUISE\_DEF@{CRUISE\_DEF}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{CRUISE\_DEF}{CRUISE\_DEF}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+Core\+::\+CRUISE\+\_\+\+DEF\hspace{0.3cm}{\ttfamily [static]}}
+
+The definition of cruise. If the absolute value a vehicle\textquotesingle{}s vertical speed is within this value then, by definition, the aircraft is in cruise.
+
+This values should be \char`\"{}final\char`\"{}; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}\label{classlarcfm_1_1_priority_core_ae33fa4a8bdeb46f32cff3aeac4830d41}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!LATERAL\_DEADBAND@{LATERAL\_DEADBAND}}
+\index{LATERAL\_DEADBAND@{LATERAL\_DEADBAND}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{LATERAL\_DEADBAND}{LATERAL\_DEADBAND}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+Core\+::\+LATERAL\+\_\+\+DEADBAND\hspace{0.3cm}{\ttfamily [static]}}
+
+This is a representation of the known uncertainty in the horizontal speed. 
+
+This values should be \char`\"{}final\char`\"{}; however, since its precise values is still to be experimentally determined, it is left modifiable. \mbox{\Hypertarget{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}\label{classlarcfm_1_1_priority_core_a56ccadeebe631a55f2f129e8696ac29b}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!TC@{TC}}
+\index{TC@{TC}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{TC}{TC}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+Core\+::\+TC\hspace{0.3cm}{\ttfamily [static]}}
+
+The time \char`\"{}back\char`\"{} from the time of closest approach ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}\label{classlarcfm_1_1_priority_core_aafb11e48c4cc4985aa456fb301ca8567}} 
+\index{larcfm::PriorityCore@{larcfm::PriorityCore}!VERTICAL\_DEADBAND@{VERTICAL\_DEADBAND}}
+\index{VERTICAL\_DEADBAND@{VERTICAL\_DEADBAND}!larcfm::PriorityCore@{larcfm::PriorityCore}}
+\doxysubsubsection{\texorpdfstring{VERTICAL\_DEADBAND}{VERTICAL\_DEADBAND}}
+{\footnotesize\ttfamily double larcfm\+::\+Priority\+Core\+::\+VERTICAL\+\_\+\+DEADBAND\hspace{0.3cm}{\ttfamily [static]}}
+
+This is a representation of the known uncertainty in the vertical speed.
+
+This values should be \char`\"{}final\char`\"{}; however, since its precise values is still to be experimentally determined, it is left modifiable. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Priority\+Core.\+h\end{DoxyCompactItemize}

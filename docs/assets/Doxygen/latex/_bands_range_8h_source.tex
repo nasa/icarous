@@ -1,0 +1,51 @@
+\hypertarget{_bands_range_8h_source}{}\doxysection{Bands\+Range.\+h}
+\label{_bands_range_8h_source}\index{Modules/ACCoRD/inc/BandsRange.h@{Modules/ACCoRD/inc/BandsRange.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef BANDSRANGE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define BANDSRANGE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ColorValue.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bands_range}{BandsRange}} \{}
+\DoxyCodeLine{18 \textcolor{keyword}{public}:}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20   \textcolor{comment}{// This numeric type is used for index variables over vectors of BandsRange}}
+\DoxyCodeLine{21   \textcolor{keyword}{typedef} std::vector<BandsRange>::size\_type nat;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}    interval;}
+\DoxyCodeLine{24   BandsRegion::Region region;}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_bands_range}{BandsRange}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& i, BandsRegion::Region r);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \textcolor{comment}{/*}}
+\DoxyCodeLine{28 \textcolor{comment}{   * Transforms a list of color values into a list of BandRanges.}}
+\DoxyCodeLine{29 \textcolor{comment}{   * This function avoids adding color points where the left and right colors are the same.}}
+\DoxyCodeLine{30 \textcolor{comment}{   */}}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keywordtype}{void} makeRangesFromColorValues(std::vector<BandsRange>\& ranges, \textcolor{keyword}{const} std::vector<ColorValue>\& l, \textcolor{keywordtype}{bool} recovery);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_range_a106b1572117b4d6cb093864520692473}{index\_of}}(\textcolor{keyword}{const} std::vector<BandsRange>\& ranges, \textcolor{keywordtype}{double} val, \textcolor{keywordtype}{double} mod);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{40   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{private}:}
+\DoxyCodeLine{43   \textcolor{comment}{// NONE's when in recovery, become RECOVERY}}
+\DoxyCodeLine{44   \textcolor{keyword}{static} BandsRegion::Region resolution\_region(BandsRegion::Region region, \textcolor{keywordtype}{bool} recovery);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

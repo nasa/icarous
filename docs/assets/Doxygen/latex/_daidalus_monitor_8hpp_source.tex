@@ -54,8 +54,8 @@
 \DoxyCodeLine{50     \textcolor{keywordtype}{bool} CheckSafeToTurn(\textcolor{keywordtype}{double} position[],\textcolor{keywordtype}{double} velocity[],\textcolor{keywordtype}{double} fromHeading,\textcolor{keywordtype}{double} toHeading);}
 \DoxyCodeLine{51     \textcolor{keywordtype}{bool} CheckTurnConflict(\textcolor{keywordtype}{double} low, \textcolor{keywordtype}{double} high, \textcolor{keywordtype}{double} newHeading, \textcolor{keywordtype}{double} oldHeading);}
 \DoxyCodeLine{52 }
-\DoxyCodeLine{53     larcfm::Daidalus DAA1;   \textcolor{comment}{// DAA1 object used for regular traffic monitor}}
-\DoxyCodeLine{54     larcfm::Daidalus DAA2;   \textcolor{comment}{// DAA2 object used for stateless queries}}
+\DoxyCodeLine{53     \mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm::Daidalus}} DAA1;   \textcolor{comment}{// DAA1 object used for regular traffic monitor}}
+\DoxyCodeLine{54     \mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm::Daidalus}} DAA2;   \textcolor{comment}{// DAA2 object used for stateless queries}}
 \DoxyCodeLine{55 }
 \DoxyCodeLine{56     \textcolor{keywordtype}{int} dataSource;}
 \DoxyCodeLine{57     \textcolor{keywordtype}{bool} sensorMapping;}
@@ -69,9 +69,9 @@
 \DoxyCodeLine{65 \textcolor{keyword}{public}:}
 \DoxyCodeLine{66 }
 \DoxyCodeLine{67     \mbox{\hyperlink{class_daidalus_monitor}{DaidalusMonitor}}(std::string \mbox{\hyperlink{structcallsign}{callsign}}, std::string daaConfig);}
-\DoxyCodeLine{68     \textcolor{keywordtype}{void} MonitorTraffic(larcfm::Velocity windfrom);}
+\DoxyCodeLine{68     \textcolor{keywordtype}{void} MonitorTraffic(\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm::Velocity}} windfrom);}
 \DoxyCodeLine{69     std::string GetAlerter(\textcolor{keywordtype}{object}\& intruder);}
-\DoxyCodeLine{70     \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} larcfm::Position pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{70     \textcolor{keywordtype}{bool} CheckPositionFeasibility(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm::Position}} pos,\textcolor{keyword}{const} \textcolor{keywordtype}{double} speed);}
 \DoxyCodeLine{71     \textcolor{keywordtype}{void} UpdateParameters(std::string daaParameters);}
 \DoxyCodeLine{72     \textcolor{keywordtype}{int} GetTrafficAlerts(\textcolor{keywordtype}{int} index,std::string\& trafficID,\textcolor{keywordtype}{int}\& alertLevel);}
 \DoxyCodeLine{73     bands\_t GetTrackBands(\textcolor{keywordtype}{void});}

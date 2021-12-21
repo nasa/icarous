@@ -1,0 +1,335 @@
+\hypertarget{classlarcfm_1_1_error_log}{}\doxysection{larcfm\+::Error\+Log Class Reference}
+\label{classlarcfm_1_1_error_log}\index{larcfm::ErrorLog@{larcfm::ErrorLog}}
+Inheritance diagram for larcfm\+::Error\+Log\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_error_log}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_error_log_a52c069adc02675512f1bc5fd91f88112}{Error\+Log}} (const std\+::string \&name)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_error_log_af504400f0b70b9dc72b25b3bcbee756a}{set\+Fail\+Fast}} (bool ff)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_error_log_ae02b52274d9f93c636a59c37e85537e3}{set\+Console\+Output}} (bool console)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_error_log_ad49c8672cc28f870ffac87384cbee7c7}{add\+Error}} (const std\+::string \&msg)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_error_log_a663c798f36f7ea17fa4832c4586d5a56}{add\+Warning}} (const std\+::string \&msg)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_error_log_ab0e70e72e5d06c9317b3c9e4e229c315}{add\+Reporter}} (\mbox{\hyperlink{classlarcfm_1_1_error_reporter}{Error\+Reporter}} \&reporter)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_a97ab1f60ef01339e70fde17740871efc}{is\+Positive}} (const std\+::string \&method, double val)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_a4764c00063e787f240c30e3c3694f38e}{is\+Non\+Negative}} (const std\+::string \&method, double val)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_a95e405c1c5763e72c46cc0fe9ee3892c}{is\+Non\+Positive}} (const std\+::string \&method, double val)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_ae121c7a1a3269ae1190013aeb26235a1}{is\+Less\+Than}} (const std\+::string \&method, double val, double thr)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_ac63b34d184845a2aa3d3b371c7cc01d7}{is\+Between}} (const std\+::string \&method, double val, double lb, double ub)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{get\+Message\+No\+Clear}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a18f1e018038180d51ddd4e577f0e308e}\label{classlarcfm_1_1_error_log_a18f1e018038180d51ddd4e577f0e308e}} 
+void {\bfseries set\+Name} (const std\+::string \&logname)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_error_log_af4817187ebbff96c6044cca3fa52d840}{purge}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_error_log_a69bf7233d808c55043b1ac15ae74abd3}{set\+Size\+Limit}} (int sz)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a9361be6d91ee00ac19498986fa07b315}\label{classlarcfm_1_1_error_log_a9361be6d91ee00ac19498986fa07b315}} 
+std\+::string {\bfseries name}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a8a902e2e0354989b742f06ddd6752355}\label{classlarcfm_1_1_error_log_a8a902e2e0354989b742f06ddd6752355}} 
+std\+::string {\bfseries message}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ab8131bb7358e4728b1110fc27343e894}\label{classlarcfm_1_1_error_log_ab8131bb7358e4728b1110fc27343e894}} 
+bool {\bfseries has\+\_\+error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a0c91e1213a9bcfee8d6af203d43203e9}\label{classlarcfm_1_1_error_log_a0c91e1213a9bcfee8d6af203d43203e9}} 
+bool {\bfseries fail\+\_\+fast}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a981067aa75bc5462479467b99a293cf7}\label{classlarcfm_1_1_error_log_a981067aa75bc5462479467b99a293cf7}} 
+bool {\bfseries console\+\_\+out}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a7af1310df4dcb563e1c408e29788e8fa}\label{classlarcfm_1_1_error_log_a7af1310df4dcb563e1c408e29788e8fa}} 
+int {\bfseries local\+\_\+purge\+\_\+flag}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_aa6d745e9b46628e4820ba7237c5ff9a8}\label{classlarcfm_1_1_error_log_aa6d745e9b46628e4820ba7237c5ff9a8}} 
+int {\bfseries size}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ab088a399f18d136bb8dd06b05d9a5966}\label{classlarcfm_1_1_error_log_ab088a399f18d136bb8dd06b05d9a5966}} 
+static int {\bfseries global\+\_\+purge\+\_\+flag} = 0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a6150ce30e9806b395843fa3eccc7a262}\label{classlarcfm_1_1_error_log_a6150ce30e9806b395843fa3eccc7a262}} 
+static int {\bfseries limit} = 25
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a52c069adc02675512f1bc5fd91f88112}\label{classlarcfm_1_1_error_log_a52c069adc02675512f1bc5fd91f88112}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!ErrorLog@{ErrorLog}}
+\index{ErrorLog@{ErrorLog}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{ErrorLog()}{ErrorLog()}}
+{\footnotesize\ttfamily larcfm\+::\+Error\+Log\+::\+Error\+Log (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Construct a new \mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} object. Every message includes the name of this error log. 
+\begin{DoxyParams}{Parameters}
+{\em name} & the name of this error log \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ad49c8672cc28f870ffac87384cbee7c7}\label{classlarcfm_1_1_error_log_ad49c8672cc28f870ffac87384cbee7c7}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!addError@{addError}}
+\index{addError@{addError}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{addError()}{addError()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::add\+Error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})}
+
+Indicate that the given error has occurred. 
+\begin{DoxyParams}{Parameters}
+{\em msg} & the error message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ab0e70e72e5d06c9317b3c9e4e229c315}\label{classlarcfm_1_1_error_log_ab0e70e72e5d06c9317b3c9e4e229c315}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!addReporter@{addReporter}}
+\index{addReporter@{addReporter}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{addReporter()}{addReporter()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::add\+Reporter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_error_reporter}{Error\+Reporter}} \&}]{reporter }\end{DoxyParamCaption})}
+
+Add all the errors and warnings from the given \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{Error\+Reporter}} into the current \mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}}. The given \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{Error\+Reporter}}\textquotesingle{}s status (as indicated by the \mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{has\+Error()}} and \mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{has\+Message()}} messages) is always clear at the end of this method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em reporter} & the \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{Error\+Reporter}} to take messages from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a663c798f36f7ea17fa4832c4586d5a56}\label{classlarcfm_1_1_error_log_a663c798f36f7ea17fa4832c4586d5a56}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!addWarning@{addWarning}}
+\index{addWarning@{addWarning}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{addWarning()}{addWarning()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::add\+Warning (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})}
+
+Indicate that the given warning has occurred. 
+\begin{DoxyParams}{Parameters}
+{\em msg} & the error message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}\label{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily string larcfm\+::\+Error\+Log\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}\label{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily string larcfm\+::\+Error\+Log\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}\label{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}\label{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_ac63b34d184845a2aa3d3b371c7cc01d7}\label{classlarcfm_1_1_error_log_ac63b34d184845a2aa3d3b371c7cc01d7}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!isBetween@{isBetween}}
+\index{isBetween@{isBetween}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{isBetween()}{isBetween()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::is\+Between (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{method,  }\item[{double}]{val,  }\item[{double}]{lb,  }\item[{double}]{ub }\end{DoxyParamCaption})}
+
+Checks if a value is between lb and ub. Otherwise, adds an error message and returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & name of method \\
+\hline
+{\em val} & value \\
+\hline
+{\em lb} & lower bound \\
+\hline
+{\em ub} & upper bound \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value is between upper and lower bound
+\end{DoxyReturn}
+Checks if a value is between lb and ub. Otherwise, adds an error message and returns false. \mbox{\Hypertarget{classlarcfm_1_1_error_log_ae121c7a1a3269ae1190013aeb26235a1}\label{classlarcfm_1_1_error_log_ae121c7a1a3269ae1190013aeb26235a1}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!isLessThan@{isLessThan}}
+\index{isLessThan@{isLessThan}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{isLessThan()}{isLessThan()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::is\+Less\+Than (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{method,  }\item[{double}]{val,  }\item[{double}]{thr }\end{DoxyParamCaption})}
+
+Checks if a value is less than value in internal units. Otherwise, adds an error message and returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & name of method \\
+\hline
+{\em val} & value \#1 \\
+\hline
+{\em thr} & value \#2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value \#1 is less than value \#2
+\end{DoxyReturn}
+Checks if a value is less than value in internal units. Otherwise, adds an error message and returns false. \mbox{\Hypertarget{classlarcfm_1_1_error_log_a4764c00063e787f240c30e3c3694f38e}\label{classlarcfm_1_1_error_log_a4764c00063e787f240c30e3c3694f38e}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!isNonNegative@{isNonNegative}}
+\index{isNonNegative@{isNonNegative}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{isNonNegative()}{isNonNegative()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::is\+Non\+Negative (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{method,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Checks if a value is non negative and, in that case, returns true. Otherwise, adds an error message and returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & name of method \\
+\hline
+{\em val} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value is non-\/negative
+\end{DoxyReturn}
+Checks if a value is non negative and, in that case, returns true. Otherwise, adds an error message and returns false. \mbox{\Hypertarget{classlarcfm_1_1_error_log_a95e405c1c5763e72c46cc0fe9ee3892c}\label{classlarcfm_1_1_error_log_a95e405c1c5763e72c46cc0fe9ee3892c}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!isNonPositive@{isNonPositive}}
+\index{isNonPositive@{isNonPositive}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{isNonPositive()}{isNonPositive()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::is\+Non\+Positive (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{method,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Checks if a value is non positive and, in that case, returns true. Otherwise, adds an error message and returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & name of method \\
+\hline
+{\em val} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value is non-\/positive
+\end{DoxyReturn}
+Checks if a value is non positive and, in that case, returns true. Otherwise, adds an error message and returns false. \mbox{\Hypertarget{classlarcfm_1_1_error_log_a97ab1f60ef01339e70fde17740871efc}\label{classlarcfm_1_1_error_log_a97ab1f60ef01339e70fde17740871efc}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!isPositive@{isPositive}}
+\index{isPositive@{isPositive}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{isPositive()}{isPositive()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Error\+Log\+::is\+Positive (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{method,  }\item[{double}]{val }\end{DoxyParamCaption})}
+
+Checks if a value is positive and, in that case, returns true. Otherwise, adds an error message and returns false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & name of method \\
+\hline
+{\em val} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if value is positive
+\end{DoxyReturn}
+Checks if a value is positive and, in that case, returns true. Otherwise, adds an error message and returns false. \mbox{\Hypertarget{classlarcfm_1_1_error_log_af4817187ebbff96c6044cca3fa52d840}\label{classlarcfm_1_1_error_log_af4817187ebbff96c6044cca3fa52d840}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!purge@{purge}}
+\index{purge@{purge}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{purge()}{purge()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::purge (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set a flag that causes all instances to clear their message buffers prior to the next add operation (Note\+: Java also has an explicit copy constructor). Messages will be preserved if only \mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{get\+Message\+No\+Clear()}} is called. \mbox{\Hypertarget{classlarcfm_1_1_error_log_ae02b52274d9f93c636a59c37e85537e3}\label{classlarcfm_1_1_error_log_ae02b52274d9f93c636a59c37e85537e3}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!setConsoleOutput@{setConsoleOutput}}
+\index{setConsoleOutput@{setConsoleOutput}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{setConsoleOutput()}{setConsoleOutput()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::set\+Console\+Output (\begin{DoxyParamCaption}\item[{bool}]{console }\end{DoxyParamCaption})}
+
+If console output is set to true, then every error message and warning is output to the console.
+
+
+\begin{DoxyParams}{Parameters}
+{\em console} & true, if output should go to console. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_af504400f0b70b9dc72b25b3bcbee756a}\label{classlarcfm_1_1_error_log_af504400f0b70b9dc72b25b3bcbee756a}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!setFailFast@{setFailFast}}
+\index{setFailFast@{setFailFast}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{setFailFast()}{setFailFast()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::set\+Fail\+Fast (\begin{DoxyParamCaption}\item[{bool}]{ff }\end{DoxyParamCaption})}
+
+If fail fast is true, then when an error is added, the program will terminate. 
+\begin{DoxyParams}{Parameters}
+{\em ff} & true indicates that the program should terminate when an error is added. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_error_log_a69bf7233d808c55043b1ac15ae74abd3}\label{classlarcfm_1_1_error_log_a69bf7233d808c55043b1ac15ae74abd3}} 
+\index{larcfm::ErrorLog@{larcfm::ErrorLog}!setSizeLimit@{setSizeLimit}}
+\index{setSizeLimit@{setSizeLimit}!larcfm::ErrorLog@{larcfm::ErrorLog}}
+\doxysubsubsection{\texorpdfstring{setSizeLimit()}{setSizeLimit()}}
+{\footnotesize\ttfamily void larcfm\+::\+Error\+Log\+::set\+Size\+Limit (\begin{DoxyParamCaption}\item[{int}]{sz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Set this maximum number of messages that can be held in any given \mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} 
+\begin{DoxyParams}{Parameters}
+{\em sz} & number of messages to store per log \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Error\+Log.\+h\item 
+Modules/\+ACCo\+RD/src/Error\+Log.\+cpp\end{DoxyCompactItemize}

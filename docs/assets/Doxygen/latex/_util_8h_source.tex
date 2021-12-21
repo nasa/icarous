@@ -1,0 +1,264 @@
+\hypertarget{_util_8h_source}{}\doxysection{Util.\+h}
+\label{_util_8h_source}\index{Modules/ACCoRD/inc/Util.h@{Modules/ACCoRD/inc/Util.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Util.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov), Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Utility functions.}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{9 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef UTIL\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define UTIL\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#if defined(\_MSC\_VER) }\textcolor{comment}{/* ********** MSC++ *************** */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <float.h>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}stdint.h"{}} \textcolor{comment}{// you may need to download this header file to use with MS Visual Studio}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{typedef} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} INT64FM;}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#ifndef M\_PI}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\# define M\_PI 3.141592653589793}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{34 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} Pi  = M\_PI;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} lnan[2]=\{0xffffffff, 0x7fffffff\};}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define NaN *( double* )lnan}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define PINFINITY std::numeric\_limits<double>::infinity()}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define NINFINITY -\/std::numeric\_limits<double>::infinity()}}
+\DoxyCodeLine{40 \textcolor{comment}{//\#define MAXDOUBLE numeric\_limits<double>::max()}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define MAXDOUBLE DBL\_MAX}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define MAXINTEGER std::numeric\_limits<int>::max();}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define ISNAN \_isnan}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define ISINF !\_finite}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{// this is a "{}signaling NaN"{} that may throw a fp exception, but this is implementation dependent (and the flag can be set by other libraries).  In general, don't use this.}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define SIGNaN std::numeric\_limits<double>::signaling\_NaN()}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define CONSTEXPR constexpr}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#else }\textcolor{comment}{/* ********** GCC *************** */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#include <inttypes.h>}}
+\DoxyCodeLine{54 \textcolor{keyword}{typedef} int64\_t INT64FM;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#define NaN std::numeric\_limits<double>::quiet\_NaN()}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define PINFINITY std::numeric\_limits<double>::infinity()}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define NINFINITY -\/std::numeric\_limits<double>::infinity()}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define MAXDOUBLE std::numeric\_limits<double>::max()}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define ISNAN std::isnan}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define ISINF std::isinf}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{// this is a "{}signaling NaN"{} that may throw a fp exception, but this is implementation dependent (and the flag can be set by other libraries).  In general, don't use this.}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define SIGNaN std::numeric\_limits<double>::signaling\_NaN()}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define CONSTEXPR }}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ************************* */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define ISFINITE(d) (!ISNAN(d) \&\& !ISINF(d))}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define ISPINF(d) (ISINF(d) \&\& d > 0)}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define ISNINF(d) (ISINF(d) \&\& d < 0)}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#if defined(\_MSC\_VER)}}
+\DoxyCodeLine{77 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION13 = 16348;}
+\DoxyCodeLine{78 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION5 = 1ULL << 40;}
+\DoxyCodeLine{79 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION7 = 1ULL << 34;}
+\DoxyCodeLine{80 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION9 = 1ULL << 27;}
+\DoxyCodeLine{81 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION\_DEFAULT = PRECISION13;}
+\DoxyCodeLine{82 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM HIGH\_BIT = 0x8000000000000000ULL;}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\# else}}
+\DoxyCodeLine{84 \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} Pi  = M\_PI;}
+\DoxyCodeLine{85 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION13 = 16348;}
+\DoxyCodeLine{86 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION5 = 1ULL << 40; \textcolor{comment}{// UINT64\_C(1) << 40; //1LLU << 40;}}
+\DoxyCodeLine{87 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION7 = 1LLU << 34;}
+\DoxyCodeLine{88 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION9 = 1LLU << 27;}
+\DoxyCodeLine{89 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM PRECISION\_DEFAULT = PRECISION13;}
+\DoxyCodeLine{90 \textcolor{keyword}{static} \textcolor{keyword}{const} INT64FM HIGH\_BIT = 0x8000000000000000LLU;}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{comment}{// M\_PI = 3.1415926535897931}}
+\DoxyCodeLine{94 \textcolor{comment}{// Java = 3.141592653589793}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{97 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_util}{Util}} \{}
+\DoxyCodeLine{98 \textcolor{keyword}{public}:}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{108     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a6c85ce2687e3b0756d09e25dc0a4ca6a}{almost\_less}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{119     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a6c85ce2687e3b0756d09e25dc0a4ca6a}{almost\_less}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, INT64FM maxUlps);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{129     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_ac58d2039f25fe2ac02c554c346b515ed}{almost\_greater}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{140     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_ac58d2039f25fe2ac02c554c346b515ed}{almost\_greater}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, INT64FM maxUlps);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{151     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_aee0d4d038b435aeec6408869d1ffb826}{almost\_geq}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, INT64FM maxUlps);}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{161     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_aee0d4d038b435aeec6408869d1ffb826}{almost\_geq}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{172     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_abe2265047d9043f3ac44d3747e8c1e56}{almost\_leq}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, INT64FM maxUlps);}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{182     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_abe2265047d9043f3ac44d3747e8c1e56}{almost\_leq}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{216     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}{almost\_equals}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, INT64FM maxUlps);}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{224     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}{almost\_equals}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 }
+\DoxyCodeLine{237     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a1ab0960625fefe8e33a215019c87135c}{within\_epsilon}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} epsilon);}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{246     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a1ab0960625fefe8e33a215019c87135c}{within\_epsilon}}(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} epsilon);}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248 }
+\DoxyCodeLine{256     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_aff13dc4fdc87fc154d006ad85bdc7f46}{discretizeDir}}(\textcolor{keywordtype}{double} voz, \textcolor{keywordtype}{double} nvoz, \textcolor{keywordtype}{double} discreteUnits);}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{263     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a8a21a4f52cbfce0b696a4ca5f5bee11b}{sq}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{265     \textcolor{keyword}{static} INT64FM \mbox{\hyperlink{classlarcfm_1_1_util_ac6198e6580f41bd74007149ac877e660}{llabs}}(\textcolor{keyword}{const} INT64FM x);}
+\DoxyCodeLine{271     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a2772af0dc8a38cb0688d591ecf5e5709}{sqrt\_safe}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273     \textcolor{comment}{//  /**}}
+\DoxyCodeLine{274     \textcolor{comment}{//   * Fast inverse square root approximation, as presented in https://en.wikipedia.org/wiki/Fast\_inverse\_square\_root}}
+\DoxyCodeLine{275     \textcolor{comment}{//   */}}
+\DoxyCodeLine{276     \textcolor{comment}{//  static double Q\_rsqrt(const double number);}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{284     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_adea0bb95db5ee056ebe08ce471488a90}{atan2\_safe}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{289     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a14b53f54f0171f6669e3abca21455ceb}{asin\_safe}}(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{295     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_aca839349f1f1f3c9a36c6a6ccafde0a8}{acos\_safe}}(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{303     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_aeaca41cc20bd593e15ff315b19a50518}{discr}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c);}
+\DoxyCodeLine{312     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a1ea3d717bd97668873dae589341e6a1b}{root}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{321     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a038550309ea0232328ebbd2263f83785}{root2b}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{330     \textcolor{keyword}{static} \textcolor{keywordtype}{int}    \mbox{\hyperlink{classlarcfm_1_1_util_a09cf32d4c046c7d7c9f72c5e09fccd81}{sign}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{337     \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_util_aa42e3c90f234d97f4a70699c98bebac8}{signTriple}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{338 }
+\DoxyCodeLine{344     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double}\& \mbox{\hyperlink{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}{min}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{double}\& y);}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{float}\& \mbox{\hyperlink{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}{min}}(\textcolor{keyword}{const} \textcolor{keywordtype}{float}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{float}\& y);}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \mbox{\hyperlink{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}{min}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& y);}
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{long}\& \mbox{\hyperlink{classlarcfm_1_1_util_a971ea4992375501b0597a3fcc1d39aae}{min}}(\textcolor{keyword}{const} \textcolor{keywordtype}{long}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{long}\& y);}
+\DoxyCodeLine{351 }
+\DoxyCodeLine{357     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double}\& \mbox{\hyperlink{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}{max}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{double}\& y);}
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{float}\& \mbox{\hyperlink{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}{max}}(\textcolor{keyword}{const} \textcolor{keywordtype}{float}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{float}\& y);}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& \mbox{\hyperlink{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}{max}}(\textcolor{keyword}{const} \textcolor{keywordtype}{int}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{int}\& y);}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{long}\& \mbox{\hyperlink{classlarcfm_1_1_util_ac5c6496a953fba273d9a223a334c8d63}{max}}(\textcolor{keyword}{const} \textcolor{keywordtype}{long}\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{long}\& y);}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{372     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a001d867ad4596b71c563c1764e6d2248}{modulo}}(\textcolor{keywordtype}{double} val, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}});}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{382     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a334a512e70ad879d672fa1261c48de0e}{safe\_modulo}}(\textcolor{keywordtype}{double} val, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}});}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{394     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a54cd33b77244807ee83460803720d14c}{to\_pi}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{404     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_ac52f23096443f641a34251869366a7a3}{to\_360}}(\textcolor{keywordtype}{double} deg);}
+\DoxyCodeLine{405 }
+\DoxyCodeLine{417     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a3d9b5c15ae483e12909b1c0a924f9513}{to\_2pi}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{428     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a9acde405b87081e41e899b277afdf2a3}{to\_pi2\_cont}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{429 }
+\DoxyCodeLine{438     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a78bbb8e1517f402aa35d7655ccfa381e}{to\_180}}(\textcolor{keywordtype}{double} deg);}
+\DoxyCodeLine{439 }
+\DoxyCodeLine{440 }
+\DoxyCodeLine{447     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_aa207168d37c54d02fcc93b94ead5299a}{less\_or\_equal}}(std::string s1, std::string s2);}
+\DoxyCodeLine{448 }
+\DoxyCodeLine{458     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a61b224d34153ed9c6cf50fbf47fc3007}{clockwise}}(\textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{double} beta);}
+\DoxyCodeLine{459 }
+\DoxyCodeLine{466     \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_util_a6349e43f3121173f79ed861bb6e62c11}{turnDir}}(\textcolor{keywordtype}{double} initTrack, \textcolor{keywordtype}{double} goalTrack);}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 }
+\DoxyCodeLine{478     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}{turnDelta}}(\textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{double} beta);}
+\DoxyCodeLine{479 }
+\DoxyCodeLine{480 }
+\DoxyCodeLine{489     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a1eb058d709230c185c4318a19490b2bd}{signedTurnDelta}}(\textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{double} beta);}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491 }
+\DoxyCodeLine{501     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}{turnDelta}}(\textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{double} beta, \textcolor{keywordtype}{bool} turnRight);}
+\DoxyCodeLine{502 }
+\DoxyCodeLine{512     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a7541259dca1f0143086a0db9b1d37f54}{turnDelta}}(\textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{double} beta, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} is\_double(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{515 }
+\DoxyCodeLine{521     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_util_a3356a84c93936628c4dd11fb1d825b18}{is\_boolean}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{522 }
+\DoxyCodeLine{530     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a1cb644b1c8727f365ad4d23147eb2dc8}{parse\_double}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{531 }
+\DoxyCodeLine{535     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_a0cead3262f51fcb55aca712e4e24b2af}{decimalDegrees}}(\textcolor{keyword}{const} std::string\& degMinSec);}
+\DoxyCodeLine{536 }
+\DoxyCodeLine{537     \textcolor{comment}{/* Reads in a clock string and converts it to seconds.  If clock is true, then format is hh:mm:ss}}
+\DoxyCodeLine{538 \textcolor{comment}{     * Otherwise, string must be a single decimal number}}
+\DoxyCodeLine{539 \textcolor{comment}{     *}}
+\DoxyCodeLine{540 \textcolor{comment}{     */}}
+\DoxyCodeLine{547     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_util_aced8fdea449125a5edf97782c8a269b9}{parse\_time}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{548 }
+\DoxyCodeLine{557     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_util_a39f85ba7e70be9046b7cbcb3cd58ab84}{hoursMinutesSeconds}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{558 }
+\DoxyCodeLine{565     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_util_ab8f7d6eaa31ea68ed833f3b1807528ae}{mod}}(\textcolor{keywordtype}{int} x, \textcolor{keywordtype}{int} y);}
+\DoxyCodeLine{566 }
+\DoxyCodeLine{567 }
+\DoxyCodeLine{568 \};\textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{569 }
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571 }
+\DoxyCodeLine{573 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{574 \textcolor{keyword}{inline} std::string \mbox{\hyperlink{namespacelarcfm_acc797124406004656002df49a1abcd86}{to\_string}} (\textcolor{keyword}{const} T\& t) \{}
+\DoxyCodeLine{575     std::stringstream ss;}
+\DoxyCodeLine{576     ss << t;}
+\DoxyCodeLine{577     \textcolor{keywordflow}{return} ss.str();}
+\DoxyCodeLine{578 \}}
+\DoxyCodeLine{579 }
+\DoxyCodeLine{581 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{582 \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a3734dc860834a3d4dabdd89168190993}{remove}}(T a[], \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} size) \{}
+\DoxyCodeLine{583     \textcolor{keywordflow}{while} (i < size -\/ 1) \{}
+\DoxyCodeLine{584         a[i] = a[i+1];}
+\DoxyCodeLine{585         i++;}
+\DoxyCodeLine{586     \}}
+\DoxyCodeLine{587 \}}
+\DoxyCodeLine{588 }
+\DoxyCodeLine{589 }
+\DoxyCodeLine{590 \textcolor{comment}{// deprecated functions:}}
+\DoxyCodeLine{591 }
+\DoxyCodeLine{595 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a546d9e8b36597c9be672ebc5b43a7b0c}{sq}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{599 INT64FM \mbox{\hyperlink{namespacelarcfm_ade6ccf1fb1c7aa8430991b9ef50c8690}{llabs}}(\textcolor{keyword}{const} INT64FM x);}
+\DoxyCodeLine{603 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_af284f1acd02d5320f02469b8245b1417}{sqrt\_safe}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{607 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a3fe10dc60c0e1f0fee52755b995cb11b}{atan2\_safe}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} y, \textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{611 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a48d37b765f6cba922d8a30e7f802a55b}{asin\_safe}}(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{615 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_ac4e3373b544011eeb577edbcc55731d4}{acos\_safe}}(\textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{619 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a973e3ef92ddf5ba0fbca25d4dcc203aa}{discr}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c);}
+\DoxyCodeLine{623 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_ad23da8916d55d1fe18d8208c37d96838}{root}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{627 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_abab1313984ee0ac0b9d93783700ff33e}{root2b}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} a, \textcolor{keyword}{const} \textcolor{keywordtype}{double} b, \textcolor{keyword}{const} \textcolor{keywordtype}{double} c, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{631 \textcolor{keywordtype}{int}    \mbox{\hyperlink{namespacelarcfm_a430f7a07d1606fd6f33433406d1f6c32}{sign}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x);}
+\DoxyCodeLine{632 }
+\DoxyCodeLine{643 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a4294aded9b08415e57cd166fc283da18}{to\_pi}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{644 }
+\DoxyCodeLine{654 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a4b447606c906edec429c257ba9b24e0a}{to\_360}}(\textcolor{keywordtype}{double} deg);}
+\DoxyCodeLine{655 }
+\DoxyCodeLine{666 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a931df59398d98503c2f2b31e335f5b4a}{to\_2pi}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{667 }
+\DoxyCodeLine{678 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_ae51d5e52ff4f07e51cff18b8bac63ce4}{to\_pi2\_cont}}(\textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{679 }
+\DoxyCodeLine{689 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a4eafad96fd7f9b4614d8be66a900dbe9}{to\_180}}(\textcolor{keywordtype}{double} deg);}
+\DoxyCodeLine{690 }
+\DoxyCodeLine{691 \}}
+\DoxyCodeLine{692 }
+\DoxyCodeLine{693 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* UTIL\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

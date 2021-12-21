@@ -13,13 +13,13 @@ Inheritance diagram for Traffic\+Monitor\+:\begin{figure}[H]
 virtual int {\bfseries Input\+Intruder\+Data} (const \mbox{\hyperlink{structobject}{object}} obj)
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_a5c2fbed6e4be858f8acc498d75a27dae}\label{class_traffic_monitor_a5c2fbed6e4be858f8acc498d75a27dae}} 
-virtual void {\bfseries Input\+Ownship\+Data} (const larcfm\+::\+Position pos, const larcfm\+::\+Velocity vel, double time, double sig\+Pos\mbox{[}6\mbox{]}, double sig\+Vel\mbox{[}6\mbox{]})
+virtual void {\bfseries Input\+Ownship\+Data} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} vel, double time, double sig\+Pos\mbox{[}6\mbox{]}, double sig\+Vel\mbox{[}6\mbox{]})
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_a085bc09041250af142b02d4d346e4a46}\label{class_traffic_monitor_a085bc09041250af142b02d4d346e4a46}} 
-virtual void {\bfseries Monitor\+Traffic} (larcfm\+::\+Velocity windfrom)=0
+virtual void {\bfseries Monitor\+Traffic} (\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} windfrom)=0
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_a42be21fc28c0dcf865ae1876b6a0959a}\label{class_traffic_monitor_a42be21fc28c0dcf865ae1876b6a0959a}} 
-virtual bool {\bfseries Check\+Position\+Feasibility} (const larcfm\+::\+Position pos, const double speed)=0
+virtual bool {\bfseries Check\+Position\+Feasibility} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} pos, const double speed)=0
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_a4d858ececfda6089c9aca65c5a5785ac}\label{class_traffic_monitor_a4d858ececfda6089c9aca65c5a5785ac}} 
 virtual void {\bfseries Update\+Parameters} (std\+::string params)=0
@@ -46,10 +46,10 @@ virtual bands\+\_\+t {\bfseries Get\+Vertical\+Speed\+Bands} (void)=0
 std\+::map$<$ std\+::string, \mbox{\hyperlink{structobject}{object}} $>$ {\bfseries traffic\+List}
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_aad810fa3877be8784f238b6115bcdd11}\label{class_traffic_monitor_aad810fa3877be8784f238b6115bcdd11}} 
-larcfm\+::\+Position {\bfseries position}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries position}
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_acc18d8629d255edc26968e5f24469806}\label{class_traffic_monitor_acc18d8629d255edc26968e5f24469806}} 
-larcfm\+::\+Velocity {\bfseries velocity}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries velocity}
 \item 
 \mbox{\Hypertarget{class_traffic_monitor_a99c35567713cae90e23f779a61aaf46c}\label{class_traffic_monitor_a99c35567713cae90e23f779a61aaf46c}} 
 double {\bfseries elapsed\+Time}

@@ -1,0 +1,143 @@
+\hypertarget{_units_8h_source}{}\doxysection{Units.\+h}
+\label{_units_8h_source}\index{Modules/ACCoRD/inc/Units.h@{Modules/ACCoRD/inc/Units.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Units.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Conversion to internal units: meters, seconds, radians.}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef UNITS\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define UNITS\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{//  double \_FormalATM\_m();}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{26 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a27146eb08968d5325ae8dd5add91ca40}{\_FormalATM\_gn}}();}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{29 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a67c39386e2f7683028d288f13aa1a1de}{\_FormalATM\_P0}}();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{346 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_units}{Units}} \{}
+\DoxyCodeLine{347 \textcolor{keyword}{public}:}
+\DoxyCodeLine{348 }
+\DoxyCodeLine{350     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_ac44f7395b79e3b95e8c7ee7d0d583085}{unspecified}};}
+\DoxyCodeLine{352     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a5677a40fe3685f3910153360bcc8c316}{unitless}};}
+\DoxyCodeLine{354     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \textcolor{keyword}{internal};}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{357     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a6e686f06eb2bfea7d965c97fd0de3eef}{m}};}
+\DoxyCodeLine{359     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a4b7bd37cdbd3a10dd1c0c3a4ac3913e7}{km}};}
+\DoxyCodeLine{361     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a84a95dc1eea0956629edc8bfbe51e474}{nmi}};}
+\DoxyCodeLine{363     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a57fb0b42e74eff87fea62226d2c4018b}{NM}};}
+\DoxyCodeLine{365     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a1b9a806b6ba11ccde3a26a8818a9fafe}{foot}};}
+\DoxyCodeLine{367     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_afb9b2cf35749737585efea8866e955bd}{ft}};}
+\DoxyCodeLine{369     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a4f5fc17b241057f6597267de9c7fff30}{mm}};}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{372     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a2715c92744f171ac559cfc34666bbd68}{meter2}};}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{375     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}};}
+\DoxyCodeLine{377     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a7d07bb6429eaac570401262a185cbd88}{sec}};}
+\DoxyCodeLine{379     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_afed46c17a8280f7917b1a077f6e45bcd}{min}};}
+\DoxyCodeLine{381     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a94f47b552859c673fd991fb6dc8e3fc9}{hour}};}
+\DoxyCodeLine{383     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_afda99bc5832602c5c1834138e30a5a4d}{day}};}
+\DoxyCodeLine{385     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a330ef0745768d563be9b24dc6d18f6a6}{ms}};}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{388     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_abc7e6a70799715191ecbc2dd8ad22d3d}{rad}};}
+\DoxyCodeLine{390     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_ae55aa2ca6f98e562382db8aa5f2f9713}{deg}};}
+\DoxyCodeLine{392     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a7bfe65c858d91f26727e324a780962b2}{degree}};}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{395     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a0217219988003ff26f58d2dec08cbd58}{kg}};}
+\DoxyCodeLine{397     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a34bdd330d1bd34b4e590870c4036f981}{pound\_mass}};}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{400     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_adfe97ce2da288bb7c3bce665e0a1ad74}{mps}};}
+\DoxyCodeLine{401     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} meter\_per\_second;}
+\DoxyCodeLine{403     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a8677dca3d2a13170a364ad4a7fdd557a}{kph}};}
+\DoxyCodeLine{404     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} kilometer\_per\_hour;}
+\DoxyCodeLine{406     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a6be2329a0b180a691f34b62d20985aa2}{knot}};}
+\DoxyCodeLine{407     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} kn;}
+\DoxyCodeLine{408     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} kts;}
+\DoxyCodeLine{410     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a27923cb24219022ab4bdca52a1f7ad80}{fpm}};}
+\DoxyCodeLine{412     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_aae8d816c763dec913cc3e7fab9bede2a}{foot\_per\_second}};}
+\DoxyCodeLine{414     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a393dde40676366ec59fc918d1c9442eb}{nautical\_mile\_per\_second}};}
+\DoxyCodeLine{416     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_ac4db6eed8db7b2d7d4ad3240c3ec88c4}{mph}};}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} degreeC;}
+\DoxyCodeLine{419     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} degreeF;}
+\DoxyCodeLine{420     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} K;}
+\DoxyCodeLine{421     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} degreeK;}
+\DoxyCodeLine{422     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} degreeR;}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425     }
+\DoxyCodeLine{444     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_aa2bb8b0caabbeeddf2ac551368e33d01}{gn}};}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} G;}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{449     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a5eb002589020f5f3980b91045fc534ce}{meter\_per\_second2}};}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{452     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a068ba7724efde14295ee9e02d06dc6b5}{newton}};}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{455     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_ab5b3683e4f221e2a17b6e82cb4661c3a}{pascal}};}
+\DoxyCodeLine{457     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a2891ee74aa30eb65f1f8e3d0b6f76090}{Pa}};}
+\DoxyCodeLine{463     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a7e9fe90b66bfbe5652f316a89c4d22a8}{P0}};}
+\DoxyCodeLine{465     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a31f1bd36f28a58d2e8a4724cf3fc4509}{atm}};}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467 }
+\DoxyCodeLine{469     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{to}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} symbol, \textcolor{keyword}{const} \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{471     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_aac2f400e7a0ee3098f8500245efdd886}{to}}(\textcolor{keyword}{const} std::string\& symbol, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{473     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{from}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} symbol, \textcolor{keyword}{const} \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{475     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{from}}(\textcolor{keyword}{const} std::string\& units, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{476     \textcolor{keyword}{static} \textcolor{keywordtype}{double} fromInternal(\textcolor{keyword}{const} std::string\& defaultUnits, \textcolor{keyword}{const} std::string\& units, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{477 }
+\DoxyCodeLine{479     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_a644e7c072ae8fd236e374f09099a8b15}{getFactor}}(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{483     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_units_a9bffebe3e8c201ad3cc0c0fca1995d5e}{isUnit}}(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{484 }
+\DoxyCodeLine{492     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_units_a068af7834d86557e874cd4f7518e186c}{isCompatible}}(\textcolor{keyword}{const} std::string\& unit1, \textcolor{keyword}{const} std::string\& unit2);}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{495     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}}(\textcolor{keyword}{const} std::string\& symbol, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{496 }
+\DoxyCodeLine{498     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_a67a9e982c26a3e258dfbe5d3c6309e4b}{strX}}(\textcolor{keyword}{const} std::string\& symbol, \textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{501     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}}(\textcolor{keyword}{const} std::string\& symbol, \textcolor{keywordtype}{double} value, \textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{502 }
+\DoxyCodeLine{510     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_aabca9596e3e076b7b0c365084db737ed}{clean}}(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{511 }
+\DoxyCodeLine{512 \textcolor{keyword}{private}:}
+\DoxyCodeLine{518     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_a815c8cadf6b82128b62c65b412c84698}{cleanOnly}}(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{519 \textcolor{keyword}{public}:}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{521     \textcolor{keyword}{static} \textcolor{keywordtype}{double} parse(\textcolor{keyword}{const} std::string\& defaultUnitsFrom, \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}}, \textcolor{keywordtype}{double} default\_val);}
+\DoxyCodeLine{522 }
+\DoxyCodeLine{523     \textcolor{keyword}{static} \textcolor{keywordtype}{double} parse(\textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}});}
+\DoxyCodeLine{524 }
+\DoxyCodeLine{533     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_units_ae2aad0eb13c89bbb39313677fe916461}{parse}}(\textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}}, \textcolor{keywordtype}{double} default\_value);}
+\DoxyCodeLine{534 }
+\DoxyCodeLine{535     \textcolor{keyword}{static} \textcolor{keywordtype}{double} parse(\textcolor{keyword}{const} std::string\&, \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_units_a2ea6a60a4b915c207856ccf23715a81b}{str}});}
+\DoxyCodeLine{536 }
+\DoxyCodeLine{544     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_units_a0c72f247b1d1d6f6f2e6b049cd717e28}{parseUnits}}(\textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_units_a81874c1487331677c012127639222f91}{s}});}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546 }
+\DoxyCodeLine{547 }
+\DoxyCodeLine{551     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string \mbox{\hyperlink{classlarcfm_1_1_units_ae290960c0e417898135eb55463fedcfb}{canonical}}(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{552 }
+\DoxyCodeLine{553 \};}
+\DoxyCodeLine{554 }
+\DoxyCodeLine{555 \}}
+\DoxyCodeLine{556 }
+\DoxyCodeLine{557 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* UNITS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

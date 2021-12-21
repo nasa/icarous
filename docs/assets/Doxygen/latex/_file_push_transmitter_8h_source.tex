@@ -1,0 +1,48 @@
+\hypertarget{_file_push_transmitter_8h_source}{}\doxysection{File\+Push\+Transmitter.\+h}
+\label{_file_push_transmitter_8h_source}\index{Modules/ACCoRD/inc/FilePushTransmitter.h@{Modules/ACCoRD/inc/FilePushTransmitter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef FILEPUSHTRANSMITTER\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define FILEPUSHTRANSMITTER\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Transmitter.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter}{FilePushTransmitter}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{private}:}
+\DoxyCodeLine{18     std::string filename;}
+\DoxyCodeLine{19     std::string keyword;}
+\DoxyCodeLine{20     std::string outfile;}
+\DoxyCodeLine{21     std::string lockfile;}
+\DoxyCodeLine{22     \textcolor{keywordtype}{bool} running;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} exists(\textcolor{keyword}{const} std::string\& name);}
+\DoxyCodeLine{25     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} createNewFile(\textcolor{keyword}{const} std::string\& name);}
+\DoxyCodeLine{26     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} deleteFile(\textcolor{keyword}{const} std::string\& name);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{public}:}
+\DoxyCodeLine{29     \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter}{FilePushTransmitter}}();}
+\DoxyCodeLine{30     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter}{\string~FilePushTransmitter}}();}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_abb5aa3fb231e06ff4e5abc94673212ce}{publish}}(\textcolor{keyword}{const} std::string\& address, \textcolor{keyword}{const} std::string\& keyword);}
+\DoxyCodeLine{33     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a9ed3c39ea104b2d6a337be3ab4430ae5}{unpublish}}(\textcolor{keyword}{const} std::string\& keyword);}
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a2d68216af5476de20d17b7f1c88c199c}{update}}(\textcolor{keyword}{const} std::string\& keyword, \textcolor{keyword}{const} std::string\& data);}
+\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_ab45d0c79bfdf2f55ac501e93db7d770f}{hasSubscribers}}(\textcolor{keyword}{const} std::string\& keyword) \textcolor{keyword}{const};}
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_file_push_transmitter_a218d79191c6c8b05ad80e5cc67b54957}{shutdown}}();}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_FILEPUSHTRANSMITTER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

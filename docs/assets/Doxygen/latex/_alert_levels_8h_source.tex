@@ -1,0 +1,83 @@
+\hypertarget{_alert_levels_8h_source}{}\doxysection{Alert\+Levels.\+h}
+\label{_alert_levels_8h_source}\index{Modules/ACCoRD/inc/AlertLevels.h@{Modules/ACCoRD/inc/AlertLevels.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2017 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef ALERTLEVELS\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define ALERTLEVELS\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}AlertThresholds.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ParameterAcceptor.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{ParameterAcceptor}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{public}:}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25   std::vector<AlertThresholds> alertor\_;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \textcolor{keywordtype}{int} conflict\_level\_;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \textcolor{comment}{// This numeric type is used for index variables over vectors of AlertThresholds}}
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} std::vector<AlertThresholds>::size\_type nat;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}}();}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{\string~AlertLevels}}();}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}}\& alertor);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{46   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a96e25228aad47ee2e84618010549e88a}{WC\_SC\_228\_Thresholds}}();}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{55   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a9574c8b753156c6981ade344557783d4}{SingleBands\_WC\_SC\_228\_Thresholds}}();}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{65   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ab58b733d200ce4cbbe8164ec157bfec3}{Buffered\_WC\_SC\_228\_Thresholds}}();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{71   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ad3b78ee359478baaec329c03a9a4e59d}{SingleBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* detector,}
+\DoxyCodeLine{72           \textcolor{keywordtype}{double} alerting\_time, \textcolor{keywordtype}{double} lookahead\_time);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{77   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_afff8919fc4598d635c9d91adcb360a88}{clear}}();}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{82   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a6ee7f45e9a154679d41ab859b81a5a2c}{mostSevereAlertLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{87   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a25a285176e394d7a79c15f77844d6cec}{firstGuidanceLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{92   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a7fb3dea518fd6cdb9a12e70e80774820}{lastGuidanceLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{97   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ab713101de543a41722e3998221838fb2}{conflictAlertLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{102   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a8effd402aa15bd1831b3f2298d731552}{detectorRef}}(\textcolor{keywordtype}{int} alert\_level) \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{107   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a3e7356620b5bb5b435fd69ea0227b5d4}{conflictDetectorRef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ae84698b013e2ab737a9f16a3c1be7b9d}{setConflictAlertLevel}}(\textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_add494e9973eda4c1b66790506679fa37}{setLevel}}(\textcolor{keywordtype}{int} level, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& thresholds);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a961f9fc26985e5d77a1c2ed6e4eaf3ef}{addLevel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}}\& thresholds);}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127   \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{AlertThresholds}} \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a5b01e487ea0c20cd73dddbbc8cdf6fa7}{getLevel}}(\textcolor{keywordtype}{int} level) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{134   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ae0afa6824857740bc024117fa0c2ebeb}{copy}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{AlertLevels}}\& alertor);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{137   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{138   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{141   std::string toPVS(\textcolor{keywordtype}{int} prec) \textcolor{keyword}{const};}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \};}
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,393 @@
+\hypertarget{classlarcfm_1_1_interval_set}{}\doxysection{larcfm\+::Interval\+Set Class Reference}
+\label{classlarcfm_1_1_interval_set}\index{larcfm::IntervalSet@{larcfm::IntervalSet}}
+
+
+{\ttfamily \#include $<$Interval\+Set.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}{Interval\+Set}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set_a4f70fdac1b0a7abb87b652e6683fa143}{Interval\+Set}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&l)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set_a460e547213d4b17557f52d02c0cf7dd5}{Interval\+Set}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$ \&v)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$ \mbox{\hyperlink{classlarcfm_1_1_interval_set_a6af9e66f40bfc129b662f23425d2a949}{to\+Vector}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a09d89c38e3bde61406db9b8165f8ce58}{clear}} ()
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \& \mbox{\hyperlink{classlarcfm_1_1_interval_set_a98c3d5994e34bfaf2c11a77985606a13}{get\+Interval}} (int i) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}{size}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a8e95d772d8c02588ec690754e25d669f}\label{classlarcfm_1_1_interval_set_a8e95d772d8c02588ec690754e25d669f}} 
+bool {\bfseries is\+Empty} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac3a1cdfe59eb5e5a2801c9c10599cba6}{in}} (double x) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8633c570c0d8199c2863b4dae8d7d965}{unions}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&rn)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a3266cd3515f82456d37f71cb536df8c3}{unions}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&n)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a318b53004cfbebdba3d3bf8a69c77e97}{almost\+\_\+unions}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&n, INT64\+FM max\+Ulps)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_ab622f3884095d19c305f2bc7c8bb1e20}{almost\+\_\+add}} (double l, double u)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_ae4e7d4cc1dbde7485c8f3f57cbb7b566}{almost\+\_\+add}} (double l, double u, INT64\+FM max\+Ulps)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a12c0e7185167401d7ef69099b3a7473e}{almost\+\_\+intersect}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&n)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a7b5be74595b52b8ce3ebef763f46dabd}{almost\+\_\+intersect}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&n, INT64\+FM max\+Ulps)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a435c04616496405dfd4d566823fdf791}{diff}} (const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&rn)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_af14239a8ea3824a49ef77001c91df0fe}{diff}} (const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&n)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}{remove\+Single}} (double x, double width)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_a692bdb3af8b51a6974ec96feeb01cd34}{remove\+Single}} (double x)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}{sweep\+Single}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_aecc34576aec8477c8fa57f067204b426}{sweep\+Single}} (double width)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_interval_set_acd8bb9068130d035b2c3acb648449406}{sweep\+Breaks}} (double width)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_interval_set_a8ad8fd554f7cf35c896287e7e2be1e63}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_interval_set_a22c310db9cefc9728750fdfb8ce4d9e0}{to\+String}} (const std\+::string \&unit) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \mbox{\hyperlink{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}{max\+\_\+intervals}} = 400
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a5b71752a4f17b177e2d71db65214dc37}\label{classlarcfm_1_1_interval_set_a5b71752a4f17b177e2d71db65214dc37}} 
+int {\bfseries order} (double x) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a11eb9e31a06b9174b7f5fafbd51092d8}\label{classlarcfm_1_1_interval_set_a11eb9e31a06b9174b7f5fafbd51092d8}} 
+void {\bfseries insert} (int i, const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&r)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a4d5d2998a44cc9ad63da4bc066fd7c0e}\label{classlarcfm_1_1_interval_set_a4d5d2998a44cc9ad63da4bc066fd7c0e}} 
+void {\bfseries remove} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a2d7103d0dfe78d138280c05f2b3704d8}\label{classlarcfm_1_1_interval_set_a2d7103d0dfe78d138280c05f2b3704d8}} 
+void {\bfseries remove} (int i, int len)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_adf062eb7759399383abf781c7842ff7e}\label{classlarcfm_1_1_interval_set_adf062eb7759399383abf781c7842ff7e}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries r} \mbox{[}\mbox{\hyperlink{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}{max\+\_\+intervals}}\mbox{]}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a31e20b4a9d1396b8b1e4fca23ed04b8b}\label{classlarcfm_1_1_interval_set_a31e20b4a9d1396b8b1e4fca23ed04b8b}} 
+int {\bfseries length}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_ab52ea92dd06c8c57c8ba0c007ea90023}\label{classlarcfm_1_1_interval_set_ab52ea92dd06c8c57c8ba0c007ea90023}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries empty}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} class represents a set of \char`\"{}double\char`\"{} values. Ranges of doubles are maintained as intervals (\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}). These Intervals are ordered consecutively from lowest to highest. Standard set operations of {\ttfamily in} (membership), {\ttfamily union} (set union), {\ttfamily intersect} (set intersection), and {\ttfamily diff} (set difference) are provided.
+
+Within the \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}, intervals are generally considered closed (including end-\/points), and the results off operations are closed intervals. This implies that the interval difference is between a set of closed intervals and one or more open intervals.
+
+The intervals are numbered 0 to \mbox{\hyperlink{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}{size()}}-\/1. To cycle through the intervals one may\+:
+
+
+\begin{DoxyPre}{\ttfamily 
+\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} set;
+
+for( int i = 0; i < set.size(); i++) \{
+  \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} r;
+  r = set.getInterval(i);
+  ... work with r ...
+\}
+}\end{DoxyPre}
+
+
+The current implementation does not allocate any dynamic (heap) memory. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}\label{classlarcfm_1_1_interval_set_af81849627d07e0ccb903789545403ae6}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!IntervalSet@{IntervalSet}}
+\index{IntervalSet@{IntervalSet}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{IntervalSet()}{IntervalSet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Interval\+Set\+::\+Interval\+Set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct an empty \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a4f70fdac1b0a7abb87b652e6683fa143}\label{classlarcfm_1_1_interval_set_a4f70fdac1b0a7abb87b652e6683fa143}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!IntervalSet@{IntervalSet}}
+\index{IntervalSet@{IntervalSet}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{IntervalSet()}{IntervalSet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Interval\+Set\+::\+Interval\+Set (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{l }\end{DoxyParamCaption})}
+
+Copy the \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into a new set 
+\begin{DoxyParams}{Parameters}
+{\em l} & \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} to copy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a460e547213d4b17557f52d02c0cf7dd5}\label{classlarcfm_1_1_interval_set_a460e547213d4b17557f52d02c0cf7dd5}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!IntervalSet@{IntervalSet}}
+\index{IntervalSet@{IntervalSet}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{IntervalSet()}{IntervalSet()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Interval\+Set\+::\+Interval\+Set (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$ \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Build an \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} from the given vector 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_ab622f3884095d19c305f2bc7c8bb1e20}\label{classlarcfm_1_1_interval_set_ab622f3884095d19c305f2bc7c8bb1e20}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!almost\_add@{almost\_add}}
+\index{almost\_add@{almost\_add}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{almost\_add()}{almost\_add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::almost\+\_\+add (\begin{DoxyParamCaption}\item[{double}]{l,  }\item[{double}]{u }\end{DoxyParamCaption})}
+
+Add the given interval into this set. If this interval overlaps any interval in the set, then the intervals are merged. This method uses \char`\"{}almost\char`\"{} inequalities to compute the addition.
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & lower bound of interval \\
+\hline
+{\em u} & upper bound of interval\\
+\hline
+\end{DoxyParams}
+Add the given interval into this set. If this interval overlaps any interval in the set, then the intervals are merged. This method uses \char`\"{}almost\char`\"{} inequalities to compute the addition. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_ae4e7d4cc1dbde7485c8f3f57cbb7b566}\label{classlarcfm_1_1_interval_set_ae4e7d4cc1dbde7485c8f3f57cbb7b566}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!almost\_add@{almost\_add}}
+\index{almost\_add@{almost\_add}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{almost\_add()}{almost\_add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::almost\+\_\+add (\begin{DoxyParamCaption}\item[{double}]{l,  }\item[{double}]{u,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})}
+
+Add the given interval into this set. If this interval overlaps any interval in the set, then the intervals are merged. This method uses \char`\"{}almost\char`\"{} inequalities to compute the addition.
+
+
+\begin{DoxyParams}{Parameters}
+{\em l} & lower bound of interval \\
+\hline
+{\em u} & upper bound of interval \\
+\hline
+{\em max\+Ulps} & units of least precision\\
+\hline
+\end{DoxyParams}
+Add the given interval into this set. If this interval overlaps any interval in the set, then the intervals are merged. This method uses \char`\"{}almost\char`\"{} inequalities to compute the addition. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a12c0e7185167401d7ef69099b3a7473e}\label{classlarcfm_1_1_interval_set_a12c0e7185167401d7ef69099b3a7473e}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!almost\_intersect@{almost\_intersect}}
+\index{almost\_intersect@{almost\_intersect}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{almost\_intersect()}{almost\_intersect()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::almost\+\_\+intersect (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{n }\end{DoxyParamCaption})}
+
+Intersect the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. Set n is unmodified. This method uses \char`\"{}almost\char`\"{} inequalities to compute the intersection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & set\\
+\hline
+\end{DoxyParams}
+Intersect the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. Set n is unmodified. This method uses \char`\"{}almost\char`\"{} inequalities to compute the intersection. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a7b5be74595b52b8ce3ebef763f46dabd}\label{classlarcfm_1_1_interval_set_a7b5be74595b52b8ce3ebef763f46dabd}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!almost\_intersect@{almost\_intersect}}
+\index{almost\_intersect@{almost\_intersect}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{almost\_intersect()}{almost\_intersect()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::almost\+\_\+intersect (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{n,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})}
+
+Intersect the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. Set n is unmodified. This method uses \char`\"{}almost\char`\"{} inequalities to compute the intersection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & set \\
+\hline
+{\em max\+Ulps} & units of least precision\\
+\hline
+\end{DoxyParams}
+Intersect the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. Set n is unmodified. This method uses \char`\"{}almost\char`\"{} inequalities to compute the intersection. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a318b53004cfbebdba3d3bf8a69c77e97}\label{classlarcfm_1_1_interval_set_a318b53004cfbebdba3d3bf8a69c77e97}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!almost\_unions@{almost\_unions}}
+\index{almost\_unions@{almost\_unions}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{almost\_unions()}{almost\_unions()}}
+{\footnotesize\ttfamily void Interval\+Set\+::almost\+\_\+unions (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{n,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption})}
+
+Union the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. Set n is unmodified. This method uses \char`\"{}almost\char`\"{} inequalities to compute the intersection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a09d89c38e3bde61406db9b8165f8ce58}\label{classlarcfm_1_1_interval_set_a09d89c38e3bde61406db9b8165f8ce58}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!clear@{clear}}
+\index{clear@{clear}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void Interval\+Set\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Empty this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a435c04616496405dfd4d566823fdf791}\label{classlarcfm_1_1_interval_set_a435c04616496405dfd4d566823fdf791}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!diff@{diff}}
+\index{diff@{diff}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{diff()}{diff()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::diff (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{rn }\end{DoxyParamCaption})}
+
+Remove the given open interval from the given set of closed intervals. Note\+: the semantics of this method mean that \mbox{[}1,2\mbox{]} -\/ (1,2) = \mbox{[}1,1\mbox{]} and \mbox{[}2,2\mbox{]}. To get rid of the extraneous singletons use methods like \mbox{\hyperlink{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}{remove\+Single()}} or \mbox{\hyperlink{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}{sweep\+Single()}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em rn} & interval \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_af14239a8ea3824a49ef77001c91df0fe}\label{classlarcfm_1_1_interval_set_af14239a8ea3824a49ef77001c91df0fe}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!diff@{diff}}
+\index{diff@{diff}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{diff()}{diff()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::diff (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{n }\end{DoxyParamCaption})}
+
+Perform a set difference between these two Interval\+Sets. The parameter is interpreted as a set of open intervals.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & set \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a98c3d5994e34bfaf2c11a77985606a13}\label{classlarcfm_1_1_interval_set_a98c3d5994e34bfaf2c11a77985606a13}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!getInterval@{getInterval}}
+\index{getInterval@{getInterval}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{getInterval()}{getInterval()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \& Interval\+Set\+::get\+Interval (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Return \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} i from this set. The Intervals are numbered 0..\mbox{\hyperlink{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}{size()}}-\/1. If i is invalid, then an empty interval is returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the index of the desired \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_ac3a1cdfe59eb5e5a2801c9c10599cba6}\label{classlarcfm_1_1_interval_set_ac3a1cdfe59eb5e5a2801c9c10599cba6}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!in@{in}}
+\index{in@{in}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{in()}{in()}}
+{\footnotesize\ttfamily bool Interval\+Set\+::in (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption}) const}
+
+Is the given value a member of this set?
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if in set 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a692bdb3af8b51a6974ec96feeb01cd34}\label{classlarcfm_1_1_interval_set_a692bdb3af8b51a6974ec96feeb01cd34}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!removeSingle@{removeSingle}}
+\index{removeSingle@{removeSingle}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{removeSingle()}{removeSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::remove\+Single (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})}
+
+Remove the single-\/valued interval x from this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. If x is not a single-\/valued interval, then this method does nothing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}\label{classlarcfm_1_1_interval_set_ac0e75790a63ec4b1b33f3f0e208c00d9}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!removeSingle@{removeSingle}}
+\index{removeSingle@{removeSingle}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{removeSingle()}{removeSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::remove\+Single (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{width }\end{DoxyParamCaption})}
+
+Remove the single-\/valued interval x from this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. If x is not a single-\/valued interval (of width or less), then this method does nothing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value \\
+\hline
+{\em width} & space around value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}\label{classlarcfm_1_1_interval_set_abbe3e787fda6e93212e0f655b647de00}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!size@{size}}
+\index{size@{size}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int Interval\+Set\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the total number of intervals \begin{DoxyReturn}{Returns}
+number of intervals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_acd8bb9068130d035b2c3acb648449406}\label{classlarcfm_1_1_interval_set_acd8bb9068130d035b2c3acb648449406}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!sweepBreaks@{sweepBreaks}}
+\index{sweepBreaks@{sweepBreaks}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{sweepBreaks()}{sweepBreaks()}}
+{\footnotesize\ttfamily void Interval\+Set\+::sweep\+Breaks (\begin{DoxyParamCaption}\item[{double}]{width }\end{DoxyParamCaption})}
+
+Remove all breaks of less than width from this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & max open space to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}\label{classlarcfm_1_1_interval_set_affd4dcc8e57af4576185060332e3ca6e}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!sweepSingle@{sweepSingle}}
+\index{sweepSingle@{sweepSingle}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{sweepSingle()}{sweepSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::sweep\+Single (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Remove all the single-\/valued intervals from this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_aecc34576aec8477c8fa57f067204b426}\label{classlarcfm_1_1_interval_set_aecc34576aec8477c8fa57f067204b426}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!sweepSingle@{sweepSingle}}
+\index{sweepSingle@{sweepSingle}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{sweepSingle()}{sweepSingle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::sweep\+Single (\begin{DoxyParamCaption}\item[{double}]{width }\end{DoxyParamCaption})}
+
+Remove all the single-\/valued intervals (of width or less) from this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & space around single values \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a8ad8fd554f7cf35c896287e7e2be1e63}\label{classlarcfm_1_1_interval_set_a8ad8fd554f7cf35c896287e7e2be1e63}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!toString@{toString}}
+\index{toString@{toString}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string Interval\+Set\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Print the contents of this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a22c310db9cefc9728750fdfb8ce4d9e0}\label{classlarcfm_1_1_interval_set_a22c310db9cefc9728750fdfb8ce4d9e0}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!toString@{toString}}
+\index{toString@{toString}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string Interval\+Set\+::to\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption}) const}
+
+Print the contents of this \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a6af9e66f40bfc129b662f23425d2a949}\label{classlarcfm_1_1_interval_set_a6af9e66f40bfc129b662f23425d2a949}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!toVector@{toVector}}
+\index{toVector@{toVector}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{toVector()}{toVector()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} $>$ Interval\+Set\+::to\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return this set as a vector \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a8633c570c0d8199c2863b4dae8d7d965}\label{classlarcfm_1_1_interval_set_a8633c570c0d8199c2863b4dae8d7d965}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!unions@{unions}}
+\index{unions@{unions}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{unions()}{unions()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::unions (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \&}]{rn }\end{DoxyParamCaption})}
+
+Merge the given interval into this set. If this interval overlaps any interval in the set, then the intervals are merged. \mbox{\Hypertarget{classlarcfm_1_1_interval_set_a3266cd3515f82456d37f71cb536df8c3}\label{classlarcfm_1_1_interval_set_a3266cd3515f82456d37f71cb536df8c3}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!unions@{unions}}
+\index{unions@{unions}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{unions()}{unions()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Interval\+Set\+::unions (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} \&}]{n }\end{DoxyParamCaption})}
+
+Union the given \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} into the current \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}}. \mbox{\hyperlink{classlarcfm_1_1_interval_set}{Interval\+Set}} n is unmodified. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}\label{classlarcfm_1_1_interval_set_a7e8997cfa897173a1066885e08af6e20}} 
+\index{larcfm::IntervalSet@{larcfm::IntervalSet}!max\_intervals@{max\_intervals}}
+\index{max\_intervals@{max\_intervals}!larcfm::IntervalSet@{larcfm::IntervalSet}}
+\doxysubsubsection{\texorpdfstring{max\_intervals}{max\_intervals}}
+{\footnotesize\ttfamily const int larcfm\+::\+Interval\+Set\+::max\+\_\+intervals = 400\hspace{0.3cm}{\ttfamily [static]}}
+
+The maximum number of intervals 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Interval\+Set.\+h\item 
+Modules/\+ACCo\+RD/src/Interval\+Set.\+cpp\end{DoxyCompactItemize}

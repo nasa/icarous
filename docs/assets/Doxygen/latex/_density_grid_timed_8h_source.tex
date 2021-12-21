@@ -1,0 +1,57 @@
+\hypertarget{_density_grid_timed_8h_source}{}\doxysection{Density\+Grid\+Timed.\+h}
+\label{_density_grid_timed_8h_source}\index{Modules/ACCoRD/inc/DensityGridTimed.h@{Modules/ACCoRD/inc/DensityGridTimed.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DENSITYGRIDTIMED\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DENSITYGRIDTIMED\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}DensityGrid.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_density_grid}{DensityGrid}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keyword}{protected}:}
+\DoxyCodeLine{25     \textcolor{keywordtype}{double} lookaheadEndTime;}
+\DoxyCodeLine{26     \textcolor{keywordtype}{double} gs;}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{public}:}
+\DoxyCodeLine{30     \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{BoundingRectangle}}\& b, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& start, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& end, \textcolor{keywordtype}{double} startT, \textcolor{keywordtype}{double} groundSpeed, \textcolor{keywordtype}{int} buffer, \textcolor{keywordtype}{double} sqSz, \textcolor{keywordtype}{bool} ll);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{int} buffer, \textcolor{keywordtype}{double} squareSize);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{\string~DensityGridTimed}}();}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} getLookaheadEndTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{keywordtype}{void} setLookaheadEndTime(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keywordtype}{int} x, \textcolor{keywordtype}{int} y, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keyword}{const} std::pair<int,int>\& xy, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}}\& pii) \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keywordtype}{double} getGroundSpeed() \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \};}
+\DoxyCodeLine{49 \}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{51 }
+
+\end{DoxyCode}

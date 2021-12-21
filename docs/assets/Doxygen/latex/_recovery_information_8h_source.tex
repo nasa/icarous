@@ -1,0 +1,58 @@
+\hypertarget{_recovery_information_8h_source}{}\doxysection{Recovery\+Information.\+h}
+\label{_recovery_information_8h_source}\index{Modules/ACCoRD/inc/RecoveryInformation.h@{Modules/ACCoRD/inc/RecoveryInformation.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef RECOVERYINFORMATION\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define RECOVERYINFORMATION\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16   \textcolor{keyword}{private}:}
+\DoxyCodeLine{17   \textcolor{keywordtype}{double} time\_;  \textcolor{comment}{// Time to recovery in seconds. NaN: recovery no computed, Negative Infinity: recovery not available}}
+\DoxyCodeLine{18   \textcolor{keywordtype}{int} nfactor\_;  \textcolor{comment}{// Number of times the recovery volume was reduced}}
+\DoxyCodeLine{19    \textcolor{keywordtype}{double} horizontal\_distance\_; \textcolor{comment}{// Minimum horizontal distance in internal units, i.e., [m]}}
+\DoxyCodeLine{20    \textcolor{keywordtype}{double} vertical\_distance\_; \textcolor{comment}{// Minimum vertical distance in internal units, i.e., [m]}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22   \textcolor{keyword}{public}:}
+\DoxyCodeLine{23    \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}}(\textcolor{keywordtype}{double} t, \textcolor{keywordtype}{int} nfactor, \textcolor{keywordtype}{double} hs, \textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{28   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a76623fcdcef68a3003e3a39b9d4e25fa}{nFactor}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{34   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a6b03e92d12ba5964fc70d340e83d207a}{timeToRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_ae671f4e20bc44bc51642ee5f2cb5fd14}{timeToToRecovery}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a0df3ef240b3c073f24d67f1ed7251a7c}{recoveryHorizontalDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{49    \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a0df3ef240b3c073f24d67f1ed7251a7c}{recoveryHorizontalDistance}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54    \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a1c6afd75d700adaeda045c4cdddb0892}{recoveryVerticalDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{59    \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a1c6afd75d700adaeda045c4cdddb0892}{recoveryVerticalDistance}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{64    \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a44fc108bdefe24ea75e3bd504a147532}{recoveryBandsComputed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69    \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_recovery_information_af614e762c77ff004e1e0e5f85c5611e6}{recoveryBandsSaturated}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71    std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73    std::string toStringUnits(\textcolor{keyword}{const} std::string\& hunits,\textcolor{keyword}{const} std::string\& vunits) \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75    std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{76 \};}
+\DoxyCodeLine{77 \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

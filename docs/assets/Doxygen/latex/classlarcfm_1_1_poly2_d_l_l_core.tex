@@ -1,0 +1,111 @@
+\hypertarget{classlarcfm_1_1_poly2_d_l_l_core}{}\doxysection{larcfm\+::Poly2\+DLLCore Class Reference}
+\label{classlarcfm_1_1_poly2_d_l_l_core}\index{larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}}
+
+
+{\ttfamily \#include $<$Poly2\+DLLCore.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::pair$<$ bool, bool $>$ \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_ada61f46692896ea088295888c4c9d886}{upshot\+\_\+crosses\+\_\+edge}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_a9ae497a74adddba80412b93ead9b0c7b}\label{classlarcfm_1_1_poly2_d_l_l_core_a9ae497a74adddba80412b93ead9b0c7b}} 
+static bool {\bfseries edges\+\_\+crossed\+\_\+upto} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s, int i, int j)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_a80bcde0b933a88419a755d64ab2cce37}\label{classlarcfm_1_1_poly2_d_l_l_core_a80bcde0b933a88419a755d64ab2cce37}} 
+static std\+::pair$<$ int, bool $>$ {\bfseries number\+\_\+upshot\+\_\+crosses\+\_\+upto} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_a5fc4a8ca886eee594b07aaebc15dd56c}\label{classlarcfm_1_1_poly2_d_l_l_core_a5fc4a8ca886eee594b07aaebc15dd56c}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ {\bfseries fix\+\_\+polygon} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll, double BUFF)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_ad7c5d2fcff627bf815320cb6a6389b9d}\label{classlarcfm_1_1_poly2_d_l_l_core_ad7c5d2fcff627bf815320cb6a6389b9d}} 
+static bool {\bfseries spherical\+\_\+inside\+\_\+prelim} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_a7c4fb2a2d7818bc0610b599f639c3e3a}{spherical\+\_\+inside}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll, double BUFF)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_a7758b45fa0facd68afab607b11befe4d}\label{classlarcfm_1_1_poly2_d_l_l_core_a7758b45fa0facd68afab607b11befe4d}} 
+static bool {\bfseries spherical\+\_\+outside\+\_\+prelim} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_poly2_d_l_l_core_aa3056bec6603c03fea5f5d07f0ab0b75}{spherical\+\_\+outside}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll, double BUFF)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. This implementation assumes a simply connected polygon. The Polygon is otherwise quite general allowing multiply connected regions. The class provides a containment test for points and uses bounding rectangles to speed up computations. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_a7c4fb2a2d7818bc0610b599f639c3e3a}\label{classlarcfm_1_1_poly2_d_l_l_core_a7c4fb2a2d7818bc0610b599f639c3e3a}} 
+\index{larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}!spherical\_inside@{spherical\_inside}}
+\index{spherical\_inside@{spherical\_inside}!larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}}
+\doxysubsubsection{\texorpdfstring{spherical\_inside()}{spherical\_inside()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly2\+DLLCore\+::spherical\+\_\+inside (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{ll,  }\item[{double}]{BUFF }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Main function 
+\begin{DoxyParams}{Parameters}
+{\em p} & list of points (polygon) \\
+\hline
+{\em ll} & point \\
+\hline
+{\em BUFF} & buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if inside
+\end{DoxyReturn}
+Main function 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+{\em ll} & \\
+\hline
+{\em BUFF} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_aa3056bec6603c03fea5f5d07f0ab0b75}\label{classlarcfm_1_1_poly2_d_l_l_core_aa3056bec6603c03fea5f5d07f0ab0b75}} 
+\index{larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}!spherical\_outside@{spherical\_outside}}
+\index{spherical\_outside@{spherical\_outside}!larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}}
+\doxysubsubsection{\texorpdfstring{spherical\_outside()}{spherical\_outside()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly2\+DLLCore\+::spherical\+\_\+outside (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{ll,  }\item[{double}]{BUFF }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Main function 
+\begin{DoxyParams}{Parameters}
+{\em p} & list of points (polygon) \\
+\hline
+{\em ll} & point \\
+\hline
+{\em BUFF} & buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if inside
+\end{DoxyReturn}
+Main function 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+{\em ll} & \\
+\hline
+{\em BUFF} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly2_d_l_l_core_ada61f46692896ea088295888c4c9d886}\label{classlarcfm_1_1_poly2_d_l_l_core_ada61f46692896ea088295888c4c9d886}} 
+\index{larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}!upshot\_crosses\_edge@{upshot\_crosses\_edge}}
+\index{upshot\_crosses\_edge@{upshot\_crosses\_edge}!larcfm::Poly2DLLCore@{larcfm::Poly2DLLCore}}
+\doxysubsubsection{\texorpdfstring{upshot\_crosses\_edge()}{upshot\_crosses\_edge()}}
+{\footnotesize\ttfamily std\+::pair$<$ bool, bool $>$ larcfm\+::\+Poly2\+DLLCore\+::upshot\+\_\+crosses\+\_\+edge (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{ll,  }\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a (answer,is\+Invalid) pair \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Poly2\+DLLCore.\+h\item 
+Modules/\+ACCo\+RD/src/Poly2\+DLLCore.\+cpp\end{DoxyCompactItemize}

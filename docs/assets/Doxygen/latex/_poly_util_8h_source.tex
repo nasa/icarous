@@ -1,0 +1,126 @@
+\hypertarget{_poly_util_8h_source}{}\doxysection{Poly\+Util.\+h}
+\label{_poly_util_8h_source}\index{Modules/ACCoRD/inc/PolyUtil.h@{Modules/ACCoRD/inc/PolyUtil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef POLYUTIL\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define POLYUTIL\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}SimplePoly.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly_util}{PolyUtil}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25     \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_poly_util_1_1_s_i_comparator}{SIComparator}} \{}
+\DoxyCodeLine{26     \textcolor{keyword}{public}:}
+\DoxyCodeLine{27         \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator ()(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Position,double,double>}}\& o1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Position,double,double>}}\& o2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{28 \textcolor{keyword}{        }\{}
+\DoxyCodeLine{29             \textcolor{keywordflow}{if} (\mbox{\hyperlink{classlarcfm_1_1_util_a7d3bdd158b8197651fd30516ebf27f54}{Util::almost\_equals}}(o1.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}}, o2.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}})) \{}
+\DoxyCodeLine{30                     \textcolor{keywordflow}{return} o1.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}} <  o2.\mbox{\hyperlink{classlarcfm_1_1_triple_a8dcaad2522530d754fe2a17dcb1508f8}{third}};}
+\DoxyCodeLine{31             \}}
+\DoxyCodeLine{32             \textcolor{keywordflow}{return} o1.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}} < o2.\mbox{\hyperlink{classlarcfm_1_1_triple_a7f15a9856eb78fb8e56c850d87bb72fa}{second}};}
+\DoxyCodeLine{33         \}}
+\DoxyCodeLine{34 \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{public}:}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{50 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aa3ae40f18d2f619236c80735b0b94394}{convexHull}}(\textcolor{keyword}{const} std::vector<Position>\& plist, \textcolor{keywordtype}{double} bottom, \textcolor{keywordtype}{double} top);}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aa3ae40f18d2f619236c80735b0b94394}{convexHull}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{60 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aa3ae40f18d2f619236c80735b0b94394}{convexHull}}(\textcolor{keyword}{const} std::vector<SimplePoly>\& p);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{70 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aa3ae40f18d2f619236c80735b0b94394}{convexHull}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keywordtype}{double} buffer);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{79 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_a07a474b60f7ca36b6882c22200d44a25}{pushOut}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& poly, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keywordtype}{double} buffer);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{89 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_a07a474b60f7ca36b6882c22200d44a25}{pushOut}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& poly, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} buffer);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} simplify2(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keywordtype}{double} buffer);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{99 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ac6a34367cdc8627d13052a283364b379}{simplify}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keywordtype}{double} buffer);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ac6a34367cdc8627d13052a283364b379}{simplify}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{111 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aaa4e1f201be308652ffe954645bb1297}{simplifyToSize}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keywordtype}{int} num);}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{139 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aee9b5c8f173b120d665078e9a31aaf27}{stretchOverTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& sp, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} timeBefore, \textcolor{keywordtype}{double} timeAfter);}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{152 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aee9b5c8f173b120d665078e9a31aaf27}{stretchOverTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pbase, \textcolor{keywordtype}{double} timeBefore, \textcolor{keywordtype}{double} timeAfter);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{163 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ac26ceba2a7329fa0b7c17ae586ed3b1e}{bufferedConvexHull}}(\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& p, \textcolor{keywordtype}{double} hbuff, \textcolor{keywordtype}{double} vbuff);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{172 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ac26ceba2a7329fa0b7c17ae586ed3b1e}{bufferedConvexHull}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pbase, \textcolor{keywordtype}{double} hbuff, \textcolor{keywordtype}{double} vbuff);}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{175 \textcolor{comment}{//   * This is a SLOW, APPROXIMATE test for 2D intersection between a moving polygon and a moving point.  For more accurate}}
+\DoxyCodeLine{176 \textcolor{comment}{//   * (and verified) tests for this property, see polygon functions in the ACCoRD framework, specifically classes that implement}}
+\DoxyCodeLine{177 \textcolor{comment}{//   * the DetectionPolygon interface and CDSSPolygon.}}
+\DoxyCodeLine{178 \textcolor{comment}{//   * @param so point-\/mass starting position}}
+\DoxyCodeLine{179 \textcolor{comment}{//   * @param vo point-\/mass velocity}}
+\DoxyCodeLine{180 \textcolor{comment}{//   * @param sp polygon starting position}}
+\DoxyCodeLine{181 \textcolor{comment}{//   * @param vp polygon average velocity}}
+\DoxyCodeLine{182 \textcolor{comment}{//   * @param T end time for test (relative)}}
+\DoxyCodeLine{183 \textcolor{comment}{//   * @param incr time increment for search (\&gt; 0)}}
+\DoxyCodeLine{184 \textcolor{comment}{//   * @return true if the point mass will intersect with the polygon at or before time T}}
+\DoxyCodeLine{185 \textcolor{comment}{//   */}}
+\DoxyCodeLine{186 \textcolor{comment}{//  static bool intersectsPolygon2D(const Position\& so, const Velocity\& vo, SimplePoly\& sp, const Velocity\& vp, double T, double incr);}}
+\DoxyCodeLine{187 \textcolor{comment}{//}}
+\DoxyCodeLine{188 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{189 \textcolor{comment}{//   * This is a SLOW, APPROXIMATE test for 3D intersection between a moving polygon and a moving point.  For more accurate}}
+\DoxyCodeLine{190 \textcolor{comment}{//   * (and verified) tests for this property, see polygon functions in the ACCoRD framework, specifically classes that implement}}
+\DoxyCodeLine{191 \textcolor{comment}{//   * the DetectionPolygon interface and CDSSPolygon.}}
+\DoxyCodeLine{192 \textcolor{comment}{//   * @param so point-\/mass starting position}}
+\DoxyCodeLine{193 \textcolor{comment}{//   * @param vo point-\/mass velocity}}
+\DoxyCodeLine{194 \textcolor{comment}{//   * @param sp polygon starting position}}
+\DoxyCodeLine{195 \textcolor{comment}{//   * @param vp polygon average velocity}}
+\DoxyCodeLine{196 \textcolor{comment}{//   * @param T end time for test (relative)}}
+\DoxyCodeLine{197 \textcolor{comment}{//   * @param incr time increment for search (\&gt; 0)}}
+\DoxyCodeLine{198 \textcolor{comment}{//   * @return true if the point mass will intersect with the polygon at or before time T}}
+\DoxyCodeLine{199 \textcolor{comment}{//   */}}
+\DoxyCodeLine{200 \textcolor{comment}{//  static bool intersectsPolygon(const Position\& so, const Velocity\& vo, SimplePoly\& sp, const Velocity\& vp, double T, double incr);}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{216 \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly_util_a83f9d1971914118c41af52351eefebc8}{intersectsPolygon2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& pp, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} incr);}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{229 \textcolor{comment}{//static Plan reducePlanAgainstPolys(const Plan\& p, const std::vector<PolyPath>\& paths, double incr);}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ae669470dd3d47eb9425eaa4f9d4a0292}{reducePlanAgainstPolys}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, \textcolor{keywordtype}{double} gs, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} incr,}
+\DoxyCodeLine{232         \textcolor{keywordtype}{bool} leadInsPresent, \textcolor{keyword}{const} std::vector<PolyPath>\& containment);}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_util_ae669470dd3d47eb9425eaa4f9d4a0292}{reducePlanAgainstPolys}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& pln, \textcolor{keywordtype}{double} gs, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} incr,}
+\DoxyCodeLine{235         \textcolor{keywordtype}{bool} leadInsPresent);}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{keyword}{static} std::pair<double,std::string> isPlanInConflictWx(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} start, \textcolor{keywordtype}{double} end, \textcolor{keywordtype}{double} incr);}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{keyword}{static} std::pair<double,std::string>  isPlanInConflictWx(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} incr);}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{keyword}{static} std::pair<double,std::string> isPlanInConflictWx(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} incr, \textcolor{keywordtype}{double} fromTime);}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{254 \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_poly_util_afa11804b95bebc46758be968f9c1cd92}{isPlanContained}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} incr);}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{264 \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_poly_util_aabcf515d409d1048d1a9440725bf5af6}{calculateWxExitTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, std::vector<PolyPath>\& paths, \textcolor{keywordtype}{double} incr, \textcolor{keywordtype}{double} entryTime);}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 \}; \textcolor{comment}{//class}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \}\textcolor{comment}{// namespace}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

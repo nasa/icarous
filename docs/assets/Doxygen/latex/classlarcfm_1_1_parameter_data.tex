@@ -1,0 +1,1041 @@
+\hypertarget{classlarcfm_1_1_parameter_data}{}\doxysection{larcfm\+::Parameter\+Data Class Reference}
+\label{classlarcfm_1_1_parameter_data}\index{larcfm::ParameterData@{larcfm::ParameterData}}
+
+
+{\ttfamily \#include $<$Parameter\+Data.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlarcfm_1_1_parameter_data_1_1comp__order}{comp\+\_\+order}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a3bfc08fe0dbe9a3fdb4da22911cf8b8d}{is\+Preserve\+Units}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}{set\+Preserve\+Units}} (bool v)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a00fe626af647d688e75c6f68d154de24}{is\+Unit\+Compatibility}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac39fc235232b5e8ca1fc4c37da97d318}{set\+Unit\+Compatibility}} (bool v)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a96f0725dd4a701f586675cd916ef4906}{size}} () const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a62f997d0c0c3fa5670186461a96f32f2}{get\+Key\+List}} () const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a0bb7a126195879590ebc8765bfb819c8}{get\+Key\+List\+Entry\+Order}} () const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1fb2afde922da1a06494d2831ebc4023}{get\+Key\+List\+With\+Filter}} (\mbox{\hyperlink{classlarcfm_1_1_function}{Function}}$<$ const std\+::string \&, bool $>$ \&f) const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8e1ce0c3997e20b428589f3c3c66c045}{get\+List\+Full}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac8ec76c5343ff4f06f772d590201093b}{clear}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a210c431444099589a41d65ccb294b66c}{contains}} (const std\+::string \&key) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a5dfc7180e9f14d685e992d627ae17207}\label{classlarcfm_1_1_parameter_data_a5dfc7180e9f14d685e992d627ae17207}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries match\+List} (const std\+::string \&key) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a5104c06def2af1d2fec227994222c630}{copy\+With\+Prefix}} (const std\+::string \&prefix) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a58b6658f9ddb9b183a89f82417bda698}{extract\+Prefix}} (const std\+::string \&prefix) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ad360e2eff246c16e371ec89feb5c4563}{remove\+Keys\+With\+Prefix}} (const std\+::string \&prefix) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa90f7dad213117bf362596aa2fb62dbe}{get\+String}} (const std\+::string \&key) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a56c6abaf3cd1946d8a265190b85cb31a}{get\+Value}} (const std\+::string \&key) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a4c3209d23a3c68bf35172121114ff4e3}{get\+Value}} (const std\+::string \&key, const std\+::string \&default\+Unit) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1aebd202bf4146c9977395d2681cc96e}{get\+Unit}} (const std\+::string \&key) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ae3a619ab161ebc652b4b8336025bca93}{get\+Bool}} (const std\+::string \&key) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac6cc873b26507d8d22d4d1709be671b6}{get\+Int}} (const std\+::string \&key) const
+\item 
+long \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aee2cd18c27bb63fc926ec1b3f4cada5c}{get\+Long}} (const std\+::string \&key) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}} (const std\+::string \&s)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a552810104f32ba3e7a325fadb4c0f8c6}{set}} (const std\+::string \&key, const std\+::string \&value)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_adadc623f2ea342d7e40c8adee18c4484}\label{classlarcfm_1_1_parameter_data_adadc623f2ea342d7e40c8adee18c4484}} 
+bool {\bfseries set} (const std\+::string \&key, char $\ast$value)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a07df8223397f9936b9e7dc734c71366a}{set}} (const std\+::string \&key, const char $\ast$value)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a14b43112db9b8b221eb282b55a7aab62}{set\+Bool}} (const std\+::string \&key, bool value)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a069a1a16d8bfa5ac40aeb350db1e65c4}{set\+True}} (const std\+::string \&key)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac564ad960ce308be10d33a5962b5fea4}{set\+False}} (const std\+::string \&key)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ae51fb871e461de38bff72d6f7384d7bd}{set\+Int}} (const std\+::string \&key, int value)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a53482121475cacf701114de73e4189f6}{set}} (const std\+::string \&key, double value, const std\+::string \&unit)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ab6161ff5688a20a1490aa66ac6371eb8}{set\+Internal}} (const std\+::string \&key, double value, const std\+::string \&units)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a272fb79ec924a209fa6265fcd9d80c7b}{set\+Internal}} (const std\+::string \&key, double value, const std\+::string \&units, int prec)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a76752943162f420b049831f6dfdc2bb6}{update\+Unit}} (const std\+::string \&key, const std\+::string \&unit)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa170ce27805581613f13c333eac7feb0}{update\+Comment}} (const std\+::string \&key, const std\+::string \&msg)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a27256865ea4c68c5efb7b3cc076f2eb7}{get\+Comment}} (const std\+::string \&key) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a628052a763d12736059562ff37c36017}{set\+Preserve\+Unit}} (const std\+::string \&key, double value, const std\+::string \&units)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aafe8c8177bc6564bce1ccfbb634ab6b8}{set\+Internal\+Preserve\+Unit}} (const std\+::string \&key, double value, const std\+::string \&units)
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a78978b647d0efe14b06eac413f35efd1}{unrecognized\+Parameters}} (std\+::vector$<$ std\+::string $>$ c) const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1963dfe8aa4b0c234c61e7488d80663c}{validate\+Parameters}} (std\+::vector$<$ std\+::string $>$ c)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a0c1fbebf82fccb07e1477fb13f3d1190}{list\+Copy}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p, const std\+::vector$<$ std\+::string $>$ \&plist, bool overwrite)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a17d7b5662f576b79ec2c2bccf26da902}{copy}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p, bool overwrite)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_adb8b2c0b135424e0b3bec519027bf2d7}{remove}} (const std\+::string \&key)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa96d40e22212c1eb82126b79ca4cec4f}{remove\+All}} (const std\+::vector$<$ std\+::string $>$ \&key)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a6ac1de26e7b958316c30658e250f9bb0}{to\+Parameter\+List}} (const std\+::string \&separator) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a5179126adb6e66271752aaf21d76c47a}{parse\+Parameter\+List}} (const std\+::string \&separator, std\+::string line)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8052d133749c986e11edf83a37545a62}{is\+Boolean}} (const std\+::string \&key) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a4850770972e45bcf400e6af0cedd3864}{is\+Number}} (const std\+::string \&key) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_acaf73287236cf2fa43b8e5c5e27ee30f}{is\+String}} (const std\+::string \&key) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aff40fe579b1896791a728fc5070283c1}{list\+To\+String}} (const std\+::vector$<$ std\+::string $>$ \&keys) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ab1f3f276c3a0e203ac8b87e8b5480f06}{list\+To\+String}} (const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::string \&separator) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a675298c3872f44a360dba16d63f6cd16}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a97a95b7f2c4a33b3e1e081ac624c12ea}{to\+String}} (const std\+::string \&separator) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aa7ff14288a4eea1d033b1e0b2c06ae2d}\label{classlarcfm_1_1_parameter_data_aa7ff14288a4eea1d033b1e0b2c06ae2d}} 
+bool {\bfseries equals} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pd) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a66bba0c432df9b161c1b5ba0839b9586}{diff\+String}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pd) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ad0c9c2769e7a5cdab714462bb1a706c0}{delta}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&base) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ade8be7edbdc0b6773ba6261936623219}\label{classlarcfm_1_1_parameter_data_ade8be7edbdc0b6773ba6261936623219}} 
+std\+::vector$<$ int $>$ {\bfseries get\+List\+Integer} (const std\+::string \&key) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a82d8edf0236c5c37df5bfb473f883ec9}\label{classlarcfm_1_1_parameter_data_a82d8edf0236c5c37df5bfb473f883ec9}} 
+std\+::vector$<$ double $>$ {\bfseries get\+List\+Double} (const std\+::string \&key) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_af0d4cc5462ad42f223711cfadd880655}\label{classlarcfm_1_1_parameter_data_af0d4cc5462ad42f223711cfadd880655}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries get\+List\+String} (const std\+::string \&key) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a24db15c05085dd5899e6220a87bd63a2}\label{classlarcfm_1_1_parameter_data_a24db15c05085dd5899e6220a87bd63a2}} 
+std\+::vector$<$ bool $>$ {\bfseries get\+List\+Bool} (const std\+::string \&key) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a8f26a9242c766e48a4febaefbf890d05}\label{classlarcfm_1_1_parameter_data_a8f26a9242c766e48a4febaefbf890d05}} 
+bool {\bfseries set} (const std\+::string \&key, const std\+::vector$<$ int $>$ \&list)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ae278fc077905fec0fbbbf9048f46defe}\label{classlarcfm_1_1_parameter_data_ae278fc077905fec0fbbbf9048f46defe}} 
+bool {\bfseries set} (const std\+::string \&key, const std\+::vector$<$ double $>$ \&list)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a0ea98dd04a4f9917bfe9948ca567bc09}\label{classlarcfm_1_1_parameter_data_a0ea98dd04a4f9917bfe9948ca567bc09}} 
+bool {\bfseries set} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&list)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ac167a0e481867cee02c4993c86e9f1f7}\label{classlarcfm_1_1_parameter_data_ac167a0e481867cee02c4993c86e9f1f7}} 
+bool {\bfseries set\+List\+Bool} (const std\+::string \&key, const std\+::vector$<$ bool $>$ \&list)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a44bcb2bdd0762f994740082c53197bef}{make}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a291341614b22d6b07ae61c534594851c}\label{classlarcfm_1_1_parameter_data_a291341614b22d6b07ae61c534594851c}} 
+static const std\+::string {\bfseries paren\+Pattern} = \char`\"{}\mbox{[}()\mbox{]}+\char`\"{}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_af0a72d3c65801e84487c35c526a3c510}\label{classlarcfm_1_1_parameter_data_af0a72d3c65801e84487c35c526a3c510}} 
+static const std\+::string {\bfseries default\+Entry\+Separator} = \char`\"{}?\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a0d4469e38e7b91fbb7516ee412cc104f}\label{classlarcfm_1_1_parameter_data_a0d4469e38e7b91fbb7516ee412cc104f}} 
+typedef std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}}, \mbox{\hyperlink{structlarcfm_1_1string_case_insensitive}{string\+Case\+Insensitive}} $>$ {\bfseries paramtype}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aec86252df975dca374d02cbb108d0b9a}\label{classlarcfm_1_1_parameter_data_aec86252df975dca374d02cbb108d0b9a}} 
+int {\bfseries longest\+Key} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ae2ac0cea5f1413b6c2d7953b8eb2cf49}\label{classlarcfm_1_1_parameter_data_ae2ac0cea5f1413b6c2d7953b8eb2cf49}} 
+int {\bfseries longest\+Val} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a6ac3ff65250137387729b700028fc836}{parse\+\_\+parameter\+\_\+string}} (const std\+::string \&str)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8ef86ca2396432c49cd07dafe66a7658}{put\+Param}} (const std\+::string \&key, const std\+::pair$<$ bool, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} $>$ \&entry)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ad1ee6f8955dd6b12e8ed1428a81c2a7c}\label{classlarcfm_1_1_parameter_data_ad1ee6f8955dd6b12e8ed1428a81c2a7c}} 
+bool {\bfseries put\+Param} (const std\+::string \&key, bool perform\+\_\+conversion, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} \&entry)
+\item 
+std\+::pair$<$ bool, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} $>$ \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa3d8d34366e358a6502745d31e4a8443}{parse\+\_\+parameter\+\_\+value}} (const std\+::string \&value)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a02ffb93ec0c34d40e9a0735f93e10043}\label{classlarcfm_1_1_parameter_data_a02ffb93ec0c34d40e9a0735f93e10043}} 
+static std\+::vector$<$ std\+::string $>$ {\bfseries string\+List} (const std\+::string \&instring)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a00cd7738ed91c0d39df70beb78e9ff2e}\label{classlarcfm_1_1_parameter_data_a00cd7738ed91c0d39df70beb78e9ff2e}} 
+static std\+::vector$<$ int $>$ {\bfseries int\+List} (const std\+::string \&instring)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a780db6e610c034b3b98c939332a35582}\label{classlarcfm_1_1_parameter_data_a780db6e610c034b3b98c939332a35582}} 
+static std\+::vector$<$ double $>$ {\bfseries double\+List} (const std\+::string \&instring)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a3bdd3db4795b9b92f35c75e8b15dc20d}\label{classlarcfm_1_1_parameter_data_a3bdd3db4795b9b92f35c75e8b15dc20d}} 
+static std\+::vector$<$ bool $>$ {\bfseries bool\+List} (const std\+::string \&instring)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a1919996ce8f2bcb76a7b679aac5a9d82}\label{classlarcfm_1_1_parameter_data_a1919996ce8f2bcb76a7b679aac5a9d82}} 
+bool {\bfseries preserve\+Units}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a9eef625de3c9add236862b66abac174b}\label{classlarcfm_1_1_parameter_data_a9eef625de3c9add236862b66abac174b}} 
+bool {\bfseries unit\+Compatibility}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a6d301e736756d792d6dc77b7259df0fa}\label{classlarcfm_1_1_parameter_data_a6d301e736756d792d6dc77b7259df0fa}} 
+std\+::string {\bfseries list\+Pattern\+Str}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a20bc4a7ba3deaff654b91db7567c224e}\label{classlarcfm_1_1_parameter_data_a20bc4a7ba3deaff654b91db7567c224e}} 
+paramtype {\bfseries parameters}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class stores a database of parameters. In addition, it performs various operations parameter strings, including parsing some more complicated parameter strings into various data structures.
+
+All key accesses are case insensitive, however the actual key values are stored with case information intact. Methods returning the key values (get\+Key\+List, get\+List\+Full) will reflect the capitalization scheme used for the initial assignment to a key. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ac8ec76c5343ff4f06f772d590201093b}\label{classlarcfm_1_1_parameter_data_ac8ec76c5343ff4f06f772d590201093b}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!clear@{clear}}
+\index{clear@{clear}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Removes all stored parameters. \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a210c431444099589a41d65ccb294b66c}\label{classlarcfm_1_1_parameter_data_a210c431444099589a41d65ccb294b66c}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!contains@{contains}}
+\index{contains@{contains}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::contains (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns true if the parameter key was defined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter key to check if it is in database \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if parameter is in database 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a17d7b5662f576b79ec2c2bccf26da902}\label{classlarcfm_1_1_parameter_data_a17d7b5662f576b79ec2c2bccf26da902}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!copy@{copy}}
+\index{copy@{copy}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::copy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p,  }\item[{bool}]{overwrite }\end{DoxyParamCaption})}
+
+Copy a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object into this object. That is, A.\+copy(\+B,true) means A \texorpdfstring{$<$}{<}--- B. If either units or comments are not defined in B, then the values in A are used. 
+\begin{DoxyParams}{Parameters}
+{\em p} & source \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \\
+\hline
+{\em overwrite} & if true and a key exists in both this object and p, then use p\textquotesingle{}s value, otherwise keep the original value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a5104c06def2af1d2fec227994222c630}\label{classlarcfm_1_1_parameter_data_a5104c06def2af1d2fec227994222c630}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!copyWithPrefix@{copyWithPrefix}}
+\index{copyWithPrefix@{copyWithPrefix}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{copyWithPrefix()}{copyWithPrefix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Parameter\+Data\+::copy\+With\+Prefix (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{prefix }\end{DoxyParamCaption}) const}
+
+Return a copy of this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object, with all key values being prepended with the string prefix. This is intended to create a unique \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object representing the parameters of a particular instance (of many) of an object, that can then be collected along with others into a larger \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object representing the containing object. 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & prefix to add to each key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+copy of \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} with changes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ad0c9c2769e7a5cdab714462bb1a706c0}\label{classlarcfm_1_1_parameter_data_ad0c9c2769e7a5cdab714462bb1a706c0}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!delta@{delta}}
+\index{delta@{delta}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{delta()}{delta()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Parameter\+Data\+::delta (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{base }\end{DoxyParamCaption}) const}
+
+Compare this object with a base \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object and return all parameters in this object that are different from parameters in the base object, either having different values or that are not present in the base. (Parameters that are only in the base are not included.) If the objects are the same, the result will be an empty \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object. 
+\begin{DoxyParams}{Parameters}
+{\em base} & \char`\"{}base\char`\"{} or \char`\"{}default\char`\"{} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} to compare this object to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object containing all parameters that are in this object, but not in the base, or that are in both but have different values. This return may be empty. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a66bba0c432df9b161c1b5ba0839b9586}\label{classlarcfm_1_1_parameter_data_a66bba0c432df9b161c1b5ba0839b9586}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!diffString@{diffString}}
+\index{diffString@{diffString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{diffString()}{diffString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::diff\+String (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{pd }\end{DoxyParamCaption}) const}
+
+Compare this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} with another. Return a string listing all differences in stored values between the two. 
+\begin{DoxyParams}{Parameters}
+{\em pd} & parameter database \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string listing differences, or the empty string if the contents are the same. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a58b6658f9ddb9b183a89f82417bda698}\label{classlarcfm_1_1_parameter_data_a58b6658f9ddb9b183a89f82417bda698}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!extractPrefix@{extractPrefix}}
+\index{extractPrefix@{extractPrefix}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{extractPrefix()}{extractPrefix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Parameter\+Data\+::extract\+Prefix (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{prefix }\end{DoxyParamCaption}) const}
+
+Return a copy of this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}}, with the string prefix removed from the beginning of all key values. If any key value in this object does not start with the given prefix, do not include it in the returned object. This is intended to filter out the parameters of a particular instance of a group of objects. The resulting \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object will include an empty string parameter if a key exactly matches the prefix.
+
+
+\begin{DoxyParams}{Parameters}
+{\em prefix} & prefix of each key returned \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+copy of \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} with changes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ae3a619ab161ebc652b4b8336025bca93}\label{classlarcfm_1_1_parameter_data_ae3a619ab161ebc652b4b8336025bca93}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getBool@{getBool}}
+\index{getBool@{getBool}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getBool()}{getBool()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::get\+Bool (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the Boolean value of the given parameter key. If the key is not present, or not representation of \char`\"{}true\char`\"{}, return the empty string. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean representation of parameter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a27256865ea4c68c5efb7b3cc076f2eb7}\label{classlarcfm_1_1_parameter_data_a27256865ea4c68c5efb7b3cc076f2eb7}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getComment@{getComment}}
+\index{getComment@{getComment}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getComment()}{getComment()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::get\+Comment (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Return a parameter\textquotesingle{}s comment field. 
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The comment string associated with the entry. If the entry does not exist, return the empty string. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ac6cc873b26507d8d22d4d1709be671b6}\label{classlarcfm_1_1_parameter_data_ac6cc873b26507d8d22d4d1709be671b6}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getInt@{getInt}}
+\index{getInt@{getInt}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getInt()}{getInt()}}
+{\footnotesize\ttfamily int larcfm\+::\+Parameter\+Data\+::get\+Int (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the integer value of the given parameter key in internal units. If no units were specified in the file, then the default\+Unit parameter is used. If the key is not present or if the value is not a numeral, then return 0. This value is an integer version of the double value (see the related get\+Parameter\+Value() method). If the double value is larger than an integer, behavior is undefined. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+integer representation of parameter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a62f997d0c0c3fa5670186461a96f32f2}\label{classlarcfm_1_1_parameter_data_a62f997d0c0c3fa5670186461a96f32f2}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getKeyList@{getKeyList}}
+\index{getKeyList@{getKeyList}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getKeyList()}{getKeyList()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::get\+Key\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns an array of parameter strings encountered, alphabetically ordered \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a0bb7a126195879590ebc8765bfb819c8}\label{classlarcfm_1_1_parameter_data_a0bb7a126195879590ebc8765bfb819c8}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getKeyListEntryOrder@{getKeyListEntryOrder}}
+\index{getKeyListEntryOrder@{getKeyListEntryOrder}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getKeyListEntryOrder()}{getKeyListEntryOrder()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::get\+Key\+List\+Entry\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns an array of parameter strings encountered, in the order entered \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a1fb2afde922da1a06494d2831ebc4023}\label{classlarcfm_1_1_parameter_data_a1fb2afde922da1a06494d2831ebc4023}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getKeyListWithFilter@{getKeyListWithFilter}}
+\index{getKeyListWithFilter@{getKeyListWithFilter}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getKeyListWithFilter()}{getKeyListWithFilter()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::get\+Key\+List\+With\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_function}{Function}}$<$ const std\+::string \&, bool $>$ \&}]{f }\end{DoxyParamCaption}) const}
+
+Returns a list of parameter key strings encountered that satisfy the filter. Note that this will reflect the original capitalization of the keys when they were first stored.
+
+\begin{DoxyReturn}{Returns}
+list of parameter key names 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a8e1ce0c3997e20b428589f3c3c66c045}\label{classlarcfm_1_1_parameter_data_a8e1ce0c3997e20b428589f3c3c66c045}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getListFull@{getListFull}}
+\index{getListFull@{getListFull}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getListFull()}{getListFull()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::get\+List\+Full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns an array of parameter definition strings encountered. \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aee2cd18c27bb63fc926ec1b3f4cada5c}\label{classlarcfm_1_1_parameter_data_aee2cd18c27bb63fc926ec1b3f4cada5c}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getLong@{getLong}}
+\index{getLong@{getLong}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getLong()}{getLong()}}
+{\footnotesize\ttfamily long larcfm\+::\+Parameter\+Data\+::get\+Long (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the long value of the given parameter key in internal units. If no units were specified in the file, then the default\+Unit parameter is used. If the key is not present or if the value is not a numeral, then return 0. This value is an integer version of the double value (see the related get\+Parameter\+Value() method). If the double value is larger than an long, behavior is undefined. ~\newline
+ Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+long representation of parameter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aa90f7dad213117bf362596aa2fb62dbe}\label{classlarcfm_1_1_parameter_data_aa90f7dad213117bf362596aa2fb62dbe}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getString@{getString}}
+\index{getString@{getString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getString()}{getString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::get\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the string value of the given parameter key. This may be a space-\/delimited list. If the key is not present, return the empty string. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string representation of parameter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a1aebd202bf4146c9977395d2681cc96e}\label{classlarcfm_1_1_parameter_data_a1aebd202bf4146c9977395d2681cc96e}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getUnit@{getUnit}}
+\index{getUnit@{getUnit}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getUnit()}{getUnit()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::get\+Unit (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the string representation of the specified unit of the given parameter key. If the key is not present or no unit was specified, return \char`\"{}unspecified\char`\"{}. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+units of parameter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a56c6abaf3cd1946d8a265190b85cb31a}\label{classlarcfm_1_1_parameter_data_a56c6abaf3cd1946d8a265190b85cb31a}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getValue@{getValue}}
+\index{getValue@{getValue}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getValue()}{getValue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Parameter\+Data\+::get\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns the double-\/precision value of the given parameter key in internal units. If the key is not present or if the value is not a numeral, then return 0. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+value of parameter (internal units) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a4c3209d23a3c68bf35172121114ff4e3}\label{classlarcfm_1_1_parameter_data_a4c3209d23a3c68bf35172121114ff4e3}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!getValue@{getValue}}
+\index{getValue@{getValue}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{getValue()}{getValue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Parameter\+Data\+::get\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const std\+::string \&}]{default\+Unit }\end{DoxyParamCaption}) const}
+
+Returns the double-\/precision value of the given parameter key in internal units. Only in the case when units were not specified in the database, will the default\+Unit parameter be used. If the key is not present or if the value is not a numeral, then return 0. Parameter keys may be case-\/sensitive.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em default\+Unit} & units to use if no units are in database \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+value of parameter (internal units) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a8052d133749c986e11edf83a37545a62}\label{classlarcfm_1_1_parameter_data_a8052d133749c986e11edf83a37545a62}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!isBoolean@{isBoolean}}
+\index{isBoolean@{isBoolean}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{isBoolean()}{isBoolean()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::is\+Boolean (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns true if the stored value for key is likely a boolean 
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if key exists and the value is true/false/t/f, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a4850770972e45bcf400e6af0cedd3864}\label{classlarcfm_1_1_parameter_data_a4850770972e45bcf400e6af0cedd3864}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!isNumber@{isNumber}}
+\index{isNumber@{isNumber}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{isNumber()}{isNumber()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::is\+Number (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns true if the stored value for key is likely a number 
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if key exists and the value is a parsable number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a3bfc08fe0dbe9a3fdb4da22911cf8b8d}\label{classlarcfm_1_1_parameter_data_a3bfc08fe0dbe9a3fdb4da22911cf8b8d}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!isPreserveUnits@{isPreserveUnits}}
+\index{isPreserveUnits@{isPreserveUnits}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{isPreserveUnits()}{isPreserveUnits()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::is\+Preserve\+Units (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Will the units in the database will be updated if a subsequent set operation changes them. \begin{DoxyReturn}{Returns}
+true, if the units in the database will be preserved when a set method is called. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_acaf73287236cf2fa43b8e5c5e27ee30f}\label{classlarcfm_1_1_parameter_data_acaf73287236cf2fa43b8e5c5e27ee30f}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!isString@{isString}}
+\index{isString@{isString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{isString()}{isString()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::is\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns true if the stored value for key is likely a string (or list). Note, the \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa90f7dad213117bf362596aa2fb62dbe}{get\+String()}} method will always return a string (assuming a valid key is provided). This method returns a more narrow definition of a string, that is, something that is not a number or a boolean. 
+\begin{DoxyParams}{Parameters}
+{\em key} & parameter name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if key exists and the value is not a parse-\/able number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a00fe626af647d688e75c6f68d154de24}\label{classlarcfm_1_1_parameter_data_a00fe626af647d688e75c6f68d154de24}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!isUnitCompatibility@{isUnitCompatibility}}
+\index{isUnitCompatibility@{isUnitCompatibility}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{isUnitCompatibility()}{isUnitCompatibility()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::is\+Unit\+Compatibility (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Will set methods disallow updating a unit if the new unit is incompatible with the old unit. Meters and feet are compatible, whereas meters and kilograms are not. Most of the time, one wants the enforcement that compatible units are required, but there may be some situations where this is undesired. \begin{DoxyReturn}{Returns}
+true, if set methods must use compatible units with the units in the database 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a0c1fbebf82fccb07e1477fb13f3d1190}\label{classlarcfm_1_1_parameter_data_a0c1fbebf82fccb07e1477fb13f3d1190}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!listCopy@{listCopy}}
+\index{listCopy@{listCopy}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{listCopy()}{listCopy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::list\+Copy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{plist,  }\item[{bool}]{overwrite }\end{DoxyParamCaption})}
+
+Copy parameter entries from list of keys 
+\begin{DoxyParams}{Parameters}
+{\em p} & database \\
+\hline
+{\em plist} & list of keys \\
+\hline
+{\em overwrite} & if a parameter key exists in both this object and p, if overwrite is true then p\textquotesingle{}s value will be used, otherwise this object\textquotesingle{}s value will be used \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aff40fe579b1896791a728fc5070283c1}\label{classlarcfm_1_1_parameter_data_aff40fe579b1896791a728fc5070283c1}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!listToString@{listToString}}
+\index{listToString@{listToString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{listToString()}{listToString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::list\+To\+String (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys }\end{DoxyParamCaption}) const}
+
+Returns a string listing of specified parameters in (original) key/value pairs
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & list of parameter entries \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+multi-\/line string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ab1f3f276c3a0e203ac8b87e8b5480f06}\label{classlarcfm_1_1_parameter_data_ab1f3f276c3a0e203ac8b87e8b5480f06}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!listToString@{listToString}}
+\index{listToString@{listToString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{listToString()}{listToString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::list\+To\+String (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{keys,  }\item[{const std\+::string \&}]{separator }\end{DoxyParamCaption}) const}
+
+Returns a string listing all parameters in keys
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & list of parameter entries \\
+\hline
+{\em separator} & the separator (e.\+g., a comma) to separate each key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a44bcb2bdd0762f994740082c53197bef}\label{classlarcfm_1_1_parameter_data_a44bcb2bdd0762f994740082c53197bef}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!make@{make}}
+\index{make@{make}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Parameter\+Data\+::make (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+A database of parameters. The database is initially empty. \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a6ac3ff65250137387729b700028fc836}\label{classlarcfm_1_1_parameter_data_a6ac3ff65250137387729b700028fc836}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!parse\_parameter\_string@{parse\_parameter\_string}}
+\index{parse\_parameter\_string@{parse\_parameter\_string}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{parse\_parameter\_string()}{parse\_parameter\_string()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::parse\+\_\+parameter\+\_\+string (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Parse a string, if it is a valid parameter, then add it to the database and return true, else false. 
+\begin{DoxyParams}{Parameters}
+{\em str} & the string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the database was updated, false otherwise. The database may not be updated because of an invalid parameter string was given, or incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aa3d8d34366e358a6502745d31e4a8443}\label{classlarcfm_1_1_parameter_data_aa3d8d34366e358a6502745d31e4a8443}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!parse\_parameter\_value@{parse\_parameter\_value}}
+\index{parse\_parameter\_value@{parse\_parameter\_value}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{parse\_parameter\_value()}{parse\_parameter\_value()}}
+{\footnotesize\ttfamily std\+::pair$<$ bool, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} $>$ larcfm\+::\+Parameter\+Data\+::parse\+\_\+parameter\+\_\+value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Doesn\textquotesingle{}t do error checking, string should be \char`\"{}trimmed.\char`\"{} this should always return a \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a5179126adb6e66271752aaf21d76c47a}\label{classlarcfm_1_1_parameter_data_a5179126adb6e66271752aaf21d76c47a}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!parseParameterList@{parseParameterList}}
+\index{parseParameterList@{parseParameterList}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{parseParameterList()}{parseParameterList()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::parse\+Parameter\+List (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{separator,  }\item[{std\+::string}]{line }\end{DoxyParamCaption})}
+
+Read in a set of parameters as created by \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a6ac1de26e7b958316c30658e250f9bb0}{to\+Parameter\+List()}} with the same separator. 
+\begin{DoxyParams}{Parameters}
+{\em separator} & string used to separate definitions. If blank or null, use default\+Entry\+Separator instead. \\
+\hline
+{\em line} & String to be read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if string parsed successfully, false if an error occurred. If this returns false, one or more entries were not added to the database. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a8ef86ca2396432c49cd07dafe66a7658}\label{classlarcfm_1_1_parameter_data_a8ef86ca2396432c49cd07dafe66a7658}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!putParam@{putParam}}
+\index{putParam@{putParam}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{putParam()}{putParam()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::put\+Param (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const std\+::pair$<$ bool, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{Parameter\+Entry}} $>$ \&}]{entry }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Put entry in parameter map 
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+{\em entry} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if parameter was added successfully 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_adb8b2c0b135424e0b3bec519027bf2d7}\label{classlarcfm_1_1_parameter_data_adb8b2c0b135424e0b3bec519027bf2d7}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!remove@{remove}}
+\index{remove@{remove}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::remove (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption})}
+
+Remove the given key from this database. If the key does not exist, do nothing. 
+\begin{DoxyParams}{Parameters}
+{\em key} & key name\\
+\hline
+\end{DoxyParams}
+Remove the given key from this database. If the key does not exist, do nothing. 
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aa96d40e22212c1eb82126b79ca4cec4f}\label{classlarcfm_1_1_parameter_data_aa96d40e22212c1eb82126b79ca4cec4f}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!removeAll@{removeAll}}
+\index{removeAll@{removeAll}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{removeAll()}{removeAll()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::remove\+All (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{key }\end{DoxyParamCaption})}
+
+Remove all keys in the list from this database, if they exist. \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ad360e2eff246c16e371ec89feb5c4563}\label{classlarcfm_1_1_parameter_data_ad360e2eff246c16e371ec89feb5c4563}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!removeKeysWithPrefix@{removeKeysWithPrefix}}
+\index{removeKeysWithPrefix@{removeKeysWithPrefix}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{removeKeysWithPrefix()}{removeKeysWithPrefix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Parameter\+Data\+::remove\+Keys\+With\+Prefix (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{prefix }\end{DoxyParamCaption}) const}
+
+Return a copy of this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}}, with all keys starting with the indicated prefix removed. Only include the key values that do not start with the given prefix (if any). 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & the prefix to look for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+copy of \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} without matching keys 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a07df8223397f9936b9e7dc734c71366a}\label{classlarcfm_1_1_parameter_data_a07df8223397f9936b9e7dc734c71366a}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!set@{set}}
+\index{set@{set}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const char $\ast$}]{value }\end{DoxyParamCaption})}
+
+Associates a parameter key with a value (both represented as strings). Examples of string values include\+: 
+\begin{DoxyItemize}
+\item true 
+\item hello everyone! 
+\item 20 
+\item 10 \mbox{[}NM\mbox{]} 
+\end{DoxyItemize}
+
+A note on this last example (\textquotesingle{}10 \mbox{[}NM\mbox{]}\textquotesingle{}). The value field may include a units descriptor in addition to the actual value. This is called the supplied units. If the supplied units are unspecified (e.\+g., \textquotesingle{}20\textquotesingle{}), then the units in the database for this parameter are used to interpret the value given.
+
+Another note is that the string value stored is exactly what was supplied, except white space is trimmed off the beginning and end.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em value} & string representation of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of an invalid parameter string was given, or incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a552810104f32ba3e7a325fadb4c0f8c6}\label{classlarcfm_1_1_parameter_data_a552810104f32ba3e7a325fadb4c0f8c6}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!set@{set}}
+\index{set@{set}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const std\+::string \&}]{value }\end{DoxyParamCaption})}
+
+Associates a parameter key with a value (both represented as strings). The value field may include a units descriptor in addition to the actual value, usually in a format similar to \char`\"{}10 \mbox{[}\+NM\mbox{]}\char`\"{}, representing 10 nautical miles. \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a53482121475cacf701114de73e4189f6}\label{classlarcfm_1_1_parameter_data_a53482121475cacf701114de73e4189f6}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!set@{set}}
+\index{set@{set}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{double}]{value,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})}
+
+Associates a value (in the given units) with a parameter key. If the supplied units are \char`\"{}unspecified,\char`\"{} then the units in the database are used to interpret the value given. How the units in the database are updated depends on the value of the \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}{set\+Preserve\+Units()}} parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & the name of the parameter \\
+\hline
+{\em value} & the value of the parameter in EXTERNAL units \\
+\hline
+{\em units} & the units of the given parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}\label{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!set@{set}}
+\index{set@{set}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+Parses the given string as a parameter assignment. If successful, returns a true value and adds the parameter. Otherwise returns a false value and makes no change to the parameter database. If the supplied units are unspecified, then the units in the database are used to interpret the value given. 
+
+Examples of valid strings include\+: 
+\begin{DoxyItemize}
+\item a = true 
+\item b = hello everyone! 
+\item c = 10 \mbox{[}NM\mbox{]} 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the given string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of an invalid parameter string was given, or incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a14b43112db9b8b221eb282b55a7aab62}\label{classlarcfm_1_1_parameter_data_a14b43112db9b8b221eb282b55a7aab62}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setBool@{setBool}}
+\index{setBool@{setBool}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setBool()}{setBool()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+Bool (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{bool}]{value }\end{DoxyParamCaption})}
+
+Associates a boolean value with a parameter key.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em value} & boolean representation of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ac564ad960ce308be10d33a5962b5fea4}\label{classlarcfm_1_1_parameter_data_ac564ad960ce308be10d33a5962b5fea4}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setFalse@{setFalse}}
+\index{setFalse@{setFalse}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setFalse()}{setFalse()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+False (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption})}
+
+Associates false value with a parameter key.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ae51fb871e461de38bff72d6f7384d7bd}\label{classlarcfm_1_1_parameter_data_ae51fb871e461de38bff72d6f7384d7bd}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setInt@{setInt}}
+\index{setInt@{setInt}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setInt()}{setInt()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+Int (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{int}]{value }\end{DoxyParamCaption})}
+
+Associates an integer value with a parameter key. Integer values always have the unit of \textquotesingle{}unitless\textquotesingle{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em value} & integer representation of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ab6161ff5688a20a1490aa66ac6371eb8}\label{classlarcfm_1_1_parameter_data_ab6161ff5688a20a1490aa66ac6371eb8}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setInternal@{setInternal}}
+\index{setInternal@{setInternal}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setInternal()}{setInternal()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+Internal (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{double}]{value,  }\item[{const std\+::string \&}]{units }\end{DoxyParamCaption})}
+
+Associates a value (in internal units) with a parameter key. How the units in the database are updated, depends on the value of the \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}{set\+Preserve\+Units()}} parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & the name of the parameter \\
+\hline
+{\em value} & the value of the parameter in INTERNAL units \\
+\hline
+{\em units} & the typical units of the value (but no conversion takes place, if \char`\"{}unspecified\char`\"{} any old value is preserved) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a272fb79ec924a209fa6265fcd9d80c7b}\label{classlarcfm_1_1_parameter_data_a272fb79ec924a209fa6265fcd9d80c7b}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setInternal@{setInternal}}
+\index{setInternal@{setInternal}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setInternal()}{setInternal()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+Internal (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{double}]{value,  }\item[{const std\+::string \&}]{units,  }\item[{int}]{prec }\end{DoxyParamCaption})}
+
+Associates a value (in internal units) with a parameter key. How the units in the database are updated, depends on the value of the \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}{set\+Preserve\+Units()}} parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & the name of the parameter \\
+\hline
+{\em value} & the value of the parameter in INTERNAL units \\
+\hline
+{\em units} & the typical units of the value (but no conversion takes place, if \char`\"{}unspecified\char`\"{} any old value is preserved) \\
+\hline
+{\em prec} & number of digits of precision to represent this value as a string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aafe8c8177bc6564bce1ccfbb634ab6b8}\label{classlarcfm_1_1_parameter_data_aafe8c8177bc6564bce1ccfbb634ab6b8}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setInternalPreserveUnit@{setInternalPreserveUnit}}
+\index{setInternalPreserveUnit@{setInternalPreserveUnit}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setInternalPreserveUnit()}{setInternalPreserveUnit()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::set\+Internal\+Preserve\+Unit (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{double}]{value,  }\item[{const std\+::string \&}]{units }\end{DoxyParamCaption})}
+
+Associates a value (in internal units) with a parameter key. If the parameter was already defined with a specified unit than the original unit is retained as the default unit for this parameter. If not, then the unit provided through this method becomes the default unit for this parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+{\em value} & \\
+\hline
+{\em units} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a628052a763d12736059562ff37c36017}\label{classlarcfm_1_1_parameter_data_a628052a763d12736059562ff37c36017}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setPreserveUnit@{setPreserveUnit}}
+\index{setPreserveUnit@{setPreserveUnit}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setPreserveUnit()}{setPreserveUnit()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::set\+Preserve\+Unit (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{double}]{value,  }\item[{const std\+::string \&}]{units }\end{DoxyParamCaption})}
+
+Associates a value (in the given units) with a parameter key. If the parameter was already defined with a specified unit than the original unit is retained as the default unit for this parameter. If not, then the unit provided through this method becomes the default unit for this parameter.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+{\em value} & \\
+\hline
+{\em units} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}\label{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setPreserveUnits@{setPreserveUnits}}
+\index{setPreserveUnits@{setPreserveUnits}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setPreserveUnits()}{setPreserveUnits()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::set\+Preserve\+Units (\begin{DoxyParamCaption}\item[{bool}]{v }\end{DoxyParamCaption})}
+
+Controls whether all subsequent calls to \char`\"{}set..\char`\"{} methods will update the units in the database to the units supplied through a \char`\"{}set..\char`\"{} method. The \char`\"{}unspecified\char`\"{} unit is never preserved.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & If true, then the units in the database should be preserved \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a069a1a16d8bfa5ac40aeb350db1e65c4}\label{classlarcfm_1_1_parameter_data_a069a1a16d8bfa5ac40aeb350db1e65c4}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setTrue@{setTrue}}
+\index{setTrue@{setTrue}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setTrue()}{setTrue()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::set\+True (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key }\end{DoxyParamCaption})}
+
+Associates true value with a parameter key.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the database was updated, false otherwise. The database may not be updated because of incompatible units, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_ac39fc235232b5e8ca1fc4c37da97d318}\label{classlarcfm_1_1_parameter_data_ac39fc235232b5e8ca1fc4c37da97d318}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!setUnitCompatibility@{setUnitCompatibility}}
+\index{setUnitCompatibility@{setUnitCompatibility}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{setUnitCompatibility()}{setUnitCompatibility()}}
+{\footnotesize\ttfamily void larcfm\+::\+Parameter\+Data\+::set\+Unit\+Compatibility (\begin{DoxyParamCaption}\item[{bool}]{v }\end{DoxyParamCaption})}
+
+Controls whether set methods disallow updating a unit if the new unit is incompatible with the old unit. Meters and feet are compatible, whereas meters and kilograms are not. Most of the time, one wants the enforcement that compatible units are required, but there may be some situations where this is undesired.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & true when the units in a set method must be compatible with the database. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a96f0725dd4a701f586675cd916ef4906}\label{classlarcfm_1_1_parameter_data_a96f0725dd4a701f586675cd916ef4906}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!size@{size}}
+\index{size@{size}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+Parameter\+Data\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Number of parameters in this object
+
+\begin{DoxyReturn}{Returns}
+number of parameters 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a6ac1de26e7b958316c30658e250f9bb0}\label{classlarcfm_1_1_parameter_data_a6ac1de26e7b958316c30658e250f9bb0}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!toParameterList@{toParameterList}}
+\index{toParameterList@{toParameterList}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{toParameterList()}{toParameterList()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::to\+Parameter\+List (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{separator }\end{DoxyParamCaption}) const}
+
+Return this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} as a single line string that can subsequently be parsed by parse\+Line()
+
+
+\begin{DoxyParams}{Parameters}
+{\em separator} & A unique (to the key and value set) character string to separate each entry. If this is null or the empty string, use the default\+Entry\+Separator string instead. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Single-\/line string representation of this \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object, possibly empty, or null if the separator is a substring of any key/value entry. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a675298c3872f44a360dba16d63f6cd16}\label{classlarcfm_1_1_parameter_data_a675298c3872f44a360dba16d63f6cd16}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!toString@{toString}}
+\index{toString@{toString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns a multi-\/line string listing all parameters and their (original string) values \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a97a95b7f2c4a33b3e1e081ac624c12ea}\label{classlarcfm_1_1_parameter_data_a97a95b7f2c4a33b3e1e081ac624c12ea}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!toString@{toString}}
+\index{toString@{toString}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Parameter\+Data\+::to\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{separator }\end{DoxyParamCaption}) const}
+
+Returns a string listing all parameters 
+\begin{DoxyParams}{Parameters}
+{\em separator} & the separator (e.\+g., a comma) to separate each key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A separated string of all parameters
+\end{DoxyReturn}
+Returns a string listing all parameters in keys
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & list of parameter entries @parame separator \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a78978b647d0efe14b06eac413f35efd1}\label{classlarcfm_1_1_parameter_data_a78978b647d0efe14b06eac413f35efd1}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!unrecognizedParameters@{unrecognizedParameters}}
+\index{unrecognizedParameters@{unrecognizedParameters}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{unrecognizedParameters()}{unrecognizedParameters()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::unrecognized\+Parameters (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{c }\end{DoxyParamCaption}) const}
+
+Checks the parameters against the supplied list, and returns a list of unrecognized parameters that have been read, possible empty \mbox{\Hypertarget{classlarcfm_1_1_parameter_data_aa170ce27805581613f13c333eac7feb0}\label{classlarcfm_1_1_parameter_data_aa170ce27805581613f13c333eac7feb0}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!updateComment@{updateComment}}
+\index{updateComment@{updateComment}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{updateComment()}{updateComment()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::update\+Comment (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const std\+::string \&}]{msg }\end{DoxyParamCaption})}
+
+Updates entry\textquotesingle{}s comment
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em msg} & the new comment of the parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the entry does not exist, this returns false, otherwise it returns true. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a76752943162f420b049831f6dfdc2bb6}\label{classlarcfm_1_1_parameter_data_a76752943162f420b049831f6dfdc2bb6}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!updateUnit@{updateUnit}}
+\index{updateUnit@{updateUnit}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{updateUnit()}{updateUnit()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Parameter\+Data\+::update\+Unit (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key,  }\item[{const std\+::string \&}]{unit }\end{DoxyParamCaption})}
+
+Updates the unit for an existing entry. This ignores the set\+Preserved\+Units() flag. You may create a blank entry in order to preemptively store a units value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & name of parameter \\
+\hline
+{\em unit} & unit for this parameter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the unit was changed then return true, otherwise false. The unit may not be changed because it was duplicative, incompatible, not a unit, etc. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_parameter_data_a1963dfe8aa4b0c234c61e7488d80663c}\label{classlarcfm_1_1_parameter_data_a1963dfe8aa4b0c234c61e7488d80663c}} 
+\index{larcfm::ParameterData@{larcfm::ParameterData}!validateParameters@{validateParameters}}
+\index{validateParameters@{validateParameters}!larcfm::ParameterData@{larcfm::ParameterData}}
+\doxysubsubsection{\texorpdfstring{validateParameters()}{validateParameters()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Parameter\+Data\+::validate\+Parameters (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{c }\end{DoxyParamCaption})}
+
+Checks the parameters against the supplied list, and returns a list of unrecognized parameters. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Parameter\+Data.\+h\item 
+Modules/\+ACCo\+RD/src/Parameter\+Data.\+cpp\end{DoxyCompactItemize}

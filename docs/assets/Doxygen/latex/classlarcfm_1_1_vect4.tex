@@ -1,0 +1,378 @@
+\hypertarget{classlarcfm_1_1_vect4}{}\doxysection{larcfm\+::Vect4 Class Reference}
+\label{classlarcfm_1_1_vect4}\index{larcfm::Vect4@{larcfm::Vect4}}
+
+
+{\ttfamily \#include $<$Vect4.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4_af8ab7e170ecc77c98b937d7c850caf82}{Vect4}} (const double xx=0, const double yy=0, const double zz=0, const double tt=0)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4_a5be777db5106c3c972a299b9b5a6241d}{Vect4}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v, double \mbox{\hyperlink{classlarcfm_1_1_vect4_a3f1fa067481a605465bd2b951462d144}{t}})
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vect4_a5aa85064650860f5f36082efd800723c}{is\+Zero}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vect4_abd758417bd7411fb869a980811e37f5f}{almost\+Equals}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vect4_aa963d9120aaac37084e37884133ec32f}{almost\+Equals}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v, INT64\+FM max\+Ulps) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_a789427036530eefb06cb3f6f3e69a791}{operator+}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_aecca980b45818bd6a2a90dc4b14e9733}{operator-\/}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_aa4171015b079d60b57fa311e54b199e8}{operator-\/}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_aa3d37481e4686477d6eb6349a5b95c56}{operator$\ast$}} (const double k) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a106b1cdecbca276c36d3e32cd6118b0a}{operator$\ast$}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vect4_a330d646e4c1677c34c678de7d404f983}{operator==}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_vect4_aa371eb8e8e3174e53762e058e8a9dc57}{operator!=}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_vect4_a073550a00dc5bc7a500ed76e0590bee8}{vect3}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_vect4_a05c4619807b2293c5affb7a19fbdbd76}{vect2}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_aac8634f46e205327769f439a497afe53}{Add}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_a7313de23f522652d7ecd0cd74dfc3e21}{Sub}} (const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_adbaae0c039a0da805ed562c3b72b248d}{Neg}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_a50a15305c52481dc98aeca8f01e66bfb}{Scal}} (double k) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_vect4_aa79336c7f974a1edf6d2bf829cf37df7}{Scal\+Add}} (const double k, const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&v) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_vect4_ad444ea8753ba7c29d86f165f224ed6f2}{break\+Symmetry}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_ab56c1df7c16eda0024dbf05fda3bf58c}{dot}} (const double \mbox{\hyperlink{classlarcfm_1_1_vect4_a5fdbbddfaf2b410972f5551db0f175ad}{x}}, const double \mbox{\hyperlink{classlarcfm_1_1_vect4_a46f4f1d8f95e4fcd167f793919e58b63}{y}}, const double \mbox{\hyperlink{classlarcfm_1_1_vect4_ae596c91b10dbb40eb7e217705a5c6eb3}{z}}, const double \mbox{\hyperlink{classlarcfm_1_1_vect4_a3f1fa067481a605465bd2b951462d144}{t}}) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a86bb3bb03253612b19f6b070c6bccc0a}{sqv}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a4ec412c9c20203eb0c994e162a4bd4d9}{norm}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_ae755e3e9d99649bf3e563a3084fe848d}{lat}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a1c5fe6b602f26c1e8b6390ecf7cb49f1}{lon}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_vect4_a8a815933d474f5fcf4d04f060198ff84}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \& \mbox{\hyperlink{classlarcfm_1_1_vect4_a19d0e459d5920176ad2cd385394bf92a}{ZERO}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a5fdbbddfaf2b410972f5551db0f175ad}{x}}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a46f4f1d8f95e4fcd167f793919e58b63}{y}}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_ae596c91b10dbb40eb7e217705a5c6eb3}{z}}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_vect4_a3f1fa067481a605465bd2b951462d144}{t}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A four dimensional mathematical vector 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_af8ab7e170ecc77c98b937d7c850caf82}\label{classlarcfm_1_1_vect4_af8ab7e170ecc77c98b937d7c850caf82}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Vect4@{Vect4}}
+\index{Vect4@{Vect4}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Vect4()}{Vect4()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Vect4\+::\+Vect4 (\begin{DoxyParamCaption}\item[{const double}]{xx = {\ttfamily 0},  }\item[{const double}]{yy = {\ttfamily 0},  }\item[{const double}]{zz = {\ttfamily 0},  }\item[{const double}]{tt = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\Hypertarget{classlarcfm_1_1_vect4_a5be777db5106c3c972a299b9b5a6241d}\label{classlarcfm_1_1_vect4_a5be777db5106c3c972a299b9b5a6241d}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Vect4@{Vect4}}
+\index{Vect4@{Vect4}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Vect4()}{Vect4()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Vect4\+::\+Vect4 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector \\
+\hline
+{\em t} & time (4th dimension of vector) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_aac8634f46e205327769f439a497afe53}\label{classlarcfm_1_1_vect4_aac8634f46e205327769f439a497afe53}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Add@{Add}}
+\index{Add@{Add}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Add()}{Add()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::\+Add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the addition of this vector and the parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vector sum 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_abd758417bd7411fb869a980811e37f5f}\label{classlarcfm_1_1_vect4_abd758417bd7411fb869a980811e37f5f}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!almostEquals@{almostEquals}}
+\index{almostEquals@{almostEquals}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{almostEquals()}{almostEquals()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vect4\+::almost\+Equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Checks if vectors are almost equal.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Vector\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true}, if {\ttfamily this} vector is almost equal to {\ttfamily v}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_aa963d9120aaac37084e37884133ec32f}\label{classlarcfm_1_1_vect4_aa963d9120aaac37084e37884133ec32f}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!almostEquals@{almostEquals}}
+\index{almostEquals@{almostEquals}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{almostEquals()}{almostEquals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vect4\+::almost\+Equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v,  }\item[{INT64\+FM}]{max\+Ulps }\end{DoxyParamCaption}) const}
+
+Checks if vectors are almost equal.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Vector \\
+\hline
+{\em max\+Ulps} & unit of least precision\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true}, if {\ttfamily this} vector is almost equal to {\ttfamily v}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_ad444ea8753ba7c29d86f165f224ed6f2}\label{classlarcfm_1_1_vect4_ad444ea8753ba7c29d86f165f224ed6f2}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!breakSymmetry@{breakSymmetry}}
+\index{breakSymmetry@{breakSymmetry}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{breakSymmetry()}{breakSymmetry()}}
+{\footnotesize\ttfamily int larcfm\+::\+Vect4\+::break\+Symmetry (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+A symmetry calculation \mbox{\Hypertarget{classlarcfm_1_1_vect4_ab56c1df7c16eda0024dbf05fda3bf58c}\label{classlarcfm_1_1_vect4_ab56c1df7c16eda0024dbf05fda3bf58c}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!dot@{dot}}
+\index{dot@{dot}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{dot()}{dot()}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::dot (\begin{DoxyParamCaption}\item[{const double}]{x,  }\item[{const double}]{y,  }\item[{const double}]{z,  }\item[{const double}]{t }\end{DoxyParamCaption}) const}
+
+The dot product of this vector and the parameter \mbox{\Hypertarget{classlarcfm_1_1_vect4_a5aa85064650860f5f36082efd800723c}\label{classlarcfm_1_1_vect4_a5aa85064650860f5f36082efd800723c}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!isZero@{isZero}}
+\index{isZero@{isZero}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{isZero()}{isZero()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vect4\+::is\+Zero (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Is this vector zero? \mbox{\Hypertarget{classlarcfm_1_1_vect4_ae755e3e9d99649bf3e563a3084fe848d}\label{classlarcfm_1_1_vect4_ae755e3e9d99649bf3e563a3084fe848d}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!lat@{lat}}
+\index{lat@{lat}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{lat()}{lat()}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::lat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The latitude component of this vector \begin{DoxyReturn}{Returns}
+latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a1c5fe6b602f26c1e8b6390ecf7cb49f1}\label{classlarcfm_1_1_vect4_a1c5fe6b602f26c1e8b6390ecf7cb49f1}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!lon@{lon}}
+\index{lon@{lon}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{lon()}{lon()}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The longitude component of this vector \begin{DoxyReturn}{Returns}
+longitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_adbaae0c039a0da805ed562c3b72b248d}\label{classlarcfm_1_1_vect4_adbaae0c039a0da805ed562c3b72b248d}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Neg@{Neg}}
+\index{Neg@{Neg}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Neg()}{Neg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::\+Neg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the negation of this vector
+
+\begin{DoxyReturn}{Returns}
+negation vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a4ec412c9c20203eb0c994e162a4bd4d9}\label{classlarcfm_1_1_vect4_a4ec412c9c20203eb0c994e162a4bd4d9}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!norm@{norm}}
+\index{norm@{norm}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{norm()}{norm()}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::norm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The vector norm of this vector, i.\+e., the Euclidean distance \begin{DoxyReturn}{Returns}
+norm 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_aa371eb8e8e3174e53762e058e8a9dc57}\label{classlarcfm_1_1_vect4_aa371eb8e8e3174e53762e058e8a9dc57}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vect4\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Are these two vectors unequal? \mbox{\Hypertarget{classlarcfm_1_1_vect4_aa3d37481e4686477d6eb6349a5b95c56}\label{classlarcfm_1_1_vect4_aa3d37481e4686477d6eb6349a5b95c56}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{const double}]{k }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the scale of this vector by k \mbox{\Hypertarget{classlarcfm_1_1_vect4_a106b1cdecbca276c36d3e32cd6118b0a}\label{classlarcfm_1_1_vect4_a106b1cdecbca276c36d3e32cd6118b0a}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+The dot product of this vector and the parameter \mbox{\Hypertarget{classlarcfm_1_1_vect4_a789427036530eefb06cb3f6f3e69a791}\label{classlarcfm_1_1_vect4_a789427036530eefb06cb3f6f3e69a791}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator+@{operator+}}
+\index{operator+@{operator+}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::operator+ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the addition of this vector and the parameter \mbox{\Hypertarget{classlarcfm_1_1_vect4_aa4171015b079d60b57fa311e54b199e8}\label{classlarcfm_1_1_vect4_aa4171015b079d60b57fa311e54b199e8}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::operator-\/ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the negation of this vector ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_vect4_aecca980b45818bd6a2a90dc4b14e9733}\label{classlarcfm_1_1_vect4_aecca980b45818bd6a2a90dc4b14e9733}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::operator-\/ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the subtract of this vector and the parameter \mbox{\Hypertarget{classlarcfm_1_1_vect4_a330d646e4c1677c34c678de7d404f983}\label{classlarcfm_1_1_vect4_a330d646e4c1677c34c678de7d404f983}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!operator==@{operator==}}
+\index{operator==@{operator==}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Vect4\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Are these two vectors equal? \mbox{\Hypertarget{classlarcfm_1_1_vect4_a50a15305c52481dc98aeca8f01e66bfb}\label{classlarcfm_1_1_vect4_a50a15305c52481dc98aeca8f01e66bfb}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Scal@{Scal}}
+\index{Scal@{Scal}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Scal()}{Scal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::\+Scal (\begin{DoxyParamCaption}\item[{double}]{k }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the scale of this vector by k 
+\begin{DoxyParams}{Parameters}
+{\em k} & scale factor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+scaled vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_aa79336c7f974a1edf6d2bf829cf37df7}\label{classlarcfm_1_1_vect4_aa79336c7f974a1edf6d2bf829cf37df7}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!ScalAdd@{ScalAdd}}
+\index{ScalAdd@{ScalAdd}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{ScalAdd()}{ScalAdd()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::\+Scal\+Add (\begin{DoxyParamCaption}\item[{const double}]{k,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Return a new vector that is this$\ast$k+v
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & vector scale factor \\
+\hline
+{\em v} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result of this$\ast$k+v 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a86bb3bb03253612b19f6b070c6bccc0a}\label{classlarcfm_1_1_vect4_a86bb3bb03253612b19f6b070c6bccc0a}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!sqv@{sqv}}
+\index{sqv@{sqv}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{sqv()}{sqv()}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::sqv (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+The sum of the square of each component
+
+\begin{DoxyReturn}{Returns}
+sum of squares 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a7313de23f522652d7ecd0cd74dfc3e21}\label{classlarcfm_1_1_vect4_a7313de23f522652d7ecd0cd74dfc3e21}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!Sub@{Sub}}
+\index{Sub@{Sub}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{Sub()}{Sub()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} larcfm\+::\+Vect4\+::\+Sub (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Return a new vector that is the subtract of this vector and the parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vector subtraction 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a8a815933d474f5fcf4d04f060198ff84}\label{classlarcfm_1_1_vect4_a8a815933d474f5fcf4d04f060198ff84}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!toString@{toString}}
+\index{toString@{toString}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Vect4\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+A string representation of this vector \mbox{\Hypertarget{classlarcfm_1_1_vect4_a05c4619807b2293c5affb7a19fbdbd76}\label{classlarcfm_1_1_vect4_a05c4619807b2293c5affb7a19fbdbd76}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!vect2@{vect2}}
+\index{vect2@{vect2}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{vect2()}{vect2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Vect4\+::vect2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the x and y components of this vector \begin{DoxyReturn}{Returns}
+2D vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a073550a00dc5bc7a500ed76e0590bee8}\label{classlarcfm_1_1_vect4_a073550a00dc5bc7a500ed76e0590bee8}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!vect3@{vect3}}
+\index{vect3@{vect3}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{vect3()}{vect3()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Vect4\+::vect3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the x,y, and z components of this vector \begin{DoxyReturn}{Returns}
+3D vector 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a19d0e459d5920176ad2cd385394bf92a}\label{classlarcfm_1_1_vect4_a19d0e459d5920176ad2cd385394bf92a}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!ZERO@{ZERO}}
+\index{ZERO@{ZERO}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{ZERO()}{ZERO()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \& larcfm\+::\+Vect4\+::\+ZERO (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a zero vector 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_vect4_a3f1fa067481a605465bd2b951462d144}\label{classlarcfm_1_1_vect4_a3f1fa067481a605465bd2b951462d144}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!t@{t}}
+\index{t@{t}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{t}{t}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::t}
+
+t component \mbox{\Hypertarget{classlarcfm_1_1_vect4_a5fdbbddfaf2b410972f5551db0f175ad}\label{classlarcfm_1_1_vect4_a5fdbbddfaf2b410972f5551db0f175ad}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!x@{x}}
+\index{x@{x}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::x}
+
+x component \mbox{\Hypertarget{classlarcfm_1_1_vect4_a46f4f1d8f95e4fcd167f793919e58b63}\label{classlarcfm_1_1_vect4_a46f4f1d8f95e4fcd167f793919e58b63}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!y@{y}}
+\index{y@{y}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::y}
+
+y component \mbox{\Hypertarget{classlarcfm_1_1_vect4_ae596c91b10dbb40eb7e217705a5c6eb3}\label{classlarcfm_1_1_vect4_ae596c91b10dbb40eb7e217705a5c6eb3}} 
+\index{larcfm::Vect4@{larcfm::Vect4}!z@{z}}
+\index{z@{z}!larcfm::Vect4@{larcfm::Vect4}}
+\doxysubsubsection{\texorpdfstring{z}{z}}
+{\footnotesize\ttfamily double larcfm\+::\+Vect4\+::z}
+
+z component 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Vect4.\+h\item 
+Modules/\+ACCo\+RD/src/Vect4.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,85 @@
+\hypertarget{_mof_n_8h_source}{}\doxysection{Mof\+N.\+h}
+\label{_mof_n_8h_source}\index{Modules/ACCoRD/inc/MofN.h@{Modules/ACCoRD/inc/MofN.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Implementation of M of N filtering logic}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Contact: Cesar A. Munoz}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef MOFN\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define MOFN\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <deque>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} \{}
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23   \textcolor{comment}{/*}}
+\DoxyCodeLine{24 \textcolor{comment}{   * Set M of N with a given initial value}}
+\DoxyCodeLine{25 \textcolor{comment}{   */}}
+\DoxyCodeLine{26   \textcolor{keywordtype}{void} setMofN(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n, \textcolor{keywordtype}{int} val=-\/1);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{comment}{/*}}
+\DoxyCodeLine{29 \textcolor{comment}{   * Creates an M of N object, with a given initial value}}
+\DoxyCodeLine{30 \textcolor{comment}{   */}}
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n, \textcolor{keywordtype}{int} val=-\/1);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{comment}{/*}}
+\DoxyCodeLine{34 \textcolor{comment}{   * Creates an empty M of N object, with no parameter initialization.}}
+\DoxyCodeLine{35 \textcolor{comment}{   * Without further use of setMofN on this object, it's considered invalid and}}
+\DoxyCodeLine{36 \textcolor{comment}{   * doesn't perform M of N logic.}}
+\DoxyCodeLine{37 \textcolor{comment}{   */}}
+\DoxyCodeLine{38   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}();}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{comment}{/*}}
+\DoxyCodeLine{41 \textcolor{comment}{   * Creates a copy of M of N object}}
+\DoxyCodeLine{42 \textcolor{comment}{   */}}
+\DoxyCodeLine{43   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}\& mofn);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{comment}{/*}}
+\DoxyCodeLine{46 \textcolor{comment}{   * Reset M of N object with a given initial value}}
+\DoxyCodeLine{47 \textcolor{comment}{   */}}
+\DoxyCodeLine{48   \textcolor{keywordtype}{void} reset(\textcolor{keywordtype}{int} val=-\/1);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{comment}{/*}}
+\DoxyCodeLine{51 \textcolor{comment}{   * Returns true if this object is able to perform M of N logic.}}
+\DoxyCodeLine{52 \textcolor{comment}{   */}}
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} isValid() \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{comment}{/*}}
+\DoxyCodeLine{56 \textcolor{comment}{   * Return M of N value for a given value.}}
+\DoxyCodeLine{57 \textcolor{comment}{   * Counts maximum occurrences of value assuming that that value represents all the}}
+\DoxyCodeLine{58 \textcolor{comment}{   * values val such that 0 <= val <= value. Return -\/1 if none of the values satisfies}}
+\DoxyCodeLine{59 \textcolor{comment}{   * M of N logic.}}
+\DoxyCodeLine{60 \textcolor{comment}{   */}}
+\DoxyCodeLine{61   \textcolor{keywordtype}{int} m\_of\_n(\textcolor{keywordtype}{int} value);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_mof_n}{\string~MofN}}() \{\};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{bool} sameAs(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}\& mofn) \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{private}:}
+\DoxyCodeLine{70   \textcolor{keywordtype}{int} m\_;}
+\DoxyCodeLine{71   \textcolor{keywordtype}{int} n\_;}
+\DoxyCodeLine{72   \textcolor{keywordtype}{int}    max\_;}
+\DoxyCodeLine{73   std::deque<int> queue\_;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* MOFN\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

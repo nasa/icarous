@@ -1,0 +1,177 @@
+\hypertarget{_traj_gen_8h_source}{}\doxysection{Traj\+Gen.\+h}
+\label{_traj_gen_8h_source}\index{Modules/ACCoRD/inc/TrajGen.h@{Modules/ACCoRD/inc/TrajGen.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Trajectory Generation}}
+\DoxyCodeLine{2 \textcolor{comment}{ *}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Authors:  George Hagen              NASA Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ *           Ricky Butler              NASA Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *           Jeff Maddalon             NASA Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{9 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef TrajGen\_H}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define TrajGen\_H}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{18 \textcolor{comment}{//\#include "{}UnitSymbols.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}GreatCircle.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}ProjectedKinematics.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}Constants.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include <cctype>}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{55 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_traj_gen}{TrajGen}} \{}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{public}:}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{private}:}
+\DoxyCodeLine{61     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} verbose; \textcolor{comment}{// = false;}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{public}:}
+\DoxyCodeLine{65 \textcolor{comment}{//  static bool vertexNameInBOT;}}
+\DoxyCodeLine{66 \textcolor{comment}{//  static double gsOffsetTime;}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} MIN\_MARK\_LEG\_TIME;}
+\DoxyCodeLine{69     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} minorVfactor; \textcolor{comment}{// = 0.01; // used to differentiate "{}minor"{} vel change vs no vel change}}
+\DoxyCodeLine{70     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxVs;         \textcolor{comment}{// only used for warning}}
+\DoxyCodeLine{71     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxAlt;         \textcolor{comment}{// only used for error}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string turnFail;}
+\DoxyCodeLine{74     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string gsFail;}
+\DoxyCodeLine{75     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string vsFail;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<double,double,double>}} getStoredParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p);}
+\DoxyCodeLine{86     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a8c2c60f27339975ec0e91eb8de4510b2}{addParams}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} gsAccel, \textcolor{keywordtype}{double} vsAccel);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{98     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a6445e915de0100a4161c8be68131cc67}{turnCanBeInscribed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& BOT, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& EOT) ;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     }
+\DoxyCodeLine{108     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aa1e877d03c90423997e4ac49be45a38a}{markVsChanges}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     }
+\DoxyCodeLine{111     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} generateTurnTCPs(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& kpc, \textcolor{keywordtype}{double} bankAngle) ;}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{123     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} generateTurnTCPs(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{double} default\_bank\_angle, \textcolor{keywordtype}{bool} continueGen);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{134     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aef2c63c713c201ff70719f68cee137f2}{generateTurnTcpAt}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} ixNp2, \textcolor{keywordtype}{double} default\_bankAngle,  \textcolor{keywordtype}{bool} continueGen);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{144     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a01bd59cefba698bc3fe770bb74c74642}{generateTurnTcp}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} ixNp2, \textcolor{keywordtype}{double} R,  \textcolor{keywordtype}{bool} bankUsed, \textcolor{keywordtype}{bool} continueGen);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{153     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a12471debfe7a4423c90d26d1fae309e2}{neededTurnLegDistance}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{int} ix, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     \textcolor{keyword}{static} \textcolor{keywordtype}{double} neededLegLengthBankAngle(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{int} ix, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{160     \textcolor{keyword}{static} std::pair<int,double> \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a93a1053a6a0e01eeb7e8902f23575551}{movePointsWithinTurn}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj,\textcolor{keywordtype}{int} ixBOT, \textcolor{keywordtype}{int} ixNp2, \textcolor{keywordtype}{int} ixEOT,  \textcolor{keywordtype}{double} gsIn);}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{169     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a8617fe8ace9e3ba73a7e8110047d2749}{generateTurnTCPsRadius}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{179     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a8617fe8ace9e3ba73a7e8110047d2749}{generateTurnTCPsRadius}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{bool} continueGen);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181     }
+\DoxyCodeLine{193     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a26bfd1b62cfd293b0068de3a3ae1124d}{generateGsTCPsAt}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} gsAccel, \textcolor{keywordtype}{bool} repairGs);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{207     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae77878d67545931d99b4a8b7c3b0c685}{adjustGsInsideAccel}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} ixBGS, \textcolor{keywordtype}{double} aBGS, \textcolor{keywordtype}{double} distToEGS);}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{219     \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aac41f95601e3605fc332e4122de4878c}{generateGsToZero}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} targetGs);}
+\DoxyCodeLine{229     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae3d0ebd3864192b15c5eeb2d20613171}{adjustGsInsideAccelToEGS}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} ixBGS, \textcolor{keywordtype}{double} aBGS, \textcolor{keywordtype}{int} ixEGS);}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} attemptRepair2(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& kpc, \textcolor{keywordtype}{int} ixBGS, \textcolor{keywordtype}{int} ixEGS, \textcolor{keywordtype}{double} maxGsAccel);}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{241     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_adc9cb6e9be450e8dfd6851afea3aa479}{makeBGS}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}}\& tcp1, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{bool} isAltPreserve);}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} makeEGS();}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{254     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a60e4f258e3ec3e3584bfe31063f0d20f}{generateGsTCPs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} maxGsAccel, \textcolor{keywordtype}{bool} repairGs);}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256     \textcolor{keyword}{static} \textcolor{keywordtype}{void} generateGsTCP(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} maxGsAccel, \textcolor{keywordtype}{bool} repairGs);}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{266     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_acda5065816f1724020cd50c1f03786d0}{generateVsTCPs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& kpc, \textcolor{keywordtype}{double} maxVsAccel, \textcolor{keywordtype}{bool} continueGen, \textcolor{keywordtype}{bool} repairVs\_zeroGs);}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_acda5065816f1724020cd50c1f03786d0}{generateVsTCPs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& kpc, \textcolor{keywordtype}{double} maxVsAccel);}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{292     \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a94c5c66a2bb41cc58ad71e9049ee2848}{generateVsTCP}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} vsAccel, \textcolor{keywordtype}{bool} continueGen,  \textcolor{keywordtype}{bool} repairVs\_zeroGs);}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 }
+\DoxyCodeLine{307     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a2c0a61c4972829a25a71af1bef3fee87}{fixAlts}}(\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& traj, \textcolor{keywordtype}{int} bindex, \textcolor{keywordtype}{int} eindex, \textcolor{keywordtype}{double} vs1, \textcolor{keywordtype}{double} accel);}
+\DoxyCodeLine{308 }
+\DoxyCodeLine{317     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ab386b0dd2b05c11d9e0c4acf70a746cf}{calcRadius}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{int} ix, \textcolor{keywordtype}{double} bank);}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{330     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a162674a2cb362686a0fafa0d01ee2fb7}{linearRepairShortTurnLegs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} bank, \textcolor{keywordtype}{bool} addMiddle) ;}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332     }
+\DoxyCodeLine{333     \textcolor{comment}{// Make vertical speeds constant by adjusting altitudes between wp1 and wp2}}
+\DoxyCodeLine{334     \textcolor{comment}{// Assume there are no vertical speed accelerations}}
+\DoxyCodeLine{335     \textcolor{comment}{// do not alter wp1 and wp2}}
+\DoxyCodeLine{342 \textcolor{comment}{}    \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a5162ab6e136997fd0027c3009d4256ca}{makeMarkedVsConstant}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& kpc) ;}
+\DoxyCodeLine{343     }
+\DoxyCodeLine{344     }
+\DoxyCodeLine{355     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a797551bef34b6dd96adbe6904bfdb65c}{repairPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{bool} repairTurn, \textcolor{keywordtype}{bool} repairVs,}
+\DoxyCodeLine{356             \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} vsAccel);}
+\DoxyCodeLine{357     }
+\DoxyCodeLine{358 }
+\DoxyCodeLine{377     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}{makeKinematicPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} gsAccel, \textcolor{keywordtype}{double} vsAccel, \textcolor{keywordtype}{bool} repairTurn, \textcolor{keywordtype}{bool} repairVs, \textcolor{keywordtype}{bool} repairGs);}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{390     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}{makeKinematicPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} gsAccel, \textcolor{keywordtype}{double} vsAccel);}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{398     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a025851b7b5b571aca08ba7bc8ce9abca}{makeVsKinematicPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{double} vsAccel);}
+\DoxyCodeLine{399     }
+\DoxyCodeLine{409 \textcolor{keyword}{private}: \textcolor{keyword}{static}  \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a44b92ca0d70289426d74a34c43d772cd}{directToContinueTime}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keywordtype}{double} bankAngle) ;}
+\DoxyCodeLine{410         }
+\DoxyCodeLine{411 \textcolor{keyword}{public}:}
+\DoxyCodeLine{421     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_abc98b6bc05596549d611472b519863ae}{genDirect2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{422 }
+\DoxyCodeLine{435     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a47a5b698976f1d47992747bd553942bb}{genDirectToLinear}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} to, \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} timeBeforeTurn) ;}
+\DoxyCodeLine{436     }
+\DoxyCodeLine{437 }
+\DoxyCodeLine{442     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae71b0e901aa77f11c9598f7a840bee22}{buildDirectTo}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& base, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{450     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a645e4413c5a8b00918602a814c4e2e50}{makeLinearPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}});}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453 \textcolor{keyword}{public}:}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 }
+\DoxyCodeLine{456 }
+\DoxyCodeLine{457     \textcolor{keyword}{static} \textcolor{keywordtype}{void} setVerbose(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459     \textcolor{keyword}{static} \textcolor{keywordtype}{void} printError(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{460 }
+\DoxyCodeLine{461 \};}
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463 \}}
+\DoxyCodeLine{464 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// Plan\_H}}
+\DoxyCodeLine{465 }
+
+\end{DoxyCode}

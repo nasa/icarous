@@ -1,0 +1,865 @@
+\hypertarget{classlarcfm_1_1_poly_path}{}\doxysection{larcfm\+::Poly\+Path Class Reference}
+\label{classlarcfm_1_1_poly_path}\index{larcfm::PolyPath@{larcfm::PolyPath}}
+
+
+{\ttfamily \#include $<$Poly\+Path.\+h$>$}
+
+Inheritance diagram for larcfm\+::Poly\+Path\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_poly_path}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aee07b5a713dfe5d7c24f7c3ea2bca563}\label{classlarcfm_1_1_poly_path_aee07b5a713dfe5d7c24f7c3ea2bca563}} 
+enum {\bfseries Path\+Mode} \{ \newline
+{\bfseries MORPHING}
+, {\bfseries AVG\+\_\+\+VEL}
+, {\bfseries USER\+\_\+\+VEL}
+, {\bfseries USER\+\_\+\+VEL\+\_\+\+FINITE}
+, \newline
+{\bfseries USER\+\_\+\+VEL\+\_\+\+EVER}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path_a332ef1079170d5f6e21a92ff7eea1a9c}{Poly\+Path}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path_a98b65a3e8811998d79f35a7edff6f1ec}{Poly\+Path}} (const std\+::string \&n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a31a5e2e41b17367bd3719d9611b6d645}\label{classlarcfm_1_1_poly_path_a31a5e2e41b17367bd3719d9611b6d645}} 
+{\bfseries Poly\+Path} (const std\+::string \&n, Path\+Mode m)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path_a5ee3a9057f7a6e4d9bff972829dc7658}{Poly\+Path}} (const std\+::string \&n, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path_ab06145d10661de3911e441d72179c1ab}{Poly\+Path}} (const std\+::string \&n, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a6b405041d95317fc368caed70d1f0fdc}\label{classlarcfm_1_1_poly_path_a6b405041d95317fc368caed70d1f0fdc}} 
+{\bfseries Poly\+Path} (const std\+::string \&n, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a59d97b955a40c8549ecb0c513fbfef05}\label{classlarcfm_1_1_poly_path_a59d97b955a40c8549ecb0c513fbfef05}} 
+{\bfseries Poly\+Path} (const std\+::string \&n, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} $>$ \&ps, const std\+::vector$<$ double $>$ \&ts)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a87e316c2ed362839aeff7c93aa82b5db}{copy}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a94cc7c474436d3e3314602c31177661a}\label{classlarcfm_1_1_poly_path_a94cc7c474436d3e3314602c31177661a}} 
+\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}, double, double $>$ {\bfseries build\+Plan} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_a8ccbf08ae90adeccb615807da156b7da}{is\+Lat\+Lon}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_a489cbc3d327dbbe54ed64c4eab86f265}{is\+Static}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_aea63b3769783e6b773132e13b878ab4a}{is\+Continuing}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_a33e9fd59f6fd9ca6162bea455e79ec03}{is\+User\+Vel}} () const
+\item 
+Path\+Mode \mbox{\hyperlink{classlarcfm_1_1_poly_path_a2aaad10d80a78eae9df15932347e40f9}{get\+Path\+Mode}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a860521373ee22f10e90abb7181f9be1f}{set\+Path\+Mode}} (Path\+Mode m)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_a8ed4fb94b42f71b80fb0051c7d2933ef}{get\+ID}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a3b0955d1ddeb65ecf9d3071a3b8c2459}{set\+ID}} (const std\+::string \&n)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_a68859e9303e7c3f44304183f3966a3ed}{get\+Note}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a6d61c148c6b79e363bfeda7d42642a98}\label{classlarcfm_1_1_poly_path_a6d61c148c6b79e363bfeda7d42642a98}} 
+void {\bfseries set\+Note} (const std\+::string \&n)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_path_abc327f714c1676aa7c8abc6d18a4d621}{size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a6722fcb7119b0fe8b83b787faa7606d3}{add\+Polygon}} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, double time)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a75bce206a9abf48da42e7ff0e932c262}{add\+Polygon}} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double time)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a7363a4291043935a2778ae31917e5322}{remove}} (int n)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly_path_a3c15620a01f73436bc8e69b71b4a8a64}{get\+First\+Time}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly_path_ac2800949bea270a82247cf97504f6b67}{get\+Last\+Time}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly_path_acdac11b23cef61d3fbf664dbcda497c8}{get\+Last\+Poly\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_aff50291ebfe017abf901ce6d7bc1b678}{make\+Vertex\+Count\+Equal}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_ae6697cfa9413a5cc239ecbf1d6f433a5}{interpolate}} (double time) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a9d965650f1ed46297c41539c6628bb5f}{initial\+Velocity}} (int n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a79d94a3ec3a6433b3244a79433ab8c5e}\label{classlarcfm_1_1_poly_path_a79d94a3ec3a6433b3244a79433ab8c5e}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries initial\+Vertex\+Velocity} (int vert, int n)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_path_a2753160a35e0e9c0cce0ff165acefe2c}{get\+Segment}} (double tm) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a7a5b8f1542bf75d7491b71f0afce908c}{position}} (double time) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_path_ab468110132aaf35c18a0329214739d9d}{get\+Index}} (double time) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a17203beef3e25a2ec11bd73b41fa7398}\label{classlarcfm_1_1_poly_path_a17203beef3e25a2ec11bd73b41fa7398}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \& {\bfseries get\+Poly\+Ref} (int n)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a3ebcd5e0d7fb28e96ebd39c0de5797d1}{get\+Poly}} (int n) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_poly_path_aafe5a01fdf16b961043d56994283c612}{get\+Time}} (int n) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a9a0c9930326531514fb3ca90948f809e}{set\+Time}} (int n, double t)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_ab7444444caa68ee6433fbeecaf7b044e}{set\+Polygon}} (int i, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_ad2ad76136098b5fe05d67bcf1342ec6d}{set\+Velocity}} (int i, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_a73ea522d8af255268578dca4568b0155}{validate}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_ab66c56e3272c2c7616288dffa09de860}{truncate}} (double t)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_a41cfe89cdfd1287e4668515053073379}{add\+Vertex}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double bottom, double top, double time)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_ac8bae6f38dcb903df6cead2015d776fe}{add\+Vertex}} (int n, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_aeafe9cf6a9cfeb81050d696e593b359f}{remove\+Vertex}} (int vert)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_ae322a10b0432d56a219e51751ab6f41a}{translate}} (\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} off)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_poly_path_ae6a6b077cecd17637e1be114ded14cb5}{timeshift}} (double shift)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_aef50fa812d21719c340e46c1731a5843}{velocity}} (double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a595bbc8becf61a399768499e1bc8cb6b}\label{classlarcfm_1_1_poly_path_a595bbc8becf61a399768499e1bc8cb6b}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries vertex\+Velocity} (int vert, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a74efb8daf1ebbe6e63815d658252c599}\label{classlarcfm_1_1_poly_path_a74efb8daf1ebbe6e63815d658252c599}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries final\+Velocity} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a26badaf108255d4750a17299f367d54d}\label{classlarcfm_1_1_poly_path_a26badaf108255d4750a17299f367d54d}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries final\+Vertex\+Velocity} (int vert, int i)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a2aef4d3cdcffad03e14f8534cd55a2aa}{get\+Initial\+Moving\+Polygon}} (int i, const Euclidean\+Projection \&proj)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_ae782cd93be5d23ae5adf84c88e35e947}{get\+Moving\+Polygon}} (double time, const Euclidean\+Projection \&proj)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aaf0a66bc32bfd19ca4e6bc0b460de12d}\label{classlarcfm_1_1_poly_path_aaf0a66bc32bfd19ca4e6bc0b460de12d}} 
+bool {\bfseries is\+Containment} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a4e048281b1cf3a4260581b01d5d8aa8c}\label{classlarcfm_1_1_poly_path_a4e048281b1cf3a4260581b01d5d8aa8c}} 
+void {\bfseries set\+Containment} (bool b)
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_a0b5e68b0a6ed72f687bb33203ff89820}{to\+String}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a8fe77b71d44cbe19e2119753269ddd07}\label{classlarcfm_1_1_poly_path_a8fe77b71d44cbe19e2119753269ddd07}} 
+std\+::string {\bfseries to\+String\+Short} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_aca9a0a672e4088e422799dced93342f5}{to\+Output}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a67558d9aae412c143abc6fb93af4fc30}\label{classlarcfm_1_1_poly_path_a67558d9aae412c143abc6fb93af4fc30}} 
+std\+::string {\bfseries to\+Output} (int precision, bool tcp\+Columns)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a7caca7adca8a33511671bba143214230}\label{classlarcfm_1_1_poly_path_a7caca7adca8a33511671bba143214230}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} (int i, int j, int precision, int lat\+Lon\+Extra\+Precision, bool tcp\+Columns)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aa258cb96e20f3f400aa15d067ad42b43}\label{classlarcfm_1_1_poly_path_aa258cb96e20f3f400aa15d067ad42b43}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries get\+Simple\+Moving\+Poly} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aab104a510aea6c7f83ab04e08f81994b}\label{classlarcfm_1_1_poly_path_aab104a510aea6c7f83ab04e08f81994b}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries get\+Simple\+Moving\+Poly} (double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_af853bfbd1f1b22f3d2adb0db747c9f8e}\label{classlarcfm_1_1_poly_path_af853bfbd1f1b22f3d2adb0db747c9f8e}} 
+bool {\bfseries contains} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a0c4188af6b400eebcb0c9a32bda81b53}\label{classlarcfm_1_1_poly_path_a0c4188af6b400eebcb0c9a32bda81b53}} 
+bool {\bfseries contains2D} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \mbox{\hyperlink{classlarcfm_1_1_poly_path_a93974e3af04ea97d1c70e69c999a690d}{get\+Bounding\+Rectangle}} (double user\+\_\+vel\+\_\+time\+\_\+extension)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a38de55ddbeea930d3ecb3459394055e8}\label{classlarcfm_1_1_poly_path_a38de55ddbeea930d3ecb3459394055e8}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries get\+Bounding\+Rectangle} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_ad036abef95be3b0fc8c58c510f855646}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_poly_path_a29521b00fcc1860cd0c675210c437aae}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_ac54be7cc2e5e82347dc3437600404683}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_poly_path_ac51b445672b398b8cb8cc3829342b387}{get\+Message\+No\+Clear}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a964087e4ec9be0553b8b8daa065ca2c8}\label{classlarcfm_1_1_poly_path_a964087e4ec9be0553b8b8daa065ca2c8}} 
+void {\bfseries add\+Warning} (std\+::string s) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a4a1977e0f13c220e4fdb5cbbdac37a31}\label{classlarcfm_1_1_poly_path_a4a1977e0f13c220e4fdb5cbbdac37a31}} 
+void {\bfseries add\+Error} (std\+::string s) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_addfb5d0d6571822ca0968b05ff5b27f2}\label{classlarcfm_1_1_poly_path_addfb5d0d6571822ca0968b05ff5b27f2}} 
+static \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} {\bfseries path\+From\+State} (const std\+::string \&n, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double tstart, double tend)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a7da376e780a56f6dc845f7e35299ff18}\label{classlarcfm_1_1_poly_path_a7da376e780a56f6dc845f7e35299ff18}} 
+static \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} {\bfseries path\+From\+State} (const std\+::string \&n, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&mp, Euclidean\+Projection proj, double tstart, double tend)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aaa74fb6b913208ede4129a74e77b2312}\label{classlarcfm_1_1_poly_path_aaa74fb6b913208ede4129a74e77b2312}} 
+static std\+::string {\bfseries path\+Mode\+To\+String} (Path\+Mode m)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac5bfdd42723b1eb384a47c6d2b9114c8}\label{classlarcfm_1_1_poly_path_ac5bfdd42723b1eb384a47c6d2b9114c8}} 
+static Path\+Mode {\bfseries parse\+Path\+Mode} (const std\+::string \&s)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a6e104420fa1847c8397db7ae84fe5c80}\label{classlarcfm_1_1_poly_path_a6e104420fa1847c8397db7ae84fe5c80}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} $>$ {\bfseries poly\+List}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a6c0bd13ec74292a104b35aebc45b02f5}\label{classlarcfm_1_1_poly_path_a6c0bd13ec74292a104b35aebc45b02f5}} 
+std\+::vector$<$ double $>$ {\bfseries times}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a48ca202a4606b01c7c466b65078b8b7b}\label{classlarcfm_1_1_poly_path_a48ca202a4606b01c7c466b65078b8b7b}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries vlist}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a3e952e7c6a612b11cd3421fa7f1cba55}\label{classlarcfm_1_1_poly_path_a3e952e7c6a612b11cd3421fa7f1cba55}} 
+std\+::string {\bfseries label}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ab79529eb0fe758f0edcdc8b1181b1270}\label{classlarcfm_1_1_poly_path_ab79529eb0fe758f0edcdc8b1181b1270}} 
+std\+::string {\bfseries note}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac7bb7b5f6af56eefdba4a5701070db63}\label{classlarcfm_1_1_poly_path_ac7bb7b5f6af56eefdba4a5701070db63}} 
+Path\+Mode {\bfseries mode}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a70dce1d898d14f11aa5794dba9a126e8}\label{classlarcfm_1_1_poly_path_a70dce1d898d14f11aa5794dba9a126e8}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aa8f93b97b9742da036a25ef8997ce7e4}\label{classlarcfm_1_1_poly_path_aa8f93b97b9742da036a25ef8997ce7e4}} 
+bool {\bfseries mode\+Set}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a69d62a38de4daf4932cd1fee9b5563c1}\label{classlarcfm_1_1_poly_path_a69d62a38de4daf4932cd1fee9b5563c1}} 
+bool {\bfseries containment}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Polygons are arranged in \char`\"{}paths\char`\"{} similar to aircraft plans (and, in fact, this object can produce one -- or more -- faux-\/aircraft plans that approximate the area in question). The polygon is allowed to change shape as it travels along the path, but the number of vertices must remain constant. The shape at non-\/specified time points is linearly interpolated from the neighboring points. ~\newline
+
+
+(Note that the default mode has changed from MORPHING to AVG\+\_\+\+VEL.)
+
+Paths can have one of several modes\+: AVG\+\_\+\+VEL (the default)\+: Velocities are calculated between the average points of consecutive steps. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time. \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed is based on the bottom of the steps. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) MORPHING\+: all polygons must have the same number of vertices. Velocities are calculated vertex by vertex between consecutive steps. The path starts to exist at the first time and stops existing at the last time. \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed is based on the bottom of the steps. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) USER\+\_\+\+VEL\+: Velocities are user-\/specified and applied to all vertices. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time, and the last step will have an infinitely continuing velocity. The time interval the path exists is always \mbox{[}t1,+inf\mbox{]} USER\+\_\+\+VEL\+\_\+\+FINITE\+: As USER\+\_\+\+VEL, but the path does not continue beyond the last step. (One-\/step paths are considered the same as USER\+\_\+\+VEL.) ~\newline
+ The last step is mostly ignored except for time and can be any non-\/null polygon. The time interval the path exists is always \mbox{[}t1,t2\mbox{]} USER\+\_\+\+VEL\+\_\+\+EVER\+: As USER\+\_\+\+VEL, but the path also continues into the past from the first point (at least to time 0). The time interval the path exists is always \mbox{[}0,+inf\mbox{]}
+
+While different modes can mimic many of the same behaviors, there are some internal optimizations when processing certain polygon modes. For example it is more efficient to use a static polygon than to use a USER\+\_\+\+VEL polygon with zero velocity. Interpolating MORPHING polygons also can require more computation than other varieties.
+
+Note\+: polygon support is experimental and the interface is subject to change! 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a332ef1079170d5f6e21a92ff7eea1a9c}\label{classlarcfm_1_1_poly_path_a332ef1079170d5f6e21a92ff7eea1a9c}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!PolyPath@{PolyPath}}
+\index{PolyPath@{PolyPath}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{PolyPath()}{PolyPath()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Poly\+Path\+::\+Poly\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor \mbox{\Hypertarget{classlarcfm_1_1_poly_path_a98b65a3e8811998d79f35a7edff6f1ec}\label{classlarcfm_1_1_poly_path_a98b65a3e8811998d79f35a7edff6f1ec}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!PolyPath@{PolyPath}}
+\index{PolyPath@{PolyPath}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{PolyPath()}{PolyPath()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Poly\+Path\+::\+Poly\+Path (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Constructor with associated name 
+\begin{DoxyParams}{Parameters}
+{\em n} & name string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a5ee3a9057f7a6e4d9bff972829dc7658}\label{classlarcfm_1_1_poly_path_a5ee3a9057f7a6e4d9bff972829dc7658}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!PolyPath@{PolyPath}}
+\index{PolyPath@{PolyPath}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{PolyPath()}{PolyPath()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Poly\+Path\+::\+Poly\+Path (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{n,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p }\end{DoxyParamCaption})}
+
+Make a Poly\+Plan for a non-\/dynamic area p. 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ab06145d10661de3911e441d72179c1ab}\label{classlarcfm_1_1_poly_path_ab06145d10661de3911e441d72179c1ab}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!PolyPath@{PolyPath}}
+\index{PolyPath@{PolyPath}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{PolyPath()}{PolyPath()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Poly\+Path\+::\+Poly\+Path (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{n,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Construct a new (dynamic) path including polygon p at time t 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a75bce206a9abf48da42e7ff0e932c262}\label{classlarcfm_1_1_poly_path_a75bce206a9abf48da42e7ff0e932c262}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!addPolygon@{addPolygon}}
+\index{addPolygon@{addPolygon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{addPolygon()}{addPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::add\+Polygon (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+Add a polygon with velocity information. If mode has not been already set, this defaults to USER\+\_\+\+VEL mode. 
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+{\em v} & velocity \\
+\hline
+{\em time} & start time for this polygon \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a6722fcb7119b0fe8b83b787faa7606d3}\label{classlarcfm_1_1_poly_path_a6722fcb7119b0fe8b83b787faa7606d3}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!addPolygon@{addPolygon}}
+\index{addPolygon@{addPolygon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{addPolygon()}{addPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::add\+Polygon (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+Add a polygon without velocity data. If the mode has not been set, this defaults to MORPHING mode.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & polygon \\
+\hline
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a41cfe89cdfd1287e4668515053073379}\label{classlarcfm_1_1_poly_path_a41cfe89cdfd1287e4668515053073379}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::add\+Vertex (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{double}]{bottom,  }\item[{double}]{top,  }\item[{double}]{time }\end{DoxyParamCaption})}
+
+A quick and dirty method for building paths one point at a time. This does not check that there are the same number of points at each step -- call \mbox{\hyperlink{classlarcfm_1_1_poly_path_a73ea522d8af255268578dca4568b0155}{validate()}} on this object when done to confirm that the final path is correct. 
+\begin{DoxyParams}{Parameters}
+{\em p} & A new point. \\
+\hline
+{\em bottom} & polygon\textquotesingle{}s bottom altitude \\
+\hline
+{\em top} & polygon\textquotesingle{}s top altitude \\
+\hline
+{\em time} & the time for the poly p is a vertex of \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac8bae6f38dcb903df6cead2015d776fe}\label{classlarcfm_1_1_poly_path_ac8bae6f38dcb903df6cead2015d776fe}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::add\+Vertex (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+This adds a vertex to every polygon on this path. The vertex will be added relative to the centroid in each case, so other polygons may need to be modified to match.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a87e316c2ed362839aeff7c93aa82b5db}\label{classlarcfm_1_1_poly_path_a87e316c2ed362839aeff7c93aa82b5db}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!copy@{copy}}
+\index{copy@{copy}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Poly\+Path\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a deep copy of this path.
+
+\begin{DoxyReturn}{Returns}
+path of polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a93974e3af04ea97d1c70e69c999a690d}\label{classlarcfm_1_1_poly_path_a93974e3af04ea97d1c70e69c999a690d}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getBoundingRectangle@{getBoundingRectangle}}
+\index{getBoundingRectangle@{getBoundingRectangle}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getBoundingRectangle()}{getBoundingRectangle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} larcfm\+::\+Poly\+Path\+::get\+Bounding\+Rectangle (\begin{DoxyParamCaption}\item[{double}]{user\+\_\+vel\+\_\+time\+\_\+extension }\end{DoxyParamCaption})}
+
+Computes a large bounding rectangle around the moving polygon.
+
+Note\+: for the USER\+\_\+\+VEL AND USER\+\_\+\+VEL\+\_\+\+EVER types, the last polygon is extended \char`\"{}user\+\_\+vel\+\_\+time\+\_\+extension\char`\"{} hours
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+\_\+vel\+\_\+time\+\_\+extension} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bounding rectangle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a3c15620a01f73436bc8e69b71b4a8a64}\label{classlarcfm_1_1_poly_path_a3c15620a01f73436bc8e69b71b4a8a64}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getFirstTime@{getFirstTime}}
+\index{getFirstTime@{getFirstTime}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getFirstTime()}{getFirstTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly\+Path\+::get\+First\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the start time of this path. Static paths have a start time of 0. \begin{DoxyReturn}{Returns}
+first time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a8ed4fb94b42f71b80fb0051c7d2933ef}\label{classlarcfm_1_1_poly_path_a8ed4fb94b42f71b80fb0051c7d2933ef}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getID@{getID}}
+\index{getID@{getID}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getID()}{getID()}}
+{\footnotesize\ttfamily string larcfm\+::\+Poly\+Path\+::get\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the name associated with this path \begin{DoxyReturn}{Returns}
+name 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ab468110132aaf35c18a0329214739d9d}\label{classlarcfm_1_1_poly_path_ab468110132aaf35c18a0329214739d9d}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getIndex@{getIndex}}
+\index{getIndex@{getIndex}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getIndex()}{getIndex()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Path\+::get\+Index (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Returns the step index associated with a particular time, if there is a match, otherwise returns a negative value. -\/1 indicates a time before the path begins. -\/x indicates a time after point (x-\/1), so a time between points 1 and 2 will return index -\/2. A time after the path will return -\/size-\/1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a2aef4d3cdcffad03e14f8534cd55a2aa}\label{classlarcfm_1_1_poly_path_a2aef4d3cdcffad03e14f8534cd55a2aa}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getInitialMovingPolygon@{getInitialMovingPolygon}}
+\index{getInitialMovingPolygon@{getInitialMovingPolygon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getInitialMovingPolygon()}{getInitialMovingPolygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} larcfm\+::\+Poly\+Path\+::get\+Initial\+Moving\+Polygon (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})}
+
+This will return a moving polygon that starts at point i and ends at point i+1 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_acdac11b23cef61d3fbf664dbcda497c8}\label{classlarcfm_1_1_poly_path_acdac11b23cef61d3fbf664dbcda497c8}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getLastPolyTime@{getLastPolyTime}}
+\index{getLastPolyTime@{getLastPolyTime}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getLastPolyTime()}{getLastPolyTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly\+Path\+::get\+Last\+Poly\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the time associated with the last polygon in the path. Note that this may not be the same as getlast\+Time(). \begin{DoxyReturn}{Returns}
+time
+\end{DoxyReturn}
+Returns the time of the last polygon in the path \mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac2800949bea270a82247cf97504f6b67}\label{classlarcfm_1_1_poly_path_ac2800949bea270a82247cf97504f6b67}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getLastTime@{getLastTime}}
+\index{getLastTime@{getLastTime}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getLastTime()}{getLastTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly\+Path\+::get\+Last\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the end time of this path. Static paths have an end time of 0. Continuing paths have an end time of POSITIVE\+\_\+\+INFINITY \begin{DoxyReturn}{Returns}
+last time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac54be7cc2e5e82347dc3437600404683}\label{classlarcfm_1_1_poly_path_ac54be7cc2e5e82347dc3437600404683}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Poly\+Path\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ac51b445672b398b8cb8cc3829342b387}\label{classlarcfm_1_1_poly_path_ac51b445672b398b8cb8cc3829342b387}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Poly\+Path\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_poly_path_ad036abef95be3b0fc8c58c510f855646}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ae782cd93be5d23ae5adf84c88e35e947}\label{classlarcfm_1_1_poly_path_ae782cd93be5d23ae5adf84c88e35e947}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getMovingPolygon@{getMovingPolygon}}
+\index{getMovingPolygon@{getMovingPolygon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getMovingPolygon()}{getMovingPolygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} larcfm\+::\+Poly\+Path\+::get\+Moving\+Polygon (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})}
+
+This will return a moving polygon that STARTS at time t (relative time 0) and ends at its segment end time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a68859e9303e7c3f44304183f3966a3ed}\label{classlarcfm_1_1_poly_path_a68859e9303e7c3f44304183f3966a3ed}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getNote@{getNote}}
+\index{getNote@{getNote}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getNote()}{getNote()}}
+{\footnotesize\ttfamily string larcfm\+::\+Poly\+Path\+::get\+Note (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the note field. \begin{DoxyReturn}{Returns}
+note 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a2aaad10d80a78eae9df15932347e40f9}\label{classlarcfm_1_1_poly_path_a2aaad10d80a78eae9df15932347e40f9}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getPathMode@{getPathMode}}
+\index{getPathMode@{getPathMode}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getPathMode()}{getPathMode()}}
+{\footnotesize\ttfamily Poly\+Path\+::\+Path\+Mode larcfm\+::\+Poly\+Path\+::get\+Path\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the mode for this path. AVG\+\_\+\+VEL (the default)\+: Velocities are calculated between the average points of consecutive steps. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) MORPHING\+: all polygons must have the same number of vertices. Velocities are calculated vertex by vertex between consecutive steps. The path starts to exist at the first time and stops existing at the last time. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) USER\+\_\+\+VEL\+: Velocities are user-\/specified and applied to all vertices. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time, and the last step will have an infinitely continuing velocity. The time interval the path exists is always \mbox{[}t1,+inf\mbox{]} USER\+\_\+\+VEL\+\_\+\+FINITE\+: As USER\+\_\+\+VEL, but the path does not continue beyond the last step. (One-\/step paths are considered the same as USER\+\_\+\+VEL.) ~\newline
+ The last step is mostly ignored except for time and can be any non-\/null polygon. The time interval the path exists is always \mbox{[}t1,t2\mbox{]} USER\+\_\+\+VEL\+\_\+\+EVER\+: As USER\+\_\+\+VEL, but the path also continues into the past from the first point (at least to time 0). The time interval the path exists is always \mbox{[}0,+inf\mbox{]} \begin{DoxyReturn}{Returns}
+path mode 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a3ebcd5e0d7fb28e96ebd39c0de5797d1}\label{classlarcfm_1_1_poly_path_a3ebcd5e0d7fb28e96ebd39c0de5797d1}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getPoly@{getPoly}}
+\index{getPoly@{getPoly}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getPoly()}{getPoly()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Poly\+Path\+::get\+Poly (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption}) const}
+
+Returns a copy of the poly at step index n.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a2753160a35e0e9c0cce0ff165acefe2c}\label{classlarcfm_1_1_poly_path_a2753160a35e0e9c0cce0ff165acefe2c}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getSegment@{getSegment}}
+\index{getSegment@{getSegment}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getSegment()}{getSegment()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Path\+::get\+Segment (\begin{DoxyParamCaption}\item[{double}]{tm }\end{DoxyParamCaption}) const}
+
+Return the segment number that contains \textquotesingle{}time\textquotesingle{} in \mbox{[}s\mbox{]}. If the time is not contained in the flight plan then -\/1 is returned. If the time for point 1 is 10.\+0 and the time for point 2 is 20.\+0, then get\+Segment(10.\+0) will produce 0, get\+Segment(15.\+0) will produce 0, and get\+Segment(20.\+0) will produce 1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tm} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+segment number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aafe5a01fdf16b961043d56994283c612}\label{classlarcfm_1_1_poly_path_aafe5a01fdf16b961043d56994283c612}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!getTime@{getTime}}
+\index{getTime@{getTime}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{getTime()}{getTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Poly\+Path\+::get\+Time (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption}) const}
+
+Returns the time for a given step index.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ad036abef95be3b0fc8c58c510f855646}\label{classlarcfm_1_1_poly_path_ad036abef95be3b0fc8c58c510f855646}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a29521b00fcc1860cd0c675210c437aae}\label{classlarcfm_1_1_poly_path_a29521b00fcc1860cd0c675210c437aae}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a9d965650f1ed46297c41539c6628bb5f}\label{classlarcfm_1_1_poly_path_a9d965650f1ed46297c41539c6628bb5f}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!initialVelocity@{initialVelocity}}
+\index{initialVelocity@{initialVelocity}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{initialVelocity()}{initialVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Poly\+Path\+::initial\+Velocity (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+Returns the initial velocity of this path, starting from a given step index. 
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ae6697cfa9413a5cc239ecbf1d6f433a5}\label{classlarcfm_1_1_poly_path_ae6697cfa9413a5cc239ecbf1d6f433a5}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!interpolate@{interpolate}}
+\index{interpolate@{interpolate}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{interpolate()}{interpolate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Poly\+Path\+::interpolate (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Returns an interpolated poly from an arbitrary time on this path. Returns null if the polygon does not exist at the given time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aea63b3769783e6b773132e13b878ab4a}\label{classlarcfm_1_1_poly_path_aea63b3769783e6b773132e13b878ab4a}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!isContinuing@{isContinuing}}
+\index{isContinuing@{isContinuing}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{isContinuing()}{isContinuing()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::is\+Continuing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if this \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} continues to exist past the defined path (it has a velocity, which may be zero, and no definite end point) This is the case if mode is USER\+\_\+\+VEL or if there is only one step in the path. Note that static paths will also be continuing. \begin{DoxyReturn}{Returns}
+true, if continuing 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a8ccbf08ae90adeccb615807da156b7da}\label{classlarcfm_1_1_poly_path_a8ccbf08ae90adeccb615807da156b7da}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if this path contains any geodetic points. \begin{DoxyReturn}{Returns}
+true, if lat/lon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a489cbc3d327dbbe54ed64c4eab86f265}\label{classlarcfm_1_1_poly_path_a489cbc3d327dbbe54ed64c4eab86f265}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!isStatic@{isStatic}}
+\index{isStatic@{isStatic}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{isStatic()}{isStatic()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::is\+Static (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if this \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} is static (it exists in a fixed location). This is the case if there is only one step in the path and the mode is MORPHING or AVG\+\_\+\+VEL. Note that several optimizations are applied to static polygons that are not applied to a USER\+\_\+\+VEL path with zero velocity (even though they ultimately have similar behaviors). \begin{DoxyReturn}{Returns}
+true, if static 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a33e9fd59f6fd9ca6162bea455e79ec03}\label{classlarcfm_1_1_poly_path_a33e9fd59f6fd9ca6162bea455e79ec03}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!isUserVel@{isUserVel}}
+\index{isUserVel@{isUserVel}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{isUserVel()}{isUserVel()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::is\+User\+Vel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Helper function to combine the 3 user vel modes \begin{DoxyReturn}{Returns}
+true, if user velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aff50291ebfe017abf901ce6d7bc1b678}\label{classlarcfm_1_1_poly_path_aff50291ebfe017abf901ce6d7bc1b678}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!makeVertexCountEqual@{makeVertexCountEqual}}
+\index{makeVertexCountEqual@{makeVertexCountEqual}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{makeVertexCountEqual()}{makeVertexCountEqual()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::make\+Vertex\+Count\+Equal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Convert the polygons in this path so that all have the same number of vertices. \mbox{\Hypertarget{classlarcfm_1_1_poly_path_a7a5b8f1542bf75d7491b71f0afce908c}\label{classlarcfm_1_1_poly_path_a7a5b8f1542bf75d7491b71f0afce908c}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!position@{position}}
+\index{position@{position}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Poly\+Path\+::position (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption}) const}
+
+Interpolate the poly at the given time If time is outside the path\textquotesingle{}s limit, return null. 
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon
+\end{DoxyReturn}
+Interpolate the poly at the given time If time is outside the path\textquotesingle{}s limit, return null. 
+\begin{DoxyParams}{Parameters}
+{\em time} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a7363a4291043935a2778ae31917e5322}\label{classlarcfm_1_1_poly_path_a7363a4291043935a2778ae31917e5322}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!remove@{remove}}
+\index{remove@{remove}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::remove (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+Remove a poly from this path, by step index. 
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aeafe9cf6a9cfeb81050d696e593b359f}\label{classlarcfm_1_1_poly_path_aeafe9cf6a9cfeb81050d696e593b359f}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!removeVertex@{removeVertex}}
+\index{removeVertex@{removeVertex}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{removeVertex()}{removeVertex()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::remove\+Vertex (\begin{DoxyParamCaption}\item[{int}]{vert }\end{DoxyParamCaption})}
+
+Remove the nth vertex from all polygons on the path. 
+\begin{DoxyParams}{Parameters}
+{\em vert} & index of vertex to be removed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a3b0955d1ddeb65ecf9d3071a3b8c2459}\label{classlarcfm_1_1_poly_path_a3b0955d1ddeb65ecf9d3071a3b8c2459}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!setID@{setID}}
+\index{setID@{setID}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{setID()}{setID()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::set\+ID (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{n }\end{DoxyParamCaption})}
+
+Sets the name to be associated with this path. 
+\begin{DoxyParams}{Parameters}
+{\em n} & new name \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a860521373ee22f10e90abb7181f9be1f}\label{classlarcfm_1_1_poly_path_a860521373ee22f10e90abb7181f9be1f}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!setPathMode@{setPathMode}}
+\index{setPathMode@{setPathMode}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{setPathMode()}{setPathMode()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::set\+Path\+Mode (\begin{DoxyParamCaption}\item[{Path\+Mode}]{m }\end{DoxyParamCaption})}
+
+Set the mode for this path. Note that switching away from a USER\+\_\+\+Vel$\ast$ mode can cause a loss of stored velocity information. AVG\+\_\+\+VEL (the default)\+: Velocities are calculated between the average points of consecutive steps. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) MORPHING\+: all polygons must have the same number of vertices. Velocities are calculated vertex by vertex between consecutive steps. The path starts to exist at the first time and stops existing at the last time. In the case of a single-\/step path, velocity is zero and time is ignored\+: the polygon always exists statically at that location. The time interval the path exists is either \mbox{[}t1,t2\mbox{]} or \mbox{[}0,+inf\mbox{]} (for 1-\/step paths) USER\+\_\+\+VEL\+: Velocities are user-\/specified and applied to all vertices. Polygons do not need to have the same number of vertices at each step. The path starts to exist at the first time, and the last step will have an infinitely continuing velocity. The time interval the path exists is always \mbox{[}t1,+inf\mbox{]} USER\+\_\+\+VEL\+\_\+\+FINITE\+: As USER\+\_\+\+VEL, but the path does not continue beyond the last step. (One-\/step paths are considered the same as USER\+\_\+\+VEL.) ~\newline
+ The last step is mostly ignored except for time and can be any non-\/null polygon. The time interval the path exists is always \mbox{[}t1,t2\mbox{]} USER\+\_\+\+VEL\+\_\+\+EVER\+: As USER\+\_\+\+VEL, but the path also continues into the past from the first point (at least to time 0). The time interval the path exists is always \mbox{[}0,+inf\mbox{]} 
+\begin{DoxyParams}{Parameters}
+{\em m} & path mode \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ab7444444caa68ee6433fbeecaf7b044e}\label{classlarcfm_1_1_poly_path_ab7444444caa68ee6433fbeecaf7b044e}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!setPolygon@{setPolygon}}
+\index{setPolygon@{setPolygon}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{setPolygon()}{setPolygon()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::set\+Polygon (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p }\end{DoxyParamCaption})}
+
+Set the polygon at index i to be a copy of p
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+{\em p} & polygon\\
+\hline
+\end{DoxyParams}
+Set the polygon at index i to be a copy of p \mbox{\Hypertarget{classlarcfm_1_1_poly_path_a9a0c9930326531514fb3ca90948f809e}\label{classlarcfm_1_1_poly_path_a9a0c9930326531514fb3ca90948f809e}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!setTime@{setTime}}
+\index{setTime@{setTime}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{setTime()}{setTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::set\+Time (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Sets the time t for a given step n. The order of times must be preserved.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+{\em t} & time\\
+\hline
+\end{DoxyParams}
+Sets the time t for a given step n. The order of times must be preserved. \mbox{\Hypertarget{classlarcfm_1_1_poly_path_ad2ad76136098b5fe05d67bcf1342ec6d}\label{classlarcfm_1_1_poly_path_ad2ad76136098b5fe05d67bcf1342ec6d}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!setVelocity@{setVelocity}}
+\index{setVelocity@{setVelocity}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{setVelocity()}{setVelocity()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::set\+Velocity (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption})}
+
+Set the user velocity at index i to be v This only has effect if is\+Calculated\+Velocities() is false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+{\em v} & velocity\\
+\hline
+\end{DoxyParams}
+Set the user velocity at index i to be v This only has effect if is\+Calculated\+Velocities() is false. \mbox{\Hypertarget{classlarcfm_1_1_poly_path_abc327f714c1676aa7c8abc6d18a4d621}\label{classlarcfm_1_1_poly_path_abc327f714c1676aa7c8abc6d18a4d621}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!size@{size}}
+\index{size@{size}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Path\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the number of time points in this path. Static paths will have a size of 1. \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ae6a6b077cecd17637e1be114ded14cb5}\label{classlarcfm_1_1_poly_path_ae6a6b077cecd17637e1be114ded14cb5}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!timeshift@{timeshift}}
+\index{timeshift@{timeshift}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{timeshift()}{timeshift()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::timeshift (\begin{DoxyParamCaption}\item[{double}]{shift }\end{DoxyParamCaption})}
+
+Shift all times in the path by the given number of seconds. 
+\begin{DoxyParams}{Parameters}
+{\em shift} & Amount of shift. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aca9a0a672e4088e422799dced93342f5}\label{classlarcfm_1_1_poly_path_aca9a0a672e4088e422799dced93342f5}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!toOutput@{toOutput}}
+\index{toOutput@{toOutput}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{toOutput()}{toOutput()}}
+{\footnotesize\ttfamily string larcfm\+::\+Poly\+Path\+::to\+Output (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns a string representation of this path that is compatible with the \mbox{\hyperlink{classlarcfm_1_1_poly_reader}{Poly\+Reader}} input format. \begin{DoxyReturn}{Returns}
+string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a0b5e68b0a6ed72f687bb33203ff89820}\label{classlarcfm_1_1_poly_path_a0b5e68b0a6ed72f687bb33203ff89820}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!toString@{toString}}
+\index{toString@{toString}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily string larcfm\+::\+Poly\+Path\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns a string representation of this path. \mbox{\Hypertarget{classlarcfm_1_1_poly_path_ae322a10b0432d56a219e51751ab6f41a}\label{classlarcfm_1_1_poly_path_ae322a10b0432d56a219e51751ab6f41a}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!translate@{translate}}
+\index{translate@{translate}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{translate()}{translate()}}
+{\footnotesize\ttfamily void larcfm\+::\+Poly\+Path\+::translate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}}]{off }\end{DoxyParamCaption})}
+
+Translate the entire path by a Euclidean offset 
+\begin{DoxyParams}{Parameters}
+{\em off} & Euclidean offset \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_ab66c56e3272c2c7616288dffa09de860}\label{classlarcfm_1_1_poly_path_ab66c56e3272c2c7616288dffa09de860}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!truncate@{truncate}}
+\index{truncate@{truncate}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{truncate()}{truncate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Poly\+Path\+::truncate (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Return a truncated version of this path that ends at time t. This will change a USER\+\_\+\+VEL path into a USER\+\_\+\+VEL\+\_\+\+FINITE path. 
+\begin{DoxyParams}{Parameters}
+{\em t} & The time to halt the path. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A truncated path. If t {$\le$} the path\textquotesingle{}s start time, then return an empty path. If t {$\ge$} the path\textquotesingle{}s end time, then return a copy of the original path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_a73ea522d8af255268578dca4568b0155}\label{classlarcfm_1_1_poly_path_a73ea522d8af255268578dca4568b0155}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!validate@{validate}}
+\index{validate@{validate}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{validate()}{validate()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Poly\+Path\+::validate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if the polypath follows expected behaviors (i.\+e. increasing times and same size for each MORPHING poly). Otherwise this sets error messages.
+
+\begin{DoxyReturn}{Returns}
+true, if polypath performs expected behaviors 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_path_aef50fa812d21719c340e46c1731a5843}\label{classlarcfm_1_1_poly_path_aef50fa812d21719c340e46c1731a5843}} 
+\index{larcfm::PolyPath@{larcfm::PolyPath}!velocity@{velocity}}
+\index{velocity@{velocity}!larcfm::PolyPath@{larcfm::PolyPath}}
+\doxysubsubsection{\texorpdfstring{velocity()}{velocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Poly\+Path\+::velocity (\begin{DoxyParamCaption}\item[{double}]{time }\end{DoxyParamCaption})}
+
+Interpolate the average\+Point velocity at the given time If time is outside the path\textquotesingle{}s limit, return invalid velocity. 
+\begin{DoxyParams}{Parameters}
+{\em time} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Poly\+Path.\+h\item 
+Modules/\+ACCo\+RD/src/Poly\+Path.\+cpp\end{DoxyCompactItemize}

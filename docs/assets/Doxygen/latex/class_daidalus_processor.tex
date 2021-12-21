@@ -1,0 +1,71 @@
+\hypertarget{class_daidalus_processor}{}\doxysection{Daidalus\+Processor Class Reference}
+\label{class_daidalus_processor}\index{DaidalusProcessor@{DaidalusProcessor}}
+Inheritance diagram for Daidalus\+Processor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_daidalus_processor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a54eb4478a92d24beba1ef96395f82a05}\label{class_daidalus_processor_a54eb4478a92d24beba1ef96395f82a05}} 
+{\bfseries Daidalus\+Processor} (const std\+::string \&own)
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_ab40389ac4dbfb7d9eb4ddd2933d14cc4}\label{class_daidalus_processor_ab40389ac4dbfb7d9eb4ddd2933d14cc4}} 
+void {\bfseries set\+Ownship} (const std\+::string \&own)
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_ab0077632bb30fd0907e2ac0d2d259a57}\label{class_daidalus_processor_ab0077632bb30fd0907e2ac0d2d259a57}} 
+double {\bfseries get\+From} () const
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_aef89b03e36599bdadcd2052a90e751d0}\label{class_daidalus_processor_aef89b03e36599bdadcd2052a90e751d0}} 
+double {\bfseries get\+To} () const
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_abea142d179e6154f5de55b58d89cff4b}\label{class_daidalus_processor_abea142d179e6154f5de55b58d89cff4b}} 
+std\+::string {\bfseries get\+Ownship} () const
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_aceedb23d8ef71e6bd30ea745fc9d4446}\label{class_daidalus_processor_aceedb23d8ef71e6bd30ea745fc9d4446}} 
+bool {\bfseries process\+Options} (const char $\ast$args\mbox{[}$\,$\mbox{]}, int i)
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a77bd7d77f6535504d22952fa59102fe7}\label{class_daidalus_processor_a77bd7d77f6535504d22952fa59102fe7}} 
+std\+::string {\bfseries get\+Options\+String} ()
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a95adb1f1f4b1143f5cbd649cfcc3e907}\label{class_daidalus_processor_a95adb1f1f4b1143f5cbd649cfcc3e907}} 
+void {\bfseries process\+File} (const std\+::string \&filename, \mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm\+::\+Daidalus}} \&daa)
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a70cff8d748c6891d90b2d321e59dd14f}\label{class_daidalus_processor_a70cff8d748c6891d90b2d321e59dd14f}} 
+virtual void {\bfseries process\+Time} (\mbox{\hyperlink{classlarcfm_1_1_daidalus}{larcfm\+::\+Daidalus}} \&daa, const std\+::string \&filename)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a38acf3bbec1deeb7e176822ff8d0c2e2}\label{class_daidalus_processor_a38acf3bbec1deeb7e176822ff8d0c2e2}} 
+static void {\bfseries get\+File\+Names} (std\+::vector$<$ std\+::string $>$ \&txt\+Files, const std\+::vector$<$ std\+::string $>$ \&names, const std\+::string \&ext, int i)
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_abe8a2aed6aa5cf5a77a6704484d290a8}\label{class_daidalus_processor_abe8a2aed6aa5cf5a77a6704484d290a8}} 
+static std\+::string {\bfseries get\+Help\+String} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a260794879ed7cf6e0e2365c2dd010669}\label{class_daidalus_processor_a260794879ed7cf6e0e2365c2dd010669}} 
+double {\bfseries from\+\_\+}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_ab04faa113ec954ee5e7373d0f32af086}\label{class_daidalus_processor_ab04faa113ec954ee5e7373d0f32af086}} 
+double {\bfseries to\+\_\+}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_aac0a91e5a88653402335a3f5a38529f1}\label{class_daidalus_processor_aac0a91e5a88653402335a3f5a38529f1}} 
+double {\bfseries relative\+\_\+}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_acfdad4796d1c92c5c8722d2e242c83fb}\label{class_daidalus_processor_acfdad4796d1c92c5c8722d2e242c83fb}} 
+std\+::string {\bfseries options\+\_\+}
+\item 
+\mbox{\Hypertarget{class_daidalus_processor_a9835cf941e985e97abe3b0233e85a101}\label{class_daidalus_processor_a9835cf941e985e97abe3b0233e85a101}} 
+std\+::string {\bfseries ownship\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Daidalus\+Processor.\+h\item 
+Modules/\+ACCo\+RD/src/Daidalus\+Processor.\+cpp\end{DoxyCompactItemize}

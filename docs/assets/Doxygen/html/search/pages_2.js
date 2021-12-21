@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['guidance_20module_0',['Guidance Module',['../md__modules__core__guidance__r_e_a_d_m_e.html',1,'']]]
+  ['event_20manager_0',['Event Manager',['../md__modules__core__event_manager__requirements_design.html',1,'']]]
 ];

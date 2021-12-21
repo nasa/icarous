@@ -1,0 +1,230 @@
+\hypertarget{classlarcfm_1_1_azi_equi_projection}{}\doxysection{larcfm\+::Azi\+Equi\+Projection Class Reference}
+\label{classlarcfm_1_1_azi_equi_projection}\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+
+
+{\ttfamily \#include $<$Azi\+Equi\+Projection.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}{Azi\+Equi\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a446734fee5f82bcdb839a74cf4eb5dc0}{Azi\+Equi\+Projection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a22cce7476d6e07aae48e76282e18f73c}{Azi\+Equi\+Projection}} (double lat, double lon, double alt)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_adac0ecc905111d21cf69d302be40ec64}{$\sim$\+Azi\+Equi\+Projection}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{Azi\+Equi\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a95a2b1211b6d7e520241620460badb8a}{make\+New}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{Azi\+Equi\+Projection}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a639003f3fda782b0d30a9461315790ea}{make\+New}} (double lat, double lon, double alt) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aef7424f62deebdc89ee71692f88b1273}{conflict\+Range}} (double latitude, double accuracy) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a41ad2e4b1c49f6695552eef5cb9fdba7}{max\+Range}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aa6443ca68c83a79484113f6fc8fdb90f}{get\+Projection\+Point}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aa179d19fe7c3cc4a95f08ed23ac83794}{project2}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_ab788deda5ecfba694e71e83674423763}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a24d3ef74391631ae4bfe7f518c459f42}{project\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&sip) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&xy, double alt) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_adc928c978ffa4204ad2f2b81ac0e2d7f}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&xyz) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a76bd02ec2bac2feab1201a56f8d09a7e}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a7a330db4713c4204a986daeedafb3808}{project\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&ss, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_acea84e1447478cee386229d2ecbadc38}{inverse\+Velocity}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aff9429b4ac825386ac15bfe5befa59f4}{project}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_aba11433700cb94f6977363ea0ea92116}\label{classlarcfm_1_1_azi_equi_projection_aba11433700cb94f6977363ea0ea92116}} 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries project} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_ad62f1dcc66b25575618106934fa91f72}{inverse}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, bool to\+Lat\+Lon) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a74db066884dd2a29b7787e92efb41d8a}{to\+String}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a90ff50988c6b776bb7eb73d4155bdb23}\label{classlarcfm_1_1_azi_equi_projection_a90ff50988c6b776bb7eb73d4155bdb23}} 
+double {\bfseries proj\+Alt}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_ac85ea1f9af3b69a71684f50dcdd15c0b}\label{classlarcfm_1_1_azi_equi_projection_ac85ea1f9af3b69a71684f50dcdd15c0b}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries ref}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a3539469e93dc00d5be9d6b3accf6f2c5}\label{classlarcfm_1_1_azi_equi_projection_a3539469e93dc00d5be9d6b3accf6f2c5}} 
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries lla\+Ref}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class creates a local Euclidean projection around a given point. This projection may be used to transform geodesic coordinates (\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} objects) into this Euclidean frame, using the \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project()}} method. Also points within this frame, may be found in geodesic coordinates with the \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}{inverse()}} method. As long as the points are close to the projection point, the errors will be very small.
+
+This is equivalent to a truncated azmuthal equidistant projection, and is similar to the ENU/tangent plane, but preserves distance from the reference point (along great circles), while distorting distances along great circles lines perpendicular to these. This is the same basic projection used on the UN logo. This version is truncated and so only projects over one hemisphere, giving a max range of 1/4 the (spherical) Earth\textquotesingle{}s circumference. ~\newline
+
+
+Note\+: projection objects should never be made directly, and instead should be retrieved via Projection.\+get\+Projection() 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}\label{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!AziEquiProjection@{AziEquiProjection}}
+\index{AziEquiProjection@{AziEquiProjection}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{AziEquiProjection()}{AziEquiProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Azi\+Equi\+Projection\+::\+Azi\+Equi\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Default constructor. \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a446734fee5f82bcdb839a74cf4eb5dc0}\label{classlarcfm_1_1_azi_equi_projection_a446734fee5f82bcdb839a74cf4eb5dc0}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!AziEquiProjection@{AziEquiProjection}}
+\index{AziEquiProjection@{AziEquiProjection}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{AziEquiProjection()}{AziEquiProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Azi\+Equi\+Projection\+::\+Azi\+Equi\+Projection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a22cce7476d6e07aae48e76282e18f73c}\label{classlarcfm_1_1_azi_equi_projection_a22cce7476d6e07aae48e76282e18f73c}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!AziEquiProjection@{AziEquiProjection}}
+\index{AziEquiProjection@{AziEquiProjection}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{AziEquiProjection()}{AziEquiProjection()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Azi\+Equi\+Projection\+::\+Azi\+Equi\+Projection (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption})}
+
+Create a projection around the given reference point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude of reference point \\
+\hline
+{\em lon} & longitude of reference point \\
+\hline
+{\em alt} & altitude of reference point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_adac0ecc905111d21cf69d302be40ec64}\label{classlarcfm_1_1_azi_equi_projection_adac0ecc905111d21cf69d302be40ec64}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!````~AziEquiProjection@{$\sim$AziEquiProjection}}
+\index{````~AziEquiProjection@{$\sim$AziEquiProjection}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{$\sim$AziEquiProjection()}{~AziEquiProjection()}}
+{\footnotesize\ttfamily larcfm\+::\+Azi\+Equi\+Projection\+::$\sim$\+Azi\+Equi\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_aef7424f62deebdc89ee71692f88b1273}\label{classlarcfm_1_1_azi_equi_projection_aef7424f62deebdc89ee71692f88b1273}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!conflictRange@{conflictRange}}
+\index{conflictRange@{conflictRange}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{conflictRange()}{conflictRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Azi\+Equi\+Projection\+::conflict\+Range (\begin{DoxyParamCaption}\item[{double}]{latitude,  }\item[{double}]{accuracy }\end{DoxyParamCaption}) const}
+
+Given an ownship latitude and desired accuracy, what is the longest distance to conflict this projection will support? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_aa6443ca68c83a79484113f6fc8fdb90f}\label{classlarcfm_1_1_azi_equi_projection_aa6443ca68c83a79484113f6fc8fdb90f}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!getProjectionPoint@{getProjectionPoint}}
+\index{getProjectionPoint@{getProjectionPoint}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{getProjectionPoint()}{getProjectionPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Azi\+Equi\+Projection\+::get\+Projection\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the projection point for this projection \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}\label{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Azi\+Equi\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{xy,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_ad62f1dcc66b25575618106934fa91f72}\label{classlarcfm_1_1_azi_equi_projection_ad62f1dcc66b25575618106934fa91f72}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Azi\+Equi\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity and the point. If to\+Lat\+Lon is true, the point/velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_adc928c978ffa4204ad2f2b81ac0e2d7f}\label{classlarcfm_1_1_azi_equi_projection_adc928c978ffa4204ad2f2b81ac0e2d7f}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!inverse@{inverse}}
+\index{inverse@{inverse}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{inverse()}{inverse()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Azi\+Equi\+Projection\+::inverse (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{xyz }\end{DoxyParamCaption}) const}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} value corresponding to the given Euclidean position \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_acea84e1447478cee386229d2ecbadc38}\label{classlarcfm_1_1_azi_equi_projection_acea84e1447478cee386229d2ecbadc38}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!inverseVelocity@{inverseVelocity}}
+\index{inverseVelocity@{inverseVelocity}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{inverseVelocity()}{inverseVelocity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Azi\+Equi\+Projection\+::inverse\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{bool}]{to\+Lat\+Lon }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in Euclidean 3-\/space, return a projection of this velocity. If to\+Lat\+Lon is true, the velocity is projected into the geodetic coordinate space \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a95a2b1211b6d7e520241620460badb8a}\label{classlarcfm_1_1_azi_equi_projection_a95a2b1211b6d7e520241620460badb8a}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{Azi\+Equi\+Projection}} larcfm\+::\+Azi\+Equi\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a639003f3fda782b0d30a9461315790ea}\label{classlarcfm_1_1_azi_equi_projection_a639003f3fda782b0d30a9461315790ea}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!makeNew@{makeNew}}
+\index{makeNew@{makeNew}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{makeNew()}{makeNew()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{Azi\+Equi\+Projection}} larcfm\+::\+Azi\+Equi\+Projection\+::make\+New (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt }\end{DoxyParamCaption}) const}
+
+Return a new projection with the given reference point \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a41ad2e4b1c49f6695552eef5cb9fdba7}\label{classlarcfm_1_1_azi_equi_projection_a41ad2e4b1c49f6695552eef5cb9fdba7}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!maxRange@{maxRange}}
+\index{maxRange@{maxRange}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{maxRange()}{maxRange()}}
+{\footnotesize\ttfamily double larcfm\+::\+Azi\+Equi\+Projection\+::max\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+What is the maximum effective horizontal range of this projection? \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}\label{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!project@{project}}
+\index{project@{project}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Azi\+Equi\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_aff9429b4ac825386ac15bfe5befa59f4}\label{classlarcfm_1_1_azi_equi_projection_aff9429b4ac825386ac15bfe5befa59f4}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!project@{project}}
+\index{project@{project}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ larcfm\+::\+Azi\+Equi\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-\/space. If the position is already in Euclidean coordinates, this acts as the idenitty function. \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_ab788deda5ecfba694e71e83674423763}\label{classlarcfm_1_1_azi_equi_projection_ab788deda5ecfba694e71e83674423763}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!project@{project}}
+\index{project@{project}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{project()}{project()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Azi\+Equi\+Projection\+::project (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_aa179d19fe7c3cc4a95f08ed23ac83794}\label{classlarcfm_1_1_azi_equi_projection_aa179d19fe7c3cc4a95f08ed23ac83794}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!project2@{project2}}
+\index{project2@{project2}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{project2()}{project2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Azi\+Equi\+Projection\+::project2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption}) const}
+
+Return a projection of a lat/lon(/alt) point in Euclidean 2-\/space \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a24d3ef74391631ae4bfe7f518c459f42}\label{classlarcfm_1_1_azi_equi_projection_a24d3ef74391631ae4bfe7f518c459f42}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!projectPoint@{projectPoint}}
+\index{projectPoint@{projectPoint}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{projectPoint()}{projectPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Azi\+Equi\+Projection\+::project\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{sip }\end{DoxyParamCaption}) const}
+
+Return a projection of a \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a76bd02ec2bac2feab1201a56f8d09a7e}\label{classlarcfm_1_1_azi_equi_projection_a76bd02ec2bac2feab1201a56f8d09a7e}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Azi\+Equi\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point in geodetic coordinates, return a projection of this velocity in Euclidean 3-\/space \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a7a330db4713c4204a986daeedafb3808}\label{classlarcfm_1_1_azi_equi_projection_a7a330db4713c4204a986daeedafb3808}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!projectVelocity@{projectVelocity}}
+\index{projectVelocity@{projectVelocity}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{projectVelocity()}{projectVelocity()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Azi\+Equi\+Projection\+::project\+Velocity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{ss,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption}) const}
+
+Given a velocity from a point, return a projection of this velocity in Euclidean 3-\/space (if already in Euclidian coordinate, this is the identity function) \mbox{\Hypertarget{classlarcfm_1_1_azi_equi_projection_a74db066884dd2a29b7787e92efb41d8a}\label{classlarcfm_1_1_azi_equi_projection_a74db066884dd2a29b7787e92efb41d8a}} 
+\index{larcfm::AziEquiProjection@{larcfm::AziEquiProjection}!toString@{toString}}
+\index{toString@{toString}!larcfm::AziEquiProjection@{larcfm::AziEquiProjection}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Azi\+Equi\+Projection\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+String representation 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Azi\+Equi\+Projection.\+h\item 
+Modules/\+ACCo\+RD/src/Azi\+Equi\+Projection.\+cpp\end{DoxyCompactItemize}

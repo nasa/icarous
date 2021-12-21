@@ -1,0 +1,1428 @@
+\hypertarget{classlarcfm_1_1_great_circle}{}\doxysection{larcfm\+::Great\+Circle Class Reference}
+\label{classlarcfm_1_1_great_circle}\index{larcfm::GreatCircle@{larcfm::GreatCircle}}
+
+
+{\ttfamily \#include $<$Great\+Circle.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a02c041d21efc54d8ac75d006ce0a3cc3}{angle\+\_\+from\+\_\+distance}} (double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ae4e719d904bf33fd1ea12c7f11ded731}{distance}}, double h)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_adc1d102b3522664af07405ea88d091c2}{distance\+\_\+from\+\_\+angle}} (double angle, double h)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a514b6ea0c9d78893a79310935fafed06}{angular\+\_\+distance}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a1e823f84cd628253ba2be43fedb51b7c}{angular\+\_\+distance}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ae4e719d904bf33fd1ea12c7f11ded731}{distance}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a67d40059d396b325a3cce61297ff66c4}{distance}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_great_circle_afa3b7c1ec823a9ebe47bcfa4a5df0a88}{almost\+\_\+equals}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_great_circle_a9461a35de6b402145d344109972c0078}{almost\+\_\+equals}} (double lat1, double lon1, double lat2, double lon2, double epsilon)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5aed60267852b818e459c20d74f2d6b4}\label{classlarcfm_1_1_great_circle_a5aed60267852b818e459c20d74f2d6b4}} 
+static bool {\bfseries almost\+Equals} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&v)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_great_circle_ab78dc694db0fdd56cf98dcd737750487}{almost\+Equals}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a, double horiz\+Eps, double vert\+Eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a729bd92a1cf185e89291d48207587039}\label{classlarcfm_1_1_great_circle_a729bd92a1cf185e89291d48207587039}} 
+static bool {\bfseries almost\+Equals2D} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&v, double horiz\+Eps)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a5721a6ea79333eff17d8c767dec32766}{initial\+\_\+course}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a28edc203d9446447fff22f0d9b9f90cf}{initial\+\_\+course}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a4603eb57c6f3d05c5f49c535b2f1d129}{final\+\_\+course}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ab37979a45c9363e3bab7a0e3caf6d2c5}{representative\+\_\+course}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a2be8396d9f0668d1aa4f30a73356daf7}\label{classlarcfm_1_1_great_circle_a2be8396d9f0668d1aa4f30a73356daf7}} 
+static double {\bfseries representative\+\_\+course} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a36d0a10a7648f839d5d01951d171d15c}{max\+\_\+latitude\+\_\+gc}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a24bc2834cc025b075c419cc6da27932c}{max\+\_\+latitude\+\_\+gc}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ac977ffc44ad961186819d90d3ad674ac}{min\+\_\+latitude\+\_\+gc}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_afab07bc8131f751f08b448711669c4f7}{min\+\_\+latitude\+\_\+gc}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a8e4ed140693e0b7a6d8096e8cb0b2f74}\label{classlarcfm_1_1_great_circle_a8e4ed140693e0b7a6d8096e8cb0b2f74}} 
+static double {\bfseries lon\+Cross} (double lat1, double lon1, double lat2, double lon2, double lat3)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ad2f5942ab50531e278d961f3fcfc17b4}{max\+\_\+latitude}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_acf4bc92047e886b483782dcee4e7b721}\label{classlarcfm_1_1_great_circle_acf4bc92047e886b483782dcee4e7b721}} 
+static double {\bfseries max\+\_\+latitude} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a6e4dde4743191770dbca4036db09cabe}{min\+\_\+latitude}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ac0228447a52c38fb1cbf36702eb5090d}\label{classlarcfm_1_1_great_circle_ac0228447a52c38fb1cbf36702eb5090d}} 
+static double {\bfseries min\+\_\+latitude} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a02d2ad6420991b6c91ec55911abe34f9}{interpolate}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, double f)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a53b02ca62eae0002e4b90928ccac1567}{interpolate\+Est}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, double f)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a8c9b780946f6b7f170b9f53dd9e55e0c}{linear\+\_\+gcgs}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a56fbb2e3508769802b7dade422db5866}{linear\+\_\+gc}} (\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} p1, \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} p2, double d)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a5778125f6ab7a9b038275ef7a6f3a089}{linear\+\_\+rhumb}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_aa77e845232ba5cf7e2508acec5cea5b9}{linear\+\_\+rhumb}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s, double track, double dist)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ \mbox{\hyperlink{classlarcfm_1_1_great_circle_a21e416608864085162e99a7b2a1253ed}{side\+\_\+side\+\_\+angle}} (double b, double a, double A, bool first\+Solution)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ \mbox{\hyperlink{classlarcfm_1_1_great_circle_a971eba843aba76e10c6264c8f29414c1}{side\+\_\+angle\+\_\+angle}} (double a, double A, double B, bool first\+Solution)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ \mbox{\hyperlink{classlarcfm_1_1_great_circle_aeb6af24a5499d6c758ebe7e64bbc964b}{side\+\_\+angle\+\_\+side}} (double a, double C, double b)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ \mbox{\hyperlink{classlarcfm_1_1_great_circle_a4ac5cf362f2a55f839f8ff9d8dbd5a4d}{angle\+\_\+side\+\_\+angle}} (double A, double c, double B)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a09adb277d5c154b64ffef8b4f4774888}\label{classlarcfm_1_1_great_circle_a09adb277d5c154b64ffef8b4f4774888}} 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries intersection\+Segment} (double T, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si2)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a63352405ff1a71710c20fa88b3ea0121}{intersect\+Segments}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si2)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a6d9fe885caee97e8218023db5941ffaf}{linear\+\_\+initial}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_af1bb650dd32fe5c8d00babe7cd2f1c66}{linear\+\_\+initial}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s, double track, double dist)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a277b75e8d0dda791dbad905c16a2f9b5}{cross\+\_\+track\+\_\+distance}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&off\+Circle)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_great_circle_a01671de12c3face5e38147f313896d17}{collinear}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p3)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_aeece2bc86df6752f136bc1e4a58e2fb1}{closest\+\_\+point\+\_\+circle}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&x)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a892d7abb508754819fb08ab70b33bd2f}{closest\+\_\+point\+\_\+segment}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&x)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_abc8dbac7c71d1de67538fbefb71adea4}{intersection}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b2)
+\item 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}, double $>$ \mbox{\hyperlink{classlarcfm_1_1_great_circle_ac837e50d8174ea31cd6929fa6f353535}{intersection\+Extrap\+Alt}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so2, double dto, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aaa9eb6abe9b261ac65817e967c39bab1}\label{classlarcfm_1_1_great_circle_aaa9eb6abe9b261ac65817e967c39bab1}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}, double $>$ {\bfseries intersection\+Avg\+Alt} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so2, double dto, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a80bc322134ec66a048fd3f37b27d785b}\label{classlarcfm_1_1_great_circle_a80bc322134ec66a048fd3f37b27d785b}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}, double $>$ {\bfseries intersection} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a06b8660ce25236ce7170b20c05657a75}{angle\+Between}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_acd66c7c2e034fdd769c5c9c20a9ed233}{angle\+\_\+between\+OLD}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&c)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a7059c4067a049b90a28bb03aa8771cdf}{angle\+\_\+between}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&c)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_aa5d6ef227a7d24bdcc1fa6133c79cf13}{angle\+\_\+between}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&c, int dir)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_great_circle_a059ccf6fa0ebcf4d8409df2f206467c3}{behind}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&x, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&ll, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_great_circle_afddd186eddfc0287b49f163539834e53}{passing\+Direction}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5f83ddddcb6b41e42dec86b20c1126d3}\label{classlarcfm_1_1_great_circle_a5f83ddddcb6b41e42dec86b20c1126d3}} 
+static int {\bfseries dir\+For\+Behind} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a13bddcc33b6ebb06c4af297fde5bd727}{velocity\+\_\+average}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a1eefd210833768cad95b1a4965e7bbb2}{velocity\+\_\+average\+\_\+speed}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&s2, double speed)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a9add907532404f103fc6e9073d1bb2e4}{velocity\+\_\+initial}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a5749d993bd4e46e8b477c0511bf5b90c}{velocity\+\_\+final}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a9be54817d19a2290adc519f333886b2d}{spherical2xyz}} (double lat, double lon)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a06ff2a7943be938fb0a28682bae7105c}{spherical2xyz}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&lla)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_a920ad419837d3fbcf219163f96b799ca}{xyz2spherical}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ab5a969d0b22a7ff7547b47da07c53e51}{chord\+\_\+distance}} (double lat1, double lon1, double lat2, double lon2)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a69a4f1e0c0ac278620953c7a5edc5d9b}{chord\+\_\+distance}} (double surface\+\_\+dist)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a23ab0bf4c966f16b50647dcf7bbfe912}{surface\+\_\+distance}} (double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ab5a969d0b22a7ff7547b47da07c53e51}{chord\+\_\+distance}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a20bd4fba1818ebee7a88f997840a9214}\label{classlarcfm_1_1_great_circle_a20bd4fba1818ebee7a88f997840a9214}} 
+static double {\bfseries to\+\_\+chordal\+\_\+radius} (double surface\+\_\+radius)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a1d203a2826cd633dff76151fbe75592f}\label{classlarcfm_1_1_great_circle_a1d203a2826cd633dff76151fbe75592f}} 
+static double {\bfseries to\+\_\+surface\+\_\+radius} (double chord\+\_\+radius)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \mbox{\hyperlink{classlarcfm_1_1_great_circle_af29cbfed8a152fb11088fdf9db47a7c3}{small\+\_\+circle\+\_\+rotation}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&center, double angle)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a0380745dfb618e51d4c7754138b51f32}{small\+\_\+circle\+\_\+arc\+\_\+length}} (double radius, double arc\+Angle)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a6b0c14131a6095d63c042aee0a48c11f}{small\+\_\+circle\+\_\+arc\+\_\+angle}} (double radius, double arc\+Length)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5c60fa7ce0df63b98f2d3906a7a9f16c}\label{classlarcfm_1_1_great_circle_a5c60fa7ce0df63b98f2d3906a7a9f16c}} 
+static const double {\bfseries min\+Dt} = 1E-\/5
+\item 
+static const double \mbox{\hyperlink{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}{spherical\+\_\+earth\+\_\+radius}} = 6366707.\+0194937070000000000
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a80f12fab32ce25f6dc2cc1dde2bb27a8}\label{classlarcfm_1_1_great_circle_a80f12fab32ce25f6dc2cc1dde2bb27a8}} 
+static double {\bfseries max\+\_\+latitude\+\_\+gc\+\_\+course} (double lat1, double trk)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a9146b7210ec85a0b155dd2b8ca76e1ce}\label{classlarcfm_1_1_great_circle_a9146b7210ec85a0b155dd2b8ca76e1ce}} 
+static double {\bfseries min\+\_\+latitude\+\_\+gc\+\_\+course} (double lat1, double trk)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aa86190c9f8d94684cf8df1f78771db1a}\label{classlarcfm_1_1_great_circle_aa86190c9f8d94684cf8df1f78771db1a}} 
+static bool {\bfseries gauss\+\_\+check} (double a, double b, double c, double A, double B, double C)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ab935523f431a5b0a0271333334e415cd}\label{classlarcfm_1_1_great_circle_ab935523f431a5b0a0271333334e415cd}} 
+static \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} {\bfseries closest\+\_\+point\+\_\+circle} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&x, double a, double b, double c, double A, double B, double C)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_great_circle_acc72a3ac852f4cc2f1fedafffa2e4c66}{angle\+\_\+from\+\_\+distance}} (double \mbox{\hyperlink{classlarcfm_1_1_great_circle_ae4e719d904bf33fd1ea12c7f11ded731}{distance}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains common formulas used for modeling a spherical Earth, in particular, Great Circle calculations. Many of the formulas are based on the Aviation Formulary (v1.\+44) by Ed Williams. 
+
+Notes\+: 
+\begin{DoxyItemize}
+\item The Earth does not rotate. This may change. 
+\item Positive latitude is north and positive longitude is east. 
+\item All course angles (i.\+e., desired chord angles) are in radians clockwise from true north. 
+\item For any of these calculations that rely on a radius for the earth, the value used is {\ttfamily \mbox{\hyperlink{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}{Great\+Circle.\+spherical\+\_\+earth\+\_\+radius}}}. 
+\item Great circles cannot be defined by antipodal points. (e.\+g., the north pole and the south pole) 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_afa3b7c1ec823a9ebe47bcfa4a5df0a88}\label{classlarcfm_1_1_great_circle_afa3b7c1ec823a9ebe47bcfa4a5df0a88}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!almost\_equals@{almost\_equals}}
+\index{almost\_equals@{almost\_equals}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{almost\_equals()}{almost\_equals()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Great\+Circle\+::almost\+\_\+equals (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if two points are close to each other, see \mbox{\hyperlink{classlarcfm_1_1_constants_a5ba10c39c6697ef252fcbe08c732a365}{Constants.\+get\+\_\+horizontal\+\_\+accuracy()}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a9461a35de6b402145d344109972c0078}\label{classlarcfm_1_1_great_circle_a9461a35de6b402145d344109972c0078}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!almost\_equals@{almost\_equals}}
+\index{almost\_equals@{almost\_equals}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{almost\_equals()}{almost\_equals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Great\+Circle\+::almost\+\_\+equals (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2,  }\item[{double}]{epsilon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if two points are close to each other, where \textquotesingle{}close\textquotesingle{} is defined by the distance value given in meters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+{\em epsilon} & maximum difference in meters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ab78dc694db0fdd56cf98dcd737750487}\label{classlarcfm_1_1_great_circle_ab78dc694db0fdd56cf98dcd737750487}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!almostEquals@{almostEquals}}
+\index{almostEquals@{almostEquals}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{almostEquals()}{almostEquals()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Great\+Circle\+::almost\+Equals (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a,  }\item[{double}]{horiz\+Eps,  }\item[{double}]{vert\+Eps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Are these two \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} almost equal, where \textquotesingle{}almost\textquotesingle{} is defined by the given distances \mbox{[}m\mbox{]}
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object \\
+\hline
+{\em a} & \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} object \\
+\hline
+{\em horiz\+Eps} & allowed difference in horizontal dimension \\
+\hline
+{\em vert\+Eps} & allowed difference in vertical dimension \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the two are almost equals 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a7059c4067a049b90a28bb03aa8771cdf}\label{classlarcfm_1_1_great_circle_a7059c4067a049b90a28bb03aa8771cdf}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_between@{angle\_between}}
+\index{angle\_between@{angle\_between}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_between()}{angle\_between()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+\_\+between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the turn angle between great circles (this will return a value between 0 and PI) (uses coordinate transformation) 
+\begin{DoxyParams}{Parameters}
+{\em a} & point on gc1 \\
+\hline
+{\em b} & intersection of gc1 and gc2 \\
+\hline
+{\em c} & point on gc2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+magnitude of angle between the two great circles, from a-\/b to b-\/c 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aa5d6ef227a7d24bdcc1fa6133c79cf13}\label{classlarcfm_1_1_great_circle_aa5d6ef227a7d24bdcc1fa6133c79cf13}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_between@{angle\_between}}
+\index{angle\_between@{angle\_between}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_between()}{angle\_between()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+\_\+between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{c,  }\item[{int}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the turn angle between two great circles, measured in the indicated direction. This can return a value larger than PI. 
+\begin{DoxyParams}{Parameters}
+{\em a} & first point \\
+\hline
+{\em b} & turn point \\
+\hline
+{\em c} & last point \\
+\hline
+{\em dir} & +1 is right (clockwise), -\/1 is left (counterclockwise) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value of angle of turn from a-\/b to b-\/c 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_acd66c7c2e034fdd769c5c9c20a9ed233}\label{classlarcfm_1_1_great_circle_acd66c7c2e034fdd769c5c9c20a9ed233}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_betweenOLD@{angle\_betweenOLD}}
+\index{angle\_betweenOLD@{angle\_betweenOLD}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_betweenOLD()}{angle\_betweenOLD()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+\_\+between\+OLD (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return angle between great circles (old version, uses spherical trig) 
+\begin{DoxyParams}{Parameters}
+{\em a} & point on gc1 \\
+\hline
+{\em b} & intersection of gc1 and gc2 \\
+\hline
+{\em c} & point on gc2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle between the two great circles 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_acc72a3ac852f4cc2f1fedafffa2e4c66}\label{classlarcfm_1_1_great_circle_acc72a3ac852f4cc2f1fedafffa2e4c66}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_from\_distance@{angle\_from\_distance}}
+\index{angle\_from\_distance@{angle\_from\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_from\_distance()}{angle\_from\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+\_\+from\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{distance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Convert the distance (in internal length units) across the {\bfseries{surface}} of the (spherical) Earth into an angle. \mbox{\Hypertarget{classlarcfm_1_1_great_circle_a02c041d21efc54d8ac75d006ce0a3cc3}\label{classlarcfm_1_1_great_circle_a02c041d21efc54d8ac75d006ce0a3cc3}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_from\_distance@{angle\_from\_distance}}
+\index{angle\_from\_distance@{angle\_from\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_from\_distance()}{angle\_from\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+\_\+from\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{distance,  }\item[{double}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the distance (in internal length units) across a sphere at a height of h (in internal length units) above surface of the (spherical) Earth into an angle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & distance \mbox{[}m\mbox{]} \\
+\hline
+{\em h} & height above surface of spherical Earth \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angular distance \mbox{[}radian\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a4ac5cf362f2a55f839f8ff9d8dbd5a4d}\label{classlarcfm_1_1_great_circle_a4ac5cf362f2a55f839f8ff9d8dbd5a4d}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angle\_side\_angle@{angle\_side\_angle}}
+\index{angle\_side\_angle@{angle\_side\_angle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angle\_side\_angle()}{angle\_side\_angle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ larcfm\+::\+Great\+Circle\+::angle\+\_\+side\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{A,  }\item[{double}]{c,  }\item[{double}]{B }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This implements the supplemental (polar triangle) spherical cosine rule to complete a triangle on the unit sphere 
+\begin{DoxyParams}{Parameters}
+{\em A} & angle A \\
+\hline
+{\em c} & side between A and B (angular distance \\
+\hline
+{\em B} & angle B \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+triple of a,b,C (side opposite A, side opposite B, angle opposite c) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a06b8660ce25236ce7170b20c05657a75}\label{classlarcfm_1_1_great_circle_a06b8660ce25236ce7170b20c05657a75}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angleBetween@{angleBetween}}
+\index{angleBetween@{angleBetween}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angleBetween()}{angleBetween()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angle\+Between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Given two great circles defined by a1, a2 and b1, b2 return the angle between them at the intersection point. ~\newline
+ This is the same as the dihedral angle, or angle between the two GC planes. This may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point). and will generally not be the same as the (non-\/projected) track angle difference between them (though that can be very close). This will always return a value between 0 and PI.
+
+Note\+: When two great circles intersect, they form supplementary angles, that is, two angles that sum to 180. This method can return either the smaller (less than 90) or the larger (greater than 90). It is a little complicated to determine which one will be returned. Imagine a \textquotesingle{}right-\/handed\textquotesingle{} vector going from a1 to a2 and another one going from b1 to b2. If these two vectors point mostly in the same direction, then the smaller supplementary angle will be returned. If they point in mostly opposite directions, then the larger supplementary angle will be returned. As an example. Imagine three points, two points (a and c) on the equator, less than 90 degrees apart and point b at the north pole. angle\+Between(a,b,c,b) will return the smaller supplementary angle, and angle\+Between(a,b,b,c) will return the larger supplementary angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a1} & one point on the first great circle \\
+\hline
+{\em a2} & second point on the first great circle \\
+\hline
+{\em b1} & one point on the second great circle \\
+\hline
+{\em b2} & second point on the second great circle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle between two great circles 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a1e823f84cd628253ba2be43fedb51b7c}\label{classlarcfm_1_1_great_circle_a1e823f84cd628253ba2be43fedb51b7c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angular\_distance@{angular\_distance}}
+\index{angular\_distance@{angular\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angular\_distance()}{angular\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angular\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute the great circle distance in radians between the two points. The calculation applies to any sphere, not just a spherical Earth. The current implementation uses the haversine formula.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & one point \\
+\hline
+{\em p2} & another point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angular distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a514b6ea0c9d78893a79310935fafed06}\label{classlarcfm_1_1_great_circle_a514b6ea0c9d78893a79310935fafed06}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!angular\_distance@{angular\_distance}}
+\index{angular\_distance@{angular\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{angular\_distance()}{angular\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::angular\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute the great circle distance in radians between the two points. The calculation applies to any sphere, not just a spherical Earth. The current implementation uses the haversine formula.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angular distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a059ccf6fa0ebcf4d8409df2f206467c3}\label{classlarcfm_1_1_great_circle_a059ccf6fa0ebcf4d8409df2f206467c3}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!behind@{behind}}
+\index{behind@{behind}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{behind()}{behind()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Great\+Circle\+::behind (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{x,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{ll,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return true if x is \char`\"{}behind\char`\"{} ll, considering its current direction of travel, v. \char`\"{}\+Behind\char`\"{} here refers to the hemisphere aft of ll. That is, x is within the region behind the perpendicular line to v through ll. 
+\begin{DoxyParams}{Parameters}
+{\em ll} & aircraft position \\
+\hline
+{\em v} & aircraft velocity \\
+\hline
+{\em x} & intruder position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if x is behind ll
+\end{DoxyReturn}
+Return true if x is \char`\"{}behind\char`\"{} ll, considering its current direction of travel, v. \char`\"{}\+Behind\char`\"{} here refers to the hemisphere aft of ll. That is, x is within the region behind the perpendicular line to v through ll. 
+\begin{DoxyParams}{Parameters}
+{\em ll} & aircraft position \\
+\hline
+{\em v} & aircraft velocity \\
+\hline
+{\em x} & intruder positino \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ab5a969d0b22a7ff7547b47da07c53e51}\label{classlarcfm_1_1_great_circle_ab5a969d0b22a7ff7547b47da07c53e51}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!chord\_distance@{chord\_distance}}
+\index{chord\_distance@{chord\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{chord\_distance()}{chord\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::chord\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the straight-\/line chord distance (through a spherical earth) from two points on the surface of the earth.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of first point \\
+\hline
+{\em lon1} & longitude of first point \\
+\hline
+{\em lat2} & latitude of second point \\
+\hline
+{\em lon2} & longitude of second point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the chord distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a69a4f1e0c0ac278620953c7a5edc5d9b}\label{classlarcfm_1_1_great_circle_a69a4f1e0c0ac278620953c7a5edc5d9b}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!chord\_distance@{chord\_distance}}
+\index{chord\_distance@{chord\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{chord\_distance()}{chord\_distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::chord\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{surface\+\_\+dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the chord distance (through the earth) corresponding to a given surface distance (at the nominal earth radius). This is the distance of a direct line between two surface points. 
+\begin{DoxyParams}{Parameters}
+{\em surface\+\_\+dist} & distance across surface \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+chord distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aeece2bc86df6752f136bc1e4a58e2fb1}\label{classlarcfm_1_1_great_circle_aeece2bc86df6752f136bc1e4a58e2fb1}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!closest\_point\_circle@{closest\_point\_circle}}
+\index{closest\_point\_circle@{closest\_point\_circle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{closest\_point\_circle()}{closest\_point\_circle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::closest\+\_\+point\+\_\+circle (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This returns the point on the great circle running through p1 and p2 that is closest to point x. The altitude of the output is the same as x.
+
+If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles. In this case, x will be returned. ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em p1} & the starting point of the great circle \\
+\hline
+{\em p2} & another point on the great circle \\
+\hline
+{\em x} & point to determine closest segment point to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} point on the segment that is closest (horizontally) to x
+\end{DoxyReturn}
+This returns the point on the great circle running through p1 and p2 that is closest to point x. The altitude of the output is the same as x.
+
+If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles. In this case, x will be returned. This assumes any 2 points will be within 90 degrees of each other (angular distance). 
+\begin{DoxyParams}{Parameters}
+{\em p1} & the starting point of the great circle \\
+\hline
+{\em p2} & another point on the great circle \\
+\hline
+{\em x} & point to determine closest segment point to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} point on the segment that is closest (horizontally) to x 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a892d7abb508754819fb08ab70b33bd2f}\label{classlarcfm_1_1_great_circle_a892d7abb508754819fb08ab70b33bd2f}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!closest\_point\_segment@{closest\_point\_segment}}
+\index{closest\_point\_segment@{closest\_point\_segment}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{closest\_point\_segment()}{closest\_point\_segment()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::closest\+\_\+point\+\_\+segment (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This returns the point on the great circle segment running through p1 and p2 that is closest to point x. This will return either p1 or p2 if the actual closest point is outside the segment. 
+\begin{DoxyParams}{Parameters}
+{\em p1} & the starting point of the great circle \\
+\hline
+{\em p2} & another point on the great circle \\
+\hline
+{\em x} & point to determine closest segment point to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} point on the segment that is closest (horizontally) to x 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a01671de12c3face5e38147f313896d17}\label{classlarcfm_1_1_great_circle_a01671de12c3face5e38147f313896d17}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!collinear@{collinear}}
+\index{collinear@{collinear}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{collinear()}{collinear()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Great\+Circle\+::collinear (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Determines if the three points are on the same great circle. 
+\begin{DoxyParams}{Parameters}
+{\em p1} & One point \\
+\hline
+{\em p2} & Second point \\
+\hline
+{\em p3} & Third point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the three points are collinear (2d) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a277b75e8d0dda791dbad905c16a2f9b5}\label{classlarcfm_1_1_great_circle_a277b75e8d0dda791dbad905c16a2f9b5}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!cross\_track\_distance@{cross\_track\_distance}}
+\index{cross\_track\_distance@{cross\_track\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{cross\_track\_distance()}{cross\_track\_distance()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::cross\+\_\+track\+\_\+distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{off\+Circle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This function forms a great circle from p1 to p2, then computes the shortest distance of another point (off\+Circle) to the great circle. This is the cross track distance. A positive value means off\+Circle is to the right of the path from p1 to p2. A negative value means off\+Circle is to the left of the path from p1 to p2.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & the starting point of the great circle \\
+\hline
+{\em p2} & another point on the great circle \\
+\hline
+{\em off\+Circle} & the point to measure the cross track distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the signed cross track distance \mbox{[}m\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a67d40059d396b325a3cce61297ff66c4}\label{classlarcfm_1_1_great_circle_a67d40059d396b325a3cce61297ff66c4}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!distance@{distance}}
+\index{distance@{distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute the great circle distance between the two given points. The calculation assumes the Earth is a sphere. This ignores the altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & one point \\
+\hline
+{\em p2} & another point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angular distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ae4e719d904bf33fd1ea12c7f11ded731}\label{classlarcfm_1_1_great_circle_ae4e719d904bf33fd1ea12c7f11ded731}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!distance@{distance}}
+\index{distance@{distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{distance()}{distance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::distance (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute the great circle distance between the two given points. The calculation assumes the Earth is a sphere
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance in meters 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_adc1d102b3522664af07405ea88d091c2}\label{classlarcfm_1_1_great_circle_adc1d102b3522664af07405ea88d091c2}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!distance\_from\_angle@{distance\_from\_angle}}
+\index{distance\_from\_angle@{distance\_from\_angle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{distance\_from\_angle()}{distance\_from\_angle()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::distance\+\_\+from\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{angle,  }\item[{double}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert the given angle into a distance across a (spherical) Earth at height above the surface of h.
+
+
+\begin{DoxyParams}{Parameters}
+{\em angle} & angular distance \mbox{[}radian\mbox{]} \\
+\hline
+{\em h} & height above surface of spherical Earth \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear distance \mbox{[}m\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a4603eb57c6f3d05c5f49c535b2f1d129}\label{classlarcfm_1_1_great_circle_a4603eb57c6f3d05c5f49c535b2f1d129}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!final\_course@{final\_course}}
+\index{final\_course@{final\_course}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{final\_course()}{final\_course()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::final\+\_\+course (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Course of the great circle coming in from point \#1 to point \#2. This value is NOT a compass angle (in the 0 to 2 Pi range), but is in radians from clockwise from true north.
+
+Usage Note\+: If point \#1 and \#2 are close to each other, then the course may become unstable. In the extreme case when point \#1 equals point \#2, then the course is undefined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point \#1 \\
+\hline
+{\em p2} & point \#2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+final course 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a28edc203d9446447fff22f0d9b9f90cf}\label{classlarcfm_1_1_great_circle_a28edc203d9446447fff22f0d9b9f90cf}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!initial\_course@{initial\_course}}
+\index{initial\_course@{initial\_course}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{initial\_course()}{initial\_course()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::initial\+\_\+course (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The initial true course (course relative to true north) at point \#1 on the great circle route from point \#1 to point \#2. The value is in internal units of angles (radians), and is a compass angle \mbox{[}0..2$\ast$\+Pi\mbox{]}\+: clockwise from true north. 
+
+Usage Note\+: If point \#1 and \#2 are close to each other, then the course may become unstable. In the extreme case when point \#1 equals point \#2, then the course is undefined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & a point \\
+\hline
+{\em p2} & another point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+initial course 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5721a6ea79333eff17d8c767dec32766}\label{classlarcfm_1_1_great_circle_a5721a6ea79333eff17d8c767dec32766}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!initial\_course@{initial\_course}}
+\index{initial\_course@{initial\_course}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{initial\_course()}{initial\_course()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::initial\+\_\+course (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The initial true course (course relative to true north) at lat/long \#1 on the great circle route from lat/long \#1 to lat/long \#2. The value is in internal units of angles (radians), and is a compass angle \mbox{[}0..2$\ast$\+Pi\mbox{]}\+: clockwise from true north. 
+
+Usage Note\+: If lat/long \#1 and \#2 are close to each other, then the initial course may become unstable. In the extreme case when lat/long \#1 equals lat/long \#2, then the initial course is undefined.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+initial course 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a02d2ad6420991b6c91ec55911abe34f9}\label{classlarcfm_1_1_great_circle_a02d2ad6420991b6c91ec55911abe34f9}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!interpolate@{interpolate}}
+\index{interpolate@{interpolate}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{interpolate()}{interpolate()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::interpolate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{double}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find the position (latitude, longitude, and altitude) of a point on the great circle from point \#1 to point \#2 as a fraction of the distance between the two points. If the fraction is 0.\+0 then point \#1 is returned, if the fraction is 1.\+0 then point \#2 is returned. If a fraction less than zero or greater than one is used, then this function will extrapolate along the great circle. 
+
+Usage Notes\+: 
+\begin{DoxyItemize}
+\item The return value r has r.\+x as latitude and r.\+y as longitude. This is different than in the \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} class. 
+\item Behavior of this function is undefined if the two points are antipodal (i.\+e. lat1+lat2=0 and abs(lon1-\/lon2)=pi) because a unique great circle line is undefined (there are infinitely many of them). 
+\item if lat/long \#1 is almost the same as \#2, then \#1 is returned 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point \#1 \\
+\hline
+{\em p2} & point \#1 \\
+\hline
+{\em f} & decimal fraction \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new point between p1 and p2 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a53b02ca62eae0002e4b90928ccac1567}\label{classlarcfm_1_1_great_circle_a53b02ca62eae0002e4b90928ccac1567}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!interpolateEst@{interpolateEst}}
+\index{interpolateEst@{interpolateEst}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{interpolateEst()}{interpolateEst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::interpolate\+Est (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{double}]{f }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This is a fast but crude way of interpolating between relatively close geodesic points
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point \#1 \\
+\hline
+{\em p2} & point \#1 \\
+\hline
+{\em f} & decimal fraction \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new point between p1 and p2 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_abc8dbac7c71d1de67538fbefb71adea4}\label{classlarcfm_1_1_great_circle_abc8dbac7c71d1de67538fbefb71adea4}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!intersection@{intersection}}
+\index{intersection@{intersection}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{intersection()}{intersection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::intersection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{a2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{b2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Given two great circles defined by a1,a2 and b1,b2, return the intersection point that is closest a1. Use Lat\+Lon\+Alt.\+antipode() to get the other value. This assumes that the arc distance between a1,a2 \texorpdfstring{$<$}{<} 90 and b1,b2 \texorpdfstring{$<$}{<} 90 The altitude of the return value is equal to a1.\+alt() This returns an INVALID value if both segments are collinear
+
+
+\begin{DoxyParams}{Parameters}
+{\em a1} & point \#1 to form great circle \#1 \\
+\hline
+{\em a2} & point \#2 to form great circle \#1 \\
+\hline
+{\em b1} & point \#1 to form great circle \#2 \\
+\hline
+{\em b2} & point \#2 to form great circle \#2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the point that intersects the two great circles
+\end{DoxyReturn}
+Given two great circles defined by a1,a2 and b1,b2, return the intersection poin that is closest a1. Use Lat\+Lon\+Alt.\+antipode() to get the other value. This assumes that the arc distance between a1,a2 \texorpdfstring{$<$}{<} 90 and b1,b2 \texorpdfstring{$<$}{<} 90 This returns an INVALID value if both segments are collinear EXPERIMENTAL \mbox{\Hypertarget{classlarcfm_1_1_great_circle_ac837e50d8174ea31cd6929fa6f353535}\label{classlarcfm_1_1_great_circle_ac837e50d8174ea31cd6929fa6f353535}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!intersectionExtrapAlt@{intersectionExtrapAlt}}
+\index{intersectionExtrapAlt@{intersectionExtrapAlt}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{intersectionExtrapAlt()}{intersectionExtrapAlt()}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}, double $>$ larcfm\+::\+Great\+Circle\+::intersection\+Extrap\+Alt (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so2,  }\item[{double}]{dto,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{si2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Given two great circles defined by so, so2 and si, si2 return the intersection point that is closest to so. (Note. because on a sphere there are two intersection points) Calculate altitude of intersection using linear extrapolation from line (so,so2)
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & first point of line o \\
+\hline
+{\em so2} & second point of line o \\
+\hline
+{\em dto} & the delta time between point so and point so2. \\
+\hline
+{\em si} & first point of line i \\
+\hline
+{\em si2} & second point of line i \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pair\+: intersection point and the delta time from point \char`\"{}so\char`\"{} to the intersection, can be negative if intersect point is in the past. If intersection point is invalid then the returned delta time is -\/1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a63352405ff1a71710c20fa88b3ea0121}\label{classlarcfm_1_1_great_circle_a63352405ff1a71710c20fa88b3ea0121}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!intersectSegments@{intersectSegments}}
+\index{intersectSegments@{intersectSegments}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{intersectSegments()}{intersectSegments()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::intersect\+Segments (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{si2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+EXPERIMENTAL Given two great circle segments defined by a1,a2 and b1,b2, return the intersection point that is closest a1. ~\newline
+ This assumes that the arc distance between a1,a2 \texorpdfstring{$<$}{<} 90 and b1,b2 \texorpdfstring{$<$}{<} 90 The altitude of the return value is equal to a1.\+alt() This returns an INVALID value if both segments are collinear or there is no intersection
+
+Note\+: This is very slow compared to the equivalent \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em so} & starting point of segment \mbox{[}so,so2\mbox{]} \\
+\hline
+{\em so2} & ending point of segment \mbox{[}so,so2\mbox{]} \\
+\hline
+{\em si} & starting point of segment \mbox{[}si,si2\mbox{]} \\
+\hline
+{\em si2} & ending point of segment \mbox{[}si,si2\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the point that intersects the two \char`\"{}great circle\char`\"{} segments 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a56fbb2e3508769802b7dade422db5866}\label{classlarcfm_1_1_great_circle_a56fbb2e3508769802b7dade422db5866}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_gc@{linear\_gc}}
+\index{linear\_gc@{linear\_gc}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_gc()}{linear\_gc()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+gc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}}]{p1,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}}]{p2,  }\item[{double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a new location on the great circle path from p1 to p2 that is distance d from p1
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & the first point to define the great circle \\
+\hline
+{\em p2} & the second point to define the great circle \\
+\hline
+{\em d} & distance from point \#1 \mbox{[}m\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new position that is distance d from point \#1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a8c9b780946f6b7f170b9f53dd9e55e0c}\label{classlarcfm_1_1_great_circle_a8c9b780946f6b7f170b9f53dd9e55e0c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_gcgs@{linear\_gcgs}}
+\index{linear\_gcgs@{linear\_gcgs}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_gcgs()}{linear\_gcgs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+gcgs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find a point on the great circle route from point \#1 to point \#2, traveling at the given velocity (only ground speed and vertical speed, not track angle) for the given amount of time. If points \#1 and \#2 are essentially the same, then the direction between these two points is undefined, so the first point is returned. 
+
+This calculation ignores altitude. Small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & a point \\
+\hline
+{\em p2} & another point \\
+\hline
+{\em v} & velocity \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+end point of a linear extrapolation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a6d9fe885caee97e8218023db5941ffaf}\label{classlarcfm_1_1_great_circle_a6d9fe885caee97e8218023db5941ffaf}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_initial@{linear\_initial}}
+\index{linear\_initial@{linear\_initial}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_initial()}{linear\_initial()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+initial (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find a point from the given lat/lon (\textquotesingle{}s\textquotesingle{}) when traveling along the great circle with the given initial velocity for the given amount of time. 
+
+This calculation is approximate\+: small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & a position \\
+\hline
+{\em v} & velocity \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position that is t seconds from s going velocity v 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_af1bb650dd32fe5c8d00babe7cd2f1c66}\label{classlarcfm_1_1_great_circle_af1bb650dd32fe5c8d00babe7cd2f1c66}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_initial@{linear\_initial}}
+\index{linear\_initial@{linear\_initial}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_initial()}{linear\_initial()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+initial (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s,  }\item[{double}]{track,  }\item[{double}]{dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find a point from the given lat/lon (\textquotesingle{}s\textquotesingle{}) with an initial \textquotesingle{}track\textquotesingle{} angle at a distance of \textquotesingle{}dist\textquotesingle{}. This calculation follows the great circle. 
+
+Note\+: this method does not compute an accurate altitude
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & a position \\
+\hline
+{\em track} & the initial course coming from point s, assuming a great circle is followed \\
+\hline
+{\em dist} & distance from point \#1 over the surface of the Earth \mbox{[}m\mbox{]}, for very small distances, this method returns inaccurate results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new position that is distance d from point \#1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5778125f6ab7a9b038275ef7a6f3a089}\label{classlarcfm_1_1_great_circle_a5778125f6ab7a9b038275ef7a6f3a089}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_rhumb@{linear\_rhumb}}
+\index{linear\_rhumb@{linear\_rhumb}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_rhumb()}{linear\_rhumb()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+rhumb (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find a point from the given lat/lon when traveling at the given velocity for the given amount of time. This calculation follows the rhumb line (loxodrome or line of constant track). 
+
+Modern aircraft (and most ships) usually travel great circles not rhumb lines, therefore \mbox{\hyperlink{classlarcfm_1_1_great_circle_a6d9fe885caee97e8218023db5941ffaf}{linear\+\_\+initial()}} is usually the preferred over this function. 
+
+At \char`\"{}normal\char`\"{} latitudes, rhumb lines are usually within a few percent of the great circle route. However, near the poles the behavior of rhumb lines is not intuitive\+: if the destination is a point near the pole, then the rhumb line may spiral around the pole to get to the destination. In fact, if you maintain a constant track angle along a rhumb line for a long enough distance, gradually the line will spiral in towards one of the poles. 
+
+Rhumb lines are not defined at the exact north and south poles, therefore if the origin or destination is precisely at a pole, this function will choose a point near the pole. 
+
+This calculation is approximate\+: small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & position \\
+\hline
+{\em v} & velocity \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear extrapolation along a rhumb line 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aa77e845232ba5cf7e2508acec5cea5b9}\label{classlarcfm_1_1_great_circle_aa77e845232ba5cf7e2508acec5cea5b9}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!linear\_rhumb@{linear\_rhumb}}
+\index{linear\_rhumb@{linear\_rhumb}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{linear\_rhumb()}{linear\_rhumb()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::linear\+\_\+rhumb (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s,  }\item[{double}]{track,  }\item[{double}]{dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find a point from the given lat/lon at an angle of \textquotesingle{}track\textquotesingle{} at a distance of \textquotesingle{}dist\textquotesingle{}. This calculation follows the rhumb line (loxodrome or line of constant track). 
+
+Modern aircraft (and most ships) usually travel great circles not rhumb lines, therefore \mbox{\hyperlink{classlarcfm_1_1_great_circle_a6d9fe885caee97e8218023db5941ffaf}{linear\+\_\+initial()}} is usually preferred over this function. 
+
+At \char`\"{}normal\char`\"{} latitudes, rhumb lines are usually within a few percent of the great circle route. However, near the poles the behavior of rhumb lines is not intuitive\+: if the destination is a point near the pole, then the rhumb line may spiral around the pole to get to the destination. In fact, if you maintain a constant track angle along a rhumb line for a long enough distance, gradually the line will spiral in towards one of the poles. 
+
+Rhumb lines are not defined at the exact north and south poles, therefore if the origin or destination is precisely at a pole, this function will choose a point near the pole. 
+
+This calculation is approximate\+: small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & position \\
+\hline
+{\em track} & track angle \\
+\hline
+{\em dist} & distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear extrapolation along a rhumb line 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ad2f5942ab50531e278d961f3fcfc17b4}\label{classlarcfm_1_1_great_circle_ad2f5942ab50531e278d961f3fcfc17b4}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!max\_latitude@{max\_latitude}}
+\index{max\_latitude@{max\_latitude}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{max\_latitude()}{max\_latitude()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::max\+\_\+latitude (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find the maximum (northern-\/most) latitude of the line segment defined by the two points along a great circle path.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+maximum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a24bc2834cc025b075c419cc6da27932c}\label{classlarcfm_1_1_great_circle_a24bc2834cc025b075c419cc6da27932c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!max\_latitude\_gc@{max\_latitude\_gc}}
+\index{max\_latitude\_gc@{max\_latitude\_gc}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{max\_latitude\_gc()}{max\_latitude\_gc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::max\+\_\+latitude\+\_\+gc (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the maximum latitude of the great circle defined by the two points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point 1 \\
+\hline
+{\em p2} & point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+maximum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a36d0a10a7648f839d5d01951d171d15c}\label{classlarcfm_1_1_great_circle_a36d0a10a7648f839d5d01951d171d15c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!max\_latitude\_gc@{max\_latitude\_gc}}
+\index{max\_latitude\_gc@{max\_latitude\_gc}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{max\_latitude\_gc()}{max\_latitude\_gc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::max\+\_\+latitude\+\_\+gc (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the maximum latitude of the great circle defined by the two points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+maximum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a6e4dde4743191770dbca4036db09cabe}\label{classlarcfm_1_1_great_circle_a6e4dde4743191770dbca4036db09cabe}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!min\_latitude@{min\_latitude}}
+\index{min\_latitude@{min\_latitude}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{min\_latitude()}{min\_latitude()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::min\+\_\+latitude (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Find the minimum (southern-\/most) latitude of the line segment defined by the two points along a great circle path.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_afab07bc8131f751f08b448711669c4f7}\label{classlarcfm_1_1_great_circle_afab07bc8131f751f08b448711669c4f7}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!min\_latitude\_gc@{min\_latitude\_gc}}
+\index{min\_latitude\_gc@{min\_latitude\_gc}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{min\_latitude\_gc()}{min\_latitude\_gc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::min\+\_\+latitude\+\_\+gc (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the minimum latitude of the great circle defined by the two points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point 1 \\
+\hline
+{\em p2} & point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ac977ffc44ad961186819d90d3ad674ac}\label{classlarcfm_1_1_great_circle_ac977ffc44ad961186819d90d3ad674ac}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!min\_latitude\_gc@{min\_latitude\_gc}}
+\index{min\_latitude\_gc@{min\_latitude\_gc}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{min\_latitude\_gc()}{min\_latitude\_gc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::min\+\_\+latitude\+\_\+gc (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the minimum latitude of the great circle defined by the two points.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum latitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_afddd186eddfc0287b49f163539834e53}\label{classlarcfm_1_1_great_circle_afddd186eddfc0287b49f163539834e53}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!passingDirection@{passingDirection}}
+\index{passingDirection@{passingDirection}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{passingDirection()}{passingDirection()}}
+{\footnotesize\ttfamily int larcfm\+::\+Great\+Circle\+::passing\+Direction (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{si,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns values describing if the ownship state will pass in front of or behind the intruder (from a horizontal perspective) 
+\begin{DoxyParams}{Parameters}
+{\em so} & ownship position \\
+\hline
+{\em vo} & ownship velocity \\
+\hline
+{\em si} & intruder position \\
+\hline
+{\em vi} & intruder velocity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if ownship will pass in front (or collide, from a horizontal sense), -\/1 if ownship will pass behind, 0 if collinear or parallel or closest intersection is behind you 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_ab37979a45c9363e3bab7a0e3caf6d2c5}\label{classlarcfm_1_1_great_circle_ab37979a45c9363e3bab7a0e3caf6d2c5}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!representative\_course@{representative\_course}}
+\index{representative\_course@{representative\_course}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{representative\_course()}{representative\_course()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::representative\+\_\+course (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+A representative course (course relative to true north) for the entire arc on the great circle route from lat/long \#1 to lat/long \#2. The value is in internal units of angles (radians), and is a compass angle \mbox{[}0..2$\ast$\+Pi\mbox{]}\+: clockwise from true north. This is currently calculated as the initial course from the midpoint of the arc to its endpoint.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & latitude of point 1 \\
+\hline
+{\em lon1} & longitude of point 1 \\
+\hline
+{\em lat2} & latitude of point 2 \\
+\hline
+{\em lon2} & longitude of point 2 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+representative course 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a971eba843aba76e10c6264c8f29414c1}\label{classlarcfm_1_1_great_circle_a971eba843aba76e10c6264c8f29414c1}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!side\_angle\_angle@{side\_angle\_angle}}
+\index{side\_angle\_angle@{side\_angle\_angle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{side\_angle\_angle()}{side\_angle\_angle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ larcfm\+::\+Great\+Circle\+::side\+\_\+angle\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{A,  }\item[{double}]{B,  }\item[{bool}]{first\+Solution }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Solve the spherical triangle when one has a side (in angular distance), and two angles. The side is {\bfseries{not}} between the angles. The sides are labeled a, b, and c. The angles are labelled A, B, and C. Side a is opposite angle A, and so forth.
+
+Given these constraints, in some cases two solutions are possible. To get one solution set the parameter first\+Solution to true, to get the other set first\+Solution to false. A first\+Solution == true will return a smaller side, b, than first\+Solution == false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & one side (in angular distance) \\
+\hline
+{\em A} & the angle opposite the side a \\
+\hline
+{\em B} & another angle \\
+\hline
+{\em first\+Solution} & select which solution to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}} of side b, angle C, and the side c. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_aeb6af24a5499d6c758ebe7e64bbc964b}\label{classlarcfm_1_1_great_circle_aeb6af24a5499d6c758ebe7e64bbc964b}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!side\_angle\_side@{side\_angle\_side}}
+\index{side\_angle\_side@{side\_angle\_side}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{side\_angle\_side()}{side\_angle\_side()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ larcfm\+::\+Great\+Circle\+::side\+\_\+angle\+\_\+side (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{C,  }\item[{double}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This implements the spherical cosine rule to complete a triangle on the unit sphere 
+\begin{DoxyParams}{Parameters}
+{\em a} & side a (angular distance) \\
+\hline
+{\em C} & angle between sides a and b \\
+\hline
+{\em b} & side b (angular distance) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+triple of A,B,c (angle opposite a, angle opposite b, side opposite C) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a21e416608864085162e99a7b2a1253ed}\label{classlarcfm_1_1_great_circle_a21e416608864085162e99a7b2a1253ed}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!side\_side\_angle@{side\_side\_angle}}
+\index{side\_side\_angle@{side\_side\_angle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{side\_side\_angle()}{side\_side\_angle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ larcfm\+::\+Great\+Circle\+::side\+\_\+side\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{a,  }\item[{double}]{A,  }\item[{bool}]{first\+Solution }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Solve the spherical triangle when one has a side (in angular distance), another side, and an angle between sides. The angle is {\bfseries{not}} between the sides. The sides are labeled a, b, and c. The angles are labelled A, B, and C. Side a is opposite angle A, and so forth.
+
+Given these constraints, in some cases two solutions are possible. To get one solution set the parameter first\+Solution to true, to get the other set first\+Solution to false. A first\+Solution == true will return a smaller angle, B, than first\+Solution == false.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & one side (in angular distance) \\
+\hline
+{\em a} & another side (in angular distance) \\
+\hline
+{\em A} & the angle opposite the side a \\
+\hline
+{\em first\+Solution} & select which solution to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}} of angles B and C, and the side c. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a6b0c14131a6095d63c042aee0a48c11f}\label{classlarcfm_1_1_great_circle_a6b0c14131a6095d63c042aee0a48c11f}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!small\_circle\_arc\_angle@{small\_circle\_arc\_angle}}
+\index{small\_circle\_arc\_angle@{small\_circle\_arc\_angle}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{small\_circle\_arc\_angle()}{small\_circle\_arc\_angle()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::small\+\_\+circle\+\_\+arc\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{radius,  }\item[{double}]{arc\+Length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Accurately calculate the angular distance of an arc on a small circle (turn) on the sphere. 
+\begin{DoxyParams}{Parameters}
+{\em radius} & along-\/surface radius of small circle \\
+\hline
+{\em arc\+Length} & linear (m) length of the arc. This is the along-\/line length of the arc. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Angular distance of the arc around the small circle (from 0 o 2pi) Note\+: A 100 km radius turn over 100 km of turn produces about 0.\+0024 degrees of error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a0380745dfb618e51d4c7754138b51f32}\label{classlarcfm_1_1_great_circle_a0380745dfb618e51d4c7754138b51f32}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!small\_circle\_arc\_length@{small\_circle\_arc\_length}}
+\index{small\_circle\_arc\_length@{small\_circle\_arc\_length}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{small\_circle\_arc\_length()}{small\_circle\_arc\_length()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::small\+\_\+circle\+\_\+arc\+\_\+length (\begin{DoxyParamCaption}\item[{double}]{radius,  }\item[{double}]{arc\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Accurately calculate the linear distance of an arc on a small circle (turn) on the sphere. 
+\begin{DoxyParams}{Parameters}
+{\em radius} & along-\/surface radius of small circle \\
+\hline
+{\em arc\+Angle} & angular (radian) length of the arc. This is the angle between two great circles that intersect at the small circle\textquotesingle{}s center. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+linear distance of the small circle arc Note\+: A 100 km radius turn over 60 degrees produces about 4.\+3 m error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_af29cbfed8a152fb11088fdf9db47a7c3}\label{classlarcfm_1_1_great_circle_af29cbfed8a152fb11088fdf9db47a7c3}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!small\_circle\_rotation@{small\_circle\_rotation}}
+\index{small\_circle\_rotation@{small\_circle\_rotation}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{small\_circle\_rotation()}{small\_circle\_rotation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::small\+\_\+circle\+\_\+rotation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{center,  }\item[{double}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+EXPERIMENTAL Given a small circle, rotate a point 
+\begin{DoxyParams}{Parameters}
+{\em so} & point on circle \\
+\hline
+{\em center} & center of circle \\
+\hline
+{\em angle} & angle of rotation around center (positive is clockwise) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+another position on the circle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a06ff2a7943be938fb0a28682bae7105c}\label{classlarcfm_1_1_great_circle_a06ff2a7943be938fb0a28682bae7105c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!spherical2xyz@{spherical2xyz}}
+\index{spherical2xyz@{spherical2xyz}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{spherical2xyz()}{spherical2xyz()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Great\+Circle\+::spherical2xyz (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Transforms a lat/lon position to a point in R3 (on a sphere) This is an Earth-\/\+Centered, Earth-\/\+Fixed translation (ECEF, assuming earth-\/surface altitude). From Wikipedia\+: en.\+wikipedia.\+org/wiki/\+Curvilinear\+\_\+coordinates (contents apparently moved to Geodetic datum entry)
+
+The x-\/axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lla} & lattitude/longitude point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point in R3 on surface of the earth (zero altitude) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a9be54817d19a2290adc519f333886b2d}\label{classlarcfm_1_1_great_circle_a9be54817d19a2290adc519f333886b2d}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!spherical2xyz@{spherical2xyz}}
+\index{spherical2xyz@{spherical2xyz}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{spherical2xyz()}{spherical2xyz()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} larcfm\+::\+Great\+Circle\+::spherical2xyz (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Transforms a lat/lon position to a point in R3 (on a sphere) This is an Earth-\/\+Centered, Earth-\/\+Fixed translation (assuming earth-\/surface altitude). From Wikipedia\+: en.\+wikipedia.\+org/wiki/\+Curvilinear\+\_\+coordinates (contents apparently moved to Geodetic datum entry)
+
+The x-\/axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich).
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & latitude \\
+\hline
+{\em lon} & longitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+point in R3 on surface of the earth (zero altitude) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a23ab0bf4c966f16b50647dcf7bbfe912}\label{classlarcfm_1_1_great_circle_a23ab0bf4c966f16b50647dcf7bbfe912}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!surface\_distance@{surface\_distance}}
+\index{surface\_distance@{surface\_distance}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{surface\_distance()}{surface\_distance()}}
+{\footnotesize\ttfamily double larcfm\+::\+Great\+Circle\+::surface\+\_\+distance (\begin{DoxyParamCaption}\item[{double}]{chord\+\_\+distance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the surface distance (at the nominal earth radius) corresponding to a given chord distance (through the earth). 
+\begin{DoxyParams}{Parameters}
+{\em chord\+\_\+distance} & cordal distance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+surface distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a13bddcc33b6ebb06c4af297fde5bd727}\label{classlarcfm_1_1_great_circle_a13bddcc33b6ebb06c4af297fde5bd727}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!velocity\_average@{velocity\_average}}
+\index{velocity\_average@{velocity\_average}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{velocity\_average()}{velocity\_average()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Great\+Circle\+::velocity\+\_\+average (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the velocity on the great circle from lat/lon \#1 to lat/lon \#2 with the given amount of time. Essentially, the velocity at the mid point between lat/lon \#1 and lat/lon \#2. If points \#1 and \#2 are essentially the same (about 1 meter apart), then a zero vector is returned. Also if the absolute value of time is less than 1 \mbox{[}ms\mbox{]}, then a zero vector is returned. 
+
+If the time is negative, then the velocity is along the great circle formed by \#1 and \#2, but in the opposite direction from \#2.
+
+This is an estimate of the velocity. This calculation ignores altitude when calculating great circle distance. Small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & a point \\
+\hline
+{\em p2} & another point \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+average velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a1eefd210833768cad95b1a4965e7bbb2}\label{classlarcfm_1_1_great_circle_a1eefd210833768cad95b1a4965e7bbb2}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!velocity\_average\_speed@{velocity\_average\_speed}}
+\index{velocity\_average\_speed@{velocity\_average\_speed}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{velocity\_average\_speed()}{velocity\_average\_speed()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Great\+Circle\+::velocity\+\_\+average\+\_\+speed (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{s2,  }\item[{double}]{speed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the velocity on the great circle from lat/lon \#1 to lat/lon \#2 with the given speed. If the time is negative, then the velocity is along the great circle formed by \#1 and \#2, but in the opposite direction from \#2.
+
+This is an estimate of the velocity. This calculation ignores altitude when calculating great circle distance. Small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s1} & a point \\
+\hline
+{\em s2} & another point \\
+\hline
+{\em speed} & speed between point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+average velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a5749d993bd4e46e8b477c0511bf5b90c}\label{classlarcfm_1_1_great_circle_a5749d993bd4e46e8b477c0511bf5b90c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!velocity\_final@{velocity\_final}}
+\index{velocity\_final@{velocity\_final}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{velocity\_final()}{velocity\_final()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Great\+Circle\+::velocity\+\_\+final (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Estimate the final velocity on the great circle from lat/lon \#1 to lat/lon \#2 with the given amount of time. The track angle of the velocity is the course from point \#1 to \#2 roughly at point \#2. If points \#1 and \#2 are essentially the same (about 1 meter apart), then a zero vector is returned. Also if the absolute value of time is less than 1 \mbox{[}ms\mbox{]}, then a zero vector is returned. 
+
+If the time is negative, then the velocity is along the great circle formed by \#1 and \#2, but in the opposite direction from \#2. 
+
+This is an estimate of the velocity. This calculation ignores altitude when calculating great circle distance. Small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & a point \\
+\hline
+{\em p2} & another point \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+final velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a9add907532404f103fc6e9073d1bb2e4}\label{classlarcfm_1_1_great_circle_a9add907532404f103fc6e9073d1bb2e4}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!velocity\_initial@{velocity\_initial}}
+\index{velocity\_initial@{velocity\_initial}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{velocity\_initial()}{velocity\_initial()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Great\+Circle\+::velocity\+\_\+initial (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{p2,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Compute the initial velocity on the great circle from lat/lon \#1 to lat/lon \#2 with the given amount of time. If points \#1 and \#2 are essentially the same (about 1 meter apart), then a zero vector is returned. Also if the absolute value of time is less than 1 \mbox{[}ms\mbox{]}, then a zero vector is returned. 
+
+If the time is negative, then the velocity is along the great circle formed by \#1 and \#2, but in the opposite direction from \#2. 
+
+This calculation ignores altitude when calculating great circle distance. Small errors (typically less than 0.\+5\%) will be introduced at typical aircraft altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & point 1 \\
+\hline
+{\em p2} & point 2 \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity from point 1 to point 2, taking time t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a920ad419837d3fbcf219163f96b799ca}\label{classlarcfm_1_1_great_circle_a920ad419837d3fbcf219163f96b799ca}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!xyz2spherical@{xyz2spherical}}
+\index{xyz2spherical@{xyz2spherical}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{xyz2spherical()}{xyz2spherical()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} larcfm\+::\+Great\+Circle\+::xyz2spherical (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Transforms a R3 position on the earth surface into lat/lon coordinates This is an Earth-\/\+Centered, Earth-\/\+Fixed translation (ECEF, assuming earth-\/surface altitude). From Wikipedia\+: en.\+wikipedia.\+org/wiki/\+Curvilinear\+\_\+coordinates (contents apparently moved to Geodetic datum entry) We take a standard radius of the earth as defined in \mbox{\hyperlink{classlarcfm_1_1_great_circle}{Great\+Circle}}, and treat altitude as 0. 
+\begin{DoxyParams}{Parameters}
+{\em v} & position in R3, with ECEF origin \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} point on surface of the earth (zero altitude) 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}\label{classlarcfm_1_1_great_circle_a93bff9d2b9cbee7e8ee230208057002c}} 
+\index{larcfm::GreatCircle@{larcfm::GreatCircle}!spherical\_earth\_radius@{spherical\_earth\_radius}}
+\index{spherical\_earth\_radius@{spherical\_earth\_radius}!larcfm::GreatCircle@{larcfm::GreatCircle}}
+\doxysubsubsection{\texorpdfstring{spherical\_earth\_radius}{spherical\_earth\_radius}}
+{\footnotesize\ttfamily const double larcfm\+::\+Great\+Circle\+::spherical\+\_\+earth\+\_\+radius = 6366707.\+0194937070000000000\hspace{0.3cm}{\ttfamily [static]}}
+
+The radius of a spherical \char`\"{}\+Earth\char`\"{} assuming 1 nautical mile is 1852 meters (as defined by various international committees) and that one nautical mile is equal to one minute of arc (traditional definition of a nautical mile). This value lies between the major and minor axis as defined by WGS84. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Great\+Circle.\+h\item 
+Modules/\+ACCo\+RD/src/Great\+Circle.\+cpp\end{DoxyCompactItemize}

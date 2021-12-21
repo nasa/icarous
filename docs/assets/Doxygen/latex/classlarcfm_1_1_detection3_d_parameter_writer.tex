@@ -1,0 +1,70 @@
+\hypertarget{classlarcfm_1_1_detection3_d_parameter_writer}{}\doxysection{larcfm\+::Detection3\+DParameter\+Writer Class Reference}
+\label{classlarcfm_1_1_detection3_d_parameter_writer}\index{larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}}
+
+
+{\ttfamily \#include $<$Detection3\+DParameter\+Writer.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_writer_a2448d5c753e0bcda8f4a31ca1ee2d293}{write\+Core\+Detection}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ dlist, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$res)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_writer_ad23022fac25b11fae26fed51f888cd39}{write\+Core\+Detection}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$ dlist, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$res, bool ordered)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_detection3_d_parameter_writer_a891cbb843ad6a63ed39ffa0c0310d2b7}{clear\+Core\+Detection\+Parameters}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains static methods to create \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} objects that contain information about \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance definitions in a format consistent with Detection\+Parameter\+Reader. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_writer_a891cbb843ad6a63ed39ffa0c0310d2b7}\label{classlarcfm_1_1_detection3_d_parameter_writer_a891cbb843ad6a63ed39ffa0c0310d2b7}} 
+\index{larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}!clearCoreDetectionParameters@{clearCoreDetectionParameters}}
+\index{clearCoreDetectionParameters@{clearCoreDetectionParameters}!larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}}
+\doxysubsubsection{\texorpdfstring{clearCoreDetectionParameters()}{clearCoreDetectionParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection3\+DParameter\+Writer\+::clear\+Core\+Detection\+Parameters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This removes all standard core detection parameters from a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_writer_a2448d5c753e0bcda8f4a31ca1ee2d293}\label{classlarcfm_1_1_detection3_d_parameter_writer_a2448d5c753e0bcda8f4a31ca1ee2d293}} 
+\index{larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}!writeCoreDetection@{writeCoreDetection}}
+\index{writeCoreDetection@{writeCoreDetection}!larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}}
+\doxysubsubsection{\texorpdfstring{writeCoreDetection()}{writeCoreDetection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Detection3\+DParameter\+Writer\+::write\+Core\+Detection (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$}]{dlist,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{det,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{res }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} suitable to be read by read\+Core\+Detection() based on the supplied \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instances. 
+\begin{DoxyParams}{Parameters}
+{\em dlist} & list of \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instances -- this may be empty. det and res instances will be automatically added to the list (if they are not already in it) \\
+\hline
+{\em det} & detection instance -- this may be null \\
+\hline
+{\em res} & resolution instance -- this may be null Note\+: this may modify the instance identifiers if they are not already unique. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_detection3_d_parameter_writer_ad23022fac25b11fae26fed51f888cd39}\label{classlarcfm_1_1_detection3_d_parameter_writer_ad23022fac25b11fae26fed51f888cd39}} 
+\index{larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}!writeCoreDetection@{writeCoreDetection}}
+\index{writeCoreDetection@{writeCoreDetection}!larcfm::Detection3DParameterWriter@{larcfm::Detection3DParameterWriter}}
+\doxysubsubsection{\texorpdfstring{writeCoreDetection()}{writeCoreDetection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Detection3\+DParameter\+Writer\+::write\+Core\+Detection (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ $>$}]{dlist,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{det,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{res,  }\item[{bool}]{ordered }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} suitable to be read by read\+Core\+Detection() based on the supplied \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instances. 
+\begin{DoxyParams}{Parameters}
+{\em dlist} & list of \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instances -- this may be empty. det and res instances will be automatically added to the list (if they are not already in it) \\
+\hline
+{\em det} & detection instance -- this may be null \\
+\hline
+{\em res} & resolution instance -- this may be null \\
+\hline
+{\em ordered} & true to modify detection identifiers to ensure they retain the input list\textquotesingle{}s ordering when decoded, false will only modify identifiers if they are not unique \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Detection3\+DParameter\+Writer.\+h\item 
+Modules/\+ACCo\+RD/src/Detection3\+DParameter\+Writer.\+cpp\end{DoxyCompactItemize}

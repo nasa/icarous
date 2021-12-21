@@ -1,0 +1,70 @@
+\hypertarget{_critical_vectors_8h_source}{}\doxysection{Critical\+Vectors.\+h}
+\label{_critical_vectors_8h_source}\index{Modules/ACCoRD/inc/CriticalVectors.h@{Modules/ACCoRD/inc/CriticalVectors.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CriticalVectors.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef CRITICALVECTORS\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define CRITICALVECTORS\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}CriticalVectors2D.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Vertical.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_critical_vectors}{CriticalVectors}} \{}
+\DoxyCodeLine{24   \textcolor{keyword}{public}:}
+\DoxyCodeLine{25     \textcolor{keyword}{static} std::list<Vect2> tracks(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{26                 \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{keyword}{static} std::list<Vect2> tracks(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{29                 \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keyword}{static} std::list<Vect2> groundSpeeds(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{32                       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{static} std::list<Vect2> groundSpeeds(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{35                       \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{static} std::list<double> verticalSpeeds(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{38                      \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keyword}{static} std::list<double> verticalSpeeds(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{41                      \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{42   \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{//std::list<Vect2> tracks(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{45 \textcolor{comment}{//          const double D, const double H, const double B, const double T);}}
+\DoxyCodeLine{46 \textcolor{comment}{//}}
+\DoxyCodeLine{47 \textcolor{comment}{//std::list<Vect2> tracks(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{48 \textcolor{comment}{//          const double D, const double H, const double T);}}
+\DoxyCodeLine{49 \textcolor{comment}{//}}
+\DoxyCodeLine{50 \textcolor{comment}{//std::list<Vect2> groundSpeeds(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{51 \textcolor{comment}{//                const double D, const double H, const double B, const double T);}}
+\DoxyCodeLine{52 \textcolor{comment}{//}}
+\DoxyCodeLine{53 \textcolor{comment}{//std::list<Vect2> groundSpeeds(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{54 \textcolor{comment}{//                const double D, const double H, const double T);}}
+\DoxyCodeLine{55 \textcolor{comment}{//}}
+\DoxyCodeLine{56 \textcolor{comment}{//std::list<double> verticalSpeeds(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{57 \textcolor{comment}{//               const double D, const double H, const double B, const double T);}}
+\DoxyCodeLine{58 \textcolor{comment}{//}}
+\DoxyCodeLine{59 \textcolor{comment}{//std::list<double> verticalSpeeds(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{60 \textcolor{comment}{//               const double D, const double H, const double T);}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CRITICALVECTORS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

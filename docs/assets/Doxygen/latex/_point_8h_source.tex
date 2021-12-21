@@ -1,0 +1,92 @@
+\hypertarget{_point_8h_source}{}\doxysection{Point.\+h}
+\label{_point_8h_source}\index{Modules/ACCoRD/inc/Point.h@{Modules/ACCoRD/inc/Point.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Point.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef POINT\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define POINT\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}OutputList.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{31 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_point}{Point}}: \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_output_list}{OutputList}} \{}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41     \mbox{\hyperlink{classlarcfm_1_1_point_a4d43f5247afe8c85c6da1aa39dbcc738}{Point}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a0b5d2eb44cacfb010c98524aad22fed4}{x}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_ad2cd0f8e8e002e5eb070dbd1b84428fe}{y}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a948b78d2382edf656fe3d2b429e6f9e6}{z}});}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{45     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}}\& \mbox{\hyperlink{classlarcfm_1_1_point_a145ca2852df318309a9964c2c17c8863}{ZEROP}}();}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}}\& \mbox{\hyperlink{classlarcfm_1_1_point_a09d9b3bb3c24c99f97c7336a2cb4cfb5}{INVALIDP}}();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{57     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a7a90e9a4869c153798669beaa04d70e5}{mk}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{67     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a7a90e9a4869c153798669beaa04d70e5}{mk}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keywordtype}{double} alt = 0.0);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{79     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a7a90e9a4869c153798669beaa04d70e5}{mk}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a0b5d2eb44cacfb010c98524aad22fed4}{x}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_ad2cd0f8e8e002e5eb070dbd1b84428fe}{y}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a948b78d2382edf656fe3d2b429e6f9e6}{z}});}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{90     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a4625648d5d44187adf8d6885570a5542}{make}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a0b5d2eb44cacfb010c98524aad22fed4}{x}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_ad2cd0f8e8e002e5eb070dbd1b84428fe}{y}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a948b78d2382edf656fe3d2b429e6f9e6}{z}});}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{104     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a4625648d5d44187adf8d6885570a5542}{make}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a0b5d2eb44cacfb010c98524aad22fed4}{x}}, \textcolor{keyword}{const} std::string\& unitsX, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_ad2cd0f8e8e002e5eb070dbd1b84428fe}{y}}, \textcolor{keyword}{const} std::string\& unitsY, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_vect3_a948b78d2382edf656fe3d2b429e6f9e6}{z}}, \textcolor{keyword}{const} std::string\& unitsZ);}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{111     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a2c8f42fc3ffceefeff6f04b41e3b1e04}{mkX}}(\textcolor{keywordtype}{double} X) \textcolor{keyword}{const};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{118     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a4e38391d0297956c6cf4e77b992e31af}{mkY}}(\textcolor{keywordtype}{double} Y) \textcolor{keyword}{const};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{125     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_aae41c47a100115ac0372409acb314121}{mkZ}}(\textcolor{keywordtype}{double} Z) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} Hat() \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} Neg() \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} Add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} Sub(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} Scal(\textcolor{keywordtype}{double} k) \textcolor{keyword}{const};}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{143     \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_a5292de32a3b058c2dc0e5b5699757ceb}{linear}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{comment}{// }}
+\DoxyCodeLine{146     \textcolor{comment}{// output methods}}
+\DoxyCodeLine{147     \textcolor{comment}{//}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{150     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a1b06b4422f9c2a4a84e7dc921f47cfa8}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{160     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a1b06b4422f9c2a4a84e7dc921f47cfa8}{toString}}(\textcolor{keywordtype}{int} prec, \textcolor{keyword}{const} std::string\& xUnits, \textcolor{keyword}{const} std::string\& yUnits, \textcolor{keyword}{const} std::string\& zUnits) \textcolor{keyword}{const};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{168     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a6777ebdb44b8d38786d53646dcd580e6}{toStringUnits}}(\textcolor{keyword}{const} std::string\& xUnits, \textcolor{keyword}{const} std::string\& yUnits, \textcolor{keyword}{const} std::string\& zUnits) \textcolor{keyword}{const};}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{174     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_point_a3f47d8ac14dbec09750586de7dbe98ff}{toStringList}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{179     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a964becb39b5d187f39274b2727aa93d5}{toStringNP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{186     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a964becb39b5d187f39274b2727aa93d5}{toStringNP}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{196     std::string \mbox{\hyperlink{classlarcfm_1_1_point_a964becb39b5d187f39274b2727aa93d5}{toStringNP}}(\textcolor{keywordtype}{int} precision, \textcolor{keyword}{const} std::string\& xUnits, \textcolor{keyword}{const} std::string\& yUnits, \textcolor{keyword}{const} std::string\& zUnits) \textcolor{keyword}{const};}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{208     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_point}{Point}} \mbox{\hyperlink{classlarcfm_1_1_point_aa5a57ab5762b5d9ecca6a6f3b9a70fa0}{parse}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \};}
+\DoxyCodeLine{211 \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* POINT\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

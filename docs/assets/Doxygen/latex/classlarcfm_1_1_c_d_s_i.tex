@@ -1,0 +1,460 @@
+\hypertarget{classlarcfm_1_1_c_d_s_i}{}\doxysection{larcfm\+::CDSI Class Reference}
+\label{classlarcfm_1_1_c_d_s_i}\index{larcfm::CDSI@{larcfm::CDSI}}
+
+
+{\ttfamily \#include $<$CDSI.\+h$>$}
+
+Inheritance diagram for larcfm\+::CDSI\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_c_d_s_i}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a33aba5c70e0ecc51946e17704e111833}{get\+Filter\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa5d84c1fb034c70175eaa2797f902144}{set\+Filter\+Time}} (double cdfilter)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_af74568c1136741d6cd009ee63746b3f0}{conflict}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_acd037915203e17a34d212ae5d772cb16}{get\+Time\+In}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a16d487bf93993daba33f06f8616678bd}{get\+Time\+Out}} (int i) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aeb1e9b3f96bc0cfe994fc58fe0dcb6ee}{get\+Segment\+In}} (int i) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_af25dbcdedbb8a715a2d8b3220f7e4eba}{get\+Segment\+Out}} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a6475a2a135ebe5030411ea73543442be}\label{classlarcfm_1_1_c_d_s_i_a6475a2a135ebe5030411ea73543442be}} 
+double {\bfseries get\+Critical\+Time} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a0831b3d621e706236481fe445b49a6ba}\label{classlarcfm_1_1_c_d_s_i_a0831b3d621e706236481fe445b49a6ba}} 
+double {\bfseries get\+Distance\+At\+Critical\+Time} (int i) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ac8846bfdde9eb4786389e696dfb5f8d2}{detection\+XYZ}} (double sx, double sy, double sz, double vx, double vy, double vz, double t0, double horizon, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&intent, double startT, double endT)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a029d7963d75922caea38f885c7b12de9}{detection\+LL}} (double lat, double lon, double alt, double trk, double gs, double vs, double t0, double horizon, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&intent, double startT, double endT)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ada314cd0c241bdf04a86db279806363e}{set\+Core\+Detection\+Ptr}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$c)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a7e5b7696e1c22280e81c94dc225cb8f1}{set\+Core\+Detection\+Ref}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \&c)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ad60bd64deaee6eeb437fc3db3eb4cbf9}{get\+Core\+Detection\+Ptr}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \& \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a6d6970fbf24268bbdcefc32e5ea6e889}{get\+Core\+Detection\+Ref}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ac2963051f3da114ca4d6ec4649c15f2b}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a1427a195cb0e20eacd52f8984626bab2}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa4444c7d4746261313803ca8426358b6}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a340b546564d226063aa3b96a7cbf9656}{get\+Message\+No\+Clear}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aa064a956db0b7892bfdc332d85aa8d6c}{make}} (double distance, const std\+::string \&d\+Str, double height, const std\+::string \&h\+Str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a4f91544652ee30397804d688c05878c0}\label{classlarcfm_1_1_c_d_s_i_a4f91544652ee30397804d688c05878c0}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} {\bfseries make} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a20cb3abc750e83c285e2202bb6a0f31e}{mk}} (double distance, double height)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ae3e4524627c1fbaddf6615ed1fd14b49}{CDSI}} (double distance, double height)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a50f2ff5967d49f19e922c434a48fc037}{CDSI}} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_aad5a04d33fd9b23ab393f6f76abf99d8}{get\+Distance}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a23b293d4de5167a1f7fca6187d58fcc3}{get\+Height}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a47c4024243e7137f9112e01803a025ca}{set\+Distance}} (double distance)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ae0276b49a20f65fc1319257605de0500}{set\+Height}} (double height)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a5b2d432fcefa6a73831b91ebcb914942}\label{classlarcfm_1_1_c_d_s_i_a5b2d432fcefa6a73831b91ebcb914942}} 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_core}{CDSICore}} {\bfseries core}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aca25d0c05ca1fc020392e2ab137a88bd}\label{classlarcfm_1_1_c_d_s_i_aca25d0c05ca1fc020392e2ab137a88bd}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class implements the algorithm for conflict detection between an ownship (modeled with a state vector) and a traffic aircraft trajectory (modeled with intent information). 
+
+This class can be used two ways\+: through an object or through a static method. The static method approach has the advantage that an object does not need to be created. The object approach has the advantage that more information is available. Specifically, the start and end times for every conflict are available in the object approach. 
+
+In addition, for each of these types of use, the aircraft can be specified in two different coordinate systems\+: a Euclidean space and a latitude and longitude reference frame. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ae3e4524627c1fbaddf6615ed1fd14b49}\label{classlarcfm_1_1_c_d_s_i_ae3e4524627c1fbaddf6615ed1fd14b49}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!CDSI@{CDSI}}
+\index{CDSI@{CDSI}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{CDSI()}{CDSI()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+CDSI\+::\+CDSI (\begin{DoxyParamCaption}\item[{double}]{distance,  }\item[{double}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Create a new conflict detection (state information for the ownship and intent information for the traffic) object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}nmi\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}ft\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a50f2ff5967d49f19e922c434a48fc037}\label{classlarcfm_1_1_c_d_s_i_a50f2ff5967d49f19e922c434a48fc037}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!CDSI@{CDSI}}
+\index{CDSI@{CDSI}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{CDSI()}{CDSI()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+CDSI\+::\+CDSI (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}, {\ttfamily [private]}}
+
+Create a new conflict detection (state information for the ownship and intent information for the traffic) object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}nmi\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}ft\mbox{]}. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_af74568c1136741d6cd009ee63746b3f0}\label{classlarcfm_1_1_c_d_s_i_af74568c1136741d6cd009ee63746b3f0}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSI\+::conflict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns if there were any conflicts \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a029d7963d75922caea38f885c7b12de9}\label{classlarcfm_1_1_c_d_s_i_a029d7963d75922caea38f885c7b12de9}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!detectionLL@{detectionLL}}
+\index{detectionLL@{detectionLL}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{detectionLL()}{detectionLL()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSI\+::detection\+LL (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{double}]{alt,  }\item[{double}]{trk,  }\item[{double}]{gs,  }\item[{double}]{vs,  }\item[{double}]{t0,  }\item[{double}]{horizon,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{intent,  }\item[{double}]{startT,  }\item[{double}]{endT }\end{DoxyParamCaption})}
+
+Returns if there is a conflict between two aircraft\+: the state aircraft and the intent aircraft. The state aircraft is assumed to move linearly from it position. The intent aircraft is assumed to move according to the given flight plan. Both aircraft are assumed to be represented in a latitude/longitude reference frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & the latitude of the state aircraft in \mbox{[}deg\mbox{]} \\
+\hline
+{\em lon} & the longitude of the state aircraft in \mbox{[}deg\mbox{]} \\
+\hline
+{\em alt} & the altitude of the state aircraft in \mbox{[}feet\mbox{]} \\
+\hline
+{\em trk} & the track angle of the velocity of the state aircraft in \mbox{[}deg from true north\mbox{]} \\
+\hline
+{\em gs} & the ground speed of velocity of the state aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em vs} & the vertical speed of velocity of the state aircraft in \mbox{[}ft/min\mbox{]} \\
+\hline
+{\em t0} & the time, in \mbox{[}s\mbox{]}, of the state aircraft when located at (lat, lon, alt). This can be 0.\+0 to represent \char`\"{}now\char`\"{} \\
+\hline
+{\em horizon} & the maximum amount of time after t0 that the position of the state aircraft\textquotesingle{}s position can be predicted \\
+\hline
+{\em intent} & the flight plan of the intent aircraft \\
+\hline
+{\em startT} & the time, in \mbox{[}s\mbox{]}, to start looking for conflicts relative to t0. This can be 0.\+0. \\
+\hline
+{\em endT} & the time, in \mbox{[}s\mbox{]}, to end looking for conflicts relative to t0 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ac8846bfdde9eb4786389e696dfb5f8d2}\label{classlarcfm_1_1_c_d_s_i_ac8846bfdde9eb4786389e696dfb5f8d2}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!detectionXYZ@{detectionXYZ}}
+\index{detectionXYZ@{detectionXYZ}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{detectionXYZ()}{detectionXYZ()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSI\+::detection\+XYZ (\begin{DoxyParamCaption}\item[{double}]{sx,  }\item[{double}]{sy,  }\item[{double}]{sz,  }\item[{double}]{vx,  }\item[{double}]{vy,  }\item[{double}]{vz,  }\item[{double}]{t0,  }\item[{double}]{horizon,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{intent,  }\item[{double}]{startT,  }\item[{double}]{endT }\end{DoxyParamCaption})}
+
+Returns if there is a conflict between two aircraft\+: the state aircraft and the intent aircraft. The state aircraft is assumed to move linearly from it position. The intent aircraft is assumed to move according to the given flight plan. Both aircraft are assumed to be represented in a cartesian reference frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sx} & the x position of the state aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em sy} & the y position of the state aircraft in \mbox{[}nmi\mbox{]} \\
+\hline
+{\em sz} & the z position of the state aircraft in \mbox{[}feet\mbox{]} \\
+\hline
+{\em vx} & the x component of velocity of the state aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em vy} & the y component of velocity of the state aircraft in \mbox{[}knot\mbox{]} \\
+\hline
+{\em vz} & the z component of velocity of the state aircraft in \mbox{[}ft/min\mbox{]} \\
+\hline
+{\em t0} & the time, in \mbox{[}s\mbox{]}, of the state aircraft when located at (sx,sy,sz). This can be 0.\+0 to represent \char`\"{}now\char`\"{} \\
+\hline
+{\em horizon} & the maximum amount of time after t0 that the position of the state aircraft\textquotesingle{}s position can be predicted \\
+\hline
+{\em intent} & the flight plan of the intent aircraft \\
+\hline
+{\em startT} & the time, in \mbox{[}s\mbox{]}, to start looking for conflicts relative to t0. This can be 0.\+0. \\
+\hline
+{\em endT} & the time, in \mbox{[}s\mbox{]}, to end looking for conflicts relative to t0 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ad60bd64deaee6eeb437fc3db3eb4cbf9}\label{classlarcfm_1_1_c_d_s_i_ad60bd64deaee6eeb437fc3db3eb4cbf9}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getCoreDetectionPtr@{getCoreDetectionPtr}}
+\index{getCoreDetectionPtr@{getCoreDetectionPtr}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getCoreDetectionPtr()}{getCoreDetectionPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+CDSI\+::get\+Core\+Detection\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a pointer to this object\textquotesingle{}s \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_ae410c5193ee879510616c241f969df71}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a6d6970fbf24268bbdcefc32e5ea6e889}\label{classlarcfm_1_1_c_d_s_i_a6d6970fbf24268bbdcefc32e5ea6e889}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getCoreDetectionRef@{getCoreDetectionRef}}
+\index{getCoreDetectionRef@{getCoreDetectionRef}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getCoreDetectionRef()}{getCoreDetectionRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \& larcfm\+::\+CDSI\+::get\+Core\+Detection\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a reference to this object\textquotesingle{}s \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_a13923af713661cef9c63a09a30e538c3}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aad5a04d33fd9b23ab393f6f76abf99d8}\label{classlarcfm_1_1_c_d_s_i_aad5a04d33fd9b23ab393f6f76abf99d8}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSI\+::get\+Distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Returns the minimum horizontal separation distance in \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a33aba5c70e0ecc51946e17704e111833}\label{classlarcfm_1_1_c_d_s_i_a33aba5c70e0ecc51946e17704e111833}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getFilterTime@{getFilterTime}}
+\index{getFilterTime@{getFilterTime}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getFilterTime()}{getFilterTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSI\+::get\+Filter\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the conflict detection filter time.
+
+\begin{DoxyReturn}{Returns}
+the conflict detection filter time seconds 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a23b293d4de5167a1f7fca6187d58fcc3}\label{classlarcfm_1_1_c_d_s_i_a23b293d4de5167a1f7fca6187d58fcc3}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSI\+::get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Returns the minimum vertical separation distance in \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aa4444c7d4746261313803ca8426358b6}\label{classlarcfm_1_1_c_d_s_i_aa4444c7d4746261313803ca8426358b6}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDSI\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a340b546564d226063aa3b96a7cbf9656}\label{classlarcfm_1_1_c_d_s_i_a340b546564d226063aa3b96a7cbf9656}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDSI\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_ac2963051f3da114ca4d6ec4649c15f2b}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aeb1e9b3f96bc0cfe994fc58fe0dcb6ee}\label{classlarcfm_1_1_c_d_s_i_aeb1e9b3f96bc0cfe994fc58fe0dcb6ee}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getSegmentIn@{getSegmentIn}}
+\index{getSegmentIn@{getSegmentIn}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getSegmentIn()}{getSegmentIn()}}
+{\footnotesize\ttfamily int larcfm\+::\+CDSI\+::get\+Segment\+In (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the segment number of the entry into a conflict from the traffic aircraft\textquotesingle{}s flight plan. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_af25dbcdedbb8a715a2d8b3220f7e4eba}\label{classlarcfm_1_1_c_d_s_i_af25dbcdedbb8a715a2d8b3220f7e4eba}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getSegmentOut@{getSegmentOut}}
+\index{getSegmentOut@{getSegmentOut}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getSegmentOut()}{getSegmentOut()}}
+{\footnotesize\ttfamily int larcfm\+::\+CDSI\+::get\+Segment\+Out (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the segment number of the exit from a conflict from the traffic aircraft\textquotesingle{}s flight plan. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_acd037915203e17a34d212ae5d772cb16}\label{classlarcfm_1_1_c_d_s_i_acd037915203e17a34d212ae5d772cb16}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getTimeIn@{getTimeIn}}
+\index{getTimeIn@{getTimeIn}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getTimeIn()}{getTimeIn()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSI\+::get\+Time\+In (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the start time of the conflict in \mbox{[}s\mbox{]}. This value is in absolute time. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a16d487bf93993daba33f06f8616678bd}\label{classlarcfm_1_1_c_d_s_i_a16d487bf93993daba33f06f8616678bd}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDSI\+::get\+Time\+Out (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the end time of the conflict in \mbox{[}s\mbox{]}. This value is in absolute time. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ac2963051f3da114ca4d6ec4649c15f2b}\label{classlarcfm_1_1_c_d_s_i_ac2963051f3da114ca4d6ec4649c15f2b}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSI\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a1427a195cb0e20eacd52f8984626bab2}\label{classlarcfm_1_1_c_d_s_i_a1427a195cb0e20eacd52f8984626bab2}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDSI\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aa064a956db0b7892bfdc332d85aa8d6c}\label{classlarcfm_1_1_c_d_s_i_aa064a956db0b7892bfdc332d85aa8d6c}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!make@{make}}
+\index{make@{make}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} larcfm\+::\+CDSI\+::make (\begin{DoxyParamCaption}\item[{double}]{distance,  }\item[{const std\+::string \&}]{d\+Units,  }\item[{double}]{height,  }\item[{const std\+::string \&}]{h\+Units }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} conflict detection object using specified units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}d\+Str\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}h\+Str\mbox{]}.\\
+\hline
+\end{DoxyParams}
+Create a new state-\/based conflict detection object using specified units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}h\+Str\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}d\+Str\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a20cb3abc750e83c285e2202bb6a0f31e}\label{classlarcfm_1_1_c_d_s_i_a20cb3abc750e83c285e2202bb6a0f31e}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!mk@{mk}}
+\index{mk@{mk}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{mk()}{mk()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} larcfm\+::\+CDSI\+::mk (\begin{DoxyParamCaption}\item[{double}]{distance,  }\item[{double}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_c_d_s_i}{CDSI}} conflict detection object using internal units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}m\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}m\mbox{]}.\\
+\hline
+\end{DoxyParams}
+Create a new state-\/based conflict detection object using internal units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \mbox{[}m\mbox{]} \\
+\hline
+{\em height} & the minimum vertical separation height \mbox{[}m\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ada314cd0c241bdf04a86db279806363e}\label{classlarcfm_1_1_c_d_s_i_ada314cd0c241bdf04a86db279806363e}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!setCoreDetectionPtr@{setCoreDetectionPtr}}
+\index{setCoreDetectionPtr@{setCoreDetectionPtr}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{setCoreDetectionPtr()}{setCoreDetectionPtr()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSI\+::set\+Core\+Detection\+Ptr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Experimental. You are responsible for deleting c after this call. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_ae7e17839a976d5acb5bf2d6d3303988c}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a7e5b7696e1c22280e81c94dc225cb8f1}\label{classlarcfm_1_1_c_d_s_i_a7e5b7696e1c22280e81c94dc225cb8f1}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!setCoreDetectionRef@{setCoreDetectionRef}}
+\index{setCoreDetectionRef@{setCoreDetectionRef}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{setCoreDetectionRef()}{setCoreDetectionRef()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSI\+::set\+Core\+Detection\+Ref (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \&}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Apply a deep copy of the referenced \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object to this object at the lowest level. The user is responsible for cleaning up the original instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection3_d_acceptor_af95d11212f07e638867ee8280271078c}{larcfm\+::\+Detection3\+DAcceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a47c4024243e7137f9112e01803a025ca}\label{classlarcfm_1_1_c_d_s_i_a47c4024243e7137f9112e01803a025ca}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!setDistance@{setDistance}}
+\index{setDistance@{setDistance}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{setDistance()}{setDistance()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSI\+::set\+Distance (\begin{DoxyParamCaption}\item[{double}]{distance }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Sets the minimum horizontal separation distance in \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_aa5d84c1fb034c70175eaa2797f902144}\label{classlarcfm_1_1_c_d_s_i_aa5d84c1fb034c70175eaa2797f902144}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!setFilterTime@{setFilterTime}}
+\index{setFilterTime@{setFilterTime}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{setFilterTime()}{setFilterTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSI\+::set\+Filter\+Time (\begin{DoxyParamCaption}\item[{double}]{cdfilter }\end{DoxyParamCaption})}
+
+Sets the conflict detection filter time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cdfilter} & the conflict detection filter time in seconds. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_ae0276b49a20f65fc1319257605de0500}\label{classlarcfm_1_1_c_d_s_i_ae0276b49a20f65fc1319257605de0500}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!setHeight@{setHeight}}
+\index{setHeight@{setHeight}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{setHeight()}{setHeight()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDSI\+::set\+Height (\begin{DoxyParamCaption}\item[{double}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Sets the minimum vertical separation distance in \mbox{[}m\mbox{]} \mbox{\Hypertarget{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}\label{classlarcfm_1_1_c_d_s_i_a5364f57b285b2f6473a3b60bda11a59a}} 
+\index{larcfm::CDSI@{larcfm::CDSI}!size@{size}}
+\index{size@{size}!larcfm::CDSI@{larcfm::CDSI}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+CDSI\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the number of conflicts 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CDSI.\+h\item 
+Modules/\+ACCo\+RD/src/CDSI.\+cpp\end{DoxyCompactItemize}

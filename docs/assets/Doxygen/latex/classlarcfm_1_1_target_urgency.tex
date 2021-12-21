@@ -1,0 +1,54 @@
+\hypertarget{classlarcfm_1_1_target_urgency}{}\doxysection{larcfm\+::Target\+Urgency Class Reference}
+\label{classlarcfm_1_1_target_urgency}\index{larcfm::TargetUrgency@{larcfm::TargetUrgency}}
+
+
+{\ttfamily \#include $<$Target\+Urgency.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_target_urgency_a19be0737e4efa062553af6b8f71eca69}\label{classlarcfm_1_1_target_urgency_a19be0737e4efa062553af6b8f71eca69}} 
+static bool {\bfseries most\+Urgent} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$cd, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si1, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi1, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si2, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi2, double B, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_target_urgency_a658b3dba3dab08a246126c9274706ead}{sort\+Value}} (double cdist, bool conflict, double tin, double tca, double dist\+\_\+tca, double B, double T)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class is used to determine if one aircraft has priority over another aircraft. It is an encapsulation of the \char`\"{}right of way\char`\"{} rules.
+
+Disclaimer\+: The current rules have been verified to have certain safety and liveness properties, but they have not been validated, that is, they may not behave \char`\"{}naturally.\char`\"{} As we learn more about what is expected, these rules may evolve in the future. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_target_urgency_a658b3dba3dab08a246126c9274706ead}\label{classlarcfm_1_1_target_urgency_a658b3dba3dab08a246126c9274706ead}} 
+\index{larcfm::TargetUrgency@{larcfm::TargetUrgency}!sortValue@{sortValue}}
+\index{sortValue@{sortValue}!larcfm::TargetUrgency@{larcfm::TargetUrgency}}
+\doxysubsubsection{\texorpdfstring{sortValue()}{sortValue()}}
+{\footnotesize\ttfamily double larcfm\+::\+Target\+Urgency\+::sort\+Value (\begin{DoxyParamCaption}\item[{double}]{cdist,  }\item[{bool}]{conflict,  }\item[{double}]{tin,  }\item[{double}]{tca,  }\item[{double}]{dist\+\_\+tca,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a priority ranking value far an aircraft s.\+t. if two ranking values are compared, the lower (possibly negative) value will represent the most urgent aircraft. 
+\begin{DoxyParams}{Parameters}
+{\em cdist} & current distance between aircraft, in meters \\
+\hline
+{\em conflict} & true if a conflict was detected \\
+\hline
+{\em tin} & time in for the conflict, in seconds (if conflict) \\
+\hline
+{\em tca} & critical time of conflict, in seconds (if conflict) \\
+\hline
+{\em dist\+\_\+tca} & distance at critical time, \texorpdfstring{$>$}{>}= 0.\+0 (if conflict) \\
+\hline
+{\em B} & detection start time (generally 0) \\
+\hline
+{\em T} & detection lookahead time, t \texorpdfstring{$<$}{<}= 0 is \char`\"{}no data\char`\"{} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+urgency sorting value, with positive infinity being least urgent and negative infinity being most urgent 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Target\+Urgency.\+h\item 
+Modules/\+ACCo\+RD/src/Target\+Urgency.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,250 @@
+\hypertarget{classlarcfm_1_1_alert_levels}{}\doxysection{larcfm\+::Alert\+Levels Class Reference}
+\label{classlarcfm_1_1_alert_levels}\index{larcfm::AlertLevels@{larcfm::AlertLevels}}
+
+
+{\ttfamily \#include $<$Alert\+Levels.\+h$>$}
+
+Inheritance diagram for larcfm\+::Alert\+Levels\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_alert_levels}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a6a2d5ee14c3df00da80b8b0c571dc4af}\label{classlarcfm_1_1_alert_levels_a6a2d5ee14c3df00da80b8b0c571dc4af}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} $>$\+::size\+\_\+type {\bfseries nat}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a07676439c253d9eb5cc7fc48125b6561}\label{classlarcfm_1_1_alert_levels_a07676439c253d9eb5cc7fc48125b6561}} 
+{\bfseries Alert\+Levels} (const \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \&alertor)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_afff8919fc4598d635c9d91adcb360a88}{clear}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a6ee7f45e9a154679d41ab859b81a5a2c}{most\+Severe\+Alert\+Level}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a25a285176e394d7a79c15f77844d6cec}{first\+Guidance\+Level}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a7fb3dea518fd6cdb9a12e70e80774820}{last\+Guidance\+Level}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ab713101de543a41722e3998221838fb2}{conflict\+Alert\+Level}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a8effd402aa15bd1831b3f2298d731552}{detector\+Ref}} (int alert\+\_\+level) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a3e7356620b5bb5b435fd69ea0227b5d4}{conflict\+Detector\+Ref}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ae84698b013e2ab737a9f16a3c1be7b9d}{set\+Conflict\+Alert\+Level}} (int alert\+\_\+level)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_add494e9973eda4c1b66790506679fa37}{set\+Level}} (int level, const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&thresholds)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a961f9fc26985e5d77a1c2ed6e4eaf3ef}{add\+Level}} (const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&thresholds)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} const \& \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a5b01e487ea0c20cd73dddbbc8cdf6fa7}{get\+Level}} (int level) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ae0afa6824857740bc024117fa0c2ebeb}{copy}} (const \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \&alertor)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a12a8316c2566d9f3214e92fd832ed3fd}{get\+Parameters}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a20ac8370fcea0dcef1865f45ffb72102}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a70621de1d6031bd3e2950a703f8ef156}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a302ef3fe14b7118ee25bb498a4339eb1}\label{classlarcfm_1_1_alert_levels_a302ef3fe14b7118ee25bb498a4339eb1}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a845c0e53201ba2b0c1244ebe03c1dbd6}\label{classlarcfm_1_1_alert_levels_a845c0e53201ba2b0c1244ebe03c1dbd6}} 
+std\+::string {\bfseries to\+PVS} (int prec) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a96e25228aad47ee2e84618010549e88a}{WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_a9574c8b753156c6981ade344557783d4}{Single\+Bands\+\_\+\+WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ab58b733d200ce4cbbe8164ec157bfec3}{Buffered\+\_\+\+WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds}} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \mbox{\hyperlink{classlarcfm_1_1_alert_levels_ad3b78ee359478baaec329c03a9a4e59d}{Single\+Bands}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$detector, double alerting\+\_\+time, double lookahead\+\_\+time)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a1afda815c7f3dd19fac70b866c2d055e}\label{classlarcfm_1_1_alert_levels_a1afda815c7f3dd19fac70b866c2d055e}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} $>$ {\bfseries alertor\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a58c100a3d9d8445b64be6cf86cb8727c}\label{classlarcfm_1_1_alert_levels_a58c100a3d9d8445b64be6cf86cb8727c}} 
+int {\bfseries conflict\+\_\+level\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+It is assumed that for all alert level i \texorpdfstring{$>$}{>}= 1\+: detection(i+1) =\texorpdfstring{$>$}{>} detection(i) and that there is at least one guidance level whose region is different from NONE. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a961f9fc26985e5d77a1c2ed6e4eaf3ef}\label{classlarcfm_1_1_alert_levels_a961f9fc26985e5d77a1c2ed6e4eaf3ef}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!addLevel@{addLevel}}
+\index{addLevel@{addLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{addLevel()}{addLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alert\+Levels\+::add\+Level (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&}]{thresholds }\end{DoxyParamCaption})}
+
+Add an alert level and returns its numerical type, which is a positive number. \mbox{\Hypertarget{classlarcfm_1_1_alert_levels_ab58b733d200ce4cbbe8164ec157bfec3}\label{classlarcfm_1_1_alert_levels_ab58b733d200ce4cbbe8164ec157bfec3}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!Buffered\_WC\_SC\_228\_Thresholds@{Buffered\_WC\_SC\_228\_Thresholds}}
+\index{Buffered\_WC\_SC\_228\_Thresholds@{Buffered\_WC\_SC\_228\_Thresholds}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{Buffered\_WC\_SC\_228\_Thresholds()}{Buffered\_WC\_SC\_228\_Thresholds()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} larcfm\+::\+Alert\+Levels\+::\+Buffered\+\_\+\+WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds (buffered) as defined by SC-\/228 MOPS. Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning Well-\/clear volume (buffered) is defined by alerting level 2 (conflict\+\_\+alerting\+\_\+level) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_afff8919fc4598d635c9d91adcb360a88}\label{classlarcfm_1_1_alert_levels_afff8919fc4598d635c9d91adcb360a88}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!clear@{clear}}
+\index{clear@{clear}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clears alert levels \mbox{\Hypertarget{classlarcfm_1_1_alert_levels_ab713101de543a41722e3998221838fb2}\label{classlarcfm_1_1_alert_levels_ab713101de543a41722e3998221838fb2}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!conflictAlertLevel@{conflictAlertLevel}}
+\index{conflictAlertLevel@{conflictAlertLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{conflictAlertLevel()}{conflictAlertLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alert\+Levels\+::conflict\+Alert\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+conflict alert level. When the numerical is value is 0, first guidance level 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a3e7356620b5bb5b435fd69ea0227b5d4}\label{classlarcfm_1_1_alert_levels_a3e7356620b5bb5b435fd69ea0227b5d4}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!conflictDetectorRef@{conflictDetectorRef}}
+\index{conflictDetectorRef@{conflictDetectorRef}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{conflictDetectorRef()}{conflictDetectorRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+Alert\+Levels\+::conflict\+Detector\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+detector for conflict alert level 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_ae0afa6824857740bc024117fa0c2ebeb}\label{classlarcfm_1_1_alert_levels_ae0afa6824857740bc024117fa0c2ebeb}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!copy@{copy}}
+\index{copy@{copy}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::copy (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} \&}]{alertor }\end{DoxyParamCaption})}
+
+Copy alertor to the same values as the given parameter. Detectors are deeply copied. \mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a8effd402aa15bd1831b3f2298d731552}\label{classlarcfm_1_1_alert_levels_a8effd402aa15bd1831b3f2298d731552}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!detectorRef@{detectorRef}}
+\index{detectorRef@{detectorRef}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{detectorRef()}{detectorRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$ larcfm\+::\+Alert\+Levels\+::detector\+Ref (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+detector for given alert level 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a25a285176e394d7a79c15f77844d6cec}\label{classlarcfm_1_1_alert_levels_a25a285176e394d7a79c15f77844d6cec}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!firstGuidanceLevel@{firstGuidanceLevel}}
+\index{firstGuidanceLevel@{firstGuidanceLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{firstGuidanceLevel()}{firstGuidanceLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alert\+Levels\+::first\+Guidance\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+first guidance level whose region is different from NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a5b01e487ea0c20cd73dddbbc8cdf6fa7}\label{classlarcfm_1_1_alert_levels_a5b01e487ea0c20cd73dddbbc8cdf6fa7}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!getLevel@{getLevel}}
+\index{getLevel@{getLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{getLevel()}{getLevel()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} const  \& larcfm\+::\+Alert\+Levels\+::get\+Level (\begin{DoxyParamCaption}\item[{int}]{level }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+threshold values of a given alert level 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a12a8316c2566d9f3214e92fd832ed3fd}\label{classlarcfm_1_1_alert_levels_a12a8316c2566d9f3214e92fd832ed3fd}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Alert\+Levels\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a7fb3dea518fd6cdb9a12e70e80774820}\label{classlarcfm_1_1_alert_levels_a7fb3dea518fd6cdb9a12e70e80774820}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!lastGuidanceLevel@{lastGuidanceLevel}}
+\index{lastGuidanceLevel@{lastGuidanceLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{lastGuidanceLevel()}{lastGuidanceLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alert\+Levels\+::last\+Guidance\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+last guidance level whose region is different from NONE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a6ee7f45e9a154679d41ab859b81a5a2c}\label{classlarcfm_1_1_alert_levels_a6ee7f45e9a154679d41ab859b81a5a2c}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!mostSevereAlertLevel@{mostSevereAlertLevel}}
+\index{mostSevereAlertLevel@{mostSevereAlertLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{mostSevereAlertLevel()}{mostSevereAlertLevel()}}
+{\footnotesize\ttfamily int larcfm\+::\+Alert\+Levels\+::most\+Severe\+Alert\+Level (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+numerical type of most severe alert level. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_ae84698b013e2ab737a9f16a3c1be7b9d}\label{classlarcfm_1_1_alert_levels_ae84698b013e2ab737a9f16a3c1be7b9d}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!setConflictAlertLevel@{setConflictAlertLevel}}
+\index{setConflictAlertLevel@{setConflictAlertLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{setConflictAlertLevel()}{setConflictAlertLevel()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::set\+Conflict\+Alert\+Level (\begin{DoxyParamCaption}\item[{int}]{alert\+\_\+level }\end{DoxyParamCaption})}
+
+Set conflict alert level \mbox{\Hypertarget{classlarcfm_1_1_alert_levels_add494e9973eda4c1b66790506679fa37}\label{classlarcfm_1_1_alert_levels_add494e9973eda4c1b66790506679fa37}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!setLevel@{setLevel}}
+\index{setLevel@{setLevel}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{setLevel()}{setLevel()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::set\+Level (\begin{DoxyParamCaption}\item[{int}]{level,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_alert_thresholds}{Alert\+Thresholds}} \&}]{thresholds }\end{DoxyParamCaption})}
+
+Set the threshold values of a given alert level. \mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a70621de1d6031bd3e2950a703f8ef156}\label{classlarcfm_1_1_alert_levels_a70621de1d6031bd3e2950a703f8ef156}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{larcfm\+::\+Parameter\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_ad3b78ee359478baaec329c03a9a4e59d}\label{classlarcfm_1_1_alert_levels_ad3b78ee359478baaec329c03a9a4e59d}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!SingleBands@{SingleBands}}
+\index{SingleBands@{SingleBands}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{SingleBands()}{SingleBands()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} larcfm\+::\+Alert\+Levels\+::\+Single\+Bands (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{detector,  }\item[{double}]{alerting\+\_\+time,  }\item[{double}]{lookahead\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds for single bands given by detector, alerting time, and lookahead time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a9574c8b753156c6981ade344557783d4}\label{classlarcfm_1_1_alert_levels_a9574c8b753156c6981ade344557783d4}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!SingleBands\_WC\_SC\_228\_Thresholds@{SingleBands\_WC\_SC\_228\_Thresholds}}
+\index{SingleBands\_WC\_SC\_228\_Thresholds@{SingleBands\_WC\_SC\_228\_Thresholds}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{SingleBands\_WC\_SC\_228\_Thresholds()}{SingleBands\_WC\_SC\_228\_Thresholds()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} larcfm\+::\+Alert\+Levels\+::\+Single\+Bands\+\_\+\+WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds (unbuffered) as defined by SC-\/228 MOPS. Maneuver guidance logic produces single level bands\+: NEAR\+: Corrective Well-\/clear volume (unbuffered) is defined by alerting level 2 (conflict\+\_\+alerting\+\_\+level) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a20ac8370fcea0dcef1865f45ffb72102}\label{classlarcfm_1_1_alert_levels_a20ac8370fcea0dcef1865f45ffb72102}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+Alert\+Levels\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_alert_levels_a96e25228aad47ee2e84618010549e88a}\label{classlarcfm_1_1_alert_levels_a96e25228aad47ee2e84618010549e88a}} 
+\index{larcfm::AlertLevels@{larcfm::AlertLevels}!WC\_SC\_228\_Thresholds@{WC\_SC\_228\_Thresholds}}
+\index{WC\_SC\_228\_Thresholds@{WC\_SC\_228\_Thresholds}!larcfm::AlertLevels@{larcfm::AlertLevels}}
+\doxysubsubsection{\texorpdfstring{WC\_SC\_228\_Thresholds()}{WC\_SC\_228\_Thresholds()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classlarcfm_1_1_alert_levels}{Alert\+Levels}} larcfm\+::\+Alert\+Levels\+::\+WC\+\_\+\+SC\+\_\+228\+\_\+\+Thresholds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+alerting thresholds (unbuffered) as defined by SC-\/228 MOPS. Maneuver guidance logic produces multilevel bands\+: MID\+: Corrective NEAR\+: Warning Well-\/clear volume (unbuffered) is defined by alerting level 2 (conflict\+\_\+alerting\+\_\+level) 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Alert\+Levels.\+h\end{DoxyCompactItemize}

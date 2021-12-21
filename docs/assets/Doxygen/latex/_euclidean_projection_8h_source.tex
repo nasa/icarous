@@ -1,0 +1,92 @@
+\hypertarget{_euclidean_projection_8h_source}{}\doxysection{Euclidean\+Projection.\+h}
+\label{_euclidean_projection_8h_source}\index{Modules/ACCoRD/inc/EuclideanProjection.h@{Modules/ACCoRD/inc/EuclideanProjection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * EuclideanProjection.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef EUCLIDEANPROJECTION\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define EUCLIDEANPROJECTION\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16  \textcolor{comment}{/*}}
+\DoxyCodeLine{17 \textcolor{comment}{  * WARNING! The string "{}EuclideanProjection"{} is the name of a MACRO}}
+\DoxyCodeLine{18 \textcolor{comment}{  * representing the actual type of the chosen projection.}}
+\DoxyCodeLine{19 \textcolor{comment}{  *}}
+\DoxyCodeLine{20 \textcolor{comment}{  * Anything starting with this string will be replaced with SOMETHING}}
+\DoxyCodeLine{21 \textcolor{comment}{  * ELSE at compile time.  You may not notice a difference.  At first.}}
+\DoxyCodeLine{22 \textcolor{comment}{  *}}
+\DoxyCodeLine{23 \textcolor{comment}{  */}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{// Yes, I know this is a bad idea, but this was the only way to both avoid dynamic memory woes and (syntactically) "{}appear"{} to have inheritance...}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{comment}{// pick which projection to use here...  undefine all other ones that may be defined}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#if defined ENU\_PROJECTION\_}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#undef AZIEQUI\_PROJECTION\_}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#elif defined AZIEQUI\_PROJECTION\_}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#undef ORTHO\_PROJECTION\_}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#elif defined ORTHO\_PROJECTION\_}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#undef SIMPLE\_PROJECTION\_}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#elif defined SIMPLE\_PROJECTION\_}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#undef SIMPLE\_NO\_POLAR\_PROJECTION\_}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#elif defined SIMPLE\_NO\_POLAR\_PROJECTION\_}}
+\DoxyCodeLine{42 \textcolor{comment}{// no other possibilities}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{44 \textcolor{comment}{// if none are defined, use this as the default}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define ENU\_PROJECTION\_}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48  \textcolor{comment}{/* Not used in C++ in a functional way. */}}
+\DoxyCodeLine{49  \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{50   \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} ProjectionType;}
+\DoxyCodeLine{51   \textcolor{keyword}{enum} \{UNKNOWN\_PROJECTION, SIMPLE, SIMPLE\_NO\_POLAR, ENU, AZIEQUI, ORTHO\};}
+\DoxyCodeLine{52  \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#ifdef SIMPLE\_PROJECTION\_}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#define EuclideanProjection SimpleProjection}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define projection\_type\_value\_\_ SIMPLE}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#include "{}SimpleProjection.h"{}}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#ifdef SIMPLE\_NO\_POLAR\_PROJECTION\_}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define EuclideanProjection SimpleNoPolarProjection}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define projection\_type\_value\_\_ SIMPLE\_NO\_POLAR}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#include "{}SimpleNoPolarProjection.h"{}}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#ifdef ENU\_PROJECTION\_}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define EuclideanProjection ENUProjection}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define projection\_type\_value\_\_ ENU}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#include "{}ENUProjection.h"{}}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#ifdef AZIEQUI\_PROJECTION\_}}
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#define EuclideanProjection AziEquiProjection}}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define projection\_type\_value\_\_ AZIEQUI}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#include "{}AziEquiProjection.h"{}}}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#ifdef ORTHO\_PROJECTION\_}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define EuclideanProjection OrthographicProjection}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define projection\_type\_value\_\_ ORTHO}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#include "{}OrthographicProjection.h"{}}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* EUCLIDEANPROJECTION\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

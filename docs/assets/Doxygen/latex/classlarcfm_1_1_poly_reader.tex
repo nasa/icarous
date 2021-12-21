@@ -1,0 +1,225 @@
+\hypertarget{classlarcfm_1_1_poly_reader}{}\doxysection{larcfm\+::Poly\+Reader Class Reference}
+\label{classlarcfm_1_1_poly_reader}\index{larcfm::PolyReader@{larcfm::PolyReader}}
+
+
+{\ttfamily \#include $<$Poly\+Reader.\+h$>$}
+
+Inheritance diagram for larcfm\+::Poly\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_poly_reader}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa436d01a881a04ce20e97c68e075ee49}{Poly\+Reader}} ()
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a66640b4b41b4ff051f1c0ec73d93badf}{open}} (const std\+::string \&filename)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_poly_reader_af9c2ab5c3b788a0c9294f1d88e3d4933}{open}} (std\+::istream $\ast$input)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa4cbdfd7eef725b80e87e461424e38c7}{plan\+Size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a5b667c38e9006ea41b28e51feaac9b06}{poly\+Size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a682e405f0656df15a7f080990f7d8aa2}{containment\+Size}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a0df73aca3ec61adbee6914e446d0492c}{get\+Plan}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_afd6e3265f83f1e68a164d865c41997c4}{get\+Poly\+Path}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a7328c4d8b5a3b0ca5bfc83455bda71cb}{get\+Containment\+Polygon}} (int i) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_poly_reader_aa493e9a03fd3873b7ea7e3fda5057b5e}{combined\+Size}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a57b2c821607f03c6b942862b6daa7c6f}{get\+Combined\+Plan}} (int i) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_aa1ee550775aa606198adedde0e0dd455}\label{classlarcfm_1_1_poly_reader_aa1ee550775aa606198adedde0e0dd455}} 
+int {\bfseries path\+Name\+Index} (const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_ac1c6e3c9b45337898b3e1c214f8b7d5e}\label{classlarcfm_1_1_poly_reader_ac1c6e3c9b45337898b3e1c214f8b7d5e}} 
+int {\bfseries containment\+Name\+Index} (const std\+::string \&name) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_ac5955c5dd6f6178a9120006d0b95dab8}\label{classlarcfm_1_1_poly_reader_ac5955c5dd6f6178a9120006d0b95dab8}} 
+enum \{ \newline
+{\bfseries NAME}
+, {\bfseries LAT\+\_\+\+SX}
+, {\bfseries LON\+\_\+\+SY}
+, {\bfseries SZ}
+, \newline
+{\bfseries TIME}
+, {\bfseries LABEL}
+, {\bfseries TYPE}
+, {\bfseries TCP\+\_\+\+TRK}
+, \newline
+{\bfseries TCP\+\_\+\+GS}
+, {\bfseries TCP\+\_\+\+VS}
+, {\bfseries ACC\+\_\+\+TRK}
+, {\bfseries ACC\+\_\+\+GS}
+, \newline
+{\bfseries ACC\+\_\+\+VS}
+, {\bfseries TRK}
+, {\bfseries GS}
+, {\bfseries VS}
+, \newline
+{\bfseries SRC\+\_\+\+LAT\+\_\+\+SX}
+, {\bfseries SRC\+\_\+\+LON\+\_\+\+SY}
+, {\bfseries SRC\+\_\+\+ALT}
+, {\bfseries SRC\+\_\+\+TIME}
+, \newline
+{\bfseries RADIUS}
+, {\bfseries SZ2}
+, {\bfseries ENDTIME}
+ \}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a52ce25bd27755a14988a95064c84bf92}\label{classlarcfm_1_1_poly_reader_a52ce25bd27755a14988a95064c84bf92}} 
+enum \{ {\bfseries POLY}
+, {\bfseries UNKNOWN}
+, {\bfseries PLAN}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_ae35e035464c0dc808da95c88ee581c27}\label{classlarcfm_1_1_poly_reader_ae35e035464c0dc808da95c88ee581c27}} 
+int {\bfseries alt\+Headings5} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3, const std\+::string \&s4, const std\+::string \&s5) const
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_poly_reader_a46134989995f57171169577895d8c6ff}{loadfile}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_aa4181af0d0cffdd9da49fe8722d039e9}\label{classlarcfm_1_1_poly_reader_aa4181af0d0cffdd9da49fe8722d039e9}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries paths}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a0669bf0f139afd5e3de9765245b1da2b}\label{classlarcfm_1_1_poly_reader_a0669bf0f139afd5e3de9765245b1da2b}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries containment}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+This reads in and stores both Plans and Poly\+Paths (and parameters) from a file
+
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} files consist of comma or space-\/separated values, with one point per line. Required columns include either\+: Aircraft name, x-\/position \mbox{[}nmi\mbox{]}, y-\/position \mbox{[}nmi\mbox{]}, z-\/position \mbox{[}ft\mbox{]}, time \mbox{[}s\mbox{]} or Aircraft name, latitude \mbox{[}deg\mbox{]}, longitude \mbox{[}deg\mbox{]}, altitude \mbox{[}ft\mbox{]}, time \mbox{[}s\mbox{]}
+
+Polygon files also include a required second altitude column \href{e.g. alt2}{\texttt{ ft}}.
+
+Any given line may contain either type of information, but all lines describing a single entity (either aircraft or polygon) must be located together, and without time decreasing -- new entities are detected by a change in the name field or if (time of entry n) \texorpdfstring{$<$}{<} (time of entry n+1). The type of the entry is defined by the presence or lack of a second altitude column value (polys have it, plans don\textquotesingle{}t).
+
+Optional columns include point mutability and point label, both with \mbox{[}unspecified\mbox{]} units. Even if these columns are defined, these two values are optional for any given line. Columns without values may be left blank (if comma-\/delimited) or indicated by a single dash (-\/).
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above).
+
+If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (\char`\"{}). \+The aircraft name is case sensitive, so US54\+A != Us54a != us54a.  \+Any empty line or any line starting with a hash sign (\#) is ignored.  \+Files may also include parameter definitions prior to other data.  Parameter definitions are of the form $<$key$>$ = $<$value$>$, one per line, where $<$key$>$ is a case-\/insensitive alphanumeric word and $<$value$>$ is either a numeral or string.  The $<$value$>$  may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}.  Note that parameters require a space on either side of the equals sign.  \+Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type.  \+If the optional parameter \char`\"{}filetype\char`\"{} is specified, its value must be \char`\"{}plan\char`\"{}, \char`\"{}trajectory\char`\"{}, \char`\"{}poly\char`\"{}, or \char`\"{}plan+poly\char`\"{} (no quotes) for this reader to accept the file without error.  \+Plan \char`\"{}note"{} information is to be stored with a parameter named ID\+\_\+note, where ID is the name of the plan in question. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_aa436d01a881a04ce20e97c68e075ee49}\label{classlarcfm_1_1_poly_reader_aa436d01a881a04ce20e97c68e075ee49}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!PolyReader@{PolyReader}}
+\index{PolyReader@{PolyReader}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{PolyReader()}{PolyReader()}}
+{\footnotesize\ttfamily larcfm\+::\+Poly\+Reader\+::\+Poly\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_poly_reader}{Poly\+Reader}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_aa493e9a03fd3873b7ea7e3fda5057b5e}\label{classlarcfm_1_1_poly_reader_aa493e9a03fd3873b7ea7e3fda5057b5e}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!combinedSize@{combinedSize}}
+\index{combinedSize@{combinedSize}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{combinedSize()}{combinedSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Reader\+::combined\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the total number of both plans and paths. \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a682e405f0656df15a7f080990f7d8aa2}\label{classlarcfm_1_1_poly_reader_a682e405f0656df15a7f080990f7d8aa2}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!containmentSize@{containmentSize}}
+\index{containmentSize@{containmentSize}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{containmentSize()}{containmentSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Reader\+::containment\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of containment areas in the file \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a57b2c821607f03c6b942862b6daa7c6f}\label{classlarcfm_1_1_poly_reader_a57b2c821607f03c6b942862b6daa7c6f}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!getCombinedPlan@{getCombinedPlan}}
+\index{getCombinedPlan@{getCombinedPlan}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{getCombinedPlan()}{getCombinedPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Poly\+Reader\+::get\+Combined\+Plan (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns a plan or the plan corresponding to a path. Real plans occur first in the list. This should only be used if approximating plans by variable-\/sized traffic.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a7328c4d8b5a3b0ca5bfc83455bda71cb}\label{classlarcfm_1_1_poly_reader_a7328c4d8b5a3b0ca5bfc83455bda71cb}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!getContainmentPolygon@{getContainmentPolygon}}
+\index{getContainmentPolygon@{getContainmentPolygon}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{getContainmentPolygon()}{getContainmentPolygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Poly\+Reader\+::get\+Containment\+Polygon (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th containment polygon in the file \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a0df73aca3ec61adbee6914e446d0492c}\label{classlarcfm_1_1_poly_reader_a0df73aca3ec61adbee6914e446d0492c}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!getPlan@{getPlan}}
+\index{getPlan@{getPlan}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{getPlan()}{getPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Poly\+Reader\+::get\+Plan (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th plan in the file \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_afd6e3265f83f1e68a164d865c41997c4}\label{classlarcfm_1_1_poly_reader_afd6e3265f83f1e68a164d865c41997c4}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!getPolyPath@{getPolyPath}}
+\index{getPolyPath@{getPolyPath}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{getPolyPath()}{getPolyPath()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Poly\+Reader\+::get\+Poly\+Path (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th path in the file \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a46134989995f57171169577895d8c6ff}\label{classlarcfm_1_1_poly_reader_a46134989995f57171169577895d8c6ff}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!loadfile@{loadfile}}
+\index{loadfile@{loadfile}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{loadfile()}{loadfile()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Poly\+Reader\+::loadfile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_plan_reader}{larcfm\+::\+Plan\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a66640b4b41b4ff051f1c0ec73d93badf}\label{classlarcfm_1_1_poly_reader_a66640b4b41b4ff051f1c0ec73d93badf}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!open@{open}}
+\index{open@{open}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Poly\+Reader\+::open (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_plan_reader}{larcfm\+::\+Plan\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_af9c2ab5c3b788a0c9294f1d88e3d4933}\label{classlarcfm_1_1_poly_reader_af9c2ab5c3b788a0c9294f1d88e3d4933}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!open@{open}}
+\index{open@{open}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{open()}{open()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Poly\+Reader\+::open (\begin{DoxyParamCaption}\item[{std\+::istream $\ast$}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_plan_reader}{larcfm\+::\+Plan\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_poly_reader_aa4cbdfd7eef725b80e87e461424e38c7}\label{classlarcfm_1_1_poly_reader_aa4cbdfd7eef725b80e87e461424e38c7}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!planSize@{planSize}}
+\index{planSize@{planSize}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{planSize()}{planSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Reader\+::plan\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of plans in the file \mbox{\Hypertarget{classlarcfm_1_1_poly_reader_a5b667c38e9006ea41b28e51feaac9b06}\label{classlarcfm_1_1_poly_reader_a5b667c38e9006ea41b28e51feaac9b06}} 
+\index{larcfm::PolyReader@{larcfm::PolyReader}!polySize@{polySize}}
+\index{polySize@{polySize}!larcfm::PolyReader@{larcfm::PolyReader}}
+\doxysubsubsection{\texorpdfstring{polySize()}{polySize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Poly\+Reader\+::poly\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of paths in the file 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Poly\+Reader.\+h\end{DoxyCompactItemize}

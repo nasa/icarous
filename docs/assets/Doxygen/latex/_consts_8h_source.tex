@@ -1,0 +1,47 @@
+\hypertarget{_consts_8h_source}{}\doxysection{Consts.\+h}
+\label{_consts_8h_source}\index{Modules/ACCoRD/inc/Consts.h@{Modules/ACCoRD/inc/Consts.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Const.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef CONSTS\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define CONSTS\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{18   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} Entry       = -\/1;}
+\DoxyCodeLine{20   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} Exit        =  1;}
+\DoxyCodeLine{21   }
+\DoxyCodeLine{22   \textcolor{comment}{// Type of resolution}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{25   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} Unnecessary =  0;}
+\DoxyCodeLine{27   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} None        =  -\/1;}
+\DoxyCodeLine{29   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} Conflict    =  1;}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} LoS         =  2;}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} LoSConv     =  2;}
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} LoSDivg     =  3;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{/*  static std::string resolutionStr(int r) \{         // for debug purposes}}
+\DoxyCodeLine{41 \textcolor{comment}{     if (r == -\/1) return "{}None"{};}}
+\DoxyCodeLine{42 \textcolor{comment}{     else if (r == 0) return "{}Unnecessary"{};}}
+\DoxyCodeLine{43 \textcolor{comment}{     else if (r == 1) return "{}Conflict"{};}}
+\DoxyCodeLine{44 \textcolor{comment}{     else if (r == 2) return "{}LoS"{};}}
+\DoxyCodeLine{45 \textcolor{comment}{     else return "{}?????"{};}}
+\DoxyCodeLine{46 \textcolor{comment}{  \}}}
+\DoxyCodeLine{47 \textcolor{comment}{*/}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CONSTS\_H */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

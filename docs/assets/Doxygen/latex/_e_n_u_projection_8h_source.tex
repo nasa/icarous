@@ -1,0 +1,86 @@
+\hypertarget{_e_n_u_projection_8h_source}{}\doxysection{ENUProjection.\+h}
+\label{_e_n_u_projection_8h_source}\index{Modules/ACCoRD/inc/ENUProjection.h@{Modules/ACCoRD/inc/ENUProjection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * ENUProjection.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef ENUPROJECTION\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define ENUPROJECTION\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Point.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{39   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} \{}
+\DoxyCodeLine{40   \textcolor{keyword}{private}:}
+\DoxyCodeLine{41     \textcolor{keywordtype}{double} projAlt;}
+\DoxyCodeLine{42     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} ref;}
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} llaRef;}
+\DoxyCodeLine{44  }
+\DoxyCodeLine{45   \textcolor{keyword}{public}:}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48     \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}{ENUProjection}}();}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{54     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}{ENUProjection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{55     }
+\DoxyCodeLine{62     \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aca0b3f37bfae4e1da9eba2abd2177083}{ENUProjection}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{65     \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0733e7b1624c99b68c8cc13a2a1522d0}{\string~ENUProjection}}() \{\}}
+\DoxyCodeLine{66     }
+\DoxyCodeLine{68     \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa95ec9e8ed466bca1ede513cbe7fd144}{makeNew}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{69     }
+\DoxyCodeLine{71     \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection}{ENUProjection}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa95ec9e8ed466bca1ede513cbe7fd144}{makeNew}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt) \textcolor{keyword}{const};}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{76     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a9545219fb094f23cf60b163f8bcf8c4e}{conflictRange}}(\textcolor{keywordtype}{double} latitude, \textcolor{keywordtype}{double} accuracy) \textcolor{keyword}{const};}
+\DoxyCodeLine{77     }
+\DoxyCodeLine{81     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa739b5c3edd04b4223accf795ce38601}{maxRange}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{84     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0e88e1d4f3282b51a1d56872653b2033}{getProjectionPoint}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{87     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ad1dde6591141fb2a85dc00555c106cc0}{project2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{88     }
+\DoxyCodeLine{90     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{91     }
+\DoxyCodeLine{93     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip) \textcolor{keyword}{const};}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{96     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a47a2d42221fd99b2c1a4176e69f54fbe}{projectPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip) \textcolor{keyword}{const};}
+\DoxyCodeLine{97     }
+\DoxyCodeLine{99     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& xy, \textcolor{keywordtype}{double} alt) \textcolor{keyword}{const};}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{102     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& xyz) \textcolor{keyword}{const}; }
+\DoxyCodeLine{103     }
+\DoxyCodeLine{107     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a76d8d177b13b1d3d032801cd9de4f38b}{projectVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{108     }
+\DoxyCodeLine{112     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a76d8d177b13b1d3d032801cd9de4f38b}{projectVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& ss, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{113     }
+\DoxyCodeLine{115     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_aa0408d57746707ea5f71ea409f9451f4}{inverseVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} toLatLon) \textcolor{keyword}{const};}
+\DoxyCodeLine{116     }
+\DoxyCodeLine{118     std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_ac57b826451169c4381cfce18ecc4be56}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{123     std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a07b2e2dcea11b01495680c7b10ddc390}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} toLatLon) \textcolor{keyword}{const};}
+\DoxyCodeLine{124     }
+\DoxyCodeLine{126     std::string \mbox{\hyperlink{classlarcfm_1_1_e_n_u_projection_a0c42be2127842216f707707c41a4a9f8}{toString}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}ENUProjection "{}}+ \mbox{\hyperlink{namespacelarcfm_acc797124406004656002df49a1abcd86}{to\_string}}(projAlt)+\textcolor{stringliteral}{"{} "{}}+ref.\mbox{\hyperlink{classlarcfm_1_1_vect3_af1df529dc6e5f09f7675008ef78ef0ac}{toString}}(); \}}
+\DoxyCodeLine{127   \};}
+\DoxyCodeLine{128 \}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ENUPROJECTION\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

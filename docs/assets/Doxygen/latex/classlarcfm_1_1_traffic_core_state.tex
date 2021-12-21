@@ -1,0 +1,130 @@
+\hypertarget{classlarcfm_1_1_traffic_core_state}{}\doxysection{larcfm\+::Traffic\+Core\+State Class Reference}
+\label{classlarcfm_1_1_traffic_core_state}\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+
+
+{\ttfamily \#include $<$Traffic\+Core\+State.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a0fae71de0fdf521b618d5f0b97034b01}\label{classlarcfm_1_1_traffic_core_state_a0fae71de0fdf521b618d5f0b97034b01}} 
+{\bfseries Traffic\+Core\+State} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a32d9c1f01863c7dc1a89575f67677ef5}\label{classlarcfm_1_1_traffic_core_state_a32d9c1f01863c7dc1a89575f67677ef5}} 
+{\bfseries Traffic\+Core\+State} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{Traffic\+Core\+State}} \&ac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a696b0fc2dc85af6e4024a9d6166de566}\label{classlarcfm_1_1_traffic_core_state_a696b0fc2dc85af6e4024a9d6166de566}} 
+bool {\bfseries is\+Valid} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a0ff9000d30298bb1644e50f6f608158e}\label{classlarcfm_1_1_traffic_core_state_a0ff9000d30298bb1644e50f6f608158e}} 
+std\+::string {\bfseries get\+Id} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a8ebe4619926d889dcf7c491ac17c42f4}\label{classlarcfm_1_1_traffic_core_state_a8ebe4619926d889dcf7c491ac17c42f4}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_ab5169f98991d1f43eda982f72ef0a94c}\label{classlarcfm_1_1_traffic_core_state_ab5169f98991d1f43eda982f72ef0a94c}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} const \& {\bfseries get\+Position} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_aee00217a79fa3eb00e9018fdcc48370d}\label{classlarcfm_1_1_traffic_core_state_aee00217a79fa3eb00e9018fdcc48370d}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} const \& {\bfseries get\+Velocity} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a13fd0507c16657bce94b0f1467f63865}{track}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_ab0a270c48a8764fe7446cdf3584c957a}{track}} (const std\+::string \&utrk) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a74ff621cd657be36d604038fdb6ea509}{ground\+Speed}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_ac640109b7490bc5453cbbd7e7f6ae4ce}{ground\+Speed}} (const std\+::string \&ugs) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a0c46e04b8a0e088e57cbc2ba66b95305}{vertical\+Speed}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_aba084005a36d749073b5a92f0881d2f6}{vertical\+Speed}} (const std\+::string \&uvs) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_aef6b4605498e941269413197d962c586}{altitude}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state_a52854b3413b49a52c9a834bd063a4f52}{altitude}} (const std\+::string \&ualt) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a16b7f42efd353360fa5cc4992efd4b6a}\label{classlarcfm_1_1_traffic_core_state_a16b7f42efd353360fa5cc4992efd4b6a}} 
+bool {\bfseries same\+Id} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{Traffic\+Core\+State}} \&ac) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_aec14485d30ffca44f893e004f95ef05c}\label{classlarcfm_1_1_traffic_core_state_aec14485d30ffca44f893e004f95ef05c}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_ac48a95d84d192f47220fd5a9a3558ed0}\label{classlarcfm_1_1_traffic_core_state_ac48a95d84d192f47220fd5a9a3558ed0}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{Traffic\+Core\+State}} {\bfseries INVALIDC} = \mbox{\hyperlink{classlarcfm_1_1_traffic_core_state}{Traffic\+Core\+State}}()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a3fce1cd74d070b0f152bc45a16a6c453}\label{classlarcfm_1_1_traffic_core_state_a3fce1cd74d070b0f152bc45a16a6c453}} 
+std\+::string {\bfseries id\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a68a387dbb1a08e745cb8577f016247d6}\label{classlarcfm_1_1_traffic_core_state_a68a387dbb1a08e745cb8577f016247d6}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries pos\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a0e1a568bc81522957fcae6539524f5ab}\label{classlarcfm_1_1_traffic_core_state_a0e1a568bc81522957fcae6539524f5ab}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries vel\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} solution 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_aef6b4605498e941269413197d962c586}\label{classlarcfm_1_1_traffic_core_state_aef6b4605498e941269413197d962c586}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!altitude@{altitude}}
+\index{altitude@{altitude}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{altitude()}{altitude()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::altitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current altitude in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a52854b3413b49a52c9a834bd063a4f52}\label{classlarcfm_1_1_traffic_core_state_a52854b3413b49a52c9a834bd063a4f52}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!altitude@{altitude}}
+\index{altitude@{altitude}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{altitude()}{altitude()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::altitude (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ualt }\end{DoxyParamCaption}) const}
+
+Returns current altitude in given units \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a74ff621cd657be36d604038fdb6ea509}\label{classlarcfm_1_1_traffic_core_state_a74ff621cd657be36d604038fdb6ea509}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!groundSpeed@{groundSpeed}}
+\index{groundSpeed@{groundSpeed}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{groundSpeed()}{groundSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::ground\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current ground speed in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_ac640109b7490bc5453cbbd7e7f6ae4ce}\label{classlarcfm_1_1_traffic_core_state_ac640109b7490bc5453cbbd7e7f6ae4ce}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!groundSpeed@{groundSpeed}}
+\index{groundSpeed@{groundSpeed}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{groundSpeed()}{groundSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::ground\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ugs }\end{DoxyParamCaption}) const}
+
+Returns current ground speed in given units \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a13fd0507c16657bce94b0f1467f63865}\label{classlarcfm_1_1_traffic_core_state_a13fd0507c16657bce94b0f1467f63865}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!track@{track}}
+\index{track@{track}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::track (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current track in internal units \mbox{[}0 -\/ 2pi\mbox{]} \mbox{[}rad\mbox{]} (clock wise with respect to North) \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_ab0a270c48a8764fe7446cdf3584c957a}\label{classlarcfm_1_1_traffic_core_state_ab0a270c48a8764fe7446cdf3584c957a}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!track@{track}}
+\index{track@{track}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::track (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{utrk }\end{DoxyParamCaption}) const}
+
+Returns current track in given units \mbox{[}0 -\/ 2pi\mbox{]} \mbox{[}u\mbox{]} (clock wise with respect to North) \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_a0c46e04b8a0e088e57cbc2ba66b95305}\label{classlarcfm_1_1_traffic_core_state_a0c46e04b8a0e088e57cbc2ba66b95305}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::vertical\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current vertical speed in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_core_state_aba084005a36d749073b5a92f0881d2f6}\label{classlarcfm_1_1_traffic_core_state_aba084005a36d749073b5a92f0881d2f6}} 
+\index{larcfm::TrafficCoreState@{larcfm::TrafficCoreState}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::TrafficCoreState@{larcfm::TrafficCoreState}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+Core\+State\+::vertical\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{uvs }\end{DoxyParamCaption}) const}
+
+Returns current vertical speed in given units 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Traffic\+Core\+State.\+h\item 
+Modules/\+ACCo\+RD/src/Traffic\+Core\+State.\+cpp\end{DoxyCompactItemize}

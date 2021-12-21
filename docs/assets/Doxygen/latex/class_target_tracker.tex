@@ -16,7 +16,7 @@
 \begin{DoxyCompactList}\small\item\em Construct a new Target Tracker object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_target_tracker_aca88bb2f0c0866e2336e43a747303fb4}{Read\+Param\+From\+File}} (std\+::string config\+File)
 \begin{DoxyCompactList}\small\item\em Read parameters from file. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}{Set\+Home\+Position}} (larcfm\+::\+Position \&home)
+void \mbox{\hyperlink{class_target_tracker_af0ad8a42233bca42e8f1ed17dfe4d666}{Set\+Home\+Position}} (\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&home)
 \begin{DoxyCompactList}\small\item\em Set the Home Position object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_target_tracker_a316c2ab73b39c4c47a32e249966bf2ab}{Set\+Gate\+Thresholds}} (double p, double v)
 \begin{DoxyCompactList}\small\item\em Set the chi2 gating thresholds. \end{DoxyCompactList}\item 
@@ -24,7 +24,7 @@ void \mbox{\hyperlink{class_target_tracker_a627eeaaf053b67606e62eeb2e559676d}{Up
 \begin{DoxyCompactList}\small\item\em Update track predictions for given time. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_target_tracker_a228b18fa3aefddb50d67d92296c0553c}{Set\+Model\+Uncertainty}} (double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
 \begin{DoxyCompactList}\small\item\em Set the Model Uncertainty. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}{Input\+Current\+State}} (double time, larcfm\+::\+Position \&pos, larcfm\+::\+Velocity \&vel, double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
+void \mbox{\hyperlink{class_target_tracker_a8cda79a58cdf5cc179573106ebf4a15a}{Input\+Current\+State}} (double time, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&pos, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&vel, double sigmaP\mbox{[}6\mbox{]}, double sigmaV\mbox{[}6\mbox{]})
 \begin{DoxyCompactList}\small\item\em Input ownship information. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_target_tracker_af15330be6db6419158e806456b04b3af}{Input\+Measurement}} (\mbox{\hyperlink{structmeasurement}{measurement}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
 \begin{DoxyCompactList}\small\item\em Input measurement data. \end{DoxyCompactList}\item 
@@ -69,7 +69,7 @@ double {\bfseries p\+Threshold}
 double {\bfseries v\+Threshold}
 \begin{DoxyCompactList}\small\item\em chi2 threshold for mahalanobis distance -\/ velocity error \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}\label{class_target_tracker_ac298a903710c3327ef24eacc83e0b375}} 
-larcfm\+::\+Position {\bfseries home\+Pos}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries home\+Pos}
 \begin{DoxyCompactList}\small\item\em initial position -\/ use to produce NED projections \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}\label{class_target_tracker_af3dfb9abb31cb4d6b06ad029a191903a}} 
 \mbox{\hyperlink{structmeasurement}{measurement}} {\bfseries current\+State}
@@ -160,7 +160,7 @@ int
 \index{TargetTracker@{TargetTracker}!InputCurrentState@{InputCurrentState}}
 \index{InputCurrentState@{InputCurrentState}!TargetTracker@{TargetTracker}}
 \doxysubsubsection{\texorpdfstring{InputCurrentState()}{InputCurrentState()}}
-{\footnotesize\ttfamily void Target\+Tracker\+::\+Input\+Current\+State (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{larcfm\+::\+Position \&}]{pos,  }\item[{larcfm\+::\+Velocity \&}]{vel,  }\item[{double}]{sigmaP\mbox{[}6\mbox{]},  }\item[{double}]{sigmaV\mbox{[}6\mbox{]} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Input\+Current\+State (\begin{DoxyParamCaption}\item[{double}]{time,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{pos,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{vel,  }\item[{double}]{sigmaP\mbox{[}6\mbox{]},  }\item[{double}]{sigmaV\mbox{[}6\mbox{]} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -214,7 +214,7 @@ int
 \index{TargetTracker@{TargetTracker}!SetHomePosition@{SetHomePosition}}
 \index{SetHomePosition@{SetHomePosition}!TargetTracker@{TargetTracker}}
 \doxysubsubsection{\texorpdfstring{SetHomePosition()}{SetHomePosition()}}
-{\footnotesize\ttfamily void Target\+Tracker\+::\+Set\+Home\+Position (\begin{DoxyParamCaption}\item[{larcfm\+::\+Position \&}]{home }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Target\+Tracker\+::\+Set\+Home\+Position (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{home }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

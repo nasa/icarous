@@ -1,0 +1,48 @@
+\hypertarget{_tangent_line_8h_source}{}\doxysection{Tangent\+Line.\+h}
+\label{_tangent_line_8h_source}\index{Modules/ACCoRD/inc/TangentLine.h@{Modules/ACCoRD/inc/TangentLine.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * TangentLine.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Computes a vector that is tangent to the protected zone.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{12 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{13 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{14 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{15 \textcolor{comment}{ */}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#ifndef TANGENTLINE\_H\_}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define TANGENTLINE\_H\_}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_tangent_line}{TangentLine}}: \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \{}
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \mbox{\hyperlink{classlarcfm_1_1_tangent_line_a57bbda28af55d0e7b8eb9a044a3d414b}{TangentLine}}();}
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_tangent_line_a57bbda28af55d0e7b8eb9a044a3d414b}{TangentLine}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{32   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tangent_line_a843027d6874d874e249a09fd22b90539}{undef}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{34   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tangent_line_a9b92bfa2b8077e4013710d9ad3a770ec}{horizontal\_criterion}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{36   \textcolor{keywordtype}{int}  \mbox{\hyperlink{classlarcfm_1_1_tangent_line_a89bd9f763d2d71823624f7ed91a73294}{get\_eps}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{39   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_tangent_line_aa6936684b3892a52ca01afec62188142}{Q}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{private}:}
+\DoxyCodeLine{42   \textcolor{keywordtype}{int} eps;}
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{46 \textcolor{comment}{//  Vect2 Q(const Vect2\& s, const double D, const int eps);}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* TANGENTLINE\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

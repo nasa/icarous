@@ -1,0 +1,142 @@
+\hypertarget{_t_c_a_s3_d_8h_source}{}\doxysection{TCAS3\+D.\+h}
+\label{_t_c_a_s3_d_8h_source}\index{Modules/ACCoRD/inc/TCAS3D.h@{Modules/ACCoRD/inc/TCAS3D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2012-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef TCAS3D\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define TCAS3D\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}TCAS2D.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}TCASTable.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ConflictData.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{21   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}} table\_;}
+\DoxyCodeLine{22   std::string id;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{public}:}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ab25908a4dda14ace7a8b0e0b94130e6c}{TCAS3D}}();}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{30   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ab25908a4dda14ace7a8b0e0b94130e6c}{TCAS3D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& tables);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}}\& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a31061e55da0aaa975e091f54d3dc742e}{A\_TCAS3D}}();}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{40   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}}\& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a1f46b63874a91c066bb0e51d3b3a2621}{TCASII\_RA}}();}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{45   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}}\& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a779f234862fdcc11e56b83a74eb7b51d}{TCASII\_TA}}();}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a70be823b0ce37e72ee15f5b8f8b853a3}{make\_Empty}}();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{51   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a4f7934d48991edef26337fae91d61035}{make\_TCASII\_RA}}();}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{54   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac1466eaf229644baedf8515601f4c743}{make\_TCASII\_TA}}();}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{57   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a19e6813d543b69f83da9d2e1163ea2e3}{getTCASTable}}();}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{62   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aedda8796e353462a8f600ebdb9be0fd9}{setDefaultTCASIIThresholds}}(\textcolor{keywordtype}{bool} ra);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{66   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7c57484bbc6e75d89a21a3d613c874dd}{setTCASTable}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s_table}{TCASTable}}\& tables);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{comment}{// if true, then ownship has a TCAS resolution advisory at current time}}
+\DoxyCodeLine{69   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a1f46b63874a91c066bb0e51d3b3a2621}{TCASII\_RA}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi) \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<double,double,double>}} RA3D\_interval(\textcolor{keywordtype}{int} sl, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& so2, \textcolor{keywordtype}{double} soz, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vo2, \textcolor{keywordtype}{double} voz,}
+\DoxyCodeLine{72       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& si2, \textcolor{keywordtype}{double} siz, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& vi2, \textcolor{keywordtype}{double} viz, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \textcolor{comment}{// if true, within lookahead time T, the ownship has a TCAS resolution advisory (at time time before T) (effectively conflict detection)}}
+\DoxyCodeLine{75   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} RA3D(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo,  \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77   \textcolor{comment}{// The methods violation and conflict are inherited from Detection3DSum. This enable a uniform}}
+\DoxyCodeLine{78   \textcolor{comment}{// treatment of border cases in the generic bands algorithms}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a3a8d6dae893c5108d0e51160ca02faeb}{conflictDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}}* \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a7ce395fecc3e754abd4fa77609508306}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{83   \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d}{TCAS3D}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} vertical\_RA(\textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz, \textcolor{keywordtype}{double} ZTHR, \textcolor{keywordtype}{double} TCOA);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{comment}{//  static double time\_coalt(double sz, double voz, double viz, double h);}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} cd2d\_TCAS\_after(\textcolor{keywordtype}{double} HMD, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} s, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vo, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vi, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} cd2d\_TCAS(\textcolor{keywordtype}{double} HMD, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} s, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vo, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vi);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{102   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a6bc2d23d65c4713d1bf0e957b9d47148}{getTAU}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{107   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a127719a179856e786a992397e94bdcfd}{getTCOA}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad65e8ce5c68d500a11123e71536a1a3a}{getDMOD}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad65e8ce5c68d500a11123e71536a1a3a}{getDMOD}}(\textcolor{keywordtype}{int} sl, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a5084a31988abc7c812ba6a4244d3ba6d}{getZTHR}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_a5084a31988abc7c812ba6a4244d3ba6d}{getZTHR}}(\textcolor{keywordtype}{int} sl,\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{132   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad56de1e48205f71d904be4bcb234d923}{getHMD}}(\textcolor{keywordtype}{int} sl) \textcolor{keyword}{const};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{137   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad56de1e48205f71d904be4bcb234d923}{getHMD}}(\textcolor{keywordtype}{int} sl, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{142   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac797714472f66a1d17d0e442a24dde61}{setTAU}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{147   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ae85428294c003f1ea66fcb4438fa64b1}{setTCOA}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{152   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad99cb6b9be3fb7a07436838b6fbec2bf}{setDMOD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{157   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ad99cb6b9be3fb7a07436838b6fbec2bf}{setDMOD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{162   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aadee58226ee6619393c1323eef1493c7}{setZTHR}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{167   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_aadee58226ee6619393c1323eef1493c7}{setZTHR}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{173   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_afe62a353e330cf6cb71158cce672058b}{setHMD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{179   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_afe62a353e330cf6cb71158cce672058b}{setHMD}}(\textcolor{keywordtype}{int} sl, \textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   \textcolor{keywordtype}{void} setHMDFilter(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183   \textcolor{keywordtype}{bool} getHMDFilter();}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185   \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{186   \textcolor{keyword}{virtual} std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188   \textcolor{keyword}{virtual} std::string getIdentifier() \textcolor{keyword}{const};}
+\DoxyCodeLine{189   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_ac01165b6a4f4373347ec0e1c477ac7fa}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* d) \textcolor{keyword}{const};}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{194   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{195   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197   \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_t_c_a_s3_d_acada7dc7e792f05c628eecd53d336ee3}{horizontalHazardZone}}(std::vector<Position>\& haz, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder,}
+\DoxyCodeLine{200       \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \};}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \}}
+\DoxyCodeLine{205 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

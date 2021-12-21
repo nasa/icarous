@@ -1,0 +1,113 @@
+\hypertarget{format_8h_source}{}\doxysection{format.\+h}
+\label{format_8h_source}\index{Modules/ACCoRD/inc/format.h@{Modules/ACCoRD/inc/format.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef FORMAT\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define FORMAT\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20   std::string \mbox{\hyperlink{namespacelarcfm_aa9928cc6c8191d90b8dbb4eefda7346f}{Fmi}}(\textcolor{keywordtype}{int} v);}
+\DoxyCodeLine{22   std::string \mbox{\hyperlink{namespacelarcfm_a6d911866aa2a538ac99a13e09f7e3fbb}{Fmui}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} v);}
+\DoxyCodeLine{24   std::string \mbox{\hyperlink{namespacelarcfm_afb9e74f4aa5c759cc6692014269ac94b}{Fmul}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} v);}
+\DoxyCodeLine{26   std::string \mbox{\hyperlink{namespacelarcfm_a6e8a2a7741c7bc0d39e64e4f67e7b4b3}{Fm0}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{28   std::string \mbox{\hyperlink{namespacelarcfm_a31514bfff12ba2aa1b7d4c269c1a2574}{Fm1}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{30   std::string \mbox{\hyperlink{namespacelarcfm_a2b86b546353dcfed31dca224dba915e7}{Fm2}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{32   std::string \mbox{\hyperlink{namespacelarcfm_a5f68d54fe406fdae5cb574a062e825a5}{Fm2z}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{34   std::string \mbox{\hyperlink{namespacelarcfm_a3200eb72576048c9682dd38f2497c0a2}{Fm3}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{36   std::string \mbox{\hyperlink{namespacelarcfm_a8d47066dcf1218878d53d7f0db0fc402}{Fm3z}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{38   std::string \mbox{\hyperlink{namespacelarcfm_a33a6c2304aeedc0139b43aac9057121d}{Fm4}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{40   std::string \mbox{\hyperlink{namespacelarcfm_a07510fd7ca3c837f603ef4deeb0943a1}{Fm6}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{42   std::string \mbox{\hyperlink{namespacelarcfm_a3dcb4aca2c7c7859fe321c3275f421dd}{Fm8}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{44   std::string \mbox{\hyperlink{namespacelarcfm_ab30cab4d46954952ed4b6725c59b7494}{Fm12}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{46   std::string \mbox{\hyperlink{namespacelarcfm_aadc33aa467f4a010849b05609dec941a}{Fm16}}(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{49   std::string \mbox{\hyperlink{namespacelarcfm_a2d624847f46532e9808c6e149fcb057c}{FmLead}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} minLength);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   std::string FmPrecision(\textcolor{keywordtype}{double} v);}
+\DoxyCodeLine{52   std::string FmPrecision(\textcolor{keywordtype}{double} v, \textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{53   std::string FmPrecision(\textcolor{keywordtype}{double} v, \textcolor{keywordtype}{int} precision, \textcolor{keywordtype}{bool} includeTrailingZeros);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   std::string Fmb(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{58   std::string \mbox{\hyperlink{namespacelarcfm_a8ebaddaf65308115564f7fea7bfc9c76}{FmVec}}(Vect2 v);}
+\DoxyCodeLine{60   std::string \mbox{\hyperlink{namespacelarcfm_a8ebaddaf65308115564f7fea7bfc9c76}{FmVec}}(Vect3 v);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{63   std::string \mbox{\hyperlink{namespacelarcfm_a581691438fe5db2092cbd2c956c53d2c}{padLeft}}(std::string s, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{65   std::string \mbox{\hyperlink{namespacelarcfm_aab4da034d7af149448b2d89a77d7fb32}{padRight}}(std::string s, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{68   std::string \mbox{\hyperlink{namespacelarcfm_ab15092fc1eb023a0ba6491b083bb0c54}{bool2str}}(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_accb88236a7fae9e2fcfe06e4f39eb4a8}{fpln}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{73   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{75   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_accb88236a7fae9e2fcfe06e4f39eb4a8}{fpln}}(std::ostream* os, \textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{77   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}(std::ostream* os, \textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{79   \textcolor{keywordtype}{void} \mbox{\hyperlink{namespacelarcfm_a993b580f9c093ef2316303228312004f}{fdln}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{82   std::string \mbox{\hyperlink{namespacelarcfm_ab46ec53aad067e6aecf9ba429f53e316}{fsStr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{85   std::string \mbox{\hyperlink{namespacelarcfm_ab46ec53aad067e6aecf9ba429f53e316}{fsStr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87   std::string fsStrNP(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v, \textcolor{keywordtype}{int} prec, \textcolor{keyword}{const} std::string\& xunits, \textcolor{keyword}{const} std::string\& yunits, \textcolor{keyword}{const} std::string\& zunits);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   std::string fsStrNP(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keywordtype}{int} prec);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   std::string fsStr8NP(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   std::string fsStr15NP(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{96   std::string \mbox{\hyperlink{namespacelarcfm_ac454a5f1fb04798b4e5a7d1297152297}{fvStr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{99   std::string \mbox{\hyperlink{namespacelarcfm_ac454a5f1fb04798b4e5a7d1297152297}{fvStr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{102   std::string \mbox{\hyperlink{namespacelarcfm_ac3cce0bb6448c45bd1aaceaf52feb614}{fvStr2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{105   std::string \mbox{\hyperlink{namespacelarcfm_ac3cce0bb6448c45bd1aaceaf52feb614}{fvStr2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   std::string FmPair(\textcolor{keyword}{const} std::pair<int,int>\& p);}
+\DoxyCodeLine{108   std::string FmPair(\textcolor{keyword}{const} std::pair<double,double>\& p);}
+\DoxyCodeLine{109   std::string FmTriple(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}}\& p);}
+\DoxyCodeLine{110   std::string FmTriple(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<double,double,double>}}\& p);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112   std::string Fobj(\textcolor{keyword}{const} std::vector<int>\& v);}
+\DoxyCodeLine{113   std::string Fobj(\textcolor{keyword}{const} std::vector<double>\& v);}
+\DoxyCodeLine{114   std::string Fobj(\textcolor{keyword}{const} std::vector<std::string>\& v);}
+\DoxyCodeLine{115   std::string Fobj(\textcolor{keyword}{const} std::vector<std::pair<int,int> >\& v);}
+\DoxyCodeLine{116   std::string Fobj(\textcolor{keyword}{const} std::vector<std::pair<double,double> >\& v);}
+\DoxyCodeLine{117   std::string Fobj(\textcolor{keyword}{const} std::vector<\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}} >\& v);}
+\DoxyCodeLine{118   std::string Fobj(\textcolor{keyword}{const} std::vector<\mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<double, double, double>}} >\& v);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   std::string Fobj(\textcolor{keyword}{const} std::map<std::string,std::string>\& v);}
+\DoxyCodeLine{121   std::string Fobj(\textcolor{keyword}{const} std::map<int,int>\& v);}
+\DoxyCodeLine{122   std::string Fobj(\textcolor{keyword}{const} std::map<int,std::string>\& v);}
+\DoxyCodeLine{123   std::string Fobj(\textcolor{keyword}{const} std::map<std::string,int>\& v);}
+\DoxyCodeLine{124   std::string Fobj(\textcolor{keyword}{const} std::map<double,double>\& v);}
+\DoxyCodeLine{125   std::string Fobj(\textcolor{keyword}{const} std::map<double,std::string>\& v);}
+\DoxyCodeLine{126   std::string Fobj(\textcolor{keyword}{const} std::map<std::string,double>\& v);}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128   std::string list2str(\textcolor{keyword}{const} std::vector<std::string>\& l, \textcolor{keyword}{const} std::string\& delimiter);}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   std::string \mbox{\hyperlink{namespacelarcfm_a7371ddd193782f64e4db0efe1989947d}{Farray}}(\textcolor{keywordtype}{int} \textcolor{keyword}{const} v[], \textcolor{keywordtype}{int} sz);}
+\DoxyCodeLine{131   std::string \mbox{\hyperlink{namespacelarcfm_a7371ddd193782f64e4db0efe1989947d}{Farray}}(\textcolor{keywordtype}{double} \textcolor{keyword}{const} v[], \textcolor{keywordtype}{int} sz);}
+\DoxyCodeLine{132   std::string \mbox{\hyperlink{namespacelarcfm_a7371ddd193782f64e4db0efe1989947d}{Farray}}(std::string \textcolor{keyword}{const} v[], \textcolor{keywordtype}{int} sz);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   std::string double2PVS(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{135   std::string double2PVS(\textcolor{keywordtype}{double} val, \textcolor{keywordtype}{int} precision);}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \}}
+\DoxyCodeLine{138 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,102 @@
+\hypertarget{_conflict_data_8h_source}{}\doxysection{Conflict\+Data.\+h}
+\label{_conflict_data_8h_source}\index{Modules/ACCoRD/inc/ConflictData.h@{Modules/ACCoRD/inc/ConflictData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * LossData.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *  Created on: Nov 21, 2014}}
+\DoxyCodeLine{11 \textcolor{comment}{ *      Author: rbutler}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef CONFLICTDATA\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define CONFLICTDATA\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Horizontal.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Vertical.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{private}:}
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s\_; \textcolor{comment}{// Relative position}}
+\DoxyCodeLine{31   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} v\_; \textcolor{comment}{// Relative velocity}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{public}:}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keywordtype}{double}  time\_crit;   \textcolor{comment}{// relative time to critical point}}
+\DoxyCodeLine{36   \textcolor{keywordtype}{double}  dist\_crit;   \textcolor{comment}{// distance or severity at critical point (0 is most critical, +inf is least severe)}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   std::string \mbox{\hyperlink{classlarcfm_1_1_conflict_data_ac32ca305f06d35caa79c8547b439ad3f}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}}(\textcolor{keywordtype}{double} t\_in, \textcolor{keywordtype}{double} t\_out, \textcolor{keywordtype}{double} t\_crit, \textcolor{keywordtype}{double} d\_crit, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{41   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}}\& ld, \textcolor{keywordtype}{double} t\_crit, \textcolor{keywordtype}{double} d\_crit, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{42   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}}();}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}}\& EMPTY();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{49   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_conflict_data_ac4fb8bcddcaeb2af7e9d604f6c364130}{get\_s}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{54   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \textcolor{keyword}{const} \& \mbox{\hyperlink{classlarcfm_1_1_conflict_data_af68b29339f960ef533d1985369901efa}{get\_v}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a97690afdfda6b4abd643a19a1df0fac2}{HMD}}(\textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{64   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a97690afdfda6b4abd643a19a1df0fac2}{HMD}}(\textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{69   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a6906fab0702594ea19c76715344c2d5f}{VMD}}(\textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a6906fab0702594ea19c76715344c2d5f}{VMD}}(\textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{80   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a8f06a7aeb1d0158b2dc4da9c3646894a}{horizontalSeparation}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{87   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a8f06a7aeb1d0158b2dc4da9c3646894a}{horizontalSeparation}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{94   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a39b39477e288acfb324944f74c7bc53f}{horizontalSeparationAtTime}}(\textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{102   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a39b39477e288acfb324944f74c7bc53f}{horizontalSeparationAtTime}}(\textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{108   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a2457d7fbd4db8a5215a9423ac5297e88}{verticalSeparation}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{115   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a2457d7fbd4db8a5215a9423ac5297e88}{verticalSeparation}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{122   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a5dcd4fa6b14f432279f69a2bc61a7f5d}{verticalSeparationAtTime}}(\textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{130   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a5dcd4fa6b14f432279f69a2bc61a7f5d}{verticalSeparationAtTime}}(\textcolor{keyword}{const} std::string\& u, \textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{136   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a1bd35ab81b39b703b060cc9a91102cc2}{tcpa2D}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{142   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a38c8f75856dd73f0c821562e241a1fe9}{tcpa3D}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{148   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a956fc799ff8870d57a0f308830300221}{tcoa}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{154   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_ae63695e088cbf008d91601413ab1f547}{horizontalClosureRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{161   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_ae63695e088cbf008d91601413ab1f547}{horizontalClosureRate}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{167   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a634cbaf0d7146a516db1c91a2b700e93}{verticalClosureRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{174   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a634cbaf0d7146a516db1c91a2b700e93}{verticalClosureRate}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{180   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a74240da6923f5313c3daa9a21e3d101b}{getCriticalTimeOfConflict}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_conflict_data_a1428b1dc231fba9cd02e70772ad65b53}{getDistanceAtCriticalTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_LOSSDATA\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

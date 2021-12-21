@@ -1,0 +1,124 @@
+\hypertarget{classlarcfm_1_1_kinematic_integer_bands}{}\doxysection{larcfm\+::Kinematic\+Integer\+Bands Class Reference}
+\label{classlarcfm_1_1_kinematic_integer_bands}\index{larcfm::KinematicIntegerBands@{larcfm::KinematicIntegerBands}}
+Inheritance diagram for larcfm\+::Kinematic\+Integer\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.222222cm]{classlarcfm_1_1_kinematic_integer_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a3ebcd152f412117240dabb161224be58}\label{classlarcfm_1_1_kinematic_integer_bands_a3ebcd152f412117240dabb161224be58}} 
+virtual std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} $>$ {\bfseries trajectory} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, double time, bool dir) const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_ad5ead8d8c760d0e11baddae900f7ac80}\label{classlarcfm_1_1_kinematic_integer_bands_ad5ead8d8c760d0e11baddae900f7ac80}} 
+bool {\bfseries no\+\_\+conflict} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, bool trajdir, double tsk, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aecf28a70a32532ba2ed2e49a68999353}\label{classlarcfm_1_1_kinematic_integer_bands_aecf28a70a32532ba2ed2e49a68999353}} 
+void {\bfseries kinematic\+\_\+bands\+\_\+combine} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a5e5704d4df50207d9371d2f1181c6f51}\label{classlarcfm_1_1_kinematic_integer_bands_a5e5704d4df50207d9371d2f1181c6f51}} 
+bool {\bfseries any\+\_\+los\+\_\+aircraft} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, bool trajdir, double tsk, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a1e0317504f0ad17a9aaf5977ed627c8e}\label{classlarcfm_1_1_kinematic_integer_bands_a1e0317504f0ad17a9aaf5977ed627c8e}} 
+int {\bfseries first\+\_\+green} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_adc72853509a88e08eb499bdca109b598}\label{classlarcfm_1_1_kinematic_integer_bands_adc72853509a88e08eb499bdca109b598}} 
+bool {\bfseries all\+\_\+int\+\_\+red} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv, int dir) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a09937e2e37fb084fdf10126b5150fa9c}\label{classlarcfm_1_1_kinematic_integer_bands_a09937e2e37fb084fdf10126b5150fa9c}} 
+bool {\bfseries any\+\_\+conflict\+\_\+aircraft} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, double B, double T, bool trajdir, double tsk, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a66583a9b98905a23de1a926c7a7c7601}\label{classlarcfm_1_1_kinematic_integer_bands_a66583a9b98905a23de1a926c7a7c7601}} 
+void {\bfseries instantaneous\+\_\+bands\+\_\+combine} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a7ee421a8aa775336848d3cf96f8c9372}\label{classlarcfm_1_1_kinematic_integer_bands_a7ee421a8aa775336848d3cf96f8c9372}} 
+bool {\bfseries red\+\_\+band\+\_\+exist} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a72e46359dd0e760085b78d4abefa186e}\label{classlarcfm_1_1_kinematic_integer_bands_a72e46359dd0e760085b78d4abefa186e}} 
+bool {\bfseries any\+\_\+int\+\_\+red} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv, int dir) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_ae154e08a6ea604f013eff0faa34df1ba}\label{classlarcfm_1_1_kinematic_integer_bands_ae154e08a6ea604f013eff0faa34df1ba}} 
+bool {\bfseries all\+\_\+instantaneous\+\_\+red} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv, int dir)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a430850490c5532a98cac4f5daca95b90}\label{classlarcfm_1_1_kinematic_integer_bands_a430850490c5532a98cac4f5daca95b90}} 
+bool {\bfseries any\+\_\+instantaneous\+\_\+red} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, int maxl, int maxr, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv, int dir)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a5528f1751e006f5c6000e0079761ab98}\label{classlarcfm_1_1_kinematic_integer_bands_a5528f1751e006f5c6000e0079761ab98}} 
+static void {\bfseries append\+\_\+intband} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&r)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aca4d8e5841baa0356afbdc349e939f2c}\label{classlarcfm_1_1_kinematic_integer_bands_aca4d8e5841baa0356afbdc349e939f2c}} 
+static void {\bfseries neg} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_ac7ddeaa45b9e884b07f491f38c118a6b}\label{classlarcfm_1_1_kinematic_integer_bands_ac7ddeaa45b9e884b07f491f38c118a6b}} 
+int {\bfseries j\+\_\+step\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aa4788d66b042c53c533915b215272787}\label{classlarcfm_1_1_kinematic_integer_bands_aa4788d66b042c53c533915b215272787}} 
+int {\bfseries first\+\_\+los\+\_\+step} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, double tstep, bool trajdir, int min, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a784058845738c3adca10dd2efdd7acb7}\label{classlarcfm_1_1_kinematic_integer_bands_a784058845738c3adca10dd2efdd7acb7}} 
+int {\bfseries first\+\_\+los\+\_\+search\+\_\+index} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a6edf6ab592bbf144cbcab17a5dab8414}\label{classlarcfm_1_1_kinematic_integer_bands_a6edf6ab592bbf144cbcab17a5dab8414}} 
+int {\bfseries bands\+\_\+search\+\_\+index} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a8f09aed5c7d0ee79058bd9f0fe9799e9}\label{classlarcfm_1_1_kinematic_integer_bands_a8f09aed5c7d0ee79058bd9f0fe9799e9}} 
+void {\bfseries traj\+\_\+conflict\+\_\+only\+\_\+bands} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aa4dd49b9890a0f6ebbbcec6d881ecd01}\label{classlarcfm_1_1_kinematic_integer_bands_aa4dd49b9890a0f6ebbbcec6d881ecd01}} 
+void {\bfseries kinematic\+\_\+bands} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double tstep, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a8c70f1b7f1bbd035d10525863acd2480}\label{classlarcfm_1_1_kinematic_integer_bands_a8c70f1b7f1bbd035d10525863acd2480}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries linvel} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, double tstep, bool trajdir, int k) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a14e7011db6e60085f7f01e625b67777b}\label{classlarcfm_1_1_kinematic_integer_bands_a14e7011db6e60085f7f01e625b67777b}} 
+bool {\bfseries repulsive\+\_\+at} (double tstep, bool trajdir, int k, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a454aacc23bf23085e2805cb3f749ba8e}\label{classlarcfm_1_1_kinematic_integer_bands_a454aacc23bf23085e2805cb3f749ba8e}} 
+int {\bfseries first\+\_\+nonrepulsive\+\_\+step} (double tstep, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a566230856e30a4f479e2f7946e59a268}\label{classlarcfm_1_1_kinematic_integer_bands_a566230856e30a4f479e2f7946e59a268}} 
+bool {\bfseries vert\+\_\+repul\+\_\+at} (double tstep, bool trajdir, int k, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_ac5d814a9a8cd9401ddfbd5682548dbfb}\label{classlarcfm_1_1_kinematic_integer_bands_ac5d814a9a8cd9401ddfbd5682548dbfb}} 
+int {\bfseries first\+\_\+nonvert\+\_\+repul\+\_\+step} (double tstep, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsv) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a522feccd351d9e780d1a69ef4b804382}\label{classlarcfm_1_1_kinematic_integer_bands_a522feccd351d9e780d1a69ef4b804382}} 
+bool {\bfseries cd\+\_\+future\+\_\+traj} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, double B, double T, bool trajdir, double t, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aa8e4b4a90169a3be3d011a920d898415}\label{classlarcfm_1_1_kinematic_integer_bands_aa8e4b4a90169a3be3d011a920d898415}} 
+bool {\bfseries any\+\_\+conflict\+\_\+step} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, double tstep, double B, double T, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a0326e1f86cbae5a19b7872257708b588}\label{classlarcfm_1_1_kinematic_integer_bands_a0326e1f86cbae5a19b7872257708b588}} 
+bool {\bfseries no\+\_\+instantaneous\+\_\+conflict} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, bool trajdir, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a1c2090a975eb07593dea62da10d96c59}\label{classlarcfm_1_1_kinematic_integer_bands_a1c2090a975eb07593dea62da10d96c59}} 
+void {\bfseries instantaneous\+\_\+bands} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_integerval}{Integerval}} $>$ \&l, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_aeffe5761cece4c0223bf31a9ff3d4a2d}\label{classlarcfm_1_1_kinematic_integer_bands_aeffe5761cece4c0223bf31a9ff3d4a2d}} 
+int {\bfseries first\+\_\+instantaneous\+\_\+green} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a75fedb09b5c4cae20f8a98c0af9a6e13}\label{classlarcfm_1_1_kinematic_integer_bands_a75fedb09b5c4cae20f8a98c0af9a6e13}} 
+bool {\bfseries instantaneous\+\_\+red\+\_\+band\+\_\+exist} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$conflict\+\_\+det, \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$recovery\+\_\+det, double B, double T, double B2, double T2, bool trajdir, int max, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&repac, int epsh, int epsv)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_integer_bands_a3329d979ac9572dfe79dd13a7a94f025}\label{classlarcfm_1_1_kinematic_integer_bands_a3329d979ac9572dfe79dd13a7a94f025}} 
+static bool {\bfseries conflict} (\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi, double B, double T)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Kinematic\+Integer\+Bands.\+h\end{DoxyCompactItemize}

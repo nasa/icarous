@@ -1,0 +1,50 @@
+\hypertarget{_debug_support_8h_source}{}\doxysection{Debug\+Support.\+h}
+\label{_debug_support_8h_source}\index{Modules/ACCoRD/inc/DebugSupport.h@{Modules/ACCoRD/inc/DebugSupport.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DEBUGSUPPORT\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DEBUGSUPPORT\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_debug_support}{DebugSupport}}\{}
+\DoxyCodeLine{23 \textcolor{keyword}{public}:}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{33     \textcolor{comment}{//static std::string getNameNoPath(std::string filename);}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_debug_support_a2a2cfb1333e944b0479ec64eb95405f2}{dumpPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan, std::string str) ;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keywordtype}{void} dumpPlanAndPoly(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& pln, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{SimplePoly}}\& sp, std::string str);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{keyword}{static} \textcolor{keywordtype}{void} dumpPlanAndPolyPaths(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& pln, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, std::string str);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keywordtype}{void} dumpPlanAndPolyPaths(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& pln, \textcolor{keyword}{const} std::vector<PolyPath>\& paths, \textcolor{keywordtype}{bool} write\_tcp, std::string str);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{comment}{//Position p1(LatLonAlt::make(45.01, -\/93.31, 10000.0));}}
+\DoxyCodeLine{44     \textcolor{comment}{//NavPoint np1(p1,80);}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{static} \textcolor{keywordtype}{void} dumpAsUnitTest(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan) ;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49     \textcolor{keyword}{static} \textcolor{keywordtype}{void} dumpAsNavPointAsserts(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& plan) ;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keyword}{static} \textcolor{keywordtype}{void} halt();}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \};}
+\DoxyCodeLine{55 \}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

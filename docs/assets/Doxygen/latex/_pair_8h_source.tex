@@ -1,0 +1,77 @@
+\hypertarget{_pair_8h_source}{}\doxysection{Pair.\+h}
+\label{_pair_8h_source}\index{Modules/ACCoRD/inc/Pair.h@{Modules/ACCoRD/inc/Pair.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Pair.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * a three element tuple}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef PAIR\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define PAIR\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_pair}{Pair}} \{}
+\DoxyCodeLine{26  \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     L \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}};}
+\DoxyCodeLine{30     R \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}};}
+\DoxyCodeLine{31     }
+\DoxyCodeLine{33     \mbox{\hyperlink{classlarcfm_1_1_pair_a60a6bcf6507a56c80191d3c53ad5a2c9}{Pair}}(): \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}(L()),  \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}(R()) \{\}}
+\DoxyCodeLine{34  }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_pair_ae198fe315ec0a16807a878b0b6cdcf99}{Pair}}(\textcolor{keyword}{const} L\& \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}, \textcolor{keyword}{const} R\& \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}) : \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}(\mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}),  \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}(\mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}) \{\}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{39     L \mbox{\hyperlink{classlarcfm_1_1_pair_a32d53b8c6372098bb7e85d3d685c8317}{getLeft}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{40         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}};}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42  }
+\DoxyCodeLine{44     R \mbox{\hyperlink{classlarcfm_1_1_pair_a5ab5876ab4c9a4aa049cae7c6da7e2b9}{getRight}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{45          \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}};}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52     L \mbox{\hyperlink{classlarcfm_1_1_pair_a81a38586249c8217c080134192450cd1}{getFirst}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{53         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}};}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{60     R \mbox{\hyperlink{classlarcfm_1_1_pair_adeb8cb271f7278e7cc387100f15c2bca}{getSecond}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{61         \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}};}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64  }
+\DoxyCodeLine{66     \textcolor{keyword}{template} <\textcolor{keyword}{typename} L1,  \textcolor{keyword}{typename} R1> }
+\DoxyCodeLine{67     \mbox{\hyperlink{classlarcfm_1_1_pair_af488ff17733ff9a1b21a370f3594a3d0}{Pair}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L1, R1>}}\& t): \mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}(t.\mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}}),  \mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}(t.\mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}}) \{\}}
+\DoxyCodeLine{68  \};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{77  \textcolor{keyword}{template} <\textcolor{keyword}{typename} L, \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{78  \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L, R>}} \mbox{\hyperlink{namespacelarcfm_a8ee5fbc52da2bf46d0f5aa1065c5d9d5}{make}}(\textcolor{keyword}{const} L\& left,  \textcolor{keyword}{const} R\& right) \{}
+\DoxyCodeLine{79    \textcolor{keywordflow}{return} \textcolor{keyword}{new} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L, R>}}(left,  right);}
+\DoxyCodeLine{80  \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{83   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L,  \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{84   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_ae714da719acb7ee9047444b14eafe7e9}{operator== }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L,R>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L,R>}}\& t2) \{}
+\DoxyCodeLine{85     \textcolor{keywordflow}{return} t1.\mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}} == t2.\mbox{\hyperlink{classlarcfm_1_1_pair_a9404dc901f2fda9053b573ad6e38fa8e}{left}} \&\& t1.\mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}} == t2.\mbox{\hyperlink{classlarcfm_1_1_pair_ab331a0ba0868d9cb4c2110ea1e1305ed}{right}};}
+\DoxyCodeLine{86   \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{89   \textcolor{keyword}{template} <\textcolor{keyword}{typename} L,  \textcolor{keyword}{typename} R> }
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a9532427b324c671f7e0dd98d4f3711c2}{operator!= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L,R>}}\& t1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_pair}{Pair<L,R>}}\& t2) \{}
+\DoxyCodeLine{91     \textcolor{keywordflow}{return} !(t1==t2);}
+\DoxyCodeLine{92   \}}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94 \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* PAIR\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

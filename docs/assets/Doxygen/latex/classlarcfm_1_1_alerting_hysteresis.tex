@@ -1,0 +1,56 @@
+\hypertarget{classlarcfm_1_1_alerting_hysteresis}{}\doxysection{larcfm\+::Alerting\+Hysteresis Class Reference}
+\label{classlarcfm_1_1_alerting_hysteresis}\index{larcfm::AlertingHysteresis@{larcfm::AlertingHysteresis}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_a8fd679834b58991046e81c23dc962f12}\label{classlarcfm_1_1_alerting_hysteresis_a8fd679834b58991046e81c23dc962f12}} 
+{\bfseries Alerting\+Hysteresis} (double hysteresis\+\_\+time, double persistence\+\_\+time, int m, int n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_a28821f6e24e5f52462f0fe29823dcab3}\label{classlarcfm_1_1_alerting_hysteresis_a28821f6e24e5f52462f0fe29823dcab3}} 
+void {\bfseries set\+Hysteresis\+Persistence} (double hysteresis\+\_\+time, double persistence\+\_\+time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_a5d238ac5291d4cb0bd6578f2731afee6}\label{classlarcfm_1_1_alerting_hysteresis_a5d238ac5291d4cb0bd6578f2731afee6}} 
+double {\bfseries get\+Last\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_ab642e7e162dcb6cb7306b5f12e46864e}\label{classlarcfm_1_1_alerting_hysteresis_ab642e7e162dcb6cb7306b5f12e46864e}} 
+int {\bfseries get\+Last\+Alert} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_abb4be2e507d85ef9360ee961c26ce3ac}\label{classlarcfm_1_1_alerting_hysteresis_abb4be2e507d85ef9360ee961c26ce3ac}} 
+void {\bfseries reset} (int val=-\/1)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_aad3289ae37d9d197a751513a0736735b}\label{classlarcfm_1_1_alerting_hysteresis_aad3289ae37d9d197a751513a0736735b}} 
+void {\bfseries reset\+If\+Current\+Time} (double current\+\_\+time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_aaa716551fe1d5593a61d2f0ac5b2ce27}\label{classlarcfm_1_1_alerting_hysteresis_aaa716551fe1d5593a61d2f0ac5b2ce27}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_aa714fdf4b422631258494089748f0233}\label{classlarcfm_1_1_alerting_hysteresis_aa714fdf4b422631258494089748f0233}} 
+int {\bfseries alerting\+Hysteresis} (int alert\+\_\+level, double current\+\_\+time)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_ad968932b1b84721dad5e5a47859e0217}\label{classlarcfm_1_1_alerting_hysteresis_ad968932b1b84721dad5e5a47859e0217}} 
+\mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} {\bfseries mofn\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_af4834827f4a17c214823c7a117ff0987}\label{classlarcfm_1_1_alerting_hysteresis_af4834827f4a17c214823c7a117ff0987}} 
+double {\bfseries hysteresis\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_ae1b06c047c2b23a2719cbb2cb6488a62}\label{classlarcfm_1_1_alerting_hysteresis_ae1b06c047c2b23a2719cbb2cb6488a62}} 
+double {\bfseries persistence\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_a85dfb3e717583bc6bf3478dbc41a3abd}\label{classlarcfm_1_1_alerting_hysteresis_a85dfb3e717583bc6bf3478dbc41a3abd}} 
+double {\bfseries init\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_ae71d788078f199104995500c876b8118}\label{classlarcfm_1_1_alerting_hysteresis_ae71d788078f199104995500c876b8118}} 
+double {\bfseries last\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_alerting_hysteresis_ad35a2d0a5a50e267d6b5dbdbba2a00dc}\label{classlarcfm_1_1_alerting_hysteresis_ad35a2d0a5a50e267d6b5dbdbba2a00dc}} 
+int {\bfseries last\+\_\+alert\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Alerting\+Hysteresis.\+h\item 
+Modules/\+ACCo\+RD/src/Alerting\+Hysteresis.\+cpp\end{DoxyCompactItemize}

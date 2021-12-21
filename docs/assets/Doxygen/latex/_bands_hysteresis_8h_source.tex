@@ -1,0 +1,149 @@
+\hypertarget{_bands_hysteresis_8h_source}{}\doxysection{Bands\+Hysteresis.\+h}
+\label{_bands_hysteresis_8h_source}\index{Modules/ACCoRD/inc/BandsHysteresis.h@{Modules/ACCoRD/inc/BandsHysteresis.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Implementation of bands hysteresis logic that includes MofN and persistence.}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Contact: Cesar A. Munoz}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef BANDSHYSTERESIS\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define BANDSHYSTERESIS\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}BandsRange.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}BandsMofN.h"{}}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bands_hysteresis}{BandsHysteresis}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24   \textcolor{comment}{/*}}
+\DoxyCodeLine{25 \textcolor{comment}{   * Creates an empty object}}
+\DoxyCodeLine{26 \textcolor{comment}{   */}}
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_bands_hysteresis}{BandsHysteresis}}();}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29   \textcolor{keywordtype}{void} setMod(\textcolor{keywordtype}{double} mod);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keywordtype}{void} initialize(\textcolor{keywordtype}{double} hysteresis\_time,}
+\DoxyCodeLine{32       \textcolor{keywordtype}{double} persistence\_time, \textcolor{keywordtype}{bool} bands\_persistence,}
+\DoxyCodeLine{33       \textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keywordtype}{double} getLastTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{bool} getLastPreferredDirection() \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{double} getLastResolutionLow() \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} getLastResolutionUp() \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} getRawResolutionLow() \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keywordtype}{double} getRawResolutionUp() \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordtype}{int} getLastNFactorLow() \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{int} getLastNFactorUp() \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keyword}{const} std::vector<BandsMofN>\& bands\_mofn() \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{comment}{/*}}
+\DoxyCodeLine{54 \textcolor{comment}{   * Reset object}}
+\DoxyCodeLine{55 \textcolor{comment}{   */}}
+\DoxyCodeLine{56   \textcolor{keywordtype}{void} reset();}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{comment}{/*}}
+\DoxyCodeLine{59 \textcolor{comment}{   * Reset object if current time is older than hysteresis time with}}
+\DoxyCodeLine{60 \textcolor{comment}{   * respect to last time}}
+\DoxyCodeLine{61 \textcolor{comment}{   */}}
+\DoxyCodeLine{62   \textcolor{keywordtype}{void} resetIfCurrentTime(\textcolor{keywordtype}{double} current\_time);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \textcolor{comment}{// Implement MofN logic for bands}}
+\DoxyCodeLine{65   \textcolor{keywordtype}{void} m\_of\_n(std::vector<ColorValue>\& lcvs);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{comment}{// Implement persistence logic for bands. Return index in ranges of current value}}
+\DoxyCodeLine{68   \textcolor{keywordtype}{int} bandsPersistence(std::vector<BandsRange>\& ranges, std::vector<ColorValue>\& lcvs, \textcolor{keywordtype}{bool} recovery, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keywordtype}{void} resolutionsHysteresis(\textcolor{keyword}{const} std::vector<BandsRange>\& ranges,}
+\DoxyCodeLine{71       BandsRegion::Region corrective\_region,}
+\DoxyCodeLine{72       \textcolor{keywordtype}{double} delta, \textcolor{keywordtype}{int} nfactor,}
+\DoxyCodeLine{73       \textcolor{keywordtype}{double} val, \textcolor{keywordtype}{int} idx\_l, \textcolor{keywordtype}{int} idx\_u);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keywordtype}{void} preferredDirectionHysteresis(\textcolor{keywordtype}{double} delta, \textcolor{keywordtype}{double} nfactor, \textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77   \textcolor{keywordtype}{void} bandsHysteresis(\textcolor{keyword}{const} std::vector<BandsRange>\& ranges,}
+\DoxyCodeLine{78       BandsRegion::Region corrective\_region,}
+\DoxyCodeLine{79       \textcolor{keywordtype}{double} delta, \textcolor{keywordtype}{int} nfactor, \textcolor{keywordtype}{double} val, \textcolor{keywordtype}{int} idx);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_bands_hysteresis}{\string~BandsHysteresis}}() \{\};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{private}:}
+\DoxyCodeLine{86   \textcolor{keywordtype}{double}  mod\_;}
+\DoxyCodeLine{87   \textcolor{keywordtype}{double}  mod2\_;}
+\DoxyCodeLine{88   \textcolor{keywordtype}{double} hysteresis\_time\_;}
+\DoxyCodeLine{89   \textcolor{keywordtype}{double} persistence\_time\_;}
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool}   bands\_persistence\_;}
+\DoxyCodeLine{91   \textcolor{keywordtype}{double} last\_time\_;}
+\DoxyCodeLine{92   \textcolor{keywordtype}{int}    m\_;}
+\DoxyCodeLine{93   \textcolor{keywordtype}{int}    n\_;}
+\DoxyCodeLine{94   std::vector<BandsMofN> bands\_mofn\_; \textcolor{comment}{// Color values for computation of MofN bands logic}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   \textcolor{comment}{/* Parameters for hysteresis of preferred direction */}}
+\DoxyCodeLine{97   \textcolor{keywordtype}{bool}    preferred\_dir\_; \textcolor{comment}{// Returned preferred direction after hysteresis}}
+\DoxyCodeLine{98   \textcolor{keywordtype}{double}  time\_of\_dir\_;   \textcolor{comment}{// Time of current preferred direction}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \textcolor{comment}{// Following variables are used in bands persistence}}
+\DoxyCodeLine{101   BandsRegion::Region conflict\_region\_;  \textcolor{comment}{// Last conflict region}}
+\DoxyCodeLine{102   \textcolor{keywordtype}{double} conflict\_region\_low\_; \textcolor{comment}{// If last region is conflict band, lower bound of conflict band}}
+\DoxyCodeLine{103   \textcolor{keywordtype}{double} conflict\_region\_up\_;  \textcolor{comment}{// If last region is conflict band, upper bound of conflict band}}
+\DoxyCodeLine{104   \textcolor{keywordtype}{double} time\_of\_conflict\_region\_; \textcolor{comment}{// Time of last region}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106   \textcolor{comment}{/*}}
+\DoxyCodeLine{107 \textcolor{comment}{   * resolution\_up\_,resolution\_low\_ are the resolution interval computed from all regions that are at least}}
+\DoxyCodeLine{108 \textcolor{comment}{   * as severe as the corrective region. Negative/positive infinity means no possible resolutions}}
+\DoxyCodeLine{109 \textcolor{comment}{   * NaN means no resolutions are computed (either because there is no conflict or}}
+\DoxyCodeLine{110 \textcolor{comment}{   * because of invalid inputs)}}
+\DoxyCodeLine{111 \textcolor{comment}{   */}}
+\DoxyCodeLine{112   \textcolor{keywordtype}{double} resolution\_up\_;}
+\DoxyCodeLine{113   \textcolor{keywordtype}{double} resolution\_low\_;}
+\DoxyCodeLine{114   \textcolor{keywordtype}{double} raw\_up\_; \textcolor{comment}{// Resolution up without hysteresis}}
+\DoxyCodeLine{115   \textcolor{keywordtype}{double} raw\_low\_; \textcolor{comment}{// Resolution low without hysteresis}}
+\DoxyCodeLine{116   \textcolor{comment}{// nfactor >= 0 means recovery bands. It's the reduction factor for the internal cylinder}}
+\DoxyCodeLine{117   \textcolor{keywordtype}{int}    nfactor\_up\_;}
+\DoxyCodeLine{118   \textcolor{keywordtype}{int}    nfactor\_low\_;}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{keywordtype}{void} conflict\_region\_persistence(\textcolor{keyword}{const} std::vector<BandsRange>\& ranges, \textcolor{keywordtype}{int} idx);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{comment}{// Returns true if a is to the left of b (modulo mod). If mod is 0, this is the same a < b}}
+\DoxyCodeLine{123   \textcolor{comment}{// Note that, by definition, if a is almost equal to b, then a is to the left of b.}}
+\DoxyCodeLine{124   \textcolor{keywordtype}{bool} to\_the\_left(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{comment}{// check if region is below corrective region}}
+\DoxyCodeLine{127   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} is\_below\_corrective\_region(BandsRegion::Region corrective\_region, BandsRegion::Region region);}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129   \textcolor{comment}{// check if regions from idx\_from to idx\_to are resolutions}}
+\DoxyCodeLine{130   \textcolor{keywordtype}{bool} contiguous\_resolution\_region(\textcolor{keyword}{const} std::vector<BandsRange>\& ranges,}
+\DoxyCodeLine{131       BandsRegion::Region corrective\_region,}
+\DoxyCodeLine{132       \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{int} idx\_from, \textcolor{keywordtype}{int} idx\_to) \textcolor{keyword}{const};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   \textcolor{comment}{// check if region is above corrective region (corrective or above)}}
+\DoxyCodeLine{135   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} is\_up\_from\_corrective\_region(BandsRegion::Region corrective\_region, BandsRegion::Region region);}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137   \textcolor{keywordtype}{void} switch\_dir(\textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{double} nfactor);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \};}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BANDSHYSTERESIS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

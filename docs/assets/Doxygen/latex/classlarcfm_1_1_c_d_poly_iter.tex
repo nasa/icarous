@@ -1,0 +1,329 @@
+\hypertarget{classlarcfm_1_1_c_d_poly_iter}{}\doxysection{larcfm\+::CDPoly\+Iter Class Reference}
+\label{classlarcfm_1_1_c_d_poly_iter}\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+
+
+{\ttfamily \#include $<$CDPoly\+Iter.\+h$>$}
+
+Inheritance diagram for larcfm\+::CDPoly\+Iter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlarcfm_1_1_c_d_poly_iter}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a01b017440a83b1e486cc411d6cc58fdc}\label{classlarcfm_1_1_c_d_poly_iter_a01b017440a83b1e486cc411d6cc58fdc}} 
+double {\bfseries get\+Time\+Step} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_add33acfcdee74736b87e4483f6b633ab}\label{classlarcfm_1_1_c_d_poly_iter_add33acfcdee74736b87e4483f6b633ab}} 
+void {\bfseries set\+Time\+Step} (double val)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ae2233e4ae2d4bc47e2952a9f1a79a468}\label{classlarcfm_1_1_c_d_poly_iter_ae2233e4ae2d4bc47e2952a9f1a79a468}} 
+bool {\bfseries get\+Containment} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a825cf6508eafc4613662c1c7c7a1e487}\label{classlarcfm_1_1_c_d_poly_iter_a825cf6508eafc4613662c1c7c7a1e487}} 
+void {\bfseries set\+Containment} (bool flag)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a4ef43b076f2a238ce3b5bb45fa21d195}\label{classlarcfm_1_1_c_d_poly_iter_a4ef43b076f2a238ce3b5bb45fa21d195}} 
+std\+::pair$<$ double, double $>$ {\bfseries polygon\+\_\+alt\+\_\+inside\+\_\+time} (double B, double T, double vspeed, double minalt, double maxalt, double sz, double vz)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a7100832d50725bd92a627faaad9b4a35}\label{classlarcfm_1_1_c_d_poly_iter_a7100832d50725bd92a627faaad9b4a35}} 
+bool {\bfseries contains} (\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&p3d, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a590875229c52f86302d87c4963ee6b7d}{get\+Parameters}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_afa3c741f77992072d54c4740a6babef3}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a2744dd686da36adb887ccf49a29caa65}{set\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a1855043d166d8b0c3e5c8f6e067e5b88}\label{classlarcfm_1_1_c_d_poly_iter_a1855043d166d8b0c3e5c8f6e067e5b88}} 
+bool {\bfseries poly\+Iter\+\_\+detection} (double B, double T, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&mp3D, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a84de4c5528b4b5f64f0838dd523cf5af}{violation}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&si) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a911c0648e35f6e46dae037c97f624560}{conflict}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&si, double B, double T) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a3efd092872d461d4a9e42c3c9c110cd4}{conflict\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&si, double B, double T)
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_ac0a4b632ef19e7ca015494820d4e0957}{get\+Times\+In}} () const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_abccbb18810712b97e5a2f6b3070c74e8}{get\+Times\+Out}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a908178b9a66a21982e17455320b738a4}\label{classlarcfm_1_1_c_d_poly_iter_a908178b9a66a21982e17455320b738a4}} 
+double {\bfseries get\+Time\+In} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_af513c804340b96e3a82ab20c3c832040}{get\+Time\+Out}} (int i) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_abbe35fddcb0cbaadbd250945751a7dee}\label{classlarcfm_1_1_c_d_poly_iter_abbe35fddcb0cbaadbd250945751a7dee}} 
+double {\bfseries get\+Time\+In} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a71fc40ce9d1a77b926842122722c363c}{get\+Time\+Out}} () const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a45b732fdfcad06c0e02dab96b7d2d97d}{get\+Critical\+Times\+Of\+Conflict}} () const
+\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_ae48450dc06b40a75e14b7ca8cd9bd58f}{get\+Distances\+At\+Critical\+Times}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a24c2affc7d6210fbcf71546ecc0e59f9}{make}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a0da5d87ef364c68f80dab0a62afdf13d}{copy}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_ac4192c42433692813d9764d44b3a0a9e}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_aef7f544946b187531981f3189cf9eaf5}{get\+Class\+Name}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_ae9879b4e11230697e6ab75f731f9cf4e}{get\+Identifier}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_aabae2d5bef1dc8b8230168ab46174b82}{set\+Identifier}} (const std\+::string \&s)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a377870d0372d739996529f8f0c0993a1}{equals}} (\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$d) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a2e19c03628d0ffd6aee9dbc51c4672a8}\label{classlarcfm_1_1_c_d_poly_iter_a2e19c03628d0ffd6aee9dbc51c4672a8}} 
+std\+::string {\bfseries str\+Velocities} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&polyvel) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_aacfc78c0ef3963ee7d9eeae554a96742}\label{classlarcfm_1_1_c_d_poly_iter_aacfc78c0ef3963ee7d9eeae554a96742}} 
+static const std\+::pair$<$ double, double $>$ \& {\bfseries no\+Detection} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ab42e0784e2882f7fa0d0fb93fcd80a47}\label{classlarcfm_1_1_c_d_poly_iter_ab42e0784e2882f7fa0d0fb93fcd80a47}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries polygon\+\_\+2\+D\+\_\+at} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{Moving\+Polygon2D}} \&mp, double tr)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ada9b4f9598c5eedf93d0af2e03603d2b}\label{classlarcfm_1_1_c_d_poly_iter_ada9b4f9598c5eedf93d0af2e03603d2b}} 
+static bool {\bfseries within\+\_\+polygon\+\_\+altitude} (double minalt, double maxalt, double sz)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a17c6427b813e26342bb75ed6da261261}\label{classlarcfm_1_1_c_d_poly_iter_a17c6427b813e26342bb75ed6da261261}} 
+static bool {\bfseries no\+\_\+detection} (const std\+::pair$<$ double, double $>$ \&det)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ac3e5189e7f2112cf7b178416176acef1}\label{classlarcfm_1_1_c_d_poly_iter_ac3e5189e7f2112cf7b178416176acef1}} 
+std\+::vector$<$ double $>$ {\bfseries timesin}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a38e92e751297edf61425e4840c2aa683}\label{classlarcfm_1_1_c_d_poly_iter_a38e92e751297edf61425e4840c2aa683}} 
+std\+::vector$<$ double $>$ {\bfseries timesout}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a100916c702bc6e9fab3f7568d49f3062}\label{classlarcfm_1_1_c_d_poly_iter_a100916c702bc6e9fab3f7568d49f3062}} 
+std\+::vector$<$ double $>$ {\bfseries timestca}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a8fcccaeca698a5a45d6fca79123cbf7c}\label{classlarcfm_1_1_c_d_poly_iter_a8fcccaeca698a5a45d6fca79123cbf7c}} 
+std\+::vector$<$ double $>$ {\bfseries diststca}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a8da05b51b081d24f86656ac6a5edb9f2}\label{classlarcfm_1_1_c_d_poly_iter_a8da05b51b081d24f86656ac6a5edb9f2}} 
+std\+::string {\bfseries id}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a98fa2cbecc6c0206426b73ee7d1651b9}\label{classlarcfm_1_1_c_d_poly_iter_a98fa2cbecc6c0206426b73ee7d1651b9}} 
+double {\bfseries time\+Step}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a453006caba94466ba31da0d94c598c2d}\label{classlarcfm_1_1_c_d_poly_iter_a453006caba94466ba31da0d94c598c2d}} 
+bool {\bfseries containment}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Polygon detection. Based on UNVERIFIED PVS code. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a911c0648e35f6e46dae037c97f624560}\label{classlarcfm_1_1_c_d_poly_iter_a911c0648e35f6e46dae037c97f624560}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDPoly\+Iter\+::conflict (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&}]{si,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a3efd092872d461d4a9e42c3c9c110cd4}\label{classlarcfm_1_1_c_d_poly_iter_a3efd092872d461d4a9e42c3c9c110cd4}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!conflictDetection@{conflictDetection}}
+\index{conflictDetection@{conflictDetection}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{conflictDetection()}{conflictDetection()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDPoly\+Iter\+::conflict\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&}]{si,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a0da5d87ef364c68f80dab0a62afdf13d}\label{classlarcfm_1_1_c_d_poly_iter_a0da5d87ef364c68f80dab0a62afdf13d}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!copy@{copy}}
+\index{copy@{copy}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ larcfm\+::\+CDPoly\+Iter\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a377870d0372d739996529f8f0c0993a1}\label{classlarcfm_1_1_c_d_poly_iter_a377870d0372d739996529f8f0c0993a1}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!equals@{equals}}
+\index{equals@{equals}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDPoly\+Iter\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{o }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return true if two instances have identical parameters (including identifiers). Use address equality (\&x == \&y) to distinguish instances. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_adbaca7784b073c359e90eefc4faa7a1d}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_aef7f544946b187531981f3189cf9eaf5}\label{classlarcfm_1_1_c_d_poly_iter_aef7f544946b187531981f3189cf9eaf5}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getClassName@{getClassName}}
+\index{getClassName@{getClassName}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getClassName()}{getClassName()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDPoly\+Iter\+::get\+Class\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a45b732fdfcad06c0e02dab96b7d2d97d}\label{classlarcfm_1_1_c_d_poly_iter_a45b732fdfcad06c0e02dab96b7d2d97d}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getCriticalTimesOfConflict@{getCriticalTimesOfConflict}}
+\index{getCriticalTimesOfConflict@{getCriticalTimesOfConflict}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getCriticalTimesOfConflict()}{getCriticalTimesOfConflict()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter\+::get\+Critical\+Times\+Of\+Conflict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ae48450dc06b40a75e14b7ca8cd9bd58f}\label{classlarcfm_1_1_c_d_poly_iter_ae48450dc06b40a75e14b7ca8cd9bd58f}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getDistancesAtCriticalTimes@{getDistancesAtCriticalTimes}}
+\index{getDistancesAtCriticalTimes@{getDistancesAtCriticalTimes}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getDistancesAtCriticalTimes()}{getDistancesAtCriticalTimes()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter\+::get\+Distances\+At\+Critical\+Times (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ae9879b4e11230697e6ab75f731f9cf4e}\label{classlarcfm_1_1_c_d_poly_iter_ae9879b4e11230697e6ab75f731f9cf4e}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getIdentifier@{getIdentifier}}
+\index{getIdentifier@{getIdentifier}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getIdentifier()}{getIdentifier()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDPoly\+Iter\+::get\+Identifier (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a590875229c52f86302d87c4963ee6b7d}\label{classlarcfm_1_1_c_d_poly_iter_a590875229c52f86302d87c4963ee6b7d}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+CDPoly\+Iter\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a71fc40ce9d1a77b926842122722c363c}\label{classlarcfm_1_1_c_d_poly_iter_a71fc40ce9d1a77b926842122722c363c}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDPoly\+Iter\+::get\+Time\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_af513c804340b96e3a82ab20c3c832040}\label{classlarcfm_1_1_c_d_poly_iter_af513c804340b96e3a82ab20c3c832040}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+CDPoly\+Iter\+::get\+Time\+Out (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Time to exit from loss of separation in internal units.
+
+\begin{DoxyReturn}{Returns}
+the time to exit out loss of separation. If time\+Out is zero then there is no conflict. If time\+Out is negative then, time\+Out is infinite. Note that this is a relative time. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ac0a4b632ef19e7ca015494820d4e0957}\label{classlarcfm_1_1_c_d_poly_iter_ac0a4b632ef19e7ca015494820d4e0957}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getTimesIn@{getTimesIn}}
+\index{getTimesIn@{getTimesIn}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getTimesIn()}{getTimesIn()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter\+::get\+Times\+In (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_abccbb18810712b97e5a2f6b3070c74e8}\label{classlarcfm_1_1_c_d_poly_iter_abccbb18810712b97e5a2f6b3070c74e8}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!getTimesOut@{getTimesOut}}
+\index{getTimesOut@{getTimesOut}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{getTimesOut()}{getTimesOut()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ larcfm\+::\+CDPoly\+Iter\+::get\+Times\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a24c2affc7d6210fbcf71546ecc0e59f9}\label{classlarcfm_1_1_c_d_poly_iter_a24c2affc7d6210fbcf71546ecc0e59f9}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!make@{make}}
+\index{make@{make}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ larcfm\+::\+CDPoly\+Iter\+::make (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_aabae2d5bef1dc8b8230168ab46174b82}\label{classlarcfm_1_1_c_d_poly_iter_aabae2d5bef1dc8b8230168ab46174b82}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!setIdentifier@{setIdentifier}}
+\index{setIdentifier@{setIdentifier}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{setIdentifier()}{setIdentifier()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDPoly\+Iter\+::set\+Identifier (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a2744dd686da36adb887ccf49a29caa65}\label{classlarcfm_1_1_c_d_poly_iter_a2744dd686da36adb887ccf49a29caa65}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!setParameters@{setParameters}}
+\index{setParameters@{setParameters}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{setParameters()}{setParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDPoly\+Iter\+::set\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_ac4192c42433692813d9764d44b3a0a9e}\label{classlarcfm_1_1_c_d_poly_iter_ac4192c42433692813d9764d44b3a0a9e}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!toString@{toString}}
+\index{toString@{toString}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDPoly\+Iter\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_afa3c741f77992072d54c4740a6babef3}\label{classlarcfm_1_1_c_d_poly_iter_afa3c741f77992072d54c4740a6babef3}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDPoly\+Iter\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_poly_iter_a84de4c5528b4b5f64f0838dd523cf5af}\label{classlarcfm_1_1_c_d_poly_iter_a84de4c5528b4b5f64f0838dd523cf5af}} 
+\index{larcfm::CDPolyIter@{larcfm::CDPolyIter}!violation@{violation}}
+\index{violation@{violation}!larcfm::CDPolyIter@{larcfm::CDPolyIter}}
+\doxysubsubsection{\texorpdfstring{violation()}{violation()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDPoly\+Iter\+::violation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&}]{si }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{larcfm\+::\+Detection\+Polygon}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CDPoly\+Iter.\+h\item 
+Modules/\+ACCo\+RD/src/CDPoly\+Iter.\+cpp\end{DoxyCompactItemize}

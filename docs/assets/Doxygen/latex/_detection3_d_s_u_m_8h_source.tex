@@ -1,0 +1,39 @@
+\hypertarget{_detection3_d_s_u_m_8h_source}{}\doxysection{Detection3\+DSUM.\+h}
+\label{_detection3_d_s_u_m_8h_source}\index{Modules/ACCoRD/inc/Detection3DSUM.h@{Modules/ACCoRD/inc/Detection3DSUM.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Detection3DSUM.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ */}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef DETECTION3DSUM\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define DETECTION3DSUM\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}ConflictData.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}ParameterAcceptor.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_detection3_d_s_u_m}{Detection3DSUM}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \{}
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} violationSUMAt(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{28   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} conflictSUM(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{29   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} conflictDetectionSUM(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} s\_err, \textcolor{keywordtype}{double} sz\_err, \textcolor{keywordtype}{double} v\_err, \textcolor{keywordtype}{double} vz\_err) \textcolor{keyword}{const};}
+\DoxyCodeLine{30 \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DETECTION3DSUM\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

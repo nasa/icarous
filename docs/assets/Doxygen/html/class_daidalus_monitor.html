@@ -85,12 +85,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada54de72fbfbf2c45c5b5967e67fb6f7"><td class="memItemLeft" align="right" valign="top"><a id="ada54de72fbfbf2c45c5b5967e67fb6f7" name="ada54de72fbfbf2c45c5b5967e67fb6f7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DaidalusMonitor</b> (std::string <a class="el" href="structcallsign.html">callsign</a>, std::string daaConfig)</td></tr>
 <tr class="separator:ada54de72fbfbf2c45c5b5967e67fb6f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7aefbb58bffb8d2079efd65195b988a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_daidalus_monitor.html#aa7aefbb58bffb8d2079efd65195b988a">MonitorTraffic</a> (larcfm::Velocity windfrom)</td></tr>
+<tr class="memitem:aa7aefbb58bffb8d2079efd65195b988a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_daidalus_monitor.html#aa7aefbb58bffb8d2079efd65195b988a">MonitorTraffic</a> (<a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> windfrom)</td></tr>
 <tr class="separator:aa7aefbb58bffb8d2079efd65195b988a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a272b552d1d49c202460ae119877c5b11"><td class="memItemLeft" align="right" valign="top"><a id="a272b552d1d49c202460ae119877c5b11" name="a272b552d1d49c202460ae119877c5b11"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlerter</b> (<a class="el" href="structobject.html">object</a> &amp;intruder)</td></tr>
 <tr class="separator:a272b552d1d49c202460ae119877c5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a938478482292d7b9e5c0a9b26a3a83c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_daidalus_monitor.html#a938478482292d7b9e5c0a9b26a3a83c4">CheckPositionFeasibility</a> (const larcfm::Position pos, const double speed)</td></tr>
+<tr class="memitem:a938478482292d7b9e5c0a9b26a3a83c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_daidalus_monitor.html#a938478482292d7b9e5c0a9b26a3a83c4">CheckPositionFeasibility</a> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> pos, const double speed)</td></tr>
 <tr class="separator:a938478482292d7b9e5c0a9b26a3a83c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58e9beeeef3500e447c90e3416b7720f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_daidalus_monitor.html#a58e9beeeef3500e447c90e3416b7720f">UpdateParameters</a> (std::string daaParameters)</td></tr>
 <tr class="separator:a58e9beeeef3500e447c90e3416b7720f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,7 +109,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlerter</b>
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>InputIntruderData</b> (const <a class="el" href="structobject.html">object</a> obj)</td></tr>
 <tr class="separator:a53831ee5d71d8c58652c949e80b97c9e inherit pub_methods_class_traffic_monitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2fbed6e4be858f8acc498d75a27dae inherit pub_methods_class_traffic_monitor"><td class="memItemLeft" align="right" valign="top"><a id="a5c2fbed6e4be858f8acc498d75a27dae" name="a5c2fbed6e4be858f8acc498d75a27dae"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>InputOwnshipData</b> (const larcfm::Position pos, const larcfm::Velocity vel, double time, double sigPos[6], double sigVel[6])</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>InputOwnshipData</b> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> pos, const <a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> vel, double time, double sigPos[6], double sigVel[6])</td></tr>
 <tr class="separator:a5c2fbed6e4be858f8acc498d75a27dae inherit pub_methods_class_traffic_monitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
@@ -214,10 +214,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>staleThreshold</b><
 std::map&lt; std::string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficAlerts</b></td></tr>
 <tr class="separator:adad0c0b2447ba06e70c33dee8d8fca00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c4209963b11553136cace03e4717a17"><td class="memItemLeft" align="right" valign="top"><a id="a8c4209963b11553136cace03e4717a17" name="a8c4209963b11553136cace03e4717a17"></a>
-larcfm::Daidalus&#160;</td><td class="memItemRight" valign="bottom"><b>DAA1</b></td></tr>
+<a class="el" href="classlarcfm_1_1_daidalus.html">larcfm::Daidalus</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DAA1</b></td></tr>
 <tr class="separator:a8c4209963b11553136cace03e4717a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8bd6f3b02fd61beb2a0a898f133ce6c"><td class="memItemLeft" align="right" valign="top"><a id="ac8bd6f3b02fd61beb2a0a898f133ce6c" name="ac8bd6f3b02fd61beb2a0a898f133ce6c"></a>
-larcfm::Daidalus&#160;</td><td class="memItemRight" valign="bottom"><b>DAA2</b></td></tr>
+<a class="el" href="classlarcfm_1_1_daidalus.html">larcfm::Daidalus</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DAA2</b></td></tr>
 <tr class="separator:ac8bd6f3b02fd61beb2a0a898f133ce6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c92338ba79fc6982cc7ad884bd1adc4"><td class="memItemLeft" align="right" valign="top"><a id="a1c92338ba79fc6982cc7ad884bd1adc4" name="a1c92338ba79fc6982cc7ad884bd1adc4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>dataSource</b></td></tr>
@@ -251,10 +251,10 @@ Additional Inherited Members</h2></td></tr>
 std::map&lt; std::string, <a class="el" href="structobject.html">object</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficList</b></td></tr>
 <tr class="separator:ac44010824a9d1ee32be0b393de3716aa inherit pro_attribs_class_traffic_monitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad810fa3877be8784f238b6115bcdd11 inherit pro_attribs_class_traffic_monitor"><td class="memItemLeft" align="right" valign="top"><a id="aad810fa3877be8784f238b6115bcdd11" name="aad810fa3877be8784f238b6115bcdd11"></a>
-larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
 <tr class="separator:aad810fa3877be8784f238b6115bcdd11 inherit pro_attribs_class_traffic_monitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc18d8629d255edc26968e5f24469806 inherit pro_attribs_class_traffic_monitor"><td class="memItemLeft" align="right" valign="top"><a id="acc18d8629d255edc26968e5f24469806" name="acc18d8629d255edc26968e5f24469806"></a>
-larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
 <tr class="separator:acc18d8629d255edc26968e5f24469806 inherit pro_attribs_class_traffic_monitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c35567713cae90e23f779a61aaf46c inherit pro_attribs_class_traffic_monitor"><td class="memItemLeft" align="right" valign="top"><a id="a99c35567713cae90e23f779a61aaf46c" name="a99c35567713cae90e23f779a61aaf46c"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>elapsedTime</b></td></tr>
@@ -279,7 +279,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>velSigma</b> [6]</t
         <tr>
           <td class="memname">bool DaidalusMonitor::CheckPositionFeasibility </td>
           <td>(</td>
-          <td class="paramtype">const larcfm::Position&#160;</td>
+          <td class="paramtype">const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a>&#160;</td>
           <td class="paramname"><em>pos</em>, </td>
         </tr>
         <tr>
@@ -473,7 +473,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>velSigma</b> [6]</t
         <tr>
           <td class="memname">void DaidalusMonitor::MonitorTraffic </td>
           <td>(</td>
-          <td class="paramtype">larcfm::Velocity&#160;</td>
+          <td class="paramtype"><a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a>&#160;</td>
           <td class="paramname"><em>windfrom</em></td><td>)</td>
           <td></td>
         </tr>

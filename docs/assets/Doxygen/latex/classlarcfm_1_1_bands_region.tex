@@ -1,0 +1,82 @@
+\hypertarget{classlarcfm_1_1_bands_region}{}\doxysection{larcfm\+::Bands\+Region Class Reference}
+\label{classlarcfm_1_1_bands_region}\index{larcfm::BandsRegion@{larcfm::BandsRegion}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_ad382f780c416cb4d7e7eb51653e71d14}\label{classlarcfm_1_1_bands_region_ad382f780c416cb4d7e7eb51653e71d14}} 
+enum {\bfseries Region} \{ \newline
+{\bfseries UNKNOWN}
+, {\bfseries NONE}
+, {\bfseries FAR}
+, {\bfseries MID}
+, \newline
+{\bfseries NEAR}
+, {\bfseries RECOVERY}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a610e2561f375117982af62d3012fb32a}\label{classlarcfm_1_1_bands_region_a610e2561f375117982af62d3012fb32a}} 
+static bool {\bfseries is\+Valid\+Band} (Region region)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_abf2ba7f9f190d857decf65a9b050ff0a}\label{classlarcfm_1_1_bands_region_abf2ba7f9f190d857decf65a9b050ff0a}} 
+static bool {\bfseries is\+Resolution\+Band} (Region region)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_ada7d309bcf9fc6387f755f5d9908c2e8}\label{classlarcfm_1_1_bands_region_ada7d309bcf9fc6387f755f5d9908c2e8}} 
+static bool {\bfseries is\+Conflict\+Band} (Region region)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_adfe64a4fb8d8f628a95653bc46c99511}\label{classlarcfm_1_1_bands_region_adfe64a4fb8d8f628a95653bc46c99511}} 
+static Region {\bfseries value\+Of} (const std\+::string \&str)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a06d326dbde6f4fd524c9890783e6c3b0}\label{classlarcfm_1_1_bands_region_a06d326dbde6f4fd524c9890783e6c3b0}} 
+static std\+::string {\bfseries to\+\_\+string} (Region region)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_bands_region_a73b3fce0818865fd31faa7d87aa82bd0}{order\+Of\+Region}} (Region region)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_bands_region_a576211202598bbb7f8d9fdb3445e85ad}{order\+Of\+Conflict\+Region}} (Region region)
+\item 
+static Region \mbox{\hyperlink{classlarcfm_1_1_bands_region_a5528dd23380a0f1fda31ba16c61c3932}{region\+From\+Order}} (int i)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a9cc89552fa9eb70f0c3d15d5b6ef61ff}\label{classlarcfm_1_1_bands_region_a9cc89552fa9eb70f0c3d15d5b6ef61ff}} 
+static const int {\bfseries NUMBER\+\_\+\+OF\+\_\+\+CONFLICT\+\_\+\+BANDS} = 3
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a576211202598bbb7f8d9fdb3445e85ad}\label{classlarcfm_1_1_bands_region_a576211202598bbb7f8d9fdb3445e85ad}} 
+\index{larcfm::BandsRegion@{larcfm::BandsRegion}!orderOfConflictRegion@{orderOfConflictRegion}}
+\index{orderOfConflictRegion@{orderOfConflictRegion}!larcfm::BandsRegion@{larcfm::BandsRegion}}
+\doxysubsubsection{\texorpdfstring{orderOfConflictRegion()}{orderOfConflictRegion()}}
+{\footnotesize\ttfamily int larcfm\+::\+Bands\+Region\+::order\+Of\+Conflict\+Region (\begin{DoxyParamCaption}\item[{Region}]{region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+NONE/\+RECOVERY\+: 0, FAR\+: 1, MID\+: 2, NEAR\+: 3, UNKNOWN\+: -\/1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a73b3fce0818865fd31faa7d87aa82bd0}\label{classlarcfm_1_1_bands_region_a73b3fce0818865fd31faa7d87aa82bd0}} 
+\index{larcfm::BandsRegion@{larcfm::BandsRegion}!orderOfRegion@{orderOfRegion}}
+\index{orderOfRegion@{orderOfRegion}!larcfm::BandsRegion@{larcfm::BandsRegion}}
+\doxysubsubsection{\texorpdfstring{orderOfRegion()}{orderOfRegion()}}
+{\footnotesize\ttfamily int larcfm\+::\+Bands\+Region\+::order\+Of\+Region (\begin{DoxyParamCaption}\item[{Region}]{region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+NONE\+: 0, FAR\+: 1, MID\+: 2, NEAR\+: 3, RECOVERY\+: 4, UNKNOWN\+: -\/1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bands_region_a5528dd23380a0f1fda31ba16c61c3932}\label{classlarcfm_1_1_bands_region_a5528dd23380a0f1fda31ba16c61c3932}} 
+\index{larcfm::BandsRegion@{larcfm::BandsRegion}!regionFromOrder@{regionFromOrder}}
+\index{regionFromOrder@{regionFromOrder}!larcfm::BandsRegion@{larcfm::BandsRegion}}
+\doxysubsubsection{\texorpdfstring{regionFromOrder()}{regionFromOrder()}}
+{\footnotesize\ttfamily Bands\+Region\+::\+Region larcfm\+::\+Bands\+Region\+::region\+From\+Order (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\begin{DoxyReturn}{Returns}
+0\+: NONE, 1\+: FAR, 2\+: MID, 3\+: NEAR, 4\+: RECOVERY, otherwise\+: UNKNOWN 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bands\+Region.\+h\item 
+Modules/\+ACCo\+RD/src/Bands\+Region.\+cpp\end{DoxyCompactItemize}

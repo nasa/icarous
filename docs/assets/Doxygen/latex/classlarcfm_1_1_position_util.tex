@@ -1,0 +1,71 @@
+\hypertarget{classlarcfm_1_1_position_util}{}\doxysection{larcfm\+::Position\+Util Class Reference}
+\label{classlarcfm_1_1_position_util}\index{larcfm::PositionUtil@{larcfm::PositionUtil}}
+
+
+{\ttfamily \#include $<$Position\+Util.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a48d5c28e3a7d00fbd32b25d2f43a4ab7}\label{classlarcfm_1_1_position_util_a48d5c28e3a7d00fbd32b25d2f43a4ab7}} 
+static bool {\bfseries collinear} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p0, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a814a2f94035ee816f4e1ee5303bae8a1}\label{classlarcfm_1_1_position_util_a814a2f94035ee816f4e1ee5303bae8a1}} 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries interpolate} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&v1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&v2, double f)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_position_util_ad4b661d253c4e8ac8053dd0203e64157}{angle\+\_\+between}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p3)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a93f8f76a07274867d6f296b377fd838b}\label{classlarcfm_1_1_position_util_a93f8f76a07274867d6f296b377fd838b}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ {\bfseries intersection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_ae4adac75cf4ec582c8d0f19414ed8389}\label{classlarcfm_1_1_position_util_ae4adac75cf4ec582c8d0f19414ed8389}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}, double $>$ {\bfseries intersection} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so2, double dto, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_ae80ab75bde197de18c256e71322eb981}\label{classlarcfm_1_1_position_util_ae80ab75bde197de18c256e71322eb981}} 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries closest\+Point} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&x)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_ad6d11e4da7e4f1bcc72d5c14b48ea40d}\label{classlarcfm_1_1_position_util_ad6d11e4da7e4f1bcc72d5c14b48ea40d}} 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries closest\+Point\+On\+Segment} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&x)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a13329829aa4575d197199f0b028bc314}\label{classlarcfm_1_1_position_util_a13329829aa4575d197199f0b028bc314}} 
+static \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries behind} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&a, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&x)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a6a06b40c57bba837d7a1bc6dda474a62}\label{classlarcfm_1_1_position_util_a6a06b40c57bba837d7a1bc6dda474a62}} 
+static bool {\bfseries behind} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a729c01f8a776772b407199e64d28e8b0}\label{classlarcfm_1_1_position_util_a729c01f8a776772b407199e64d28e8b0}} 
+static int {\bfseries passing\+Direction} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_a2510627241dec6e061be333832a64546}\label{classlarcfm_1_1_position_util_a2510627241dec6e061be333832a64546}} 
+static int {\bfseries dir\+For\+Behind} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&si, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vi)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_great_circle}{Great\+Circle}} and \mbox{\hyperlink{classlarcfm_1_1_vect_funs}{Vect\+Funs}} functions lifted to Positions 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_position_util_ad4b661d253c4e8ac8053dd0203e64157}\label{classlarcfm_1_1_position_util_ad4b661d253c4e8ac8053dd0203e64157}} 
+\index{larcfm::PositionUtil@{larcfm::PositionUtil}!angle\_between@{angle\_between}}
+\index{angle\_between@{angle\_between}!larcfm::PositionUtil@{larcfm::PositionUtil}}
+\doxysubsubsection{\texorpdfstring{angle\_between()}{angle\_between()}}
+{\footnotesize\ttfamily double larcfm\+::\+Position\+Util\+::angle\+\_\+between (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p2,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return angle between P1-\/\+P2 and P2-\/\+P3 
+\begin{DoxyParams}{Parameters}
+{\em p1} & point 1 \\
+\hline
+{\em p2} & point 2 (intersection of two lines) \\
+\hline
+{\em p3} & point 3 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle between two lines 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Position\+Util.\+h\item 
+Modules/\+ACCo\+RD/src/Position\+Util.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,133 @@
+\hypertarget{classlarcfm_1_1_generic_intent_bands}{}\doxysection{larcfm\+::Generic\+Intent\+Bands Class Reference}
+\label{classlarcfm_1_1_generic_intent_bands}\index{larcfm::GenericIntentBands@{larcfm::GenericIntentBands}}
+
+
+{\ttfamily \#include $<$Generic\+Intent\+Bands.\+h$>$}
+
+Inheritance diagram for larcfm\+::Generic\+Intent\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_generic_intent_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a2ac1eb7d7eb56427dfb193aba506c6a3}{set\+Ownship}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double time, const std\+::string \&tunit)=0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a156ae51492e305555604ba2706b58a50}{set\+Ownship\+LL}} (double lat, double lon, const std\+::string \&hunit, double alt, const std\+::string \&vunit, double trk, const std\+::string \&trkunit, double gs, const std\+::string \&gsunit, double vs, const std\+::string \&vsunit, double time, const std\+::string \&tunit)=0
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a14f1821e107c837ba168c76f45944fe8}{set\+Ownship\+XYZ}} (double sx, double sy, const std\+::string \&hpunit, double sz, const std\+::string \&vpunit, double vx, double vy, const std\+::string \&hvunit, double vz, const std\+::string \&vvunit, double time, const std\+::string \&tunit)=0
+\item 
+virtual bool \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a2f50172efa4bef21d468e8b399f09b6e}{add\+Traffic}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}})=0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This provides an interface to classes for various conflict prevention bands. The input to these objects is the position and velocity of the ownship, the output is ranges of guidance maneuvers\+: track angles, ground speeds, and vertical speeds. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_generic_intent_bands_a2f50172efa4bef21d468e8b399f09b6e}\label{classlarcfm_1_1_generic_intent_bands_a2f50172efa4bef21d468e8b399f09b6e}} 
+\index{larcfm::GenericIntentBands@{larcfm::GenericIntentBands}!addTraffic@{addTraffic}}
+\index{addTraffic@{addTraffic}!larcfm::GenericIntentBands@{larcfm::GenericIntentBands}}
+\doxysubsubsection{\texorpdfstring{addTraffic()}{addTraffic()}}
+{\footnotesize\ttfamily virtual bool larcfm\+::\+Generic\+Intent\+Bands\+::add\+Traffic (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Add a traffic aircraft to this set of the conflict prevention bands. Whether the position are specified in Latitude/longitude or cartesian and the velocities are specified in track, ground speed, or cartesian depends on the set\+Lat\+Lon() and set\+Track\+Velocity() methods. No traffic aircraft can be added until the ownship is set (see \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a2ac1eb7d7eb56427dfb193aba506c6a3}{set\+Ownship()}}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & intent plan for traffic. This may be either in nmi or latlong. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if no ownship has been set or there is a latlon mismatch 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_intent_bands_aeb601f49dec6fae454e7ca3bec0189c0}{larcfm\+::\+Intent\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_intent_bands_a2ac1eb7d7eb56427dfb193aba506c6a3}\label{classlarcfm_1_1_generic_intent_bands_a2ac1eb7d7eb56427dfb193aba506c6a3}} 
+\index{larcfm::GenericIntentBands@{larcfm::GenericIntentBands}!setOwnship@{setOwnship}}
+\index{setOwnship@{setOwnship}!larcfm::GenericIntentBands@{larcfm::GenericIntentBands}}
+\doxysubsubsection{\texorpdfstring{setOwnship()}{setOwnship()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Intent\+Bands\+::set\+Ownship (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{time,  }\item[{const std\+::string \&}]{tunit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Specify the ownship\textquotesingle{}s position and velocity. Once the ownship is set, any existing \textquotesingle{}band\textquotesingle{} information is cleared. This also sets the coordinate frame for this object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & ownship position \\
+\hline
+{\em v} & ownship velocity \\
+\hline
+{\em time} & current time \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a7e13731c3af1e266a983bb8bd0888d6e}{larcfm\+::\+Intent\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_intent_bands_a156ae51492e305555604ba2706b58a50}\label{classlarcfm_1_1_generic_intent_bands_a156ae51492e305555604ba2706b58a50}} 
+\index{larcfm::GenericIntentBands@{larcfm::GenericIntentBands}!setOwnshipLL@{setOwnshipLL}}
+\index{setOwnshipLL@{setOwnshipLL}!larcfm::GenericIntentBands@{larcfm::GenericIntentBands}}
+\doxysubsubsection{\texorpdfstring{setOwnshipLL()}{setOwnshipLL()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Intent\+Bands\+::set\+Ownship\+LL (\begin{DoxyParamCaption}\item[{double}]{lat,  }\item[{double}]{lon,  }\item[{const std\+::string \&}]{hunit,  }\item[{double}]{alt,  }\item[{const std\+::string \&}]{vunit,  }\item[{double}]{trk,  }\item[{const std\+::string \&}]{trkunit,  }\item[{double}]{gs,  }\item[{const std\+::string \&}]{gsunit,  }\item[{double}]{vs,  }\item[{const std\+::string \&}]{vsunit,  }\item[{double}]{time,  }\item[{const std\+::string \&}]{tunit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Specify the ownship\textquotesingle{}s position and velocity. Once the ownship is set, any existing \textquotesingle{}band\textquotesingle{} information is cleared. This also sets the bands object to the lat/lon coordinate frame.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat} & north latitude \mbox{[}deg\mbox{]} of ownship \\
+\hline
+{\em lon} & east longitude \mbox{[}deg\mbox{]} of ownship \\
+\hline
+{\em alt} & altitude \mbox{[}feet\mbox{]} of ownship \\
+\hline
+{\em trk} & track angle \mbox{[}degrees clockwise from true north\mbox{]} of ownship \\
+\hline
+{\em gs} & ground speed \mbox{[}knot\mbox{]} of ownship \\
+\hline
+{\em vs} & vertical speed \mbox{[}feet/min\mbox{]} of ownship \\
+\hline
+{\em time} & current time \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a20199cf9930fc384f73680df6f20c676}{larcfm\+::\+Intent\+Bands}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_generic_intent_bands_a14f1821e107c837ba168c76f45944fe8}\label{classlarcfm_1_1_generic_intent_bands_a14f1821e107c837ba168c76f45944fe8}} 
+\index{larcfm::GenericIntentBands@{larcfm::GenericIntentBands}!setOwnshipXYZ@{setOwnshipXYZ}}
+\index{setOwnshipXYZ@{setOwnshipXYZ}!larcfm::GenericIntentBands@{larcfm::GenericIntentBands}}
+\doxysubsubsection{\texorpdfstring{setOwnshipXYZ()}{setOwnshipXYZ()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Generic\+Intent\+Bands\+::set\+Ownship\+XYZ (\begin{DoxyParamCaption}\item[{double}]{sx,  }\item[{double}]{sy,  }\item[{const std\+::string \&}]{hpunit,  }\item[{double}]{sz,  }\item[{const std\+::string \&}]{vpunit,  }\item[{double}]{vx,  }\item[{double}]{vy,  }\item[{const std\+::string \&}]{hvunit,  }\item[{double}]{vz,  }\item[{const std\+::string \&}]{vvunit,  }\item[{double}]{time,  }\item[{const std\+::string \&}]{tunit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Specify the ownship\textquotesingle{}s position and velocity. Once the ownship is set, any existing \textquotesingle{}band\textquotesingle{} information is cleared. This also sets the bands object to the Euclidean coordinate frame.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sx} & x position \mbox{[}nmi\mbox{]} of ownship \\
+\hline
+{\em sy} & y position \mbox{[}nmi\mbox{]} of ownship \\
+\hline
+{\em sz} & z position \mbox{[}feet\mbox{]} of ownship \\
+\hline
+{\em vx} & x speed component \mbox{[}knot\mbox{]} of ownship \\
+\hline
+{\em vy} & y speed component \mbox{[}knot\mbox{]} of ownship \\
+\hline
+{\em vz} & z speed component \mbox{[}feet/min\mbox{]} of ownship \\
+\hline
+{\em time} & current time \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_intent_bands_a17d4d5a6a5a213130b470a312c6b52c2}{larcfm\+::\+Intent\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Generic\+Intent\+Bands.\+h\end{DoxyCompactItemize}

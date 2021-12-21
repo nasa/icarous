@@ -1,0 +1,216 @@
+\hypertarget{_daidalus_core_8h_source}{}\doxysection{Daidalus\+Core.\+h}
+\label{_daidalus_core_8h_source}\index{Modules/ACCoRD/inc/DaidalusCore.h@{Modules/ACCoRD/inc/DaidalusCore.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DAIDALUSBANDSCORE\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DAIDALUSBANDSCORE\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}CriteriaCore.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}UrgencyStrategy.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}IndexLevelT.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}TCASTable.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Alerter.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Constants.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}NoneUrgencyStrategy.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}DaidalusParameters.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}HysteresisData.h"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}} \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \textcolor{comment}{/* Absolute ownship state */}}
+\DoxyCodeLine{33   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} ownship;}
+\DoxyCodeLine{34   \textcolor{comment}{/* Absolute list of traffic states */}}
+\DoxyCodeLine{35   std::vector<TrafficState> traffic;}
+\DoxyCodeLine{36   \textcolor{comment}{/* Kinematic bands parameters */}}
+\DoxyCodeLine{37   \textcolor{comment}{/* Current time */}}
+\DoxyCodeLine{38   \textcolor{keywordtype}{double} current\_time;}
+\DoxyCodeLine{39   \textcolor{comment}{/* Wind vector in TO direction */}}
+\DoxyCodeLine{40   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} wind\_vector;}
+\DoxyCodeLine{41   \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}} parameters;}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{comment}{/* Strategy for most urgent aircraft */}}
+\DoxyCodeLine{44   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* get\_urgency\_strategy() \textcolor{keyword}{const};}
+\DoxyCodeLine{45   \textcolor{keywordtype}{bool} set\_urgency\_strategy(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* strat);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{private}:}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{comment}{/* Strategy for most urgent aircraft */}}
+\DoxyCodeLine{50   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* urgency\_strategy\_;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{comment}{  /**** CACHED VARIABLES ****/}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54   \textcolor{comment}{/* Variable to control re-\/computation of cached values */}}
+\DoxyCodeLine{55   \textcolor{keywordtype}{int} cache\_; \textcolor{comment}{// -\/1: outdated, 1:updated, 0: updated only most\_urgent\_ac and eps values}}
+\DoxyCodeLine{56   \textcolor{comment}{/* Most urgent aircraft */}}
+\DoxyCodeLine{57   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} most\_urgent\_ac\_;}
+\DoxyCodeLine{58   \textcolor{comment}{/* Cached horizontal epsilon for implicit coordination */}}
+\DoxyCodeLine{59   \textcolor{keywordtype}{int} epsh\_;}
+\DoxyCodeLine{60   \textcolor{comment}{/* Cached vertical epsilon for implicit coordination */}}
+\DoxyCodeLine{61   \textcolor{keywordtype}{int} epsv\_;}
+\DoxyCodeLine{62   \textcolor{comment}{/* Cached value of DTA status given current aircraft states.}}
+\DoxyCodeLine{63 \textcolor{comment}{   *  0 : Not in DTA}}
+\DoxyCodeLine{64 \textcolor{comment}{   * -\/1 : In DTA, but special bands are not enabled yet}}
+\DoxyCodeLine{65 \textcolor{comment}{   *  1 : In DTA and special bands are enabled}}
+\DoxyCodeLine{66 \textcolor{comment}{   */}}
+\DoxyCodeLine{67   \textcolor{keywordtype}{int} dta\_status\_;}
+\DoxyCodeLine{68   \textcolor{comment}{/* Cached lists of aircraft indices, alert\_levels, and lookahead times sorted by indices, contributing to conflict (non-\/peripheral)}}
+\DoxyCodeLine{69 \textcolor{comment}{   * band listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR */}}
+\DoxyCodeLine{70   std::vector<std::vector<IndexLevelT> > acs\_conflict\_bands\_;}
+\DoxyCodeLine{71   \textcolor{comment}{/* Cached list of time to violation per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR */}}
+\DoxyCodeLine{72   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} tiov\_[BandsRegion::NUMBER\_OF\_CONFLICT\_BANDS];}
+\DoxyCodeLine{73   \textcolor{comment}{/* Cached list of bool alues indicating which bands should be computed, where 0th:NEAR, 1th:MID, 2th:FAR.}}
+\DoxyCodeLine{74 \textcolor{comment}{   * NaN means that bands are not computed for that region*/}}
+\DoxyCodeLine{75   \textcolor{keywordtype}{bool} bands4region\_[BandsRegion::NUMBER\_OF\_CONFLICT\_BANDS];}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{comment}{  /**** HYSTERESIS VARIABLES ****/}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79   \textcolor{comment}{// Alerting and DTA hysteresis per aircraft's ids}}
+\DoxyCodeLine{80   std::map<std::string,HysteresisData> alerting\_hysteresis\_acs\_;}
+\DoxyCodeLine{81   std::map<std::string,HysteresisData> dta\_hysteresis\_acs\_;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{keywordtype}{void} copyFrom(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{84   \textcolor{keywordtype}{void} refresh\_mua\_eps();}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keyword}{public}:}
+\DoxyCodeLine{87   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}();}
+\DoxyCodeLine{88   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{\string~DaidalusCore}}() \{\};}
+\DoxyCodeLine{89   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& core);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& alerter);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{100   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a4e23db85255cc7b8574b824b6133494c}{clear}}();}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{105   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_af27f7ddaef3950143f12a70df195e229}{clear\_wind}}();}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   \textcolor{keywordtype}{bool} set\_alerter\_ownship(\textcolor{keywordtype}{int} alerter\_idx);}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109   \textcolor{keywordtype}{bool} set\_alerter\_traffic(\textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{int} alerter\_idx);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{114   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a09d1310b1edfe8241a21e46e3ab11b1f}{clear\_hysteresis}}();}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{119   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a361648c37ce97a448a4c88a371b28f35}{stale}}();}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{124   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a1adcef8309d1b46af85b1ca038dfa3b7}{isFresh}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{129   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a75fa2ba9e607c11ccce1d20473f5462c}{refresh}}();}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{137   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a690eb24b454741d92ee907a202606675}{DTAStatus}}();}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{142   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a831a776b40f07c977288d5aa2e263130}{mostUrgentAircraft}}();}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{148   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}{epsilonH}}();}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}{epsilonV}}() ;}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{159   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}{epsilonH}}(\textcolor{keywordtype}{bool} recovery\_case, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{164   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}{epsilonV}}(\textcolor{keywordtype}{bool} recovery\_case, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{169   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a522b4d07c06955d1984008e60600852c}{bands\_for}}(\textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{174   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_aeb86b90ae45ac49b7b8f92c03484bf8e}{minHorizontalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{179   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a56b56dbe05c4d6f5fd7bc6d7a123cc70}{minVerticalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   \textcolor{keywordtype}{void} set\_ownship\_state(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183   \textcolor{comment}{// Return 0-\/based index in traffic list (-\/1 if aircraft doesn't exist)}}
+\DoxyCodeLine{184   \textcolor{keywordtype}{int} find\_traffic\_state(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}) \textcolor{keyword}{const};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186   \textcolor{comment}{// Return 0-\/based index in traffic list where aircraft was added. Return -\/1 if}}
+\DoxyCodeLine{187   \textcolor{comment}{// nothing is done (e.g., id is the same as ownship's)}}
+\DoxyCodeLine{188   \textcolor{keywordtype}{int} set\_traffic\_state(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190   \textcolor{keywordtype}{void} reset\_ownship(\textcolor{keywordtype}{int} idx);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192   \textcolor{comment}{// idx is 0-\/based index in traffic list}}
+\DoxyCodeLine{193   \textcolor{keywordtype}{bool} remove\_traffic(\textcolor{keywordtype}{int} idx);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195   \textcolor{keywordtype}{void} set\_wind\_velocity(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& wind);}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197   \textcolor{keywordtype}{bool} linear\_projection(\textcolor{keywordtype}{double} offset);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199   \textcolor{keywordtype}{bool} has\_ownship() \textcolor{keyword}{const};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{keywordtype}{bool} has\_traffic() \textcolor{keyword}{const};}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203   \textcolor{comment}{/* idx is a 0-\/based index in the list of traffic aircraft}}
+\DoxyCodeLine{204 \textcolor{comment}{   * returns 1 if detector of traffic aircraft}}
+\DoxyCodeLine{205 \textcolor{comment}{   * returns 2 if corrective alerter level is not set}}
+\DoxyCodeLine{206 \textcolor{comment}{   * returns 3 if alerter of traffic aircraft is out of bands}}
+\DoxyCodeLine{207 \textcolor{comment}{   * otherwise, if there are no errors, returns 0 and the answer is in blobs}}
+\DoxyCodeLine{208 \textcolor{comment}{   */}}
+\DoxyCodeLine{209   \textcolor{keywordtype}{int} horizontal\_contours(std::vector<std::vector<Position> >\& blobs, \textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\_level}});}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211   \textcolor{comment}{/* idx is a 0-\/based index in the list of traffic aircraft}}
+\DoxyCodeLine{212 \textcolor{comment}{   * returns 1 if detector of traffic aircraft}}
+\DoxyCodeLine{213 \textcolor{comment}{   * returns 2 if corrective alerter level is not set}}
+\DoxyCodeLine{214 \textcolor{comment}{   * returns 3 if alerter of traffic aircraft is out of bands}}
+\DoxyCodeLine{215 \textcolor{comment}{   * otherwise, if there are no errors, returns 0 and the answer is in blobs}}
+\DoxyCodeLine{216 \textcolor{comment}{   */}}
+\DoxyCodeLine{217   \textcolor{keywordtype}{int} horizontal\_hazard\_zone(std::vector<Position>\& haz, \textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\_level}},}
+\DoxyCodeLine{218       \textcolor{keywordtype}{bool} loss, \textcolor{keywordtype}{bool} from\_ownship);}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{237   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\_level}}(\textcolor{keywordtype}{int} idx, \textcolor{keywordtype}{int} turning, \textcolor{keywordtype}{int} accelerating, \textcolor{keywordtype}{int} climbing);}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{keyword}{private}:}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241   \textcolor{keywordtype}{int} dta\_hysteresis\_current\_value(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243   \textcolor{keywordtype}{int} alerting\_hysteresis\_current\_value(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{int} turning, \textcolor{keywordtype}{int} accelerating, \textcolor{keywordtype}{int} climbing);}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245   \textcolor{keywordtype}{bool} greater\_than\_corrective() \textcolor{keyword}{const};}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247   \textcolor{keywordtype}{int} raw\_alert\_level(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& alerter, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{int} turning, \textcolor{keywordtype}{int} accelerating, \textcolor{keywordtype}{int} climbing);}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{252   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a759b3bbd45b93a297a498ad3f7406349}{check\_alerting\_thresholds}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& alerter, \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\_level}}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{int} turning, \textcolor{keywordtype}{int} accelerating, \textcolor{keywordtype}{int} climbing);}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{260   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a4fc4a7e130ca428155a5d9ae4ad92e50}{conflict\_aircraft}}(\textcolor{keywordtype}{int} conflict\_region);}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \textcolor{keyword}{public}:}
+\DoxyCodeLine{269   \textcolor{keyword}{const} std::vector<IndexLevelT>\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a9ec679045c479da3d72b3849e2fc745c}{acs\_conflict\_bands}}(\textcolor{keywordtype}{int} conflict\_region);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{276   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a19de4fff9ab586d751d62173527312a2}{tiov}}(\textcolor{keywordtype}{int} conflict\_region);}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{286   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a46ccc9f76e75e54afb7b578de21985ea}{alerter\_index\_of}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder);}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}{epsilonH}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}{epsilonV}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} criteria\_ac();}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} recovery\_ac();}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296   std::string outputStringAircraftStates(\textcolor{keywordtype}{bool} \textcolor{keyword}{internal}) \textcolor{keyword}{const};}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298   std::string rawString() \textcolor{keyword}{const};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{301 \};}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 \}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

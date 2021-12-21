@@ -1,0 +1,208 @@
+\hypertarget{_parameter_data_8h_source}{}\doxysection{Parameter\+Data.\+h}
+\label{_parameter_data_8h_source}\index{Modules/ACCoRD/inc/ParameterData.h@{Modules/ACCoRD/inc/ParameterData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2014-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef PARAMETERDATA\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define PARAMETERDATA\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterEntry.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Function.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{struct }\mbox{\hyperlink{structlarcfm_1_1string_case_insensitive}{stringCaseInsensitive}} \{}
+\DoxyCodeLine{31     \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} std::string\& lhs, \textcolor{keyword}{const} std::string\& rhs)\textcolor{keyword}{ const}}
+\DoxyCodeLine{32 \textcolor{keyword}{    }\{\textcolor{keywordflow}{return} \mbox{\hyperlink{namespacelarcfm_ac78ef11018896115742dbd9b13358461}{toLowerCase}}(lhs)<\mbox{\hyperlink{namespacelarcfm_ac78ef11018896115742dbd9b13358461}{toLowerCase}}(rhs);\}}
+\DoxyCodeLine{33 \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{44 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \{}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{47     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string parenPattern;}
+\DoxyCodeLine{48     \textcolor{keyword}{static} \textcolor{keyword}{const} std::string defaultEntrySeparator;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}();}
+\DoxyCodeLine{53     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a44bcb2bdd0762f994740082c53197bef}{make}}();}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{59     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a3bfc08fe0dbe9a3fdb4da22911cf8b8d}{isPreserveUnits}}();}
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a7afa0b9907dc881c00ed29d49cd32fbf}{setPreserveUnits}}(\textcolor{keywordtype}{bool} v);}
+\DoxyCodeLine{75     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a00fe626af647d688e75c6f68d154de24}{isUnitCompatibility}}();}
+\DoxyCodeLine{84     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac39fc235232b5e8ca1fc4c37da97d318}{setUnitCompatibility}}(\textcolor{keywordtype}{bool} v);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{90     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a96f0725dd4a701f586675cd916ef4906}{size}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{95     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a62f997d0c0c3fa5670186461a96f32f2}{getKeyList}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{100     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a0bb7a126195879590ebc8765bfb819c8}{getKeyListEntryOrder}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{108     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1fb2afde922da1a06494d2831ebc4023}{getKeyListWithFilter}}(\mbox{\hyperlink{classlarcfm_1_1_function}{Function<const std::string\&,bool>}}\& f) \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{113     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8e1ce0c3997e20b428589f3c3c66c045}{getListFull}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{117     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac8ec76c5343ff4f06f772d590201093b}{clear}}();}
+\DoxyCodeLine{124     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a210c431444099589a41d65ccb294b66c}{contains}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     std::vector<std::string> matchList(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{135     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a5104c06def2af1d2fec227994222c630}{copyWithPrefix}}(\textcolor{keyword}{const} std::string\& prefix) \textcolor{keyword}{const};}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{146     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a58b6658f9ddb9b183a89f82417bda698}{extractPrefix}}(\textcolor{keyword}{const} std::string\& prefix) \textcolor{keyword}{const};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{154     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ad360e2eff246c16e371ec89feb5c4563}{removeKeysWithPrefix}}(\textcolor{keyword}{const} std::string\& prefix) \textcolor{keyword}{const};}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{164     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa90f7dad213117bf362596aa2fb62dbe}{getString}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{174     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a56c6abaf3cd1946d8a265190b85cb31a}{getValue}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{186     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a56c6abaf3cd1946d8a265190b85cb31a}{getValue}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::string\& defaultUnit) \textcolor{keyword}{const};}
+\DoxyCodeLine{195     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1aebd202bf4146c9977395d2681cc96e}{getUnit}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{204     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ae3a619ab161ebc652b4b8336025bca93}{getBool}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{217     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac6cc873b26507d8d22d4d1709be671b6}{getInt}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{230     \textcolor{keywordtype}{long} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aee2cd18c27bb63fc926ec1b3f4cada5c}{getLong}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{249     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{256     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::string\& value);}
+\DoxyCodeLine{257     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{char}* value);}
+\DoxyCodeLine{282     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* value);}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{291     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a14b43112db9b8b221eb282b55a7aab62}{setBool}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{bool} value);}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{299     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a069a1a16d8bfa5ac40aeb350db1e65c4}{setTrue}}(\textcolor{keyword}{const} std::string\& key);}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{307     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ac564ad960ce308be10d33a5962b5fea4}{setFalse}}(\textcolor{keyword}{const} std::string\& key);}
+\DoxyCodeLine{308 }
+\DoxyCodeLine{317     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ae51fb871e461de38bff72d6f7384d7bd}{setInt}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{int} value);}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{331     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} value, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{342     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ab6161ff5688a20a1490aa66ac6371eb8}{setInternal}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} value, \textcolor{keyword}{const} std::string\& units);}
+\DoxyCodeLine{343 }
+\DoxyCodeLine{354     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ab6161ff5688a20a1490aa66ac6371eb8}{setInternal}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} value, \textcolor{keyword}{const} std::string\& units, \textcolor{keywordtype}{int} prec);}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{365     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a76752943162f420b049831f6dfdc2bb6}{updateUnit}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::string\& unit); }
+\DoxyCodeLine{366 }
+\DoxyCodeLine{374     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa170ce27805581613f13c333eac7feb0}{updateComment}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::string\& msg);}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376 }
+\DoxyCodeLine{382     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a27256865ea4c68c5efb7b3cc076f2eb7}{getComment}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384 }
+\DoxyCodeLine{395     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a628052a763d12736059562ff37c36017}{setPreserveUnit}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} value, \textcolor{keyword}{const} std::string\& units);}
+\DoxyCodeLine{396 }
+\DoxyCodeLine{407     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aafe8c8177bc6564bce1ccfbb634ab6b8}{setInternalPreserveUnit}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{double} value, \textcolor{keyword}{const} std::string\& units);}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409 }
+\DoxyCodeLine{410 }
+\DoxyCodeLine{415     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a78978b647d0efe14b06eac413f35efd1}{unrecognizedParameters}}(std::vector<std::string> c) \textcolor{keyword}{const};}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{421     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a1963dfe8aa4b0c234c61e7488d80663c}{validateParameters}}(std::vector<std::string> c);}
+\DoxyCodeLine{422 }
+\DoxyCodeLine{429     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a0c1fbebf82fccb07e1477fb13f3d1190}{listCopy}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p, \textcolor{keyword}{const} std::vector<std::string>\& plist, \textcolor{keywordtype}{bool} overwrite);}
+\DoxyCodeLine{430 }
+\DoxyCodeLine{437     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a17d7b5662f576b79ec2c2bccf26da902}{copy}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p, \textcolor{keywordtype}{bool} overwrite);}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{443     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_adb8b2c0b135424e0b3bec519027bf2d7}{remove}}(\textcolor{keyword}{const} std::string\& key);}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{448     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa96d40e22212c1eb82126b79ca4cec4f}{removeAll}}(\textcolor{keyword}{const} std::vector<std::string>\& key);}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{458     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a6ac1de26e7b958316c30658e250f9bb0}{toParameterList}}(\textcolor{keyword}{const} std::string\& separator) \textcolor{keyword}{const};}
+\DoxyCodeLine{459 }
+\DoxyCodeLine{466     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a5179126adb6e66271752aaf21d76c47a}{parseParameterList}}(\textcolor{keyword}{const} std::string\& separator, std::string line);}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{473     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8052d133749c986e11edf83a37545a62}{isBoolean}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{474 }
+\DoxyCodeLine{480     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a4850770972e45bcf400e6af0cedd3864}{isNumber}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{490     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_acaf73287236cf2fa43b8e5c5e27ee30f}{isString}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{491 }
+\DoxyCodeLine{498     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aff40fe579b1896791a728fc5070283c1}{listToString}}(\textcolor{keyword}{const} std::vector<std::string>\& keys) \textcolor{keyword}{const};}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{507     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aff40fe579b1896791a728fc5070283c1}{listToString}}(\textcolor{keyword}{const} std::vector<std::string>\& keys, \textcolor{keyword}{const} std::string\& separator) \textcolor{keyword}{const};}
+\DoxyCodeLine{508 }
+\DoxyCodeLine{512     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a675298c3872f44a360dba16d63f6cd16}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{519     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a675298c3872f44a360dba16d63f6cd16}{toString}}(\textcolor{keyword}{const} std::string\& separator) \textcolor{keyword}{const};}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{521     \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pd) \textcolor{keyword}{const};}
+\DoxyCodeLine{522 }
+\DoxyCodeLine{529     std::string \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a66bba0c432df9b161c1b5ba0839b9586}{diffString}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pd) \textcolor{keyword}{const};}
+\DoxyCodeLine{530 }
+\DoxyCodeLine{538     \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_ad0c9c2769e7a5cdab714462bb1a706c0}{delta}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& base) \textcolor{keyword}{const};}
+\DoxyCodeLine{539 }
+\DoxyCodeLine{540 }
+\DoxyCodeLine{541     std::vector<int> getListInteger(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{542     std::vector<double> getListDouble(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{543     std::vector<std::string> getListString(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{544     std::vector<bool> getListBool(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::vector<int>\& list);}
+\DoxyCodeLine{547     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::vector<double>\& list);}
+\DoxyCodeLine{548     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_af7da8c005e05599e01a54ecd681416e5}{set}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::vector<std::string>\& list);}
+\DoxyCodeLine{549     \textcolor{keywordtype}{bool} setListBool(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::vector<bool>\& list);}
+\DoxyCodeLine{550 }
+\DoxyCodeLine{551 \textcolor{keyword}{private}:}
+\DoxyCodeLine{552     \textcolor{keywordtype}{int} longestKey() \textcolor{keyword}{const};}
+\DoxyCodeLine{553     \textcolor{keywordtype}{int} longestVal() \textcolor{keyword}{const};}
+\DoxyCodeLine{554 }
+\DoxyCodeLine{561     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a6ac3ff65250137387729b700028fc836}{parse\_parameter\_string}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{562 }
+\DoxyCodeLine{569     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8ef86ca2396432c49cd07dafe66a7658}{putParam}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keyword}{const} std::pair<bool, ParameterEntry>\& entry);}
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_parameter_data_a8ef86ca2396432c49cd07dafe66a7658}{putParam}}(\textcolor{keyword}{const} std::string\& key, \textcolor{keywordtype}{bool} perform\_conversion, \mbox{\hyperlink{classlarcfm_1_1_parameter_entry}{ParameterEntry}}\& entry);}
+\DoxyCodeLine{572 }
+\DoxyCodeLine{573     std::pair<bool, ParameterEntry> \mbox{\hyperlink{classlarcfm_1_1_parameter_data_aa3d8d34366e358a6502745d31e4a8443}{parse\_parameter\_value}}(\textcolor{keyword}{const} std::string\& value);}
+\DoxyCodeLine{574 }
+\DoxyCodeLine{575     \textcolor{keyword}{static} std::vector<std::string> stringList(\textcolor{keyword}{const} std::string\& instring);}
+\DoxyCodeLine{576     \textcolor{keyword}{static} std::vector<int> intList(\textcolor{keyword}{const} std::string\& instring);}
+\DoxyCodeLine{577     \textcolor{keyword}{static} std::vector<double> doubleList(\textcolor{keyword}{const} std::string\& instring);}
+\DoxyCodeLine{578     \textcolor{keyword}{static} std::vector<bool> boolList(\textcolor{keyword}{const} std::string\& instring);}
+\DoxyCodeLine{579 }
+\DoxyCodeLine{580 }
+\DoxyCodeLine{581     \textcolor{keywordtype}{bool} preserveUnits;}
+\DoxyCodeLine{582     \textcolor{keywordtype}{bool} unitCompatibility;}
+\DoxyCodeLine{583     std::string listPatternStr;}
+\DoxyCodeLine{584     \textcolor{keyword}{typedef} std::map<std::string, ParameterEntry, stringCaseInsensitive> paramtype;}
+\DoxyCodeLine{585     paramtype parameters;}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{587     \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_parameter_data_1_1comp__order}{comp\_order}} \{}
+\DoxyCodeLine{588     \textcolor{keyword}{public}:}
+\DoxyCodeLine{589         \textcolor{keyword}{const} paramtype *params;}
+\DoxyCodeLine{590         \mbox{\hyperlink{classlarcfm_1_1_parameter_data_1_1comp__order}{comp\_order}}(\textcolor{keyword}{const} paramtype *p) \{}
+\DoxyCodeLine{591             params = p;}
+\DoxyCodeLine{592         \}}
+\DoxyCodeLine{593         \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} std::string\& lhs, \textcolor{keyword}{const} std::string\& rhs)\textcolor{keyword}{ const}}
+\DoxyCodeLine{594 \textcolor{keyword}{        }\{}
+\DoxyCodeLine{595             paramtype::const\_iterator p1 = params-\/>find(lhs);}
+\DoxyCodeLine{596             paramtype::const\_iterator p2 = params-\/>find(rhs);}
+\DoxyCodeLine{597             \textcolor{keywordtype}{long} n1 = p1-\/>second.order;}
+\DoxyCodeLine{598             \textcolor{keywordtype}{long} n2 = p2-\/>second.order;}
+\DoxyCodeLine{599             \textcolor{keywordflow}{return} n1<n2;}
+\DoxyCodeLine{600         \}}
+\DoxyCodeLine{601     \} ;}
+\DoxyCodeLine{602 }
+\DoxyCodeLine{603 }
+\DoxyCodeLine{604 \};}
+\DoxyCodeLine{605 }
+\DoxyCodeLine{606 \}}
+\DoxyCodeLine{607 }
+\DoxyCodeLine{608 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

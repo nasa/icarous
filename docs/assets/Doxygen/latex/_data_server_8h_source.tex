@@ -1,0 +1,72 @@
+\hypertarget{_data_server_8h_source}{}\doxysection{Data\+Server.\+h}
+\label{_data_server_8h_source}\index{Modules/ACCoRD/inc/DataServer.h@{Modules/ACCoRD/inc/DataServer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DATASERVER\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DATASERVER\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Transmitter.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}GeneralState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}GeneralPlan.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{31 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_data_server}{DataServer}} \{}
+\DoxyCodeLine{32 \textcolor{keyword}{private}:}
+\DoxyCodeLine{33     std::map<std::string,Transmitter*> transmitters;}
+\DoxyCodeLine{34     std::string word;}
+\DoxyCodeLine{35 \textcolor{keyword}{public}:}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_data_server}{DataServer}}();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_data_server}{\string~DataServer}}();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{46     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a6de1bbe1edf86ecfdc759346f17b5d2a}{addTransmitter}}(\textcolor{keyword}{const} std::string\& address, \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}}* t);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{54     \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}}* \mbox{\hyperlink{classlarcfm_1_1_data_server_a0aa682e2724595f95cfc8d4ba37a02dd}{getTransmitter}}(\textcolor{keyword}{const} std::string\& address) \textcolor{keyword}{const};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_af1ae43543006797d3b412b77081264e7}{removeTransmitter}}(\textcolor{keyword}{const} std::string\& address);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a47b8f7bcfdcf2ff83357502e27489961}{advertiseAll}}(\textcolor{keyword}{const} std::string\& keyword);}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{75     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a35ee264d2e649ebf2e210b32dd6e3291}{advertiseOne}}(\textcolor{keyword}{const} std::string\& address, \textcolor{keyword}{const} std::string\& keyword);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{82     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a5139ce4245077dde18bf572f17e45b11}{update}}(\textcolor{keyword}{const} std::string\& keyword, \textcolor{keyword}{const} std::string\& data);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{89     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_data_server_a0d619462d2bee883d7ce782a6c5f6923}{hasClients}}(\textcolor{keyword}{const} std::string\& keyword) \textcolor{keyword}{const};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     \textcolor{comment}{//*******************************}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{97     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a26fed2153bb78c60d1fdd64ba299cdf1}{updateGeneralStates}}(\textcolor{keyword}{const} std::vector<GeneralState>\& p);}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a26fed2153bb78c60d1fdd64ba299cdf1}{updateGeneralStates}}(\textcolor{keyword}{const} std::vector<GeneralState>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pd);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{104     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a1a6855404b38fb59cfad4e72194d751b}{updateGeneralPlans}}(\textcolor{keyword}{const} std::vector<GeneralPlan>\& p);}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a1a6855404b38fb59cfad4e72194d751b}{updateGeneralPlans}}(\textcolor{keyword}{const} std::vector<GeneralPlan>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& pd);}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{111     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_af3d14ddeb76bf65cec7d3626f763664e}{updateParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{116     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a3905732bf114c0cf97c0be81c93c7170}{updateString}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{123     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_data_server_a3905732bf114c0cf97c0be81c93c7170}{updateString}}(\textcolor{keyword}{const} std::string\& keyword, \textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DATASERVER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

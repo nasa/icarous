@@ -1,0 +1,181 @@
+\hypertarget{_triple_bands_8h_source}{}\doxysection{Triple\+Bands.\+h}
+\label{_triple_bands_8h_source}\index{Modules/ACCoRD/inc/TripleBands.h@{Modules/ACCoRD/inc/TripleBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Conflict Prevention Bands}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon, Rick Butler, Cesar Munoz}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef TRIPLEBANDS\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define TRIPLEBANDS\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}GenericDHStateBands.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}BandsCore.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{84   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_triple_bands}{TripleBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands}{GenericDHStateBands}}, \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \textcolor{keyword}{public}:}
+\DoxyCodeLine{104     \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ac8e7e344bf5e8b627557ea2419b3c3af}{TripleBands}}(\textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} Tnear, \textcolor{keywordtype}{double} Tmid, \textcolor{keyword}{const} std::string\& tunit, \textcolor{keywordtype}{double} max\_gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} max\_vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{118     \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a7969235df338636acd9df51ab893ce9e}{TripleBands}}();}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{122     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a6dbe0f6bf9e087670296c03550bc0582}{setTimeNear}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{124     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a40ba6afb3cfe91410dbf8687638d3024}{getTimeNear}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{131     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a8e1e1ec23a59927473133d3ad57b28aa}{setTimeMid}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{133     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa70a3353248c4219243dc39c8d094e69}{getTimeMid}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{138     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa760eec7037428ef778e06d5b195e534}{setLookaheadTime}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{142     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_afabf6fdfa096e812c8f83e9758d7131f}{getLookaheadTime}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+\DoxyCodeLine{148     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aeae6907c5718f4623a59f72e5bcc83fd}{setTimeRange}}(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& tunit);}
+\DoxyCodeLine{152     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aafc0be3ffaee89f3b45fcc5fa7e46a4c}{getStartTime}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155     \textcolor{comment}{//}}
+\DoxyCodeLine{156     \textcolor{comment}{// interface methods}}
+\DoxyCodeLine{157     \textcolor{comment}{//}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a9891060149b40cd224daf82b9d167dab}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab7f08c7ae9ab5f1ba1600474254538fe}{setDistance}}(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{162     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa34ad8fd4e92c25f0ac27f9648572f57}{getDistance}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a22978c65eea3ad3c17d1b9734288c0ce}{setHeight}}(\textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{165     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a847ab48fee2172584e92b451deb48cc5}{getHeight}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a65c847dd6bc56b5de3b5b1007b1b9bee}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{168     \textcolor{keywordtype}{double} getMaxGroundSpeed(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a40cde42db38d592fdf8c053121850b1a}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{171     \textcolor{keywordtype}{double} getMaxVerticalSpeed(\textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173     \textcolor{keywordtype}{void} setTrackTolerance(\textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{174     \textcolor{keywordtype}{double} getTrackTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{175     \textcolor{keywordtype}{void} setGroundSpeedTolerance(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{176     \textcolor{keywordtype}{double} getGroundSpeedTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{177     \textcolor{keywordtype}{void} setVerticalSpeedTolerance(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{178     \textcolor{keywordtype}{double} getVerticalSpeedTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{179     }
+\DoxyCodeLine{180     \textcolor{comment}{//  SPECIAL: in internal units}}
+\DoxyCodeLine{181     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa3e9080984e985bcfa6d3b06e0be0e86}{setOwnship}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \textcolor{keywordtype}{void} setOwnshipLL(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& vunit, \textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& trkunit, \textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} setOwnshipXYZ(\textcolor{keywordtype}{double} sx, \textcolor{keywordtype}{double} sy, \textcolor{keyword}{const} std::string\& hpunit, \textcolor{keywordtype}{double} sz, \textcolor{keyword}{const} std::string\& vpunit, \textcolor{keywordtype}{double} vx, \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} std::string\& hvunit, \textcolor{keywordtype}{double} vz, \textcolor{keyword}{const} std::string\& vvunit);}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187       \textcolor{comment}{//  SPECIAL: in internal units}}
+\DoxyCodeLine{188     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a4e002adbc00d0d3b99f670540bb78847}{addTraffic}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190     \textcolor{keywordtype}{void} addTrafficLL(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& vunit, \textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& trkunit, \textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{void} addTrafficXYZ(\textcolor{keywordtype}{double} sx, \textcolor{keywordtype}{double} sy, \textcolor{keyword}{const} std::string\& hpunit, \textcolor{keywordtype}{double} sz, \textcolor{keyword}{const} std::string\& vpunit, \textcolor{keywordtype}{double} vx, \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} std::string\& hvunit, \textcolor{keywordtype}{double} vz, \textcolor{keyword}{const} std::string\& vvunit);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_af3e26c681f167515cabe97a93bf8d495}{clear}}();}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_adc5c23ff57b1c992274f893abe6dfd55}{trackLength}}();}
+\DoxyCodeLine{198     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3ecbd4ba9ea871ef402c7f3fac284019}{track}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{199     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aa8c99631388f4d03f7c4c8ae16e64605}{trackRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{200     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a61fe18140c2eb806ed3aacf3ba99e3d8}{regionOfTrack}}(\textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ad8bf02f4536fd3b2610da770a373523d}{groundSpeedLength}}();}
+\DoxyCodeLine{203     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ae2e5752c443c49612218ec65e042391e}{groundSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{204     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a9603eea159f27c769a08fb6c7768357b}{groundSpeedRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{205     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ad3d6a65fb339a533586a91b29ea365c7}{regionOfGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_aba38be397c666ff0840b3af30083f79c}{verticalSpeedLength}}();}
+\DoxyCodeLine{208     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab9ff47fd2258f314d2baa51e5ad8bf04}{verticalSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{209     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a22fd9105a26c8ea14b75a1f77bc8eee7}{verticalSpeedRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{210     BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_triple_bands_abe79a2b074509846c2a3602da6833025}{regionOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{213     std::string \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3a15165a24de29b030081b71cdeffb59}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{214     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{215     }
+\DoxyCodeLine{216     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a74cc3c3ccc780583f5e7c651db54941c}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{217       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}();}
+\DoxyCodeLine{218     \}}
+\DoxyCodeLine{219     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab8e4ff18265ac830c08c6060554e5fa8}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{220       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}();}
+\DoxyCodeLine{221     \}}
+\DoxyCodeLine{222     std::string \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3af57bca1e1d96d0497d3709747846a6}{getMessage}}() \{}
+\DoxyCodeLine{223       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}();}
+\DoxyCodeLine{224     \}}
+\DoxyCodeLine{225     std::string \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a6fa915c666f4997b0339e11b02e93f29}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{226       \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}();}
+\DoxyCodeLine{227     \}}
+\DoxyCodeLine{228     }
+\DoxyCodeLine{229   \textcolor{keyword}{private}:}
+\DoxyCodeLine{230     \mbox{\hyperlink{classlarcfm_1_1_bands_core}{BandsCore}} red; }
+\DoxyCodeLine{231     \mbox{\hyperlink{classlarcfm_1_1_bands_core}{BandsCore}} amber;}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     \textcolor{keywordtype}{bool} ownship;}
+\DoxyCodeLine{234     \textcolor{keywordtype}{bool} needCompute;}
+\DoxyCodeLine{235     }
+\DoxyCodeLine{236     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} tmp\_amber;  \textcolor{comment}{// for performance}}
+\DoxyCodeLine{237     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}} tmp\_green;  \textcolor{comment}{// for performance}}
+\DoxyCodeLine{238     \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} so;}
+\DoxyCodeLine{241     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo;}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} NUM\_REGIONS = 400;}
+\DoxyCodeLine{244     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} trackArray[NUM\_REGIONS];}
+\DoxyCodeLine{245     BandsRegion::Region trackRegionArray[NUM\_REGIONS];}
+\DoxyCodeLine{246     \textcolor{keywordtype}{int} trackSize;}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} groundArray[NUM\_REGIONS];}
+\DoxyCodeLine{249     BandsRegion::Region groundRegionArray[NUM\_REGIONS];}
+\DoxyCodeLine{250     \textcolor{keywordtype}{int} groundSize;}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} verticalArray[NUM\_REGIONS];}
+\DoxyCodeLine{253     BandsRegion::Region verticalRegionArray[NUM\_REGIONS];}
+\DoxyCodeLine{254     \textcolor{keywordtype}{int} verticalSize;}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a3ecbd4ba9ea871ef402c7f3fac284019}{track}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{258     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ae2e5752c443c49612218ec65e042391e}{groundSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{259     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ab9ff47fd2258f314d2baa51e5ad8bf04}{verticalSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261     \textcolor{keywordtype}{void} init(\textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} Tnear, \textcolor{keywordtype}{double} Tmid, \textcolor{keyword}{const} std::string\& tunit, \textcolor{keywordtype}{double} max\_gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} max\_vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263     \textcolor{keywordtype}{void} recompute();}
+\DoxyCodeLine{269     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a81f5e52ae1d4a63fd91776e26305088a}{trackCompute}}();}
+\DoxyCodeLine{272     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_ae3b4ee2339d04215c47fbaabf1d07dff}{groundCompute}}();}
+\DoxyCodeLine{275     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_triple_bands_a62f63308a0959eb82486e4dfc086402b}{verticalCompute}}();}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277     \textcolor{keywordtype}{void} toArrays(\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} interval[], BandsRegion::Region intRegion[], \textcolor{keywordtype}{int}\& size,}
+\DoxyCodeLine{278           \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& red, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& amber, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& green);}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281     \textcolor{keywordtype}{void} add(\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} arr[], \textcolor{keywordtype}{int} size, \textcolor{keywordtype}{int} i, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& r);}
+\DoxyCodeLine{282     \textcolor{keywordtype}{void} add(BandsRegion::Region arr[], \textcolor{keywordtype}{int} size, \textcolor{keywordtype}{int} i, BandsRegion::Region color);}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284     \textcolor{keywordtype}{int} order(\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} arr[], \textcolor{keywordtype}{int} size, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& n);}
+\DoxyCodeLine{285   }
+\DoxyCodeLine{286   \};}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 \}}
+\DoxyCodeLine{289 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

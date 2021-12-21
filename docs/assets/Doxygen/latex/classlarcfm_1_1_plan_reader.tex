@@ -1,0 +1,382 @@
+\hypertarget{classlarcfm_1_1_plan_reader}{}\doxysection{larcfm\+::Plan\+Reader Class Reference}
+\label{classlarcfm_1_1_plan_reader}\index{larcfm::PlanReader@{larcfm::PlanReader}}
+
+
+{\ttfamily \#include $<$Plan\+Reader.\+h$>$}
+
+Inheritance diagram for larcfm\+::Plan\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_plan_reader}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan_reader_a4ae32214106a6877a5cc9b9576b5c86d}{Plan\+Reader}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a64de72f132b67715ba3527f0b8a43583}\label{classlarcfm_1_1_plan_reader_a64de72f132b67715ba3527f0b8a43583}} 
+virtual void {\bfseries open} (const std\+::string \&filename)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a7a9c5dbb9036fdc2a667bf7817e71177}\label{classlarcfm_1_1_plan_reader_a7a9c5dbb9036fdc2a667bf7817e71177}} 
+virtual void {\bfseries open} (std\+::istream $\ast$input)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a883beaebe64acc0bd17dfe463de64af7}{plan\+Size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a756fc446f4f59a354219e6fd9e47ffe3}{poly\+Size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a969a61a9a18e3739f658678521e5faf1}{containment\+Size}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a42d560bdc881f0f767b9e2b6cfe74f5f}{size}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a83052fb038d0d48cf0d717cd45cdf167}{get\+Plan}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a4c99a604c09a7fb364386707be78d4f7}{get\+Poly\+Path}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a0e5e3b7b4a96045f84f564dc74e412d8}{get\+Containment\+Polygon}} (int i) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a61eea3507f1de708e490361413d750f7}{combined\+Size}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a2378ff09562fe0c0bd5abcef6466430d}{get\+Combined\+Plan}} (int i) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a6609b362f071a433876c00d468ad1a76}{get\+Parameters}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a08d73edb7a8b662a262946670390f376}{update\+Parameter\+Data}} (\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \& \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ab6734c9544cea105958ebadcb0126007}{get\+Parameters\+Ref}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ac5dc4f376fe3ccdc8615136738c45f97}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_plan_reader_aa87d3d22a6c3c7f2613feac276190101}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ae449f76d5a367fb4313658f9fb3aff2c}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_plan_reader_a0ecedce9c1916e1c4f2f348722080df6}{get\+Message\+No\+Clear}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_af7ebdea7810a8da2ee01224f45e6382f}\label{classlarcfm_1_1_plan_reader_af7ebdea7810a8da2ee01224f45e6382f}} 
+int {\bfseries path\+Name\+Index} (const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_aa2fec234b7dff0e20ed3d7172704a1b8}\label{classlarcfm_1_1_plan_reader_aa2fec234b7dff0e20ed3d7172704a1b8}} 
+int {\bfseries containment\+Name\+Index} (const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a0fd2619568af670e1d56f046f9cb69b7}\label{classlarcfm_1_1_plan_reader_a0fd2619568af670e1d56f046f9cb69b7}} 
+int {\bfseries plan\+Name\+Index} (const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a4f458aae564aaad8cdfd16867bedde9c}\label{classlarcfm_1_1_plan_reader_a4f458aae564aaad8cdfd16867bedde9c}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3, const std\+::string \&s4) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a5971d1096c9615c8d20e3ae710fc6955}\label{classlarcfm_1_1_plan_reader_a5971d1096c9615c8d20e3ae710fc6955}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_aa6b693c0fb442fb71234846dd69feb97}\label{classlarcfm_1_1_plan_reader_aa6b693c0fb442fb71234846dd69feb97}} 
+int {\bfseries alt\+Headings} (const std\+::string \&s1, const std\+::string \&s2) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a05b944137a1e4138a04fde38cb754e5c}\label{classlarcfm_1_1_plan_reader_a05b944137a1e4138a04fde38cb754e5c}} 
+double {\bfseries get\+Clock} (const std\+::string \&s) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a905895f7f8a5fa2c0c18ef88aa2ae4d3}\label{classlarcfm_1_1_plan_reader_a905895f7f8a5fa2c0c18ef88aa2ae4d3}} 
+\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} {\bfseries error}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a704b24540aa1f956ce49481374430636}\label{classlarcfm_1_1_plan_reader_a704b24540aa1f956ce49481374430636}} 
+\mbox{\hyperlink{classlarcfm_1_1_separated_input}{Separated\+Input}} {\bfseries input}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_af60424582438484eb8abb99aa3ab25aa}\label{classlarcfm_1_1_plan_reader_af60424582438484eb8abb99aa3ab25aa}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} $>$ {\bfseries plans}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a87063ef9b9d46d3c8b9dfabf32577499}\label{classlarcfm_1_1_plan_reader_a87063ef9b9d46d3c8b9dfabf32577499}} 
+bool {\bfseries clock}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a194602062cd2e2e15aa59bfe5ea5f347}\label{classlarcfm_1_1_plan_reader_a194602062cd2e2e15aa59bfe5ea5f347}} 
+std\+::vector$<$ int $>$ {\bfseries head}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_aa847e9359cd14526705e6a9e8bd35580}\label{classlarcfm_1_1_plan_reader_aa847e9359cd14526705e6a9e8bd35580}} 
+bool {\bfseries OLD\+\_\+\+COLUMN\+\_\+\+HEADERS}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_abea02e8e9073b26dbd5fbda68cd75d90}\label{classlarcfm_1_1_plan_reader_abea02e8e9073b26dbd5fbda68cd75d90}} 
+enum \{ \newline
+{\bfseries ID}
+, {\bfseries LAT\+\_\+\+SX}
+, {\bfseries LON\+\_\+\+SY}
+, {\bfseries SZ}
+, \newline
+{\bfseries TIME}
+, {\bfseries POINT\+\_\+\+NAME}
+, {\bfseries INFO}
+, {\bfseries TYPE}
+, \newline
+{\bfseries TCP\+\_\+\+TRK}
+, {\bfseries TCP\+\_\+\+GS}
+, {\bfseries TCP\+\_\+\+VS}
+, {\bfseries ACC\+\_\+\+TRK}
+, \newline
+{\bfseries ACC\+\_\+\+GS}
+, {\bfseries ACC\+\_\+\+VS}
+, {\bfseries TRK}
+, {\bfseries GS}
+, \newline
+{\bfseries VS}
+, {\bfseries RADIUS}
+, {\bfseries CENTER\+\_\+\+LAT\+\_\+\+SX}
+, {\bfseries CENTER\+\_\+\+LON\+\_\+\+SY}
+, \newline
+{\bfseries CENTER\+\_\+\+ALT}
+, {\bfseries SZ2}
+, {\bfseries ENDTIME}
+ \}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_ac2c8063982d1e0c6e15614456fd3e22a}\label{classlarcfm_1_1_plan_reader_ac2c8063982d1e0c6e15614456fd3e22a}} 
+enum \{ {\bfseries POLY}
+, {\bfseries UNKNOWN}
+, {\bfseries PLAN}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a3ccf9761712e352e2555a5e091eaaaaf}\label{classlarcfm_1_1_plan_reader_a3ccf9761712e352e2555a5e091eaaaaf}} 
+int {\bfseries alt\+Headings5} (const std\+::string \&s1, const std\+::string \&s2, const std\+::string \&s3, const std\+::string \&s4, const std\+::string \&s5) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_ab01d69c3468e08a23fe6e63ea18fbb9d}\label{classlarcfm_1_1_plan_reader_ab01d69c3468e08a23fe6e63ea18fbb9d}} 
+virtual void {\bfseries loadfile} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a4572a0d9a5aba54ecd6c933e3542ede4}\label{classlarcfm_1_1_plan_reader_a4572a0d9a5aba54ecd6c933e3542ede4}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries paths}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_adb80add915c5666c72f3ac7582323023}\label{classlarcfm_1_1_plan_reader_adb80add915c5666c72f3ac7582323023}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ {\bfseries containment}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This reads in and stores both Plans and Poly\+Paths (and parameters) from a file. \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} files consist of comma or space-\/separated values, with one point per line. Required columns include either\+:~\newline
+ Aircraft name, x-\/position \mbox{[}nmi\mbox{]}, y-\/position \mbox{[}nmi\mbox{]}, z-\/position \mbox{[}ft\mbox{]}, time \mbox{[}s\mbox{]}~\newline
+ or~\newline
+ Aircraft name, latitude \mbox{[}deg\mbox{]}, longitude \mbox{[}deg\mbox{]}, altitude \mbox{[}ft\mbox{]}, time \mbox{[}s\mbox{]}
+
+Polygon files also include a required second altitude column \href{e.g. alt2}{\texttt{ ft}}.
+
+Any given line may contain either type of information, but all lines describing a single entity (either aircraft or polygon) must be located together, and without time decreasing -- new entities are detected by a change in the name field or if (time of entry n) \texorpdfstring{$<$}{<} (time of entry n+1). The type of the entry is defined by the presence or lack of a second altitude column value (polys have it, plans don\textquotesingle{}t).
+
+Optional columns include point mutability and point label, both with \mbox{[}unspecified\mbox{]} units. Even if these columns are defined, these two values are optional for any given line. Columns without values may be left blank (if comma-\/delimited) or indicated by a single dash (-\/).
+
+It is necessary to include a header line that defines the column ordering. The column definitions are not case sensitive. There is also an optional header line, immediately following the column definition, that defines the unit type for each column (the defaults are listed above).
+
+If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (\char`\"{}). \+The aircraft name is case sensitive, so US54\+A != Us54a != us54a.$<$p$>$  \+Any empty line or any line starting with a hash sign (\#) is ignored.$<$p$>$  \+Files may also include parameter definitions prior to other data.  Parameter definitions are of the form $<$code$>$key$<$/code$>$ = $<$code$>$value$<$/code$>$, one per line, where $<$code$>$key$<$/code$>$ is a case-\/insensitive alphanumeric word and $<$code$>$value$<$/code$>$ is either a numeral or string.  The $<$code$>$value$<$/code$>$  may include a unit, such as \char`\"{}dist = 50 \mbox{[}m\mbox{]}\char`\"{}.  Note that parameters require a space on either side of the equals sign.$<$p$>$  \+Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is interpreted as which type.$<$p$>$  \+If the optional parameter \char`\"{}filetype\char`\"{} is specified, its value must be \char`\"{}plan\char`\"{}, \char`\"{}trajectory\char`\"{}, \char`\"{}poly\char`\"{}, or \char`\"{}plan+poly\char`\"{} (no quotes) for this reader to accept the file without error.$<$p$>$  \+Plan \char`\"{}note\char`\"{} information is to be stored with a parameter named ID\+\_\+note, where ID is the name of the plan in question. \+Similarly for Poly\+Path \char`\"{}note"{} information. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a4ae32214106a6877a5cc9b9576b5c86d}\label{classlarcfm_1_1_plan_reader_a4ae32214106a6877a5cc9b9576b5c86d}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!PlanReader@{PlanReader}}
+\index{PlanReader@{PlanReader}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{PlanReader()}{PlanReader()}}
+{\footnotesize\ttfamily larcfm\+::\+Plan\+Reader\+::\+Plan\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create a new \mbox{\hyperlink{classlarcfm_1_1_plan_reader}{Plan\+Reader}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a61eea3507f1de708e490361413d750f7}\label{classlarcfm_1_1_plan_reader_a61eea3507f1de708e490361413d750f7}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!combinedSize@{combinedSize}}
+\index{combinedSize@{combinedSize}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{combinedSize()}{combinedSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Reader\+::combined\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the total number of both plans and paths. \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a969a61a9a18e3739f658678521e5faf1}\label{classlarcfm_1_1_plan_reader_a969a61a9a18e3739f658678521e5faf1}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!containmentSize@{containmentSize}}
+\index{containmentSize@{containmentSize}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{containmentSize()}{containmentSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Reader\+::containment\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of containment areas in the file \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a2378ff09562fe0c0bd5abcef6466430d}\label{classlarcfm_1_1_plan_reader_a2378ff09562fe0c0bd5abcef6466430d}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getCombinedPlan@{getCombinedPlan}}
+\index{getCombinedPlan@{getCombinedPlan}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getCombinedPlan()}{getCombinedPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Reader\+::get\+Combined\+Plan (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns a plan or the plan corresponding to a path. Real plans occur first in the list. This should only be used if approximating Poly\+Paths by variable-\/sized traffic.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a0e5e3b7b4a96045f84f564dc74e412d8}\label{classlarcfm_1_1_plan_reader_a0e5e3b7b4a96045f84f564dc74e412d8}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getContainmentPolygon@{getContainmentPolygon}}
+\index{getContainmentPolygon@{getContainmentPolygon}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getContainmentPolygon()}{getContainmentPolygon()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Plan\+Reader\+::get\+Containment\+Polygon (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th containment polygon in the file 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_ae449f76d5a367fb4313658f9fb3aff2c}\label{classlarcfm_1_1_plan_reader_ae449f76d5a367fb4313658f9fb3aff2c}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Plan\+Reader\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a0ecedce9c1916e1c4f2f348722080df6}\label{classlarcfm_1_1_plan_reader_a0ecedce9c1916e1c4f2f348722080df6}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Plan\+Reader\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_plan_reader_ac5dc4f376fe3ccdc8615136738c45f97}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a6609b362f071a433876c00d468ad1a76}\label{classlarcfm_1_1_plan_reader_a6609b362f071a433876c00d468ad1a76}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getParameters@{getParameters}}
+\index{getParameters@{getParameters}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getParameters()}{getParameters()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Plan\+Reader\+::get\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_ab6734c9544cea105958ebadcb0126007}\label{classlarcfm_1_1_plan_reader_ab6734c9544cea105958ebadcb0126007}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getParametersRef@{getParametersRef}}
+\index{getParametersRef@{getParametersRef}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getParametersRef()}{getParametersRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \& larcfm\+::\+Plan\+Reader\+::get\+Parameters\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{larcfm\+::\+Parameter\+Reader}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a83052fb038d0d48cf0d717cd45cdf167}\label{classlarcfm_1_1_plan_reader_a83052fb038d0d48cf0d717cd45cdf167}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getPlan@{getPlan}}
+\index{getPlan@{getPlan}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getPlan()}{getPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Plan\+Reader\+::get\+Plan (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th plan in the file 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a4c99a604c09a7fb364386707be78d4f7}\label{classlarcfm_1_1_plan_reader_a4c99a604c09a7fb364386707be78d4f7}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!getPolyPath@{getPolyPath}}
+\index{getPolyPath@{getPolyPath}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{getPolyPath()}{getPolyPath()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} larcfm\+::\+Plan\+Reader\+::get\+Poly\+Path (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the i-\/th path in the file 
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_ac5dc4f376fe3ccdc8615136738c45f97}\label{classlarcfm_1_1_plan_reader_ac5dc4f376fe3ccdc8615136738c45f97}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Reader\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_aa87d3d22a6c3c7f2613feac276190101}\label{classlarcfm_1_1_plan_reader_aa87d3d22a6c3c7f2613feac276190101}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Plan\+Reader\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a883beaebe64acc0bd17dfe463de64af7}\label{classlarcfm_1_1_plan_reader_a883beaebe64acc0bd17dfe463de64af7}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!planSize@{planSize}}
+\index{planSize@{planSize}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{planSize()}{planSize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Reader\+::plan\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of plans in the file \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a756fc446f4f59a354219e6fd9e47ffe3}\label{classlarcfm_1_1_plan_reader_a756fc446f4f59a354219e6fd9e47ffe3}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!polySize@{polySize}}
+\index{polySize@{polySize}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{polySize()}{polySize()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Reader\+::poly\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of paths in the file \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a42d560bdc881f0f767b9e2b6cfe74f5f}\label{classlarcfm_1_1_plan_reader_a42d560bdc881f0f767b9e2b6cfe74f5f}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!size@{size}}
+\index{size@{size}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+Plan\+Reader\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of plans in the file \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_plan_reader_a08d73edb7a8b662a262946670390f376}\label{classlarcfm_1_1_plan_reader_a08d73edb7a8b662a262946670390f376}} 
+\index{larcfm::PlanReader@{larcfm::PlanReader}!updateParameterData@{updateParameterData}}
+\index{updateParameterData@{updateParameterData}!larcfm::PlanReader@{larcfm::PlanReader}}
+\doxysubsubsection{\texorpdfstring{updateParameterData()}{updateParameterData()}}
+{\footnotesize\ttfamily void larcfm\+::\+Plan\+Reader\+::update\+Parameter\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_parameter_provider}{larcfm\+::\+Parameter\+Provider}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Plan\+Reader.\+h\item 
+Modules/\+ACCo\+RD/src/Plan\+Reader.\+cpp\end{DoxyCompactItemize}

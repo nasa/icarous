@@ -1,0 +1,138 @@
+\hypertarget{classlarcfm_1_1_kinematic_bands}{}\doxysection{larcfm\+::Kinematic\+Bands Class Reference}
+\label{classlarcfm_1_1_kinematic_bands}\index{larcfm::KinematicBands@{larcfm::KinematicBands}}
+
+
+{\ttfamily \#include $<$Kinematic\+Bands.\+h$>$}
+
+Inheritance diagram for larcfm\+::Kinematic\+Bands\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classlarcfm_1_1_kinematic_bands}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_a559a82b7aafbd33415ba5699cd99e159}{Kinematic\+Bands}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$detector)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_aa4b118580db09ed798276ea43ad09d0c}{Kinematic\+Bands}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_ae31104acd15350d6fcbfb28f5d3e8b4a}{Kinematic\+Bands}} (const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} \&b)
+\item 
+virtual void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_a446b392e7eb99852df79373e481e9a4e}{set\+Lookahead\+Time}} (double t)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_a8e7b7021af06bdaf0b4049fa12d13ee3}{get\+Alerting\+Time}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_a612f483240f920cf7526debfea8a662c}{set\+Alerting\+Time}} (double t)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands_aec6647d19c5e4151f5d1199e330c95de}{set\+Core\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$detector)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Objects of class \char`\"{}\+Kinematic\+Multi\+Bands\char`\"{} compute the conflict bands using kinematic single-\/maneuver projections of the ownship and linear preditions of (multiple) traffic aircraft positions. The bands consist of ranges of guidance maneuvers\+: track angles, ground speeds, vertical speeds, and altitude. 
+
+An assumption of the bands information is that the traffic aircraft do not maneuver. If the ownship immediately executes a NONE guidance maneuver, then the new path is conflict free (within a lookahead time of the parameter). If the ownship immediately executes a NEAR guidance maneuver and no traffic aircraft maneuvers, then there will be a loss of separation within the lookahead time.
+
+If recovery bands are set via \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_a1aa8a3db9c8269ff3de74dda11cbd60c}{set\+Recovery\+Bands()}} and the ownship is in a violation path, loss of separation recovery bands and recovery times are computed for each type of maneuver. If the ownship immediately executes a RECOVERY guidance maneuver, then the new path is conflict-\/free after the recovery time. Furthermore, the recovery time is the minimum time for which there exists a kinematic conflict-\/free maneuver in the future. 
+
+Note that in the case of geodetic coordinates this version of bands performs an internal projection of the coordinates and velocities into the Euclidean frame (see Util/\+Projection). Accuracy may be reduced if the traffic plans involve any segments longer than Util.\+Projection.\+projection\+Conflict\+Range(lat,acc), and an error will be logged if the distance between traffic and ownship exceeds Util.\+Projection.\+projection\+Max\+Range() at any point in the lookahead range.
+
+Disclaimers\+: The formal proofs of the core algorithms use real numbers, however these implementations use floating point numbers, so numerical differences could result. In addition, the geodetic computations include certain inaccuracies, especially near the poles.
+
+The basic usage is 
+\begin{DoxyPre}
+\mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{KinematicBands}} b(..with configuration parameters..);
+b.clear();
+b.setOwnship(position of ownship, velocity of ownship);
+b.addTraffic(position of (one) traffic aircraft, velocity of traffic);
+b.addTraffic(position of (another) traffic aircraft, velocity of traffic);
+...add other traffic aircraft...
+
+for (int i = 0; i < b.trackLength(); i++ ) \{  
+   intrval = b.track(i);
+   lower\_ang = intrval.low;
+   upper\_ang = intrval.up;
+   regionType = b.trackRegion(i);
+   ..do something with this information..
+\} 
+
+...similar for ground speed and vertical speed...
+\end{DoxyPre}
+
+
+When any \char`\"{}parameter\char`\"{} to this class is set (separation distance, lookahead time, positions in latitude/longitude, etc.), all previous bands information is cleared, though unlike instantaneous-\/maneuver bands, ownship and traffic state data is preserved in Kineamatic\+Bands unless explicitly cleared. ~\newline
+ For more complete example usage see the file {\ttfamily Batch.\+java}. 
+
+Kinematic bands also have a set of \char`\"{}step size\char`\"{} parameters that determine the granularity of the search. Track\+Step indicates the maximum track resolution, Ground\+Speed\+Step for ground speed, and Vertical\+Speed\+Step for vertical speed. These determine the output granularity, for example, if Track\+Step is set to 1 degree, bands will be in 1 degree increments.
+
+If the detection calculations discover a maneuver will cause the ownship to enter an intruder\textquotesingle{}s protected zone (e.\+g. a loss of separation, RA), then all further maneuvers in that direction will be marked with a \char`\"{}near\char`\"{} band. An example of this is if the ownship is moving with a track of 20 deg, and a turn to the right would cause a loss of separation at the 50 deg point, then the \char`\"{}near\char`\"{} bands for track will at least contain the range of approximately 50-\/200 degrees (current track +180 deg, +/-\/ the track\+Step).
+
+Note that \mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} outputs hold within a given (constant) frame of reference, with the default being against a stationary Earth (i.\+e. GPS coordinates and velocities). This means that if bands are instead given wind-\/oriented input data (airspeed and yaw-\/heading) for all aircraft, then the output maneuvers will be in the same frame of reference\+: \char`\"{}ground\+Speed\char`\"{} bands should then be read as \char`\"{}air\+Speed\char`\"{} bands, and \char`\"{}track\char`\"{} should be read as \char`\"{}heading\char`\"{}.
+
+Altitude bands assume assume an immediate maneuver to a given vertical speed, with a level off maneuver to various altitudes (based on altitude\+Step, for example, every 500 ft). \char`\"{}\+NONE\char`\"{} bands here indicate no conflict during or immediately following such a maneuver, assuming all traffic aircraft continue at a constant velocity. \char`\"{}\+NEAR\char`\"{} bands indicate either a loss of separation during the climb/descent or a conflict after leveling off to that altitude. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_a559a82b7aafbd33415ba5699cd99e159}\label{classlarcfm_1_1_kinematic_bands_a559a82b7aafbd33415ba5699cd99e159}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!KinematicBands@{KinematicBands}}
+\index{KinematicBands@{KinematicBands}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{KinematicBands()}{KinematicBands()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Kinematic\+Bands\+::\+Kinematic\+Bands (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{detector }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} with default parameters. The initial state detector is specified by the parameters. 
+\begin{DoxyParams}{Parameters}
+{\em detector} & State detector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_aa4b118580db09ed798276ea43ad09d0c}\label{classlarcfm_1_1_kinematic_bands_aa4b118580db09ed798276ea43ad09d0c}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!KinematicBands@{KinematicBands}}
+\index{KinematicBands@{KinematicBands}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{KinematicBands()}{KinematicBands()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Kinematic\+Bands\+::\+Kinematic\+Bands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} object with default values for configuration parameters. The default state detector is cylinder. \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_ae31104acd15350d6fcbfb28f5d3e8b4a}\label{classlarcfm_1_1_kinematic_bands_ae31104acd15350d6fcbfb28f5d3e8b4a}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!KinematicBands@{KinematicBands}}
+\index{KinematicBands@{KinematicBands}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{KinematicBands()}{KinematicBands()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Kinematic\+Bands\+::\+Kinematic\+Bands (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} \&}]{b }\end{DoxyParamCaption})}
+
+Construct a \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} object from an existing \mbox{\hyperlink{classlarcfm_1_1_kinematic_bands}{Kinematic\+Bands}} object. This copies all traffic data. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_a8e7b7021af06bdaf0b4049fa12d13ee3}\label{classlarcfm_1_1_kinematic_bands_a8e7b7021af06bdaf0b4049fa12d13ee3}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!getAlertingTime@{getAlertingTime}}
+\index{getAlertingTime@{getAlertingTime}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{getAlertingTime()}{getAlertingTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Kinematic\+Bands\+::get\+Alerting\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+alerting time in seconds. This is the first time prior to a violation when bands are computed. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_a612f483240f920cf7526debfea8a662c}\label{classlarcfm_1_1_kinematic_bands_a612f483240f920cf7526debfea8a662c}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!setAlertingTime@{setAlertingTime}}
+\index{setAlertingTime@{setAlertingTime}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{setAlertingTime()}{setAlertingTime()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+::set\+Alerting\+Time (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Sets alerting time in seconds. This is the first time prior to a violation when bands are computed. \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_aec6647d19c5e4151f5d1199e330c95de}\label{classlarcfm_1_1_kinematic_bands_aec6647d19c5e4151f5d1199e330c95de}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!setCoreDetection@{setCoreDetection}}
+\index{setCoreDetection@{setCoreDetection}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{setCoreDetection()}{setCoreDetection()}}
+{\footnotesize\ttfamily void larcfm\+::\+Kinematic\+Bands\+::set\+Core\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$}]{detector }\end{DoxyParamCaption})}
+
+Experimental. Set the underlying \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object that will be used to determine conflicts. This will also clear any results (but not traffic info). \mbox{\Hypertarget{classlarcfm_1_1_kinematic_bands_a446b392e7eb99852df79373e481e9a4e}\label{classlarcfm_1_1_kinematic_bands_a446b392e7eb99852df79373e481e9a4e}} 
+\index{larcfm::KinematicBands@{larcfm::KinematicBands}!setLookaheadTime@{setLookaheadTime}}
+\index{setLookaheadTime@{setLookaheadTime}!larcfm::KinematicBands@{larcfm::KinematicBands}}
+\doxysubsubsection{\texorpdfstring{setLookaheadTime()}{setLookaheadTime()}}
+{\footnotesize\ttfamily virtual void larcfm\+::\+Kinematic\+Bands\+::set\+Lookahead\+Time (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets lookahead time in seconds. This is the time horizon used to compute bands. 
+
+Reimplemented from \mbox{\hyperlink{classlarcfm_1_1_kinematic_multi_bands_ad48b54ff3a076a98523009fd828568cf}{larcfm\+::\+Kinematic\+Multi\+Bands}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Kinematic\+Bands.\+h\end{DoxyCompactItemize}

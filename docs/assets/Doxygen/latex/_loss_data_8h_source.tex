@@ -1,0 +1,68 @@
+\hypertarget{_loss_data_8h_source}{}\doxysection{Loss\+Data.\+h}
+\label{_loss_data_8h_source}\index{Modules/ACCoRD/inc/LossData.h@{Modules/ACCoRD/inc/LossData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2014-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * LossData.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * [CAM] (time\_in,time\_out) is the time interval of loss of separation. Every point in the open interval represents}}
+\DoxyCodeLine{11 \textcolor{comment}{ * a time where the aircraft are in violation. Whether or not the bounds of the interval are violation points or not}}
+\DoxyCodeLine{12 \textcolor{comment}{ * depends on the detector, e.g., for CD3D the points time\_in and time\_out are not necessarily violations points,}}
+\DoxyCodeLine{13 \textcolor{comment}{ * for WCV\_tvar the points time\_in and time\_out violation times. Furthermore, time\_in and time\_out are always}}
+\DoxyCodeLine{14 \textcolor{comment}{ * between the lookahead time interval [B,T], where 0 <= B < T. It is always the case that if time\_in < time\_out}}
+\DoxyCodeLine{15 \textcolor{comment}{ * is true, then there is a conflict.}}
+\DoxyCodeLine{16 \textcolor{comment}{ */}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifndef SRC\_LOSSDATA\_H\_}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define SRC\_LOSSDATA\_H\_}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{private}:}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} time\_in;   \textcolor{comment}{// relative time to loss of separation}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{double} time\_out;  \textcolor{comment}{// relative time to the exit from loss of separation}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}}(\textcolor{keywordtype}{double} time\_in, \textcolor{keywordtype}{double} time\_out);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}}();}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}}\& EMPTY();}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{45     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_loss_data_ac54e345fab08ef7e8384090f2474dc3f}{conflict}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{50     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_loss_data_a5dd79c0007956989d567bdab4691d58f}{conflictBefore}}(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{55     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_loss_data_a61b1c5ad508a9d3aee4b96e2994ffbce}{conflictLastMoreThan}}(\textcolor{keywordtype}{double} thr) \textcolor{keyword}{const};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_loss_data_ac54e345fab08ef7e8384090f2474dc3f}{conflict}}(\textcolor{keywordtype}{double} thr) \textcolor{keyword}{const};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{66     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_loss_data_a2cc7986f41e7964ec498c0cacb7a4663}{getTimeIn}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{72     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_loss_data_add24aa1e2f23b579be2465ab80d3d5cc}{getTimeOut}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{77     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_loss_data_a23db372ebc066bedfa40a182f3fa7206}{getTimeInterval}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_loss_data}{\string~LossData}}() \{\};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_LOSSDATA\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

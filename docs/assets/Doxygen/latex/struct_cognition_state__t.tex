@@ -25,7 +25,7 @@ std\+::string {\bfseries call\+Sign}
 std\+::string {\bfseries mission\+Plan}
 \begin{DoxyCompactList}\small\item\em Mission plan id (should be \char`\"{}\+Plan0\char`\"{}) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_aa292b421ee720a31de88d75dd66fe669}\label{struct_cognition_state__t_aa292b421ee720a31de88d75dd66fe669}} 
-larcfm\+::\+Position {\bfseries launch\+Point}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries launch\+Point}
 \begin{DoxyCompactList}\small\item\em Position for RTL. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_af6c583b3c5071419e1e5cdad08018e59}\label{struct_cognition_state__t_af6c583b3c5071419e1e5cdad08018e59}} 
 \mbox{\hyperlink{structcognition__params__t}{cognition\+\_\+params\+\_\+t}} {\bfseries parameters}
@@ -34,10 +34,10 @@ larcfm\+::\+Position {\bfseries launch\+Point}
 bool {\bfseries ic\+Ready}
 \begin{DoxyCompactList}\small\item\em True if icarous is ready. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a35ce39617b78b33c4f66dd28b06de13a}\label{struct_cognition_state__t_a35ce39617b78b33c4f66dd28b06de13a}} 
-std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries flight\+Plans}
+std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ {\bfseries flight\+Plans}
 \begin{DoxyCompactList}\small\item\em List of flight plans. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a0669529e970de1a93162c07e4aae1cf1}\label{struct_cognition_state__t_a0669529e970de1a93162c07e4aae1cf1}} 
-larcfm\+::\+Plan $\ast$ {\bfseries active\+Plan}
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ {\bfseries active\+Plan}
 \begin{DoxyCompactList}\small\item\em Pointer to the active flight plan. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a12e10cd60bb81a3afbd1e87f8f90d4d7}\label{struct_cognition_state__t_a12e10cd60bb81a3afbd1e87f8f90d4d7}} 
 std\+::map$<$ std\+::string, int $>$ {\bfseries next\+Wp\+Id}
@@ -79,10 +79,10 @@ double {\bfseries time\+To\+Fence\+Violation}
 double {\bfseries xtrack\+Deviation}
 \begin{DoxyCompactList}\small\item\em Cross track deviation. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a696510b9d13eb05c504ea81a234d748f}\label{struct_cognition_state__t_a696510b9d13eb05c504ea81a234d748f}} 
-larcfm\+::\+Position {\bfseries position}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries position}
 \begin{DoxyCompactList}\small\item\em position \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a694f323f24ecc1a6e487786159d5e55d}\label{struct_cognition_state__t_a694f323f24ecc1a6e487786159d5e55d}} 
-larcfm\+::\+Velocity {\bfseries velocity}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries velocity}
 \begin{DoxyCompactList}\small\item\em velocity \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a97e8d727df757c0b1bae6c7daa036c72}\label{struct_cognition_state__t_a97e8d727df757c0b1bae6c7daa036c72}} 
 double {\bfseries hdg}
@@ -97,10 +97,10 @@ bool {\bfseries keep\+In\+Conflict}
 bool {\bfseries keep\+Out\+Conflict}
 \begin{DoxyCompactList}\small\item\em keep out geofence conflict \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a55c0ef4413b57f283445af75175f8c02}\label{struct_cognition_state__t_a55c0ef4413b57f283445af75175f8c02}} 
-larcfm\+::\+Position {\bfseries recovery\+Position}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries recovery\+Position}
 \begin{DoxyCompactList}\small\item\em recovery position (safe position) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_ab5bc17ef1985c6976497962ba8dc955d}\label{struct_cognition_state__t_ab5bc17ef1985c6976497962ba8dc955d}} 
-larcfm\+::\+Position {\bfseries clst\+Point}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries clst\+Point}
 \begin{DoxyCompactList}\small\item\em closest point on nominal plan \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_aeace19241991feca3b15592cb9c8c542}\label{struct_cognition_state__t_aeace19241991feca3b15592cb9c8c542}} 
 bool {\bfseries line\+Of\+Sight2\+Goal}
@@ -214,7 +214,7 @@ bool {\bfseries direct\+Path\+To\+Feasible\+WP1}
 bool {\bfseries direct\+Path\+To\+Feasible\+WP2}
 \begin{DoxyCompactList}\small\item\em direct path to next feasible wp on secondary plan \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a38b32950b832a5c6572ec6773d4168d7}\label{struct_cognition_state__t_a38b32950b832a5c6572ec6773d4168d7}} 
-larcfm\+::\+Position {\bfseries ditch\+Site}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries ditch\+Site}
 \begin{DoxyCompactList}\small\item\em position of ditch site \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{struct_cognition_state__t_a3245822666de31f6bdc53cc7d7b14439}\label{struct_cognition_state__t_a3245822666de31f6bdc53cc7d7b14439}} 
 double {\bfseries tod\+Altitude}

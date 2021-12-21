@@ -1,0 +1,33 @@
+\hypertarget{_density_grid_timed_search_8h_source}{}\doxysection{Density\+Grid\+Timed\+Search.\+h}
+\label{_density_grid_timed_search_8h_source}\index{Modules/ACCoRD/inc/DensityGridTimedSearch.h@{Modules/ACCoRD/inc/DensityGridTimedSearch.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DENSITYGRIDTIMEDSEARCH\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DENSITYGRIDTIMEDSEARCH\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}DensityGrid.h"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed_search}{DensityGridTimedSearch}}\{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keyword}{public}:}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > searchT(\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}}\& dg, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& startPos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& endPos, \textcolor{keywordtype}{double} startTime, \textcolor{keywordtype}{double} gs) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keyword}{virtual} std::vector<std::pair<int,int> > optimalPathT(\mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}}\& dg) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \};}
+\DoxyCodeLine{25 \}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{27 }
+
+\end{DoxyCode}

@@ -1,0 +1,403 @@
+\hypertarget{classlarcfm_1_1_density_grid}{}\doxysection{larcfm\+::Density\+Grid Class Reference}
+\label{classlarcfm_1_1_density_grid}\index{larcfm::DensityGrid@{larcfm::DensityGrid}}
+
+
+{\ttfamily \#include $<$Density\+Grid.\+h$>$}
+
+Inheritance diagram for larcfm\+::Density\+Grid\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classlarcfm_1_1_density_grid}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_density_grid_a04fd142a961788d3cba77a4cc3a180ff}{Density\+Grid}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_density_grid_ab3cf5537a9acf4c3fbe06aab548bcdb5}{Density\+Grid}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&end, int buffer, double sq\+Sz, bool ll)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_density_grid_ac30ec51304b935aa4131087f187afc86}{Density\+Grid}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int buffer, double square\+Size)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_density_grid_ac65f30b013731cc94baf5398e9410149}{Density\+Grid}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double startT, int buffer, double square\+Size)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_density_grid_a1aaf7fd2a954dba3fb5cb734c626d978}{get\+Native\+Square\+Dist}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_density_grid_a914cae961acc095c3e4054419bb30bfb}{get\+Square\+Dist}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_afe0f2f82736560a072c3957b159ac570}{snap\+To\+Start}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a52b0cb7b54d8a4b8b5892c8f2e3c297e}\label{classlarcfm_1_1_density_grid_a52b0cb7b54d8a4b8b5892c8f2e3c297e}} 
+std\+::pair$<$ int, int $>$ {\bfseries grid\+Position} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a0467d12c2ac552bbc08032d7b35472c2}\label{classlarcfm_1_1_density_grid_a0467d12c2ac552bbc08032d7b35472c2}} 
+bool {\bfseries contains\+Cell} (const std\+::pair$<$ int, int $>$ \&xy) const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_density_grid_a4f47b7e3d18572b0f7018fb1aba6a9ef}{sizeX}} () const
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_density_grid_a9385c07ec1880c6a2c85d90db5fdad70}{sizeY}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aa0de733b22b5e2ff3259021a0d75dd3c}\label{classlarcfm_1_1_density_grid_aa0de733b22b5e2ff3259021a0d75dd3c}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries get\+Position} (int x, int y) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ada00e3ade5b30c9eb0d99fd29ed603d2}\label{classlarcfm_1_1_density_grid_ada00e3ade5b30c9eb0d99fd29ed603d2}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries get\+Position} (const std\+::pair$<$ int, int $>$ \&pii) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aeeb87edfe15fc89f53b333e226dded68}\label{classlarcfm_1_1_density_grid_aeeb87edfe15fc89f53b333e226dded68}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries center} (int x, int y) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a6fcdd7b695ff8d250df5ac9ec6178f5a}\label{classlarcfm_1_1_density_grid_a6fcdd7b695ff8d250df5ac9ec6178f5a}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries center} (const std\+::pair$<$ int, int $>$ \&pii) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a89867def8445f399bc45cd1775f8ef79}\label{classlarcfm_1_1_density_grid_a89867def8445f399bc45cd1775f8ef79}} 
+double {\bfseries get\+Weight} (int x, int y) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a2ce4b89383e092b591d7e8ac7be346a3}\label{classlarcfm_1_1_density_grid_a2ce4b89383e092b591d7e8ac7be346a3}} 
+double {\bfseries get\+Weight} (const std\+::pair$<$ int, int $>$ \&pii) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ab8b3b8050e02a5f6d82adf0b34848125}\label{classlarcfm_1_1_density_grid_ab8b3b8050e02a5f6d82adf0b34848125}} 
+void {\bfseries set\+Weight} (int x, int y, double d)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aa5510aa0bdc892a06c26f19ae7f8723d}\label{classlarcfm_1_1_density_grid_aa5510aa0bdc892a06c26f19ae7f8723d}} 
+void {\bfseries clear\+Weight} (int x, int y)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_ae679f97320ccc7fd8ef3fe33b1419500}{set\+Weights}} (int minX, int minY, int maxX, int maxY, double d)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_a0ee85554a663f00a841f30290599798b}{set\+Weights}} (double d)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_a25c3b446b98f79a058f2cbd78007cb4e}{clear\+Weights\+Outside}} (\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} poly)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_ad6749d4fe65ee874583961930eb33ddb}{set\+Weights\+Inside}} (\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} poly, double d)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a448eb7f2ec7bb5a3f1352dcd6e99d9e8}\label{classlarcfm_1_1_density_grid_a448eb7f2ec7bb5a3f1352dcd6e99d9e8}} 
+void {\bfseries clear\+Weights} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aacc1735a3c2463ff5e27680a10bfed61}\label{classlarcfm_1_1_density_grid_aacc1735a3c2463ff5e27680a10bfed61}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries start\+Point} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_af95f5a76b65ffd01b09c42ef1d7d4a84}\label{classlarcfm_1_1_density_grid_af95f5a76b65ffd01b09c42ef1d7d4a84}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries end\+Point} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a54db3aaa12de3010e7365152ef7f8c7a}\label{classlarcfm_1_1_density_grid_a54db3aaa12de3010e7365152ef7f8c7a}} 
+double {\bfseries start\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a021565773bac79120dcc012680e30052}\label{classlarcfm_1_1_density_grid_a021565773bac79120dcc012680e30052}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries grid\+Path} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a195582841c65f9335e604ec632fa4a2d}\label{classlarcfm_1_1_density_grid_a195582841c65f9335e604ec632fa4a2d}} 
+void {\bfseries print\+Grid\+Path} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aacd58148cc3c9ca38f63b988e312e730}\label{classlarcfm_1_1_density_grid_aacd58148cc3c9ca38f63b988e312e730}} 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries grid\+Path\+To\+Plan} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path, double gs, double vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a1bd039d95e7d79ec0c745d74ec83fa5a}\label{classlarcfm_1_1_density_grid_a1bd039d95e7d79ec0c745d74ec83fa5a}} 
+void {\bfseries set\+Proximity\+Weights} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path, double factor, bool apply\+To\+Undefined)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_density_grid_a67e28543c88695204bbaa0a3bc73c7d2}{set\+Proximity\+Weights}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double factor, bool apply\+To\+Undefined)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ad7c218f06f9088b8814d2b9368740a97}\label{classlarcfm_1_1_density_grid_ad7c218f06f9088b8814d2b9368740a97}} 
+void {\bfseries set\+Poly\+Weights} (double time, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} $>$ \&path)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a7e23fc357856227a4ecde449844e5afd}\label{classlarcfm_1_1_density_grid_a7e23fc357856227a4ecde449844e5afd}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a315817d27ddf8549dcb5ff5601990b7c}\label{classlarcfm_1_1_density_grid_a315817d27ddf8549dcb5ff5601990b7c}} 
+void {\bfseries print\+Weights} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a1abc6d5a7a2ec93eba5e333371de3b27}\label{classlarcfm_1_1_density_grid_a1abc6d5a7a2ec93eba5e333371de3b27}} 
+void {\bfseries print\+Corners} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a35360469a404238bdf77471dc2d5263e}\label{classlarcfm_1_1_density_grid_a35360469a404238bdf77471dc2d5263e}} 
+static double {\bfseries dist\+Est\+Lat\+Lon} (double lat1, double lat2)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a73565ac6e8c0cde86174fa43778300fc}\label{classlarcfm_1_1_density_grid_a73565ac6e8c0cde86174fa43778300fc}} 
+static std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ {\bfseries thin} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a368c985932fa9b1001430158994543d0}\label{classlarcfm_1_1_density_grid_a368c985932fa9b1001430158994543d0}} 
+void {\bfseries init} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&b, const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&start, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&end, int buffer, double sq\+Sz, bool ll)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a12c8d2071630573a8cab61e90e2f3974}\label{classlarcfm_1_1_density_grid_a12c8d2071630573a8cab61e90e2f3974}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries start\+Point\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a18b549cc6845753df9ae426710942c43}\label{classlarcfm_1_1_density_grid_a18b549cc6845753df9ae426710942c43}} 
+double {\bfseries start\+Time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a6aa4a1e18a0fb708a6db4f8cf11372bf}\label{classlarcfm_1_1_density_grid_a6aa4a1e18a0fb708a6db4f8cf11372bf}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries end\+Point\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a057bebd7be3a52674a521822226ece8f}\label{classlarcfm_1_1_density_grid_a057bebd7be3a52674a521822226ece8f}} 
+std\+::map$<$ std\+::pair$<$ int, int $>$, double $>$ {\bfseries weights}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a1a1b174fa88a98a579c9e871662e1456}\label{classlarcfm_1_1_density_grid_a1a1b174fa88a98a579c9e871662e1456}} 
+std\+::map$<$ std\+::pair$<$ int, int $>$, double $>$\+::iterator {\bfseries weightspos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a3057a37f94006cbe1206e02fc0982c6a}\label{classlarcfm_1_1_density_grid_a3057a37f94006cbe1206e02fc0982c6a}} 
+std\+::map$<$ std\+::pair$<$ int, int $>$, std\+::pair$<$ double, double $>$ $>$ {\bfseries corners}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a8d7104fe2b14f1718a12471081f565d7}\label{classlarcfm_1_1_density_grid_a8d7104fe2b14f1718a12471081f565d7}} 
+std\+::map$<$ std\+::pair$<$ int, int $>$, std\+::pair$<$ double, double $>$ $>$\+::iterator {\bfseries cornerspos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a5783307528f4561a03f04b44185e10b9}\label{classlarcfm_1_1_density_grid_a5783307528f4561a03f04b44185e10b9}} 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$\+::iterator {\bfseries g\+Pathpos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a2ace7c13f33110a34b428d62974303c0}\label{classlarcfm_1_1_density_grid_a2ace7c13f33110a34b428d62974303c0}} 
+bool {\bfseries lat\+Lon}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ade89c1d43601c281806b70ffc020f861}\label{classlarcfm_1_1_density_grid_ade89c1d43601c281806b70ffc020f861}} 
+double {\bfseries square\+Size}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a7cbe7125a187b914005fc7a93e4a1786}\label{classlarcfm_1_1_density_grid_a7cbe7125a187b914005fc7a93e4a1786}} 
+double {\bfseries square\+Dist}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_af43de6791226ded7035621841799929a}\label{classlarcfm_1_1_density_grid_af43de6791226ded7035621841799929a}} 
+int {\bfseries sz\+\_\+x}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a93ec35330f41025e95b70f072747d1cd}\label{classlarcfm_1_1_density_grid_a93ec35330f41025e95b70f072747d1cd}} 
+int {\bfseries sz\+\_\+y}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ad602646802cf8a8c04e127d6f75b8684}\label{classlarcfm_1_1_density_grid_ad602646802cf8a8c04e127d6f75b8684}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries bounds}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ab73f40345d76e702bc800eb449276fdd}\label{classlarcfm_1_1_density_grid_ab73f40345d76e702bc800eb449276fdd}} 
+double {\bfseries min\+Searched\+Weight\+Value}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_acef21768902bdb27f3311924386f5b36}\label{classlarcfm_1_1_density_grid_acef21768902bdb27f3311924386f5b36}} 
+double {\bfseries max\+Searched\+Weight\+Value}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a4b681e557335c6baa742e3040c3551f0}\label{classlarcfm_1_1_density_grid_a4b681e557335c6baa742e3040c3551f0}} 
+bool {\bfseries contains} (const std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \&g\+Path, const std\+::pair$<$ int, int $>$ \&pii) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a2979ee22879ae1b862ffa91fce7427b1}\label{classlarcfm_1_1_density_grid_a2979ee22879ae1b862ffa91fce7427b1}} 
+static double {\bfseries linear\+EstY} (double lati, double dn)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_aa11b1d486e9c6c9db72c26051788e228}\label{classlarcfm_1_1_density_grid_aa11b1d486e9c6c9db72c26051788e228}} 
+static bool {\bfseries valid\+Pair} (const std\+::pair$<$ int, int $>$ \&p)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} is a weighted grid that is used to support a heuristic search through a rectangular region. Each cell in the grid is roughly similar in size (in lat/lon the actual size and shape may vary somewhat with latitude). The grid enables a heuristic search that attempts to find the optimal path through the grid based on the assigned weights to cells from a start position to an end position. As an example, a search used with weather data may assign weights based the cell\textquotesingle{}s distance from the end cell, as well as if the cell is free of any weather polygons. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a04fd142a961788d3cba77a4cc3a180ff}\label{classlarcfm_1_1_density_grid_a04fd142a961788d3cba77a4cc3a180ff}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!DensityGrid@{DensityGrid}}
+\index{DensityGrid@{DensityGrid}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{DensityGrid()}{DensityGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Density\+Grid\+::\+Density\+Grid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create a completely empty \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} that has no specified location or area \mbox{\Hypertarget{classlarcfm_1_1_density_grid_ab3cf5537a9acf4c3fbe06aab548bcdb5}\label{classlarcfm_1_1_density_grid_ab3cf5537a9acf4c3fbe06aab548bcdb5}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!DensityGrid@{DensityGrid}}
+\index{DensityGrid@{DensityGrid}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{DensityGrid()}{DensityGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Density\+Grid\+::\+Density\+Grid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{b,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&}]{start,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{end,  }\item[{int}]{buffer,  }\item[{double}]{sq\+Sz,  }\item[{bool}]{ll }\end{DoxyParamCaption})}
+
+Create a blank \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} that covers a certain area. Note\+: grid coordinates refer to the bottom left (SW) corner of a grid square.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & rectangle that roughly outlines base search area \\
+\hline
+{\em start} & start position and time, should be within b \\
+\hline
+{\em end} & end position, should be within b \\
+\hline
+{\em buffer} & number of additional squares to include for each side outside of the base grid area \\
+\hline
+{\em sq\+Sz} & approximate square size, in meters \\
+\hline
+{\em ll} & if true, coordinates are latlon, if false, euclidean \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ac30ec51304b935aa4131087f187afc86}\label{classlarcfm_1_1_density_grid_ac30ec51304b935aa4131087f187afc86}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!DensityGrid@{DensityGrid}}
+\index{DensityGrid@{DensityGrid}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{DensityGrid()}{DensityGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Density\+Grid\+::\+Density\+Grid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{buffer,  }\item[{double}]{square\+Size }\end{DoxyParamCaption})}
+
+Create a blank \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} based on a complete plan Note\+: grid coordinates refer to the bottom left (SW) corner of a grid square.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan that defines the base grid area \\
+\hline
+{\em buffer} & number of additional squares to include for each side outside of the base grid area \\
+\hline
+{\em square\+Size} & approximate square size, in meters \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_ac65f30b013731cc94baf5398e9410149}\label{classlarcfm_1_1_density_grid_ac65f30b013731cc94baf5398e9410149}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!DensityGrid@{DensityGrid}}
+\index{DensityGrid@{DensityGrid}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{DensityGrid()}{DensityGrid()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Density\+Grid\+::\+Density\+Grid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{startT,  }\item[{int}]{buffer,  }\item[{double}]{square\+Size }\end{DoxyParamCaption})}
+
+Create a blank \mbox{\hyperlink{classlarcfm_1_1_density_grid}{Density\+Grid}} based on an in-\/progress plan (plan points before the current time are ignored) Note\+: grid coordinates refer to the bottom left (SW) corner of a grid square.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & plan that defines the base grid area \\
+\hline
+{\em startT} & current-\/time in the plan \\
+\hline
+{\em buffer} & number of additional squares to include for each side outside of the base grid area \\
+\hline
+{\em square\+Size} & approximate square size, in meters \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a25c3b446b98f79a058f2cbd78007cb4e}\label{classlarcfm_1_1_density_grid_a25c3b446b98f79a058f2cbd78007cb4e}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!clearWeightsOutside@{clearWeightsOutside}}
+\index{clearWeightsOutside@{clearWeightsOutside}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{clearWeightsOutside()}{clearWeightsOutside()}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::clear\+Weights\+Outside (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}}]{poly }\end{DoxyParamCaption})}
+
+Clear all weights of grid squares whose center is outside the given (static) polygon. 
+\begin{DoxyParams}{Parameters}
+{\em poly} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a1aaf7fd2a954dba3fb5cb734c626d978}\label{classlarcfm_1_1_density_grid_a1aaf7fd2a954dba3fb5cb734c626d978}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!getNativeSquareDist@{getNativeSquareDist}}
+\index{getNativeSquareDist@{getNativeSquareDist}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{getNativeSquareDist()}{getNativeSquareDist()}}
+{\footnotesize\ttfamily double larcfm\+::\+Density\+Grid\+::get\+Native\+Square\+Dist (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Approximate size of square, in either meters (if Euclidean) or radians (if latlon) \begin{DoxyReturn}{Returns}
+size
+\end{DoxyReturn}
+Approximate size of square, in either meters (if Euclidean) or radians (if latlon) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a914cae961acc095c3e4054419bb30bfb}\label{classlarcfm_1_1_density_grid_a914cae961acc095c3e4054419bb30bfb}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!getSquareDist@{getSquareDist}}
+\index{getSquareDist@{getSquareDist}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{getSquareDist()}{getSquareDist()}}
+{\footnotesize\ttfamily double larcfm\+::\+Density\+Grid\+::get\+Square\+Dist (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Approximate size of square, in meters \begin{DoxyReturn}{Returns}
+size
+\end{DoxyReturn}
+Approximate size of square, in meters \mbox{\Hypertarget{classlarcfm_1_1_density_grid_a67e28543c88695204bbaa0a3bc73c7d2}\label{classlarcfm_1_1_density_grid_a67e28543c88695204bbaa0a3bc73c7d2}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!setProximityWeights@{setProximityWeights}}
+\index{setProximityWeights@{setProximityWeights}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{setProximityWeights()}{setProximityWeights()}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::set\+Proximity\+Weights (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{factor,  }\item[{bool}]{apply\+To\+Undefined }\end{DoxyParamCaption})}
+
+Weight against plan points. Weight should be 0 for on-\/plan, and factor$\ast$yxdistance for off-\/plan. (Weight is against the closest plan point) 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan \\
+\hline
+{\em factor} & factor \\
+\hline
+{\em apply\+To\+Undefined} & true, if should be applied to undefined points\\
+\hline
+\end{DoxyParams}
+Weight against plan points. 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+{\em factor} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a0ee85554a663f00a841f30290599798b}\label{classlarcfm_1_1_density_grid_a0ee85554a663f00a841f30290599798b}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!setWeights@{setWeights}}
+\index{setWeights@{setWeights}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{setWeights()}{setWeights()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::set\+Weights (\begin{DoxyParamCaption}\item[{double}]{d }\end{DoxyParamCaption})}
+
+Set all weights to d
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & weight\\
+\hline
+\end{DoxyParams}
+Set all weights to d \mbox{\Hypertarget{classlarcfm_1_1_density_grid_ae679f97320ccc7fd8ef3fe33b1419500}\label{classlarcfm_1_1_density_grid_ae679f97320ccc7fd8ef3fe33b1419500}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!setWeights@{setWeights}}
+\index{setWeights@{setWeights}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{setWeights()}{setWeights()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::set\+Weights (\begin{DoxyParamCaption}\item[{int}]{minX,  }\item[{int}]{minY,  }\item[{int}]{maxX,  }\item[{int}]{maxY,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+Set all weights to d in grid cells minX to maxX and minY to maxY, inclusive
+
+
+\begin{DoxyParams}{Parameters}
+{\em minX} & minimum x \\
+\hline
+{\em minY} & minimum y \\
+\hline
+{\em maxX} & maximum x \\
+\hline
+{\em maxY} & maximum y \\
+\hline
+{\em d} & weight\\
+\hline
+\end{DoxyParams}
+Set all weights to d in grid cells minX to maxX and minY to maxY, inclusive \mbox{\Hypertarget{classlarcfm_1_1_density_grid_ad6749d4fe65ee874583961930eb33ddb}\label{classlarcfm_1_1_density_grid_ad6749d4fe65ee874583961930eb33ddb}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!setWeightsInside@{setWeightsInside}}
+\index{setWeightsInside@{setWeightsInside}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{setWeightsInside()}{setWeightsInside()}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::set\+Weights\+Inside (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}}]{poly,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+set all weights of grid squares whose center is inside the given (static) polygon. 
+\begin{DoxyParams}{Parameters}
+{\em poly} & polygon \\
+\hline
+{\em d} & weight\\
+\hline
+\end{DoxyParams}
+set all weights of grid squares whose center is inside the given (static) polygon. 
+\begin{DoxyParams}{Parameters}
+{\em poly} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a4f47b7e3d18572b0f7018fb1aba6a9ef}\label{classlarcfm_1_1_density_grid_a4f47b7e3d18572b0f7018fb1aba6a9ef}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!sizeX@{sizeX}}
+\index{sizeX@{sizeX}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{sizeX()}{sizeX()}}
+{\footnotesize\ttfamily int larcfm\+::\+Density\+Grid\+::sizeX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Note\+: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square) The SW corner of the plan bounding box should be in square (buffer,buffer) \begin{DoxyReturn}{Returns}
+size 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_a9385c07ec1880c6a2c85d90db5fdad70}\label{classlarcfm_1_1_density_grid_a9385c07ec1880c6a2c85d90db5fdad70}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!sizeY@{sizeY}}
+\index{sizeY@{sizeY}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{sizeY()}{sizeY()}}
+{\footnotesize\ttfamily int larcfm\+::\+Density\+Grid\+::sizeY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Note\+: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square) \begin{DoxyReturn}{Returns}
+size
+\end{DoxyReturn}
+Note\+: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square) \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_density_grid_afe0f2f82736560a072c3957b159ac570}\label{classlarcfm_1_1_density_grid_afe0f2f82736560a072c3957b159ac570}} 
+\index{larcfm::DensityGrid@{larcfm::DensityGrid}!snapToStart@{snapToStart}}
+\index{snapToStart@{snapToStart}!larcfm::DensityGrid@{larcfm::DensityGrid}}
+\doxysubsubsection{\texorpdfstring{snapToStart()}{snapToStart()}}
+{\footnotesize\ttfamily void larcfm\+::\+Density\+Grid\+::snap\+To\+Start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Adjust all grid corner coordinates so that the start point it in the center of its grid. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Density\+Grid.\+h\item 
+Modules/\+ACCo\+RD/src/Density\+Grid.\+cpp\end{DoxyCompactItemize}

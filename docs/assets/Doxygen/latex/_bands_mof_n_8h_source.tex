@@ -1,0 +1,48 @@
+\hypertarget{_bands_mof_n_8h_source}{}\doxysection{Bands\+Mof\+N.\+h}
+\label{_bands_mof_n_8h_source}\index{Modules/ACCoRD/inc/BandsMofN.h@{Modules/ACCoRD/inc/BandsMofN.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * BandsMofN.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef BANDSMOFN\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define BANDSMOFN\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}MofN.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ColorValue.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{BandsMofN}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23   \textcolor{keywordtype}{double} val;}
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} colors\_left;}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} colors\_right;}
+\DoxyCodeLine{26   \mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{BandsMofN}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_color_value}{ColorValue}}\& cv, \textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{BandsMofN}}(\textcolor{keywordtype}{double} value, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}\& mofn);}
+\DoxyCodeLine{28   BandsRegion::Region left\_m\_of\_n(BandsRegion::Region region);}
+\DoxyCodeLine{29   BandsRegion::Region right\_m\_of\_n(BandsRegion::Region region);}
+\DoxyCodeLine{30   \textcolor{keywordtype}{bool} same\_colors() \textcolor{keyword}{const};}
+\DoxyCodeLine{31   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{32   \textcolor{keyword}{static} std::string listToString(\textcolor{keyword}{const} std::vector<BandsMofN>\& l);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{\string~BandsMofN}}() \{\};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{private}:}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* BANDSMOFN\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

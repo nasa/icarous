@@ -83,19 +83,19 @@ enum \mbox{\hyperlink{_cognition_8hpp_ae43a793abb723e0714d93ca186662e7c}{takeoff
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-larcfm\+::\+Plan $\ast$ \mbox{\hyperlink{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}{Get\+Plan}} (std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ \mbox{\hyperlink{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}{Get\+Plan}} (std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
 \begin{DoxyCompactList}\small\item\em Get the pointer for given plan id from a list of plans. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}{Get\+Total\+Waypoints}} (std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
+int \mbox{\hyperlink{_cognition_8hpp_a29b225ef430085e3ed554157ac06b18d}{Get\+Total\+Waypoints}} (std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ $\ast$plan\+List, const std\+::string \&plan\+\_\+id)
 \begin{DoxyCompactList}\small\item\em Get total Waypoints. \end{DoxyCompactList}\item 
-larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}{Get\+Next\+WP}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \mbox{\hyperlink{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}{Get\+Next\+WP}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$fp, int next\+WP)
 \begin{DoxyCompactList}\small\item\em Get next waypoint in given plan. \end{DoxyCompactList}\item 
-larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}{Get\+Prev\+WP}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \mbox{\hyperlink{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}{Get\+Prev\+WP}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$fp, int next\+WP)
 \begin{DoxyCompactList}\small\item\em Get prev waypoint in given plan. \end{DoxyCompactList}\item 
-larcfm\+::\+Velocity \mbox{\hyperlink{_cognition_8hpp_a5759c49855c795a61af13d3022998648}{Get\+Next\+WPVelocity}} (larcfm\+::\+Plan $\ast$fp, int next\+WP)
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \mbox{\hyperlink{_cognition_8hpp_a5759c49855c795a61af13d3022998648}{Get\+Next\+WPVelocity}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$fp, int next\+WP)
 \begin{DoxyCompactList}\small\item\em Get velocity of next waypoint. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}{Check\+Projected\+Traffic\+Conflict}} (larcfm\+::\+Position \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, larcfm\+::\+Velocity velocity, larcfm\+::\+Position prev\+WP, larcfm\+::\+Position next\+WP, double time\+To\+Violation, double DTHR, double ZTHR)
+bool \mbox{\hyperlink{_cognition_8hpp_a130ab4e3906a2dd0cd6d412526bd5dd2}{Check\+Projected\+Traffic\+Conflict}} (\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} velocity, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} prev\+WP, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} next\+WP, double time\+To\+Violation, double DTHR, double ZTHR)
 \begin{DoxyCompactList}\small\item\em check projected traffic conflict given lookahead, current position and velocity \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}{Compute\+Target\+Feasibility}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, larcfm\+::\+Position target)
+bool \mbox{\hyperlink{_cognition_8hpp_a28b900d9abdbaf807f7044b04f5f985b}{Compute\+Target\+Feasibility}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} target)
 \begin{DoxyCompactList}\small\item\em Compute feasibility of a given target position. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_a82a273c9caea71bcb6499a088e5fedbc}{Set\+Guidance\+Vel\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const double track, const double gs, const double vs)
 \begin{DoxyCompactList}\small\item\em Create an output velocity command on the output cognition\+Commands list. \end{DoxyCompactList}\item 
@@ -111,9 +111,9 @@ void \mbox{\hyperlink{_cognition_8hpp_af558797182c2c8c3ec66a3badd45e6b7}{Set\+Rt
 \begin{DoxyCompactList}\small\item\em enqueue the RTL command \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_a16cc2c35c2c5d29dbbfb71d2ad3a4af4}{Set\+Ditch\+Site\+Request\+Cmd}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state)
 \begin{DoxyCompactList}\small\item\em enqueue the ditch site request command \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}{Find\+New\+Path}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const larcfm\+::\+Position \&positionA, const larcfm\+::\+Velocity \&velocityA, const larcfm\+::\+Position \&positionB, const larcfm\+::\+Velocity \&velocityB)
+void \mbox{\hyperlink{_cognition_8hpp_ac2936b533541d05ab3a312feb9685823}{Find\+New\+Path}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const std\+::string \&plan\+ID, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&positionA, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&velocityA, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&positionB, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&velocityB)
 \begin{DoxyCompactList}\small\item\em enqueue a request to compute a new flightplan \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}{Set\+Guidance\+P2P}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const larcfm\+::\+Position \&point, const double speed)
+void \mbox{\hyperlink{_cognition_8hpp_a165d3d4618688d32c3f0c5388ff00a2b}{Set\+Guidance\+P2P}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&point, const double speed)
 \begin{DoxyCompactList}\small\item\em enqueue the point 2 point guidance command \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}{Send\+Status}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, const char buffer\mbox{[}$\,$\mbox{]}, const uint8\+\_\+t severity)
 \begin{DoxyCompactList}\small\item\em enqueue a status message in the output \end{DoxyCompactList}\item 
@@ -121,9 +121,9 @@ void \mbox{\hyperlink{_cognition_8hpp_a21dd0a9db2c5a6696d7a4e1a7f114c39}{Send\+S
 \begin{DoxyCompactList}\small\item\em Get the Resolution Type object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_cognition_8hpp_ad8559541fb7ac99c310ac951b7199b86}{Log\+Message}} (\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$state, std\+::string message)
 \item 
-double \mbox{\hyperlink{_cognition_8hpp_a664684cec884944bca77b95e848337c7}{Compute\+Xtrack\+Distance}} (const larcfm\+::\+Position \&prev\+\_\+wp, const larcfm\+::\+Position \&next\+\_\+wp, const larcfm\+::\+Position \&pos, double offset\mbox{[}$\,$\mbox{]})
+double \mbox{\hyperlink{_cognition_8hpp_a664684cec884944bca77b95e848337c7}{Compute\+Xtrack\+Distance}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&prev\+\_\+wp, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&next\+\_\+wp, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&pos, double offset\mbox{[}$\,$\mbox{]})
 \begin{DoxyCompactList}\small\item\em compute perpendicular deviation from a flightplan segement \end{DoxyCompactList}\item 
-larcfm\+::\+Position \mbox{\hyperlink{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}{Get\+Nearest\+Position\+On\+Plan}} (const larcfm\+::\+Plan $\ast$fp, const larcfm\+::\+Position \&current\+\_\+pos, int \&next\+WP)
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \mbox{\hyperlink{_cognition_8hpp_a8e93368b11f79fd66eb93c3e6c8ffca6}{Get\+Nearest\+Position\+On\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$fp, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&current\+\_\+pos, int \&next\+WP)
 \begin{DoxyCompactList}\small\item\em Get the nearest position on plan. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{_cognition_8hpp_a096d2497cf50812d5bc2032fbfe714ed}{Check\+Turn\+Conflict}} (const double low, const double high, const double new\+\_\+heading, const double old\+\_\+heading, bool \&right\+Turn\+Conflict, bool \&left\+Turn\+Conflict)
 \begin{DoxyCompactList}\small\item\em Check if turning from old heading to new heading is conflict free. \end{DoxyCompactList}\item 
@@ -187,7 +187,7 @@ c\+NOOP&No operations. \\
 \index{Cognition.hpp@{Cognition.hpp}!CheckProjectedTrafficConflict@{CheckProjectedTrafficConflict}}
 \index{CheckProjectedTrafficConflict@{CheckProjectedTrafficConflict}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{CheckProjectedTrafficConflict()}{CheckProjectedTrafficConflict()}}
-{\footnotesize\ttfamily bool Check\+Projected\+Traffic\+Conflict (\begin{DoxyParamCaption}\item[{larcfm\+::\+Position}]{position,  }\item[{larcfm\+::\+Velocity}]{velocity,  }\item[{larcfm\+::\+Position}]{prev\+WP,  }\item[{larcfm\+::\+Position}]{next\+WP,  }\item[{double}]{time\+To\+Violation,  }\item[{double}]{DTHR,  }\item[{double}]{ZTHR }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool Check\+Projected\+Traffic\+Conflict (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{position,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}}}]{velocity,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{prev\+WP,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{next\+WP,  }\item[{double}]{time\+To\+Violation,  }\item[{double}]{DTHR,  }\item[{double}]{ZTHR }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -237,7 +237,7 @@ true if both turns are safe
 \index{Cognition.hpp@{Cognition.hpp}!ComputeTargetFeasibility@{ComputeTargetFeasibility}}
 \index{ComputeTargetFeasibility@{ComputeTargetFeasibility}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{ComputeTargetFeasibility()}{ComputeTargetFeasibility()}}
-{\footnotesize\ttfamily bool Compute\+Target\+Feasibility (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{larcfm\+::\+Position}]{target }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily bool Compute\+Target\+Feasibility (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}}}]{target }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -250,7 +250,7 @@ true if both turns are safe
 \index{Cognition.hpp@{Cognition.hpp}!ComputeXtrackDistance@{ComputeXtrackDistance}}
 \index{ComputeXtrackDistance@{ComputeXtrackDistance}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{ComputeXtrackDistance()}{ComputeXtrackDistance()}}
-{\footnotesize\ttfamily double Compute\+Xtrack\+Distance (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{prev\+\_\+wp,  }\item[{const larcfm\+::\+Position \&}]{next\+\_\+wp,  }\item[{const larcfm\+::\+Position \&}]{pos,  }\item[{double}]{offset\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double Compute\+Xtrack\+Distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{prev\+\_\+wp,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{next\+\_\+wp,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{pos,  }\item[{double}]{offset\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -270,7 +270,7 @@ double
 \index{Cognition.hpp@{Cognition.hpp}!FindNewPath@{FindNewPath}}
 \index{FindNewPath@{FindNewPath}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{FindNewPath()}{FindNewPath()}}
-{\footnotesize\ttfamily void Find\+New\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+ID,  }\item[{const larcfm\+::\+Position \&}]{positionA,  }\item[{const larcfm\+::\+Velocity \&}]{velocityA,  }\item[{const larcfm\+::\+Position \&}]{positionB,  }\item[{const larcfm\+::\+Velocity \&}]{velocityB }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Find\+New\+Path (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const std\+::string \&}]{plan\+ID,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{positionA,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{velocityA,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{positionB,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{velocityB }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -291,7 +291,7 @@ double
 \index{Cognition.hpp@{Cognition.hpp}!GetNearestPositionOnPlan@{GetNearestPositionOnPlan}}
 \index{GetNearestPositionOnPlan@{GetNearestPositionOnPlan}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetNearestPositionOnPlan()}{GetNearestPositionOnPlan()}}
-{\footnotesize\ttfamily larcfm\+::\+Position Get\+Nearest\+Position\+On\+Plan (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Plan $\ast$}]{fp,  }\item[{const larcfm\+::\+Position \&}]{current\+\_\+pos,  }\item[{int \&}]{next\+WP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} Get\+Nearest\+Position\+On\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$}]{fp,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{current\+\_\+pos,  }\item[{int \&}]{next\+WP }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -303,13 +303,13 @@ double
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Position closest point on flightplan 
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} closest point on flightplan 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}\label{_cognition_8hpp_a84482410ece02f44bbefdea9dfdb41cf}} 
 \index{Cognition.hpp@{Cognition.hpp}!GetNextWP@{GetNextWP}}
 \index{GetNextWP@{GetNextWP}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetNextWP()}{GetNextWP()}}
-{\footnotesize\ttfamily larcfm\+::\+Position Get\+Next\+WP (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} Get\+Next\+WP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -319,13 +319,13 @@ larcfm\+::\+Position closest point on flightplan
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Position waypoint position 
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} waypoint position 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_cognition_8hpp_a5759c49855c795a61af13d3022998648}\label{_cognition_8hpp_a5759c49855c795a61af13d3022998648}} 
 \index{Cognition.hpp@{Cognition.hpp}!GetNextWPVelocity@{GetNextWPVelocity}}
 \index{GetNextWPVelocity@{GetNextWPVelocity}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetNextWPVelocity()}{GetNextWPVelocity()}}
-{\footnotesize\ttfamily larcfm\+::\+Velocity Get\+Next\+WPVelocity (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} Get\+Next\+WPVelocity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -335,13 +335,13 @@ larcfm\+::\+Position waypoint position
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Velocity velocity at given waypoint index 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} velocity at given waypoint index 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}\label{_cognition_8hpp_ae6f13b5e0f678dfbb79981bf06030c2b}} 
 \index{Cognition.hpp@{Cognition.hpp}!GetPlan@{GetPlan}}
 \index{GetPlan@{GetPlan}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
-{\footnotesize\ttfamily larcfm\+::\+Plan $\ast$ Get\+Plan (\begin{DoxyParamCaption}\item[{std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ Get\+Plan (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -351,13 +351,13 @@ larcfm\+::\+Velocity velocity at given waypoint index
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Plan$\ast$ pointer to queried plan 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}}$\ast$ pointer to queried plan 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}\label{_cognition_8hpp_a4baae8ccebc7bbe8d7cb06f287fd02ca}} 
 \index{Cognition.hpp@{Cognition.hpp}!GetPrevWP@{GetPrevWP}}
 \index{GetPrevWP@{GetPrevWP}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetPrevWP()}{GetPrevWP()}}
-{\footnotesize\ttfamily larcfm\+::\+Position Get\+Prev\+WP (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} Get\+Prev\+WP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$}]{fp,  }\item[{int}]{next\+WP }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -367,7 +367,7 @@ larcfm\+::\+Plan$\ast$ pointer to queried plan
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Position previous waypoint position 
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} previous waypoint position 
 \end{DoxyReturn}
 \mbox{\Hypertarget{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}\label{_cognition_8hpp_a7d371331b1497a24b17686a68338043e}} 
 \index{Cognition.hpp@{Cognition.hpp}!GetPriorityValues@{GetPriorityValues}}
@@ -401,7 +401,7 @@ resolution\+Type\+\_\+e
 \index{Cognition.hpp@{Cognition.hpp}!GetTotalWaypoints@{GetTotalWaypoints}}
 \index{GetTotalWaypoints@{GetTotalWaypoints}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{GetTotalWaypoints()}{GetTotalWaypoints()}}
-{\footnotesize\ttfamily int Get\+Total\+Waypoints (\begin{DoxyParamCaption}\item[{std\+::list$<$ larcfm\+::\+Plan $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int Get\+Total\+Waypoints (\begin{DoxyParamCaption}\item[{std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ $\ast$}]{plan\+List,  }\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -488,7 +488,7 @@ int total waypoints in queried plan
 \index{Cognition.hpp@{Cognition.hpp}!SetGuidanceP2P@{SetGuidanceP2P}}
 \index{SetGuidanceP2P@{SetGuidanceP2P}!Cognition.hpp@{Cognition.hpp}}
 \doxysubsubsection{\texorpdfstring{SetGuidanceP2P()}{SetGuidanceP2P()}}
-{\footnotesize\ttfamily void Set\+Guidance\+P2P (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const larcfm\+::\+Position \&}]{point,  }\item[{const double}]{speed }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Set\+Guidance\+P2P (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cognition_state__t}{Cognition\+State\+\_\+t}} $\ast$}]{state,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{point,  }\item[{const double}]{speed }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

@@ -1,0 +1,46 @@
+\hypertarget{_polycarp_resolution_8h_source}{}\doxysection{Polycarp\+Resolution.\+h}
+\label{_polycarp_resolution_8h_source}\index{Modules/ACCoRD/inc/PolycarpResolution.h@{Modules/ACCoRD/inc/PolycarpResolution.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpResolution -\/ closest point inside-\/outside a polygon to a given point -\/ with a buffer}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{comment}{/*}}
+\DoxyCodeLine{12 \textcolor{comment}{ * PolycarpResolution.h}}
+\DoxyCodeLine{13 \textcolor{comment}{ *}}
+\DoxyCodeLine{14 \textcolor{comment}{ *  Created on: Dec 18, 2015}}
+\DoxyCodeLine{15 \textcolor{comment}{ *      Author: ghagen}}
+\DoxyCodeLine{16 \textcolor{comment}{ */}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifndef SRC\_POLYCARPRESOLUTION\_H\_}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define SRC\_POLYCARPRESOLUTION\_H\_}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_resolution}{PolycarpResolution}} \{}
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} proj\_vect(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& u, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w, \textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{32   \textcolor{keyword}{static} std::vector<Vect2> expand\_polygon\_2D(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\& p);}
+\DoxyCodeLine{33   \textcolor{keyword}{static} std::vector<Vect2> contract\_polygon\_2D(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\& p);}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \textcolor{keywordtype}{int} closest\_edge(\textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keywordtype}{double} BUFF, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{35   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} recovery\_test\_point(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\&, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{36   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} recovery\_point(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} outside\_recovery\_point(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{38   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} inside\_recovery\_point(\textcolor{keywordtype}{double} BUFF, \textcolor{keywordtype}{double} ResolBUFF, \textcolor{keyword}{const} std::vector<Vect2>\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* SRC\_POLYCARPRESOLUTION\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,101 @@
+\hypertarget{_w_c_v_table_8h_source}{}\doxysection{WCVTable.\+h}
+\label{_w_c_v_table_8h_source}\index{Modules/ACCoRD/inc/WCVTable.h@{Modules/ACCoRD/inc/WCVTable.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2012-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef WCVTABLE\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define WCVTABLE\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}ParameterTable.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <map>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_table}{ParameterTable}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{private}:}
+\DoxyCodeLine{22   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   \textcolor{keywordtype}{double} DTHR; \textcolor{comment}{// Distance threshold}}
+\DoxyCodeLine{26   \textcolor{keywordtype}{double} ZTHR; \textcolor{comment}{// Vertical threshold}}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double} TTHR; \textcolor{comment}{// Time threshold}}
+\DoxyCodeLine{28   \textcolor{keywordtype}{double} TCOA; \textcolor{comment}{// Time to co-\/altitude threshold}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{33   \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a0aed561f905b8fc8eb2caf5a6d4f93f5}{WCVTable}}(\textcolor{keywordtype}{double} dthr, \textcolor{keywordtype}{double} zthr, \textcolor{keywordtype}{double} tthr, \textcolor{keywordtype}{double} tcoa);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{38   \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a0aed561f905b8fc8eb2caf5a6d4f93f5}{WCVTable}}(\textcolor{keywordtype}{double} dthr, \textcolor{keyword}{const} std::string\& udthr, \textcolor{keywordtype}{double} zthr, \textcolor{keyword}{const} std::string\& uzthr,}
+\DoxyCodeLine{39       \textcolor{keywordtype}{double} tthr, \textcolor{keyword}{const} std::string\& utthr, \textcolor{keywordtype}{double} tcoa, \textcolor{keyword}{const} std::string\& utcoa);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{44   \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a0aed561f905b8fc8eb2caf5a6d4f93f5}{WCVTable}}();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{\string~WCVTable}}();}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{52   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a4179ff62cd43ee481baf59cc0206945b}{DO\_365\_Phase\_I\_preventive}}();}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{58   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_ad30ecec89b5c0c663c4058541f2fefb2}{DO\_365\_DWC\_Phase\_I}}();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{64   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a3f862a81f79e78a85c17a954ad7cde2f}{DO\_365\_DWC\_Phase\_II}}();}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{70   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a077d07d6136434cdcd7308ec2be6ac4e}{DO\_365\_DWC\_Non\_Coop}}();}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{76   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a09de928e3fe8a61ff29d286c2f72364c}{Buffered\_Phase\_I\_preventive}}();}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{82   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a58888458043c6a50872a652bc272da52}{Buffered\_DWC\_Phase\_I}}();}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{87   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a95f6f80ca59ee97d3880466fc303eb5d}{getDTHR}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{91   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a95f6f80ca59ee97d3880466fc303eb5d}{getDTHR}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{96   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_ae385785061d55c05d34eb4b928b7051a}{getZTHR}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{100   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_ae385785061d55c05d34eb4b928b7051a}{getZTHR}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{105   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_ac2de57544cc1f5e715cfd459eb84e5f4}{getTTHR}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{106   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_ac2de57544cc1f5e715cfd459eb84e5f4}{getTTHR}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{111   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a149f3b9bc9464fe5abef74c4d9fb733f}{getTCOA}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{112   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table_a149f3b9bc9464fe5abef74c4d9fb733f}{getTCOA}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114   \textcolor{keywordtype}{void} setDTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{115   \textcolor{keywordtype}{void} setDTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{void} setZTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{118   \textcolor{keywordtype}{void} setZTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{keywordtype}{void} setTTHR(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{121   \textcolor{keywordtype}{void} setTTHR(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   \textcolor{keywordtype}{void} setTCOA(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{124   \textcolor{keywordtype}{void} setTCOA(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{127   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{128   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132   \textcolor{keywordtype}{bool} equals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& t2) \textcolor{keyword}{const};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tab) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   std::string toPVS\_() \textcolor{keyword}{const};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,52 @@
+\hypertarget{_position_util_8h_source}{}\doxysection{Position\+Util.\+h}
+\label{_position_util_8h_source}\index{Modules/ACCoRD/inc/PositionUtil.h@{Modules/ACCoRD/inc/PositionUtil.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef POSITIONUTIL\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define POSITIONUTIL\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_position_util}{PositionUtil}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} collinear(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p0, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p2);}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} interpolate(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& v1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& v2, \textcolor{keywordtype}{double} f);}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{34     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_position_util_ad4b661d253c4e8ac8053dd0203e64157}{angle\_between}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p3);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{static} std::pair<Position,double> intersection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vi);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \textcolor{keyword}{static} std::pair<Position,double> intersection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& so1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& so2, \textcolor{keywordtype}{double} dto, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& si1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& si2);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} closestPoint(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& b, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& x);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} closestPointOnSegment(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& b, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& x);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} behind(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& a, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& b, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& x);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} behind(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vo);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{keyword}{static} \textcolor{keywordtype}{int} passingDirection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vi);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keyword}{static} \textcolor{keywordtype}{int} dirForBehind(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& vi);}
+\DoxyCodeLine{51 \};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* POSITIONUTIL\_H\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{56 }
+
+\end{DoxyCode}

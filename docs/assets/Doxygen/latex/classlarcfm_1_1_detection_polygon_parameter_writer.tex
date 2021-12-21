@@ -1,0 +1,57 @@
+\hypertarget{classlarcfm_1_1_detection_polygon_parameter_writer}{}\doxysection{larcfm\+::Detection\+Polygon\+Parameter\+Writer Class Reference}
+\label{classlarcfm_1_1_detection_polygon_parameter_writer}\index{larcfm::DetectionPolygonParameterWriter@{larcfm::DetectionPolygonParameterWriter}}
+
+
+{\ttfamily \#include $<$Detection\+Polygon\+Parameter\+Writer.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_writer_a700d74c843b2115f07088a776868ef73}{write\+Polygon\+Detection}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ dlist, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$det, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$res)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_writer_ad0c43fe4176ba4e1d159b7902b798ea6}{write\+Polygon\+Detection}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ dlist, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$det, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$res, bool ordered)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains static methods to create \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} objects that contain information about \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instance definitions in a format consistent with \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader}{Detection\+Polygon\+Parameter\+Reader}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_writer_a700d74c843b2115f07088a776868ef73}\label{classlarcfm_1_1_detection_polygon_parameter_writer_a700d74c843b2115f07088a776868ef73}} 
+\index{larcfm::DetectionPolygonParameterWriter@{larcfm::DetectionPolygonParameterWriter}!writePolygonDetection@{writePolygonDetection}}
+\index{writePolygonDetection@{writePolygonDetection}!larcfm::DetectionPolygonParameterWriter@{larcfm::DetectionPolygonParameterWriter}}
+\doxysubsubsection{\texorpdfstring{writePolygonDetection()}{writePolygonDetection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Detection\+Polygon\+Parameter\+Writer\+::write\+Polygon\+Detection (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$}]{dlist,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{det,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{res }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} suitable to be read by read\+Polygon\+Detection() based on the supplied \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instances. 
+\begin{DoxyParams}{Parameters}
+{\em dlist} & list of \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instances -- this may be empty. det and res instances will be automatically added to the list (if they are not already in it) \\
+\hline
+{\em det} & detection instance -- this may be null \\
+\hline
+{\em res} & resolution instance -- this may be null Note\+: this may modify the instance identifiers if they are not already unique. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_writer_ad0c43fe4176ba4e1d159b7902b798ea6}\label{classlarcfm_1_1_detection_polygon_parameter_writer_ad0c43fe4176ba4e1d159b7902b798ea6}} 
+\index{larcfm::DetectionPolygonParameterWriter@{larcfm::DetectionPolygonParameterWriter}!writePolygonDetection@{writePolygonDetection}}
+\index{writePolygonDetection@{writePolygonDetection}!larcfm::DetectionPolygonParameterWriter@{larcfm::DetectionPolygonParameterWriter}}
+\doxysubsubsection{\texorpdfstring{writePolygonDetection()}{writePolygonDetection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} larcfm\+::\+Detection\+Polygon\+Parameter\+Writer\+::write\+Polygon\+Detection (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$}]{dlist,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{det,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{res,  }\item[{bool}]{ordered }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} suitable to be read by read\+Polygon\+Detection() based on the supplied \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instances. 
+\begin{DoxyParams}{Parameters}
+{\em dlist} & list of \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instances -- this may be empty. det and res instances will be automatically added to the list (if they are not already in it) \\
+\hline
+{\em det} & detection instance -- this may be null \\
+\hline
+{\em res} & resolution instance -- this may be null \\
+\hline
+{\em ordered} & true to modify detection identifiers to ensure they retain the input list\textquotesingle{}s ordering when decoded, false will only modify identifiers if they are not unique \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Detection\+Polygon\+Parameter\+Writer.\+h\item 
+Modules/\+ACCo\+RD/src/Detection\+Polygon\+Parameter\+Writer.\+cpp\end{DoxyCompactItemize}

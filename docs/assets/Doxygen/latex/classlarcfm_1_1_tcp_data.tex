@@ -1,0 +1,881 @@
+\hypertarget{classlarcfm_1_1_tcp_data}{}\doxysection{larcfm\+::Tcp\+Data Class Reference}
+\label{classlarcfm_1_1_tcp_data}\index{larcfm::TcpData@{larcfm::TcpData}}
+
+
+{\ttfamily \#include $<$Tcp\+Data.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{Way\+Type}} \{ {\bfseries Orig}
+, {\bfseries Virtual}
+, {\bfseries Alt\+Preserve}
+, {\bfseries UNKNOWN\+\_\+\+WT}
+ \}
+\item 
+enum \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{Trk\+Tcp\+Type}} \{ \newline
+{\bfseries NONE}
+, {\bfseries BOT}
+, {\bfseries EOT}
+, {\bfseries EOTBOT}
+, \newline
+{\bfseries MOT}
+, {\bfseries UNKNOWN\+\_\+\+TRK}
+ \}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a0f85dea3209c29c19de4a33e30dc6708}\label{classlarcfm_1_1_tcp_data_a0f85dea3209c29c19de4a33e30dc6708}} 
+enum {\bfseries Gs\+Tcp\+Type} \{ \newline
+{\bfseries NONEg}
+, {\bfseries BGS}
+, {\bfseries EGS}
+, {\bfseries EGSBGS}
+, \newline
+{\bfseries UNKNOWN\+\_\+\+GS}
+ \}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a5c48c8205409843252234a1061e7c2ab}\label{classlarcfm_1_1_tcp_data_a5c48c8205409843252234a1061e7c2ab}} 
+enum {\bfseries Vs\+Tcp\+Type} \{ \newline
+{\bfseries NONEv}
+, {\bfseries BVS}
+, {\bfseries EVS}
+, {\bfseries EVSBVS}
+, \newline
+{\bfseries UNKNOWN\+\_\+\+VS}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac6823904f84bb78b252488eb2ec98015}\label{classlarcfm_1_1_tcp_data_ac6823904f84bb78b252488eb2ec98015}} 
+{\bfseries Tcp\+Data} (const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&data)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a3bb130201544a7663575803df22bc939}\label{classlarcfm_1_1_tcp_data_a3bb130201544a7663575803df22bc939}} 
+std\+::string {\bfseries get\+Type\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a9f642469da61b743c5eea12cf9404f4c}\label{classlarcfm_1_1_tcp_data_a9f642469da61b743c5eea12cf9404f4c}} 
+bool {\bfseries is\+Virtual} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a91fe92ce7a607a1838cd80acb6330623}\label{classlarcfm_1_1_tcp_data_a91fe92ce7a607a1838cd80acb6330623}} 
+bool {\bfseries is\+Original} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a54bd9f1c38fb69ad0a56f1da45f283f8}\label{classlarcfm_1_1_tcp_data_a54bd9f1c38fb69ad0a56f1da45f283f8}} 
+bool {\bfseries is\+Alt\+Preserve} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa2470734bd9de59088daf03cc38a162c}\label{classlarcfm_1_1_tcp_data_aa2470734bd9de59088daf03cc38a162c}} 
+void {\bfseries set\+Type} (const std\+::string \&t)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a7f8498b7c6f118f7cd57b15b798bf906}{copy}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad371f17dc7823f221718c352c380f5cd}{set\+Virtual}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a3b6c2bd493ffba7b8936c5602b2482f4}{set\+Original}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a555531044652eff0b5b5b09f60d6fddb}{set\+Alt\+Preserve}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abeb5db5d65b96bedbf7046616915e6f2}{reset}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a8f8a29c158c61f5a26c2931c602c0ab9}\label{classlarcfm_1_1_tcp_data_a8f8a29c158c61f5a26c2931c602c0ab9}} 
+std\+::string {\bfseries get\+Trk\+Type\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a6aff806e1ec62daa0c3ffa7578f42d34}\label{classlarcfm_1_1_tcp_data_a6aff806e1ec62daa0c3ffa7578f42d34}} 
+std\+::string {\bfseries get\+Gs\+Type\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a99cdf2dcd9f351961bded6c7191d9d59}\label{classlarcfm_1_1_tcp_data_a99cdf2dcd9f351961bded6c7191d9d59}} 
+std\+::string {\bfseries get\+Vs\+Type\+String} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a5b7ac2c3e4a2c4de35ff5a0e02d9f889}{get\+Radius\+Signed}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a64f073b0872efff809f450c752ab1a4f}\label{classlarcfm_1_1_tcp_data_a64f073b0872efff809f450c752ab1a4f}} 
+int {\bfseries turn\+Dir} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a212172dea7021e2588c0b56449b5ca15}\label{classlarcfm_1_1_tcp_data_a212172dea7021e2588c0b56449b5ca15}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries set\+Radius\+Signed} (double r)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a7d6979a95c3d7c2a707267df1619a312}\label{classlarcfm_1_1_tcp_data_a7d6979a95c3d7c2a707267df1619a312}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries turn\+Center} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ae2f7a6b134872a60ac0490d0d87ce544}\label{classlarcfm_1_1_tcp_data_ae2f7a6b134872a60ac0490d0d87ce544}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries set\+Turn\+Center} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&center)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac2c7f4f45b69a45d4639945691b591ec}\label{classlarcfm_1_1_tcp_data_ac2c7f4f45b69a45d4639945691b591ec}} 
+double {\bfseries get\+Gs\+Accel} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac51f708df7fda7ba6a53b82de9c0e6c1}\label{classlarcfm_1_1_tcp_data_ac51f708df7fda7ba6a53b82de9c0e6c1}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries set\+Gs\+Accel} (double ga)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a2687a7afecf467ff85eb2b8fc410aadb}\label{classlarcfm_1_1_tcp_data_a2687a7afecf467ff85eb2b8fc410aadb}} 
+double {\bfseries get\+Vs\+Accel} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ab510229563aecb320545fbede9489539}{set\+Vs\+Accel}} (double va)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a27f6d57e9bae7bdd53d8509fed518158}{set\+Velocity\+Init}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad32bf4387b6658d8c54c9e4763295121}\label{classlarcfm_1_1_tcp_data_ad32bf4387b6658d8c54c9e4763295121}} 
+std\+::string {\bfseries get\+Information} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abab1c3e3051255d10f594eab1b637143}\label{classlarcfm_1_1_tcp_data_abab1c3e3051255d10f594eab1b637143}} 
+void {\bfseries set\+Information} (const std\+::string \&info)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a63606160a0fb7c4fcc5a12877ce95c32}\label{classlarcfm_1_1_tcp_data_a63606160a0fb7c4fcc5a12877ce95c32}} 
+void {\bfseries append\+Information} (const std\+::string \&info)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ab1c66ab42853aa59de928be3a3930cb2}\label{classlarcfm_1_1_tcp_data_ab1c66ab42853aa59de928be3a3930cb2}} 
+void {\bfseries append\+Information\+No\+Duplication} (const std\+::string \&info)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_acc75d8baf2a39de7521766b908db080d}{set\+BOT}} (double signed\+Radius, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&center)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1eee6847fc1b1790472dec2f3c4bc5a9}\label{classlarcfm_1_1_tcp_data_a1eee6847fc1b1790472dec2f3c4bc5a9}} 
+void {\bfseries clear\+Trk} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad21fbc03b11f27fd5b0b2ecd1ea94719}\label{classlarcfm_1_1_tcp_data_ad21fbc03b11f27fd5b0b2ecd1ea94719}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+BOT} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a5fb82d2df31ec5a9933adcbc28cce166}\label{classlarcfm_1_1_tcp_data_a5fb82d2df31ec5a9933adcbc28cce166}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+EOT} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_afacc4fd3ed4be921593eb55068ad1cdb}\label{classlarcfm_1_1_tcp_data_afacc4fd3ed4be921593eb55068ad1cdb}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+BGS} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af6e633cbd5d954e19508af65cf1ac032}\label{classlarcfm_1_1_tcp_data_af6e633cbd5d954e19508af65cf1ac032}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+EGS} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a53c62ec7795e1a1812b4782899f572f5}\label{classlarcfm_1_1_tcp_data_a53c62ec7795e1a1812b4782899f572f5}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+BVS} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a43ee20d5e60839aef9e35228e29d0a1b}\label{classlarcfm_1_1_tcp_data_a43ee20d5e60839aef9e35228e29d0a1b}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries clear\+EVS} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ae16cd1bab30fd24a8478cf0a400f5e1e}{set\+EOT}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a16f7a79ec786db9c86438825b92327f9}{add\+BOT}} (double signed\+Radius, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} center)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a78ffadcaccf990c2718fafbe9173aad9}{add\+EOT}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a07c16e48dc075fa239abe727487cef6a}{set\+EOTBOT}} (double signed\+Radius, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&center)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a841e2b20602accdbbec8374f0bad345d}\label{classlarcfm_1_1_tcp_data_a841e2b20602accdbbec8374f0bad345d}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries set\+MOT} (bool b)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad55c87dd5b180ddecf5c8378b6b3446a}{set\+BGS}} (double a)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa7e344159211b453d0550ebc8eef96da}{add\+EGS}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ab76caa50ab4a95f8521f56970c4cbf45}\label{classlarcfm_1_1_tcp_data_ab76caa50ab4a95f8521f56970c4cbf45}} 
+void {\bfseries clear\+Gs} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af724ee28a19f0f3e1c37299bb163c704}{set\+EGS}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af1dda2d56350ec024eeafb902e3ea5e9}{set\+EGSBGS}} (double a)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a807d497f1fb1295ac50a6cdcc04223da}{set\+BVS}} (double a)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a630e5fe4a68a67031c84a80a7878d11d}\label{classlarcfm_1_1_tcp_data_a630e5fe4a68a67031c84a80a7878d11d}} 
+void {\bfseries clear\+Vs} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a1cf343924626c85223f745ac3ba79fda}{set\+EVS}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af0c8ca4d45c338198c4d117ce31ac59d}{add\+EVS}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a3855ecd086eb72561dfb98275f10bcca}{set\+EVSBVS}} (double a)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abdb230c6814360ac9660243ce5c47119}\label{classlarcfm_1_1_tcp_data_abdb230c6814360ac9660243ce5c47119}} 
+bool {\bfseries is\+Invalid} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ab13d913bfe67c18cb46837cc9ba8a2b9}{is\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa271332e80aa344694e2c98922a17cef}{is\+Trk\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a805732b3940471d62a27f4871217f066}{is\+BOT}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_afc4ba1bec6879cca07fd761e18f0fd32}{is\+EOT}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af919c4832a20821344e2dc85719d6eb4}\label{classlarcfm_1_1_tcp_data_af919c4832a20821344e2dc85719d6eb4}} 
+bool {\bfseries is\+MOT} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ac294d324638b4a1774825f9d3592f7e6}{is\+Gs\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a7f79bc42b1757612dbefba6f96941ca3}{is\+EGSBGS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a372aac49509066ef50c38beded7744fe}{is\+BGS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a36c4a169837932361d0641ef1161f178}{is\+EGS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a876af646b8dde84dd7f8df51d358ce46}{is\+EVSBVS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aadeed51fd6c0494c797bb1641459423e}{is\+Vs\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abd48dd60df8191f50afd6140d4f1fe6e}{is\+BVS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_acdb28dd12e9632e8226cb7f21dd7d205}{is\+EVS}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abb63dcbc9d5e6d6795a7cd32ad85918f}{is\+Begin\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abd6ce54f6fe37d08292dfe8f18316942}{is\+End\+TCP}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a30397f94c8868b252d18a7ef8ef9de74}{is\+Defined}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}{mergeable}} (const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&point) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a4fc72931862be9e897cc5c501dfa25b0}{merge\+TCPData}} (const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&point) const
+\item 
+std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}}, std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a34c1634c49321d5078682ba8442b2246}{parse\+Meta\+Data\+Label}} (const std\+::string \&tlabel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad9cd4cc7c867e099bac64c8b4dfda800}\label{classlarcfm_1_1_tcp_data_ad9cd4cc7c867e099bac64c8b4dfda800}} 
+std\+::string {\bfseries tcp\+Type\+String} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a49ec32fd144da0620a14779be7f5d543}{meta\+Data\+Label}} (int precision) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a165dbe51133485a66455a93d77048846}\label{classlarcfm_1_1_tcp_data_a165dbe51133485a66455a93d77048846}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_afc5acb921760328db8f3f748d48c297e}\label{classlarcfm_1_1_tcp_data_afc5acb921760328db8f3f748d48c297e}} 
+std\+::string {\bfseries to\+String\+Tcp\+Type} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a0e15d25525058e1f1e7971959d858fbb}\label{classlarcfm_1_1_tcp_data_a0e15d25525058e1f1e7971959d858fbb}} 
+static std\+::string {\bfseries to\+String\+Way\+Type} (\mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{Way\+Type}} t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a74793edebb0605ba49ee071fb187f6e4}\label{classlarcfm_1_1_tcp_data_a74793edebb0605ba49ee071fb187f6e4}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{Tcp\+Data\+::\+Way\+Type}} {\bfseries value\+Of\+Way\+Type} (const std\+::string \&t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a88a42075b652c208ccbf3c136cf7281e}\label{classlarcfm_1_1_tcp_data_a88a42075b652c208ccbf3c136cf7281e}} 
+static std\+::string {\bfseries to\+String\+Trk\+Type} (\mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{Trk\+Tcp\+Type}} t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa29fa09b3b4f7e537fa2179178e275bd}\label{classlarcfm_1_1_tcp_data_aa29fa09b3b4f7e537fa2179178e275bd}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{Tcp\+Data\+::\+Trk\+Tcp\+Type}} {\bfseries value\+Of\+Trk\+Type} (const std\+::string \&t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a193375e57cedd99dfdc424e01b26515a}\label{classlarcfm_1_1_tcp_data_a193375e57cedd99dfdc424e01b26515a}} 
+static std\+::string {\bfseries to\+String\+Gs\+Type} (Gs\+Tcp\+Type t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a58cd03025b44efd47fd15f2e99405f53}\label{classlarcfm_1_1_tcp_data_a58cd03025b44efd47fd15f2e99405f53}} 
+static Tcp\+Data\+::\+Gs\+Tcp\+Type {\bfseries value\+Of\+Gs\+Type} (const std\+::string \&t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1a0bf1c6e74cb57fb9a3306a5d10c56b}\label{classlarcfm_1_1_tcp_data_a1a0bf1c6e74cb57fb9a3306a5d10c56b}} 
+static std\+::string {\bfseries to\+String\+Vs\+Type} (Vs\+Tcp\+Type t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac8a6bf8e708f36fd15766271161e1f71}\label{classlarcfm_1_1_tcp_data_ac8a6bf8e708f36fd15766271161e1f71}} 
+static Tcp\+Data\+::\+Vs\+Tcp\+Type {\bfseries value\+Of\+Vs\+Type} (const std\+::string \&t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af3afbec252ebbfa163e4b34b8b971293}\label{classlarcfm_1_1_tcp_data_af3afbec252ebbfa163e4b34b8b971293}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries make\+Full} (const std\+::string \&ty, const std\+::string \&tcp\+\_\+trk, const std\+::string \&tcp\+\_\+gs, const std\+::string \&tcp\+\_\+vs, double radius\+Signed, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&center, double accel\+\_\+gs, double accel\+\_\+vs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a6ab4e81ddb675fb16d35191a0453976b}\label{classlarcfm_1_1_tcp_data_a6ab4e81ddb675fb16d35191a0453976b}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries make\+Invalid} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa85693ab3767466a887829088d99cf1c}{make\+Orig}} ()
+\item 
+static std\+::string \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa2b451a3ab762343defdb39b84bd0ac4}{full\+Name}} (const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&d)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad8a3179a56b00f0b0e6e079a94e61cc5}\label{classlarcfm_1_1_tcp_data_ad8a3179a56b00f0b0e6e079a94e61cc5}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}}, \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} $>$ {\bfseries parse\+LL} (const std\+::string \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aece6c040acb3c855511221c9951665c5}\label{classlarcfm_1_1_tcp_data_aece6c040acb3c855511221c9951665c5}} 
+static std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}}, \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} $>$ {\bfseries parse\+XYZ} (const std\+::string \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a07e2c3bc7f233543bc34b5918babcac3}\label{classlarcfm_1_1_tcp_data_a07e2c3bc7f233543bc34b5918babcac3}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{Tcp\+Data\+::\+Trk\+Tcp\+Type}} {\bfseries to\+Trk\+TCP} (int ty)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_acc1eb48fd206c2d09ca04883553c0b51}\label{classlarcfm_1_1_tcp_data_acc1eb48fd206c2d09ca04883553c0b51}} 
+static Tcp\+Data\+::\+Gs\+Tcp\+Type {\bfseries to\+Gs\+TCP} (int ty)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_acfed893ea37a300617ea281c4c731a2c}\label{classlarcfm_1_1_tcp_data_acfed893ea37a300617ea281c4c731a2c}} 
+static Tcp\+Data\+::\+Vs\+Tcp\+Type {\bfseries to\+Vs\+TCP} (int ty)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac3960121cf6da03044f846ddf3e54d9c}\label{classlarcfm_1_1_tcp_data_ac3960121cf6da03044f846ddf3e54d9c}} 
+static const int {\bfseries TCP\+\_\+\+OUTPUT\+\_\+\+COLUMNS} = 20
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a9f2f3062cb9ba42af0064ad5e5caffc9}\label{classlarcfm_1_1_tcp_data_a9f2f3062cb9ba42af0064ad5e5caffc9}} 
+static const int {\bfseries MIN\+\_\+\+OUTPUT\+\_\+\+COLUMNS} = 5
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a4682bb4ec882089e9e514e6074a3346d}\label{classlarcfm_1_1_tcp_data_a4682bb4ec882089e9e514e6074a3346d}} 
+static bool {\bfseries mot\+Flag\+In\+Info} = false
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aaa77d5bf818e672722fb75b59982b009}\label{classlarcfm_1_1_tcp_data_aaa77d5bf818e672722fb75b59982b009}} 
+static std\+::string {\bfseries MOTflag} = \char`\"{}.$<$MOT$>$.\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a67325594d5d2f430aab55093863c7bed}\label{classlarcfm_1_1_tcp_data_a67325594d5d2f430aab55093863c7bed}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{Way\+Type}} {\bfseries ty}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ab215cc021db16079f9ba768d83e679a2}\label{classlarcfm_1_1_tcp_data_ab215cc021db16079f9ba768d83e679a2}} 
+\mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{Trk\+Tcp\+Type}} {\bfseries tcp\+Trk}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af385e85773498bcca1b27a3010f04dd1}\label{classlarcfm_1_1_tcp_data_af385e85773498bcca1b27a3010f04dd1}} 
+Gs\+Tcp\+Type {\bfseries tcp\+Gs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_adfb26b6bc20466fd629224e356d32ab6}\label{classlarcfm_1_1_tcp_data_adfb26b6bc20466fd629224e356d32ab6}} 
+Vs\+Tcp\+Type {\bfseries tcp\+Vs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a6fe7eda8775cf2233ecaddfd4ec550c2}\label{classlarcfm_1_1_tcp_data_a6fe7eda8775cf2233ecaddfd4ec550c2}} 
+double {\bfseries radius\+Signed}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1a25c6a3629ad5dc3f2082f26744d7d1}\label{classlarcfm_1_1_tcp_data_a1a25c6a3629ad5dc3f2082f26744d7d1}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries center\+Turn}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1ee4f68c3ac3e9b58b0784173c081842}\label{classlarcfm_1_1_tcp_data_a1ee4f68c3ac3e9b58b0784173c081842}} 
+double {\bfseries accel\+Gs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1c921e9d498662f50235cb5648d08614}\label{classlarcfm_1_1_tcp_data_a1c921e9d498662f50235cb5648d08614}} 
+double {\bfseries accel\+Vs}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a88239a29ebb81aedadeb048610e2d4ef}\label{classlarcfm_1_1_tcp_data_a88239a29ebb81aedadeb048610e2d4ef}} 
+std\+::string {\bfseries information}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A data structure to maintain certain information related to a trajectory change point (TCP). Typically, this information is associated with a \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} through a \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}. The major purpose of this class is to store the relevant TCP information (e.\+g., status information, acceleration values, etc.).
+
+Possible types of points. ~\newline
+ 
+\begin{DoxyItemize}
+\item \char`\"{}\+Orig\char`\"{} are from the original plan with no change 
+\item \char`\"{}\+Virtual\char`\"{} are temporary points, generally interpolated points (long legs are broken into segments). Virtual points will be silently over-\/written, and never register as overlapping with other points. ~\newline
+ Virtual points may be deleted unexpectedly. Not for general use. Virtual points are used for to conflict detection and not expected to be returned to the pilot or plane\textquotesingle{}s automation. 
+\item \char`\"{}\+Alt\+Preserve\char`\"{} are marked points used in trajectory generation (\mbox{\hyperlink{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}{Traj\+Gen.\+make\+Kinematic\+Plan()}}) 
+\end{DoxyItemize}
+
+Each point can be a turn point (essentially a horizontal acceleration point), a ground speed acceleration point, or a vertical speed acceleration point. These points are indicated by either being the beginning of an acceleration zone or the end of an acceleration zone. Thus, there are methods to indicate the beginning of a turn (\mbox{\hyperlink{classlarcfm_1_1_tcp_data_a805732b3940471d62a27f4871217f066}{is\+BOT}}), or the end of the a turn (\mbox{\hyperlink{classlarcfm_1_1_tcp_data_afc4ba1bec6879cca07fd761e18f0fd32}{is\+EOT}}), similarly for ground speed of vertical speed.
+
+\doxysubsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}\label{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!TrkTcpType@{TrkTcpType}}
+\index{TrkTcpType@{TrkTcpType}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{TrkTcpType}{TrkTcpType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{larcfm\+::\+Tcp\+Data\+::\+Trk\+Tcp\+Type}}}
+
+UNKNOWN values should ONLY be used when parsing a string representation fails \mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}\label{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!WayType@{WayType}}
+\index{WayType@{WayType}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{WayType}{WayType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{larcfm\+::\+Tcp\+Data\+::\+Way\+Type}}}
+
+Major types of Nav\+Points, UNKNOWN\+\_\+\+WT only used when parsing a string representation 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a16f7a79ec786db9c86438825b92327f9}\label{classlarcfm_1_1_tcp_data_a16f7a79ec786db9c86438825b92327f9}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!addBOT@{addBOT}}
+\index{addBOT@{addBOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{addBOT()}{addBOT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::add\+BOT (\begin{DoxyParamCaption}\item[{double}]{signed\+Radius,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{center }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}beginning of turn\char`\"{} point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em signed\+Radius} & right turns have a positive radius, left turns have a negative radius \\
+\hline
+{\em center} & center of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the current \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa7e344159211b453d0550ebc8eef96da}\label{classlarcfm_1_1_tcp_data_aa7e344159211b453d0550ebc8eef96da}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!addEGS@{addEGS}}
+\index{addEGS@{addEGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{addEGS()}{addEGS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::add\+EGS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as an \char`\"{}end ground speed\char`\"{} point, either a EGS or an EGSBGS
+
+\begin{DoxyReturn}{Returns}
+a reference to the current \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a78ffadcaccf990c2718fafbe9173aad9}\label{classlarcfm_1_1_tcp_data_a78ffadcaccf990c2718fafbe9173aad9}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!addEOT@{addEOT}}
+\index{addEOT@{addEOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{addEOT()}{addEOT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::add\+EOT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as an \char`\"{}end of turn\char`\"{} point, either an EOTBOT or an EOT
+
+\begin{DoxyReturn}{Returns}
+a reference to the current \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af0c8ca4d45c338198c4d117ce31ac59d}\label{classlarcfm_1_1_tcp_data_af0c8ca4d45c338198c4d117ce31ac59d}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!addEVS@{addEVS}}
+\index{addEVS@{addEVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{addEVS()}{addEVS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::add\+EVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as an \char`\"{}end vertical speed\char`\"{} point, either a EVS or an EVSBVS
+
+\begin{DoxyReturn}{Returns}
+a reference to the current \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a7f8498b7c6f118f7cd57b15b798bf906}\label{classlarcfm_1_1_tcp_data_a7f8498b7c6f118f7cd57b15b798bf906}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!copy@{copy}}
+\index{copy@{copy}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} from the current \begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa2b451a3ab762343defdb39b84bd0ac4}\label{classlarcfm_1_1_tcp_data_aa2b451a3ab762343defdb39b84bd0ac4}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!fullName@{fullName}}
+\index{fullName@{fullName}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{fullName()}{fullName()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Tcp\+Data\+::full\+Name (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&}]{p,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a string including both the point name (if set) and any tcp metadata represented as a string. If neither exists, return the empty string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & associated \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \\
+\hline
+{\em d} & \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the full label 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a5b7ac2c3e4a2c4de35ff5a0e02d9f889}\label{classlarcfm_1_1_tcp_data_a5b7ac2c3e4a2c4de35ff5a0e02d9f889}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!getRadiusSigned@{getRadiusSigned}}
+\index{getRadiusSigned@{getRadiusSigned}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{getRadiusSigned()}{getRadiusSigned()}}
+{\footnotesize\ttfamily double larcfm\+::\+Tcp\+Data\+::get\+Radius\+Signed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get signed radius. Note\+: a return value of 0 indicates no specified radius \begin{DoxyReturn}{Returns}
+radius 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abb63dcbc9d5e6d6795a7cd32ad85918f}\label{classlarcfm_1_1_tcp_data_abb63dcbc9d5e6d6795a7cd32ad85918f}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isBeginTCP@{isBeginTCP}}
+\index{isBeginTCP@{isBeginTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isBeginTCP()}{isBeginTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+Begin\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is one of the beginning TCP points, including the combined points (e.\+g., EOTBOT)
+
+\begin{DoxyReturn}{Returns}
+beginning TCP point status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a372aac49509066ef50c38beded7744fe}\label{classlarcfm_1_1_tcp_data_a372aac49509066ef50c38beded7744fe}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isBGS@{isBGS}}
+\index{isBGS@{isBGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isBGS()}{isBGS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+BGS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is a beginning of ground speed change point \begin{DoxyReturn}{Returns}
+BGS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a805732b3940471d62a27f4871217f066}\label{classlarcfm_1_1_tcp_data_a805732b3940471d62a27f4871217f066}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isBOT@{isBOT}}
+\index{isBOT@{isBOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isBOT()}{isBOT()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+BOT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is the start of a turn \begin{DoxyReturn}{Returns}
+BOT status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abd48dd60df8191f50afd6140d4f1fe6e}\label{classlarcfm_1_1_tcp_data_abd48dd60df8191f50afd6140d4f1fe6e}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isBVS@{isBVS}}
+\index{isBVS@{isBVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isBVS()}{isBVS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+BVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is the start of a vs change \begin{DoxyReturn}{Returns}
+BVS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a30397f94c8868b252d18a7ef8ef9de74}\label{classlarcfm_1_1_tcp_data_a30397f94c8868b252d18a7ef8ef9de74}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isDefined@{isDefined}}
+\index{isDefined@{isDefined}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isDefined()}{isDefined()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+Defined (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return true if, for the given type, this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} has values for the necessary fields \begin{DoxyReturn}{Returns}
+true, if acceleration fields are defined 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a36c4a169837932361d0641ef1161f178}\label{classlarcfm_1_1_tcp_data_a36c4a169837932361d0641ef1161f178}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEGS@{isEGS}}
+\index{isEGS@{isEGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEGS()}{isEGS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+EGS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is a end of ground speed change point \begin{DoxyReturn}{Returns}
+EGS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a7f79bc42b1757612dbefba6f96941ca3}\label{classlarcfm_1_1_tcp_data_a7f79bc42b1757612dbefba6f96941ca3}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEGSBGS@{isEGSBGS}}
+\index{isEGSBGS@{isEGSBGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEGSBGS()}{isEGSBGS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+EGSBGS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is a beginning of ground speed change point \begin{DoxyReturn}{Returns}
+BGS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abd6ce54f6fe37d08292dfe8f18316942}\label{classlarcfm_1_1_tcp_data_abd6ce54f6fe37d08292dfe8f18316942}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEndTCP@{isEndTCP}}
+\index{isEndTCP@{isEndTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEndTCP()}{isEndTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+End\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is one of the ending TCP points, including the combined points (e.\+g., EOTBOT)
+
+\begin{DoxyReturn}{Returns}
+ending TCP point status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_afc4ba1bec6879cca07fd761e18f0fd32}\label{classlarcfm_1_1_tcp_data_afc4ba1bec6879cca07fd761e18f0fd32}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEOT@{isEOT}}
+\index{isEOT@{isEOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEOT()}{isEOT()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+EOT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is the end of a turn \begin{DoxyReturn}{Returns}
+EOT status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_acdb28dd12e9632e8226cb7f21dd7d205}\label{classlarcfm_1_1_tcp_data_acdb28dd12e9632e8226cb7f21dd7d205}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEVS@{isEVS}}
+\index{isEVS@{isEVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEVS()}{isEVS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+EVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is the end of a vs change \begin{DoxyReturn}{Returns}
+EVS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a876af646b8dde84dd7f8df51d358ce46}\label{classlarcfm_1_1_tcp_data_a876af646b8dde84dd7f8df51d358ce46}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isEVSBVS@{isEVSBVS}}
+\index{isEVSBVS@{isEVSBVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isEVSBVS()}{isEVSBVS()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+EVSBVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is the start of a vs change \begin{DoxyReturn}{Returns}
+BVS status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ac294d324638b4a1774825f9d3592f7e6}\label{classlarcfm_1_1_tcp_data_ac294d324638b4a1774825f9d3592f7e6}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isGsTCP@{isGsTCP}}
+\index{isGsTCP@{isGsTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isGsTCP()}{isGsTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+Gs\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is a ground speed point \begin{DoxyReturn}{Returns}
+groundspeed tcp status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ab13d913bfe67c18cb46837cc9ba8a2b9}\label{classlarcfm_1_1_tcp_data_ab13d913bfe67c18cb46837cc9ba8a2b9}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isTCP@{isTCP}}
+\index{isTCP@{isTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isTCP()}{isTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is a TCP \begin{DoxyReturn}{Returns}
+tcp status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa271332e80aa344694e2c98922a17cef}\label{classlarcfm_1_1_tcp_data_aa271332e80aa344694e2c98922a17cef}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isTrkTCP@{isTrkTCP}}
+\index{isTrkTCP@{isTrkTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isTrkTCP()}{isTrkTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+Trk\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is part of a turn \begin{DoxyReturn}{Returns}
+track tcp status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aadeed51fd6c0494c797bb1641459423e}\label{classlarcfm_1_1_tcp_data_aadeed51fd6c0494c797bb1641459423e}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!isVsTCP@{isVsTCP}}
+\index{isVsTCP@{isVsTCP}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{isVsTCP()}{isVsTCP()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::is\+Vs\+TCP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+true if this point is part of a vs change \begin{DoxyReturn}{Returns}
+vertical speed tcp status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_aa85693ab3767466a887829088d99cf1c}\label{classlarcfm_1_1_tcp_data_aa85693ab3767466a887829088d99cf1c}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!makeOrig@{makeOrig}}
+\index{makeOrig@{makeOrig}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{makeOrig()}{makeOrig()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::make\+Orig (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make a new \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object with default parameters. This is essentially a factory method for the no parameter constructor. Sometimes it is convenient to have a constructor.
+
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object with default parameters. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}\label{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!mergeable@{mergeable}}
+\index{mergeable@{mergeable}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{mergeable()}{mergeable()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Tcp\+Data\+::mergeable (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&}]{point }\end{DoxyParamCaption}) const}
+
+Can this point be merged with the given point p? ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em point} & the other point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the points can be merged.
+\end{DoxyReturn}
+Can this point be merged with the given point p? Merged points only apply to TCP points. 
+\begin{DoxyParams}{Parameters}
+{\em point} & the other point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the points can be merged. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a4fc72931862be9e897cc5c501dfa25b0}\label{classlarcfm_1_1_tcp_data_a4fc72931862be9e897cc5c501dfa25b0}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!mergeTCPData@{mergeTCPData}}
+\index{mergeTCPData@{mergeTCPData}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{mergeTCPData()}{mergeTCPData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::merge\+TCPData (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&}]{point }\end{DoxyParamCaption}) const}
+
+Creates a new point that is the merger of the this point and the given point. Assumes that \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}{mergeable()}} on the two points would return true, if not, then approximately the original point is returned. 
+
+Merging rules\+: 
+\begin{DoxyItemize}
+\item merge\+TCPInfo() is commutative 
+\item If both points are linear points, then the points are merged. 
+\item If one point is a linear point (aka, not a TCP), then the TCP info (velocity and acceleration) from the TCP point is used. 
+\item If both points are TCP (aka acceleration points) of different types (Trk, Gs, Vs), then the points should merge without an issue 
+\item If both points are TCP (aka acceleration points) of the same type (Trk, Gs, or Vs), but one is a beginning point and one is an ending point, then the resulting point should be a combined point (e.\+g., EOTBOT), and the TCP information should be the information from the beginning point. 
+\item If both points are TCP \char`\"{}begin\char`\"{} points, then a message is provided if they have different source positions 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & the other point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new point that is the merger of the two points.
+\end{DoxyReturn}
+Creates a new point that is the merger of the this point and the given point. Assumes that \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}{mergeable()}} on the two points would return true, if not, then approximately the original point is returned. 
+
+Merging rules\+: 
+\begin{DoxyItemize}
+\item merge\+TCPInfo() is commutative 
+\item If both points are linear points, then the points are merged. 
+\item If one point is a linear point (aka, not a TCP), then the TCP info (velocity and acceleration) from the TCP point is used. 
+\item If both points are TCP (aka acceleration points) of different types (Trk, Gs, Vs), then the points should merge without an issue, note\+: they are required to have the same \char`\"{}velocity in\char`\"{} 
+\item If both points are TCP (aka acceleration points) of the same type (Trk, Gs, or Vs), then the resulting point should be a combined point (e.\+g., EOTBOT), and the TCP information should be the information from the beginning point. 
+\item If both points are TCP \char`\"{}begin\char`\"{} points, then a message is provided if they have different source positions 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & the other point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new point that is the merger of the two points. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a49ec32fd144da0620a14779be7f5d543}\label{classlarcfm_1_1_tcp_data_a49ec32fd144da0620a14779be7f5d543}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!metaDataLabel@{metaDataLabel}}
+\index{metaDataLabel@{metaDataLabel}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{metaDataLabel()}{metaDataLabel()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Tcp\+Data\+::meta\+Data\+Label (\begin{DoxyParamCaption}\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+Return a string representation of TCP meta data (or the empty string if none)
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & time of the associated \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \\
+\hline
+{\em precision} & number of digits of precision \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a34c1634c49321d5078682ba8442b2246}\label{classlarcfm_1_1_tcp_data_a34c1634c49321d5078682ba8442b2246}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!parseMetaDataLabel@{parseMetaDataLabel}}
+\index{parseMetaDataLabel@{parseMetaDataLabel}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{parseMetaDataLabel()}{parseMetaDataLabel()}}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}}, std\+::string $>$ larcfm\+::\+Tcp\+Data\+::parse\+Meta\+Data\+Label (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{tlabel }\end{DoxyParamCaption})}
+
+This parses the label generated for TCP types to reconstruct the meta-\/data of the point. ~\newline
+ It returns either the same point (if no significant data is in the label) or a fully reconstructed TCP type. The reconstructed TCP will have a label field that does not contain any TCP metadata -- you will need to call name() or tcp\+Label() to retrieve the full string. If it is detected that this string uses the old metatdata format, this returns an invalid \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}}\+:\+: \mbox{\Hypertarget{classlarcfm_1_1_tcp_data_abeb5db5d65b96bedbf7046616915e6f2}\label{classlarcfm_1_1_tcp_data_abeb5db5d65b96bedbf7046616915e6f2}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!reset@{reset}}
+\index{reset@{reset}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void larcfm\+::\+Tcp\+Data\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reset the \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} into a blank configuration, except for the source position, source time, and linear index, these are retained. \mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a555531044652eff0b5b5b09f60d6fddb}\label{classlarcfm_1_1_tcp_data_a555531044652eff0b5b5b09f60d6fddb}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setAltPreserve@{setAltPreserve}}
+\index{setAltPreserve@{setAltPreserve}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setAltPreserve()}{setAltPreserve()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+Alt\+Preserve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this object to \char`\"{}\+Alt\+Preserve\char`\"{} \begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad55c87dd5b180ddecf5c8378b6b3446a}\label{classlarcfm_1_1_tcp_data_ad55c87dd5b180ddecf5c8378b6b3446a}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setBGS@{setBGS}}
+\index{setBGS@{setBGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setBGS()}{setBGS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+BGS (\begin{DoxyParamCaption}\item[{double}]{a }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}beginning of ground speed change\char`\"{} point 
+\begin{DoxyParams}{Parameters}
+{\em a} & acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_acc75d8baf2a39de7521766b908db080d}\label{classlarcfm_1_1_tcp_data_acc75d8baf2a39de7521766b908db080d}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setBOT@{setBOT}}
+\index{setBOT@{setBOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setBOT()}{setBOT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+BOT (\begin{DoxyParamCaption}\item[{double}]{signed\+Radius,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{center }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}beginning of turn\char`\"{} point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em signed\+Radius} & right turns have a positive radius, left turns have a negative radius \\
+\hline
+{\em center} & center of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the current \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a807d497f1fb1295ac50a6cdcc04223da}\label{classlarcfm_1_1_tcp_data_a807d497f1fb1295ac50a6cdcc04223da}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setBVS@{setBVS}}
+\index{setBVS@{setBVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setBVS()}{setBVS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+BVS (\begin{DoxyParamCaption}\item[{double}]{a }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}beginning of vertical speed change\char`\"{} point 
+\begin{DoxyParams}{Parameters}
+{\em a} & acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af724ee28a19f0f3e1c37299bb163c704}\label{classlarcfm_1_1_tcp_data_af724ee28a19f0f3e1c37299bb163c704}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEGS@{setEGS}}
+\index{setEGS@{setEGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEGS()}{setEGS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EGS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}ending of ground speed change\char`\"{} point
+
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_af1dda2d56350ec024eeafb902e3ea5e9}\label{classlarcfm_1_1_tcp_data_af1dda2d56350ec024eeafb902e3ea5e9}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEGSBGS@{setEGSBGS}}
+\index{setEGSBGS@{setEGSBGS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEGSBGS()}{setEGSBGS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EGSBGS (\begin{DoxyParamCaption}\item[{double}]{a }\end{DoxyParamCaption})}
+
+Set this point as a combined \char`\"{}end of ground speed change and beginning of ground speed change\char`\"{} point
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ae16cd1bab30fd24a8478cf0a400f5e1e}\label{classlarcfm_1_1_tcp_data_ae16cd1bab30fd24a8478cf0a400f5e1e}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEOT@{setEOT}}
+\index{setEOT@{setEOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEOT()}{setEOT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EOT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as a \char`\"{}end of turn\char`\"{} point.
+
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a07c16e48dc075fa239abe727487cef6a}\label{classlarcfm_1_1_tcp_data_a07c16e48dc075fa239abe727487cef6a}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEOTBOT@{setEOTBOT}}
+\index{setEOTBOT@{setEOTBOT}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEOTBOT()}{setEOTBOT()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EOTBOT (\begin{DoxyParamCaption}\item[{double}]{signed\+Radius,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{center }\end{DoxyParamCaption})}
+
+Set this point as a combined \char`\"{}end of turn and beginning of turn\char`\"{} point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em signed\+Radius} & radius \\
+\hline
+{\em center} & the center of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a1cf343924626c85223f745ac3ba79fda}\label{classlarcfm_1_1_tcp_data_a1cf343924626c85223f745ac3ba79fda}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEVS@{setEVS}}
+\index{setEVS@{setEVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEVS()}{setEVS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EVS (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this point as an \char`\"{}ending of vertical speed change\char`\"{} point
+
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a3855ecd086eb72561dfb98275f10bcca}\label{classlarcfm_1_1_tcp_data_a3855ecd086eb72561dfb98275f10bcca}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setEVSBVS@{setEVSBVS}}
+\index{setEVSBVS@{setEVSBVS}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setEVSBVS()}{setEVSBVS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+EVSBVS (\begin{DoxyParamCaption}\item[{double}]{a }\end{DoxyParamCaption})}
+
+Set this point as a combined \char`\"{}ending of vertical speed change and beginning of vertical speed change\char`\"{} point
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a3b6c2bd493ffba7b8936c5602b2482f4}\label{classlarcfm_1_1_tcp_data_a3b6c2bd493ffba7b8936c5602b2482f4}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setOriginal@{setOriginal}}
+\index{setOriginal@{setOriginal}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setOriginal()}{setOriginal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+Original (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this object to \char`\"{}\+Original\char`\"{} \begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_a27f6d57e9bae7bdd53d8509fed518158}\label{classlarcfm_1_1_tcp_data_a27f6d57e9bae7bdd53d8509fed518158}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setVelocityInit@{setVelocityInit}}
+\index{setVelocityInit@{setVelocityInit}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setVelocityInit()}{setVelocityInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+Velocity\+Init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v }\end{DoxyParamCaption})}
+
+Set the initial velocity for this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} data object to the given value. This must be the correct value for points defining the entry into acceleration zones (BOT, BGSC, BVSC). \mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ad371f17dc7823f221718c352c380f5cd}\label{classlarcfm_1_1_tcp_data_ad371f17dc7823f221718c352c380f5cd}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setVirtual@{setVirtual}}
+\index{setVirtual@{setVirtual}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setVirtual()}{setVirtual()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+Virtual (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set this object to \char`\"{}\+Virtual\char`\"{} \begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_tcp_data_ab510229563aecb320545fbede9489539}\label{classlarcfm_1_1_tcp_data_ab510229563aecb320545fbede9489539}} 
+\index{larcfm::TcpData@{larcfm::TcpData}!setVsAccel@{setVsAccel}}
+\index{setVsAccel@{setVsAccel}!larcfm::TcpData@{larcfm::TcpData}}
+\doxysubsubsection{\texorpdfstring{setVsAccel()}{setVsAccel()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Tcp\+Data\+::set\+Vs\+Accel (\begin{DoxyParamCaption}\item[{double}]{va }\end{DoxyParamCaption})}
+
+Set the vertical acceleration rate to the given value 
+\begin{DoxyParams}{Parameters}
+{\em va} & vertical acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+this \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} object (for a.\+set\+X() type operations) 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Tcp\+Data.\+h\item 
+Modules/\+ACCo\+RD/src/Tcp\+Data.\+cpp\end{DoxyCompactItemize}

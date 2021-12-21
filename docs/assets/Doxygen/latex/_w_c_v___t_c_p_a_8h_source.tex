@@ -1,0 +1,55 @@
+\hypertarget{_w_c_v___t_c_p_a_8h_source}{}\doxysection{WCV\+\_\+\+TCPA.\+h}
+\label{_w_c_v___t_c_p_a_8h_source}\index{Modules/ACCoRD/inc/WCV\_TCPA.h@{Modules/ACCoRD/inc/WCV\_TCPA.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef WCV\_TCPA\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define WCV\_TCPA\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}WCVTable.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}WCV\_tvar.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a}{WCV\_TCPA}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_w_c_v__tvar}{WCV\_tvar}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a_ab646a4b43d6a3efa79f3aca6e6153330}{WCV\_TCPA}}();}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{28   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a_ab646a4b43d6a3efa79f3aca6e6153330}{WCV\_TCPA}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tab);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a}{\string~WCV\_TCPA}}() \{\};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a}{WCV\_TCPA}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a_ad6b83113409c50f2c7a9dfe7387ec6da}{A\_WCV\_TCPA}}();}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{double} horizontal\_tvar(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} horizontal\_WCV\_interval(\textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{46   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_c_p_a_ad01253c458fbbcacea477fe46883b7d2}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} hazard\_zone\_far\_end(std::vector<Position>\& haz,}
+\DoxyCodeLine{53       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& po, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& pu, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \};}
+\DoxyCodeLine{56 \}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

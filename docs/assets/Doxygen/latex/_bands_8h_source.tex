@@ -1,0 +1,322 @@
+\hypertarget{_bands_8h_source}{}\doxysection{Bands.\+h}
+\label{_bands_8h_source}\index{Modules/ACCoRD/inc/Bands.h@{Modules/ACCoRD/inc/Bands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Complete Bands for Conflict Prevention (single time version)}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon, Rick Butler, Cesar Munoz}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef BANDS\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define BANDS\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Interval.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}BandsCore.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}GenericDHStateBands.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{104 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_d_h_state_bands}{GenericDHStateBands}}, \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{public}:}
+\DoxyCodeLine{123   \mbox{\hyperlink{classlarcfm_1_1_bands_a9abf7c654e2dc33e8581698cacee647d}{Bands}}(\textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} std::string\& tunit, \textcolor{keywordtype}{double} max\_gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} max\_vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{137   \mbox{\hyperlink{classlarcfm_1_1_bands_a9abf7c654e2dc33e8581698cacee647d}{Bands}}();}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139   \textcolor{comment}{//}}
+\DoxyCodeLine{140   \textcolor{comment}{// Interface methods...}}
+\DoxyCodeLine{141   \textcolor{comment}{//}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   \textcolor{comment}{/* Enable or disable the computation of conflict bands only. Should be called before adding traffic */}}
+\DoxyCodeLine{144   \textcolor{keywordtype}{void} setConflictBands(\textcolor{keywordtype}{bool} cb);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146   \textcolor{keywordtype}{void} doConflictBands();}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148   \textcolor{keywordtype}{bool} areConflictBands() \textcolor{keyword}{const};}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150   \textcolor{comment}{/* Enable or disable the computation of track bands. Should be called before adding traffic */}}
+\DoxyCodeLine{151   \textcolor{keywordtype}{void} setTrackBands(\textcolor{keywordtype}{bool} dotrk);}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153   \textcolor{keywordtype}{void} enableTrackBands();}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   \textcolor{comment}{/* Enable or disable the computation of ground speed bands. Should be called before adding traffic */}}
+\DoxyCodeLine{156   \textcolor{keywordtype}{void} setGroundSpeedBands(\textcolor{keywordtype}{bool} dogs);}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158   \textcolor{keywordtype}{void} enableGroundSpeedBands();}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160   \textcolor{comment}{/* Enable or disable the computation of vertical speed bands. Should be called before adding traffic */}}
+\DoxyCodeLine{161   \textcolor{keywordtype}{void} setVerticalSpeedBands(\textcolor{keywordtype}{bool} dovs);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163   \textcolor{keywordtype}{void} enableVerticalSpeedBands();}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165   \textcolor{comment}{/* Enable the computation of track bands only. Should be called before adding traffic */}}
+\DoxyCodeLine{166   \textcolor{keywordtype}{void} onlyTrackBands();}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168   \textcolor{comment}{/* Enable the computation of ground speed bands only. Should be called before adding traffic */}}
+\DoxyCodeLine{169   \textcolor{keywordtype}{void} onlyGroundSpeedBands();}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171   \textcolor{comment}{/* Enable the computation of vertical speed bands only. Should be called before adding traffic */}}
+\DoxyCodeLine{172   \textcolor{keywordtype}{void} onlyVerticalSpeedBands();}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174   \textcolor{keywordtype}{void} allBands();}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{180   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a23aa28a26ee0e1860b563a49273a8548}{setLookaheadTime}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182   \textcolor{keywordtype}{void} setTime(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{185   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bands_a0a68d23903ca8f782cadeeab82ab1a57}{getLookaheadTime}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bands_ac2755ad184ca421a0436fc27e2563b01}{getTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190   \textcolor{keywordtype}{void} setTimeRange(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{191   \textcolor{keywordtype}{void} setTimeRange(\textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& tunit);}
+\DoxyCodeLine{192   \textcolor{keywordtype}{double} getStartTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{193   \textcolor{keywordtype}{double} getStartTime(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_ac858ce5e4931b0d40d6dddcf295e8797}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_abb2a44bfb8a93a27a3504f52b7c628cf}{setDistance}}(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{199   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bands_a964459a64a3f183e7fe68b47aad18fc3}{getDistance}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a7689cd77cf0b200dabcbfa8a34f27cd2}{setHeight}}(\textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{202   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_bands_afbb350010b99ac6a004e8f5233f8687f}{getHeight}}(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a533b2f371b86f8bfe8a1c59b96adfd28}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{205   \textcolor{keywordtype}{double} getMaxGroundSpeed() \textcolor{keyword}{const};}
+\DoxyCodeLine{206   \textcolor{keywordtype}{double} getMaxGroundSpeed(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_aa33b18611dc0f6b5a179c3429f3f5ff2}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{209   \textcolor{keywordtype}{double} getMaxVerticalSpeed() \textcolor{keyword}{const};}
+\DoxyCodeLine{210   \textcolor{keywordtype}{double} getMaxVerticalSpeed(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212   \textcolor{keywordtype}{void} setTrackTolerance(\textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{213   \textcolor{keywordtype}{double} getTrackTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{214   \textcolor{keywordtype}{void} setGroundSpeedTolerance(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{215   \textcolor{keywordtype}{double} getGroundSpeedTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{216   \textcolor{keywordtype}{void} setVerticalSpeedTolerance(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{217   \textcolor{keywordtype}{double} getVerticalSpeedTolerance(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{comment}{//  SPECIAL: in internal units}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222   \textcolor{keywordtype}{void} setOwnship(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& o);}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224   \textcolor{keywordtype}{void} setOwnship(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226   \textcolor{keywordtype}{void} setOwnship(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228   \textcolor{comment}{//  SPECIAL: in internal units}}
+\DoxyCodeLine{229   \textcolor{keywordtype}{void} addTraffic(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231   \textcolor{keywordtype}{void} addTraffic(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi);}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233   \textcolor{keywordtype}{void} addTraffic(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi);}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a136e1024f621ffed0fb9158fbaea5e8c}{clear}}();}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237   \textcolor{comment}{// Return false if track bands cannot turned on}}
+\DoxyCodeLine{238   \textcolor{keywordtype}{bool} turnTrackBandsOn();}
+\DoxyCodeLine{239   \textcolor{keywordtype}{bool} turnGroundSpeedBandsOn();}
+\DoxyCodeLine{240   \textcolor{keywordtype}{bool} turnVerticalSpeedBandsOn();}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_af7bc86bcac8c7ace2c69bfa16fd462fc}{trackLength}}();}
+\DoxyCodeLine{243   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a6d3a8f146a3985734a97196f03cd955d}{track}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{244   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_ac9d69c812877eaf812804554f3c75596}{trackRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{245   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_a12cb04a27e1c6fbc2edfc7ab3224bd48}{regionOfTrack}}(\textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_a79b54b62c948b70c275eb8333e655dde}{groundSpeedLength}}();}
+\DoxyCodeLine{248   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a1fd9b739a1b3d40ed17e77643f2312b0}{groundSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{249   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_aa6642d92613d653dc70d97ffc163961e}{groundSpeedRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{250   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_ae2bf36d568f9a1d99bcc22b0785a01b0}{regionOfGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_a981df3ea7c25d703f418c1105e6d7aff}{verticalSpeedLength}}();}
+\DoxyCodeLine{253   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a6a1ea6becf1fbacf7389cf14f0ec0bd3}{verticalSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{254   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_a91c92cc4abcc82c716ae99ec2063dda7}{verticalSpeedRegion}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{255   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_bands_a4f40f89f49694dff448efe16ee022755}{regionOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& unit);}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{258   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_a789cecc75c962ec4eb0531b7b4ebaf0d}{solidTrackBand}}(BandsRegion::Region br);}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{261   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_a82b8c23019de0b31ede708f46a073871}{solidGroundSpeedBand}}(BandsRegion::Region br);}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{264   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_ae3be01aa575645667f66509e87443693}{solidVerticalSpeedBand}}(BandsRegion::Region br);}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266   \textcolor{keywordtype}{void} mergeTrackBands(\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}\& bands);}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268   \textcolor{keywordtype}{void} mergeGroundSpeedBands(\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}\& bands);}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270   \textcolor{keywordtype}{void} mergeVerticalSpeedBands(\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}\& bands);}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272   \textcolor{keywordtype}{void} mergeBands(\mbox{\hyperlink{classlarcfm_1_1_bands}{Bands}}\& bands);}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274   std::string \mbox{\hyperlink{classlarcfm_1_1_bands_ad2c9531f9435d6de14fb776498251cb9}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276   std::string strBands();}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278   \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_af714b1528b8336eb82d914d37a98229e}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{281     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ae977e26839c56302a1ea9faef9e55579}{hasError}}();}
+\DoxyCodeLine{282   \}}
+\DoxyCodeLine{283   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_bands_a7970b7cdacf89af2a8e946e31298a5b0}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{284     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa13c7a8dce71c6338c8a592a50004043}{hasMessage}}();}
+\DoxyCodeLine{285   \}}
+\DoxyCodeLine{286   std::string \mbox{\hyperlink{classlarcfm_1_1_bands_ac019a04f15663c401d76f8eb5350fd20}{getMessage}}() \{}
+\DoxyCodeLine{287     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_aa73707c8611cec78e4adc6047a898eb5}{getMessage}}();}
+\DoxyCodeLine{288   \}}
+\DoxyCodeLine{289   std::string \mbox{\hyperlink{classlarcfm_1_1_bands_a14133837a7b184190a750d3f204b5582}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{290     \textcolor{keywordflow}{return} error.\mbox{\hyperlink{classlarcfm_1_1_error_log_ac8161f4465ecb880e4a0330186b43e9d}{getMessageNoClear}}();}
+\DoxyCodeLine{291   \}}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} ownship;}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{296   \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}} error;}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 \textcolor{keyword}{private}:}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300   \mbox{\hyperlink{classlarcfm_1_1_bands_core}{BandsCore}} red; }
+\DoxyCodeLine{301   \textcolor{keywordtype}{int} traffic;}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303   std::vector<Interval> trackArray;}
+\DoxyCodeLine{304   std::vector<BandsRegion::Region> trackRegionArray;}
+\DoxyCodeLine{305   std::vector<Interval> groundArray;}
+\DoxyCodeLine{306   std::vector<BandsRegion::Region> groundRegionArray;}
+\DoxyCodeLine{307   std::vector<Interval> verticalArray;}
+\DoxyCodeLine{308   std::vector<BandsRegion::Region> verticalRegionArray;}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310   \textcolor{comment}{// [CAM] The following variables handle how stateless bands are recomputed}}
+\DoxyCodeLine{311   \textcolor{keywordtype}{bool} conflictBands; \textcolor{comment}{// Only compute conflict bands}}
+\DoxyCodeLine{312   \textcolor{keywordtype}{bool} doTrk; \textcolor{comment}{// Do compute track bands}}
+\DoxyCodeLine{313   \textcolor{keywordtype}{bool} doGs;  \textcolor{comment}{// Do compute gs bands}}
+\DoxyCodeLine{314   \textcolor{keywordtype}{bool} doVs;  \textcolor{comment}{// Do compute vs bands}}
+\DoxyCodeLine{315   \textcolor{keywordtype}{bool} computeTrk; \textcolor{comment}{// Need compute track bands}}
+\DoxyCodeLine{316   \textcolor{keywordtype}{bool} computeGs;  \textcolor{comment}{// Need compute gs bands}}
+\DoxyCodeLine{317   \textcolor{keywordtype}{bool} computeVs;  \textcolor{comment}{// Need compute vs bands;}}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319   \textcolor{keywordtype}{void} init(\textcolor{keywordtype}{double} D, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} std::string\& tunit, \textcolor{keywordtype}{double} max\_gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} max\_vs, \textcolor{keyword}{const} std::string\& vsunit);}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321   \textcolor{keywordtype}{void} needComputeBands();}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323   \textcolor{keywordtype}{void} recompute();}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325   \textcolor{keywordtype}{void} resetRegions();}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{332   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_afa7b1eee6b2195e233d94b1db93acf90}{trackCompute}}();}
+\DoxyCodeLine{335   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a0631aefbb26c4ae013d6e9a86127d4d0}{groundCompute}}();}
+\DoxyCodeLine{338   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_bands_a942ed6edd80bb7d446d19eee9c2d9f28}{verticalCompute}}();}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a6d3a8f146a3985734a97196f03cd955d}{track}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{341   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a1fd9b739a1b3d40ed17e77643f2312b0}{groundSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{342   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_bands_a6a1ea6becf1fbacf7389cf14f0ec0bd3}{verticalSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} unit);}
+\DoxyCodeLine{343 }
+\DoxyCodeLine{344   \textcolor{keyword}{static} \textcolor{keywordtype}{int} order(\textcolor{keyword}{const} std::vector<Interval>\& arr, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& n);}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346   \textcolor{comment}{/*}}
+\DoxyCodeLine{347 \textcolor{comment}{   * Find first band that is equal/not equal to a given bands region and}}
+\DoxyCodeLine{348 \textcolor{comment}{   * whose size is greater than or equal to a given tolerance. It returns -\/1}}
+\DoxyCodeLine{349 \textcolor{comment}{   * if no such band exists.}}
+\DoxyCodeLine{350 \textcolor{comment}{   */}}
+\DoxyCodeLine{351   \textcolor{keyword}{static} \textcolor{keywordtype}{int} find\_first\_explicit\_band(\textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a5c65813ce2b4d1c1a13b124a568a9783}{eq}},}
+\DoxyCodeLine{352       BandsRegion::Region br, \textcolor{keywordtype}{double} tolerance,}
+\DoxyCodeLine{353       \textcolor{keyword}{const} std::vector<Interval>\& arraylist,}
+\DoxyCodeLine{354       \textcolor{keyword}{const} std::vector<BandsRegion::Region>\& regions);}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356   \textcolor{comment}{/*}}
+\DoxyCodeLine{357 \textcolor{comment}{   * Find first band that is equal/not equal to an implicit NONE and whose size is}}
+\DoxyCodeLine{358 \textcolor{comment}{   * greater than or equal to a given tolerance. Returned index i is such that}}
+\DoxyCodeLine{359 \textcolor{comment}{   * (i-\/1).up and i.low is an implicit NONE that satisfies the tolerance condition.}}
+\DoxyCodeLine{360 \textcolor{comment}{   * It returns -\/1 if no such band exists.}}
+\DoxyCodeLine{361 \textcolor{comment}{   * CAVEAT: This function returns 0, if arraylist is empty. In this case the whole}}
+\DoxyCodeLine{362 \textcolor{comment}{   * band is NONE.}}
+\DoxyCodeLine{363 \textcolor{comment}{   *}}
+\DoxyCodeLine{364 \textcolor{comment}{   */}}
+\DoxyCodeLine{365   \textcolor{keyword}{static} \textcolor{keywordtype}{int} find\_first\_implicit\_none(\textcolor{keywordtype}{double} tolerance,}
+\DoxyCodeLine{366       \textcolor{keyword}{const} std::vector<Interval>\& arraylist,}
+\DoxyCodeLine{367       \textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub);}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369   \textcolor{comment}{/*}}
+\DoxyCodeLine{370 \textcolor{comment}{   * Find first band that is equal/not equal to a given bands region and whose size is}}
+\DoxyCodeLine{371 \textcolor{comment}{   * greater than or equal to a given tolerance. It returns -\/1 if no such band exists.}}
+\DoxyCodeLine{372 \textcolor{comment}{   * If finding a band equal to NONE and the bands is a conflict bands, i.e., it has been}}
+\DoxyCodeLine{373 \textcolor{comment}{   * set through setConflictBands(), the returned value corresponds to index i such that}}
+\DoxyCodeLine{374 \textcolor{comment}{   * (i-\/1).up and i.low is an implicit NONE that satisfies the tolerance condition.}}
+\DoxyCodeLine{375 \textcolor{comment}{   * The parameters lb and up are upper and lower bound for the whole band.}}
+\DoxyCodeLine{376 \textcolor{comment}{   * CAVEAT: This function returns 0, if arraylist is empty. In this case the whole}}
+\DoxyCodeLine{377 \textcolor{comment}{   * band is NONE.}}
+\DoxyCodeLine{378 \textcolor{comment}{   */}}
+\DoxyCodeLine{379   \textcolor{keywordtype}{int} find\_first\_band(\textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a5c65813ce2b4d1c1a13b124a568a9783}{eq}}, BandsRegion::Region br, \textcolor{keywordtype}{double} tolerance,}
+\DoxyCodeLine{380       \textcolor{keyword}{const} std::vector<Interval>\& arraylist, \textcolor{keyword}{const} std::vector<BandsRegion::Region>\& regions,}
+\DoxyCodeLine{381       \textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub);}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383   \textcolor{comment}{/*}}
+\DoxyCodeLine{384 \textcolor{comment}{   * Find first track band that is equal/not equal to a given bands region and whose size is}}
+\DoxyCodeLine{385 \textcolor{comment}{   * greater than or equal to a given tolerance [rad]. It returns -\/1 if no such band exists.}}
+\DoxyCodeLine{386 \textcolor{comment}{   * If finding a band equal to NONE and the bands is a conflict bands, i.e., it has been}}
+\DoxyCodeLine{387 \textcolor{comment}{   * set through setConflictBands(), the returned value corresponds to index i such that}}
+\DoxyCodeLine{388 \textcolor{comment}{   * (i-\/1).up and i.low is an implicit NONE that satisfies the tolerance condition.}}
+\DoxyCodeLine{389 \textcolor{comment}{   * CAVEAT: This function returns 0 when when the band is empty. In this case the whole}}
+\DoxyCodeLine{390 \textcolor{comment}{   * band is NONE.}}
+\DoxyCodeLine{391 \textcolor{comment}{   */}}
+\DoxyCodeLine{392   \textcolor{keywordtype}{int} firstTrackBand(\textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a5c65813ce2b4d1c1a13b124a568a9783}{eq}}, BandsRegion::Region br, \textcolor{keywordtype}{double} trk);}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{394   \textcolor{comment}{/*}}
+\DoxyCodeLine{395 \textcolor{comment}{   * Find first ground speed band that is equal/not equal to a given bands region and}}
+\DoxyCodeLine{396 \textcolor{comment}{   * whose size is greater than or equal to a given tolerance [m/s]. It returns -\/1 if}}
+\DoxyCodeLine{397 \textcolor{comment}{   * no such band exists. If the bands region is NONE and the bands is a conflict bands,}}
+\DoxyCodeLine{398 \textcolor{comment}{   * i.e., it has been set through setConflictBands(), the returned value corresponds to}}
+\DoxyCodeLine{399 \textcolor{comment}{   * index i such that (i-\/1).up and i.low is an implicit NONE that satisfies the tolerance}}
+\DoxyCodeLine{400 \textcolor{comment}{   * condition.}}
+\DoxyCodeLine{401 \textcolor{comment}{   * CAVEAT: This function returns 0 when the band is empty. In this case the whole}}
+\DoxyCodeLine{402 \textcolor{comment}{   * band is NONE.}}
+\DoxyCodeLine{403 \textcolor{comment}{   */}}
+\DoxyCodeLine{404   \textcolor{keywordtype}{int} firstGroundSpeedBand(\textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a5c65813ce2b4d1c1a13b124a568a9783}{eq}}, BandsRegion::Region br, \textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406   \textcolor{comment}{/*}}
+\DoxyCodeLine{407 \textcolor{comment}{   * Find first vertical speed band that is equal/not equal to a given bands region and}}
+\DoxyCodeLine{408 \textcolor{comment}{   * whose size is greater than or equal to a given tolerance [m/s]. It returns -\/1 if}}
+\DoxyCodeLine{409 \textcolor{comment}{   * no such band exists. If the bands region is NONE and the bands is a conflict bands,}}
+\DoxyCodeLine{410 \textcolor{comment}{   * i.e., it has been set through setConflictBands(), the returned value corresponds to}}
+\DoxyCodeLine{411 \textcolor{comment}{   * index i such that (i-\/1).up and i.low is an implicit NONE that satisfies the tolerance}}
+\DoxyCodeLine{412 \textcolor{comment}{   * condition.}}
+\DoxyCodeLine{413 \textcolor{comment}{   * CAVEAT: This function returns 0 when the band is empty. In this case the whole}}
+\DoxyCodeLine{414 \textcolor{comment}{   * band is NONE.}}
+\DoxyCodeLine{415 \textcolor{comment}{   */}}
+\DoxyCodeLine{416   \textcolor{keywordtype}{int} firstVerticalSpeedBand(\textcolor{keywordtype}{bool} \mbox{\hyperlink{namespacelarcfm_a5c65813ce2b4d1c1a13b124a568a9783}{eq}}, BandsRegion::Region br, \textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418   \textcolor{keyword}{static} \textcolor{keywordtype}{void} toIntervalSet\_fromIntervalArray(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& intervalset,}
+\DoxyCodeLine{419       \textcolor{keyword}{const} std::vector<Interval>\& intervalarray, \textcolor{keyword}{const} std::vector<BandsRegion::Region>\& regions,}
+\DoxyCodeLine{420       BandsRegion::Region br);}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422   \textcolor{keyword}{static} \textcolor{keywordtype}{void} toArrays(std::vector<Interval>\& intervalarray, std::vector<BandsRegion::Region>\& regions,}
+\DoxyCodeLine{423       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& red, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& green);}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425   \textcolor{keyword}{static} \textcolor{keywordtype}{void} toIntervalArray\_fromIntervalSet(std::vector<Interval>\& intervalarray,}
+\DoxyCodeLine{426       std::vector<BandsRegion::Region>\& regions, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& intervalset);}
+\DoxyCodeLine{427 }
+\DoxyCodeLine{428   \textcolor{keywordtype}{void} toIntervalArray\_fromIntervalSet(std::vector<Interval>\& intervalarray,}
+\DoxyCodeLine{429       std::vector<BandsRegion::Region>\& regions, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& intervalset, \textcolor{keywordtype}{double} lowBound, \textcolor{keywordtype}{double} upBound);}
+\DoxyCodeLine{430 }
+\DoxyCodeLine{431 \};}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433 \}}
+\DoxyCodeLine{434 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

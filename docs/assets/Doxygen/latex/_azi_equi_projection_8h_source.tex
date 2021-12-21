@@ -1,0 +1,86 @@
+\hypertarget{_azi_equi_projection_8h_source}{}\doxysection{Azi\+Equi\+Projection.\+h}
+\label{_azi_equi_projection_8h_source}\index{Modules/ACCoRD/inc/AziEquiProjection.h@{Modules/ACCoRD/inc/AziEquiProjection.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * AziEquiProjection.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef AZIEQUIPROJECTION\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define AZIEQUIPROJECTION\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Point.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{40   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{AziEquiProjection}} \{}
+\DoxyCodeLine{41   \textcolor{keyword}{private}:}
+\DoxyCodeLine{42     \textcolor{keywordtype}{double} projAlt;}
+\DoxyCodeLine{43     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} ref;}
+\DoxyCodeLine{44     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} llaRef;}
+\DoxyCodeLine{45  }
+\DoxyCodeLine{46   \textcolor{keyword}{public}:}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{49     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}{AziEquiProjection}}();}
+\DoxyCodeLine{50     }
+\DoxyCodeLine{55     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}{AziEquiProjection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla);}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{63     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_addf7f54a496701124c4e74ed7d0c201e}{AziEquiProjection}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{64     }
+\DoxyCodeLine{66     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_adac0ecc905111d21cf69d302be40ec64}{\string~AziEquiProjection}}() \{\}}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{69     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{AziEquiProjection}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a95a2b1211b6d7e520241620460badb8a}{makeNew}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{70     }
+\DoxyCodeLine{72     \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection}{AziEquiProjection}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a95a2b1211b6d7e520241620460badb8a}{makeNew}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} alt) \textcolor{keyword}{const};}
+\DoxyCodeLine{73     }
+\DoxyCodeLine{77     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aef7424f62deebdc89ee71692f88b1273}{conflictRange}}(\textcolor{keywordtype}{double} latitude, \textcolor{keywordtype}{double} accuracy) \textcolor{keyword}{const};}
+\DoxyCodeLine{78     }
+\DoxyCodeLine{82     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a41ad2e4b1c49f6695552eef5cb9fdba7}{maxRange}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{85     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aa6443ca68c83a79484113f6fc8fdb90f}{getProjectionPoint}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{88     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_aa179d19fe7c3cc4a95f08ed23ac83794}{project2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{89     }
+\DoxyCodeLine{91     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla) \textcolor{keyword}{const};}
+\DoxyCodeLine{92     }
+\DoxyCodeLine{94     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip) \textcolor{keyword}{const};}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{97     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a24d3ef74391631ae4bfe7f518c459f42}{projectPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sip) \textcolor{keyword}{const};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{100     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& xy, \textcolor{keywordtype}{double} alt) \textcolor{keyword}{const};}
+\DoxyCodeLine{101     }
+\DoxyCodeLine{103     \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& xyz) \textcolor{keyword}{const}; }
+\DoxyCodeLine{104     }
+\DoxyCodeLine{106     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a76bd02ec2bac2feab1201a56f8d09a7e}{projectVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& lla, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{107     }
+\DoxyCodeLine{109     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a76bd02ec2bac2feab1201a56f8d09a7e}{projectVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& ss, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{110     }
+\DoxyCodeLine{112     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_acea84e1447478cee386229d2ecbadc38}{inverseVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} toLatLon) \textcolor{keyword}{const};}
+\DoxyCodeLine{113     }
+\DoxyCodeLine{115     std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     std::pair<Vect3,Velocity> \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a8f79ddae3c6448efb39464c0798f6bae}{project}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{120     std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_afcb91e1f9c1125f0da5b6b3f239da9d7}{inverse}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{bool} toLatLon) \textcolor{keyword}{const};}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{123     std::string \mbox{\hyperlink{classlarcfm_1_1_azi_equi_projection_a74db066884dd2a29b7787e92efb41d8a}{toString}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}AziEquiProjection "{}}+ \mbox{\hyperlink{namespacelarcfm_acc797124406004656002df49a1abcd86}{to\_string}}(projAlt)+\textcolor{stringliteral}{"{} "{}}+ref.\mbox{\hyperlink{classlarcfm_1_1_vect3_af1df529dc6e5f09f7675008ef78ef0ac}{toString}}(); \}}
+\DoxyCodeLine{124   \};}
+\DoxyCodeLine{125 \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* AZIEQUIPROJECTION\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

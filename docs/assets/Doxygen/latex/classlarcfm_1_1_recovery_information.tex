@@ -1,0 +1,140 @@
+\hypertarget{classlarcfm_1_1_recovery_information}{}\doxysection{larcfm\+::Recovery\+Information Class Reference}
+\label{classlarcfm_1_1_recovery_information}\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a6dfdb18f624efe156d81a8529ab74cb9}\label{classlarcfm_1_1_recovery_information_a6dfdb18f624efe156d81a8529ab74cb9}} 
+{\bfseries Recovery\+Information} (double t, int nfactor, double hs, double vs)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a76623fcdcef68a3003e3a39b9d4e25fa}{n\+Factor}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a6b03e92d12ba5964fc70d340e83d207a}{time\+To\+Recovery}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_ae671f4e20bc44bc51642ee5f2cb5fd14}{time\+To\+To\+Recovery}} (const std\+::string \&u) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a0df3ef240b3c073f24d67f1ed7251a7c}{recovery\+Horizontal\+Distance}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a3e02feede3eefbef6233c6a25074b204}{recovery\+Horizontal\+Distance}} (const std\+::string \&u) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a1c6afd75d700adaeda045c4cdddb0892}{recovery\+Vertical\+Distance}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_recovery_information_ab0445d6695718aff87d3d185c287c6a4}{recovery\+Vertical\+Distance}} (const std\+::string \&u) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_recovery_information_a44fc108bdefe24ea75e3bd504a147532}{recovery\+Bands\+Computed}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_recovery_information_af614e762c77ff004e1e0e5f85c5611e6}{recovery\+Bands\+Saturated}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a86adac768e9e6219eab7553b75a2333a}\label{classlarcfm_1_1_recovery_information_a86adac768e9e6219eab7553b75a2333a}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a3d7f819417c76a7e97bbe6493f457950}\label{classlarcfm_1_1_recovery_information_a3d7f819417c76a7e97bbe6493f457950}} 
+std\+::string {\bfseries to\+String\+Units} (const std\+::string \&hunits, const std\+::string \&vunits) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a1e9df6d2764169b2a12eaa94cd8df3cc}\label{classlarcfm_1_1_recovery_information_a1e9df6d2764169b2a12eaa94cd8df3cc}} 
+std\+::string {\bfseries to\+PVS} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_ac65c34974b369ea2b81a372a88f0a50a}\label{classlarcfm_1_1_recovery_information_ac65c34974b369ea2b81a372a88f0a50a}} 
+double {\bfseries time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a3e0357c4f04392a1988c8b9aa2717e5d}\label{classlarcfm_1_1_recovery_information_a3e0357c4f04392a1988c8b9aa2717e5d}} 
+int {\bfseries nfactor\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a7dea84ff9f5f22b195a4fb72b3b14525}\label{classlarcfm_1_1_recovery_information_a7dea84ff9f5f22b195a4fb72b3b14525}} 
+double {\bfseries horizontal\+\_\+distance\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a2c4d549dcdfeaf339139de887ea11a91}\label{classlarcfm_1_1_recovery_information_a2c4d549dcdfeaf339139de887ea11a91}} 
+double {\bfseries vertical\+\_\+distance\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a76623fcdcef68a3003e3a39b9d4e25fa}\label{classlarcfm_1_1_recovery_information_a76623fcdcef68a3003e3a39b9d4e25fa}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!nFactor@{nFactor}}
+\index{nFactor@{nFactor}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{nFactor()}{nFactor()}}
+{\footnotesize\ttfamily int larcfm\+::\+Recovery\+Information\+::n\+Factor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Number of time the recovery volume was reduced 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a44fc108bdefe24ea75e3bd504a147532}\label{classlarcfm_1_1_recovery_information_a44fc108bdefe24ea75e3bd504a147532}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryBandsComputed@{recoveryBandsComputed}}
+\index{recoveryBandsComputed@{recoveryBandsComputed}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryBandsComputed()}{recoveryBandsComputed()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Recovery\+Information\+::recovery\+Bands\+Computed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+True if recovery bands are computed. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_af614e762c77ff004e1e0e5f85c5611e6}\label{classlarcfm_1_1_recovery_information_af614e762c77ff004e1e0e5f85c5611e6}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryBandsSaturated@{recoveryBandsSaturated}}
+\index{recoveryBandsSaturated@{recoveryBandsSaturated}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryBandsSaturated()}{recoveryBandsSaturated()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Recovery\+Information\+::recovery\+Bands\+Saturated (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+True if recovery are computed, but they are saturated. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a0df3ef240b3c073f24d67f1ed7251a7c}\label{classlarcfm_1_1_recovery_information_a0df3ef240b3c073f24d67f1ed7251a7c}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryHorizontalDistance@{recoveryHorizontalDistance}}
+\index{recoveryHorizontalDistance@{recoveryHorizontalDistance}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryHorizontalDistance()}{recoveryHorizontalDistance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::recovery\+Horizontal\+Distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Recovery horizontal distance in internal units, i.\+e., \mbox{[}m\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a3e02feede3eefbef6233c6a25074b204}\label{classlarcfm_1_1_recovery_information_a3e02feede3eefbef6233c6a25074b204}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryHorizontalDistance@{recoveryHorizontalDistance}}
+\index{recoveryHorizontalDistance@{recoveryHorizontalDistance}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryHorizontalDistance()}{recoveryHorizontalDistance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::recovery\+Horizontal\+Distance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Recovery horizontal distance in given units 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a1c6afd75d700adaeda045c4cdddb0892}\label{classlarcfm_1_1_recovery_information_a1c6afd75d700adaeda045c4cdddb0892}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryVerticalDistance@{recoveryVerticalDistance}}
+\index{recoveryVerticalDistance@{recoveryVerticalDistance}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryVerticalDistance()}{recoveryVerticalDistance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::recovery\+Vertical\+Distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Recovery vertical distance in internal units, i.\+e., \mbox{[}m\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_ab0445d6695718aff87d3d185c287c6a4}\label{classlarcfm_1_1_recovery_information_ab0445d6695718aff87d3d185c287c6a4}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!recoveryVerticalDistance@{recoveryVerticalDistance}}
+\index{recoveryVerticalDistance@{recoveryVerticalDistance}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{recoveryVerticalDistance()}{recoveryVerticalDistance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::recovery\+Vertical\+Distance (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Recovery vertical distance in given units 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_a6b03e92d12ba5964fc70d340e83d207a}\label{classlarcfm_1_1_recovery_information_a6b03e92d12ba5964fc70d340e83d207a}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!timeToRecovery@{timeToRecovery}}
+\index{timeToRecovery@{timeToRecovery}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{timeToRecovery()}{timeToRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::time\+To\+Recovery (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Time to recovery in seconds 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_recovery_information_ae671f4e20bc44bc51642ee5f2cb5fd14}\label{classlarcfm_1_1_recovery_information_ae671f4e20bc44bc51642ee5f2cb5fd14}} 
+\index{larcfm::RecoveryInformation@{larcfm::RecoveryInformation}!timeToToRecovery@{timeToToRecovery}}
+\index{timeToToRecovery@{timeToToRecovery}!larcfm::RecoveryInformation@{larcfm::RecoveryInformation}}
+\doxysubsubsection{\texorpdfstring{timeToToRecovery()}{timeToToRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Recovery\+Information\+::time\+To\+To\+Recovery (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Time to recovery in given units 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Recovery\+Information.\+h\item 
+Modules/\+ACCo\+RD/src/Recovery\+Information.\+cpp\end{DoxyCompactItemize}

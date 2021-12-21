@@ -1,0 +1,75 @@
+\hypertarget{_moving_polygon2_d_8h_source}{}\doxysection{Moving\+Polygon2\+D.\+h}
+\label{_moving_polygon2_d_8h_source}\index{Modules/ACCoRD/inc/MovingPolygon2D.h@{Modules/ACCoRD/inc/MovingPolygon2D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef MOVINGPOLYGON2D\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define MOVINGPOLYGON2D\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Poly2D.h"{}}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     std::vector<Vect2> polystart;}
+\DoxyCodeLine{28     std::vector<Vect2> polyvel;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{double} tend;}
+\DoxyCodeLine{30     \textcolor{keyword}{mutable} \textcolor{keywordtype}{bool} knownStable;}
+\DoxyCodeLine{31     \textcolor{keyword}{mutable} \textcolor{keywordtype}{bool} knownUnstable;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}();}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}(std::vector<Vect2> polystart, std::vector<Vect2> polyvel, \textcolor{keywordtype}{double} tend);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}\& polygon, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& polyvel, \textcolor{keywordtype}{double} tend);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}}\& polygon, \textcolor{keyword}{const} std::vector<Vect2>\& vels, \textcolor{keywordtype}{double} tend\_d);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42     \mbox{\hyperlink{classlarcfm_1_1_poly2_d}{Poly2D}} position(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{47     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d_a63f57161d1225375d3a65c36d6e9041b}{isStable}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{55     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d_a150950969021ad49a239db2e690d872c}{reverseOrder}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{//    std::string toStringOLD() const ;}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     std::string toString() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     std::vector<Vect2> getPolyvel() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     std::vector<Vect2> getPolystart() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     \textcolor{keywordtype}{double} getTend() \textcolor{keyword}{const};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keywordtype}{void} setPolystart(\textcolor{keyword}{const} std::vector<Vect2>\& polystart) \{}
+\DoxyCodeLine{69         this-\/>polystart = polystart;}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \textcolor{keywordtype}{void} setPolyvel(\textcolor{keyword}{const} std::vector<Vect2>\& polyvel) \{}
+\DoxyCodeLine{73         this-\/>polyvel = polyvel;}
+\DoxyCodeLine{74     \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{keywordtype}{void} setTend(\textcolor{keywordtype}{double} tend) \{}
+\DoxyCodeLine{77         this-\/>tend = tend;}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* MOVINGPOLYGON2D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,108 @@
+\hypertarget{_parameter_reader_8h_source}{}\doxysection{Parameter\+Reader.\+h}
+\label{_parameter_reader_8h_source}\index{Modules/ACCoRD/inc/ParameterReader.h@{Modules/ACCoRD/inc/ParameterReader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * PlanReader}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: George Hagen}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef PARAMETERREADER\_H}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define PARAMETERREADER\_H}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{ParameterReader}} \{}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_reader}{\string~ParameterReader}}() \{\};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& getParametersRef() = 0;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{comment}{//   /**}}
+\DoxyCodeLine{34 \textcolor{comment}{//     * Returns true if the parameter key was defined.}}
+\DoxyCodeLine{35 \textcolor{comment}{//     */}}
+\DoxyCodeLine{36 \textcolor{comment}{//    virtual bool containsParameter(const std::string\& key) const = 0;}}
+\DoxyCodeLine{37 \textcolor{comment}{//   /**}}
+\DoxyCodeLine{38 \textcolor{comment}{//     * Returns the string value of the given parameter key.}}
+\DoxyCodeLine{39 \textcolor{comment}{//     * This may be a space-\/delimited list.  If the key is not present,}}
+\DoxyCodeLine{40 \textcolor{comment}{//     * return the empty string.  Parameter keys may be case-\/sensitive.}}
+\DoxyCodeLine{41 \textcolor{comment}{//     */}}
+\DoxyCodeLine{42 \textcolor{comment}{//    virtual std::string getString(const std::string\& key) const = 0;}}
+\DoxyCodeLine{43 \textcolor{comment}{//   /**}}
+\DoxyCodeLine{44 \textcolor{comment}{//     * Returns the Boolean value of the given parameter key.}}
+\DoxyCodeLine{45 \textcolor{comment}{//     * If the key is not present, or not representation of "{}true"{},}}
+\DoxyCodeLine{46 \textcolor{comment}{//     * return the empty string.  Parameter keys may be case-\/sensitive.}}
+\DoxyCodeLine{47 \textcolor{comment}{//     */}}
+\DoxyCodeLine{48 \textcolor{comment}{//    virtual bool getParameterBool(const std::string\& key) const = 0;}}
+\DoxyCodeLine{49 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{50 \textcolor{comment}{//     * Returns the double-\/precision value of the given parameter key.}}
+\DoxyCodeLine{51 \textcolor{comment}{//     * If units were specified in the file, this value has been converted into}}
+\DoxyCodeLine{52 \textcolor{comment}{//     * internal units. If no units were specified, then the value}}
+\DoxyCodeLine{53 \textcolor{comment}{//     * in the file is returned.  If the key is not present or if the}}
+\DoxyCodeLine{54 \textcolor{comment}{//     * value is not a numeral, then return 0.}}
+\DoxyCodeLine{55 \textcolor{comment}{//     * Parameter keys may be case-\/sensitive.}}
+\DoxyCodeLine{56 \textcolor{comment}{//     */}}
+\DoxyCodeLine{57 \textcolor{comment}{//  virtual double getParameterValue(const std::string\& key) const = 0;}}
+\DoxyCodeLine{58 \textcolor{comment}{//   /**}}
+\DoxyCodeLine{59 \textcolor{comment}{//     * Returns the double-\/precision value of the given parameter key in internal units.}}
+\DoxyCodeLine{60 \textcolor{comment}{//     * If no units were specified in the file, then the defaultUnit parameter is used.}}
+\DoxyCodeLine{61 \textcolor{comment}{//     * If the key is not present or if the}}
+\DoxyCodeLine{62 \textcolor{comment}{//     * value is not a numeral, then return 0.}}
+\DoxyCodeLine{63 \textcolor{comment}{//     * Parameter keys may be case-\/sensitive.}}
+\DoxyCodeLine{64 \textcolor{comment}{//     */}}
+\DoxyCodeLine{65 \textcolor{comment}{//    virtual double getParameterValue(const std::string\& key, const std::string\& defaultUnit) const = 0;}}
+\DoxyCodeLine{66 \textcolor{comment}{//}}
+\DoxyCodeLine{67 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{68 \textcolor{comment}{//   * Returns a vector of parameter strings encountered.}}
+\DoxyCodeLine{69 \textcolor{comment}{//   */}}
+\DoxyCodeLine{70 \textcolor{comment}{//  virtual std::vector<std::string> getParameterList() const = 0;}}
+\DoxyCodeLine{71 \textcolor{comment}{//}}
+\DoxyCodeLine{72 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{73 \textcolor{comment}{//   * Checks the parameters against the supplied list, and sets a warning if any input parameters are not listed.}}
+\DoxyCodeLine{74 \textcolor{comment}{//   */}}
+\DoxyCodeLine{75 \textcolor{comment}{//  virtual void validateParameters(std::vector<std::string> c) const = 0;}}
+\DoxyCodeLine{76 \textcolor{comment}{//}}
+\DoxyCodeLine{77 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{78 \textcolor{comment}{//   * Copies all parameters from the given object into the current object}}
+\DoxyCodeLine{79 \textcolor{comment}{//   * @param p source ParameterReader}}
+\DoxyCodeLine{80 \textcolor{comment}{//   * @param overwrite If set to true, duplicate keys will be overwritten in the local object, if false the local values will be preserved}}
+\DoxyCodeLine{81 \textcolor{comment}{//   */}}
+\DoxyCodeLine{82 \textcolor{comment}{//   virtual void copyParameters(const ParameterReader\& p, bool overwrite) = 0;}}
+\DoxyCodeLine{83 \textcolor{comment}{//}}
+\DoxyCodeLine{84 \textcolor{comment}{//}}
+\DoxyCodeLine{85 \textcolor{comment}{//   virtual int getParameterInt(const std::string\& key) const = 0;}}
+\DoxyCodeLine{86 \textcolor{comment}{//}}
+\DoxyCodeLine{87 \textcolor{comment}{//   virtual long getParameterLong(const std::string\& key) const = 0;}}
+\DoxyCodeLine{88 \textcolor{comment}{//}}
+\DoxyCodeLine{89 \textcolor{comment}{//   virtual std::string getParameterUnit(const std::string\& key) const = 0;}}
+\DoxyCodeLine{90 \textcolor{comment}{//}}
+\DoxyCodeLine{91 \textcolor{comment}{//   virtual void setParameter(const std::string\& key, double value) = 0;}}
+\DoxyCodeLine{92 \textcolor{comment}{//}}
+\DoxyCodeLine{93 \textcolor{comment}{//   virtual void setParameter(const std::string\& key, double value, const std::string\& units) = 0;}}
+\DoxyCodeLine{94 \textcolor{comment}{//}}
+\DoxyCodeLine{95 \textcolor{comment}{//   virtual void setParameter(const std::string\& key, bool value) = 0;}}
+\DoxyCodeLine{96 \textcolor{comment}{//}}
+\DoxyCodeLine{97 \textcolor{comment}{//   virtual void setParameter(const std::string\& key, const std::string\& value) = 0;}}
+\DoxyCodeLine{98 \textcolor{comment}{//}}
+\DoxyCodeLine{99 \textcolor{comment}{//   virtual void setParameter(const std::string\& s) = 0;}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PARAMETERREADER\_H}}
+
+\end{DoxyCode}

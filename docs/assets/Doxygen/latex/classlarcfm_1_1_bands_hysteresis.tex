@@ -1,0 +1,158 @@
+\hypertarget{classlarcfm_1_1_bands_hysteresis}{}\doxysection{larcfm\+::Bands\+Hysteresis Class Reference}
+\label{classlarcfm_1_1_bands_hysteresis}\index{larcfm::BandsHysteresis@{larcfm::BandsHysteresis}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_adfcf2e505866e9240898722e13b73a8d}\label{classlarcfm_1_1_bands_hysteresis_adfcf2e505866e9240898722e13b73a8d}} 
+void {\bfseries set\+Mod} (double mod)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a462e31d47da6c6ae4d0be94488bcc977}\label{classlarcfm_1_1_bands_hysteresis_a462e31d47da6c6ae4d0be94488bcc977}} 
+void {\bfseries initialize} (double hysteresis\+\_\+time, double persistence\+\_\+time, bool bands\+\_\+persistence, int m, int n)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ae2ee391d24eb0ad76d98bd6e8760c0bf}\label{classlarcfm_1_1_bands_hysteresis_ae2ee391d24eb0ad76d98bd6e8760c0bf}} 
+double {\bfseries get\+Last\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ae073883b743436c8902242dad5aab9a2}\label{classlarcfm_1_1_bands_hysteresis_ae073883b743436c8902242dad5aab9a2}} 
+bool {\bfseries get\+Last\+Preferred\+Direction} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a66fee41eb4bb68e31aa691cdcc48506a}\label{classlarcfm_1_1_bands_hysteresis_a66fee41eb4bb68e31aa691cdcc48506a}} 
+double {\bfseries get\+Last\+Resolution\+Low} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a5880657f3a757403f70d1be8648d798f}\label{classlarcfm_1_1_bands_hysteresis_a5880657f3a757403f70d1be8648d798f}} 
+double {\bfseries get\+Last\+Resolution\+Up} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_acedfef9d527ad57fb94a3a0d2a0e359d}\label{classlarcfm_1_1_bands_hysteresis_acedfef9d527ad57fb94a3a0d2a0e359d}} 
+double {\bfseries get\+Raw\+Resolution\+Low} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a6d2de8bd914b8a0acacd1124a9b3685c}\label{classlarcfm_1_1_bands_hysteresis_a6d2de8bd914b8a0acacd1124a9b3685c}} 
+double {\bfseries get\+Raw\+Resolution\+Up} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a5b7ae24969b22d6db0b726137a329527}\label{classlarcfm_1_1_bands_hysteresis_a5b7ae24969b22d6db0b726137a329527}} 
+int {\bfseries get\+Last\+NFactor\+Low} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a76b6e60c8b23d0890f00861600a35325}\label{classlarcfm_1_1_bands_hysteresis_a76b6e60c8b23d0890f00861600a35325}} 
+int {\bfseries get\+Last\+NFactor\+Up} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a40cce307e38f5a58a5036d5be1236f90}\label{classlarcfm_1_1_bands_hysteresis_a40cce307e38f5a58a5036d5be1236f90}} 
+const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{Bands\+MofN}} $>$ \& {\bfseries bands\+\_\+mofn} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a020208466033808ec46181c66f8cf78f}\label{classlarcfm_1_1_bands_hysteresis_a020208466033808ec46181c66f8cf78f}} 
+void {\bfseries reset} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_aef9e10139d2ddc10c70ab4968ef4517a}\label{classlarcfm_1_1_bands_hysteresis_aef9e10139d2ddc10c70ab4968ef4517a}} 
+void {\bfseries reset\+If\+Current\+Time} (double current\+\_\+time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a4faf06a506d774648ff10c9af0ce7ea1}\label{classlarcfm_1_1_bands_hysteresis_a4faf06a506d774648ff10c9af0ce7ea1}} 
+void {\bfseries m\+\_\+of\+\_\+n} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_color_value}{Color\+Value}} $>$ \&lcvs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ac31724889c97e9e1ff0a8c6d77863e42}\label{classlarcfm_1_1_bands_hysteresis_ac31724889c97e9e1ff0a8c6d77863e42}} 
+int {\bfseries bands\+Persistence} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_color_value}{Color\+Value}} $>$ \&lcvs, bool recovery, double val)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_addabfd043c25ebb161349981928ca772}\label{classlarcfm_1_1_bands_hysteresis_addabfd043c25ebb161349981928ca772}} 
+void {\bfseries resolutions\+Hysteresis} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, Bands\+Region\+::\+Region corrective\+\_\+region, double delta, int nfactor, double val, int idx\+\_\+l, int idx\+\_\+u)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a9d918a01780422e117a19411259a0e50}\label{classlarcfm_1_1_bands_hysteresis_a9d918a01780422e117a19411259a0e50}} 
+void {\bfseries preferred\+Direction\+Hysteresis} (double delta, double nfactor, double val)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a28e74571e4e3052c19ef32faa30b9d28}\label{classlarcfm_1_1_bands_hysteresis_a28e74571e4e3052c19ef32faa30b9d28}} 
+void {\bfseries bands\+Hysteresis} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, Bands\+Region\+::\+Region corrective\+\_\+region, double delta, int nfactor, double val, int idx)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_aac473c8b71c75e777b29775807cb23df}\label{classlarcfm_1_1_bands_hysteresis_aac473c8b71c75e777b29775807cb23df}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ab86f0ae44ca5a26ab3b1873eb166d8b9}\label{classlarcfm_1_1_bands_hysteresis_ab86f0ae44ca5a26ab3b1873eb166d8b9}} 
+void {\bfseries conflict\+\_\+region\+\_\+persistence} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, int idx)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ac7efd28ef7c55dee7f23fe6cf1f0dfa7}\label{classlarcfm_1_1_bands_hysteresis_ac7efd28ef7c55dee7f23fe6cf1f0dfa7}} 
+bool {\bfseries to\+\_\+the\+\_\+left} (double a, double b) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a2bd290745a8d5da230533b67e8fcd772}\label{classlarcfm_1_1_bands_hysteresis_a2bd290745a8d5da230533b67e8fcd772}} 
+bool {\bfseries contiguous\+\_\+resolution\+\_\+region} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_range}{Bands\+Range}} $>$ \&ranges, Bands\+Region\+::\+Region corrective\+\_\+region, bool dir, int idx\+\_\+from, int idx\+\_\+to) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a0666a68c7f33093b3b66e5572427efad}\label{classlarcfm_1_1_bands_hysteresis_a0666a68c7f33093b3b66e5572427efad}} 
+void {\bfseries switch\+\_\+dir} (bool dir, double nfactor)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a0c56bb33cac659cd8f290d91936a2012}\label{classlarcfm_1_1_bands_hysteresis_a0c56bb33cac659cd8f290d91936a2012}} 
+static bool {\bfseries is\+\_\+below\+\_\+corrective\+\_\+region} (Bands\+Region\+::\+Region corrective\+\_\+region, Bands\+Region\+::\+Region region)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a016c2bfc08019b77eedd6e60176c4033}\label{classlarcfm_1_1_bands_hysteresis_a016c2bfc08019b77eedd6e60176c4033}} 
+static bool {\bfseries is\+\_\+up\+\_\+from\+\_\+corrective\+\_\+region} (Bands\+Region\+::\+Region corrective\+\_\+region, Bands\+Region\+::\+Region region)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a60e1e0920eb820d4754cdbf7d706ecb2}\label{classlarcfm_1_1_bands_hysteresis_a60e1e0920eb820d4754cdbf7d706ecb2}} 
+double {\bfseries mod\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a64f0883e38f11f64859b43f32c52b6df}\label{classlarcfm_1_1_bands_hysteresis_a64f0883e38f11f64859b43f32c52b6df}} 
+double {\bfseries mod2\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a2f440a3e501285c09f07926304ec0616}\label{classlarcfm_1_1_bands_hysteresis_a2f440a3e501285c09f07926304ec0616}} 
+double {\bfseries hysteresis\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a9077516f5c764b8758d3a3ad0f96b311}\label{classlarcfm_1_1_bands_hysteresis_a9077516f5c764b8758d3a3ad0f96b311}} 
+double {\bfseries persistence\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a61555854620f7836ed6382f7577ddd97}\label{classlarcfm_1_1_bands_hysteresis_a61555854620f7836ed6382f7577ddd97}} 
+bool {\bfseries bands\+\_\+persistence\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a4fcee565807cadb7b1af57f982c58996}\label{classlarcfm_1_1_bands_hysteresis_a4fcee565807cadb7b1af57f982c58996}} 
+double {\bfseries last\+\_\+time\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a6364c8cb0b304da453e6d69ae5e24310}\label{classlarcfm_1_1_bands_hysteresis_a6364c8cb0b304da453e6d69ae5e24310}} 
+int {\bfseries m\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a9d8bf534ef5fc10e103cfc252ee07a21}\label{classlarcfm_1_1_bands_hysteresis_a9d8bf534ef5fc10e103cfc252ee07a21}} 
+int {\bfseries n\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a2e2b2758ddebde452f655f1877d9a806}\label{classlarcfm_1_1_bands_hysteresis_a2e2b2758ddebde452f655f1877d9a806}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_bands_mof_n}{Bands\+MofN}} $>$ {\bfseries bands\+\_\+mofn\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a6ff7c20dca27f31be306cab7ef536c5e}\label{classlarcfm_1_1_bands_hysteresis_a6ff7c20dca27f31be306cab7ef536c5e}} 
+bool {\bfseries preferred\+\_\+dir\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a74404bb3cc4b32f9703158424e683c41}\label{classlarcfm_1_1_bands_hysteresis_a74404bb3cc4b32f9703158424e683c41}} 
+double {\bfseries time\+\_\+of\+\_\+dir\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ae8b75231d131c0a48c06fcdb24fafbba}\label{classlarcfm_1_1_bands_hysteresis_ae8b75231d131c0a48c06fcdb24fafbba}} 
+Bands\+Region\+::\+Region {\bfseries conflict\+\_\+region\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ac20c70c5458a30ee1d47a645a9614498}\label{classlarcfm_1_1_bands_hysteresis_ac20c70c5458a30ee1d47a645a9614498}} 
+double {\bfseries conflict\+\_\+region\+\_\+low\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_aa2e10756f3457744222d3b39f5bccc6e}\label{classlarcfm_1_1_bands_hysteresis_aa2e10756f3457744222d3b39f5bccc6e}} 
+double {\bfseries conflict\+\_\+region\+\_\+up\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a0f636b56bc1dac5dedef0bd233d2c9a0}\label{classlarcfm_1_1_bands_hysteresis_a0f636b56bc1dac5dedef0bd233d2c9a0}} 
+double {\bfseries time\+\_\+of\+\_\+conflict\+\_\+region\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a9beca6fcc07396b681c1864f07d4cab0}\label{classlarcfm_1_1_bands_hysteresis_a9beca6fcc07396b681c1864f07d4cab0}} 
+double {\bfseries resolution\+\_\+up\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a13ac7c923064102f63245efb255b0c34}\label{classlarcfm_1_1_bands_hysteresis_a13ac7c923064102f63245efb255b0c34}} 
+double {\bfseries resolution\+\_\+low\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a44ae91d3aed8781bf08a2924d4606967}\label{classlarcfm_1_1_bands_hysteresis_a44ae91d3aed8781bf08a2924d4606967}} 
+double {\bfseries raw\+\_\+up\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ae55842501ccb714aaa57f28c9aa1de08}\label{classlarcfm_1_1_bands_hysteresis_ae55842501ccb714aaa57f28c9aa1de08}} 
+double {\bfseries raw\+\_\+low\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_ab38a3b6eb6f580e0186699cea4558216}\label{classlarcfm_1_1_bands_hysteresis_ab38a3b6eb6f580e0186699cea4558216}} 
+int {\bfseries nfactor\+\_\+up\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bands_hysteresis_a26cf292133bb04f41f066fa56afc2f7b}\label{classlarcfm_1_1_bands_hysteresis_a26cf292133bb04f41f066fa56afc2f7b}} 
+int {\bfseries nfactor\+\_\+low\+\_\+}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bands\+Hysteresis.\+h\item 
+Modules/\+ACCo\+RD/src/Bands\+Hysteresis.\+cpp\end{DoxyCompactItemize}

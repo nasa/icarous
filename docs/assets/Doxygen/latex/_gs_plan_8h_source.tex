@@ -1,0 +1,131 @@
+\hypertarget{_gs_plan_8h_source}{}\doxysection{Gs\+Plan.\+h}
+\label{_gs_plan_8h_source}\index{Modules/ACCoRD/inc/GsPlan.h@{Modules/ACCoRD/inc/GsPlan.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef GSPLAN\_H}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define GSPLAN\_H}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Route.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}} \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{private}:}
+\DoxyCodeLine{29      \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} rt;}
+\DoxyCodeLine{30      std::vector<double>  gsOuts;                   \textcolor{comment}{// ground speeds out}}
+\DoxyCodeLine{31      std::string id;                                    \textcolor{comment}{// name of the GsPlan}}
+\DoxyCodeLine{32      \textcolor{keywordtype}{double} starttime;                            \textcolor{comment}{// start time}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{public}:}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}();}
+\DoxyCodeLine{37     }
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keywordtype}{double} startTime);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{51     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{int} start, \textcolor{keywordtype}{int} end);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{58     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{64     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& gsp);}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_route}{Route}}\& r, \textcolor{keyword}{const} std::string\& name, \textcolor{keywordtype}{double} start, \textcolor{keywordtype}{double} gsAll);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{74     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_af2ddc7bf064695189162cee92b68e77e}{makeGsPlanConstant}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& gsp, \textcolor{keywordtype}{double} gsNew);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{82     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a18193fc50a02f035edcec71fb8336fe3}{mkGsPlanBankAngle}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& lpc, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86     std::string getID() \textcolor{keyword}{const};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a47a1f4d9e1ac858c9e4bc709fb0b6c51}{setID}}(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} setInfo(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{101     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a4fe3d2860c9d5693580efcd06185972b}{gs}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{107     \mbox{\hyperlink{classlarcfm_1_1_route}{Route}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_adbe081803a2041daa2b776ff3e064d8c}{route}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& info, \textcolor{keywordtype}{double} gsOut, \textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{119     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& info, \textcolor{keywordtype}{double} gsOut);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{129     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& info);}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{136     \textcolor{keywordtype}{void} add(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& p, \textcolor{keywordtype}{int} ix);}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{143     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_ac819aaf4be295b5eb9640a4fd6d9a283}{addAll}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& p);}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{153     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a2be1c18a08c578d5c45db2540175d73f}{set}}(\textcolor{keywordtype}{int} ix, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} std::string\& label, \textcolor{keyword}{const} std::string\& info, \textcolor{keywordtype}{double} gsOut, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} position(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} last() \textcolor{keyword}{const};}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160     std::string name(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162     std::string info(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164     \textcolor{keywordtype}{double} radius(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{comment}{//  bool isAltPreserve(int i) const;}}
+\DoxyCodeLine{167 \textcolor{comment}{//}}
+\DoxyCodeLine{168 \textcolor{comment}{//  void setAltPreserve(int i, bool val);}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{175     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a4ee32a9fd667d2587e1389b10870b705}{setRadius}}(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} rad);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177     std::vector<double> getGsInits() \textcolor{keyword}{const};}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{184     \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a954784beb64ead6842524acc3dae05be}{append}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& p2);}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186     \textcolor{keywordtype}{void} remove(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keywordtype}{void} setGs(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{double} gsin);}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190     \textcolor{keywordtype}{double} startTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{void} setStartTime(\textcolor{keywordtype}{double} startTime);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{199     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a86578072333d6594f255d4b237910987}{findName}}(\textcolor{keyword}{const} std::string\& nm) \textcolor{keyword}{const};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201     \textcolor{keywordtype}{double} pathDistance(\textcolor{keywordtype}{int} i, \textcolor{keywordtype}{int} j, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{209     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a5d37653172e2b1fd7322a1ef2ef6bd39}{ETA}}(\textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{216     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a66935de702c9c98761a404f9e36ae6d5}{linearPlan}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{217     }
+\DoxyCodeLine{223     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a71cdbe97b429b31f599eb127308d7388}{closestSegment}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos) \textcolor{keyword}{const};}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{232     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_af89f0e7ba42bc8c26f2fae39906d6ddc}{positionFromDistance}}(\textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} defaultBank, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{241     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a6781f859a76ce25132745466f3aa651f}{velocityFromDistance}}(\textcolor{keywordtype}{double} dist, \textcolor{keywordtype}{double} defaultBank, \textcolor{keywordtype}{bool} linear) \textcolor{keyword}{const};}
+\DoxyCodeLine{242     }
+\DoxyCodeLine{245     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_gs_plan_a12aa1adcf19e4671b0bc6980b375137a}{equals}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{246     }
+\DoxyCodeLine{247     \textcolor{keywordtype}{bool} almostEquals(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_gs_plan}{GsPlan}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{248     }
+\DoxyCodeLine{249     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{250 \};}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

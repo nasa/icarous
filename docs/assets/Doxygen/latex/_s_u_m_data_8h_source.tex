@@ -1,0 +1,103 @@
+\hypertarget{_s_u_m_data_8h_source}{}\doxysection{SUMData.\+h}
+\label{_s_u_m_data_8h_source}\index{Modules/ACCoRD/inc/SUMData.h@{Modules/ACCoRD/inc/SUMData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef SUMDATA\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define SUMDATA\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{private}:}
+\DoxyCodeLine{22   \textcolor{keywordtype}{double} s\_EW\_std\_;     \textcolor{comment}{// East/West position standard deviation in internal units}}
+\DoxyCodeLine{23   \textcolor{keywordtype}{double} s\_NS\_std\_;     \textcolor{comment}{// North/South position standard deviation in internal units}}
+\DoxyCodeLine{24   \textcolor{keywordtype}{double} s\_EN\_std\_;     \textcolor{comment}{// East/North position standard deviation in internal units}}
+\DoxyCodeLine{25   \textcolor{keywordtype}{double} sz\_std\_;       \textcolor{comment}{// Vertical position standard deviation in internal units}}
+\DoxyCodeLine{26   \textcolor{keywordtype}{double} v\_EW\_std\_;     \textcolor{comment}{// East/West velocity standard deviation in internal units}}
+\DoxyCodeLine{27   \textcolor{keywordtype}{double} v\_NS\_std\_;     \textcolor{comment}{// North/South velocity standard deviation in internal units}}
+\DoxyCodeLine{28   \textcolor{keywordtype}{double} v\_EN\_std\_;     \textcolor{comment}{// East/North velocity standard deviation in internal units}}
+\DoxyCodeLine{29   \textcolor{keywordtype}{double} vz\_std\_;       \textcolor{comment}{// Vertical velocity standard deviation in internal units}}
+\DoxyCodeLine{30   \textcolor{comment}{// The following errors are not multiplied by z-\/score yet}}
+\DoxyCodeLine{31   \textcolor{keywordtype}{double} s\_err\_;        \textcolor{comment}{// Uncertainty error in the horizontal position}}
+\DoxyCodeLine{32   \textcolor{keywordtype}{double} v\_err\_;        \textcolor{comment}{// Uncertainty error in the horizontal velocity}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{public}:}
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}();}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}\& sum);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}\& EMPTY();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordtype}{double} get\_s\_EW\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keywordtype}{double} get\_s\_EW\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keywordtype}{double} get\_s\_NS\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordtype}{double} get\_s\_NS\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{double} get\_s\_EN\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{double} get\_s\_EN\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{double} get\_sz\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordtype}{double} get\_sz\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keywordtype}{double} get\_v\_EW\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{keywordtype}{double} get\_v\_EW\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keywordtype}{double} get\_v\_NS\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keywordtype}{double} get\_v\_NS\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{double} get\_v\_EN\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keywordtype}{double} get\_v\_EN\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69   \textcolor{keywordtype}{double} get\_vz\_std() \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{double} get\_vz\_std(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keywordtype}{void} set(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}\& sum);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keyword}{static} \textcolor{keywordtype}{double} eigen\_value\_bound(\textcolor{keywordtype}{double} var1, \textcolor{keywordtype}{double} var2, \textcolor{keywordtype}{double} cov);}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_af2e1d5aa37e6c477df508742e57e3213}{horizontal\_uncertainty}}(\textcolor{keywordtype}{double} x\_std, \textcolor{keywordtype}{double} y\_std, \textcolor{keywordtype}{double} xy\_std);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{87   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_afb6e80cc223d9d160958bf2d3c99e9ff}{setHorizontalPositionUncertainty}}(\textcolor{keywordtype}{double} s\_EW\_std, \textcolor{keywordtype}{double} s\_NS\_std, \textcolor{keywordtype}{double} s\_EN\_std);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{92   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a86995a13b4e094e83983ec5077cf7805}{setVerticalPositionUncertainty}}(\textcolor{keywordtype}{double} sz\_std);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{99   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_add63804e5b8a91508f2384210737e8ea}{setHorizontalVelocityUncertainty}}(\textcolor{keywordtype}{double} v\_EW\_std, \textcolor{keywordtype}{double} v\_NS\_std,  \textcolor{keywordtype}{double} v\_EN\_std);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{104   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_ad8c2d53d46646117a5d40294a68e571b}{setVerticalSpeedUncertainty}}(\textcolor{keywordtype}{double} vz\_std);}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{109   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a332794957d7df19d259bfcb87e200cf8}{resetUncertainty}}();}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{114   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a69a27dc7144ab7cadb92dc0873f5dc66}{getHorizontalPositionError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{119   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a3b7cca8798ccee48cf29cc8810a4ee09}{getVerticalPositionError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{124   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a24ec017e9150056dfca4a63ff6f75fcc}{getHorizontalSpeedError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{129   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a1d465f071712dd2f6ec94e8018ee3c08}{getVerticalSpeedError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{134   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data_a03f55b97438b45b7897cc4dfe857e973}{is\_SUM}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \};}
+\DoxyCodeLine{137 \}}
+\DoxyCodeLine{138 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

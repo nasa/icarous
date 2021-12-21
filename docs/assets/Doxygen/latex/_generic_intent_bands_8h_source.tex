@@ -1,0 +1,47 @@
+\hypertarget{_generic_intent_bands_8h_source}{}\doxysection{Generic\+Intent\+Bands.\+h}
+\label{_generic_intent_bands_8h_source}\index{Modules/ACCoRD/inc/GenericIntentBands.h@{Modules/ACCoRD/inc/GenericIntentBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Bands interface}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2017 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef GENERICINTENTBANDS\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define GENERICINTENTBANDS\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}GenericBands.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands}{GenericIntentBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_bands}{GenericBands}} \{}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30  \textcolor{keyword}{public}:}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands}{\string~GenericIntentBands}}() \{\};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{43   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a2ac1eb7d7eb56427dfb193aba506c6a3}{setOwnship}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& tunit) = 0;}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{58   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a156ae51492e305555604ba2706b58a50}{setOwnshipLL}}(\textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon, \textcolor{keyword}{const} std::string\& hunit, \textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& vunit, \textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& trkunit, \textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& gsunit, \textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& vsunit, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& tunit) = 0;}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{73   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a14f1821e107c837ba168c76f45944fe8}{setOwnshipXYZ}}(\textcolor{keywordtype}{double} sx, \textcolor{keywordtype}{double} sy, \textcolor{keyword}{const} std::string\& hpunit, \textcolor{keywordtype}{double} sz, \textcolor{keyword}{const} std::string\& vpunit, \textcolor{keywordtype}{double} vx, \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} std::string\& hvunit, \textcolor{keywordtype}{double} vz, \textcolor{keyword}{const} std::string\& vvunit, \textcolor{keywordtype}{double} time, \textcolor{keyword}{const} std::string\& tunit) = 0;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{86   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_generic_intent_bands_a2f50172efa4bef21d468e8b399f09b6e}{addTraffic}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& \mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}) = 0;}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

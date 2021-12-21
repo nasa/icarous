@@ -1,0 +1,90 @@
+\hypertarget{_daidalus_alt_bands_8h_source}{}\doxysection{Daidalus\+Alt\+Bands.\+h}
+\label{_daidalus_alt_bands_8h_source}\index{Modules/ACCoRD/inc/DaidalusAltBands.h@{Modules/ACCoRD/inc/DaidalusAltBands.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef DAIDALUSALTBANDS\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define DAIDALUSALTBANDS\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}DaidalusRealBands.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}IntervalSet.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Kinematics.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ProjectedKinematics.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands}{DaidalusAltBands}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_daidalus_real_bands}{DaidalusRealBands}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   \mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands}{DaidalusAltBands}}();}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands}{DaidalusAltBands}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands}{DaidalusAltBands}}\& b);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} get\_recovery(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_min\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} get\_max\_rel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_special\_configuration(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keywordtype}{int} dta\_status);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} instantaneous\_bands(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} own\_val(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} time\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship) \textcolor{keyword}{const};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keyword}{virtual} std::pair<Vect3, Velocity> trajectory(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keywordtype}{double} time, \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{comment}{// In PVS: alt\_bands@conflict\_free\_traj\_step}}
+\DoxyCodeLine{53 \textcolor{keyword}{private}:}
+\DoxyCodeLine{54   \textcolor{keywordtype}{bool} conflict\_free\_traj\_step(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{55       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{int} target\_step, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{comment}{// In PVS: alt\_bands@alt\_bands\_generic}}
+\DoxyCodeLine{58   \textcolor{keywordtype}{void} alt\_bands\_generic(std::vector<Integerval>\& l,}
+\DoxyCodeLine{59       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{60       \textcolor{keywordtype}{int} maxup, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{keywordtype}{int} first\_nat(\textcolor{keywordtype}{int} mini, \textcolor{keywordtype}{int} maxi, \textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{63       \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,  \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{bool} green, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{int} first\_band\_alt\_generic(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T,}
+\DoxyCodeLine{66       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{bool} dir, \textcolor{keywordtype}{bool} green, \textcolor{keywordtype}{bool} instantaneous) \textcolor{keyword}{const};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{public}:}
+\DoxyCodeLine{69   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands_a83d00c6db9af096bd1c3c1ef225030c7}{none\_bands}}(\mbox{\hyperlink{classlarcfm_1_1_interval_set}{IntervalSet}}\& noneset, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{70       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} any\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{73       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} all\_red(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* conflict\_det, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* recovery\_det,}
+\DoxyCodeLine{76       \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} max\_delta\_resolution(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters) \textcolor{keyword}{const};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

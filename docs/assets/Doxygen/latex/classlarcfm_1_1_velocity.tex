@@ -1,0 +1,969 @@
+\hypertarget{classlarcfm_1_1_velocity}{}\doxysection{larcfm\+::Velocity Class Reference}
+\label{classlarcfm_1_1_velocity}\index{larcfm::Velocity@{larcfm::Velocity}}
+
+
+{\ttfamily \#include $<$Velocity.\+h$>$}
+
+Inheritance diagram for larcfm\+::Velocity\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_velocity}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}{Velocity}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a2381180e042c217d6454373270f1f9dd}\label{classlarcfm_1_1_velocity_a2381180e042c217d6454373270f1f9dd}} 
+{\bfseries Velocity} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v3)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a7fdbb77db7412aa8e8993f0411ef6ec6}{angle}} (const std\+::string \&uangle) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a274444dbf5a6aff3ea85f460b60d633c}{angle}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a2de29f38d614ca9dced8b14b2807131e}{track}} (const std\+::string \&utrk) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a02389da25776c3ff08d6849a4ae11c29}{compass\+Angle}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_aa3f607cfe78c527118effd1207882903}{compass\+Angle}} (const std\+::string \&u) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_aa979baa8de9b9b22671205bc17229222}{ground\+Speed}} (const std\+::string \&ugs) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_velocity_a166d643b9f6a06c15df2358a8bdbc34c}{vertical\+Speed}} (const std\+::string \&uvs) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_velocity_a7e937d9f97912e27b1397090ab4c5e9f}{compare}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double max\+Trk, double max\+Gs, double max\+Vs)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_velocity_acde4f1c5575e22c707d6cd645c1f9d9f}{compare}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double horiz\+Delta, double vert\+Delta)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ac65e3a4be608abde031724b685377a52}{mk\+Add\+Trk}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a5e8e839464c2157d5d73dd64eccbb682}{mk\+Trk}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a739c3e2f0563219677a4a91a8ce98503}{mk\+Trk}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, std\+::string u) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a6311be12aa9f6e4e6dc205e33921cf7a}{mk\+Gs}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae2b21dce3760c8dc391956016d1230f0}{mk\+Gs}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, std\+::string u) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a541f85ea9b502b25c74ed2adc6ebd938}{mk\+Vs}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a8a2663cbd682d171ebcf7eabaee5977b}{mk\+Vs}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}, std\+::string u) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a87cde5c6f48098ef147f1e8b36bc17d9}\label{classlarcfm_1_1_velocity_a87cde5c6f48098ef147f1e8b36bc17d9}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries NegV} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a58a23ea2089f8e300c7480f6ccecac81}{zero\+Small\+Vs}} (double threshold) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ae11651cfddf8aa7a78ffac72b31cdd50}\label{classlarcfm_1_1_velocity_ae11651cfddf8aa7a78ffac72b31cdd50}} 
+std\+::string {\bfseries to\+Unit\+Test} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1510ea9c8dd7e7bc7530fcfe98259da1}{to\+String}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a48343b8f82f21e1e7bcb6d8ec0e29c1a}{to\+String}} (int prec) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_ad8c1670223dabcb37d40ba5b38707d36}{to\+String\+Units}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_adcf58765a6c2870d6e8294a58ffd8d1b}{to\+String\+Units}} (const std\+::string \&trk\+Units, const std\+::string \&gs\+Units, const std\+::string \&vs\+Units) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1bdcc71c147e3a30ce4988660d8f484b}{to\+String\+XYZ}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a02cae2aaa21add2de4b8c45645ca3a3b}\label{classlarcfm_1_1_velocity_a02cae2aaa21add2de4b8c45645ca3a3b}} 
+std\+::string {\bfseries to\+String\+XYZ} (int prec) const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_velocity_a194c61443d039ff96acf34d1594f847a}{to\+String\+List}} () const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_velocity_a8d7286d807fcd20296b00ee03638a038}{to\+String\+List}} (int precision) const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_velocity_a4c40303e24239b5376a2351f5969a87e}{to\+String\+XYZList}} () const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classlarcfm_1_1_velocity_a605ed5cc0e6128c450cd13c00af4a381}{to\+String\+XYZList}} (int precision) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}{to\+String\+NP}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a4e76ae0ea2957fdc30c76e7f9c48f6d4}{to\+String\+NP}} (int precision) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a4ebd4120e801a1798c5543bf4a3ba5d8}{to\+String\+NP}} (const std\+::string \&utrk, const std\+::string \&ugs, const std\+::string \&uvs, int precision) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_adbc504e5b316a01982aaec06b08bb09f}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a1e474483e7264438e0a5fc4e22486ec3}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a1f7d7a2d3f4f846b3980efa77fd91211}{mk\+Vxyz}} (const double vx, const double vy, const double vz)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}{make\+Vxyz}} (const double vx, const double vy, const double vz)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_afed8727d38dbdb8cfc4d967773b65868}{make\+Vxyz}} (const double vx, const double vy, const std\+::string \&uvxy, const double vz, const std\+::string \&uvz)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae1eca2ddbaca68388d2303ff40999c0b}{mk\+Trk\+Gs\+Vs}} (const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}{make\+Trk\+Gs\+Vs}} (const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_aa948004fd3a67389dbaddcdc92c430b3}{make\+Trk\+Gs\+Vs}} (const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, const std\+::string \&utrk, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, const std\+::string \&ugs, const double \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}, const std\+::string \&uvs)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae8ad1457a83eb95708eb8d420f9ec0b3}{mk\+Vel}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p2, double speed)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_velocity_a2bb151a1ca9bb2faf9ac8c2dea59b516}{track}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p2)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a2b7b1ce1c4cad781f049a45873cbc6b2}{gen\+Vel}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&p2, double dt)
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}{ZEROV}} ()
+\item 
+static const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_velocity_a02df460f83c54e55a558ae042c05ff3e}{INVALIDV}} ()
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_velocity_a773b483c77c69a5bc5d71d31f92a5f30}{trkgs2vx}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}})
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_velocity_ad9874e6f341071ff603e5be685dcf22d}{trkgs2vy}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_velocity_aeaa35802e2ddf5953109f15b49fdb037}{trkgs2v}} (double \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, double \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}})
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab37a4a06011be58ccb676e9e9997e9d2}{parse\+XYZ}} (const std\+::string \&str)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_adfe50ffd4b7618018a1c4b113bea901e}{parse}} (const std\+::string \&str)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity_ab2b27bcc6db43cbf6d3f25ef1a29ff96}{Velocity}} (const double vx, const double vy, const double vz)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+This class represents a 3-\/dimensional velocity vector. The components of the vector represent East-\/\+North-\/\+Up (ENU) coordinates; thus x is positive in the east direction, y is positive in the north, and z is positive up. The other right handed coordinate system, East-\/\+North-\/\+Down can probably be used without error, but this has not be tested very well. The track angle is defined by the \char`\"{}true north, clockwise convention.\char`\"{} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ab2b27bcc6db43cbf6d3f25ef1a29ff96}\label{classlarcfm_1_1_velocity_ab2b27bcc6db43cbf6d3f25ef1a29ff96}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!Velocity@{Velocity}}
+\index{Velocity@{Velocity}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{Velocity()}{Velocity()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Velocity\+::\+Velocity (\begin{DoxyParamCaption}\item[{const double}]{vx,  }\item[{const double}]{vy,  }\item[{const double}]{vz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Instantiates a new velocity in internal units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vx} & the vx \\
+\hline
+{\em vy} & the vy \\
+\hline
+{\em vz} & the vz \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}\label{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!Velocity@{Velocity}}
+\index{Velocity@{Velocity}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{Velocity()}{Velocity()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily larcfm\+::\+Velocity\+::\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Instantiates a zero velocity. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a274444dbf5a6aff3ea85f460b60d633c}\label{classlarcfm_1_1_velocity_a274444dbf5a6aff3ea85f460b60d633c}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!angle@{angle}}
+\index{angle@{angle}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{angle()}{angle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::angle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Angle in radians in the range \mbox{[}-\/{\ttfamily Math.\+PI}, {\ttfamily Math.\+PI}\mbox{]}. Convention is counter-\/clockwise with respect to east.
+
+\begin{DoxyReturn}{Returns}
+the track angle \mbox{[}rad\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a7fdbb77db7412aa8e8993f0411ef6ec6}\label{classlarcfm_1_1_velocity_a7fdbb77db7412aa8e8993f0411ef6ec6}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!angle@{angle}}
+\index{angle@{angle}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{angle()}{angle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::angle (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{uangle }\end{DoxyParamCaption}) const}
+
+Angle in explicit units in corresponding range \mbox{[}-\/{\ttfamily Math.\+PI}, {\ttfamily Math.\+PI}\mbox{]}. Convention is counter-\/clockwise with respect to east.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uangle} & the explicit units of track angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the track angle \mbox{[}rad\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_acde4f1c5575e22c707d6cd645c1f9d9f}\label{classlarcfm_1_1_velocity_acde4f1c5575e22c707d6cd645c1f9d9f}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!compare@{compare}}
+\index{compare@{compare}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{compare()}{compare()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Velocity\+::compare (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{horiz\+Delta,  }\item[{double}]{vert\+Delta }\end{DoxyParamCaption})}
+
+Compare two velocities based on horizontal and vertical components. This could be used against a set of nacV ADS-\/B limits, for example. 
+\begin{DoxyParams}{Parameters}
+{\em v} & other \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \\
+\hline
+{\em horiz\+Delta} & horizontal tolerance (absolute value) \\
+\hline
+{\em vert\+Delta} & vertical tolerance (absolute value) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the velocities are within both horizontal and vertical tolerances of each other. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a7e937d9f97912e27b1397090ab4c5e9f}\label{classlarcfm_1_1_velocity_a7e937d9f97912e27b1397090ab4c5e9f}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!compare@{compare}}
+\index{compare@{compare}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{compare()}{compare()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Velocity\+::compare (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{max\+Trk,  }\item[{double}]{max\+Gs,  }\item[{double}]{max\+Vs }\end{DoxyParamCaption})}
+
+Compare Velocities\+: return true iff delta is within specified limits
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & the other velocity \\
+\hline
+{\em max\+Trk} & maximum track \\
+\hline
+{\em max\+Gs} & maximum gs \\
+\hline
+{\em max\+Vs} & maximum vs \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if the velocities compare correctly 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a02389da25776c3ff08d6849a4ae11c29}\label{classlarcfm_1_1_velocity_a02389da25776c3ff08d6849a4ae11c29}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!compassAngle@{compassAngle}}
+\index{compassAngle@{compassAngle}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{compassAngle()}{compassAngle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::compass\+Angle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Compass angle in radians in the range \mbox{[}{\ttfamily 0}, {\ttfamily 2$\ast$\+Math.PI}). Convention is clockwise with respect to north.
+
+\begin{DoxyReturn}{Returns}
+the compass angle \mbox{[}rad\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_aa3f607cfe78c527118effd1207882903}\label{classlarcfm_1_1_velocity_aa3f607cfe78c527118effd1207882903}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!compassAngle@{compassAngle}}
+\index{compassAngle@{compassAngle}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{compassAngle()}{compassAngle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::compass\+Angle (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{u }\end{DoxyParamCaption}) const}
+
+Compass angle in explicit units in corresponding range \mbox{[}{\ttfamily 0}, {\ttfamily 2$\ast$\+Math.PI}). Convention is clockwise with respect to north.
+
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the explicit units of compass angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the compass angle \mbox{[}u\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a2b7b1ce1c4cad781f049a45873cbc6b2}\label{classlarcfm_1_1_velocity_a2b7b1ce1c4cad781f049a45873cbc6b2}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!genVel@{genVel}}
+\index{genVel@{genVel}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{genVel()}{genVel()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::gen\+Vel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p2,  }\item[{double}]{dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the velocity if moving from p1 to p2 over the given time 
+\begin{DoxyParams}{Parameters}
+{\em p1} & first point \\
+\hline
+{\em p2} & second point \\
+\hline
+{\em dt} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_aa979baa8de9b9b22671205bc17229222}\label{classlarcfm_1_1_velocity_aa979baa8de9b9b22671205bc17229222}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!groundSpeed@{groundSpeed}}
+\index{groundSpeed@{groundSpeed}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{groundSpeed()}{groundSpeed()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::ground\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ugs }\end{DoxyParamCaption}) const}
+
+Ground speed in explicit units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ugs} & the explicit units of ground speed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the ground speed \mbox{[}ugs\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}\label{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!gs@{gs}}
+\index{gs@{gs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{gs()}{gs()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::gs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Ground speed in internal units.
+
+\begin{DoxyReturn}{Returns}
+the ground speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a02df460f83c54e55a558ae042c05ff3e}\label{classlarcfm_1_1_velocity_a02df460f83c54e55a558ae042c05ff3e}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!INVALIDV@{INVALIDV}}
+\index{INVALIDV@{INVALIDV}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{INVALIDV()}{INVALIDV()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Velocity\+::\+INVALIDV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+An invalid velocity, used for error reporting \mbox{\Hypertarget{classlarcfm_1_1_velocity_a1e474483e7264438e0a5fc4e22486ec3}\label{classlarcfm_1_1_velocity_a1e474483e7264438e0a5fc4e22486ec3}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!make@{make}}
+\index{make@{make}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} (setting the vertical speed to 0.\+0).
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & the 2-\/D velocity vector (in internal units).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_adbc504e5b316a01982aaec06b08bb09f}\label{classlarcfm_1_1_velocity_adbc504e5b316a01982aaec06b08bb09f}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!make@{make}}
+\index{make@{make}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} in internal units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & the 3-\/D velocity vector \mbox{[}mps,mps,mps\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}\label{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!makeTrkGsVs@{makeTrkGsVs}}
+\index{makeTrkGsVs@{makeTrkGsVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{makeTrkGsVs()}{makeTrkGsVs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make\+Trk\+Gs\+Vs (\begin{DoxyParamCaption}\item[{const double}]{trk,  }\item[{const double}]{gs,  }\item[{const double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Track, Ground Speed, and \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed in explicit units. Note that this uses trigonometric functions, and may introduce numeric instability.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & the track angle \mbox{[}deg\mbox{]} \\
+\hline
+{\em gs} & the ground speed \mbox{[}knot\mbox{]} \\
+\hline
+{\em vs} & the vertical speed \mbox{[}fpm\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_aa948004fd3a67389dbaddcdc92c430b3}\label{classlarcfm_1_1_velocity_aa948004fd3a67389dbaddcdc92c430b3}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!makeTrkGsVs@{makeTrkGsVs}}
+\index{makeTrkGsVs@{makeTrkGsVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{makeTrkGsVs()}{makeTrkGsVs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make\+Trk\+Gs\+Vs (\begin{DoxyParamCaption}\item[{const double}]{trk,  }\item[{const std\+::string \&}]{utrk,  }\item[{const double}]{gs,  }\item[{const std\+::string \&}]{ugs,  }\item[{const double}]{vs,  }\item[{const std\+::string \&}]{uvs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Track, Ground Speed, and \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed in explicit units. Note that this uses trigonometric functions, and may introduce numeric instability.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & the track angle \mbox{[}utrk\mbox{]} \\
+\hline
+{\em utrk} & the units of trk \\
+\hline
+{\em gs} & the ground speed \mbox{[}ugs\mbox{]} \\
+\hline
+{\em ugs} & the units of gs \\
+\hline
+{\em vs} & the vertical speed \mbox{[}uvs\mbox{]} \\
+\hline
+{\em uvs} & the units of vs\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}\label{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!makeVxyz@{makeVxyz}}
+\index{makeVxyz@{makeVxyz}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{makeVxyz()}{makeVxyz()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make\+Vxyz (\begin{DoxyParamCaption}\item[{const double}]{vx,  }\item[{const double}]{vy,  }\item[{const double}]{vz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Euclidean coordinates in \char`\"{}conventional\char`\"{} units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vx} & the x-\/velocity \mbox{[}knot\mbox{]} \\
+\hline
+{\em vy} & the y-\/velocity \mbox{[}knot\mbox{]} \\
+\hline
+{\em vz} & the z-\/velocity \mbox{[}fpm\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_afed8727d38dbdb8cfc4d967773b65868}\label{classlarcfm_1_1_velocity_afed8727d38dbdb8cfc4d967773b65868}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!makeVxyz@{makeVxyz}}
+\index{makeVxyz@{makeVxyz}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{makeVxyz()}{makeVxyz()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::make\+Vxyz (\begin{DoxyParamCaption}\item[{const double}]{vx,  }\item[{const double}]{vy,  }\item[{const std\+::string \&}]{uvxy,  }\item[{const double}]{vz,  }\item[{const std\+::string \&}]{uvz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Euclidean coordinates in explicit units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vx} & the x-\/velocity \mbox{[}uvxy\mbox{]} \\
+\hline
+{\em vy} & the y-\/velocity \mbox{[}uvzy\mbox{]} \\
+\hline
+{\em uvxy} & the units of vx and vy \\
+\hline
+{\em vz} & the z-\/velocity \mbox{[}uvz\mbox{]} \\
+\hline
+{\em uvz} & the units of vz\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ac65e3a4be608abde031724b685377a52}\label{classlarcfm_1_1_velocity_ac65e3a4be608abde031724b685377a52}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkAddTrk@{mkAddTrk}}
+\index{mkAddTrk@{mkAddTrk}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkAddTrk()}{mkAddTrk()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Add\+Trk (\begin{DoxyParamCaption}\item[{double}]{trk }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity by adding the given track angle to this vector\textquotesingle{}s track angle. Essentially, this rotates the vector, a positive angle means a clockwise rotation. 
+\begin{DoxyParams}{Parameters}
+{\em trk} & track angle \mbox{[}rad\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a6311be12aa9f6e4e6dc205e33921cf7a}\label{classlarcfm_1_1_velocity_a6311be12aa9f6e4e6dc205e33921cf7a}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkGs@{mkGs}}
+\index{mkGs@{mkGs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkGs()}{mkGs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Gs (\begin{DoxyParamCaption}\item[{double}]{gs\+\_\+d }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the ground speed 
+\begin{DoxyParams}{Parameters}
+{\em gs} & ground speed \mbox{[}m/s\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity
+\end{DoxyReturn}
+New velocity from existing velocity, changing only the ground speed 
+\begin{DoxyParams}{Parameters}
+{\em gs} & \mbox{[}m/s\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ae2b21dce3760c8dc391956016d1230f0}\label{classlarcfm_1_1_velocity_ae2b21dce3760c8dc391956016d1230f0}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkGs@{mkGs}}
+\index{mkGs@{mkGs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkGs()}{mkGs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Gs (\begin{DoxyParamCaption}\item[{double}]{gs\+\_\+d,  }\item[{std\+::string}]{u }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the ground speed 
+\begin{DoxyParams}{Parameters}
+{\em gs} & ground speed \mbox{[}u\mbox{]} \\
+\hline
+{\em u} & units \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity
+\end{DoxyReturn}
+New velocity from existing velocity, changing only the ground speed 
+\begin{DoxyParams}{Parameters}
+{\em gs} & \mbox{[}u\mbox{]} \\
+\hline
+{\em u} & unit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a5e8e839464c2157d5d73dd64eccbb682}\label{classlarcfm_1_1_velocity_a5e8e839464c2157d5d73dd64eccbb682}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkTrk@{mkTrk}}
+\index{mkTrk@{mkTrk}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkTrk()}{mkTrk()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Trk (\begin{DoxyParamCaption}\item[{double}]{trk }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the track 
+\begin{DoxyParams}{Parameters}
+{\em trk} & track angle \mbox{[}rad\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a739c3e2f0563219677a4a91a8ce98503}\label{classlarcfm_1_1_velocity_a739c3e2f0563219677a4a91a8ce98503}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkTrk@{mkTrk}}
+\index{mkTrk@{mkTrk}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkTrk()}{mkTrk()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Trk (\begin{DoxyParamCaption}\item[{double}]{trk,  }\item[{std\+::string}]{u }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the track 
+\begin{DoxyParams}{Parameters}
+{\em trk} & track angle \mbox{[}u\mbox{]} \\
+\hline
+{\em u} & units \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ae1eca2ddbaca68388d2303ff40999c0b}\label{classlarcfm_1_1_velocity_ae1eca2ddbaca68388d2303ff40999c0b}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkTrkGsVs@{mkTrkGsVs}}
+\index{mkTrkGsVs@{mkTrkGsVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkTrkGsVs()}{mkTrkGsVs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Trk\+Gs\+Vs (\begin{DoxyParamCaption}\item[{const double}]{trk,  }\item[{const double}]{gs,  }\item[{const double}]{vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Track, Ground Speed, and \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed in internal units. Note that this uses trigonometric functions, and may introduce numeric instability.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & the track angle \mbox{[}internal\mbox{]} \\
+\hline
+{\em gs} & the ground speed \mbox{[}internal\mbox{]} \\
+\hline
+{\em vs} & the vs \mbox{[}internal\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ae8ad1457a83eb95708eb8d420f9ec0b3}\label{classlarcfm_1_1_velocity_ae8ad1457a83eb95708eb8d420f9ec0b3}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkVel@{mkVel}}
+\index{mkVel@{mkVel}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkVel()}{mkVel()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Vel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p2,  }\item[{double}]{speed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the velocity along the line from p1 to p2 at the given speed 
+\begin{DoxyParams}{Parameters}
+{\em p1} & first point \\
+\hline
+{\em p2} & second point \\
+\hline
+{\em speed} & speed \mbox{[}internal units\mbox{]} (composite 3 dimensional speed, Not ground or vertical speed!) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a541f85ea9b502b25c74ed2adc6ebd938}\label{classlarcfm_1_1_velocity_a541f85ea9b502b25c74ed2adc6ebd938}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkVs@{mkVs}}
+\index{mkVs@{mkVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkVs()}{mkVs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Vs (\begin{DoxyParamCaption}\item[{double}]{vs }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the vertical speed 
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertical speed \mbox{[}m/s\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity
+\end{DoxyReturn}
+\} New velocity from existing velocity, changing only the vertical speed 
+\begin{DoxyParams}{Parameters}
+{\em vs} & \mbox{[}m/s\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a8a2663cbd682d171ebcf7eabaee5977b}\label{classlarcfm_1_1_velocity_a8a2663cbd682d171ebcf7eabaee5977b}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkVs@{mkVs}}
+\index{mkVs@{mkVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkVs()}{mkVs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Vs (\begin{DoxyParamCaption}\item[{double}]{vs,  }\item[{std\+::string}]{u }\end{DoxyParamCaption}) const}
+
+New velocity from existing velocity, changing only the vertical speed 
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertical speed \mbox{[}u\mbox{]} \\
+\hline
+{\em u} & units \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new velocity
+\end{DoxyReturn}
+New velocity from existing velocity, changing only the vertical speed 
+\begin{DoxyParams}{Parameters}
+{\em vs} & \mbox{[}u\mbox{]} \\
+\hline
+{\em u} & units \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a1f7d7a2d3f4f846b3980efa77fd91211}\label{classlarcfm_1_1_velocity_a1f7d7a2d3f4f846b3980efa77fd91211}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!mkVxyz@{mkVxyz}}
+\index{mkVxyz@{mkVxyz}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{mkVxyz()}{mkVxyz()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::mk\+Vxyz (\begin{DoxyParamCaption}\item[{const double}]{vx,  }\item[{const double}]{vy,  }\item[{const double}]{vz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+New velocity from Euclidean coordinates in internal units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vx} & the x-\/velocity \mbox{[}internal\mbox{]} \\
+\hline
+{\em vy} & the y-\/velocity \mbox{[}internal\mbox{]} \\
+\hline
+{\em vz} & the z-\/velocity \mbox{[}internal\mbox{]}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_adfe50ffd4b7618018a1c4b113bea901e}\label{classlarcfm_1_1_velocity_adfe50ffd4b7618018a1c4b113bea901e}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!parse@{parse}}
+\index{parse@{parse}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::parse (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This parses a space or comma-\/separated string as a Trk/\+Gs/\+Vs \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (an inverse to the to\+String method). If three bare values are present, then it is interpreted as degrees/knots/fpm. If there are 3 value/unit pairs then each values is interpreted wrt the appropriate unit. If the string cannot be parsed, an INVALID value is returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+velocity
+\end{DoxyReturn}
+This parses a space or comma-\/separated string as a Trk/\+Gs/\+Vs \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (an inverse to the to\+String method). If three bare values are present, then it is interpreted as degrees/knots/fpm. If there are 3 value/unit pairs then each values is interpreted wrt the appropriate unit. If the string cannot be parsed, an INVALID value is returned. \mbox{\Hypertarget{classlarcfm_1_1_velocity_ab37a4a06011be58ccb676e9e9997e9d2}\label{classlarcfm_1_1_velocity_ab37a4a06011be58ccb676e9e9997e9d2}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!parseXYZ@{parseXYZ}}
+\index{parseXYZ@{parseXYZ}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{parseXYZ()}{parseXYZ()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::parse\+XYZ (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This parses a space or comma-\/separated string as a XYZ \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} (an inverse to the to\+String\+XYZ method). If three bare values are present, then it is interpreted as internal units. If there are 3 value/unit pairs then each values is interpreted wrt the appropriate unit. If the string cannot be parsed, an INVALID value is returned.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to parse \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a1510ea9c8dd7e7bc7530fcfe98259da1}\label{classlarcfm_1_1_velocity_a1510ea9c8dd7e7bc7530fcfe98259da1}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toString@{toString}}
+\index{toString@{toString}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+String representation of the velocity in polar coordinates (compass angle and groundspeed) \begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a48343b8f82f21e1e7bcb6d8ec0e29c1a}\label{classlarcfm_1_1_velocity_a48343b8f82f21e1e7bcb6d8ec0e29c1a}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toString@{toString}}
+\index{toString@{toString}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String (\begin{DoxyParamCaption}\item[{int}]{prec }\end{DoxyParamCaption}) const}
+
+String representation of the velocity in polar coordinates (compass angle and groundspeed) in \mbox{[}deg, knot, fpm\mbox{]}. This method does not output units. 
+\begin{DoxyParams}{Parameters}
+{\em prec} & precision (0-\/15) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a194c61443d039ff96acf34d1594f847a}\label{classlarcfm_1_1_velocity_a194c61443d039ff96acf34d1594f847a}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringList@{toStringList}}
+\index{toStringList@{toStringList}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringList()}{toStringList()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Velocity\+::to\+String\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return an array of string representing each value of the velocity in the units deg, knot, fpm. \begin{DoxyReturn}{Returns}
+array of strings 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a8d7286d807fcd20296b00ee03638a038}\label{classlarcfm_1_1_velocity_a8d7286d807fcd20296b00ee03638a038}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringList@{toStringList}}
+\index{toStringList@{toStringList}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringList()}{toStringList()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Velocity\+::to\+String\+List (\begin{DoxyParamCaption}\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+Return an array of string representing each value of the velocity in the units deg, knot, fpm. 
+\begin{DoxyParams}{Parameters}
+{\em precision} & the number of digits to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array of strings 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}\label{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringNP@{toStringNP}}
+\index{toStringNP@{toStringNP}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringNP()}{toStringNP()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+NP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+String representation, default number of decimal places, without parentheses \begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a4ebd4120e801a1798c5543bf4a3ba5d8}\label{classlarcfm_1_1_velocity_a4ebd4120e801a1798c5543bf4a3ba5d8}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringNP@{toStringNP}}
+\index{toStringNP@{toStringNP}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringNP()}{toStringNP()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+NP (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{utrk,  }\item[{const std\+::string \&}]{ugs,  }\item[{const std\+::string \&}]{uvs,  }\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+String representation, with user-\/specified precision 
+\begin{DoxyParams}{Parameters}
+{\em precision} & number of decimal places (0-\/15) \\
+\hline
+{\em utrk} & units of track \\
+\hline
+{\em ugs} & units of ground speed \\
+\hline
+{\em uvs} & units of vertical speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a4e76ae0ea2957fdc30c76e7f9c48f6d4}\label{classlarcfm_1_1_velocity_a4e76ae0ea2957fdc30c76e7f9c48f6d4}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringNP@{toStringNP}}
+\index{toStringNP@{toStringNP}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringNP()}{toStringNP()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+NP (\begin{DoxyParamCaption}\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+String representation, with user-\/specified precision 
+\begin{DoxyParams}{Parameters}
+{\em precision} & number of decimal places (0-\/15) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ad8c1670223dabcb37d40ba5b38707d36}\label{classlarcfm_1_1_velocity_ad8c1670223dabcb37d40ba5b38707d36}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringUnits@{toStringUnits}}
+\index{toStringUnits@{toStringUnits}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringUnits()}{toStringUnits()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+Units (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+String representation of the velocity in polar coordinates (compass angle and groundspeed) \begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_adcf58765a6c2870d6e8294a58ffd8d1b}\label{classlarcfm_1_1_velocity_adcf58765a6c2870d6e8294a58ffd8d1b}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringUnits@{toStringUnits}}
+\index{toStringUnits@{toStringUnits}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringUnits()}{toStringUnits()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+Units (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{trk\+Units,  }\item[{const std\+::string \&}]{gs\+Units,  }\item[{const std\+::string \&}]{vs\+Units }\end{DoxyParamCaption}) const}
+
+String representation (trk,gs,vs) with the given units
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk\+Units} & units for track \\
+\hline
+{\em gs\+Units} & units for ground speed \\
+\hline
+{\em vs\+Units} & units for vertical speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a1bdcc71c147e3a30ce4988660d8f484b}\label{classlarcfm_1_1_velocity_a1bdcc71c147e3a30ce4988660d8f484b}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringXYZ@{toStringXYZ}}
+\index{toStringXYZ@{toStringXYZ}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringXYZ()}{toStringXYZ()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+Velocity\+::to\+String\+XYZ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Euclidean vector representation to arbitrary precision, in \mbox{[}knot,knot,fpm\mbox{]} \begin{DoxyReturn}{Returns}
+a string representation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a4c40303e24239b5376a2351f5969a87e}\label{classlarcfm_1_1_velocity_a4c40303e24239b5376a2351f5969a87e}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringXYZList@{toStringXYZList}}
+\index{toStringXYZList@{toStringXYZList}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringXYZList()}{toStringXYZList()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Velocity\+::to\+String\+XYZList (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm. \begin{DoxyReturn}{Returns}
+array of strings 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a605ed5cc0e6128c450cd13c00af4a381}\label{classlarcfm_1_1_velocity_a605ed5cc0e6128c450cd13c00af4a381}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!toStringXYZList@{toStringXYZList}}
+\index{toStringXYZList@{toStringXYZList}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{toStringXYZList()}{toStringXYZList()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ larcfm\+::\+Velocity\+::to\+String\+XYZList (\begin{DoxyParamCaption}\item[{int}]{precision }\end{DoxyParamCaption}) const}
+
+Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm.
+
+
+\begin{DoxyParams}{Parameters}
+{\em precision} & the number of digits to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array of strings 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a2de29f38d614ca9dced8b14b2807131e}\label{classlarcfm_1_1_velocity_a2de29f38d614ca9dced8b14b2807131e}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!track@{track}}
+\index{track@{track}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::track (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{utrk }\end{DoxyParamCaption}) const}
+
+Track angle in explicit units in the corresponding range \mbox{[}-\/{\ttfamily Math.\+PI}, {\ttfamily Math.\+PI}\mbox{]}. Convention is clockwise with respect to north.
+
+
+\begin{DoxyParams}{Parameters}
+{\em utrk} & the explicit units of track angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the track angle \mbox{[}utrk\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a2bb151a1ca9bb2faf9ac8c2dea59b516}\label{classlarcfm_1_1_velocity_a2bb151a1ca9bb2faf9ac8c2dea59b516}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!track@{track}}
+\index{track@{track}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{track()}{track()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::track (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p1,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the track along the line from p1 to p2 at the given speed 
+\begin{DoxyParams}{Parameters}
+{\em p1} & first point \\
+\hline
+{\em p2} & second point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the track 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}\label{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!trk@{trk}}
+\index{trk@{trk}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{trk()}{trk()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::trk (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Track angle in radians in the range \mbox{[}-\/{\ttfamily Math.\+PI}, {\ttfamily Math.\+PI}\mbox{]}. Convention is clockwise with respect to north.
+
+\begin{DoxyReturn}{Returns}
+the track angle \mbox{[}rad\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_aeaa35802e2ddf5953109f15b49fdb037}\label{classlarcfm_1_1_velocity_aeaa35802e2ddf5953109f15b49fdb037}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!trkgs2v@{trkgs2v}}
+\index{trkgs2v@{trkgs2v}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{trkgs2v()}{trkgs2v()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} larcfm\+::\+Velocity\+::trkgs2v (\begin{DoxyParamCaption}\item[{double}]{trk,  }\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the 2-\/dimensional Euclidean vector for velocity given the track and ground speed. The track angle is assumed to use the radians from true North-\/clockwise convention.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & track \\
+\hline
+{\em gs} & ground speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+2-\/D velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a773b483c77c69a5bc5d71d31f92a5f30}\label{classlarcfm_1_1_velocity_a773b483c77c69a5bc5d71d31f92a5f30}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!trkgs2vx@{trkgs2vx}}
+\index{trkgs2vx@{trkgs2vx}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{trkgs2vx()}{trkgs2vx()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::trkgs2vx (\begin{DoxyParamCaption}\item[{double}]{trk,  }\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the x component of velocity given the track and ground speed. The track angle is assumed to use the radians from true North-\/clockwise convention.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & track angle \\
+\hline
+{\em gs} & ground speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+x component of velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ad9874e6f341071ff603e5be685dcf22d}\label{classlarcfm_1_1_velocity_ad9874e6f341071ff603e5be685dcf22d}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!trkgs2vy@{trkgs2vy}}
+\index{trkgs2vy@{trkgs2vy}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{trkgs2vy()}{trkgs2vy()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::trkgs2vy (\begin{DoxyParamCaption}\item[{double}]{trk,  }\item[{double}]{gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the y component of velocity given the track and ground speed. The track angle is assumed to use the radians from true North-\/clockwise convention.
+
+
+\begin{DoxyParams}{Parameters}
+{\em trk} & track \\
+\hline
+{\em gs} & ground speed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+y component of velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a166d643b9f6a06c15df2358a8bdbc34c}\label{classlarcfm_1_1_velocity_a166d643b9f6a06c15df2358a8bdbc34c}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::vertical\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{uvs }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed in explicit units.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uvs} & the explicit units of vertical speed\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the vertical speed \mbox{[}uvs\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}\label{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!vs@{vs}}
+\index{vs@{vs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{vs()}{vs()}}
+{\footnotesize\ttfamily double larcfm\+::\+Velocity\+::vs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} speed in internal units.
+
+\begin{DoxyReturn}{Returns}
+the vertical speed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a58a23ea2089f8e300c7480f6ccecac81}\label{classlarcfm_1_1_velocity_a58a23ea2089f8e300c7480f6ccecac81}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!zeroSmallVs@{zeroSmallVs}}
+\index{zeroSmallVs@{zeroSmallVs}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{zeroSmallVs()}{zeroSmallVs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Velocity\+::zero\+Small\+Vs (\begin{DoxyParamCaption}\item[{double}]{threshold }\end{DoxyParamCaption}) const}
+
+If the z component of the velocity vector is smaller than the threshold, return a new vector with this component set to 0. Return the original vector if the vertical speed is greater than the threshold. 
+\begin{DoxyParams}{Parameters}
+{\em threshold} & level of vertical speed below which the vector is altered \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the new velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}\label{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}} 
+\index{larcfm::Velocity@{larcfm::Velocity}!ZEROV@{ZEROV}}
+\index{ZEROV@{ZEROV}!larcfm::Velocity@{larcfm::Velocity}}
+\doxysubsubsection{\texorpdfstring{ZEROV()}{ZEROV()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Velocity\+::\+ZEROV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return a zero velocity vector 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Velocity.\+h\item 
+Modules/\+ACCo\+RD/src/Velocity.\+cpp\end{DoxyCompactItemize}

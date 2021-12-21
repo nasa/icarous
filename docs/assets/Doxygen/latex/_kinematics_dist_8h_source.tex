@@ -1,0 +1,59 @@
+\hypertarget{_kinematics_dist_8h_source}{}\doxysection{Kinematics\+Dist.\+h}
+\label{_kinematics_dist_8h_source}\index{Modules/ACCoRD/inc/KinematicsDist.h@{Modules/ACCoRD/inc/KinematicsDist.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Kinematics.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * }}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef KINEMATICSDIST\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define KINEMATICSDIST\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Vect4.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_kinematics_dist}{KinematicsDist}} \{}
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{51     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a1198c2107ee76b87dc011afc318ccdcd}{minDistBetweenTrk}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvi,}
+\DoxyCodeLine{52             \textcolor{keywordtype}{double} bankAngleOwn, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{68     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a0cc17e8d8ce4c91c96659bfeaa0db3e5}{minDistBetweenGs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,  \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvi,}
+\DoxyCodeLine{69             \textcolor{keywordtype}{double} gsAccelOwn, \textcolor{keywordtype}{double} gsAccelTraf, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{83     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_a0cc17e8d8ce4c91c96659bfeaa0db3e5}{minDistBetweenGs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{84             \textcolor{keywordtype}{double} gsAccelOwn, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{101     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_ad102fe32f947867067713739b2f7697d}{minDistBetweenVs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,  \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvi,}
+\DoxyCodeLine{102             \textcolor{keywordtype}{double} vsAccelOwn, \textcolor{keywordtype}{double} vsAccelTraf, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{117     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect4}{Vect4}} \mbox{\hyperlink{classlarcfm_1_1_kinematics_dist_ad102fe32f947867067713739b2f7697d}{minDistBetweenVs}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nvo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{118             \textcolor{keywordtype}{double} vsAccelOwn, \textcolor{keywordtype}{double} stopTime);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120     \textcolor{keyword}{static} \textcolor{keywordtype}{double} gsTimeConstantAccelFromDist(\textcolor{keywordtype}{double} gs1, \textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} dist);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//KINEMATICSDIST\_H\_}}
+
+\end{DoxyCode}

@@ -1,0 +1,844 @@
+\hypertarget{classlarcfm_1_1_simple_poly}{}\doxysection{larcfm\+::Simple\+Poly Class Reference}
+\label{classlarcfm_1_1_simple_poly}\index{larcfm::SimplePoly@{larcfm::SimplePoly}}
+
+
+{\ttfamily \#include $<$Simple\+Poly.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}{Simple\+Poly}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly_a09e0634b56e0720568c3d13c97c5776c}{Simple\+Poly}} (double b, double t)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly_a809238d76cf94190a33e9e5a5789317d}{Simple\+Poly}} (double b, double t, const std\+::string \&units)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly_ad189447e5f23bd2434b043a330687d80}{Simple\+Poly}} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a56a1bccd5d333998434ffe4e4cc3a689}\label{classlarcfm_1_1_simple_poly_a56a1bccd5d333998434ffe4e4cc3a689}} 
+bool {\bfseries equals} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a2f7589fa1d918dababf013f0173ad1d3}{get\+Vertex}} (int n) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af11a6c7319e6e62db0536cfb73e07895}\label{classlarcfm_1_1_simple_poly_af11a6c7319e6e62db0536cfb73e07895}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ {\bfseries get\+Vertices} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0f9cf7aa3d23cb39e3eee043ae0487b4}{poly3D}} (const Euclidean\+Projection \&proj) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac18f5e77c6199bc97fd46f53d2d06098}{is\+Lat\+Lon}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab90e3df628cf668fe2a202f0e49d9f17}\label{classlarcfm_1_1_simple_poly_ab90e3df628cf668fe2a202f0e49d9f17}} 
+bool {\bfseries is\+Clockwise} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab141291226083791cb83349f15b29085}\label{classlarcfm_1_1_simple_poly_ab141291226083791cb83349f15b29085}} 
+void {\bfseries reverse\+Order} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a6913035a9831aa2719719e57c006b9af}{distance\+From\+Edge}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aba89a55cb4237c38837005f8ddd90d23}{distanceV}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a1789fcbc0ddbbcf1d53f6e94e8f0fc17}{contains}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ad1a574a67b4ac5cc27850858cd34d174}{contains2D}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ab9011b03c25f9b562a59f2b6e6ba8730}{size}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ad17f3f81bd1373ed70650ac2f07af0a3}{increase\+Vertices}} (int sz)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aa9f540c6e1ddea130f58ab537dc0669a}{centroid}} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0f48a628cb35ae1393a485862ca2a429}{area}} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5d0ea7c92afac800360833fd1cc835f7}{average\+Point}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a36872cb4028aff69a3f027990b7e7d67}\label{classlarcfm_1_1_simple_poly_a36872cb4028aff69a3f027990b7e7d67}} 
+double {\bfseries ap\+Bounding\+Radius} ()
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a3bcadcadd0caa2ca05196422f1b12277}{bounding\+Circle\+Center}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8c28bdf4886d8a4633757339df27c0d2}{is\+Convex}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a2375b3b72c31ff448586b425516a4102}{bounding\+Circle\+Radius}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a6c4a2ed1d02240974294a2d39d347ed8}\label{classlarcfm_1_1_simple_poly_a6c4a2ed1d02240974294a2d39d347ed8}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries max\+Dist\+Pair} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac06065ece12723a78807cc3adbd97860}{max\+Radius}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a60e18ced94025044e9bfb1d84d62979f}\label{classlarcfm_1_1_simple_poly_a60e18ced94025044e9bfb1d84d62979f}} 
+bool {\bfseries insert} (int i, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aa8fe93c59ad5f1a89087ac152bec6434}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&p)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ab602e881ec8c02303441fd775bd85dd5}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_simple_poly_af67fd674534afb18f290d11095506c49}{remove}} (int n)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aa5a76932e86bd6fd9e412ebd26eee8d6}{set}} (int n, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a4beb80887a373b45272fd17d58f0bba2}{set\+Top}} (double t)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a247c922f601b22b7de8480eb36e1e1b6}{get\+Top}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac053b5e19c4fa56a9a986ce8f8f1dc8d}{set\+Bottom}} (double b)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_aeee45906d23d97dc45a501d1e5e52cdf}{get\+Bottom}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a184054a7eb6d30e96cf094e1e50efcfe}{get\+Top\+Point}} (int n) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8b40fd4d56ed19cd4664d6cda0926f59}{copy}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a73b1afa7af81c079309f70498580cbf5}{poly3D}} (const Euclidean\+Projection \&proj)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a4cdef7b0916b889e0687780a3ecb2bea}{translate}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&off)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ae573ca972dc7fe94137380d9d89fd024}\label{classlarcfm_1_1_simple_poly_ae573ca972dc7fe94137380d9d89fd024}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} {\bfseries linear} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af61a70390162ca9aac2416cdf878dc53}\label{classlarcfm_1_1_simple_poly_af61a70390162ca9aac2416cdf878dc53}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} {\bfseries linear\+All\+Verts} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a3cb6400c36550204c1c452243d2a1595}{linear\+Fixed\+Shape}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double t) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a7052c8c50db3c98104c00e3c14ad17b8}\label{classlarcfm_1_1_simple_poly_a7052c8c50db3c98104c00e3c14ad17b8}} 
+bool {\bfseries validate} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a08da49b036d71a57705e8a7fe6ca590a}\label{classlarcfm_1_1_simple_poly_a08da49b036d71a57705e8a7fe6ca590a}} 
+bool {\bfseries validate} (\mbox{\hyperlink{classlarcfm_1_1_error_log}{Error\+Log}} $\ast$error) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a250afb153da143b8894cf9794043a0b7}\label{classlarcfm_1_1_simple_poly_a250afb153da143b8894cf9794043a0b7}} 
+int {\bfseries max\+In\+Range} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, double a1, double a2) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac7533827400dcb450f4cd6daef934869}\label{classlarcfm_1_1_simple_poly_ac7533827400dcb450f4cd6daef934869}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries get\+Bounding\+Rectangle} ()
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a9cdf196dcf5092c457d79660985230ec}{perp\+Side}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ab1643291a7cea7f059ca1ca66ec92d4f}{vertex\+Angle}} (int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a3e91d3fa048f173850582799e2b20e10}\label{classlarcfm_1_1_simple_poly_a3e91d3fa048f173850582799e2b20e10}} 
+std\+::string {\bfseries to\+Output} (const std\+::string \&name, int precision, int number\+Tcp\+Columns) const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a7ad66d79a4fdd48754e97879a6557d52}{to\+String}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a0d4fedcc5395f1e12c531790618f193e}\label{classlarcfm_1_1_simple_poly_a0d4fedcc5395f1e12c531790618f193e}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries to\+String\+List} (int vertex, int precision) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&p3)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a51fde2a8eea6258b188f0b25e9d986e9}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} \&p3)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_ac765bcc1ef089e52c683827d9ea5f30c}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&p3, const Euclidean\+Projection \&proj)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a0dbb8b95993d5ff3def998a4d5b8b6c8}{make}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ p\+List, double b, double t)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a8c930950ddcaec0320af83715bf2b1e0}{mk}} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ p\+List, double b, double t)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a3784165af11831042225594a446dd755}\label{classlarcfm_1_1_simple_poly_a3784165af11831042225594a446dd755}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$ {\bfseries rip} (const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&s\+Poly)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af28f7cbf115493e7f452a014e7945739}\label{classlarcfm_1_1_simple_poly_af28f7cbf115493e7f452a014e7945739}} 
+void {\bfseries init} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a3c216fdbbd9e3e103937bba21287f9a5}\label{classlarcfm_1_1_simple_poly_a3c216fdbbd9e3e103937bba21287f9a5}} 
+void {\bfseries calc\+Centroid} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_simple_poly_a31cad1ffb4d1eb415228d32da6fbf2df}{signed\+Area}} (double dx, double dy) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a5aa38bac4233ac60a3dddfb2064a5c7a}\label{classlarcfm_1_1_simple_poly_a5aa38bac4233ac60a3dddfb2064a5c7a}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries avg\+Pos} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&points, const std\+::vector$<$ double $>$ \&wgts)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aaa397cbe118781b809bed12078462921}\label{classlarcfm_1_1_simple_poly_aaa397cbe118781b809bed12078462921}} 
+bool {\bfseries vertex\+Convex} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p0, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p1, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af9007fc59ac7c97c18b5ee009b493dba}\label{classlarcfm_1_1_simple_poly_af9007fc59ac7c97c18b5ee009b493dba}} 
+bool {\bfseries is\+Lat\+Lon\+\_\+b}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a34aeecf2e28a0703d5dad9a0d92b969d}\label{classlarcfm_1_1_simple_poly_a34aeecf2e28a0703d5dad9a0d92b969d}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} {\bfseries p3d}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab5f886330ce27470112577b0b523b4f9}\label{classlarcfm_1_1_simple_poly_ab5f886330ce27470112577b0b523b4f9}} 
+\mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} {\bfseries p3dll}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac95b86261a38811cfe177cf88984c945}\label{classlarcfm_1_1_simple_poly_ac95b86261a38811cfe177cf88984c945}} 
+bool {\bfseries centroid\+Defined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab6363380eaadc72ccc4e865c5b4267d5}\label{classlarcfm_1_1_simple_poly_ab6363380eaadc72ccc4e865c5b4267d5}} 
+bool {\bfseries average\+Point\+Defined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aabe3964bf2eec2566a2721c54bc5eb66}\label{classlarcfm_1_1_simple_poly_aabe3964bf2eec2566a2721c54bc5eb66}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries c\+Pos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a11b5e748d44077baa4edd7099b8e2895}\label{classlarcfm_1_1_simple_poly_a11b5e748d44077baa4edd7099b8e2895}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries a\+Pos}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aad4243cf7ff96ee51d4745c499a1d322}\label{classlarcfm_1_1_simple_poly_aad4243cf7ff96ee51d4745c499a1d322}} 
+double {\bfseries clockwise\+Sum}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af80af885a2277e5c254b07602efc2a4b}\label{classlarcfm_1_1_simple_poly_af80af885a2277e5c254b07602efc2a4b}} 
+static const bool {\bfseries move\+\_\+constant\+\_\+shape} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A basic polygon that describes a volume. This volume has a flat bottom and top (specified as altitude values). Points describe the cross-\/section area vertices in a consistently clockwise (or consistently counter-\/clockwise) manner. The cross-\/section need not be convex, but an \char`\"{}out of order\char`\"{} listing of the vertices will result in edges that cross, and will cause several calculations to fail (with no warning).
+
+A \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} sets the altitude for all its points to be the {\itshape bottom} altitude, while the top is stored elsewhere as a single value. The exact position for \char`\"{}top\char`\"{} vertices is computed on demand.
+
+The cross-\/section must be a simple polygon, that is it allows for non-\/convex areas, but vertices and edges may not overlap or cross. Vertices may be ordered in either a clockwise or counterclockwise manner.
+
+(A vertex-\/complete polygon allows for vertices and edges to overlap but not cross, while a general polygon allows for edges to cross.)
+
+\mbox{\hyperlink{classlarcfm_1_1_point}{Point}} indices are based on the order they are added.
+
+Note\+: polygon support is experimental and the interface is subject to change! 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}\label{classlarcfm_1_1_simple_poly_a5fdb2b82bf2645306a2f27b04abc2529}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!SimplePoly@{SimplePoly}}
+\index{SimplePoly@{SimplePoly}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{SimplePoly()}{SimplePoly()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Poly\+::\+Simple\+Poly (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructs an empty \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. \mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a09e0634b56e0720568c3d13c97c5776c}\label{classlarcfm_1_1_simple_poly_a09e0634b56e0720568c3d13c97c5776c}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!SimplePoly@{SimplePoly}}
+\index{SimplePoly@{SimplePoly}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{SimplePoly()}{SimplePoly()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Poly\+::\+Simple\+Poly (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{t }\end{DoxyParamCaption})}
+
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \mbox{[}m\mbox{]} \\
+\hline
+{\em t} & Top altitude \mbox{[}m\mbox{]}\\
+\hline
+\end{DoxyParams}
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \\
+\hline
+{\em t} & Top altitude \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a809238d76cf94190a33e9e5a5789317d}\label{classlarcfm_1_1_simple_poly_a809238d76cf94190a33e9e5a5789317d}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!SimplePoly@{SimplePoly}}
+\index{SimplePoly@{SimplePoly}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{SimplePoly()}{SimplePoly()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Poly\+::\+Simple\+Poly (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{t,  }\item[{const std\+::string \&}]{units }\end{DoxyParamCaption})}
+
+Constructor for a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} with predefined top and bottom altitudes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Bottom altitude \\
+\hline
+{\em t} & Top altitude \\
+\hline
+{\em units} & units to interpret both altitudes \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ad189447e5f23bd2434b043a330687d80}\label{classlarcfm_1_1_simple_poly_ad189447e5f23bd2434b043a330687d80}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!SimplePoly@{SimplePoly}}
+\index{SimplePoly@{SimplePoly}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{SimplePoly()}{SimplePoly()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Simple\+Poly\+::\+Simple\+Poly (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&}]{p }\end{DoxyParamCaption})}
+
+Create a deep copy of a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Source poly. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aa8fe93c59ad5f1a89087ac152bec6434}\label{classlarcfm_1_1_simple_poly_aa8fe93c59ad5f1a89087ac152bec6434}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!add@{add}}
+\index{add@{add}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} \&}]{lla }\end{DoxyParamCaption})}
+
+Add a new point to the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. Points should be added in a consistently clockwise or consistently counter-\/clockwise manner. This currently does NOT set the Z component of the point (unless it is the first point) 
+\begin{DoxyParams}{Parameters}
+{\em p} & position to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an error is detected (duplicate or invalid vertex), true otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}\label{classlarcfm_1_1_simple_poly_a402c8303df69db17ac1d05d15c9973d5}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!add@{add}}
+\index{add@{add}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+Add a new point to the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. Points should be added in a consistently clockwise or consistently counter-\/clockwise manner. This currently does NOT set the Z component of the point (unless it is the first point) 
+\begin{DoxyParams}{Parameters}
+{\em p} & position to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an error is detected (duplicate or invalid vertex), true otherwise.
+\end{DoxyReturn}
+Add a new vertex to the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. Points should be added in a consistently clockwise or consistently counter-\/clockwise manner. This currently does NOT set the Z component of the point 
+\begin{DoxyParams}{Parameters}
+{\em p} & position to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an error is detected (duplicate or invalid vertex), true otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab602e881ec8c02303441fd775bd85dd5}\label{classlarcfm_1_1_simple_poly_ab602e881ec8c02303441fd775bd85dd5}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!add@{add}}
+\index{add@{add}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&}]{v }\end{DoxyParamCaption})}
+
+Add a new point to the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. Points should be added in a consistently clockwise or consistently counter-\/clockwise manner. This currently does NOT set the Z component of the point (unless it is the first point) 
+\begin{DoxyParams}{Parameters}
+{\em p} & position to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an error is detected (duplicate or invalid vertex), true otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a0f48a628cb35ae1393a485862ca2a429}\label{classlarcfm_1_1_simple_poly_a0f48a628cb35ae1393a485862ca2a429}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!area@{area}}
+\index{area@{area}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Area in square meters. \begin{DoxyReturn}{Returns}
+area
+\end{DoxyReturn}
+Area in square meters. \mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a5d0ea7c92afac800360833fd1cc835f7}\label{classlarcfm_1_1_simple_poly_a5d0ea7c92afac800360833fd1cc835f7}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!averagePoint@{averagePoint}}
+\index{averagePoint@{averagePoint}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{averagePoint()}{averagePoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Simple\+Poly\+::average\+Point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the average of all vertices. Note this is not the same as the centroid! This will, however, have the nice property of having a constant velocity when dealing with a morphing polygon. \begin{DoxyReturn}{Returns}
+average of all vertices 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a3bcadcadd0caa2ca05196422f1b12277}\label{classlarcfm_1_1_simple_poly_a3bcadcadd0caa2ca05196422f1b12277}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!boundingCircleCenter@{boundingCircleCenter}}
+\index{boundingCircleCenter@{boundingCircleCenter}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{boundingCircleCenter()}{boundingCircleCenter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Simple\+Poly\+::bounding\+Circle\+Center (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the center of a circle completely containing this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. This is not necessarily the minimal bounding circle. \begin{DoxyReturn}{Returns}
+center of polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a2375b3b72c31ff448586b425516a4102}\label{classlarcfm_1_1_simple_poly_a2375b3b72c31ff448586b425516a4102}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!boundingCircleRadius@{boundingCircleRadius}}
+\index{boundingCircleRadius@{boundingCircleRadius}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{boundingCircleRadius()}{boundingCircleRadius()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::bounding\+Circle\+Radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the radius of a circle completely containing this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. This is not necessarily the minimal bounding circle. \begin{DoxyReturn}{Returns}
+radius of bounding circle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aa9f540c6e1ddea130f58ab537dc0669a}\label{classlarcfm_1_1_simple_poly_aa9f540c6e1ddea130f58ab537dc0669a}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!centroid@{centroid}}
+\index{centroid@{centroid}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{centroid()}{centroid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Simple\+Poly\+::centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return this centroid of this volume. Note\+: if sides are small (less than about 10$^\wedge$-\/5 in internal units), there may be errors in the centroid calculations \begin{DoxyReturn}{Returns}
+The centroid position of this volume. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a1789fcbc0ddbbcf1d53f6e94e8f0fc17}\label{classlarcfm_1_1_simple_poly_a1789fcbc0ddbbcf1d53f6e94e8f0fc17}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!contains@{contains}}
+\index{contains@{contains}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::contains (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms. 
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if position is in the polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ad1a574a67b4ac5cc27850858cd34d174}\label{classlarcfm_1_1_simple_poly_ad1a574a67b4ac5cc27850858cd34d174}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!contains2D@{contains2D}}
+\index{contains2D@{contains2D}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{contains2D()}{contains2D()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::contains2D (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+This uses a standard raycasting check for point inclusion. It does not explicitly use ACCo\+RD detection algorithms.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if position is in the polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a8b40fd4d56ed19cd4664d6cda0926f59}\label{classlarcfm_1_1_simple_poly_a8b40fd4d56ed19cd4664d6cda0926f59}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!copy@{copy}}
+\index{copy@{copy}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::copy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns a deep copy of this Simpl\+Poly.
+
+\begin{DoxyReturn}{Returns}
+copy 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a6913035a9831aa2719719e57c006b9af}\label{classlarcfm_1_1_simple_poly_a6913035a9831aa2719719e57c006b9af}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!distanceFromEdge@{distanceFromEdge}}
+\index{distanceFromEdge@{distanceFromEdge}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{distanceFromEdge()}{distanceFromEdge()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::distance\+From\+Edge (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+closest horizontal distance from p to an edge. ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance from edge
+\end{DoxyReturn}
+closest horizontal distance from p to an edge. 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance from edge 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aba89a55cb4237c38837005f8ddd90d23}\label{classlarcfm_1_1_simple_poly_aba89a55cb4237c38837005f8ddd90d23}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!distanceV@{distanceV}}
+\index{distanceV@{distanceV}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{distanceV()}{distanceV()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::distanceV (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption}) const}
+
+return vertical distance from the polygon. This will be zero if the point is between the polygon\textquotesingle{}s top and bottom. 
+\begin{DoxyParams}{Parameters}
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+distance
+\end{DoxyReturn}
+return vertical distance from the polygon. This will be zero if the point is between the polygon\textquotesingle{}s top and bottom. 
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aeee45906d23d97dc45a501d1e5e52cdf}\label{classlarcfm_1_1_simple_poly_aeee45906d23d97dc45a501d1e5e52cdf}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!getBottom@{getBottom}}
+\index{getBottom@{getBottom}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{getBottom()}{getBottom()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::get\+Bottom (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the bottom altitude of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. \begin{DoxyReturn}{Returns}
+bottom altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a247c922f601b22b7de8480eb36e1e1b6}\label{classlarcfm_1_1_simple_poly_a247c922f601b22b7de8480eb36e1e1b6}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!getTop@{getTop}}
+\index{getTop@{getTop}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{getTop()}{getTop()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::get\+Top (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the top altitude of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. \begin{DoxyReturn}{Returns}
+top altitude 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a184054a7eb6d30e96cf094e1e50efcfe}\label{classlarcfm_1_1_simple_poly_a184054a7eb6d30e96cf094e1e50efcfe}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!getTopPoint@{getTopPoint}}
+\index{getTopPoint@{getTopPoint}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{getTopPoint()}{getTopPoint()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Simple\+Poly\+::get\+Top\+Point (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption}) const}
+
+Returns the position of the top point with index n. If n is not a valid index, this returns the centroid position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position
+\end{DoxyReturn}
+Returns the position of the top point with index n. If n is not a valid index, this returns INVALID // the centroid position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a2f7589fa1d918dababf013f0173ad1d3}\label{classlarcfm_1_1_simple_poly_a2f7589fa1d918dababf013f0173ad1d3}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!getVertex@{getVertex}}
+\index{getVertex@{getVertex}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{getVertex()}{getVertex()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+Simple\+Poly\+::get\+Vertex (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption}) const}
+
+Returns the position of the (bottom) point with index n. This returns an INVALID point if the index is invalid, not the centroid.
+
+NOTE\+: The altitude component of the nth position is ambiguous. This method returns the bottom altitude of the 3D object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position
+\end{DoxyReturn}
+Returns the position of the (bottom) point with index n. If n is not a valid index, this returns the centroid position. // TODO\+: Huh?
+
+NOTE\+: The altitude component of the nth position is ambiguous. This method returns the bottom altitude of the 3D object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ad17f3f81bd1373ed70650ac2f07af0a3}\label{classlarcfm_1_1_simple_poly_ad17f3f81bd1373ed70650ac2f07af0a3}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!increaseVertices@{increaseVertices}}
+\index{increaseVertices@{increaseVertices}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{increaseVertices()}{increaseVertices()}}
+{\footnotesize\ttfamily void larcfm\+::\+Simple\+Poly\+::increase\+Vertices (\begin{DoxyParamCaption}\item[{int}]{sz }\end{DoxyParamCaption})}
+
+Add vertices to a polygon until it has a specified number. This will not remove vertices if there are already more than the desired number. ~\newline
+ Each new vertex will be added the to current longest edge. 
+\begin{DoxyParams}{Parameters}
+{\em sz} & desired number of vertices\\
+\hline
+\end{DoxyParams}
+Add vertices to a polygon until it has a specified number. This will not remove vertices if there are already more than the desired number. Each new vertex will be added the to current longest edge. 
+\begin{DoxyParams}{Parameters}
+{\em sp1} & Polygon \\
+\hline
+{\em sz} & desired number of vertices \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a8c28bdf4886d8a4633757339df27c0d2}\label{classlarcfm_1_1_simple_poly_a8c28bdf4886d8a4633757339df27c0d2}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!isConvex@{isConvex}}
+\index{isConvex@{isConvex}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{isConvex()}{isConvex()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::is\+Convex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true if this polygon is convex \begin{DoxyReturn}{Returns}
+true, if convex 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac18f5e77c6199bc97fd46f53d2d06098}\label{classlarcfm_1_1_simple_poly_ac18f5e77c6199bc97fd46f53d2d06098}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Determine if the polygon contains geodetic points. \begin{DoxyReturn}{Returns}
+True if this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} contains any geodetic points. If size is 0, returns false. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a3cb6400c36550204c1c452243d2a1595}\label{classlarcfm_1_1_simple_poly_a3cb6400c36550204c1c452243d2a1595}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!linearFixedShape@{linearFixedShape}}
+\index{linearFixedShape@{linearFixedShape}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{linearFixedShape()}{linearFixedShape()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::linear\+Fixed\+Shape (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Move a polygon by velocity using vertex 0 and reconstructing geometrically
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & velocity \\
+\hline
+{\em t} & time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+polygon
+\end{DoxyReturn}
+Move a polygon by velocity using vertex 0 and reconstructing geometrically
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & \\
+\hline
+{\em t} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}\label{classlarcfm_1_1_simple_poly_a5bce245591176be0a9c1d8d85deb535a}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!make@{make}}
+\index{make@{make}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&}]{p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use Euclidean coordinates. 
+\begin{DoxyParams}{Parameters}
+{\em p3} & 3D polygon \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac765bcc1ef089e52c683827d9ea5f30c}\label{classlarcfm_1_1_simple_poly_ac765bcc1ef089e52c683827d9ea5f30c}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!make@{make}}
+\index{make@{make}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} \&}]{p3,  }\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use latlon coordinates . 
+\begin{DoxyParams}{Parameters}
+{\em p3} & 3D polygon \\
+\hline
+{\em proj} & projection to use to interpret the points in the 3D polygon \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a51fde2a8eea6258b188f0b25e9d986e9}\label{classlarcfm_1_1_simple_poly_a51fde2a8eea6258b188f0b25e9d986e9}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!make@{make}}
+\index{make@{make}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly3_d_l_l}{Poly3\+DLL}} \&}]{p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}. This \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} will use Euclidean coordinates. 
+\begin{DoxyParams}{Parameters}
+{\em p3} & 3D polygon \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a0dbb8b95993d5ff3def998a4d5b8b6c8}\label{classlarcfm_1_1_simple_poly_a0dbb8b95993d5ff3def998a4d5b8b6c8}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!make@{make}}
+\index{make@{make}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::make (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} $>$}]{p\+List,  }\item[{double}]{b,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a List\texorpdfstring{$<$}{<}\mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}}\texorpdfstring{$>$}{>}. 
+\begin{DoxyParams}{Parameters}
+{\em p\+List} & list of points \\
+\hline
+{\em b} & bottom altitude \\
+\hline
+{\em t} & top altitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}
+\end{DoxyReturn}
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a std\+::vector$<$\+Lat\+Lon\+Alt$>$. \begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac06065ece12723a78807cc3adbd97860}\label{classlarcfm_1_1_simple_poly_ac06065ece12723a78807cc3adbd97860}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!maxRadius@{maxRadius}}
+\index{maxRadius@{maxRadius}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{maxRadius()}{maxRadius()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::max\+Radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the max horizontal distance between any vertex and the centroid \begin{DoxyReturn}{Returns}
+radius 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a8c930950ddcaec0320af83715bf2b1e0}\label{classlarcfm_1_1_simple_poly_a8c930950ddcaec0320af83715bf2b1e0}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!mk@{mk}}
+\index{mk@{mk}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{mk()}{mk()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} larcfm\+::\+Simple\+Poly\+::mk (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$}]{p\+List,  }\item[{double}]{b,  }\item[{double}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a List\texorpdfstring{$<$}{<}\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\texorpdfstring{$>$}{>}. 
+\begin{DoxyParams}{Parameters}
+{\em p\+List} & list of points \\
+\hline
+{\em b} & bottom altitude \\
+\hline
+{\em t} & top altitude \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}
+\end{DoxyReturn}
+Create a \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} from a std\+::vector$<$\+Position$>$. \begin{DoxyReturn}{Returns}
+a new \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a9cdf196dcf5092c457d79660985230ec}\label{classlarcfm_1_1_simple_poly_a9cdf196dcf5092c457d79660985230ec}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!perpSide@{perpSide}}
+\index{perpSide@{perpSide}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{perpSide()}{perpSide()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::perp\+Side (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Return the angle that is perpendicular to the middle of the edge from vertex i to i+1, facing outward. Return NaN if i is out of bounds or vertex i overlaps vertex i+1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a73b1afa7af81c079309f70498580cbf5}\label{classlarcfm_1_1_simple_poly_a73b1afa7af81c079309f70498580cbf5}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!poly3D@{poly3D}}
+\index{poly3D@{poly3D}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{poly3D()}{poly3D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} larcfm\+::\+Simple\+Poly\+::poly3D (\begin{DoxyParamCaption}\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption})}
+
+return a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} version of this. proj is ignored if this is Euclidean 
+\begin{DoxyParams}{Parameters}
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new 3D polygon 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a0f9cf7aa3d23cb39e3eee043ae0487b4}\label{classlarcfm_1_1_simple_poly_a0f9cf7aa3d23cb39e3eee043ae0487b4}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!poly3D@{poly3D}}
+\index{poly3D@{poly3D}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{poly3D()}{poly3D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} larcfm\+::\+Simple\+Poly\+::poly3D (\begin{DoxyParamCaption}\item[{const Euclidean\+Projection \&}]{proj }\end{DoxyParamCaption}) const}
+
+return a \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}} version of this. proj is ignored if this is Euclidean 
+\begin{DoxyParams}{Parameters}
+{\em proj} & projection \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new 3D polygon
+\end{DoxyReturn}
+return a a\+Polygon3D version of this \mbox{\Hypertarget{classlarcfm_1_1_simple_poly_af67fd674534afb18f290d11095506c49}\label{classlarcfm_1_1_simple_poly_af67fd674534afb18f290d11095506c49}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!remove@{remove}}
+\index{remove@{remove}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily void larcfm\+::\+Simple\+Poly\+::remove (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+Remove a point from this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. 
+\begin{DoxyParams}{Parameters}
+{\em n} & Index (in order added) of the point to be removed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_aa5a76932e86bd6fd9e412ebd26eee8d6}\label{classlarcfm_1_1_simple_poly_aa5a76932e86bd6fd9e412ebd26eee8d6}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!set@{set}}
+\index{set@{set}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Simple\+Poly\+::set (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{p }\end{DoxyParamCaption})}
+
+Change the position of a point already added to the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}, indicated by its index. This currently does NOT set the Z component of the point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & index \\
+\hline
+{\em p} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false, if an invalid vertex is detected, true otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ac053b5e19c4fa56a9a986ce8f8f1dc8d}\label{classlarcfm_1_1_simple_poly_ac053b5e19c4fa56a9a986ce8f8f1dc8d}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!setBottom@{setBottom}}
+\index{setBottom@{setBottom}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{setBottom()}{setBottom()}}
+{\footnotesize\ttfamily void larcfm\+::\+Simple\+Poly\+::set\+Bottom (\begin{DoxyParamCaption}\item[{double}]{b }\end{DoxyParamCaption})}
+
+Sets the bottom altitude of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. 
+\begin{DoxyParams}{Parameters}
+{\em b} & New bottom altitude. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a4beb80887a373b45272fd17d58f0bba2}\label{classlarcfm_1_1_simple_poly_a4beb80887a373b45272fd17d58f0bba2}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!setTop@{setTop}}
+\index{setTop@{setTop}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{setTop()}{setTop()}}
+{\footnotesize\ttfamily void larcfm\+::\+Simple\+Poly\+::set\+Top (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption})}
+
+Sets the top altitude of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. 
+\begin{DoxyParams}{Parameters}
+{\em t} & New top altitude. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a31cad1ffb4d1eb415228d32da6fbf2df}\label{classlarcfm_1_1_simple_poly_a31cad1ffb4d1eb415228d32da6fbf2df}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!signedArea@{signedArea}}
+\index{signedArea@{signedArea}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{signedArea()}{signedArea()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::signed\+Area (\begin{DoxyParamCaption}\item[{double}]{dx,  }\item[{double}]{dy }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+Return the area (in m$^\wedge$2 or rad$^\wedge$2) of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. \mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab9011b03c25f9b562a59f2b6e6ba8730}\label{classlarcfm_1_1_simple_poly_ab9011b03c25f9b562a59f2b6e6ba8730}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!size@{size}}
+\index{size@{size}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+Simple\+Poly\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Number of points \begin{DoxyReturn}{Returns}
+Number of points in this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a7ad66d79a4fdd48754e97879a6557d52}\label{classlarcfm_1_1_simple_poly_a7ad66d79a4fdd48754e97879a6557d52}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!toString@{toString}}
+\index{toString@{toString}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily string larcfm\+::\+Simple\+Poly\+::to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+String representation of this \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}}. \mbox{\Hypertarget{classlarcfm_1_1_simple_poly_a4cdef7b0916b889e0687780a3ecb2bea}\label{classlarcfm_1_1_simple_poly_a4cdef7b0916b889e0687780a3ecb2bea}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!translate@{translate}}
+\index{translate@{translate}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{translate()}{translate()}}
+{\footnotesize\ttfamily void larcfm\+::\+Simple\+Poly\+::translate (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{off }\end{DoxyParamCaption})}
+
+This moves the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} by the amount determined by the given (Euclidean) offset. Used in GUI for dragging things. 
+\begin{DoxyParams}{Parameters}
+{\em off} & offset\\
+\hline
+\end{DoxyParams}
+This moves the \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} by the amount determined by the given (Euclidean) offset. 
+\begin{DoxyParams}{Parameters}
+{\em off} & offset \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_simple_poly_ab1643291a7cea7f059ca1ca66ec92d4f}\label{classlarcfm_1_1_simple_poly_ab1643291a7cea7f059ca1ca66ec92d4f}} 
+\index{larcfm::SimplePoly@{larcfm::SimplePoly}!vertexAngle@{vertexAngle}}
+\index{vertexAngle@{vertexAngle}!larcfm::SimplePoly@{larcfm::SimplePoly}}
+\doxysubsubsection{\texorpdfstring{vertexAngle()}{vertexAngle()}}
+{\footnotesize\ttfamily double larcfm\+::\+Simple\+Poly\+::vertex\+Angle (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})}
+
+Return the internal angle of vertex i. Return NaN if i is out of bounds or vertex i overlaps with an adjacent vertex.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Simple\+Poly.\+h\item 
+Modules/\+ACCo\+RD/src/Simple\+Poly.\+cpp\end{DoxyCompactItemize}

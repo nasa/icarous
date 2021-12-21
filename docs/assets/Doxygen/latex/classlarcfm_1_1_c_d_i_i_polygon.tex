@@ -1,0 +1,501 @@
+\hypertarget{classlarcfm_1_1_c_d_i_i_polygon}{}\doxysection{larcfm\+::CDIIPolygon Class Reference}
+\label{classlarcfm_1_1_c_d_i_i_polygon}\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+
+
+{\ttfamily \#include $<$CDIIPolygon.\+h$>$}
+
+Inheritance diagram for larcfm\+::CDIIPolygon\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlarcfm_1_1_c_d_i_i_polygon}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a2992d0090ea0f64e729f771704cc1c44}{CDIIPolygon}} (\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$cd)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a259283ae9ad6ad4c19bf63d66269593c}{conflict}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ab15c1ea636d558e7d757c48f8639eecc}{get\+Time\+In}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8a2ed89a3ecaf08f53933e7f4bdaea49}{get\+Time\+Out}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a65eb0f7b5a02042554430300b490dc24}{get\+Time\+Closest}} (int i) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a94a25579304c4d77978c1144bde6d3fb}{get\+Distance\+Closest}} (int i) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_af2233305a1a50e62e90bdd071ce984e3}{conflict\+Between}} (double start, double end) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_adc20fb37b2c92b3476c59fef46e9bc40}{violation}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double tm) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}{detection}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a7996449d96c815c7219ba4eaa82d41e6}{detection\+Extended}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a23667ba2ef31a23212282e4a9d76a54a}{conflict\+Detection\+Only}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a23017d816af361fc4aeff40eaf56b3c4}\label{classlarcfm_1_1_c_d_i_i_polygon_a23017d816af361fc4aeff40eaf56b3c4}} 
+bool {\bfseries conflict\+Only\+XYZ} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a919009f813b548985a6026bffee72784}\label{classlarcfm_1_1_c_d_i_i_polygon_a919009f813b548985a6026bffee72784}} 
+bool {\bfseries conflict\+Only\+LL} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_af2af21391f77272310d6862449eda3cc}\label{classlarcfm_1_1_c_d_i_i_polygon_af2af21391f77272310d6862449eda3cc}} 
+std\+::string {\bfseries to\+String} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ac24de2248790efce7029f00ce34c6e3f}{has\+Error}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aee8afa37917f6fb439f317090f90f6a3}{has\+Message}} () const
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aaf40ab156dd32740606cd3367c5bf742}{get\+Message}} ()
+\item 
+std\+::string \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_afc3e11274ba071adcf0137fbe133e732}{get\+Message\+No\+Clear}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ad98281f83f519b0d6119ac8a93a495e3}{set\+Core\+Polygon\+Detection\+Ptr}} (const \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$d)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a65e4ba3f04f6c9ce883a6a8e63706d75}{set\+Core\+Polygon\+Detection\+Ref}} (const \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} \&d)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a9eea674b1735d3468b957167020994c4}{get\+Core\+Polygon\+Detection\+Ptr}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} \& \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a3577403f4fed338a668d7fef90c6deb8}{get\+Core\+Polygon\+Detection\+Ref}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8d1edec047d6305d0ffe927f329d4491}{cdiicore}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double B, double T)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_aa62b06afefa1d1b003050e2dc25ed669}{detection\+XYZ}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&pp, double B, double T)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a60b44ca60a45c2123328a24c4fc55543}{detection\+LL}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&ownship, \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&pp, double B, double T)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a620307206e0802dae66ffd9b1f155c8d}\label{classlarcfm_1_1_c_d_i_i_polygon_a620307206e0802dae66ffd9b1f155c8d}} 
+void {\bfseries capture\+Output} (\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_polygon}{CDSIPolygon}} cdsi)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ab454da522196c463cceb8b75daa360ef}\label{classlarcfm_1_1_c_d_i_i_polygon_ab454da522196c463cceb8b75daa360ef}} 
+void {\bfseries merge} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a9cc4a1b958dcb95a88d16f9bbea44cb8}\label{classlarcfm_1_1_c_d_i_i_polygon_a9cc4a1b958dcb95a88d16f9bbea44cb8}} 
+std\+::vector$<$ double $>$ {\bfseries tin}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a89f0d9e3073fb54c5b86554eb3a662c6}\label{classlarcfm_1_1_c_d_i_i_polygon_a89f0d9e3073fb54c5b86554eb3a662c6}} 
+std\+::vector$<$ double $>$ {\bfseries tout}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a73ca4f63cdf21090a9f8f21c83cdc200}\label{classlarcfm_1_1_c_d_i_i_polygon_a73ca4f63cdf21090a9f8f21c83cdc200}} 
+std\+::vector$<$ double $>$ {\bfseries tcpa}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ac23472f45353a5287b5b04afed483712}\label{classlarcfm_1_1_c_d_i_i_polygon_ac23472f45353a5287b5b04afed483712}} 
+std\+::vector$<$ double $>$ {\bfseries dist\+\_\+tca}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ae071e93edc94abea84ea3b165f0fceb7}\label{classlarcfm_1_1_c_d_i_i_polygon_ae071e93edc94abea84ea3b165f0fceb7}} 
+\mbox{\hyperlink{classlarcfm_1_1_c_d_s_i_polygon}{CDSIPolygon}} {\bfseries cdsi}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a802902ac2dc124787359cd1be3e74d1c}\label{classlarcfm_1_1_c_d_i_i_polygon_a802902ac2dc124787359cd1be3e74d1c}} 
+static \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}} {\bfseries def} = \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon}{CDIIPolygon}}(new \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter}{CDPoly\+Iter}}())
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class implements the core algorithms for conflict detection between an ownship and a traffic aircraft trajectory, where both trajectories include intent information. This class assumes all inputs are in internal units. As such, this class is most appropriate to be part of a larger system, not as a stand-\/alone conflict detection algorithm. For that functionality, see the class \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i}{CDII}}.
+
+This class can be used two ways\+: through an object or through a static method. The static method approach has the advantage that an object does not need to be created. The object approach has the advantage that more information is available. Specifically, the start and end times for every conflict are available in the object approach. 
+
+When using the object method, all method \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ab15c1ea636d558e7d757c48f8639eecc}{get\+Time\+In()}}, etc, assume that the \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}{detection()}} method has been called first.
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a2992d0090ea0f64e729f771704cc1c44}\label{classlarcfm_1_1_c_d_i_i_polygon_a2992d0090ea0f64e729f771704cc1c44}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!CDIIPolygon@{CDIIPolygon}}
+\index{CDIIPolygon@{CDIIPolygon}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{CDIIPolygon()}{CDIIPolygon()}}
+{\footnotesize\ttfamily larcfm\+::\+CDIIPolygon\+::\+CDIIPolygon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+Create a new conflict detection (intent information for both the ownship and traffic) object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em distance} & the minimum horizontal separation distance \\
+\hline
+{\em height} & the minimum vertical separation height \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a8d1edec047d6305d0ffe927f329d4491}\label{classlarcfm_1_1_c_d_i_i_polygon_a8d1edec047d6305d0ffe927f329d4491}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!cdiicore@{cdiicore}}
+\index{cdiicore@{cdiicore}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{cdiicore()}{cdiicore()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::cdiicore (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns if there is a conflict between two aircraft\+: the ownship and the traffic aircraft. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em D} & the minimum horizontal separation distance \\
+\hline
+{\em H} & the minimum vertical separation distance \\
+\hline
+{\em B} & the absolute time to start looking for conflicts \\
+\hline
+{\em T} & the absolute time to end looking for conflicts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a259283ae9ad6ad4c19bf63d66269593c}\label{classlarcfm_1_1_c_d_i_i_polygon_a259283ae9ad6ad4c19bf63d66269593c}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!conflict@{conflict}}
+\index{conflict@{conflict}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{conflict()}{conflict()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::conflict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns if there were any conflicts. ~\newline
+ \mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_af2233305a1a50e62e90bdd071ce984e3}\label{classlarcfm_1_1_c_d_i_i_polygon_af2233305a1a50e62e90bdd071ce984e3}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!conflictBetween@{conflictBetween}}
+\index{conflictBetween@{conflictBetween}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{conflictBetween()}{conflictBetween()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::conflict\+Between (\begin{DoxyParamCaption}\item[{double}]{start,  }\item[{double}]{end }\end{DoxyParamCaption}) const}
+
+Is there a conflict at any time in the interval from start to end (inclusive). This method assumes that the \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}{detection()}} method has been called first.
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & the time to begin looking for conflicts \\
+\hline
+{\em end} & the time to end looking for conflicts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a23667ba2ef31a23212282e4a9d76a54a}\label{classlarcfm_1_1_c_d_i_i_polygon_a23667ba2ef31a23212282e4a9d76a54a}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!conflictDetectionOnly@{conflictDetectionOnly}}
+\index{conflictDetectionOnly@{conflictDetectionOnly}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{conflictDetectionOnly()}{conflictDetectionOnly()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::conflict\+Detection\+Only (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption}) const}
+
+EXPERIMENTAL Perform a \char`\"{}quick\char`\"{} conflict-\/only check without storing statistics 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & \\
+\hline
+{\em traffic} & \\
+\hline
+{\em B} & \\
+\hline
+{\em T} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}\label{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!detection@{detection}}
+\index{detection@{detection}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{detection()}{detection()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})}
+
+Returns if there is a conflict between two aircraft\+: the ownship and the traffic aircraft. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em B} & the absolute time to start looking for conflicts (no time information will be returned prior to the start of the ownship segment containing B) \\
+\hline
+{\em T} & the absolute time to end looking for conflicts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a7996449d96c815c7219ba4eaa82d41e6}\label{classlarcfm_1_1_c_d_i_i_polygon_a7996449d96c815c7219ba4eaa82d41e6}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!detectionExtended@{detectionExtended}}
+\index{detectionExtended@{detectionExtended}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{detectionExtended()}{detectionExtended()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::detection\+Extended (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})}
+
+This version calculates the \char`\"{}true\char`\"{} time in and time out for all conflicts that overlap with \mbox{[}B,T\mbox{]}. It is less efficient than the normal \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a8fa6c1ef89a846609e423a11fbf887a5}{detection()}} algorithm and should only be called if accurate time in information is necessary when B might be within a loss of separation region. \mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a60b44ca60a45c2123328a24c4fc55543}\label{classlarcfm_1_1_c_d_i_i_polygon_a60b44ca60a45c2123328a24c4fc55543}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!detectionLL@{detectionLL}}
+\index{detectionLL@{detectionLL}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{detectionLL()}{detectionLL()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::detection\+LL (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Returns if there is a conflict between the ownship aircraft and the \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} pp.
+
+This will not return any timing information prior to the ownship segment containing B.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em B} & the absolute time to start looking for conflicts. \\
+\hline
+{\em T} & the absolute time to end looking for conflicts. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict
+\end{DoxyReturn}
+Returns if there is a conflict between two aircraft\+: the ownship and the traffic aircraft. 
+
+This will not return any timing information prior to the ownship segment containing B.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em B} & the absolute time to start looking for conflicts. \\
+\hline
+{\em T} & the absolute time to end looking for conflicts. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_aa62b06afefa1d1b003050e2dc25ed669}\label{classlarcfm_1_1_c_d_i_i_polygon_aa62b06afefa1d1b003050e2dc25ed669}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!detectionXYZ@{detectionXYZ}}
+\index{detectionXYZ@{detectionXYZ}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{detectionXYZ()}{detectionXYZ()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::detection\+XYZ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{pp,  }\item[{double}]{B,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Returns if there is a conflict between the ownship aircraft and the \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} pp.
+
+This will not return any timing information prior to the owhship segment containing B.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em B} & the absolute time to start looking for conflicts. \\
+\hline
+{\em T} & the absolute time to end looking for conflicts. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict
+\end{DoxyReturn}
+Returns if there is a conflict between two aircraft\+: the ownship and the traffic aircraft. 
+
+This will not return any timing information prior to the owhship segment containing B.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ownship} & the trajectory intent of the ownship \\
+\hline
+{\em traffic} & the trajectory intent of the traffic \\
+\hline
+{\em B} & the absolute time to start looking for conflicts. \\
+\hline
+{\em T} & the absolute time to end looking for conflicts. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there is a conflict 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a9eea674b1735d3468b957167020994c4}\label{classlarcfm_1_1_c_d_i_i_polygon_a9eea674b1735d3468b957167020994c4}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getCorePolygonDetectionPtr@{getCorePolygonDetectionPtr}}
+\index{getCorePolygonDetectionPtr@{getCorePolygonDetectionPtr}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getCorePolygonDetectionPtr()}{getCorePolygonDetectionPtr()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ larcfm\+::\+CDIIPolygon\+::get\+Core\+Polygon\+Detection\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a pointer to this object\textquotesingle{}s \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_acceptor_a65a904a5af1067f0f69bc0884acfca88}{larcfm\+::\+Detection\+Polygon\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a3577403f4fed338a668d7fef90c6deb8}\label{classlarcfm_1_1_c_d_i_i_polygon_a3577403f4fed338a668d7fef90c6deb8}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getCorePolygonDetectionRef@{getCorePolygonDetectionRef}}
+\index{getCorePolygonDetectionRef@{getCorePolygonDetectionRef}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getCorePolygonDetectionRef()}{getCorePolygonDetectionRef()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} \& larcfm\+::\+CDIIPolygon\+::get\+Core\+Polygon\+Detection\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a reference to this object\textquotesingle{}s \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_acceptor_adb03a57003d39eb71bc11f6770f7ecc6}{larcfm\+::\+Detection\+Polygon\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a94a25579304c4d77978c1144bde6d3fb}\label{classlarcfm_1_1_c_d_i_i_polygon_a94a25579304c4d77978c1144bde6d3fb}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getDistanceClosest@{getDistanceClosest}}
+\index{getDistanceClosest@{getDistanceClosest}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getDistanceClosest()}{getDistanceClosest()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDIIPolygon\+::get\+Distance\+Closest (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the distance index at the time of closest approach. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_aaf40ab156dd32740606cd3367c5bf742}\label{classlarcfm_1_1_c_d_i_i_polygon_aaf40ab156dd32740606cd3367c5bf742}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDIIPolygon\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will clear any messages and reset both the error and warning status to none.
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_ad40f025bdbcfba99fca578134de93f8b}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_afc3e11274ba071adcf0137fbe133e732}\label{classlarcfm_1_1_c_d_i_i_polygon_afc3e11274ba071adcf0137fbe133e732}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getMessageNoClear@{getMessageNoClear}}
+\index{getMessageNoClear@{getMessageNoClear}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getMessageNoClear()}{getMessageNoClear()}}
+{\footnotesize\ttfamily std\+::string larcfm\+::\+CDIIPolygon\+::get\+Message\+No\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Return a string representation of any errors or warnings. Calling this method will not clear the error or warning status (i.\+e., \mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_ac24de2248790efce7029f00ce34c6e3f}{has\+Error()}} will return the same value before and after this call.)
+
+\begin{DoxyReturn}{Returns}
+error and warning messages. If there are no messages, an empty string is returned. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a4c91433a8a7a174d84b631e5b5bef26a}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a65eb0f7b5a02042554430300b490dc24}\label{classlarcfm_1_1_c_d_i_i_polygon_a65eb0f7b5a02042554430300b490dc24}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getTimeClosest@{getTimeClosest}}
+\index{getTimeClosest@{getTimeClosest}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getTimeClosest()}{getTimeClosest()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDIIPolygon\+::get\+Time\+Closest (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns an estimate of the time of closest approach. This value is in absolute time (not relative from a waypoint). This point approximates the point where the two aircraft are closest. The definition of closest is not simple. Specifically, space in the vertical dimension counts more than space in the horizontal dimension\+: encroaching in the protected zone 100 vertically is much more serious than encroaching 100 ft. horizontally.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ab15c1ea636d558e7d757c48f8639eecc}\label{classlarcfm_1_1_c_d_i_i_polygon_ab15c1ea636d558e7d757c48f8639eecc}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getTimeIn@{getTimeIn}}
+\index{getTimeIn@{getTimeIn}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getTimeIn()}{getTimeIn()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDIIPolygon\+::get\+Time\+In (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the start time of the conflict. This value is in absolute time. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a8a2ed89a3ecaf08f53933e7f4bdaea49}\label{classlarcfm_1_1_c_d_i_i_polygon_a8a2ed89a3ecaf08f53933e7f4bdaea49}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!getTimeOut@{getTimeOut}}
+\index{getTimeOut@{getTimeOut}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{getTimeOut()}{getTimeOut()}}
+{\footnotesize\ttfamily double larcfm\+::\+CDIIPolygon\+::get\+Time\+Out (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption}) const}
+
+Returns the end time of the conflict. This value is in absolute time. If there was not a conflict, then this value is meaningless. 
+\begin{DoxyParams}{Parameters}
+{\em i} & the i-\/th conflict, must be between 0..\mbox{\hyperlink{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}{size()}}-\/1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ac24de2248790efce7029f00ce34c6e3f}\label{classlarcfm_1_1_c_d_i_i_polygon_ac24de2248790efce7029f00ce34c6e3f}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!hasError@{hasError}}
+\index{hasError@{hasError}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{hasError()}{hasError()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::has\+Error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error? \begin{DoxyReturn}{Returns}
+true if there is an error. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a87d8a2d806b450fa27d9a71a0d55adc1}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_aee8afa37917f6fb439f317090f90f6a3}\label{classlarcfm_1_1_c_d_i_i_polygon_aee8afa37917f6fb439f317090f90f6a3}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!hasMessage@{hasMessage}}
+\index{hasMessage@{hasMessage}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{hasMessage()}{hasMessage()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::has\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Does this object have an error or a warning? \begin{DoxyReturn}{Returns}
+true if there is an error or warning. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_error_reporter_a0c24feabaab99943fe6cb5f3c912d1a5}{larcfm\+::\+Error\+Reporter}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_ad98281f83f519b0d6119ac8a93a495e3}\label{classlarcfm_1_1_c_d_i_i_polygon_ad98281f83f519b0d6119ac8a93a495e3}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!setCorePolygonDetectionPtr@{setCorePolygonDetectionPtr}}
+\index{setCorePolygonDetectionPtr@{setCorePolygonDetectionPtr}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{setCorePolygonDetectionPtr()}{setCorePolygonDetectionPtr()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDIIPolygon\+::set\+Core\+Polygon\+Detection\+Ptr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Apply a deep copy of the \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object pointed to to this object at the lowest level. The user is responsible for cleaning up the original instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_acceptor_a0c8e9d7863c70697963763a68218e3ef}{larcfm\+::\+Detection\+Polygon\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a65e4ba3f04f6c9ce883a6a8e63706d75}\label{classlarcfm_1_1_c_d_i_i_polygon_a65e4ba3f04f6c9ce883a6a8e63706d75}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!setCorePolygonDetectionRef@{setCorePolygonDetectionRef}}
+\index{setCorePolygonDetectionRef@{setCorePolygonDetectionRef}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{setCorePolygonDetectionRef()}{setCorePolygonDetectionRef()}}
+{\footnotesize\ttfamily void larcfm\+::\+CDIIPolygon\+::set\+Core\+Polygon\+Detection\+Ref (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} \&}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Apply a deep copy of the referenced \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} object to this object at the lowest level. The user is responsible for cleaning up the original instance. 
+
+Implements \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_acceptor_a8159e1696d5fa08d6ce0e27dc20b27e9}{larcfm\+::\+Detection\+Polygon\+Acceptor}}.
+
+\mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}\label{classlarcfm_1_1_c_d_i_i_polygon_a4279562234bbd26f79d99b401440c751}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!size@{size}}
+\index{size@{size}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily int larcfm\+::\+CDIIPolygon\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the number of conflicts \mbox{\Hypertarget{classlarcfm_1_1_c_d_i_i_polygon_adc20fb37b2c92b3476c59fef46e9bc40}\label{classlarcfm_1_1_c_d_i_i_polygon_adc20fb37b2c92b3476c59fef46e9bc40}} 
+\index{larcfm::CDIIPolygon@{larcfm::CDIIPolygon}!violation@{violation}}
+\index{violation@{violation}!larcfm::CDIIPolygon@{larcfm::CDIIPolygon}}
+\doxysubsubsection{\texorpdfstring{violation()}{violation()}}
+{\footnotesize\ttfamily bool larcfm\+::\+CDIIPolygon\+::violation (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{ownship,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_poly_path}{Poly\+Path}} \&}]{traffic,  }\item[{double}]{tm }\end{DoxyParamCaption}) const}
+
+Return true if there is a violation between two aircraft at time tm. If tm is outside either of the plans\textquotesingle{} times, this will return false. 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & \\
+\hline
+{\em traffic} & \\
+\hline
+{\em tm} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if violation
+\end{DoxyReturn}
+Return true if there is a violation between two aircraft at time tm. If tm is outside either of the plans\textquotesingle{} times, this will return false. 
+\begin{DoxyParams}{Parameters}
+{\em ownship} & \\
+\hline
+{\em traffic} & \\
+\hline
+{\em tm} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/CDIIPolygon.\+h\item 
+Modules/\+ACCo\+RD/src/CDIIPolygon.\+cpp\end{DoxyCompactItemize}

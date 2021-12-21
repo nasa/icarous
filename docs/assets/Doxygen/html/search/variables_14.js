@@ -11,5 +11,9 @@ var searchData=
   ['wind_8',['wind',['../class_guidance.html#a1942a98a0e540bac5732463566562098',1,'Guidance']]],
   ['worstcaseslotsperminorframe_9',['WorstCaseSlotsPerMinorFrame',['../struct_s_c_h___app_data__t.html#ab6daf7fd8b91cf3922f8f9c38792e592',1,'SCH_AppData_t']]],
   ['wpreached_10',['wpReached',['../structappdata_int__t.html#ae3693b8fb67eea585c8b96e93f169fe1',1,'appdataInt_t::wpReached()'],['../struct_flarm_app_data__t.html#a34850360b57d9757edfcfa0c9d1c08cd',1,'FlarmAppData_t::wpReached()'],['../struct_guidance_output__t.html#a37004bcaaa26814ecff2f4d0e4d80324',1,'GuidanceOutput_t::wpReached()'],['../class_guidance.html#a4ae6cc43e93ec637a300f3611cae5559',1,'Guidance::wpReached()']]],
-  ['wpreached_11',['wpreached',['../arducopter_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'arducopter.h']]]
+  ['wpreached_11',['wpreached',['../arducopter_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'arducopter.h']]],
+  ['wspatternbase_12',['wsPatternBase',['../classlarcfm_1_1_constants.html#abfa2f242125557d1de695275aac69660',1,'larcfm::Constants']]],
+  ['wspatternbasenoregex_13',['wsPatternBaseNoRegex',['../classlarcfm_1_1_constants.html#aa478c26f1071bc43211685d17b780c06',1,'larcfm::Constants']]],
+  ['wspatternbraces_14',['wsPatternBraces',['../classlarcfm_1_1_constants.html#a8031640ddceac810fe8569d061c58af0',1,'larcfm::Constants']]],
+  ['wspatternparens_15',['wsPatternParens',['../classlarcfm_1_1_constants.html#a3f5c8f4c59ca132eade902751d7dced1',1,'larcfm::Constants']]]
 ];

@@ -1,0 +1,85 @@
+\hypertarget{_projected_kinematics_8h_source}{}\doxysection{Projected\+Kinematics.\+h}
+\label{_projected_kinematics_8h_source}\index{Modules/ACCoRD/inc/ProjectedKinematics.h@{Modules/ACCoRD/inc/ProjectedKinematics.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Kinematics.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * }}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{5 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{6 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{8 \textcolor{comment}{ */}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef PROJECTEDKINEMATICS\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define PROJECTEDKINEMATICS\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Kinematics.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_projected_kinematics}{ProjectedKinematics}} \{}
+\DoxyCodeLine{28 \textcolor{keyword}{public}:}
+\DoxyCodeLine{37     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a2732b3e15db71412d9db615a97ff65ee}{turnAngle}}(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{47     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a58e9a32594b96a52e00d4070bf157aea}{turnDistance}}(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{58     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a7d0540a1357cf02d44c9cccf6ff2e9ff}{clockwise}}(\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s1, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} v1, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} s2);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{comment}{//static double closestTimeOnTurn(const Position\& turnstart, const Velocity\& v1, double omega, const Position\& x, double endTime);}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{74     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_af10c0ceafdce7ce4e118ba48b2a87e81}{closestDistOnTurn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& turnstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v1, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{int} dir, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& x, \textcolor{keywordtype}{double} endDist);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{keyword}{static} std::pair<Position,Velocity> turn(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} R, \textcolor{keywordtype}{bool} turnRight);}
+\DoxyCodeLine{77     \textcolor{keyword}{static} std::pair<Position,Velocity> gsAccel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} accel);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keyword}{static} std::pair<Position,Velocity> gsAccelUntil(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalGs, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{80     \textcolor{keyword}{static} std::pair<Position,Velocity> vsAccel(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} accel);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \textcolor{keyword}{static} std::pair<Position,Velocity> vsAccelUntil(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalVs,  \textcolor{keywordtype}{double} accel);}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{94     \textcolor{keyword}{static} std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a70b4a14db44bc438cf62d77495db99f1}{turnOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keyword}{static} std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a70b4a14db44bc438cf62d77495db99f1}{turnOmega}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} omega, \textcolor{keyword}{const} EuclideanProjection\& proj);}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{110     \textcolor{keyword}{static} std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_ac28ce32a9b301e39c1d7b429241fe557}{turnUntil}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \textcolor{keyword}{static} std::pair<Position,Velocity> \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_ac28ce32a9b301e39c1d7b429241fe557}{turnUntil}}(std::pair<Position,Velocity> sv, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} goalTrack, \textcolor{keywordtype}{double} bankAngle);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115     \textcolor{keyword}{static} std::pair<Position,Velocity> linear(std::pair<Position,Velocity> p, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{keyword}{static} std::pair<Position,Velocity> linear(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& p, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \textcolor{keyword}{static}  std::pair<Position,double> intersection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122     \textcolor{keyword}{static} \textcolor{keywordtype}{double} timeOfintersection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi);}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<Position,Velocity,double,int>}} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_ad35f995e78f4990343575f8f9cf8a3ca}{directToPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& wp, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Position,double,double>}} \mbox{\hyperlink{classlarcfm_1_1_projected_kinematics_a1d8a13678c4dee2ed2336861cda29563}{genDirectToVertex}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& sop, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& wpp, \textcolor{keywordtype}{double} bankAngle, \textcolor{keywordtype}{double} timeBeforeTurn);}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<Position,Velocity,double>}} vsLevelOutFinal(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132     \textcolor{keyword}{static} \textcolor{keywordtype}{double} vsLevelOutTime(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134     \textcolor{keyword}{static} std::pair<Position,Velocity> vsLevelOut(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} t, \textcolor{keywordtype}{double} climbRate, \textcolor{keywordtype}{double} targetAlt, \textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PROJECTEDKINEMATICS\_H\_}}
+
+\end{DoxyCode}

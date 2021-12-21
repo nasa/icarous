@@ -1,0 +1,42 @@
+\hypertarget{classlarcfm_1_1_polycarp_resolution}{}\doxysection{larcfm\+::Polycarp\+Resolution Class Reference}
+\label{classlarcfm_1_1_polycarp_resolution}\index{larcfm::PolycarpResolution@{larcfm::PolycarpResolution}}
+
+
+{\ttfamily \#include $<$Polycarp\+Resolution.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_afa40b9bf76a0b2e68e94f850161726fc}\label{classlarcfm_1_1_polycarp_resolution_afa40b9bf76a0b2e68e94f850161726fc}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries proj\+\_\+vect} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&u, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w, double BUFF)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_ab540d4a5d362ab806029ceead538ea8e}\label{classlarcfm_1_1_polycarp_resolution_ab540d4a5d362ab806029ceead538ea8e}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries expand\+\_\+polygon\+\_\+2D} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_a5857f4275e2d65e955b285e683e163ba}\label{classlarcfm_1_1_polycarp_resolution_a5857f4275e2d65e955b285e683e163ba}} 
+static std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ {\bfseries contract\+\_\+polygon\+\_\+2D} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_ac906fd63c0a86360cb73a2c7fe299528}\label{classlarcfm_1_1_polycarp_resolution_ac906fd63c0a86360cb73a2c7fe299528}} 
+static int {\bfseries closest\+\_\+edge} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, double BUFF, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_a72dc5aa83a68e3f97e867dabce84a34f}\label{classlarcfm_1_1_polycarp_resolution_a72dc5aa83a68e3f97e867dabce84a34f}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries recovery\+\_\+test\+\_\+point} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_a94d9328e2524139c9cb8fab4a9f173af}\label{classlarcfm_1_1_polycarp_resolution_a94d9328e2524139c9cb8fab4a9f173af}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries recovery\+\_\+point} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_aa299e310b3812460c937ed4ca305cd59}\label{classlarcfm_1_1_polycarp_resolution_aa299e310b3812460c937ed4ca305cd59}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries outside\+\_\+recovery\+\_\+point} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_resolution_a0227e7c5ef8a080dcc660f1a0bc8cf4d}\label{classlarcfm_1_1_polycarp_resolution_a0227e7c5ef8a080dcc660f1a0bc8cf4d}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries inside\+\_\+recovery\+\_\+point} (double BUFF, double Resol\+BUFF, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_polycarp_resolution}{Polycarp\+Resolution}} -\/ closest point inside-\/outside a polygon to a given point -\/ with a buffer 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Polycarp\+Resolution.\+h\item 
+Modules/\+ACCo\+RD/src/Polycarp\+Resolution.\+cpp\end{DoxyCompactItemize}

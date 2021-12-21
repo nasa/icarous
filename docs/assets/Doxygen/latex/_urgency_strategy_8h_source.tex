@@ -1,0 +1,41 @@
+\hypertarget{_urgency_strategy_8h_source}{}\doxysection{Urgency\+Strategy.\+h}
+\label{_urgency_strategy_8h_source}\index{Modules/ACCoRD/inc/UrgencyStrategy.h@{Modules/ACCoRD/inc/UrgencyStrategy.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * UrgencyStrategy.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Generic class for most urgent aircraft strategy.}}
+\DoxyCodeLine{11 \textcolor{comment}{ *}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef URGENCYSTRATEGY\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define URGENCYSTRATEGY\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}} \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}() \{\}}
+\DoxyCodeLine{26   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{\string~UrgencyStrategy}}() \{\}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{34   \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy_affe64d3a64d10b0c2dcd8a629ca2f996}{mostUrgentAircraft}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{35   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* copy() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* URGENCYSTRATEGY\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

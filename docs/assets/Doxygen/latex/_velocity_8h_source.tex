@@ -1,0 +1,172 @@
+\hypertarget{_velocity_8h_source}{}\doxysection{Velocity.\+h}
+\label{_velocity_8h_source}\index{Modules/ACCoRD/inc/Velocity.h@{Modules/ACCoRD/inc/Velocity.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Velocity.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * http://research.nianet.org/fm-\/at-\/nia/ACCoRD}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ * NOTES: }}
+\DoxyCodeLine{9 \textcolor{comment}{ * Track is True North/clockwise}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{12 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{13 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{14 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{15 \textcolor{comment}{ */}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#ifndef VELOCITY\_H\_}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define VELOCITY\_H\_}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{36 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}: \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \{}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{private}:}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{47     \mbox{\hyperlink{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}{Velocity}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vx, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{public}:}
+\DoxyCodeLine{53     \mbox{\hyperlink{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}{Velocity}}();}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_velocity_ad072ecab11d7f9d2b8d19103eedbfd65}{Velocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v3);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{65     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a274444dbf5a6aff3ea85f460b60d633c}{angle}}(\textcolor{keyword}{const} std::string\& uangle) \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{73     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a274444dbf5a6aff3ea85f460b60d633c}{angle}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{91     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a2de29f38d614ca9dced8b14b2807131e}{track}}(\textcolor{keyword}{const} std::string\& utrk) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{99     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a02389da25776c3ff08d6849a4ae11c29}{compassAngle}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{109     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a02389da25776c3ff08d6849a4ae11c29}{compassAngle}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{116     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{125     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_aa979baa8de9b9b22671205bc17229222}{groundSpeed}}(\textcolor{keyword}{const} std::string\& ugs) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{132     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{141     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a166d643b9f6a06c15df2358a8bdbc34c}{verticalSpeed}}(\textcolor{keyword}{const} std::string\& uvs) \textcolor{keyword}{const};}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{152     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_velocity_a7e937d9f97912e27b1397090ab4c5e9f}{compare}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} maxTrk, \textcolor{keywordtype}{double} maxGs, \textcolor{keywordtype}{double} maxVs);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{161     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_velocity_a7e937d9f97912e27b1397090ab4c5e9f}{compare}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keywordtype}{double} horizDelta, \textcolor{keywordtype}{double} vertDelta);}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{171     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_adbc504e5b316a01982aaec06b08bb09f}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& v);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{180     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_adbc504e5b316a01982aaec06b08bb09f}{make}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v);}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{192     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a1f7d7a2d3f4f846b3980efa77fd91211}{mkVxyz}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vx, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{204     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}{makeVxyz}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vx, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vz);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 }
+\DoxyCodeLine{218     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ad2268d9a4194c81a7c28ff9bc23fd94d}{makeVxyz}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} vx, \textcolor{keyword}{const} \textcolor{keywordtype}{double} vy, \textcolor{keyword}{const} std::string\& uvxy,}
+\DoxyCodeLine{219             \textcolor{keyword}{const} \textcolor{keywordtype}{double} vz, \textcolor{keyword}{const} std::string\& uvz);}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{231     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae1eca2ddbaca68388d2303ff40999c0b}{mkTrkGsVs}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}});}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{244     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}{makeTrkGsVs}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}});}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{260     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a937cfc066fbdcc5566fec28a346482dc}{makeTrkGsVs}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keyword}{const} std::string\& utrk,}
+\DoxyCodeLine{261             \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, \textcolor{keyword}{const} std::string\& ugs,}
+\DoxyCodeLine{262             \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}, \textcolor{keyword}{const} std::string\& uvs);}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{271     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae8ad1457a83eb95708eb8d420f9ec0b3}{mkVel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p1,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p2, \textcolor{keywordtype}{double} speed);}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{279     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a2de29f38d614ca9dced8b14b2807131e}{track}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p2);}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{288     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a2b7b1ce1c4cad781f049a45873cbc6b2}{genVel}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p2, \textcolor{keywordtype}{double} dt) ;}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 }
+\DoxyCodeLine{298     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ac65e3a4be608abde031724b685377a52}{mkAddTrk}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300 }
+\DoxyCodeLine{302     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_velocity_a0458f7eac922d0e90d3aab974f7f1ced}{ZEROV}}();}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{305     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_velocity_a02df460f83c54e55a558ae042c05ff3e}{INVALIDV}}();}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{316     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a773b483c77c69a5bc5d71d31f92a5f30}{trkgs2vx}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}});}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{326     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ad9874e6f341071ff603e5be685dcf22d}{trkgs2vy}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}});}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{336     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{classlarcfm_1_1_velocity_aeaa35802e2ddf5953109f15b49fdb037}{trkgs2v}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}});}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{343     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a5e8e839464c2157d5d73dd64eccbb682}{mkTrk}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{351     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a5e8e839464c2157d5d73dd64eccbb682}{mkTrk}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab6b9b9162ef8c52d72475f2775775021}{trk}}, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{358     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a6311be12aa9f6e4e6dc205e33921cf7a}{mkGs}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{366     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a6311be12aa9f6e4e6dc205e33921cf7a}{mkGs}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_a80a45d9adf4638c374dba46f34ec0f7c}{gs}}, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{367 }
+\DoxyCodeLine{373     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a541f85ea9b502b25c74ed2adc6ebd938}{mkVs}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{374 }
+\DoxyCodeLine{381     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a541f85ea9b502b25c74ed2adc6ebd938}{mkVs}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_velocity_ae7a47f75d64ab1175fa6313cf9185605}{vs}}, std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} NegV() \textcolor{keyword}{const};}
+\DoxyCodeLine{384 }
+\DoxyCodeLine{392     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_a58a23ea2089f8e300c7480f6ccecac81}{zeroSmallVs}}(\textcolor{keywordtype}{double} threshold) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{401     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_ab37a4a06011be58ccb676e9e9997e9d2}{parseXYZ}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{412     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_velocity_adfe50ffd4b7618018a1c4b113bea901e}{parse}}(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{413 }
+\DoxyCodeLine{414     std::string toUnitTest() \textcolor{keyword}{const};}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{419     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1510ea9c8dd7e7bc7530fcfe98259da1}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{420 }
+\DoxyCodeLine{426     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1510ea9c8dd7e7bc7530fcfe98259da1}{toString}}(\textcolor{keywordtype}{int} prec) \textcolor{keyword}{const};}
+\DoxyCodeLine{427 }
+\DoxyCodeLine{431     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_ad8c1670223dabcb37d40ba5b38707d36}{toStringUnits}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{440     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_ad8c1670223dabcb37d40ba5b38707d36}{toStringUnits}}(\textcolor{keyword}{const} std::string\& trkUnits, \textcolor{keyword}{const} std::string\& gsUnits, \textcolor{keyword}{const} std::string\& vsUnits) \textcolor{keyword}{const};}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{446     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1bdcc71c147e3a30ce4988660d8f484b}{toStringXYZ}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{448     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_a1bdcc71c147e3a30ce4988660d8f484b}{toStringXYZ}}(\textcolor{keywordtype}{int} prec) \textcolor{keyword}{const};}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{454     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_velocity_a194c61443d039ff96acf34d1594f847a}{toStringList}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{455 }
+\DoxyCodeLine{461     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_velocity_a194c61443d039ff96acf34d1594f847a}{toStringList}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{462 }
+\DoxyCodeLine{467     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_velocity_a4c40303e24239b5376a2351f5969a87e}{toStringXYZList}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{468 }
+\DoxyCodeLine{475     std::vector<std::string> \mbox{\hyperlink{classlarcfm_1_1_velocity_a4c40303e24239b5376a2351f5969a87e}{toStringXYZList}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{476 }
+\DoxyCodeLine{480     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}{toStringNP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{487     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}{toStringNP}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{488 }
+\DoxyCodeLine{497     std::string \mbox{\hyperlink{classlarcfm_1_1_velocity_aab766d20fa8a6d6260d1f9d53b2a32ea}{toStringNP}}(\textcolor{keyword}{const} std::string\& utrk, \textcolor{keyword}{const} std::string\& ugs, \textcolor{keyword}{const} std::string\& uvs, \textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500 \};}
+\DoxyCodeLine{501 }
+\DoxyCodeLine{508 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_ad09afcbc6b27366baa702ec9312b7c80}{trkgs2vx}}(\textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{509 }
+\DoxyCodeLine{516 \textcolor{keywordtype}{double} \mbox{\hyperlink{namespacelarcfm_a0b984b0883f125ef60821b562b635a05}{trkgs2vy}}(\textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{517 }
+\DoxyCodeLine{524 \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \mbox{\hyperlink{namespacelarcfm_af24a93e54071ec0e728bc207c0265fe2}{trkgs2v}}(\textcolor{keywordtype}{double} trk, \textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526 \}}
+\DoxyCodeLine{527 }
+\DoxyCodeLine{528 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* VELOCITY\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

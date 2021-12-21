@@ -1,0 +1,188 @@
+\hypertarget{classlarcfm_1_1_data_server}{}\doxysection{larcfm\+::Data\+Server Class Reference}
+\label{classlarcfm_1_1_data_server}\index{larcfm::DataServer@{larcfm::DataServer}}
+
+
+{\ttfamily \#include $<$Data\+Server.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a6de1bbe1edf86ecfdc759346f17b5d2a}{add\+Transmitter}} (const std\+::string \&address, \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} $\ast$t)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} $\ast$ \mbox{\hyperlink{classlarcfm_1_1_data_server_a0aa682e2724595f95cfc8d4ba37a02dd}{get\+Transmitter}} (const std\+::string \&address) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_af1ae43543006797d3b412b77081264e7}{remove\+Transmitter}} (const std\+::string \&address)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a47b8f7bcfdcf2ff83357502e27489961}{advertise\+All}} (const std\+::string \&keyword)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a35ee264d2e649ebf2e210b32dd6e3291}{advertise\+One}} (const std\+::string \&address, const std\+::string \&keyword)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a5139ce4245077dde18bf572f17e45b11}{update}} (const std\+::string \&keyword, const std\+::string \&data)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_data_server_a0d619462d2bee883d7ce782a6c5f6923}{has\+Clients}} (const std\+::string \&keyword) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a26fed2153bb78c60d1fdd64ba299cdf1}{update\+General\+States}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a2205798d124a2a0c350b4febbdbc24ce}\label{classlarcfm_1_1_data_server_a2205798d124a2a0c350b4febbdbc24ce}} 
+void {\bfseries update\+General\+States} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pd)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a1a6855404b38fb59cfad4e72194d751b}{update\+General\+Plans}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a15de22f105ee8772f3ee884a0bfb84e8}\label{classlarcfm_1_1_data_server_a15de22f105ee8772f3ee884a0bfb84e8}} 
+void {\bfseries update\+General\+Plans} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&pd)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_af3d14ddeb76bf65cec7d3626f763664e}{update\+Parameters}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&p)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_a3905732bf114c0cf97c0be81c93c7170}{update\+String}} (const std\+::string \&s)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_data_server_acac0692de11c003c51b015cf445a2d03}{update\+String}} (const std\+::string \&keyword, const std\+::string \&s)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a8655586e2982e8c0072defed7742cdf2}\label{classlarcfm_1_1_data_server_a8655586e2982e8c0072defed7742cdf2}} 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} $\ast$ $>$ {\bfseries transmitters}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_af2f1608db6f2e694849dfa950ab09547}\label{classlarcfm_1_1_data_server_af2f1608db6f2e694849dfa950ab09547}} 
+std\+::string {\bfseries word}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class represents a wrapper for a collection of \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} object that represents a server\textquotesingle{}s behavior. The server takes updates to plan, state, and/or parameter information and parcels it out to its various \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} object. Each \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} is intended to handle a certain type of request (e.\+g. for plan information that is updated every second and sent over a socket) and handles distributing the information to its clients. The particulars of the transmission of data are handled by the provided Transmitters.
+
+Known keywords\+: \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}}, \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}}, \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}}, String 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a6de1bbe1edf86ecfdc759346f17b5d2a}\label{classlarcfm_1_1_data_server_a6de1bbe1edf86ecfdc759346f17b5d2a}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!addTransmitter@{addTransmitter}}
+\index{addTransmitter@{addTransmitter}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{addTransmitter()}{addTransmitter()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::add\+Transmitter (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{address,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} $\ast$}]{t }\end{DoxyParamCaption})}
+
+Add a transmitter at a given address that will listen for clients 
+\begin{DoxyParams}{Parameters}
+{\em address} & This will replace any existing transmitter at this address. \\
+\hline
+{\em t} & Pointer to transmitter to be added. The destructor of this class will destroy all Transmitters included in it. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a47b8f7bcfdcf2ff83357502e27489961}\label{classlarcfm_1_1_data_server_a47b8f7bcfdcf2ff83357502e27489961}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!advertiseAll@{advertiseAll}}
+\index{advertiseAll@{advertiseAll}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{advertiseAll()}{advertiseAll()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::advertise\+All (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption})}
+
+Tell any clients that connect and ask what sort of data you provide. This propagates the same keyword to all current and future transmitters 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a35ee264d2e649ebf2e210b32dd6e3291}\label{classlarcfm_1_1_data_server_a35ee264d2e649ebf2e210b32dd6e3291}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!advertiseOne@{advertiseOne}}
+\index{advertiseOne@{advertiseOne}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{advertiseOne()}{advertiseOne()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::advertise\+One (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{address,  }\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption})}
+
+Associate a keyword with one particular \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}}. This does not affect other Transmitters. 
+\begin{DoxyParams}{Parameters}
+{\em address} & \\
+\hline
+{\em keyword} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a0aa682e2724595f95cfc8d4ba37a02dd}\label{classlarcfm_1_1_data_server_a0aa682e2724595f95cfc8d4ba37a02dd}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!getTransmitter@{getTransmitter}}
+\index{getTransmitter@{getTransmitter}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{getTransmitter()}{getTransmitter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} $\ast$ larcfm\+::\+Data\+Server\+::get\+Transmitter (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{address }\end{DoxyParamCaption}) const}
+
+Return the transmitter associated with a given address. This will return null if no transmitter is associated with the given address. Note\+: The destructor of this class will destroy all Transmitters included in it. 
+\begin{DoxyParams}{Parameters}
+{\em address} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}}, or NULL, if none exists. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a0d619462d2bee883d7ce782a6c5f6923}\label{classlarcfm_1_1_data_server_a0d619462d2bee883d7ce782a6c5f6923}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!hasClients@{hasClients}}
+\index{hasClients@{hasClients}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{hasClients()}{hasClients()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Data\+Server\+::has\+Clients (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword }\end{DoxyParamCaption}) const}
+
+Return true if this server has any clients looking for the given keyword 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_af1ae43543006797d3b412b77081264e7}\label{classlarcfm_1_1_data_server_af1ae43543006797d3b412b77081264e7}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!removeTransmitter@{removeTransmitter}}
+\index{removeTransmitter@{removeTransmitter}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{removeTransmitter()}{removeTransmitter()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::remove\+Transmitter (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{address }\end{DoxyParamCaption})}
+
+Delete the transmitter associated with an address, if there is one. This will destroy the \mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} object. 
+\begin{DoxyParams}{Parameters}
+{\em address} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a5139ce4245077dde18bf572f17e45b11}\label{classlarcfm_1_1_data_server_a5139ce4245077dde18bf572f17e45b11}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!update@{update}}
+\index{update@{update}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword,  }\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})}
+
+Transmit String with user-\/specified keyword 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a1a6855404b38fb59cfad4e72194d751b}\label{classlarcfm_1_1_data_server_a1a6855404b38fb59cfad4e72194d751b}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!updateGeneralPlans@{updateGeneralPlans}}
+\index{updateGeneralPlans@{updateGeneralPlans}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{updateGeneralPlans()}{updateGeneralPlans()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update\+General\+Plans (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_plan}{General\+Plan}} $>$ \&}]{p }\end{DoxyParamCaption})}
+
+Transmit a set of plans \mbox{\Hypertarget{classlarcfm_1_1_data_server_a26fed2153bb78c60d1fdd64ba299cdf1}\label{classlarcfm_1_1_data_server_a26fed2153bb78c60d1fdd64ba299cdf1}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!updateGeneralStates@{updateGeneralStates}}
+\index{updateGeneralStates@{updateGeneralStates}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{updateGeneralStates()}{updateGeneralStates()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update\+General\+States (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} $>$ \&}]{p }\end{DoxyParamCaption})}
+
+Transmit a set of states \mbox{\Hypertarget{classlarcfm_1_1_data_server_af3d14ddeb76bf65cec7d3626f763664e}\label{classlarcfm_1_1_data_server_af3d14ddeb76bf65cec7d3626f763664e}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!updateParameters@{updateParameters}}
+\index{updateParameters@{updateParameters}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{updateParameters()}{updateParameters()}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update\+Parameters (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{p }\end{DoxyParamCaption})}
+
+Transmit a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object \mbox{\Hypertarget{classlarcfm_1_1_data_server_acac0692de11c003c51b015cf445a2d03}\label{classlarcfm_1_1_data_server_acac0692de11c003c51b015cf445a2d03}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!updateString@{updateString}}
+\index{updateString@{updateString}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{updateString()}{updateString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{keyword,  }\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+Transmit a string with some associated keyword 
+\begin{DoxyParams}{Parameters}
+{\em keyword} & \\
+\hline
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_data_server_a3905732bf114c0cf97c0be81c93c7170}\label{classlarcfm_1_1_data_server_a3905732bf114c0cf97c0be81c93c7170}} 
+\index{larcfm::DataServer@{larcfm::DataServer}!updateString@{updateString}}
+\index{updateString@{updateString}!larcfm::DataServer@{larcfm::DataServer}}
+\doxysubsubsection{\texorpdfstring{updateString()}{updateString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void larcfm\+::\+Data\+Server\+::update\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s }\end{DoxyParamCaption})}
+
+Transmit a string 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Data\+Server.\+h\item 
+Modules/\+ACCo\+RD/src/Data\+Server.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,37 @@
+\hypertarget{_polycarp_double_quadratic_8h_source}{}\doxysection{Polycarp\+Double\+Quadratic.\+h}
+\label{_polycarp_double_quadratic_8h_source}\index{Modules/ACCoRD/inc/PolycarpDoubleQuadratic.h@{Modules/ACCoRD/inc/PolycarpDoubleQuadratic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpDoubleQuadratic -\/ Determining if a quadratic in two variables ever passes below a threshold}}
+\DoxyCodeLine{3 \textcolor{comment}{ *                         -\/ for inputs in the unit box}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef POLYCARPDOUBLEQUADRATIC\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define POLYCARPDOUBLEQUADRATIC\_H\_}}
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_double_quadratic}{PolycarpDoubleQuadratic}} \{}
+\DoxyCodeLine{20     \textcolor{keyword}{public}:}
+\DoxyCodeLine{21         \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{double} AE;}
+\DoxyCodeLine{22         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} ae(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b);}
+\DoxyCodeLine{23 \textcolor{comment}{//        static double sq(double a);}}
+\DoxyCodeLine{24 \textcolor{comment}{//        static double discr(double a, double b, double c);}}
+\DoxyCodeLine{25 \textcolor{comment}{//        static double root(double a, double b, double c, int eps);}}
+\DoxyCodeLine{26         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quad(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} ee,\textcolor{keywordtype}{double} f,\textcolor{keywordtype}{double} x,\textcolor{keywordtype}{double} y);}
+\DoxyCodeLine{27         \textcolor{keyword}{static} \textcolor{keywordtype}{double} rev\_disc(\textcolor{keywordtype}{double} a, \textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c);}
+\DoxyCodeLine{28         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quad\_min\_y\_to\_x(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} y);}
+\DoxyCodeLine{29         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quad\_min\_y(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} ee);}
+\DoxyCodeLine{30         \textcolor{keyword}{static} \textcolor{keywordtype}{double} quad\_min\_x(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} ee);}
+\DoxyCodeLine{31         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} quad\_min\_unit\_box\_init(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} ee, \textcolor{keywordtype}{double} f,\textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{32         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} quad\_min\_unit\_box(\textcolor{keywordtype}{double} a,\textcolor{keywordtype}{double} b,\textcolor{keywordtype}{double} c,\textcolor{keywordtype}{double} d,\textcolor{keywordtype}{double} ee,\textcolor{keywordtype}{double} f,\textcolor{keywordtype}{double} D);}
+\DoxyCodeLine{33     \};}
+\DoxyCodeLine{34 \}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,77 @@
+\hypertarget{_interval_8h_source}{}\doxysection{Interval.\+h}
+\label{_interval_8h_source}\index{Modules/ACCoRD/inc/Interval.h@{Modules/ACCoRD/inc/Interval.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Interval}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef INTERVAL\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define INTERVAL\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Util.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \{ }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \textcolor{comment}{// This numeric type is used for index variables over vectors of Interval}}
+\DoxyCodeLine{33     \textcolor{keyword}{typedef} std::vector<Interval>::size\_type nat;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_interval_ac12e9d26d71daebca4ac2c90bde915ad}{low}};}
+\DoxyCodeLine{38     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_interval_a77b8cc554086fe72be553a2060665251}{up}};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_interval_a1d17977c01ff00eea2ef3a547e430eec}{EMPTY}};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{48     \mbox{\hyperlink{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}{Interval}}(\textcolor{keywordtype}{double} lb, \textcolor{keywordtype}{double} ub);}
+\DoxyCodeLine{50     \mbox{\hyperlink{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}{Interval}}();}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{54     \mbox{\hyperlink{classlarcfm_1_1_interval_ae48b9a9e9f672f81977627b609e32429}{Interval}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& i);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{57     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_interval_ae178819101b270edbf5cfb8cf0bfbf50}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_abbee4d022a104dbeda34f1e02942536c}{isEmpty}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{65     std::string \mbox{\hyperlink{classlarcfm_1_1_interval_a2dbba405744a0c403c030c4bb6559fe7}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     std::string \mbox{\hyperlink{classlarcfm_1_1_interval_a2dbba405744a0c403c030c4bb6559fe7}{toString}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     std::string toStringUnits(\textcolor{keyword}{const} std::string\& unit) \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a0015e4c11d9fe9a606cef750bbc9daf6}{isSingle}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{79     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a0015e4c11d9fe9a606cef750bbc9daf6}{isSingle}}(\textcolor{keywordtype}{double} width) \textcolor{keyword}{const};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{85     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a144eee73f5509831890dd75723f693c3}{in}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{90     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a082a23f075b76b1d6494fba791d5fc48}{inCC}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{95     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_abcffa2b901033ae63b330ce31c726d45}{inCO}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{100     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a351e9439069fb45fc20fc82fa21d5b04}{inOC}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{105     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a9adc1cde2d0158447f7ac6792fa10fe7}{inOO}}(\textcolor{keywordtype}{double} x) \textcolor{keyword}{const};}
+\DoxyCodeLine{112     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a09c3ef2962e4d58294cb201de6e98750}{almost\_in}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{bool} lb\_close, \textcolor{keywordtype}{bool} ub\_close) \textcolor{keyword}{const};}
+\DoxyCodeLine{120     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a09c3ef2962e4d58294cb201de6e98750}{almost\_in}}(\textcolor{keywordtype}{double} x, \textcolor{keywordtype}{bool} lb\_close, \textcolor{keywordtype}{bool} ub\_close, INT64FM maxUlps) \textcolor{keyword}{const};}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{129     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_interval_a10b0d7f8948552cd07318a75b04e797f}{overlap}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& r) \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{137     \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_interval_a8cb103cfce3507925031a2d22e457d8f}{intersect}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}}\& r) \textcolor{keyword}{const};}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{140     std::string toPVS(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,64 @@
+\hypertarget{_detection_polygon_8h_source}{}\doxysection{Detection\+Polygon.\+h}
+\label{_detection_polygon_8h_source}\index{Modules/ACCoRD/inc/DetectionPolygon.h@{Modules/ACCoRD/inc/DetectionPolygon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2013-\/2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{comment}{/*}}
+\DoxyCodeLine{8 \textcolor{comment}{ * Detection3D.h}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *  Created on: Dec 12, 2012}}
+\DoxyCodeLine{11 \textcolor{comment}{ *      Author: ghagen}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef DETECTIONPOLYGON\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define DETECTIONPOLYGON\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}ParameterAcceptor.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Poly3D.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}MovingPolygon3D.h"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_parameter_acceptor}{ParameterAcceptor}} \{}
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{\string~DetectionPolygon}}() = 0;}
+\DoxyCodeLine{29   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} violation(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{30   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} conflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{31   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} conflictDetection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) = 0;}
+\DoxyCodeLine{32   \textcolor{keyword}{virtual} std::vector<double> getTimesIn() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{33   \textcolor{keyword}{virtual} std::vector<double> getTimesOut() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{34   \textcolor{keyword}{virtual} std::vector<double> getCriticalTimesOfConflict() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{35   \textcolor{keyword}{virtual} std::vector<double> getDistancesAtCriticalTimes() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{36   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{37   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{38   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) = 0;}
+\DoxyCodeLine{39   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* make() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{40   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* copy() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keyword}{virtual} std::string getClassName() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{43   \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{virtual} std::string getIdentifier() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{46   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s) = 0;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{51   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_adbaca7784b073c359e90eefc4faa7a1d}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* o) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} instanceof(\textcolor{keyword}{const} std::string\& classname)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{54     \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacelarcfm_a70e71904b71bbd150854983eb667a733}{larcfm::equals}}(getClassName(), classname);}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{inline} DetectionPolygon::\string~DetectionPolygon()\{\}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* DETECTIONPOLYGON\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

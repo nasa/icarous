@@ -1,0 +1,242 @@
+\hypertarget{classlarcfm_1_1_safety_buffers}{}\doxysection{larcfm\+::Safety\+Buffers Class Reference}
+\label{classlarcfm_1_1_safety_buffers}\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+
+
+{\ttfamily \#include $<$Safety\+Buffers.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ac730582edda8d4d4db2656617163be4a}{psi\+Horiz\+NAC}} (double rel\+HDist, double rel\+GS, int NACp\+Own, int NACv\+Own, int NACp\+Intr, int NACv\+Intr, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a80aa5a7acc0230c573373f5e3dd099df}{psi\+Horiz\+NIC}} (double rel\+HDist, double rel\+GS, int NICOwn, int NACv\+Own, int NICIntr, int NACv\+Intr, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ac38c07b2b9300ed3f9d2235cdbe5bec9}{psi\+Vert\+NAC}} (double rel\+VDist, double rel\+VS, int NACp\+Own, int NACv\+Own, int NACp\+Intr, int NACv\+Intr, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a34f0f3687e117322447d632404b7eef9}{psi\+Vert\+NIC}} (double rel\+VDist, double rel\+VS, int NICOwn, int NACv\+Own, int NICIntr, int NACv\+Intr, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_ae0096cac45e39ecdb160af201cf3ccee}{psi}} (double rel\+Dist, double relV, double ao, double ai, double bo, double bi, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_a93240e287fd7feafa7049a5577c3fd17}{psiH}} (\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} sm, \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} vm, double ao, double ai, double bo, double bi, double lambda, double T)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_safety_buffers_afddc14fb91c2d5017cdee944ce842f56}{psi\+Horiz\+NAC}} (\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} po, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} pi, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vi, int NACp\+Own, int NACv\+Own, int NACp\+Intr, int NACv\+Intr, double lambda, double T)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_safety_buffers}{Safety\+Buffers}} class. This computes the psi value (increase in safety buffer size) needed to preserve a given certainty for detection readings, based on relative distance and speed, and data accuracy values.
+
+In general, these functions will fail (give a negative value) if invalid NIC/\+NAC values are given, or if a NIC/\+NAC corresponds to an unknown accuracy category for that dimension.
+
+Calculations are based on A. Narkawicz, C. Munoz, H. Herencia-\/\+Zapana, G. Hagen. \char`\"{}\+Formal Verification of Safety Buffers for State-\/\+Based Conflict Detection.\char`\"{} 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_ae0096cac45e39ecdb160af201cf3ccee}\label{classlarcfm_1_1_safety_buffers_ae0096cac45e39ecdb160af201cf3ccee}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psi@{psi}}
+\index{psi@{psi}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psi()}{psi()}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi (\begin{DoxyParamCaption}\item[{double}]{rel\+Dist,  }\item[{double}]{relV,  }\item[{double}]{ao,  }\item[{double}]{ai,  }\item[{double}]{bo,  }\item[{double}]{bi,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase in a safety buffer in either vertical or horizontal that preserves a given detection accuracy, based on arbitrary measurement accuracy bounds. The overall accuracy is 4-\/(p0+p1+p2+p3). This uses horizontal distance and ground speed or vertical distance and vertical speed. 
+\begin{DoxyParams}{Parameters}
+{\em rel\+Dist} & The relative distance between ownship and intruder, at the last good reading (m) \\
+\hline
+{\em relV} & The relative speed between ownship and intruder, at time of last good reading (m/s) \\
+\hline
+{\em ao} & accuracy of ownship position information\+: the reported value is within this distance of the true value with a probability of p0 (m) \\
+\hline
+{\em ai} & accuracy of intruder position information\+: the reported value is within this distance of the true value with a probability of p1 (m) \\
+\hline
+{\em bo} & accuracy of ownship velocity information\+: the reported value is within this range of the true value with a probability of p2 (m/s) \\
+\hline
+{\em bi} & accuracy of intruder velocity information\+: the reported value is within this range of the true value with a probability of p3 (m/s) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_a93240e287fd7feafa7049a5577c3fd17}\label{classlarcfm_1_1_safety_buffers_a93240e287fd7feafa7049a5577c3fd17}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiH@{psiH}}
+\index{psiH@{psiH}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiH()}{psiH()}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psiH (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}}]{sm,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}}]{vm,  }\item[{double}]{ao,  }\item[{double}]{ai,  }\item[{double}]{bo,  }\item[{double}]{bi,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase in a safety buffer in either vertical or horizontal that preserves a given detection accuracy, based on arbitrary measurement accuracy bounds. The overall accuracy is 4-\/(p0+p1+p2+p3). This uses horizontal distance and ground speed or vertical distance and vertical speed. 
+\begin{DoxyParams}{Parameters}
+{\em sm} & The relative horizontal Euclidean positions between ownship and intruder, at the last good reading (m) \\
+\hline
+{\em vm} & The relative horizontal Euclidean velocities between ownship and intruder, at time of last good reading (m/s) \\
+\hline
+{\em ao} & accuracy of ownship position information\+: the reported value is within this distance of the true value with a probability of p0 (m) \\
+\hline
+{\em ai} & accuracy of intruder position information\+: the reported value is within this distance of the true value with a probability of p1 (m) \\
+\hline
+{\em bo} & accuracy of ownship velocity information\+: the reported value is within this range of the true value with a probability of p2 (m/s) \\
+\hline
+{\em bi} & accuracy of intruder velocity information\+: the reported value is within this range of the true value with a probability of p3 (m/s) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_ac730582edda8d4d4db2656617163be4a}\label{classlarcfm_1_1_safety_buffers_ac730582edda8d4d4db2656617163be4a}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiHorizNAC@{psiHorizNAC}}
+\index{psiHorizNAC@{psiHorizNAC}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiHorizNAC()}{psiHorizNAC()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi\+Horiz\+NAC (\begin{DoxyParamCaption}\item[{double}]{rel\+HDist,  }\item[{double}]{rel\+GS,  }\item[{int}]{NACp\+Own,  }\item[{int}]{NACv\+Own,  }\item[{int}]{NACp\+Intr,  }\item[{int}]{NACv\+Intr,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase of horizontal safety buffer size based on NACp values 
+\begin{DoxyParams}{Parameters}
+{\em rel\+HDist} & Relative horizontal distance between ownship and intruder at last good reading (m) \\
+\hline
+{\em rel\+GS} & Relative ground speed between ownship and intruder at last good reading (m/s) \\
+\hline
+{\em NACp\+Own} & Ownship NACp (1-\/11) \\
+\hline
+{\em NACv\+Own} & Ownship NACv (1-\/4) \\
+\hline
+{\em NACp\+Intr} & Intruder NACp (1-\/11) \\
+\hline
+{\em NACv\+Intr} & Intruder NACv (1-\/4) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_afddc14fb91c2d5017cdee944ce842f56}\label{classlarcfm_1_1_safety_buffers_afddc14fb91c2d5017cdee944ce842f56}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiHorizNAC@{psiHorizNAC}}
+\index{psiHorizNAC@{psiHorizNAC}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiHorizNAC()}{psiHorizNAC()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi\+Horiz\+NAC (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{po,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{Position}}}]{pi,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}}]{vo,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}}]{vi,  }\item[{int}]{NACp\+Own,  }\item[{int}]{NACv\+Own,  }\item[{int}]{NACp\+Intr,  }\item[{int}]{NACv\+Intr,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase of horizontal safety buffer size based on NACp values. If positions are in lat/lon, this uses the projection defined in Projection.\+get\+Projection, with the ownship as the origin. This version does not include inaccuracies resulting from the projection. Be sure to call \mbox{\hyperlink{classlarcfm_1_1_projection}{Projection}}. ~\newline
+ 
+\begin{DoxyParams}{Parameters}
+{\em po} & position of ownship \\
+\hline
+{\em pi} & position of intruder \\
+\hline
+{\em vo} & velocity of ownship \\
+\hline
+{\em vi} & velocity of intruder \\
+\hline
+{\em rel\+GS} & Relative ground speed between ownship and intruder at last good reading (m/s) \\
+\hline
+{\em NACp\+Own} & Ownship NACp (1-\/11) \\
+\hline
+{\em NACv\+Own} & Ownship NACv (1-\/4) \\
+\hline
+{\em NACp\+Intr} & Intruder NACp (1-\/11) \\
+\hline
+{\em NACv\+Intr} & Intruder NACv (1-\/4) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_a80aa5a7acc0230c573373f5e3dd099df}\label{classlarcfm_1_1_safety_buffers_a80aa5a7acc0230c573373f5e3dd099df}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiHorizNIC@{psiHorizNIC}}
+\index{psiHorizNIC@{psiHorizNIC}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiHorizNIC()}{psiHorizNIC()}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi\+Horiz\+NIC (\begin{DoxyParamCaption}\item[{double}]{rel\+HDist,  }\item[{double}]{rel\+GS,  }\item[{int}]{NICOwn,  }\item[{int}]{NACv\+Own,  }\item[{int}]{NICIntr,  }\item[{int}]{NACv\+Intr,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase of horizontal safety buffer size based on NIC values 
+\begin{DoxyParams}{Parameters}
+{\em rel\+HDist} & Relative horizontal distance between ownship and intruder at last good reading (m) \\
+\hline
+{\em rel\+GS} & Relative ground speed between ownship and intruder at last good reading (m/s) \\
+\hline
+{\em NACp\+Own} & Ownship NIC (1-\/11) \\
+\hline
+{\em NACv\+Own} & Ownship NACv (1-\/4) \\
+\hline
+{\em NACp\+Intr} & Intruder NIC (1-\/11) \\
+\hline
+{\em NACv\+Intr} & Intruder NACv (1-\/4) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_ac38c07b2b9300ed3f9d2235cdbe5bec9}\label{classlarcfm_1_1_safety_buffers_ac38c07b2b9300ed3f9d2235cdbe5bec9}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiVertNAC@{psiVertNAC}}
+\index{psiVertNAC@{psiVertNAC}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiVertNAC()}{psiVertNAC()}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi\+Vert\+NAC (\begin{DoxyParamCaption}\item[{double}]{rel\+VDist,  }\item[{double}]{rel\+VS,  }\item[{int}]{NACp\+Own,  }\item[{int}]{NACv\+Own,  }\item[{int}]{NACp\+Intr,  }\item[{int}]{NACv\+Intr,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase of vertical safety buffer size based on NACp values. 
+\begin{DoxyParams}{Parameters}
+{\em rel\+VDist} & Relative vertical distance between ownship and intruder at last good reading (m) \\
+\hline
+{\em rel\+VS} & Relative vertical speed between ownship and intruder at last good reading (m/s) \\
+\hline
+{\em NACp\+Own} & Ownship NACp (9-\/11) \\
+\hline
+{\em NACv\+Own} & Ownship NACv (1-\/4) \\
+\hline
+{\em NACp\+Intr} & Intruder NACp (9-\/11) \\
+\hline
+{\em NACv\+Intr} & Intruder NACv (1-\/4) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_safety_buffers_a34f0f3687e117322447d632404b7eef9}\label{classlarcfm_1_1_safety_buffers_a34f0f3687e117322447d632404b7eef9}} 
+\index{larcfm::SafetyBuffers@{larcfm::SafetyBuffers}!psiVertNIC@{psiVertNIC}}
+\index{psiVertNIC@{psiVertNIC}!larcfm::SafetyBuffers@{larcfm::SafetyBuffers}}
+\doxysubsubsection{\texorpdfstring{psiVertNIC()}{psiVertNIC()}}
+{\footnotesize\ttfamily double larcfm\+::\+Safety\+Buffers\+::psi\+Vert\+NIC (\begin{DoxyParamCaption}\item[{double}]{rel\+VDist,  }\item[{double}]{rel\+VS,  }\item[{int}]{NICOwn,  }\item[{int}]{NACv\+Own,  }\item[{int}]{NICIntr,  }\item[{int}]{NACv\+Intr,  }\item[{double}]{lambda,  }\item[{double}]{T }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculate the increase of vertical safety buffer size based on NIC values. 
+\begin{DoxyParams}{Parameters}
+{\em rel\+VDist} & Relative vertical distance between ownship and intruder at last good reading (m) \\
+\hline
+{\em rel\+VS} & Relative vertical speed between ownship and intruder at last good reading (m/s) \\
+\hline
+{\em NACp\+Own} & Ownship NIC (9-\/11) \\
+\hline
+{\em NACv\+Own} & Ownship NACv (1-\/4) \\
+\hline
+{\em NACp\+Intr} & Intruder NIC (9-\/11) \\
+\hline
+{\em NACv\+Intr} & Intruder NACv (1-\/4) \\
+\hline
+{\em lambda} & Time since last good reading (s) \\
+\hline
+{\em T} & Lookahead time (s) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Increase in safety buffer radius (m). On an error, this returns a negative value. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Safety\+Buffers.\+h\item 
+Modules/\+ACCo\+RD/src/Safety\+Buffers.\+cpp\end{DoxyCompactItemize}

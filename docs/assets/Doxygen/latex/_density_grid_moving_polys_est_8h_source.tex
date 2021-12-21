@@ -1,0 +1,48 @@
+\hypertarget{_density_grid_moving_polys_est_8h_source}{}\doxysection{Density\+Grid\+Moving\+Polys\+Est.\+h}
+\label{_density_grid_moving_polys_est_8h_source}\index{Modules/ACCoRD/inc/DensityGridMovingPolysEst.h@{Modules/ACCoRD/inc/DensityGridMovingPolysEst.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DENSITYGRIDMOVINGPOLYSEST\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DENSITYGRIDMOVINGPOLYSEST\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}DensityGridTimed.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}BoundingRectangle.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}DensityGrid.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_density_grid_moving_polys_est}{DensityGridMovingPolysEst}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_density_grid_timed}{DensityGridTimed}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{26     std::vector<Triple<Plan,double,double> > plans; \textcolor{comment}{// plan, width, height}}
+\DoxyCodeLine{27     std::vector<Triple<Plan,double,double> > contains;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{keyword}{public}:}
+\DoxyCodeLine{31     \mbox{\hyperlink{classlarcfm_1_1_density_grid_moving_polys_est}{DensityGridMovingPolysEst}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p, \textcolor{keywordtype}{int} buffer, \textcolor{keywordtype}{double} squareSize, \textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::vector<PolyPath>\& ps, \textcolor{keyword}{const} std::vector<PolyPath>\& containment);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keywordtype}{int} x, \textcolor{keywordtype}{int} y, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keyword}{const} std::pair<int,int>\& xy, \textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} getWeightT(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple<int,int,int>}}\& pii) \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 \}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* FORMAT\_H\_ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{42 }
+
+\end{DoxyCode}

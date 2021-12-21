@@ -1,0 +1,78 @@
+\hypertarget{_alerting_hysteresis_8h_source}{}\doxysection{Alerting\+Hysteresis.\+h}
+\label{_alerting_hysteresis_8h_source}\index{Modules/ACCoRD/inc/AlertingHysteresis.h@{Modules/ACCoRD/inc/AlertingHysteresis.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Implementation of alerting hysteresis logic that includes MofN and persistence.}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Contact: Cesar A. Munoz}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2019 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef ALERTINGHYSTERESIS\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define ALERTINGHYSTERESIS\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}MofN.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <deque>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_alerting_hysteresis}{AlertingHysteresis}} \{}
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22   \textcolor{comment}{/*}}
+\DoxyCodeLine{23 \textcolor{comment}{   * Creates an empty object}}
+\DoxyCodeLine{24 \textcolor{comment}{   */}}
+\DoxyCodeLine{25   \mbox{\hyperlink{classlarcfm_1_1_alerting_hysteresis}{AlertingHysteresis}}();}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   \textcolor{comment}{/*}}
+\DoxyCodeLine{28 \textcolor{comment}{   * Creates an object for given values of hysteresis, persistence time, and M of N parameters}}
+\DoxyCodeLine{29 \textcolor{comment}{   */}}
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_alerting_hysteresis}{AlertingHysteresis}}(\textcolor{keywordtype}{double} hysteresis\_time, \textcolor{keywordtype}{double} persistence\_time, \textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{comment}{/*}}
+\DoxyCodeLine{33 \textcolor{comment}{   * Sets hysteresis and persistence time}}
+\DoxyCodeLine{34 \textcolor{comment}{   */}}
+\DoxyCodeLine{35   \textcolor{keywordtype}{void} setHysteresisPersistence(\textcolor{keywordtype}{double} hysteresis\_time, \textcolor{keywordtype}{double} persistence\_time);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordtype}{double} getLastTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keywordtype}{int} getLastAlert() \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{comment}{/*}}
+\DoxyCodeLine{42 \textcolor{comment}{   * Reset object with given M of N value}}
+\DoxyCodeLine{43 \textcolor{comment}{   */}}
+\DoxyCodeLine{44   \textcolor{keywordtype}{void} reset(\textcolor{keywordtype}{int} val=-\/1);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \textcolor{comment}{/*}}
+\DoxyCodeLine{47 \textcolor{comment}{   * Reset object if current\_time is less than or equal to last\_time}}
+\DoxyCodeLine{48 \textcolor{comment}{   */}}
+\DoxyCodeLine{49   \textcolor{keywordtype}{void} resetIfCurrentTime(\textcolor{keywordtype}{double} current\_time);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{comment}{/*}}
+\DoxyCodeLine{54 \textcolor{comment}{   * In addition of m\_of\_n, this function applies persistence logic}}
+\DoxyCodeLine{55 \textcolor{comment}{   */}}
+\DoxyCodeLine{56   \textcolor{keywordtype}{int} alertingHysteresis(\textcolor{keywordtype}{int} alert\_level, \textcolor{keywordtype}{double} current\_time);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_alerting_hysteresis}{\string~AlertingHysteresis}}() \{\};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{private}:}
+\DoxyCodeLine{61   \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}}   mofn\_;}
+\DoxyCodeLine{62   \textcolor{keywordtype}{double} hysteresis\_time\_;}
+\DoxyCodeLine{63   \textcolor{keywordtype}{double} persistence\_time\_;}
+\DoxyCodeLine{64   \textcolor{keywordtype}{double} init\_time\_;}
+\DoxyCodeLine{65   \textcolor{keywordtype}{double} last\_time\_;}
+\DoxyCodeLine{66   \textcolor{keywordtype}{int}    last\_alert\_;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ALERTINGHYSTERESIS\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

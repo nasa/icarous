@@ -1,0 +1,53 @@
+\hypertarget{_bands_region_8h_source}{}\doxysection{Bands\+Region.\+h}
+\label{_bands_region_8h_source}\index{Modules/ACCoRD/inc/BandsRegion.h@{Modules/ACCoRD/inc/BandsRegion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* }}
+\DoxyCodeLine{2 \textcolor{comment}{ * Categories of Regions}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef BANDSREGION\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define BANDSREGION\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_bands_region}{BandsRegion}} \{}
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22   \textcolor{comment}{/*}}
+\DoxyCodeLine{23 \textcolor{comment}{   * NONE: No band}}
+\DoxyCodeLine{24 \textcolor{comment}{   * FAR: Far conflict band}}
+\DoxyCodeLine{25 \textcolor{comment}{   * MID: Mid conflict bands}}
+\DoxyCodeLine{26 \textcolor{comment}{   * NEAR: Near conflict band}}
+\DoxyCodeLine{27 \textcolor{comment}{   * RECOVERY: Band for violation recovery}}
+\DoxyCodeLine{28 \textcolor{comment}{   * UNKNOWN : Invalid band}}
+\DoxyCodeLine{29 \textcolor{comment}{   */}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keyword}{enum} Region \{UNKNOWN,NONE,FAR,MID,NEAR,RECOVERY\};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{comment}{// Number of conflict bands (NEAR, MID, FAR)}}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} NUMBER\_OF\_CONFLICT\_BANDS = 3;}
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} isValidBand(Region region);}
+\DoxyCodeLine{36   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} isResolutionBand(Region region);}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} isConflictBand(Region region);}
+\DoxyCodeLine{38   \textcolor{keyword}{static} Region valueOf(\textcolor{keyword}{const} std::string\& str);}
+\DoxyCodeLine{39   \textcolor{keyword}{static} std::string to\_string(Region region);}
+\DoxyCodeLine{40   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_region_a73b3fce0818865fd31faa7d87aa82bd0}{orderOfRegion}}(Region region);}
+\DoxyCodeLine{41   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_bands_region_a576211202598bbb7f8d9fdb3445e85ad}{orderOfConflictRegion}}(Region region);}
+\DoxyCodeLine{42   \textcolor{keyword}{static} Region \mbox{\hyperlink{classlarcfm_1_1_bands_region_a5528dd23380a0f1fda31ba16c61c3932}{regionFromOrder}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

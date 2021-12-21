@@ -1,0 +1,159 @@
+\hypertarget{_c_d_cylinder_8h_source}{}\doxysection{CDCylinder.\+h}
+\label{_c_d_cylinder_8h_source}\index{Modules/ACCoRD/inc/CDCylinder.h@{Modules/ACCoRD/inc/CDCylinder.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CD3D.h }}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10) }}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * CD3D is an algorithm for 3-\/D conflict *detection*.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Unit Convention}}
+\DoxyCodeLine{12 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{13 \textcolor{comment}{ * All units in this file are *internal*:}}
+\DoxyCodeLine{14 \textcolor{comment}{ * -\/ Units of distance are denoted [d]}}
+\DoxyCodeLine{15 \textcolor{comment}{ * -\/ Units of time are denoted     [t]}}
+\DoxyCodeLine{16 \textcolor{comment}{ * -\/ Units of speed are denoted    [d/t]}}
+\DoxyCodeLine{17 \textcolor{comment}{ *}}
+\DoxyCodeLine{18 \textcolor{comment}{ * REMARK: X points to East, Y points to North. }}
+\DoxyCodeLine{19 \textcolor{comment}{ *}}
+\DoxyCodeLine{20 \textcolor{comment}{ * Naming Convention}}
+\DoxyCodeLine{21 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 \textcolor{comment}{ *   The intruder is fixed at the origin of the coordinate system.}}
+\DoxyCodeLine{23 \textcolor{comment}{ * }}
+\DoxyCodeLine{24 \textcolor{comment}{ *   D  : Diameter of the protected zone [d]}}
+\DoxyCodeLine{25 \textcolor{comment}{ *   H  : Height of the protected zone [d]}}
+\DoxyCodeLine{26 \textcolor{comment}{ *   B  : Lower bound of lookahed time interval [t] (B >= 0)}}
+\DoxyCodeLine{27 \textcolor{comment}{ *   T  : Upper bound of lookahead time interval [t] (T < 0 means infinite lookahead time)}}
+\DoxyCodeLine{28 \textcolor{comment}{ *   s  : Relative 3-\/D position of the ownship [d,d,d]}}
+\DoxyCodeLine{29 \textcolor{comment}{ *   vo : Ownship velocity vector [d/t,d/t,d/t]}}
+\DoxyCodeLine{30 \textcolor{comment}{ *   vi : Traffic velocity vector [d/t,d/t,d/t]}}
+\DoxyCodeLine{31 \textcolor{comment}{ * }}
+\DoxyCodeLine{32 \textcolor{comment}{ * Functions}}
+\DoxyCodeLine{33 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{34 \textcolor{comment}{ * LoS : Check for 3-\/D loss of separation}}
+\DoxyCodeLine{35 \textcolor{comment}{ * detection : 3-\/D conflict detection with calculation of conflict interval }}
+\DoxyCodeLine{36 \textcolor{comment}{ * cd3d      : Check for predicted conflict}}
+\DoxyCodeLine{37 \textcolor{comment}{ * }}
+\DoxyCodeLine{38 \textcolor{comment}{ * Global variables (modified by detection)}}
+\DoxyCodeLine{39 \textcolor{comment}{ * -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{40 \textcolor{comment}{ * t\_in  : Time to loss of separation}}
+\DoxyCodeLine{41 \textcolor{comment}{ * t\_out : Time to recovery from loss of separation}}
+\DoxyCodeLine{42 \textcolor{comment}{ *}}
+\DoxyCodeLine{43 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{44 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{45 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{46 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{47 \textcolor{comment}{ */}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#ifndef CDCYLINDER\_H\_}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define CDCYLINDER\_H\_}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#include "{}CD2D.h"{}}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#include "{}CD3D.h"{}}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#include "{}Vertical.h"{}}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#include "{}LossData.h"{}}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#include "{}ConflictData.h"{}}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} \{}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{private}:}
+\DoxyCodeLine{64   std::string id;}
+\DoxyCodeLine{65   std::map<std::string,std::string> units\_;}
+\DoxyCodeLine{66   \textcolor{keywordtype}{double} D\_;}
+\DoxyCodeLine{67   \textcolor{keywordtype}{double} H\_;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{public}:}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{74   \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a71a08aa1ccd3bac1a8e7541135098fa8}{CDCylinder}}(\textcolor{keyword}{const} std::string\& s=\textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{80   \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a71a08aa1ccd3bac1a8e7541135098fa8}{CDCylinder}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}\& cdc);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a71a08aa1ccd3bac1a8e7541135098fa8}{CDCylinder}}(\textcolor{keywordtype}{double} d, \textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{83   \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a71a08aa1ccd3bac1a8e7541135098fa8}{CDCylinder}}(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& dunit, \textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& hunit);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{91   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a6dfcb8dafc0a69fe945bc2fe49c864b8}{make}}(\textcolor{keywordtype}{double} distance, \textcolor{keyword}{const} std::string\& dUnits, \textcolor{keywordtype}{double} height, \textcolor{keyword}{const} std::string\& hUnits);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{99   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a0994436aa6a198499064961cc0f6668d}{mk}}(\textcolor{keywordtype}{double} distance, \textcolor{keywordtype}{double} height);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{104   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}\& \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a7e7c3debc69b9300ff901b46744b609b}{A\_CDCylinder}}();}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{109   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}\& \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a1a27024455f42d37f10a0c7cf633d281}{CD3DCylinder}}();}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111   std::string getUnits(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113   \textcolor{keywordtype}{double} getHorizontalSeparation() \textcolor{keyword}{const};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115   \textcolor{keywordtype}{void} setHorizontalSeparation(\textcolor{keywordtype}{double} d);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{double} getVerticalSeparation() \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119   \textcolor{keywordtype}{void} setVerticalSeparation(\textcolor{keywordtype}{double} h);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121   \textcolor{keywordtype}{double} getHorizontalSeparation(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   \textcolor{keywordtype}{void} setHorizontalSeparation(\textcolor{keywordtype}{double} d, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keywordtype}{double} getVerticalSeparation(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127   \textcolor{keywordtype}{void} setVerticalSeparation(\textcolor{keywordtype}{double} h, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{142   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a263f467dcffa8148d00e52a9f2108e18}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} B, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{156   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a263f467dcffa8148d00e52a9f2108e18}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keyword}{const} \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{169   \mbox{\hyperlink{classlarcfm_1_1_loss_data}{LossData}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a263f467dcffa8148d00e52a9f2108e18}{detection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H) \textcolor{keyword}{const};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{\string~CDCylinder}}() \{\};}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} conflict\_detection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{174   \textcolor{keyword}{static} \textcolor{keywordtype}{double} time\_of\_closest\_approach(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} D, \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177   \textcolor{comment}{// The non-\/static methods violation and conflict are}}
+\DoxyCodeLine{178   \textcolor{comment}{// inherited from Detection3D. This enable a uniform}}
+\DoxyCodeLine{179   \textcolor{comment}{// treatment of border cases in the generic bands algorithms}}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a8c87fae6aa630e94bce9848d18574e1c}{conflictDetection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{182   \textcolor{keywordtype}{double} timeOfClosestApproach(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& si, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{185   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}* \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_aa9599fe5c6452d6838acecbf4cfdc468}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{186   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder}{CDCylinder}}* \mbox{\hyperlink{namespacelarcfm_a8ee5fbc52da2bf46d0f5aa1065c5d9d5}{make}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{187   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{188   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{189   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{keyword}{virtual} std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{192   \textcolor{keyword}{virtual} std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{193   \textcolor{keyword}{virtual} std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195   \textcolor{keyword}{virtual} std::string getIdentifier() \textcolor{keyword}{const};}
+\DoxyCodeLine{196   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a1bbefcf02f1eceb6cc3730dff5f6bff8}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* d) \textcolor{keyword}{const};}
+\DoxyCodeLine{199   \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{comment}{/* Return a list of point representing a counter-\/clockwise circular arc centered at pc,}}
+\DoxyCodeLine{202 \textcolor{comment}{   * whose first point is pc+v(0), and the last one is pc+v(alpha), where alpha is}}
+\DoxyCodeLine{203 \textcolor{comment}{   * in [0,2*pi].}}
+\DoxyCodeLine{204 \textcolor{comment}{   */}}
+\DoxyCodeLine{205   \textcolor{keyword}{static} \textcolor{keywordtype}{void} circular\_arc(std::vector<Position>\& arc, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pc, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v,}
+\DoxyCodeLine{206       \textcolor{keywordtype}{double} alpha, \textcolor{keywordtype}{bool} include\_last);}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_c_d_cylinder_a0c450e449f821fcc135e08b7325ac820}{horizontalHazardZone}}(std::vector<Position>\& haz,}
+\DoxyCodeLine{209       \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& intruder, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \};}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CDCYLINDER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

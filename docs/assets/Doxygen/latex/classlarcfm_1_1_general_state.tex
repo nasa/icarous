@@ -1,0 +1,192 @@
+\hypertarget{classlarcfm_1_1_general_state}{}\doxysection{larcfm\+::General\+State Class Reference}
+\label{classlarcfm_1_1_general_state}\index{larcfm::GeneralState@{larcfm::GeneralState}}
+
+
+{\ttfamily \#include $<$General\+State.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a6d2a3026aa94cc7639e2f45ef5ae6b56}\label{classlarcfm_1_1_general_state_a6d2a3026aa94cc7639e2f45ef5ae6b56}} 
+{\bfseries General\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a44fe484fb6249f886ed8cfc7e9d65b89}\label{classlarcfm_1_1_general_state_a44fe484fb6249f886ed8cfc7e9d65b89}} 
+{\bfseries General\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \&p, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_aff223cc0cc794be6a7e5a8090782d16e}\label{classlarcfm_1_1_general_state_aff223cc0cc794be6a7e5a8090782d16e}} 
+{\bfseries General\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} \&p, double time, bool cont)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ab84fcd549a114630f578c128dc8950c4}\label{classlarcfm_1_1_general_state_ab84fcd549a114630f578c128dc8950c4}} 
+{\bfseries General\+State} (const std\+::string \&name, const \mbox{\hyperlink{classlarcfm_1_1_simple_poly}{Simple\+Poly}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double time, bool cont)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ad4f49258914d49fea7decf77d6469977}\label{classlarcfm_1_1_general_state_ad4f49258914d49fea7decf77d6469977}} 
+{\bfseries General\+State} (const \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{Moving\+Polygon3D}} \&p, bool containment)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a3eb38b3d443d70862ec30d24b9badf7e}\label{classlarcfm_1_1_general_state_a3eb38b3d443d70862ec30d24b9badf7e}} 
+{\bfseries General\+State} (const \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \&g)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \mbox{\hyperlink{classlarcfm_1_1_general_state_a1d550b6c106fed1c370f374a8f7456f0}{representative\+Position}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a4127c8a6b35453ffa8d88d18be097d60}\label{classlarcfm_1_1_general_state_a4127c8a6b35453ffa8d88d18be097d60}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries representative\+Velocity} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ab67a9051feb5debdb2c0d1272fe54fc9}\label{classlarcfm_1_1_general_state_ab67a9051feb5debdb2c0d1272fe54fc9}} 
+std\+::string {\bfseries get\+Name} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a645fd56d5c708be0a5bd62b236a1e619}\label{classlarcfm_1_1_general_state_a645fd56d5c708be0a5bd62b236a1e619}} 
+\mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} {\bfseries copy} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a7ea4772361cfbe0e7656e83aaa8b8898}\label{classlarcfm_1_1_general_state_a7ea4772361cfbe0e7656e83aaa8b8898}} 
+bool {\bfseries has\+Point\+Mass} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a9d2ce1adae1657135bc537196aca411a}\label{classlarcfm_1_1_general_state_a9d2ce1adae1657135bc537196aca411a}} 
+bool {\bfseries has\+Polygon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a7b98c1691aafc59aa84f39d547df8153}\label{classlarcfm_1_1_general_state_a7b98c1691aafc59aa84f39d547df8153}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries get\+Position} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_abd50a704ae4d3f9b35e76e9054dd89f5}\label{classlarcfm_1_1_general_state_abd50a704ae4d3f9b35e76e9054dd89f5}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries get\+Velocity} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_aeb1bece37069db07421f0efd606a3d66}\label{classlarcfm_1_1_general_state_aeb1bece37069db07421f0efd606a3d66}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries get\+Polygon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a7cc4d072d75cd29abff082281940b51c}\label{classlarcfm_1_1_general_state_a7cc4d072d75cd29abff082281940b51c}} 
+double {\bfseries get\+Time} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ad0d678cdaf8907ca33f377b05dcc30b7}\label{classlarcfm_1_1_general_state_ad0d678cdaf8907ca33f377b05dcc30b7}} 
+bool {\bfseries is\+Containment} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a8d6d2ebb9c19ea96942d8fddfbdfad1c}\label{classlarcfm_1_1_general_state_a8d6d2ebb9c19ea96942d8fddfbdfad1c}} 
+\mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} {\bfseries get3\+DState} (const Euclidean\+Projection \&proj)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \mbox{\hyperlink{classlarcfm_1_1_general_state_ad0dda26aa3d696c06305f8978f045064}{get\+Last3\+DState}} () const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \mbox{\hyperlink{classlarcfm_1_1_general_state_ad7e2aa0be8c32dcc97ebf8b71fc29e2a}{pred}} (double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \mbox{\hyperlink{classlarcfm_1_1_general_state_a66f5656a1da6ad6bad0511aedd311329}{linear\+Pred}} (double t) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \mbox{\hyperlink{classlarcfm_1_1_general_state_a635db33f42e3c9ad5e03fc0e3e28c47b}{linear}} (double dt) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a76c2b0f617646ce003665d278a692a8c}\label{classlarcfm_1_1_general_state_a76c2b0f617646ce003665d278a692a8c}} 
+bool {\bfseries check\+Lat\+Lon} (bool ll) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a69e21f580093ed7681b49a0b28abd2b3}\label{classlarcfm_1_1_general_state_a69e21f580093ed7681b49a0b28abd2b3}} 
+bool {\bfseries is\+Lat\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a44b31d7e3233d8a2879dc762087e8793}\label{classlarcfm_1_1_general_state_a44b31d7e3233d8a2879dc762087e8793}} 
+bool {\bfseries is\+Invalid} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_aada25e97d746ec6478545187e1455ef2}\label{classlarcfm_1_1_general_state_aada25e97d746ec6478545187e1455ef2}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \mbox{\hyperlink{classlarcfm_1_1_general_state_a7258e07ecb14029cc121b5eb17e4bf58}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \&g, const std\+::string \&name, double time)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} \mbox{\hyperlink{classlarcfm_1_1_general_state_a0aef960aaf94b5843ad9cfb24be015af}{make}} (const \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \&g, const Euclidean\+Projection \&proj, const std\+::string \&name, double time)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ae2516f3b1f62265b978bb66004fb1cfd}\label{classlarcfm_1_1_general_state_ae2516f3b1f62265b978bb66004fb1cfd}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} {\bfseries INVALID} = \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}}()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a239561ae3116b8979a309e01016938fe}\label{classlarcfm_1_1_general_state_a239561ae3116b8979a309e01016938fe}} 
+std\+::string {\bfseries id}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a0806706d49caebc21edd83f382683c8b}\label{classlarcfm_1_1_general_state_a0806706d49caebc21edd83f382683c8b}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries si}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a9752d192a00f7dc4df31067a513d89a1}\label{classlarcfm_1_1_general_state_a9752d192a00f7dc4df31067a513d89a1}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries vi}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_aa9acaa088ce1ac2d5995830a725bb426}\label{classlarcfm_1_1_general_state_aa9acaa088ce1ac2d5995830a725bb426}} 
+\mbox{\hyperlink{classlarcfm_1_1_simple_moving_poly}{Simple\+Moving\+Poly}} {\bfseries mp}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a3576cc9501adc1b1fd0b8d08b09caa08}\label{classlarcfm_1_1_general_state_a3576cc9501adc1b1fd0b8d08b09caa08}} 
+double {\bfseries t}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_abe178ad6cb74032098789f1fa831e177}\label{classlarcfm_1_1_general_state_abe178ad6cb74032098789f1fa831e177}} 
+bool {\bfseries containment}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_aa39402f416b64e953d4e382e6d81031f}\label{classlarcfm_1_1_general_state_aa39402f416b64e953d4e382e6d81031f}} 
+bool {\bfseries point\+Defined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_abe1623006f250e14d0226ac963616cee}\label{classlarcfm_1_1_general_state_abe1623006f250e14d0226ac963616cee}} 
+bool {\bfseries poly\+Defined}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ac302e1fe62cdaca8dcfce33f10c6287b}\label{classlarcfm_1_1_general_state_ac302e1fe62cdaca8dcfce33f10c6287b}} 
+\mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} {\bfseries state}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A \char`\"{}general state\char`\"{} object that holds Euclidean or Lat/\+Lon information about position and velocity for an object. Currently this can either be a (point-\/mass) aircraft or a (possible morphing) polygon. This is intended to be traffic information that will be converted to a \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} object to be sent to a General\+Detector object. ~\newline
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ad0dda26aa3d696c06305f8978f045064}\label{classlarcfm_1_1_general_state_ad0dda26aa3d696c06305f8978f045064}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!getLast3DState@{getLast3DState}}
+\index{getLast3DState@{getLast3DState}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{getLast3DState()}{getLast3DState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} larcfm\+::\+General\+State\+::get\+Last3\+DState (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the last computed 3D state (via get3\+DState) \mbox{\Hypertarget{classlarcfm_1_1_general_state_a635db33f42e3c9ad5e03fc0e3e28c47b}\label{classlarcfm_1_1_general_state_a635db33f42e3c9ad5e03fc0e3e28c47b}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!linear@{linear}}
+\index{linear@{linear}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{linear()}{linear()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} larcfm\+::\+General\+State\+::linear (\begin{DoxyParamCaption}\item[{double}]{dt }\end{DoxyParamCaption}) const}
+
+Return a new general state advanced by (relative) time dt \mbox{\Hypertarget{classlarcfm_1_1_general_state_a66f5656a1da6ad6bad0511aedd311329}\label{classlarcfm_1_1_general_state_a66f5656a1da6ad6bad0511aedd311329}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!linearPred@{linearPred}}
+\index{linearPred@{linearPred}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{linearPred()}{linearPred()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} larcfm\+::\+General\+State\+::linear\+Pred (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Return a new general state advanced to new (absolute) time t \mbox{\Hypertarget{classlarcfm_1_1_general_state_a0aef960aaf94b5843ad9cfb24be015af}\label{classlarcfm_1_1_general_state_a0aef960aaf94b5843ad9cfb24be015af}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!make@{make}}
+\index{make@{make}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} larcfm\+::\+General\+State\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \&}]{g,  }\item[{const Euclidean\+Projection \&}]{proj,  }\item[{const std\+::string \&}]{name,  }\item[{double}]{time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a Lat\+Lon \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} 
+\begin{DoxyParams}{Parameters}
+{\em g} & \\
+\hline
+{\em proj} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_a7258e07ecb14029cc121b5eb17e4bf58}\label{classlarcfm_1_1_general_state_a7258e07ecb14029cc121b5eb17e4bf58}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!make@{make}}
+\index{make@{make}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{make()}{make()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} larcfm\+::\+General\+State\+::make (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} \&}]{g,  }\item[{const std\+::string \&}]{name,  }\item[{double}]{time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Creates a Euclidean \mbox{\hyperlink{classlarcfm_1_1_general_state}{General\+State}} 
+\begin{DoxyParams}{Parameters}
+{\em g} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_general_state_ad7e2aa0be8c32dcc97ebf8b71fc29e2a}\label{classlarcfm_1_1_general_state_ad7e2aa0be8c32dcc97ebf8b71fc29e2a}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!pred@{pred}}
+\index{pred@{pred}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{pred()}{pred()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3\+DState}} larcfm\+::\+General\+State\+::pred (\begin{DoxyParamCaption}\item[{double}]{t }\end{DoxyParamCaption}) const}
+
+Return most recent 3d projection advanced to new time t (or invalid if get3\+DState has not been called) \mbox{\Hypertarget{classlarcfm_1_1_general_state_a1d550b6c106fed1c370f374a8f7456f0}\label{classlarcfm_1_1_general_state_a1d550b6c106fed1c370f374a8f7456f0}} 
+\index{larcfm::GeneralState@{larcfm::GeneralState}!representativePosition@{representativePosition}}
+\index{representativePosition@{representativePosition}!larcfm::GeneralState@{larcfm::GeneralState}}
+\doxysubsubsection{\texorpdfstring{representativePosition()}{representativePosition()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} larcfm\+::\+General\+State\+::representative\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return a representative position for this state (average\+Point in the case of polygons) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/General\+State.\+h\item 
+Modules/\+ACCo\+RD/src/General\+State.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,1081 @@
+\hypertarget{_daidalus_8h_source}{}\doxysection{Daidalus.\+h}
+\label{_daidalus_8h_source}\index{Modules/ACCoRD/inc/Daidalus.h@{Modules/ACCoRD/inc/Daidalus.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef DAIDALUSBANDS\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define DAIDALUSBANDS\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}GenericStateBands.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}DaidalusCore.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}DaidalusAltBands.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}DaidalusDirBands.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}DaidalusHsBands.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}DaidalusVsBands.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}UrgencyStrategy.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}TrafficState.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}BandsRegion.h"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}Alerter.h"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}Detection3D.h"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}IndexLevelT.h"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}string\_util.h"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}format.h"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{94 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_daidalus}{Daidalus}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_generic_state_bands}{GenericStateBands}}, \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keyword}{private}:}
+\DoxyCodeLine{97   \textcolor{keyword}{mutable} \mbox{\hyperlink{classlarcfm_1_1_error_log}{ErrorLog}}  error;}
+\DoxyCodeLine{98   \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}      core\_;}
+\DoxyCodeLine{99   \mbox{\hyperlink{classlarcfm_1_1_daidalus_dir_bands}{DaidalusDirBands}}  hdir\_band\_;}
+\DoxyCodeLine{100   \mbox{\hyperlink{classlarcfm_1_1_daidalus_hs_bands}{DaidalusHsBands}}   hs\_band\_;}
+\DoxyCodeLine{101   \mbox{\hyperlink{classlarcfm_1_1_daidalus_vs_bands}{DaidalusVsBands}}   vs\_band\_;}
+\DoxyCodeLine{102   \mbox{\hyperlink{classlarcfm_1_1_daidalus_alt_bands}{DaidalusAltBands}}  alt\_band\_;}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104   \textcolor{keywordtype}{void} stale\_bands();}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{public}:}
+\DoxyCodeLine{107   \textcolor{comment}{/* Constructors */}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{115   \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac822403869458467ebbcd28d7f6e339a}{Daidalus}}();}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{120   \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac822403869458467ebbcd28d7f6e339a}{Daidalus}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& alerter);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{126   \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac822403869458467ebbcd28d7f6e339a}{Daidalus}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* det, \textcolor{keywordtype}{double} T);}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128   \textcolor{comment}{/* Destructor */}}
+\DoxyCodeLine{129   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_daidalus}{\string~Daidalus}}() \{\}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131   \textcolor{comment}{/* Setting for WC Definitions RTCA DO-\/365 */}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133   \textcolor{comment}{/*}}
+\DoxyCodeLine{134 \textcolor{comment}{   * Set Daidalus object such that}}
+\DoxyCodeLine{135 \textcolor{comment}{   * -\/ Configure two alerters (Phase I and Phase II) as defined as in RTCA DO-\/365A}}
+\DoxyCodeLine{136 \textcolor{comment}{   * -\/ Maneuver guidance logic assumes kinematic maneuvers}}
+\DoxyCodeLine{137 \textcolor{comment}{   * -\/ Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s}}
+\DoxyCodeLine{138 \textcolor{comment}{   *   when type is false.}}
+\DoxyCodeLine{139 \textcolor{comment}{   * -\/ Configure Sensor Uncertainty Migitation (SUM) when sum is true}}
+\DoxyCodeLine{140 \textcolor{comment}{   * -\/ Bands don't saturate until NMAC}}
+\DoxyCodeLine{141 \textcolor{comment}{   */}}
+\DoxyCodeLine{142   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a06562d8e55ac5a4cedc1b131c7426211}{set\_DO\_365A}}(\textcolor{keywordtype}{bool} type=\textcolor{keyword}{true}, \textcolor{keywordtype}{bool} sum=\textcolor{keyword}{true});}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \textcolor{comment}{/*}}
+\DoxyCodeLine{145 \textcolor{comment}{   * Set Daidalus object such that}}
+\DoxyCodeLine{146 \textcolor{comment}{   * -\/ Configure two alerters (Phase I, Phase II, and Non-\/Cooperative) as defined as in RTCA DO-\/365B}}
+\DoxyCodeLine{147 \textcolor{comment}{   * -\/ Maneuver guidance logic assumes kinematic maneuvers}}
+\DoxyCodeLine{148 \textcolor{comment}{   * -\/ Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s}}
+\DoxyCodeLine{149 \textcolor{comment}{   *   when type is false.}}
+\DoxyCodeLine{150 \textcolor{comment}{   * -\/ Configure Sensor Uncertainty Migitation (SUM) when sum is true}}
+\DoxyCodeLine{151 \textcolor{comment}{   * -\/ Bands don't saturate until NMAC}}
+\DoxyCodeLine{152 \textcolor{comment}{   */}}
+\DoxyCodeLine{153   \textcolor{keywordtype}{void} set\_DO\_365B(\textcolor{keywordtype}{bool} type=\textcolor{keyword}{true}, \textcolor{keywordtype}{bool} sum=\textcolor{keyword}{true});}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   \textcolor{comment}{/*}}
+\DoxyCodeLine{156 \textcolor{comment}{   * Set DAIDALUS object such that}}
+\DoxyCodeLine{157 \textcolor{comment}{   * -\/ Alerting thresholds are buffered}}
+\DoxyCodeLine{158 \textcolor{comment}{   * -\/ Maneuver guidance logic assumes kinematic maneuvers}}
+\DoxyCodeLine{159 \textcolor{comment}{   * -\/ Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s}}
+\DoxyCodeLine{160 \textcolor{comment}{   *   when type is false.}}
+\DoxyCodeLine{161 \textcolor{comment}{   * -\/ Bands don't saturate until NMAC}}
+\DoxyCodeLine{162 \textcolor{comment}{   */}}
+\DoxyCodeLine{163   \textcolor{keywordtype}{void} set\_Buffered\_WC\_DO\_365(\textcolor{keywordtype}{bool} type);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165   \textcolor{comment}{/* Set DAIDALUS object such that alerting logic and maneuver guidance corresponds to}}
+\DoxyCodeLine{166 \textcolor{comment}{   * ACCoRD's CD3D, i.e.,}}
+\DoxyCodeLine{167 \textcolor{comment}{   * -\/ Separation is given by a cylinder of of diameter 5nm and height 1000ft}}
+\DoxyCodeLine{168 \textcolor{comment}{   * -\/ Lookahead time and alerting time is 180s}}
+\DoxyCodeLine{169 \textcolor{comment}{   * -\/ Only 1 alert level}}
+\DoxyCodeLine{170 \textcolor{comment}{   * -\/ Instantaneous maneuvers */}}
+\DoxyCodeLine{171   \textcolor{keywordtype}{void} set\_CD3D();}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173   \textcolor{comment}{/* Set DAIDALUS object such that alerting logic and maneuver guidance corresponds to}}
+\DoxyCodeLine{174 \textcolor{comment}{   * ideal TCASII */}}
+\DoxyCodeLine{175   \textcolor{keywordtype}{void} set\_TCASII();}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{180   \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa937f1db38c38cd1f67d26ee790d93e0}{release}}();}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182   \textcolor{comment}{/* Ownship and Traffic Setting */}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{187   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1a6aaff772b5728c1608f9f525b89591}{getOwnshipState}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{192   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e0f4b61a4be254365a798e99bb9f6af}{getAircraftStateAt}}(\textcolor{keywordtype}{int} idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{201   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4520d62007540f4965a5d874f28c326c}{setOwnshipState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{209   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4520d62007540f4965a5d874f28c326c}{setOwnshipState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel);}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{222   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_add24b621c490fe871d73a9866f879ea7}{addTrafficState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{232   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_add24b621c490fe871d73a9866f879ea7}{addTrafficState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel);}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{237   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1b797c8e1cff06947a36256e46f80e6d}{aircraftIndex}}(\textcolor{keyword}{const} std::string\& name) \textcolor{keyword}{const};}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{243   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af201b1eee36a9172df533d436d5e8edb}{resetOwnship}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{251   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af5a29996c37812710d4448ceb8ab3afc}{removeTrafficAircraft}}(\textcolor{keyword}{const} std::string\& name);}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{257   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af47a4feb7255eaeebeb56bbe4d24b024}{linearProjection}}(\textcolor{keywordtype}{double} offset);}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{262   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afa79a5d0961f5c17d22d234805754cd5}{hasOwnship}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{267   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad85b8ea44a6d9075cd09fab6c7034acb}{hasTraffic}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{272   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac5a89369db59cf4ff7ab6e2e35ab6f7b}{numberOfAircraft}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{279   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afefd6f620c5c0550192e9b999f939ede}{lastTrafficIndex}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fee64326e290734f99c9c765a80580f}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283   \textcolor{comment}{/* Current Time */}}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{288   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a39b95f705b88db906fc6a439eaa2b0ee}{getCurrentTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{293   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a39b95f705b88db906fc6a439eaa2b0ee}{getCurrentTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295   \textcolor{comment}{/* Wind Setting */}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{300   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8706fdf70117876566d9e0c4f9805f78}{getWindVelocityTo}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{305   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aceafe881626c70aebac6f74d60d10d95}{getWindVelocityFrom}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{311   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8008c1530f5c2c48266daf2c733b5546}{setWindVelocityTo}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& wind\_vector);}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{317   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4d95fe174d9e6e57c118d5cfc6e7041e}{setWindVelocityFrom}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& nwind\_vector);}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{322   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae284510ffa93dcb62ca832b7ec7246fa}{setNoWind}}();}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324   \textcolor{comment}{/* Alerter Setting */}}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{331   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0485457114e3efda5385528cc9995fd4}{setAlerterIndex}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} alerter\_idx);}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{338   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6bde82301ed8ec7c70f9e54c355f1ba0}{setAlerter}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& alerter);}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{346   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a486e11c4ee376f39d3522d644c8c3416}{alerterIndexBasedOnAlertingLogic}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{351   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a60eb183e7a943dcb100b09acc60ebabb}{mostSevereAlertLevel}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{353   \textcolor{comment}{/* SUM Setting */}}
+\DoxyCodeLine{354 }
+\DoxyCodeLine{361   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0109ae6585b6f212ae88a6515aeacf65}{setHorizontalPositionUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} s\_EW\_std, \textcolor{keywordtype}{double} s\_NS\_std, \textcolor{keywordtype}{double} s\_EN\_std);}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{369   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0109ae6585b6f212ae88a6515aeacf65}{setHorizontalPositionUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} s\_EW\_std, \textcolor{keywordtype}{double} s\_NS\_std, \textcolor{keywordtype}{double} s\_EN\_std, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{375   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afac152710618600dc0e19e0dd61ba3a4}{setVerticalPositionUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} sz\_std);}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{381   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afac152710618600dc0e19e0dd61ba3a4}{setVerticalPositionUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} sz\_std, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{389   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a954df17f6eb4ac37586be7e79d22f345}{setHorizontalVelocityUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} v\_EW\_std, \textcolor{keywordtype}{double} v\_NS\_std,  \textcolor{keywordtype}{double} v\_EN\_std);}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{397   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a954df17f6eb4ac37586be7e79d22f345}{setHorizontalVelocityUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} v\_EW\_std, \textcolor{keywordtype}{double} v\_NS\_std,  \textcolor{keywordtype}{double} v\_EN\_std, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{403   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a818b6222f496eeb7c746b57c9a44efb2}{setVerticalSpeedUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} vz\_std);}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{409   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a818b6222f496eeb7c746b57c9a44efb2}{setVerticalSpeedUncertainty}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} vz\_std, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{414   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afa655b6179307a376d1e6b4384aecff1}{resetUncertainty}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416   \textcolor{comment}{/* Urgency strategy for implicitly coordinate bands (experimental) */}}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{421   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8f675bac970aa10ce51501a14204f536}{getUrgencyStrategy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{422 }
+\DoxyCodeLine{426   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1aa9e6c68a5e2345da46ac75f6812ab4}{setUrgencyStrategy}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{UrgencyStrategy}}* strat);}
+\DoxyCodeLine{427 }
+\DoxyCodeLine{431   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abe5c71f53c30fe578ba5e1eb639696b7}{mostUrgentAircraft}}();}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433   \textcolor{comment}{/* Computation of contours, a.k.a. blobs, and hazard zones */}}
+\DoxyCodeLine{434 }
+\DoxyCodeLine{446   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5617d30c6bd47c5717581ff3ec34fcd2}{horizontalContours}}(std::vector<std::vector<Position> >\& blobs, \textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} alert\_level=0);}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{458   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5617d30c6bd47c5717581ff3ec34fcd2}{horizontalContours}}(std::vector<std::vector<Position> >\& blobs, \textcolor{keywordtype}{int} ac\_idx,}
+\DoxyCodeLine{459       BandsRegion::Region region);}
+\DoxyCodeLine{460 }
+\DoxyCodeLine{476   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af542854edb5d7c6a7f96817cb1524bc7}{horizontalHazardZone}}(std::vector<Position>\& haz, \textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{bool} loss, \textcolor{keywordtype}{bool} from\_ownship,}
+\DoxyCodeLine{477       \textcolor{keywordtype}{int} alert\_level=0);}
+\DoxyCodeLine{478 }
+\DoxyCodeLine{493   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af542854edb5d7c6a7f96817cb1524bc7}{horizontalHazardZone}}(std::vector<Position>\& haz, \textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{bool} loss, \textcolor{keywordtype}{bool} from\_ownship,}
+\DoxyCodeLine{494       BandsRegion::Region region);}
+\DoxyCodeLine{495 }
+\DoxyCodeLine{496   \textcolor{comment}{/* Setting and getting DaidalusParameters */}}
+\DoxyCodeLine{497 }
+\DoxyCodeLine{501   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a529bf8ebd25460375ac5575c0a42c61e}{numberOfAlerters}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{502 }
+\DoxyCodeLine{506   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_acdbe1ce13e78f68ffe0c1dbc45dabd97}{getAlerterAt}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const};}
+\DoxyCodeLine{507 }
+\DoxyCodeLine{511   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2d90261dcaebcad245f54966baac0007}{getAlerterIndex}}(std::string \textcolor{keywordtype}{id}) \textcolor{keyword}{const};}
+\DoxyCodeLine{512 }
+\DoxyCodeLine{516   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1315ce75eee410d9e8469143153e5499}{clearAlerters}}();}
+\DoxyCodeLine{517 }
+\DoxyCodeLine{522   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2c909d32d1870d86ec2bcf6de58c8edc}{addAlerter}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}}\& alerter);}
+\DoxyCodeLine{523 }
+\DoxyCodeLine{527   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab25a7341b6946e2ca29b261dff7b1397}{getLookaheadTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{528 }
+\DoxyCodeLine{532   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab25a7341b6946e2ca29b261dff7b1397}{getLookaheadTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{533 }
+\DoxyCodeLine{537   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aff3a9da920caf33ae106c38848d08213}{getLeftHorizontalDirection}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{538 }
+\DoxyCodeLine{542   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aff3a9da920caf33ae106c38848d08213}{getLeftHorizontalDirection}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{543 }
+\DoxyCodeLine{547   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_acfaf366da55278fa2245d5435c183a19}{getRightHorizontalDirection}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{548 }
+\DoxyCodeLine{552   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_acfaf366da55278fa2245d5435c183a19}{getRightHorizontalDirection}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{553 }
+\DoxyCodeLine{557   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad6ff29aa3a2f86b296bd6dea07dcce83}{getMinHorizontalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{558 }
+\DoxyCodeLine{562   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad6ff29aa3a2f86b296bd6dea07dcce83}{getMinHorizontalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{563 }
+\DoxyCodeLine{567   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a978b42669b288bee6508b122aa6d519e}{getMaxHorizontalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{568 }
+\DoxyCodeLine{572   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a978b42669b288bee6508b122aa6d519e}{getMaxHorizontalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{573 }
+\DoxyCodeLine{577   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a52e4776f25744b94ade8986174f79efa}{getMinVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{578 }
+\DoxyCodeLine{582   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a52e4776f25744b94ade8986174f79efa}{getMinVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{583 }
+\DoxyCodeLine{587   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac7cacaee1622782beaa1b026ffb44119}{getMaxVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{588 }
+\DoxyCodeLine{592   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac7cacaee1622782beaa1b026ffb44119}{getMaxVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{593 }
+\DoxyCodeLine{597   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e40b2bd3cae2738929b5eb9b7a2242d}{getMinAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{602   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e40b2bd3cae2738929b5eb9b7a2242d}{getMinAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{603 }
+\DoxyCodeLine{607   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae5ff0ac0e944df4e2c317745b6add350}{getMaxAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{608 }
+\DoxyCodeLine{612   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae5ff0ac0e944df4e2c317745b6add350}{getMaxAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{613 }
+\DoxyCodeLine{618   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_accc733894461fe6995647466b32ee44b}{getBelowRelativeHorizontalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{619 }
+\DoxyCodeLine{624   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_accc733894461fe6995647466b32ee44b}{getBelowRelativeHorizontalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{625 }
+\DoxyCodeLine{630   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fd99d350c88fcd8765c781e72d466ef}{getAboveRelativeHorizontalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{636   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fd99d350c88fcd8765c781e72d466ef}{getAboveRelativeHorizontalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{637 }
+\DoxyCodeLine{642   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af22b4191ee76558ef72ef785c9bdd885}{getBelowRelativeVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{643 }
+\DoxyCodeLine{648   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af22b4191ee76558ef72ef785c9bdd885}{getBelowRelativeVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{649 }
+\DoxyCodeLine{654   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1725760b83340cc567ce7ba20996b886}{getAboveRelativeVerticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{655 }
+\DoxyCodeLine{660   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1725760b83340cc567ce7ba20996b886}{getAboveRelativeVerticalSpeed}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{661 }
+\DoxyCodeLine{666   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8ff00c6ef43567c57ac9342ef718aee6}{getBelowRelativeAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{667 }
+\DoxyCodeLine{672   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8ff00c6ef43567c57ac9342ef718aee6}{getBelowRelativeAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{673 }
+\DoxyCodeLine{678   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a72db71ef362c1ad65a22db29628ccb21}{getAboveRelativeAltitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{679 }
+\DoxyCodeLine{684   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a72db71ef362c1ad65a22db29628ccb21}{getAboveRelativeAltitude}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{685 }
+\DoxyCodeLine{689   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a19ccf1755a86d965161990d7bbd642b8}{getHorizontalDirectionStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{690 }
+\DoxyCodeLine{694   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a19ccf1755a86d965161990d7bbd642b8}{getHorizontalDirectionStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{695 }
+\DoxyCodeLine{699   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5834f62d3f884188f0716e53604251af}{getHorizontalSpeedStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{700 }
+\DoxyCodeLine{704   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5834f62d3f884188f0716e53604251af}{getHorizontalSpeedStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{705 }
+\DoxyCodeLine{709   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9cb6df530600f9212ef798511473bfd0}{getVerticalSpeedStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{710 }
+\DoxyCodeLine{714   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9cb6df530600f9212ef798511473bfd0}{getVerticalSpeedStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{715 }
+\DoxyCodeLine{719   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2e02b5c162fcc9ee47bbeaf664bfa263}{getAltitudeStep}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{720 }
+\DoxyCodeLine{724   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2e02b5c162fcc9ee47bbeaf664bfa263}{getAltitudeStep}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{725 }
+\DoxyCodeLine{729   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a82a6c3c089705c5dc91289dbc451a6c1}{getHorizontalAcceleration}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{730 }
+\DoxyCodeLine{734   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a82a6c3c089705c5dc91289dbc451a6c1}{getHorizontalAcceleration}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{735 }
+\DoxyCodeLine{740   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a14bf51d3cfdbe0f7496d14d0ac96c119}{getVerticalAcceleration}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{741 }
+\DoxyCodeLine{746   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a14bf51d3cfdbe0f7496d14d0ac96c119}{getVerticalAcceleration}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{747 }
+\DoxyCodeLine{751   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a92ed2a75daa9258672399e101752016c}{getTurnRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{752 }
+\DoxyCodeLine{756   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a92ed2a75daa9258672399e101752016c}{getTurnRate}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{757 }
+\DoxyCodeLine{761   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a433f5be964aa9c28587ddfbafa38a1e8}{getBankAngle}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{762 }
+\DoxyCodeLine{766   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a433f5be964aa9c28587ddfbafa38a1e8}{getBankAngle}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{767 }
+\DoxyCodeLine{771   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ace1802b746112690ce4e4f2bdda2b0a7}{getVerticalRate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{772 }
+\DoxyCodeLine{776   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ace1802b746112690ce4e4f2bdda2b0a7}{getVerticalRate}}(std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{777 }
+\DoxyCodeLine{781   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4780ede55f296a38a898e355fcbb83b6}{getHorizontalNMAC}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{782 }
+\DoxyCodeLine{786   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4780ede55f296a38a898e355fcbb83b6}{getHorizontalNMAC}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{787 }
+\DoxyCodeLine{791   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3d8d2fdcfec168cfc01aec334e4afab3}{getVerticalNMAC}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{792 }
+\DoxyCodeLine{796   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3d8d2fdcfec168cfc01aec334e4afab3}{getVerticalNMAC}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{797 }
+\DoxyCodeLine{802   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e7815fc91a2274919a337c254ba62c9}{getRecoveryStabilityTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{803 }
+\DoxyCodeLine{808   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e7815fc91a2274919a337c254ba62c9}{getRecoveryStabilityTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{809 }
+\DoxyCodeLine{813   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e899a07d4fdc0d31445703418386bcf}{getHysteresisTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{814 }
+\DoxyCodeLine{818   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8e899a07d4fdc0d31445703418386bcf}{getHysteresisTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{819 }
+\DoxyCodeLine{823   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3961a8f3fb2434bd6a29851810c03e1c}{getPersistenceTime}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{824 }
+\DoxyCodeLine{828   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3961a8f3fb2434bd6a29851810c03e1c}{getPersistenceTime}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{829 }
+\DoxyCodeLine{833   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a52635085c00ea04d411fb63774c3baf7}{isEnabledBandsPersistence}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{834 }
+\DoxyCodeLine{838   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a340a5dc8352696f0086febf1d7974fc3}{setBandsPersistence}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{839 }
+\DoxyCodeLine{843   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a96de441f5c72de82734e72e30473e0ca}{enableBandsPersistence}}();}
+\DoxyCodeLine{844 }
+\DoxyCodeLine{848   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3878c5a03d18ace1c9577cf80d5bd51f}{disableBandsPersistence}}();}
+\DoxyCodeLine{849 }
+\DoxyCodeLine{853   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab2744daca6d87b8f9dbbafe337d72428}{getPersistencePreferredHorizontalDirectionResolution}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{854 }
+\DoxyCodeLine{858   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab2744daca6d87b8f9dbbafe337d72428}{getPersistencePreferredHorizontalDirectionResolution}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{859 }
+\DoxyCodeLine{863   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aec6a6798fec34a24bcdaaeb22795af9a}{getPersistencePreferredHorizontalSpeedResolution}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{864 }
+\DoxyCodeLine{868   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aec6a6798fec34a24bcdaaeb22795af9a}{getPersistencePreferredHorizontalSpeedResolution}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{869 }
+\DoxyCodeLine{873   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad4530682b87dcd81be82a379a5595738}{getPersistencePreferredVerticalSpeedResolution}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{874 }
+\DoxyCodeLine{878   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad4530682b87dcd81be82a379a5595738}{getPersistencePreferredVerticalSpeedResolution}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{879 }
+\DoxyCodeLine{883   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a51934bbc7eaa4a2d246105cd4661453f}{getPersistencePreferredAltitudeResolution}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{884 }
+\DoxyCodeLine{888   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a51934bbc7eaa4a2d246105cd4661453f}{getPersistencePreferredAltitudeResolution}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{889 }
+\DoxyCodeLine{893   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a47a9c750f131844d80e2f6165853b16a}{getAlertingParameterM}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{894 }
+\DoxyCodeLine{898   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a21060dc131fc06f6a704489e37fbd36c}{getAlertingParameterN}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{899 }
+\DoxyCodeLine{903   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a91e2f00537980a7b91983dc96766521c}{getMinHorizontalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{904 }
+\DoxyCodeLine{908   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a91e2f00537980a7b91983dc96766521c}{getMinHorizontalRecovery}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{909 }
+\DoxyCodeLine{913   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adee7e815aae9ed4c75b3d47889f0ec85}{getMinVerticalRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{914 }
+\DoxyCodeLine{918   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adee7e815aae9ed4c75b3d47889f0ec85}{getMinVerticalRecovery}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{919 }
+\DoxyCodeLine{923   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afd7011a7a788d42b87a0bb96c1fb933b}{setLookaheadTime}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{924 }
+\DoxyCodeLine{928   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afd7011a7a788d42b87a0bb96c1fb933b}{setLookaheadTime}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{929 }
+\DoxyCodeLine{933   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3281f209289f9501afb7eb3083b017ab}{setLeftHorizontalDirection}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{934 }
+\DoxyCodeLine{938   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3281f209289f9501afb7eb3083b017ab}{setLeftHorizontalDirection}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{939 }
+\DoxyCodeLine{943   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abaa9c3187fdd3e7def6e36cbc83d5ac0}{setRightHorizontalDirection}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{944 }
+\DoxyCodeLine{948   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abaa9c3187fdd3e7def6e36cbc83d5ac0}{setRightHorizontalDirection}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{949 }
+\DoxyCodeLine{953   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6e66c2b3f8e4f96910214a550ac28ed4}{setMinHorizontalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{954 }
+\DoxyCodeLine{958   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6e66c2b3f8e4f96910214a550ac28ed4}{setMinHorizontalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{959 }
+\DoxyCodeLine{963   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1ac4b97501d7e4597c0948328b462fa9}{setMaxHorizontalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{964 }
+\DoxyCodeLine{968   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1ac4b97501d7e4597c0948328b462fa9}{setMaxHorizontalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{969 }
+\DoxyCodeLine{973   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afa8ffb07f7db2a0c695693d01adb41ff}{setMinVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{974 }
+\DoxyCodeLine{978   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afa8ffb07f7db2a0c695693d01adb41ff}{setMinVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{979 }
+\DoxyCodeLine{983   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a043ea83e851626237e419a851dab488d}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{984 }
+\DoxyCodeLine{988   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a043ea83e851626237e419a851dab488d}{setMaxVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{989 }
+\DoxyCodeLine{993   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a346c7b5bbe446faeef7f658ecbc61192}{setMinAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{994 }
+\DoxyCodeLine{998   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a346c7b5bbe446faeef7f658ecbc61192}{setMinAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{999 }
+\DoxyCodeLine{1003   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9d7f2a49c2650bf76c6670f366f92300}{setMaxAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1004 }
+\DoxyCodeLine{1008   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9d7f2a49c2650bf76c6670f366f92300}{setMaxAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1009 }
+\DoxyCodeLine{1014   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afe9e66c3cefe6956afdc08791c2bbc33}{setBelowRelativeHorizontalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1015 }
+\DoxyCodeLine{1020   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afe9e66c3cefe6956afdc08791c2bbc33}{setBelowRelativeHorizontalSpeed}}(\textcolor{keywordtype}{double} val,std::string u);}
+\DoxyCodeLine{1021 }
+\DoxyCodeLine{1026   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a78008a72e47456e3eed7d2e27b46fa2d}{setAboveRelativeHorizontalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1027 }
+\DoxyCodeLine{1032   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a78008a72e47456e3eed7d2e27b46fa2d}{setAboveRelativeHorizontalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1033 }
+\DoxyCodeLine{1038   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0faab54a1526bf075804e912b4635fa3}{setBelowRelativeVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1039 }
+\DoxyCodeLine{1044   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0faab54a1526bf075804e912b4635fa3}{setBelowRelativeVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1045 }
+\DoxyCodeLine{1050   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab32cf09017eb43937a6d3310d758878e}{setAboveRelativeVerticalSpeed}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1051 }
+\DoxyCodeLine{1056   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab32cf09017eb43937a6d3310d758878e}{setAboveRelativeVerticalSpeed}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1057 }
+\DoxyCodeLine{1062   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a12cd752be75dfe1386016883c852ee2b}{setBelowRelativeAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1063 }
+\DoxyCodeLine{1068   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a12cd752be75dfe1386016883c852ee2b}{setBelowRelativeAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1069 }
+\DoxyCodeLine{1074   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a665d49eeaa5cadf26aabce0b090c697f}{setAboveRelativeAltitude}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1075 }
+\DoxyCodeLine{1080   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a665d49eeaa5cadf26aabce0b090c697f}{setAboveRelativeAltitude}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1081 }
+\DoxyCodeLine{1085   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab5db355e42d7741a5321d505a643660d}{setBelowToMinRelativeHorizontalSpeed}}();}
+\DoxyCodeLine{1086 }
+\DoxyCodeLine{1090   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a047e86f100a18463d863e1ba434cf1f1}{setAboveToMaxRelativeHorizontalSpeed}}();}
+\DoxyCodeLine{1091 }
+\DoxyCodeLine{1095   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a611d68299e9b40e56690b1238087070f}{setBelowToMinRelativeVerticalSpeed}}();}
+\DoxyCodeLine{1096 }
+\DoxyCodeLine{1100   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a784364d2a753b969d21464d318f88bf4}{setAboveToMaxRelativeVerticalSpeed}}();}
+\DoxyCodeLine{1101 }
+\DoxyCodeLine{1105   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af06804278e7743b20d78487d6b94de30}{setBelowToMinRelativeAltitude}}();}
+\DoxyCodeLine{1106 }
+\DoxyCodeLine{1110   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0c47b24aa0c185569fa7fddbd68a9527}{setAboveToMaxRelativeAltitude}}();}
+\DoxyCodeLine{1111 }
+\DoxyCodeLine{1115   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7c38fe466da1bb6f5a8f577431419bff}{disableRelativeHorizontalSpeedBands}}();}
+\DoxyCodeLine{1116 }
+\DoxyCodeLine{1120   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac1cfb754707005e6d8626fd4d4e7e883}{disableRelativeVerticalSpeedBands}}();}
+\DoxyCodeLine{1121 }
+\DoxyCodeLine{1125   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8189976f3a8b9bf77ae11e8d62a8cb81}{disableRelativeAltitude}}();}
+\DoxyCodeLine{1126 }
+\DoxyCodeLine{1130   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac936a262b1bb74e0d71869583e51956d}{setHorizontalDirectionStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1131 }
+\DoxyCodeLine{1135   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac936a262b1bb74e0d71869583e51956d}{setHorizontalDirectionStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1136 }
+\DoxyCodeLine{1140   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adbff6868ff998e9943347ee32221e9b3}{setHorizontalSpeedStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1141 }
+\DoxyCodeLine{1145   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adbff6868ff998e9943347ee32221e9b3}{setHorizontalSpeedStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1146 }
+\DoxyCodeLine{1150   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a94e0e3804f505171558ba9666c6dbe7a}{setVerticalSpeedStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1151 }
+\DoxyCodeLine{1155   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a94e0e3804f505171558ba9666c6dbe7a}{setVerticalSpeedStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1156 }
+\DoxyCodeLine{1160   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a23ae826f2d8abdc6e5f7cfc54ec59bd9}{setAltitudeStep}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1161 }
+\DoxyCodeLine{1165   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a23ae826f2d8abdc6e5f7cfc54ec59bd9}{setAltitudeStep}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1166 }
+\DoxyCodeLine{1170   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac43be19f27bd04c9f3c8a11a39e2a622}{setHorizontalAcceleration}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1171 }
+\DoxyCodeLine{1175   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac43be19f27bd04c9f3c8a11a39e2a622}{setHorizontalAcceleration}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1176 }
+\DoxyCodeLine{1181   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6c3053567ec2046f639162a1e8c2a673}{setVerticalAcceleration}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1182 }
+\DoxyCodeLine{1187   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6c3053567ec2046f639162a1e8c2a673}{setVerticalAcceleration}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1188 }
+\DoxyCodeLine{1193   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac2cfc5073ea095c8929529d2eacd3e32}{setTurnRate}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1194 }
+\DoxyCodeLine{1199   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac2cfc5073ea095c8929529d2eacd3e32}{setTurnRate}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1200 }
+\DoxyCodeLine{1205   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a304c75834ae65dab7b39f1a12673db42}{setBankAngle}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1206 }
+\DoxyCodeLine{1211   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a304c75834ae65dab7b39f1a12673db42}{setBankAngle}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1212 }
+\DoxyCodeLine{1216   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae8fc39fbf96e1f412fe6697838b6c677}{setVerticalRate}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1217 }
+\DoxyCodeLine{1221   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae8fc39fbf96e1f412fe6697838b6c677}{setVerticalRate}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1222 }
+\DoxyCodeLine{1226   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a55e3ce8b1b3465d2a2182e9098287cdb}{setHorizontalNMAC}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1227 }
+\DoxyCodeLine{1231   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a55e3ce8b1b3465d2a2182e9098287cdb}{setHorizontalNMAC}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1232 }
+\DoxyCodeLine{1236   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a25d7097e3026e32fa897ab994967589b}{setVerticalNMAC}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1237 }
+\DoxyCodeLine{1241   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a25d7097e3026e32fa897ab994967589b}{setVerticalNMAC}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1242 }
+\DoxyCodeLine{1247   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a08bc69ef9266ff6d1d90ec5250a6b1b7}{setRecoveryStabilityTime}}(\textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{1248 }
+\DoxyCodeLine{1253   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a08bc69ef9266ff6d1d90ec5250a6b1b7}{setRecoveryStabilityTime}}(\textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1254 }
+\DoxyCodeLine{1258   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a044cb0e844bdf72f46b87603c50de872}{setHysteresisTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1259 }
+\DoxyCodeLine{1263   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abc3e2cfd840f1249eed4affd40a6de14}{setPersistenceTime}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1264 }
+\DoxyCodeLine{1268   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abc3e2cfd840f1249eed4affd40a6de14}{setPersistenceTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1269 }
+\DoxyCodeLine{1273   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a044cb0e844bdf72f46b87603c50de872}{setHysteresisTime}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1274 }
+\DoxyCodeLine{1278   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a88c7a746ec8cced644ce46d367d5239b}{setPersistencePreferredHorizontalDirectionResolution}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1279 }
+\DoxyCodeLine{1283   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a88c7a746ec8cced644ce46d367d5239b}{setPersistencePreferredHorizontalDirectionResolution}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1284 }
+\DoxyCodeLine{1288   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aee751af905b81d3bb8a33f26de5c7834}{setPersistencePreferredHorizontalSpeedResolution}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1289 }
+\DoxyCodeLine{1293   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aee751af905b81d3bb8a33f26de5c7834}{setPersistencePreferredHorizontalSpeedResolution}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1294 }
+\DoxyCodeLine{1298   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5c330e15efda9bebfcebd1d1e599b968}{setPersistencePreferredVerticalSpeedResolution}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1299 }
+\DoxyCodeLine{1303   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5c330e15efda9bebfcebd1d1e599b968}{setPersistencePreferredVerticalSpeedResolution}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1304 }
+\DoxyCodeLine{1308   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afcc2c66010eca9da3f5348eb184e6434}{setPersistencePreferredAltitudeResolution}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1309 }
+\DoxyCodeLine{1313   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afcc2c66010eca9da3f5348eb184e6434}{setPersistencePreferredAltitudeResolution}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1314 }
+\DoxyCodeLine{1318   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0b0ce7ba54f523b2d54a0fbb6c8671fc}{setAlertingMofN}}(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{1319 }
+\DoxyCodeLine{1323   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae7a5513e7c765f7126329c16287683dc}{setMinHorizontalRecovery}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1324 }
+\DoxyCodeLine{1328   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae7a5513e7c765f7126329c16287683dc}{setMinHorizontalRecovery}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1329 }
+\DoxyCodeLine{1333   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8abaeef0a898e3a4cc379317cd5b3eee}{setMinVerticalRecovery}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1334 }
+\DoxyCodeLine{1338   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8abaeef0a898e3a4cc379317cd5b3eee}{setMinVerticalRecovery}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1339 }
+\DoxyCodeLine{1343   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a856551bc471da4364138b97b755fa16b}{isEnabledConflictCriteria}}();}
+\DoxyCodeLine{1344 }
+\DoxyCodeLine{1348   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab3d92f1bff9df6180eb1db1b49c134a4}{setConflictCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1349 }
+\DoxyCodeLine{1353   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4db3f60f13796c78298b483eead0f740}{enableConflictCriteria}}();}
+\DoxyCodeLine{1354 }
+\DoxyCodeLine{1358   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0f111f8bf5f3d6b50bb5a0cf9bebb2f3}{disableConflictCriteria}}();}
+\DoxyCodeLine{1359 }
+\DoxyCodeLine{1363   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad090f6dd7d89f25d6ed0955fcb3fa4de}{isEnabledRecoveryCriteria}}();}
+\DoxyCodeLine{1364 }
+\DoxyCodeLine{1368   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a05a427602b9c2f632c7d3fb9f5e4944f}{setRecoveryCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1369 }
+\DoxyCodeLine{1373   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aff7aa94d3bb7fe6de63ba2c3a0eaa03b}{enableRecoveryCriteria}}();}
+\DoxyCodeLine{1374 }
+\DoxyCodeLine{1378   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a94f8d8b9c98b3bf403ad15db4545c3f9}{disableRecoveryCriteria}}();}
+\DoxyCodeLine{1379 }
+\DoxyCodeLine{1383   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1b3a0e217607ec679b846ff074372a1d}{setRepulsiveCriteria}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1384 }
+\DoxyCodeLine{1388   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4fcdc1561cc006243beb9b69d2375e02}{enableRepulsiveCriteria}}();}
+\DoxyCodeLine{1389 }
+\DoxyCodeLine{1393   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad992c23fa7dbea22471e459f615d38d8}{disableRepulsiveCriteria}}();}
+\DoxyCodeLine{1394 }
+\DoxyCodeLine{1398   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3c9972b405a767ca7f157db1b0b8e93a}{isEnabledRecoveryHorizontalDirectionBands}}();}
+\DoxyCodeLine{1399 }
+\DoxyCodeLine{1403   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afdb73bec261a687d5641c1665718f10d}{isEnabledRecoveryHorizontalSpeedBands}}();}
+\DoxyCodeLine{1404 }
+\DoxyCodeLine{1408   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa9b917593536c15f3cb14c8859f546be}{isEnabledRecoveryVerticalSpeedBands}}();}
+\DoxyCodeLine{1409 }
+\DoxyCodeLine{1413   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a48bbb2975d3ca5cc2cead02fa52b6d39}{isEnabledRecoveryAltitudeBands}}();}
+\DoxyCodeLine{1414 }
+\DoxyCodeLine{1418   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa747cb00f993ecea0e80105d023b1a68}{setRecoveryBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1419 }
+\DoxyCodeLine{1423   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae7307039c74ee42fb88b09ae9afb7d54}{enableRecoveryBands}}();}
+\DoxyCodeLine{1424 }
+\DoxyCodeLine{1428   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aeb086e28d57a389ee8250001eb793a63}{disableRecoveryBands}}();}
+\DoxyCodeLine{1429 }
+\DoxyCodeLine{1433   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a536d64ff15c62f63a0096145c0d1b422}{setRecoveryHorizontalDirectionBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1434 }
+\DoxyCodeLine{1438   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4cd01ce2f34c2ff79ecbf83b08bd1ea8}{setRecoveryHorizontalSpeedBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1439 }
+\DoxyCodeLine{1443   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8a29a8e42914c8873cbe85cbfe0032d3}{setRecoveryVerticalSpeedBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1444 }
+\DoxyCodeLine{1448   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac0340b8afcfd211105a46fa03c8ab9fe}{setRecoveryAltitudeBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1449 }
+\DoxyCodeLine{1453   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abc871a3115c8f4ff19abd9ee3f3d72ed}{isEnabledCollisionAvoidanceBands}}();}
+\DoxyCodeLine{1454 }
+\DoxyCodeLine{1458   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9cedbeb1b100a8a451acf15ee110d816}{setCollisionAvoidanceBands}}(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{1459 }
+\DoxyCodeLine{1463   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa8d8ee172032319b0a83368e7cdc3b7f}{enableCollisionAvoidanceBands}}();}
+\DoxyCodeLine{1464 }
+\DoxyCodeLine{1468   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af91d4116c4823ed36b20413c61665bba}{disableCollisionAvoidanceBands}}();}
+\DoxyCodeLine{1469 }
+\DoxyCodeLine{1473   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab6f5e928f32f35e2ea9c5d5375692b0f}{getCollisionAvoidanceBandsFactor}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1474 }
+\DoxyCodeLine{1478   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abcd03b089f85676ad0888b202ab639b9}{setCollisionAvoidanceBandsFactor}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1479 }
+\DoxyCodeLine{1483   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a04ea26c294781828c75c60eb4ccf6691}{getHorizontalPositionZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1484 }
+\DoxyCodeLine{1488   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0e86e0f0b1dc178a0edc4638208c7f9b}{setHorizontalPositionZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1489 }
+\DoxyCodeLine{1493   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad68656389ccdff35a6332064c25f40a3}{getHorizontalVelocityZScoreMin}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1494 }
+\DoxyCodeLine{1498   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0e5c58b140c21e4885bcc5ba46b17d1c}{setHorizontalVelocityZScoreMin}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1499 }
+\DoxyCodeLine{1503   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1e5adcfffb710f8452a0aee0df40a1fc}{getHorizontalVelocityZScoreMax}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1504 }
+\DoxyCodeLine{1508   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7042f62dd8fbf90e4bc30e10f0cb3eac}{setHorizontalVelocityZScoreMax}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1509 }
+\DoxyCodeLine{1513   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad1426ced02441acc9c4bf4c325ce83cd}{getHorizontalVelocityZDistance}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1514 }
+\DoxyCodeLine{1518   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad1426ced02441acc9c4bf4c325ce83cd}{getHorizontalVelocityZDistance}}(std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{1519 }
+\DoxyCodeLine{1523   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a968f4fec4d5e41cf5cfe3be765223daf}{setHorizontalVelocityZDistance}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1524 }
+\DoxyCodeLine{1528   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a968f4fec4d5e41cf5cfe3be765223daf}{setHorizontalVelocityZDistance}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1529 }
+\DoxyCodeLine{1533   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7231250d54933da42b2dbfca5453eaa1}{getVerticalPositionZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1534 }
+\DoxyCodeLine{1538   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7e07259d9362c5220eaf94422d468136}{setVerticalPositionZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1539 }
+\DoxyCodeLine{1543   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aad59d42ac5149f8d02383a916c49d649}{getVerticalSpeedZScore}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1544 }
+\DoxyCodeLine{1548   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2163be65ea0255961b05136433ccfb5d}{setVerticalSpeedZScore}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1549 }
+\DoxyCodeLine{1555   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae1c2bdbd2dd334b2f4a6fb1e7e7761d7}{getHorizontalContourThreshold}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1556 }
+\DoxyCodeLine{1562   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae1c2bdbd2dd334b2f4a6fb1e7e7761d7}{getHorizontalContourThreshold}}(std::string u) \textcolor{keyword}{const};}
+\DoxyCodeLine{1563 }
+\DoxyCodeLine{1569   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab11cf53200592cdaa47aab632e220e38}{setHorizontalContourThreshold}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1570 }
+\DoxyCodeLine{1576   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab11cf53200592cdaa47aab632e220e38}{setHorizontalContourThreshold}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1577 }
+\DoxyCodeLine{1581   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_affcdde639390d28cf8e46eb8228e432f}{isActiveDTALogic}}();}
+\DoxyCodeLine{1582 }
+\DoxyCodeLine{1586   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4c586cf4a9c18fba380d6caca7dc0e44}{isActiveDTASpecialManeuverGuidance}}();}
+\DoxyCodeLine{1587 }
+\DoxyCodeLine{1591   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a987e148b225bad805f5e13d2674c1895}{isDisabledDTALogic}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1592 }
+\DoxyCodeLine{1602   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a039920d28b18dcaab923aaa02acafc6d}{isEnabledDTALogicWithHorizontalDirRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1603 }
+\DoxyCodeLine{1613   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a986e29a0119485c9a7c897947c3f8a21}{isEnabledDTALogicWithoutHorizontalDirRecovery}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1614 }
+\DoxyCodeLine{1618   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af12cabffc8dd743d040f2137a8889dda}{disableDTALogic}}();}
+\DoxyCodeLine{1619 }
+\DoxyCodeLine{1629   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a08a077ddfd915167e1e7e840d92f55c5}{enableDTALogicWithHorizontalDirRecovery}}();}
+\DoxyCodeLine{1630 }
+\DoxyCodeLine{1640   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a229904a00f6322bbeaf57a1568567494}{enableDTALogicWithoutHorizontalDirRecovery}}();}
+\DoxyCodeLine{1641 }
+\DoxyCodeLine{1645   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_a86ad5e2b4d09280a4e791186aacf6c82}{getDTAPosition}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1646 }
+\DoxyCodeLine{1650   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a846d518ca046c395ac2dc968c0f5c8c5}{setDTALatitude}}(\textcolor{keywordtype}{double} lat);}
+\DoxyCodeLine{1651 }
+\DoxyCodeLine{1655   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a846d518ca046c395ac2dc968c0f5c8c5}{setDTALatitude}}(\textcolor{keywordtype}{double} lat, \textcolor{keyword}{const} std::string\& ulat);}
+\DoxyCodeLine{1656 }
+\DoxyCodeLine{1660   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a98d0b459fdaeb2462bdf5235aa533643}{setDTALongitude}}(\textcolor{keywordtype}{double} lon);}
+\DoxyCodeLine{1661 }
+\DoxyCodeLine{1665   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a98d0b459fdaeb2462bdf5235aa533643}{setDTALongitude}}(\textcolor{keywordtype}{double} lon, \textcolor{keyword}{const} std::string\& ulon);}
+\DoxyCodeLine{1666 }
+\DoxyCodeLine{1670   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a87aabffea08dfbae7cb7590dcee1ff50}{getDTARadius}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1671 }
+\DoxyCodeLine{1675   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a87aabffea08dfbae7cb7590dcee1ff50}{getDTARadius}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{1676 }
+\DoxyCodeLine{1680   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aacc6fb4d93fd9a5f7370985606903255}{setDTARadius}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1681 }
+\DoxyCodeLine{1685   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aacc6fb4d93fd9a5f7370985606903255}{setDTARadius}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1686 }
+\DoxyCodeLine{1690   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aac0c9b3bdb5ea126331253ddbb620d2f}{getDTAHeight}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1691 }
+\DoxyCodeLine{1695   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aac0c9b3bdb5ea126331253ddbb620d2f}{getDTAHeight}}(\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{1696 }
+\DoxyCodeLine{1700   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a81805f1cea36090259d21344ab06992a}{setDTAHeight}}(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{1701 }
+\DoxyCodeLine{1705   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a81805f1cea36090259d21344ab06992a}{setDTAHeight}}(\textcolor{keywordtype}{double} val, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1706 }
+\DoxyCodeLine{1710   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a97cc51f37a807d48ff448150dec241d9}{getDTAAlerter}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1711 }
+\DoxyCodeLine{1715   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a23eb30db6c218a9e150fbcf4a012d04b}{setDTAAlerter}}(\textcolor{keywordtype}{int} alerter);}
+\DoxyCodeLine{1716 }
+\DoxyCodeLine{1724   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_acc286aa9e94cb9b1d80df1757fc4d3e2}{setAlertingLogic}}(\textcolor{keywordtype}{bool} ownship\_centric);}
+\DoxyCodeLine{1725 }
+\DoxyCodeLine{1730   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a427ecba4ca0a85fb0cbfe818a58871a7}{setOwnshipCentricAlertingLogic}}();}
+\DoxyCodeLine{1731 }
+\DoxyCodeLine{1736   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abe532e959cde95629e813100f58329d3}{setIntruderCentricAlertingLogic}}();}
+\DoxyCodeLine{1737 }
+\DoxyCodeLine{1741   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa7030c5acb6c4dc4653098e993c41745}{isAlertingLogicOwnshipCentric}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1742 }
+\DoxyCodeLine{1746   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a66ae91c6721c6761e32ea30b4de14068}{getCorrectiveRegion}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1747 }
+\DoxyCodeLine{1751   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af25802b2bfb8a81be3b7f63e9ea7a39c}{setCorrectiveRegion}}(BandsRegion::Region val);}
+\DoxyCodeLine{1752 }
+\DoxyCodeLine{1760   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a5ab45dd8afd1e277fa686eea99e7a314}{correctiveAlertLevel}}(\textcolor{keywordtype}{int} alerter\_idx);}
+\DoxyCodeLine{1761 }
+\DoxyCodeLine{1765   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae8d34163c3c5c4bf85ac93d35ee91c2e}{maxAlertLevel}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{1766 }
+\DoxyCodeLine{1770   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a275519c1aed3d0b203d976578fb7f579}{setInstantaneousBands}}();}
+\DoxyCodeLine{1771 }
+\DoxyCodeLine{1777   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1598891e1ded0b7668e483ee643dab06}{setKinematicBands}}(\textcolor{keywordtype}{bool} type);}
+\DoxyCodeLine{1778 }
+\DoxyCodeLine{1782   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a202a3233a6169fd7a93e577e09a20587}{disableHysteresis}}();}
+\DoxyCodeLine{1783 }
+\DoxyCodeLine{1787   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0f1994955d25ee7be69e5ca049400c6d}{loadFromFile}}(\textcolor{keyword}{const} std::string\& file);}
+\DoxyCodeLine{1788 }
+\DoxyCodeLine{1792   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abb5450f0af9000298cf54fa98c66ef19}{saveToFile}}(\textcolor{keyword}{const} std::string\& file);}
+\DoxyCodeLine{1793 }
+\DoxyCodeLine{1797   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a80501e8dc3b2c738be18c7781245f45a}{setDaidalusParameters}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{DaidalusParameters}}\& parameters);}
+\DoxyCodeLine{1798 }
+\DoxyCodeLine{1799   \textcolor{keywordtype}{void} setParameterData(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{1800 }
+\DoxyCodeLine{1801   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameterData();}
+\DoxyCodeLine{1802 }
+\DoxyCodeLine{1806   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8ca2c9d13918688ed1a4bd38cb9aef5f}{getUnitsOf}}(\textcolor{keyword}{const} std::string\& key) \textcolor{keyword}{const};}
+\DoxyCodeLine{1807 }
+\DoxyCodeLine{1808   \textcolor{comment}{/* Direction Bands Settings */}}
+\DoxyCodeLine{1809 }
+\DoxyCodeLine{1814   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a507d1919bb082cc349dd34df16a6342e}{setAbsoluteHorizontalDirectionBands}}(\textcolor{keywordtype}{double} min, \textcolor{keywordtype}{double} max);}
+\DoxyCodeLine{1815 }
+\DoxyCodeLine{1820   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1ca9adb7e6513dffd16788274ebe4e90}{setAbsoluteHorizontalDirectionBands}}(\textcolor{keywordtype}{double} min, \textcolor{keywordtype}{double} max, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1821 }
+\DoxyCodeLine{1822   \textcolor{comment}{/* Utility methods */}}
+\DoxyCodeLine{1823 }
+\DoxyCodeLine{1828   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{DaidalusCore}}\& \mbox{\hyperlink{classlarcfm_1_1_daidalus_a79fd468c4a2995711b682265cbaf4c64}{getCore}}();}
+\DoxyCodeLine{1829 }
+\DoxyCodeLine{1833   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3a2b826d80ae30ad9551d08ecac194d4}{clearHysteresis}}();}
+\DoxyCodeLine{1834 }
+\DoxyCodeLine{1839   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a24a9ccbc7296ebca69ca1bb9daf4fdc3}{clear}}();}
+\DoxyCodeLine{1840 }
+\DoxyCodeLine{1844   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad8e2ae1985f895389b19e82898baf101}{reset}}();}
+\DoxyCodeLine{1845 }
+\DoxyCodeLine{1846   \textcolor{comment}{/* Main interface methods */}}
+\DoxyCodeLine{1847 }
+\DoxyCodeLine{1853   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c499158eb81e9d116a169bb5d767142}{conflictBandsAircraft}}(std::vector<std::string>\& acs, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{1854 }
+\DoxyCodeLine{1859   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c499158eb81e9d116a169bb5d767142}{conflictBandsAircraft}}(std::vector<std::string>\& acs, BandsRegion::Region region);}
+\DoxyCodeLine{1860 }
+\DoxyCodeLine{1865   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4a02f3654438fb02dbc03907a504544b}{timeIntervalOfConflict}}(\textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{1866 }
+\DoxyCodeLine{1870   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4a02f3654438fb02dbc03907a504544b}{timeIntervalOfConflict}}(BandsRegion::Region region);}
+\DoxyCodeLine{1871 }
+\DoxyCodeLine{1875   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a835303ea2024214ec572bb8a7d36bebe}{horizontalDirectionBandsLength}}();}
+\DoxyCodeLine{1876 }
+\DoxyCodeLine{1881   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a427d3e17ca2256c7d7cd161dddd57c63}{forceHorizontalDirectionBandsComputation}}();}
+\DoxyCodeLine{1882 }
+\DoxyCodeLine{1887   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a356716ad6c32e90455a26f78b230f955}{horizontalDirectionIntervalAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{1888 }
+\DoxyCodeLine{1894   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a356716ad6c32e90455a26f78b230f955}{horizontalDirectionIntervalAt}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1895 }
+\DoxyCodeLine{1900   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a70520edd3ef7d904b3bdf073cbc0b0a2}{horizontalDirectionRegionAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{1901 }
+\DoxyCodeLine{1906   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac35032ebf0a2303f3f08c747240eba18}{indexOfHorizontalDirection}}(\textcolor{keywordtype}{double} dir);}
+\DoxyCodeLine{1907 }
+\DoxyCodeLine{1913   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac35032ebf0a2303f3f08c747240eba18}{indexOfHorizontalDirection}}(\textcolor{keywordtype}{double} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1914 }
+\DoxyCodeLine{1919   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae463f4c15b5e67bfa38a0e6660f0a044}{regionOfHorizontalDirection}}(\textcolor{keywordtype}{double} dir);}
+\DoxyCodeLine{1920 }
+\DoxyCodeLine{1926   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae463f4c15b5e67bfa38a0e6660f0a044}{regionOfHorizontalDirection}}(\textcolor{keywordtype}{double} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1927 }
+\DoxyCodeLine{1933   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a58e8b21ae2cd5861e42aa0c55ccb86dc}{lastTimeToHorizontalDirectionManeuver}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{1934 }
+\DoxyCodeLine{1941   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a58e8b21ae2cd5861e42aa0c55ccb86dc}{lastTimeToHorizontalDirectionManeuver}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{1942 }
+\DoxyCodeLine{1949   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a58e8b21ae2cd5861e42aa0c55ccb86dc}{lastTimeToHorizontalDirectionManeuver}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1950 }
+\DoxyCodeLine{1954   \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4a7d3902d46d365394a2f2464569afcd}{horizontalDirectionRecoveryInformation}}();}
+\DoxyCodeLine{1955 }
+\DoxyCodeLine{1961   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a212e12950f7b87e09f74a66bb1bd124a}{peripheralHorizontalDirectionBandsAircraft}}(std::vector<std::string>\& acs, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{1962 }
+\DoxyCodeLine{1967   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a212e12950f7b87e09f74a66bb1bd124a}{peripheralHorizontalDirectionBandsAircraft}}(std::vector<std::string>\& acs, BandsRegion::Region region);}
+\DoxyCodeLine{1968 }
+\DoxyCodeLine{1977   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a572e6fa0b0b31089eb03a1329f5e222c}{horizontalDirectionResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{1978 }
+\DoxyCodeLine{1988   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a572e6fa0b0b31089eb03a1329f5e222c}{horizontalDirectionResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{1989 }
+\DoxyCodeLine{1999   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0c9241031fe45f7034f879a15ae5ea29}{horizontalDirectionRawResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2000 }
+\DoxyCodeLine{2011   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0c9241031fe45f7034f879a15ae5ea29}{horizontalDirectionRawResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2012 }
+\DoxyCodeLine{2017   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a307c33def6f1b951ebe1510e50b895ba}{preferredHorizontalDirectionRightOrLeft}}();}
+\DoxyCodeLine{2018 }
+\DoxyCodeLine{2022   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a55499ae9ebc4cb154a717236472e4101}{horizontalSpeedBandsLength}}();}
+\DoxyCodeLine{2023 }
+\DoxyCodeLine{2028   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a971451ff20388f39d354e42e5ab33de9}{forceHorizontalSpeedBandsComputation}}();}
+\DoxyCodeLine{2029 }
+\DoxyCodeLine{2034   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac8f6e56b0f7d4dd2fb32cde02cf82efe}{horizontalSpeedIntervalAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2035 }
+\DoxyCodeLine{2041   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac8f6e56b0f7d4dd2fb32cde02cf82efe}{horizontalSpeedIntervalAt}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2042 }
+\DoxyCodeLine{2047   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_afaecc6ca44a121b711ff147dc620ce74}{horizontalSpeedRegionAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2048 }
+\DoxyCodeLine{2053   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a81695b78aa890ca54f39c8af81637fd5}{indexOfHorizontalSpeed}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{2054 }
+\DoxyCodeLine{2060   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a81695b78aa890ca54f39c8af81637fd5}{indexOfHorizontalSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2061 }
+\DoxyCodeLine{2066   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_af71b638b97fa741f4e2ced925251a753}{regionOfHorizontalSpeed}}(\textcolor{keywordtype}{double} gs);}
+\DoxyCodeLine{2067 }
+\DoxyCodeLine{2073   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_af71b638b97fa741f4e2ced925251a753}{regionOfHorizontalSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2074 }
+\DoxyCodeLine{2080   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0514fcaae0a68b416f0c7f57aab61429}{lastTimeToHorizontalSpeedManeuver}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{2081 }
+\DoxyCodeLine{2088   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0514fcaae0a68b416f0c7f57aab61429}{lastTimeToHorizontalSpeedManeuver}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2089 }
+\DoxyCodeLine{2096   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a0514fcaae0a68b416f0c7f57aab61429}{lastTimeToHorizontalSpeedManeuver}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2097 }
+\DoxyCodeLine{2101   \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac45e83a823e7b4d722cec74e937d4e3b}{horizontalSpeedRecoveryInformation}}();}
+\DoxyCodeLine{2102 }
+\DoxyCodeLine{2108   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a76efde7420c237ffaadfa3b4614887fb}{peripheralHorizontalSpeedBandsAircraft}}(std::vector<std::string>\& acs, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{2109 }
+\DoxyCodeLine{2114   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a76efde7420c237ffaadfa3b4614887fb}{peripheralHorizontalSpeedBandsAircraft}}(std::vector<std::string>\& acs, BandsRegion::Region region);}
+\DoxyCodeLine{2115 }
+\DoxyCodeLine{2124   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8d26b05a8098ad24c936ee75824c24bd}{horizontalSpeedResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2125 }
+\DoxyCodeLine{2135   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a8d26b05a8098ad24c936ee75824c24bd}{horizontalSpeedResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2136 }
+\DoxyCodeLine{2146   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad045eb35de8f14eba266d75aa292f394}{horizontalSpeedRawResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2147 }
+\DoxyCodeLine{2158   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ad045eb35de8f14eba266d75aa292f394}{horizontalSpeedRawResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2159 }
+\DoxyCodeLine{2164   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a782c998c4c59c3a950ec2ef58a463a20}{preferredHorizontalSpeedUpOrDown}}();}
+\DoxyCodeLine{2165 }
+\DoxyCodeLine{2169   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae9e2859d25d830a15f3ba6faf586b18d}{verticalSpeedBandsLength}}();}
+\DoxyCodeLine{2170 }
+\DoxyCodeLine{2175   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4f8cef988ff89891c9997b8cfbe3551c}{forceVerticalSpeedBandsComputation}}();}
+\DoxyCodeLine{2176 }
+\DoxyCodeLine{2181   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a124d4e07b060b779f6716999eda17740}{verticalSpeedIntervalAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2182 }
+\DoxyCodeLine{2188   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a124d4e07b060b779f6716999eda17740}{verticalSpeedIntervalAt}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2189 }
+\DoxyCodeLine{2194   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6412cf497ab25b31942a597d9baef7d0}{verticalSpeedRegionAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2195 }
+\DoxyCodeLine{2200   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4f2023ceebac010148497a82c486f02f}{indexOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{2201 }
+\DoxyCodeLine{2207   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4f2023ceebac010148497a82c486f02f}{indexOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2208 }
+\DoxyCodeLine{2213   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac1931df71b52b02ccdd4a7d72c60d6bb}{regionOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs);}
+\DoxyCodeLine{2214 }
+\DoxyCodeLine{2220   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac1931df71b52b02ccdd4a7d72c60d6bb}{regionOfVerticalSpeed}}(\textcolor{keywordtype}{double} vs, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2221 }
+\DoxyCodeLine{2227   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c30523f74754fa74b09d4a3fedff3c8}{lastTimeToVerticalSpeedManeuver}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{2228 }
+\DoxyCodeLine{2235   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c30523f74754fa74b09d4a3fedff3c8}{lastTimeToVerticalSpeedManeuver}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2236 }
+\DoxyCodeLine{2243   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c30523f74754fa74b09d4a3fedff3c8}{lastTimeToVerticalSpeedManeuver}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2244 }
+\DoxyCodeLine{2248   \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_addb69836d80cb6c1bf4c72ae5a7757d3}{verticalSpeedRecoveryInformation}}();}
+\DoxyCodeLine{2249 }
+\DoxyCodeLine{2255   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fbb2fc206def0363f896ac19a409fb0}{peripheralVerticalSpeedBandsAircraft}}(std::vector<std::string>\& acs, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{2256 }
+\DoxyCodeLine{2261   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6fbb2fc206def0363f896ac19a409fb0}{peripheralVerticalSpeedBandsAircraft}}(std::vector<std::string>\& acs, BandsRegion::Region region);}
+\DoxyCodeLine{2262 }
+\DoxyCodeLine{2271   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a21b9cd3908a250afd090949c57749bcf}{verticalSpeedResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2272 }
+\DoxyCodeLine{2282   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a21b9cd3908a250afd090949c57749bcf}{verticalSpeedResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2283 }
+\DoxyCodeLine{2293   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab8501111f717e6419e8ec5581b7e64c0}{verticalSpeedRawResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2294 }
+\DoxyCodeLine{2305   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab8501111f717e6419e8ec5581b7e64c0}{verticalSpeedRawResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2306 }
+\DoxyCodeLine{2311   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9ed447e06c2b8baa1d99c4fedf4f2b86}{preferredVerticalSpeedUpOrDown}}();}
+\DoxyCodeLine{2312 }
+\DoxyCodeLine{2316   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2a656278aa398448e33df40102bdb8af}{altitudeBandsLength}}();}
+\DoxyCodeLine{2317 }
+\DoxyCodeLine{2322   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3c502b67ea5f37fbfdd18ca0e970e5d2}{forceAltitudeBandsComputation}}();}
+\DoxyCodeLine{2323 }
+\DoxyCodeLine{2328   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7102cabf9c12291c7939cf7174a99a73}{altitudeIntervalAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2329 }
+\DoxyCodeLine{2335   \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7102cabf9c12291c7939cf7174a99a73}{altitudeIntervalAt}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2336 }
+\DoxyCodeLine{2337 }
+\DoxyCodeLine{2342   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a13cb4bb55d9cfa9479fcb5ba735f84ba}{altitudeRegionAt}}(\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{2343 }
+\DoxyCodeLine{2348   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa36a6ee09bad61f66dd311fe255dc7b2}{indexOfAltitude}}(\textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{2349 }
+\DoxyCodeLine{2355   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa36a6ee09bad61f66dd311fe255dc7b2}{indexOfAltitude}}(\textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2356 }
+\DoxyCodeLine{2361   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_abdc02cf877bd8d60d51e56a1222d9fdb}{regionOfAltitude}}(\textcolor{keywordtype}{double} alt);}
+\DoxyCodeLine{2362 }
+\DoxyCodeLine{2368   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_abdc02cf877bd8d60d51e56a1222d9fdb}{regionOfAltitude}}(\textcolor{keywordtype}{double} alt, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2369 }
+\DoxyCodeLine{2375   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa3cfd201f8c239ac4abb9b0bf52a5cae}{lastTimeToAltitudeManeuver}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac);}
+\DoxyCodeLine{2376 }
+\DoxyCodeLine{2383   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa3cfd201f8c239ac4abb9b0bf52a5cae}{lastTimeToAltitudeManeuver}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2384 }
+\DoxyCodeLine{2391   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa3cfd201f8c239ac4abb9b0bf52a5cae}{lastTimeToAltitudeManeuver}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2392 }
+\DoxyCodeLine{2396   \mbox{\hyperlink{classlarcfm_1_1_recovery_information}{RecoveryInformation}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aec2aece8ba634373f57cdecd33438440}{altitudeRecoveryInformation}}();}
+\DoxyCodeLine{2397 }
+\DoxyCodeLine{2403   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae7e4a3821abc8f4aafd61e1083ac70fa}{peripheralAltitudeBandsAircraft}}(std::vector<std::string>\& acs, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{2404 }
+\DoxyCodeLine{2409   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae7e4a3821abc8f4aafd61e1083ac70fa}{peripheralAltitudeBandsAircraft}}(std::vector<std::string>\& acs, BandsRegion::Region region);}
+\DoxyCodeLine{2410 }
+\DoxyCodeLine{2419   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aec28406498d43e6ae32f2df781c8cbca}{altitudeResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2420 }
+\DoxyCodeLine{2430   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aec28406498d43e6ae32f2df781c8cbca}{altitudeResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2431 }
+\DoxyCodeLine{2441   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a01ae19cb61af027871ddcde6455ce0ab}{altitudeRawResolution}}(\textcolor{keywordtype}{bool} dir);}
+\DoxyCodeLine{2442 }
+\DoxyCodeLine{2453   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a01ae19cb61af027871ddcde6455ce0ab}{altitudeRawResolution}}(\textcolor{keywordtype}{bool} dir, \textcolor{keyword}{const} std::string\& u);}
+\DoxyCodeLine{2454 }
+\DoxyCodeLine{2459   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_aca326d9ac618facaec72e8b477911dab}{preferredAltitudeUpOrDown}}();}
+\DoxyCodeLine{2460 }
+\DoxyCodeLine{2461   \textcolor{comment}{/*}}
+\DoxyCodeLine{2462 \textcolor{comment}{   * Alerting logic}}
+\DoxyCodeLine{2463 \textcolor{comment}{   */}}
+\DoxyCodeLine{2464 }
+\DoxyCodeLine{2479   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adc2434ccd8a7bfacc0aa6ee63698c909}{alertLevel}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} turning, \textcolor{keywordtype}{int} accelerating, \textcolor{keywordtype}{int} climbing);}
+\DoxyCodeLine{2480 }
+\DoxyCodeLine{2486   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adc2434ccd8a7bfacc0aa6ee63698c909}{alertLevel}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2487 }
+\DoxyCodeLine{2497   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abb89eec7eb4cb0c8d3aef3cd10d1eec5}{violationOfAlertThresholds}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{2498 }
+\DoxyCodeLine{2507   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abb89eec7eb4cb0c8d3aef3cd10d1eec5}{violationOfAlertThresholds}}(\textcolor{keywordtype}{int} ac\_idx, BandsRegion::Region region);}
+\DoxyCodeLine{2508 }
+\DoxyCodeLine{2514   \mbox{\hyperlink{classlarcfm_1_1_conflict_data}{ConflictData}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab81ac2a3614679ffc0d7a040b562f4a7}{violationOfCorrectiveThresholds}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2515 }
+\DoxyCodeLine{2522   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a604740edb9cc34c9c4df58cd89555b27}{timeToCorrectiveVolume}}(\textcolor{keywordtype}{int} ac\_idx);}
+\DoxyCodeLine{2523 }
+\DoxyCodeLine{2530   BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae3575ae7e32a161cd18b6aa44403b973}{regionOfAlertLevel}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{2531 }
+\DoxyCodeLine{2539   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afd49f4328be5dbb020c45b3042651b46}{alertLevelOfRegion}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{int} region);}
+\DoxyCodeLine{2540 }
+\DoxyCodeLine{2547   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afd49f4328be5dbb020c45b3042651b46}{alertLevelOfRegion}}(\textcolor{keywordtype}{int} ac\_idx, BandsRegion::Region region);}
+\DoxyCodeLine{2548 }
+\DoxyCodeLine{2549   \textcolor{comment}{/* DAA Performance Metrics */}}
+\DoxyCodeLine{2550 }
+\DoxyCodeLine{2555   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7a2eea80b6fc8e6474ee79743ddc7731}{currentHorizontalSeparation}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2556 }
+\DoxyCodeLine{2561   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7a2eea80b6fc8e6474ee79743ddc7731}{currentHorizontalSeparation}}(\textcolor{keywordtype}{int} ac\_idx,\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2562 }
+\DoxyCodeLine{2567   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab8c739e1fb677a38247f7229369d4ef6}{currentVerticalSeparation}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2568 }
+\DoxyCodeLine{2573   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab8c739e1fb677a38247f7229369d4ef6}{currentVerticalSeparation}}(\textcolor{keywordtype}{int} ac\_idx,\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2574 }
+\DoxyCodeLine{2579   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a855f54599d7c4188f908cb9887c92888}{horizontalClosureRate}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2580 }
+\DoxyCodeLine{2585   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a855f54599d7c4188f908cb9887c92888}{horizontalClosureRate}}(\textcolor{keywordtype}{int} ac\_idx,\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2586 }
+\DoxyCodeLine{2591   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c9aa066653cbfbacb17a32c8724ec7d}{verticalClosureRate}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2592 }
+\DoxyCodeLine{2597   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1c9aa066653cbfbacb17a32c8724ec7d}{verticalClosureRate}}(\textcolor{keywordtype}{int} ac\_idx,\textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2598 }
+\DoxyCodeLine{2603   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2b1c08118bf0f95e3a9789112c5b646f}{predictedHorizontalMissDistance}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2604 }
+\DoxyCodeLine{2609   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2b1c08118bf0f95e3a9789112c5b646f}{predictedHorizontalMissDistance}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2610 }
+\DoxyCodeLine{2615   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af8a34614631484d32957c9c60415dc7e}{predictedVerticalMissDistance}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2616 }
+\DoxyCodeLine{2617 }
+\DoxyCodeLine{2622   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af8a34614631484d32957c9c60415dc7e}{predictedVerticalMissDistance}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2623 }
+\DoxyCodeLine{2630   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab012a2fcb2b8d892584ac4d4ab1b3eb3}{timeToHorizontalClosestPointOfApproach}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2631 }
+\DoxyCodeLine{2638   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab012a2fcb2b8d892584ac4d4ab1b3eb3}{timeToHorizontalClosestPointOfApproach}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2639 }
+\DoxyCodeLine{2646   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a71a4ce8f2de5ae0780c276fef5fa01d2}{distanceAtHorizontalClosestPointOfApproach}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2647 }
+\DoxyCodeLine{2654   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a71a4ce8f2de5ae0780c276fef5fa01d2}{distanceAtHorizontalClosestPointOfApproach}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2655 }
+\DoxyCodeLine{2663   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abecab2b4e3c61d41ef288d4f45d4d615}{timeToCoAltitude}}(\textcolor{keywordtype}{int} ac\_idx) \textcolor{keyword}{const};}
+\DoxyCodeLine{2664 }
+\DoxyCodeLine{2671   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abecab2b4e3c61d41ef288d4f45d4d615}{timeToCoAltitude}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2672 }
+\DoxyCodeLine{2679   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7f881e4847cafbadb9f2fe65c6f67ee9}{modifiedTau}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} DMOD) \textcolor{keyword}{const};}
+\DoxyCodeLine{2680 }
+\DoxyCodeLine{2687   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7f881e4847cafbadb9f2fe65c6f67ee9}{modifiedTau}}(\textcolor{keywordtype}{int} ac\_idx, \textcolor{keywordtype}{double} DMOD, \textcolor{keyword}{const} std::string\& DMODu, \textcolor{keyword}{const} std::string\& u) \textcolor{keyword}{const};}
+\DoxyCodeLine{2688 }
+\DoxyCodeLine{2689   \textcolor{comment}{/* Input/Output methods */}}
+\DoxyCodeLine{2690 }
+\DoxyCodeLine{2691   std::string outputStringAircraftStates() \textcolor{keyword}{const};}
+\DoxyCodeLine{2692 }
+\DoxyCodeLine{2693   std::string rawString() \textcolor{keyword}{const};}
+\DoxyCodeLine{2694 }
+\DoxyCodeLine{2695   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_a26d200740c65e0d6b4b8721037e67cf0}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{2696 }
+\DoxyCodeLine{2697   std::string outputStringInfo();}
+\DoxyCodeLine{2698 }
+\DoxyCodeLine{2699   std::string outputStringAlerting();}
+\DoxyCodeLine{2700 }
+\DoxyCodeLine{2701   std::string outputStringDirectionBands();}
+\DoxyCodeLine{2702 }
+\DoxyCodeLine{2703   std::string outputStringHorizontalSpeedBands();}
+\DoxyCodeLine{2704 }
+\DoxyCodeLine{2705   std::string outputStringVerticalSpeedBands();}
+\DoxyCodeLine{2706 }
+\DoxyCodeLine{2707   std::string outputStringAltitudeBands();}
+\DoxyCodeLine{2708 }
+\DoxyCodeLine{2709   std::string outputStringLastTimeToManeuver();}
+\DoxyCodeLine{2710 }
+\DoxyCodeLine{2711   std::string outputString();}
+\DoxyCodeLine{2712 }
+\DoxyCodeLine{2713   std::string toPVS(\textcolor{keywordtype}{bool} parameters);}
+\DoxyCodeLine{2714 }
+\DoxyCodeLine{2715   std::string toPVS();}
+\DoxyCodeLine{2716 }
+\DoxyCodeLine{2717   \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{2718 }
+\DoxyCodeLine{2719   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a7ad882c75e10d2a098e0f75abc206e1d}{hasError}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{2720 }
+\DoxyCodeLine{2721   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3a0079d157f9062c4be09e0c5505f95a}{hasMessage}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{2722 }
+\DoxyCodeLine{2723   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab2622969b7de278350c26a82fd5c977c}{getMessage}}();}
+\DoxyCodeLine{2724 }
+\DoxyCodeLine{2725   std::string \mbox{\hyperlink{classlarcfm_1_1_daidalus_a229e885918100ff151af735319dc495f}{getMessageNoClear}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{2726 }
+\DoxyCodeLine{2727   \textcolor{comment}{// Deprecate interface methods}}
+\DoxyCodeLine{2728 }
+\DoxyCodeLine{2737   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2ffe9c43bf751ae6276452a95a50b418}{setOwnship}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel) \{}
+\DoxyCodeLine{2738     \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4520d62007540f4965a5d874f28c326c}{setOwnshipState}}(\textcolor{keywordtype}{id},pos,vel);}
+\DoxyCodeLine{2739   \}}
+\DoxyCodeLine{2740 }
+\DoxyCodeLine{2748   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a4a7d818c6e8b90135fc4b2259bc6ac22}{setOwnship}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel) \{}
+\DoxyCodeLine{2749     \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2ffe9c43bf751ae6276452a95a50b418}{setOwnship}}(\textcolor{stringliteral}{"{}Ownship"{}},pos,vel);}
+\DoxyCodeLine{2750   \}}
+\DoxyCodeLine{2751 }
+\DoxyCodeLine{2762   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a476deb9571bbc9982d98d66c4a5f0b40}{addTraffic}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel) \{}
+\DoxyCodeLine{2763     \mbox{\hyperlink{classlarcfm_1_1_daidalus_add24b621c490fe871d73a9866f879ea7}{addTrafficState}}(\textcolor{keywordtype}{id},pos,vel);}
+\DoxyCodeLine{2764   \}}
+\DoxyCodeLine{2765 }
+\DoxyCodeLine{2775   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a01a86a51ee84a127706d8fcc92b14774}{addTraffic}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel) \{}
+\DoxyCodeLine{2776     \textcolor{keywordflow}{if} (!\mbox{\hyperlink{classlarcfm_1_1_daidalus_afa79a5d0961f5c17d22d234805754cd5}{hasOwnship}}()) \{}
+\DoxyCodeLine{2777       \mbox{\hyperlink{classlarcfm_1_1_daidalus_a2ffe9c43bf751ae6276452a95a50b418}{setOwnship}}(pos,vel);}
+\DoxyCodeLine{2778     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{2779       \mbox{\hyperlink{classlarcfm_1_1_daidalus_add24b621c490fe871d73a9866f879ea7}{addTrafficState}}(\textcolor{stringliteral}{"{}AC\_"{}}+\mbox{\hyperlink{namespacelarcfm_aa9928cc6c8191d90b8dbb4eefda7346f}{Fmi}}(core\_.traffic.size()+1),pos,vel);}
+\DoxyCodeLine{2780     \}}
+\DoxyCodeLine{2781   \}}
+\DoxyCodeLine{2782 }
+\DoxyCodeLine{2787   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_abce97b05d410fdabfa9e368f26acb872}{alerting}}(\textcolor{keywordtype}{int} ac\_idx) \{}
+\DoxyCodeLine{2788     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_adc2434ccd8a7bfacc0aa6ee63698c909}{alertLevel}}(ac\_idx);}
+\DoxyCodeLine{2789   \}}
+\DoxyCodeLine{2790 }
+\DoxyCodeLine{2795   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a03044da785c72f49bf35cdf5656b9b86}{setMaxGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2796     \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1ac4b97501d7e4597c0948328b462fa9}{setMaxHorizontalSpeed}}(gs,unit);}
+\DoxyCodeLine{2797   \}}
+\DoxyCodeLine{2798 }
+\DoxyCodeLine{2803   \textcolor{keyword}{virtual} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a3d8e989371d6b7c1e54dde44cf5cde18}{getMaxGroundSpeed}}(\textcolor{keyword}{const} std::string\& unit)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{2804     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a978b42669b288bee6508b122aa6d519e}{getMaxHorizontalSpeed}}(unit);}
+\DoxyCodeLine{2805   \}}
+\DoxyCodeLine{2806 }
+\DoxyCodeLine{2811   \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a883d4d19fdacb5c7ee6903f34941f449}{trackLength}}() \{}
+\DoxyCodeLine{2812     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a835303ea2024214ec572bb8a7d36bebe}{horizontalDirectionBandsLength}}();}
+\DoxyCodeLine{2813   \}}
+\DoxyCodeLine{2814 }
+\DoxyCodeLine{2819   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a42b2ce151f12d9fa50f04015106eb944}{track}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2820     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a356716ad6c32e90455a26f78b230f955}{horizontalDirectionIntervalAt}}(i,unit);}
+\DoxyCodeLine{2821   \}}
+\DoxyCodeLine{2822 }
+\DoxyCodeLine{2827   \textcolor{keyword}{virtual} BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_aa6b099db4d43e22767d3cd150bed2049}{trackRegion}}(\textcolor{keywordtype}{int} i) \{}
+\DoxyCodeLine{2828     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a70520edd3ef7d904b3bdf073cbc0b0a2}{horizontalDirectionRegionAt}}(i);}
+\DoxyCodeLine{2829   \}}
+\DoxyCodeLine{2830 }
+\DoxyCodeLine{2835   \textcolor{keyword}{virtual} BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a90736e650ed7ea5f2a22ba7a9fb82ba1}{regionOfTrack}}(\textcolor{keywordtype}{double} trk, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2836     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae463f4c15b5e67bfa38a0e6660f0a044}{regionOfHorizontalDirection}}(trk,unit);}
+\DoxyCodeLine{2837   \}}
+\DoxyCodeLine{2838 }
+\DoxyCodeLine{2843   \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ab05a01205be47de2dd2263e1403845c9}{groundSpeedLength}}() \{}
+\DoxyCodeLine{2844     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a55499ae9ebc4cb154a717236472e4101}{horizontalSpeedBandsLength}}();}
+\DoxyCodeLine{2845   \}}
+\DoxyCodeLine{2846 }
+\DoxyCodeLine{2851   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a76e7893a78fe73221c355aafdf13ad72}{groundSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2852     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ac8f6e56b0f7d4dd2fb32cde02cf82efe}{horizontalSpeedIntervalAt}}(i,unit);}
+\DoxyCodeLine{2853   \}}
+\DoxyCodeLine{2854 }
+\DoxyCodeLine{2859   \textcolor{keyword}{virtual} BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1b34d2bea71fedf79cea298cfcaf9c49}{groundSpeedRegion}}(\textcolor{keywordtype}{int} i) \{}
+\DoxyCodeLine{2860     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_afaecc6ca44a121b711ff147dc620ce74}{horizontalSpeedRegionAt}}(i);}
+\DoxyCodeLine{2861   \}}
+\DoxyCodeLine{2862 }
+\DoxyCodeLine{2867   \textcolor{keyword}{virtual} BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a260d970287e21dc6fa1c87677709621a}{regionOfGroundSpeed}}(\textcolor{keywordtype}{double} gs, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2868     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_af71b638b97fa741f4e2ced925251a753}{regionOfHorizontalSpeed}}(gs,unit);}
+\DoxyCodeLine{2869   \}}
+\DoxyCodeLine{2870 }
+\DoxyCodeLine{2875   \textcolor{keyword}{virtual} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a9890c2eb6370612396bec757d0458d47}{verticalSpeedLength}}() \{}
+\DoxyCodeLine{2876     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_ae9e2859d25d830a15f3ba6faf586b18d}{verticalSpeedBandsLength}}();}
+\DoxyCodeLine{2877   \}}
+\DoxyCodeLine{2878 }
+\DoxyCodeLine{2883   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1f7946b90baaaa502130979c4377a8a4}{verticalSpeed}}(\textcolor{keywordtype}{int} i, \textcolor{keyword}{const} std::string\& unit) \{}
+\DoxyCodeLine{2884     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a124d4e07b060b779f6716999eda17740}{verticalSpeedIntervalAt}}(i,unit);}
+\DoxyCodeLine{2885   \}}
+\DoxyCodeLine{2886 }
+\DoxyCodeLine{2891   \textcolor{keyword}{virtual} BandsRegion::Region \mbox{\hyperlink{classlarcfm_1_1_daidalus_a1f8ea98f2b1ecbedfd49db4ed1c3c507}{verticalSpeedRegion}}(\textcolor{keywordtype}{int} i) \{}
+\DoxyCodeLine{2892     \textcolor{keywordflow}{return} \mbox{\hyperlink{classlarcfm_1_1_daidalus_a6412cf497ab25b31942a597d9baef7d0}{verticalSpeedRegionAt}}(i);}
+\DoxyCodeLine{2893   \}}
+\DoxyCodeLine{2894 }
+\DoxyCodeLine{2895 \};}
+\DoxyCodeLine{2896 }
+\DoxyCodeLine{2897 \}}
+\DoxyCodeLine{2898 }
+\DoxyCodeLine{2899 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,43 @@
+\hypertarget{_transmitter_8h_source}{}\doxysection{Transmitter.\+h}
+\label{_transmitter_8h_source}\index{Modules/ACCoRD/inc/Transmitter.h@{Modules/ACCoRD/inc/Transmitter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2017-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifndef TRANSMITTER\_H\_}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define TRANSMITTER\_H\_}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_transmitter}{Transmitter}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{public}:}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_transmitter}{\string~Transmitter}}() \{\};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{28     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_transmitter_a3381d64fec62c0816a9919a0a6ff4ec3}{publish}}(\textcolor{keyword}{const} std::string\& address, \textcolor{keyword}{const} std::string\& keyword) = 0;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_transmitter_a386023811fceccbf579ba3dd15d3bce8}{unpublish}}(\textcolor{keyword}{const} std::string\& keyword) = 0;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_transmitter_a02b25f33347631d6d48f6dc41f069706}{update}}(\textcolor{keyword}{const} std::string\& keyword, \textcolor{keyword}{const} std::string\& data) = 0;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{49     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_transmitter_a6395f88a5121aaea8566d304f11f9599}{hasSubscribers}}(\textcolor{keyword}{const} std::string\& keyword) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{55     \textcolor{keyword}{virtual} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_transmitter_a23fac8ae8b1fca2dc9ba6ca9e37ee3c7}{shutdown}}() = 0;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,520 @@
+\hypertarget{classlarcfm_1_1_traffic_state}{}\doxysection{larcfm\+::Traffic\+State Class Reference}
+\label{classlarcfm_1_1_traffic_state}\index{larcfm::TrafficState@{larcfm::TrafficState}}
+
+
+{\ttfamily \#include $<$Traffic\+State.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a1c9fd121e24ef41f56283318d4e18bc6}\label{classlarcfm_1_1_traffic_state_a1c9fd121e24ef41f56283318d4e18bc6}} 
+typedef std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$\+::size\+\_\+type {\bfseries nat}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}{Traffic\+State}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_acf3856ed6bcb82e72a3245b8cd464a9a}\label{classlarcfm_1_1_traffic_state_acf3856ed6bcb82e72a3245b8cd464a9a}} 
+void {\bfseries set\+Air\+Velocity} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&new\+\_\+avel)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a082a48974bf1e9f5147e16808b45c5e6}\label{classlarcfm_1_1_traffic_state_a082a48974bf1e9f5147e16808b45c5e6}} 
+void {\bfseries set\+Position} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&new\+\_\+pos)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4c74796330fd4913ba08cddee31ee2fd}{set\+As\+Ownship}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ac1c035c6aee85290b983b41a50780ec8}{set\+As\+Intruder\+Of}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a346cf68cd1f30e9664fa371e106ecc8b}{make\+Intruder}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel) const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_afececb56377116067e5c55aeb90b5178}{set\+Alerter\+Index}} (int alerter)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aae53a6fbba33ae5519bb87f4520462ed}{get\+Alerter\+Index}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a3160cd09f9512eaeef6a53a2dfef7950}{apply\+Wind\+Vector}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&wind\+\_\+vector)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ad14bf844793de976c3577beb5056e540}{wind\+Vector}} () const
+\item 
+const Euclidean\+Projection \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a720c910510955430d0941fa9b03be6fa}{get\+Euclidean\+Projection}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a767c41c90a5035a517f12ae894fa8f5a}\label{classlarcfm_1_1_traffic_state_a767c41c90a5035a517f12ae894fa8f5a}} 
+const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \& {\bfseries get\+\_\+s} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a9bd9f590578bed0ae23fe3a34ec92b2c}\label{classlarcfm_1_1_traffic_state_a9bd9f590578bed0ae23fe3a34ec92b2c}} 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& {\bfseries get\+\_\+v} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a897071fe33c8d227d32387edac19ae4e}\label{classlarcfm_1_1_traffic_state_a897071fe33c8d227d32387edac19ae4e}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries pos\+\_\+to\+\_\+s} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ad22fe05d01d5b7966f28ada9558286b0}\label{classlarcfm_1_1_traffic_state_ad22fe05d01d5b7966f28ada9558286b0}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries vel\+\_\+to\+\_\+v} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ab9f38b4d0ade9457da0436244141a381}\label{classlarcfm_1_1_traffic_state_ab9f38b4d0ade9457da0436244141a381}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries inverse\+Velocity} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v) const
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a62322fc057eb54cd15b8696fceeee266}{linear\+Projection}} (double offset) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ab4703ecb369509d98e3073003057b8dd}\label{classlarcfm_1_1_traffic_state_ab4703ecb369509d98e3073003057b8dd}} 
+std\+::string {\bfseries formatted\+Header} (const std\+::string \&utrk, const std\+::string \&uxy, const std\+::string \&ualt, const std\+::string \&ugs, const std\+::string \&uvs) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_aa4296867c096763eba939c60b00f9610}\label{classlarcfm_1_1_traffic_state_aa4296867c096763eba939c60b00f9610}} 
+std\+::string {\bfseries formatted\+Traffic\+State} (const std\+::string \&utrk, const std\+::string \&uxy, const std\+::string \&ualt, const std\+::string \&ugs, const std\+::string \&uvs, double time) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a1db0250970769c423c059c1c2d5992ee}\label{classlarcfm_1_1_traffic_state_a1db0250970769c423c059c1c2d5992ee}} 
+std\+::string {\bfseries formatted\+Traffic} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const std\+::string \&utrk, const std\+::string \&uxy, const std\+::string \&ualt, const std\+::string \&ugs, const std\+::string \&uvs, double time) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a6803eec05c8cbc664802f3ca591e3f5d}\label{classlarcfm_1_1_traffic_state_a6803eec05c8cbc664802f3ca591e3f5d}} 
+std\+::string {\bfseries to\+PVS} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a8571bb794baaf4a74a9e1e81546d3356}\label{classlarcfm_1_1_traffic_state_a8571bb794baaf4a74a9e1e81546d3356}} 
+std\+::string {\bfseries list\+To\+PVSAircraft\+List} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aecd00e5886d2fad3d3ccebff51a5843d}{is\+Valid}} () const
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a195cdbda86deaa8b9ebd431ad9cd8cb0}{is\+Lat\+Lon}} () const
+\item 
+const std\+::string \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a408e7599b2ea6f0d027e5e3011dd90ac}{get\+Id}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a8044fe0c585f7c0e975b1e5b7f36f94b}{get\+Position}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_adec5a54b018d11406b3f4ed42ad1c413}{get\+Air\+Velocity}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a629f0fa4341841f7e4db9cc00be52734}{get\+Ground\+Velocity}} () const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ad5acc966150a71b58467e1d214e64112}{get\+Velocity}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a6a57db8f125bc4b6666e1079cc5867cd}\label{classlarcfm_1_1_traffic_state_a6a57db8f125bc4b6666e1079cc5867cd}} 
+const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& {\bfseries position\+XYZ} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ab32472a5a08285f2973e5320329454bb}\label{classlarcfm_1_1_traffic_state_ab32472a5a08285f2973e5320329454bb}} 
+const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& {\bfseries velocity\+XYZ} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aed8ccd6195dccced0db94bddfccbf34b}{horizontal\+Direction}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a6edfcfefa95b07ff9334e59dde3790a8}{horizontal\+Direction}} (const std\+::string \&utrk) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4e4538f0978568acdfe2bad96f702edc}{horizontal\+Speed}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a74cb6cb19f5c33975da94cb4ae0486b7}{horizontal\+Speed}} (const std\+::string \&ugs) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a37e4a5b1b47768b8894aae99acd9d280}{vertical\+Speed}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a8f85ff69d241bc9b43010283d1f6d53b}{vertical\+Speed}} (const std\+::string \&uvs) const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a62383a851a845908bdbc8d033e548c0a}{altitude}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ae80f83f6c228015a53f8a2ff654c84cc}{altitude}} (const std\+::string \&ualt) const
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}} \& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a47b9070c54eb45679adb1d807b95ed93}{sum}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ae63d4240c730ceab972537f2b5c271c5}{set\+Horizontal\+Position\+Uncertainty}} (double s\+\_\+\+EW\+\_\+std, double s\+\_\+\+NS\+\_\+std, double s\+\_\+\+EN\+\_\+std)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0bfec216859765ecf0127f6e9d7fa0dd}{set\+Vertical\+Position\+Uncertainty}} (double sz\+\_\+std)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a117c9b3a0e530d5bfdabf3cb209a0968}{set\+Horizontal\+Velocity\+Uncertainty}} (double v\+\_\+\+EW\+\_\+std, double v\+\_\+\+NS\+\_\+std, double v\+\_\+\+EN\+\_\+std)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a7e55a2663a1ca9bb85753b3857877e9e}{set\+Vertical\+Speed\+Uncertainty}} (double vz\+\_\+std)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a37506ee2ad9e001385f141b64d005f38}{reset\+Uncertainty}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_afca4eee4a84e85e0ba143c453d7b4a84}\label{classlarcfm_1_1_traffic_state_afca4eee4a84e85e0ba143c453d7b4a84}} 
+bool {\bfseries same\+Id} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a9700eecad3642fdab195126ba3bdd3a2}\label{classlarcfm_1_1_traffic_state_a9700eecad3642fdab195126ba3bdd3a2}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_acbf92c5d065c5608c9ee5deb44cf0767}\label{classlarcfm_1_1_traffic_state_acbf92c5d065c5608c9ee5deb44cf0767}} 
+static const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \& {\bfseries INVALID} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ab7f965b72c22316cd52655d6a8766f18}{make\+Ownship}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a71a2b1f4637f017a870d027fe12cc7cb}{find\+Aircraft\+Index}} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const std\+::string \&id)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_abddaa633d56f86dcee1830e4ececb431}\label{classlarcfm_1_1_traffic_state_abddaa633d56f86dcee1830e4ececb431}} 
+static std\+::string {\bfseries list\+To\+String} (const std\+::vector$<$ std\+::string $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a35c37c56795be9d9f8a13b7f641e4cc0}\label{classlarcfm_1_1_traffic_state_a35c37c56795be9d9f8a13b7f641e4cc0}} 
+static std\+::string {\bfseries formatted\+Traffic\+List} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, const std\+::string \&utrk, const std\+::string \&uxy, const std\+::string \&ualt, const std\+::string \&ugs, const std\+::string \&uvs, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_abc0df84fdf2340effa5ff9d312974882}\label{classlarcfm_1_1_traffic_state_abc0df84fdf2340effa5ff9d312974882}} 
+static std\+::string {\bfseries list\+To\+PVSString\+List} (const std\+::vector$<$ std\+::string $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0623605839d40cf3b12ceab0ed59a506}{Traffic\+State}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state_ae3ff0c4ab35ee0da09fd878074fbe5cd}{Traffic\+State}} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel, Euclidean\+Projection eprj, int alerter)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4cc15dca56f13c23a90963f1adc11911}{apply\+Euclidean\+Projection}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a29979e88047935793f33740d1e00710a}\label{classlarcfm_1_1_traffic_state_a29979e88047935793f33740d1e00710a}} 
+std\+::string {\bfseries id\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ae4a713baef81325c0a0dd5106260b4c7}\label{classlarcfm_1_1_traffic_state_ae4a713baef81325c0a0dd5106260b4c7}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries pos\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a2369a8a0d9f3fff89917c63d53656683}\label{classlarcfm_1_1_traffic_state_a2369a8a0d9f3fff89917c63d53656683}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries gvel\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_afb32fa5dbb0ffa8d992ba053dee57264}\label{classlarcfm_1_1_traffic_state_afb32fa5dbb0ffa8d992ba053dee57264}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries avel\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ad0d163ffa03b6c9f59a9c000a14ca5f7}\label{classlarcfm_1_1_traffic_state_ad0d163ffa03b6c9f59a9c000a14ca5f7}} 
+Euclidean\+Projection {\bfseries eprj\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ad746fdcf48e03cf60208707e71d333a3}\label{classlarcfm_1_1_traffic_state_ad746fdcf48e03cf60208707e71d333a3}} 
+int {\bfseries alerter\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_abf0201b66bc1514b3787a03144c850d9}\label{classlarcfm_1_1_traffic_state_abf0201b66bc1514b3787a03144c850d9}} 
+\mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}} {\bfseries sum\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a5b024417edf23a1d8478763d8c7cc014}\label{classlarcfm_1_1_traffic_state_a5b024417edf23a1d8478763d8c7cc014}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries posxyz\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_abc689846e41e4d781b3998dc23cfc758}\label{classlarcfm_1_1_traffic_state_abc689846e41e4d781b3998dc23cfc758}} 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} {\bfseries sxyz\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a6b0896e6b9bb1356effa396d4c896fdc}\label{classlarcfm_1_1_traffic_state_a6b0896e6b9bb1356effa396d4c896fdc}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries velxyz\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} solution 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}\label{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!TrafficState@{TrafficState}}
+\index{TrafficState@{TrafficState}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{TrafficState()}{TrafficState()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Traffic\+State\+::\+Traffic\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create an non-\/valid aircraft state \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a0623605839d40cf3b12ceab0ed59a506}\label{classlarcfm_1_1_traffic_state_a0623605839d40cf3b12ceab0ed59a506}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!TrafficState@{TrafficState}}
+\index{TrafficState@{TrafficState}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{TrafficState()}{TrafficState()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Traffic\+State\+::\+Traffic\+State (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Create a traffic state that is not lat/lon 
+\begin{DoxyParams}{Parameters}
+{\em id} & Aircraft\textquotesingle{}s identifier \\
+\hline
+{\em pos} & Aircraft\textquotesingle{}s position \\
+\hline
+{\em vel} & Aircraft\textquotesingle{}s ground velocity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ae3ff0c4ab35ee0da09fd878074fbe5cd}\label{classlarcfm_1_1_traffic_state_ae3ff0c4ab35ee0da09fd878074fbe5cd}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!TrafficState@{TrafficState}}
+\index{TrafficState@{TrafficState}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{TrafficState()}{TrafficState()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily larcfm\+::\+Traffic\+State\+::\+Traffic\+State (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vel,  }\item[{Euclidean\+Projection}]{eprj,  }\item[{int}]{alerter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Create a traffic state 
+\begin{DoxyParams}{Parameters}
+{\em id} & Aircraft\textquotesingle{}s identifier \\
+\hline
+{\em pos} & Aircraft\textquotesingle{}s position \\
+\hline
+{\em vel} & Aircraft\textquotesingle{}s ground velocity \\
+\hline
+{\em eprj} & Euclidean projection \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a62383a851a845908bdbc8d033e548c0a}\label{classlarcfm_1_1_traffic_state_a62383a851a845908bdbc8d033e548c0a}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!altitude@{altitude}}
+\index{altitude@{altitude}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{altitude()}{altitude()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::altitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current altitude in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ae80f83f6c228015a53f8a2ff654c84cc}\label{classlarcfm_1_1_traffic_state_ae80f83f6c228015a53f8a2ff654c84cc}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!altitude@{altitude}}
+\index{altitude@{altitude}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{altitude()}{altitude()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::altitude (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ualt }\end{DoxyParamCaption}) const}
+
+Returns current altitude in given units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a4cc15dca56f13c23a90963f1adc11911}\label{classlarcfm_1_1_traffic_state_a4cc15dca56f13c23a90963f1adc11911}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!applyEuclideanProjection@{applyEuclideanProjection}}
+\index{applyEuclideanProjection@{applyEuclideanProjection}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{applyEuclideanProjection()}{applyEuclideanProjection()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::apply\+Euclidean\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Apply Euclidean projection. Requires aircraft\textquotesingle{}s position in lat/lon 
+\begin{DoxyParams}{Parameters}
+{\em eprj} & \\
+\hline
+\end{DoxyParams}
+Apply Euclidean projection. Requires aircraft\textquotesingle{}s position in lat/lon \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a3160cd09f9512eaeef6a53a2dfef7950}\label{classlarcfm_1_1_traffic_state_a3160cd09f9512eaeef6a53a2dfef7950}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!applyWindVector@{applyWindVector}}
+\index{applyWindVector@{applyWindVector}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{applyWindVector()}{applyWindVector()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::apply\+Wind\+Vector (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{wind\+\_\+vector }\end{DoxyParamCaption})}
+
+Set wind velocity 
+\begin{DoxyParams}{Parameters}
+{\em wind\+\_\+vector} & Wind velocity specified in the TO direction \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a71a2b1f4637f017a870d027fe12cc7cb}\label{classlarcfm_1_1_traffic_state_a71a2b1f4637f017a870d027fe12cc7cb}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!findAircraftIndex@{findAircraftIndex}}
+\index{findAircraftIndex@{findAircraftIndex}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{findAircraftIndex()}{findAircraftIndex()}}
+{\footnotesize\ttfamily int larcfm\+::\+Traffic\+State\+::find\+Aircraft\+Index (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&}]{traffic,  }\item[{const std\+::string \&}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Index of aircraft id in traffic list. If aircraft is not in the list, returns -\/1 
+\begin{DoxyParams}{Parameters}
+{\em traffic} & \\
+\hline
+{\em id} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_adec5a54b018d11406b3f4ed42ad1c413}\label{classlarcfm_1_1_traffic_state_adec5a54b018d11406b3f4ed42ad1c413}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getAirVelocity@{getAirVelocity}}
+\index{getAirVelocity@{getAirVelocity}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getAirVelocity()}{getAirVelocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Traffic\+State\+::get\+Air\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Aircraft\textquotesingle{}s air velocity 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_aae53a6fbba33ae5519bb87f4520462ed}\label{classlarcfm_1_1_traffic_state_aae53a6fbba33ae5519bb87f4520462ed}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getAlerterIndex@{getAlerterIndex}}
+\index{getAlerterIndex@{getAlerterIndex}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getAlerterIndex()}{getAlerterIndex()}}
+{\footnotesize\ttfamily int larcfm\+::\+Traffic\+State\+::get\+Alerter\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+aircraft index for this aircraft. This index is 1-\/based. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a720c910510955430d0941fa9b03be6fa}\label{classlarcfm_1_1_traffic_state_a720c910510955430d0941fa9b03be6fa}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getEuclideanProjection@{getEuclideanProjection}}
+\index{getEuclideanProjection@{getEuclideanProjection}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getEuclideanProjection()}{getEuclideanProjection()}}
+{\footnotesize\ttfamily const Euclidean\+Projection \& larcfm\+::\+Traffic\+State\+::get\+Euclidean\+Projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return Euclidean projection \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a629f0fa4341841f7e4db9cc00be52734}\label{classlarcfm_1_1_traffic_state_a629f0fa4341841f7e4db9cc00be52734}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getGroundVelocity@{getGroundVelocity}}
+\index{getGroundVelocity@{getGroundVelocity}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getGroundVelocity()}{getGroundVelocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Traffic\+State\+::get\+Ground\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Aircraft\textquotesingle{}s velocity (can be ground or air depending on whether a wind vector was applied or not) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a408e7599b2ea6f0d027e5e3011dd90ac}\label{classlarcfm_1_1_traffic_state_a408e7599b2ea6f0d027e5e3011dd90ac}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getId@{getId}}
+\index{getId@{getId}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily const std\+::string \& larcfm\+::\+Traffic\+State\+::get\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Aircraft\textquotesingle{}s identifier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a8044fe0c585f7c0e975b1e5b7f36f94b}\label{classlarcfm_1_1_traffic_state_a8044fe0c585f7c0e975b1e5b7f36f94b}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getPosition@{getPosition}}
+\index{getPosition@{getPosition}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getPosition()}{getPosition()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \& larcfm\+::\+Traffic\+State\+::get\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Aircraft\textquotesingle{}s position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ad5acc966150a71b58467e1d214e64112}\label{classlarcfm_1_1_traffic_state_ad5acc966150a71b58467e1d214e64112}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!getVelocity@{getVelocity}}
+\index{getVelocity@{getVelocity}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{getVelocity()}{getVelocity()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \& larcfm\+::\+Traffic\+State\+::get\+Velocity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+Aircraft\textquotesingle{}s air velocity
+
+Aircraft\textquotesingle{}s velocity (can be ground or air depending on whether a wind vector was applied or not) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_aed8ccd6195dccced0db94bddfccbf34b}\label{classlarcfm_1_1_traffic_state_aed8ccd6195dccced0db94bddfccbf34b}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!horizontalDirection@{horizontalDirection}}
+\index{horizontalDirection@{horizontalDirection}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{horizontalDirection()}{horizontalDirection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::horizontal\+Direction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current horizontal direction in internal units \mbox{[}0 -\/ 2pi\mbox{]} \mbox{[}rad\mbox{]} (clock-\/wise with respect to North) Direction may be heading or track, depending on whether a wind vector was provided or not. \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a6edfcfefa95b07ff9334e59dde3790a8}\label{classlarcfm_1_1_traffic_state_a6edfcfefa95b07ff9334e59dde3790a8}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!horizontalDirection@{horizontalDirection}}
+\index{horizontalDirection@{horizontalDirection}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{horizontalDirection()}{horizontalDirection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::horizontal\+Direction (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{utrk }\end{DoxyParamCaption}) const}
+
+Returns current direction in given units \mbox{[}0 -\/ 2pi\mbox{]} \mbox{[}u\mbox{]} (clock wise with respect to North) Direction may be heading or track, depending on whether a wind vector was provided or not. \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a4e4538f0978568acdfe2bad96f702edc}\label{classlarcfm_1_1_traffic_state_a4e4538f0978568acdfe2bad96f702edc}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!horizontalSpeed@{horizontalSpeed}}
+\index{horizontalSpeed@{horizontalSpeed}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{horizontalSpeed()}{horizontalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::horizontal\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current horizontal speed in internal units. \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} speed may be air speed or group speed, depending on whether a wind vector was provided or not. \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a74cb6cb19f5c33975da94cb4ae0486b7}\label{classlarcfm_1_1_traffic_state_a74cb6cb19f5c33975da94cb4ae0486b7}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!horizontalSpeed@{horizontalSpeed}}
+\index{horizontalSpeed@{horizontalSpeed}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{horizontalSpeed()}{horizontalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::horizontal\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ugs }\end{DoxyParamCaption}) const}
+
+Returns current horizontal speed in given units. \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} speed may be air speed or group speed, depending on whether a wind vector was provided or not. \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a195cdbda86deaa8b9ebd431ad9cd8cb0}\label{classlarcfm_1_1_traffic_state_a195cdbda86deaa8b9ebd431ad9cd8cb0}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!isLatLon@{isLatLon}}
+\index{isLatLon@{isLatLon}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{isLatLon()}{isLatLon()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Traffic\+State\+::is\+Lat\+Lon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if aircraft position is specified in lat/lon instead of x,y 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_aecd00e5886d2fad3d3ccebff51a5843d}\label{classlarcfm_1_1_traffic_state_aecd00e5886d2fad3d3ccebff51a5843d}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!isValid@{isValid}}
+\index{isValid@{isValid}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{isValid()}{isValid()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Traffic\+State\+::is\+Valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if this is a valid aircraft state 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a62322fc057eb54cd15b8696fceeee266}\label{classlarcfm_1_1_traffic_state_a62322fc057eb54cd15b8696fceeee266}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!linearProjection@{linearProjection}}
+\index{linearProjection@{linearProjection}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{linearProjection()}{linearProjection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} larcfm\+::\+Traffic\+State\+::linear\+Projection (\begin{DoxyParamCaption}\item[{double}]{offset }\end{DoxyParamCaption}) const}
+
+Project aircraft state offset time, which can be positive or negative, in the direction of the air velocity. This methods doesn\textquotesingle{}t change ownship, i.\+e., the resulting aircraft is considered as another intruder. 
+\begin{DoxyParams}{Parameters}
+{\em offset} & Offset time. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Projected aircraft. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a346cf68cd1f30e9664fa371e106ecc8b}\label{classlarcfm_1_1_traffic_state_a346cf68cd1f30e9664fa371e106ecc8b}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!makeIntruder@{makeIntruder}}
+\index{makeIntruder@{makeIntruder}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{makeIntruder()}{makeIntruder()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} larcfm\+::\+Traffic\+State\+::make\+Intruder (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vel }\end{DoxyParamCaption}) const}
+
+Make intruder aircraft 
+\begin{DoxyParams}{Parameters}
+{\em id} & Intruder\textquotesingle{}s identifier \\
+\hline
+{\em pos} & Intruder\textquotesingle{}s position \\
+\hline
+{\em vel} & Intruder\textquotesingle{}s ground velocity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ab7f965b72c22316cd52655d6a8766f18}\label{classlarcfm_1_1_traffic_state_ab7f965b72c22316cd52655d6a8766f18}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!makeOwnship@{makeOwnship}}
+\index{makeOwnship@{makeOwnship}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{makeOwnship()}{makeOwnship()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} larcfm\+::\+Traffic\+State\+::make\+Ownship (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{id,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Make an ownship\textquotesingle{}s aircraft 
+\begin{DoxyParams}{Parameters}
+{\em id} & Ownship\textquotesingle{}s identifier \\
+\hline
+{\em pos} & Ownship\textquotesingle{}s position \\
+\hline
+{\em vel} & Ownship\textquotesingle{}s ground velocity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a37506ee2ad9e001385f141b64d005f38}\label{classlarcfm_1_1_traffic_state_a37506ee2ad9e001385f141b64d005f38}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!resetUncertainty@{resetUncertainty}}
+\index{resetUncertainty@{resetUncertainty}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{resetUncertainty()}{resetUncertainty()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::reset\+Uncertainty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set all uncertainties to 0 \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_afececb56377116067e5c55aeb90b5178}\label{classlarcfm_1_1_traffic_state_afececb56377116067e5c55aeb90b5178}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setAlerterIndex@{setAlerterIndex}}
+\index{setAlerterIndex@{setAlerterIndex}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setAlerterIndex()}{setAlerterIndex()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+Alerter\+Index (\begin{DoxyParamCaption}\item[{int}]{alerter }\end{DoxyParamCaption})}
+
+Set alerter index for this aircraft 
+\begin{DoxyParams}{Parameters}
+{\em alerter} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ac1c035c6aee85290b983b41a50780ec8}\label{classlarcfm_1_1_traffic_state_ac1c035c6aee85290b983b41a50780ec8}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setAsIntruderOf@{setAsIntruderOf}}
+\index{setAsIntruderOf@{setAsIntruderOf}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setAsIntruderOf()}{setAsIntruderOf()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+As\+Intruder\+Of (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship }\end{DoxyParamCaption})}
+
+Set aircraft as intruder of ownship \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a4c74796330fd4913ba08cddee31ee2fd}\label{classlarcfm_1_1_traffic_state_a4c74796330fd4913ba08cddee31ee2fd}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setAsOwnship@{setAsOwnship}}
+\index{setAsOwnship@{setAsOwnship}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setAsOwnship()}{setAsOwnship()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+As\+Ownship (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set aircraft as ownship \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ae63d4240c730ceab972537f2b5c271c5}\label{classlarcfm_1_1_traffic_state_ae63d4240c730ceab972537f2b5c271c5}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setHorizontalPositionUncertainty@{setHorizontalPositionUncertainty}}
+\index{setHorizontalPositionUncertainty@{setHorizontalPositionUncertainty}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setHorizontalPositionUncertainty()}{setHorizontalPositionUncertainty()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+Horizontal\+Position\+Uncertainty (\begin{DoxyParamCaption}\item[{double}]{s\+\_\+\+EW\+\_\+std,  }\item[{double}]{s\+\_\+\+NS\+\_\+std,  }\item[{double}]{s\+\_\+\+EN\+\_\+std }\end{DoxyParamCaption})}
+
+s\+\_\+\+EW\+\_\+std\+: East/\+West position standard deviation in internal units s\+\_\+\+NS\+\_\+std\+: North/\+South position standard deviation in internal units s\+\_\+\+EN\+\_\+std\+: East/\+North position standard deviation in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a117c9b3a0e530d5bfdabf3cb209a0968}\label{classlarcfm_1_1_traffic_state_a117c9b3a0e530d5bfdabf3cb209a0968}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setHorizontalVelocityUncertainty@{setHorizontalVelocityUncertainty}}
+\index{setHorizontalVelocityUncertainty@{setHorizontalVelocityUncertainty}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setHorizontalVelocityUncertainty()}{setHorizontalVelocityUncertainty()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+Horizontal\+Velocity\+Uncertainty (\begin{DoxyParamCaption}\item[{double}]{v\+\_\+\+EW\+\_\+std,  }\item[{double}]{v\+\_\+\+NS\+\_\+std,  }\item[{double}]{v\+\_\+\+EN\+\_\+std }\end{DoxyParamCaption})}
+
+v\+\_\+\+EW\+\_\+std\+: East/\+West velocity standard deviation in internal units v\+\_\+\+NS\+\_\+std\+: North/\+South velocity standard deviation in internal units v\+\_\+\+EN\+\_\+std\+: East/\+North velocity standard deviation in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a0bfec216859765ecf0127f6e9d7fa0dd}\label{classlarcfm_1_1_traffic_state_a0bfec216859765ecf0127f6e9d7fa0dd}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setVerticalPositionUncertainty@{setVerticalPositionUncertainty}}
+\index{setVerticalPositionUncertainty@{setVerticalPositionUncertainty}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setVerticalPositionUncertainty()}{setVerticalPositionUncertainty()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+Vertical\+Position\+Uncertainty (\begin{DoxyParamCaption}\item[{double}]{sz\+\_\+std }\end{DoxyParamCaption})}
+
+sz\+\_\+std \+: \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} position standard deviation in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a7e55a2663a1ca9bb85753b3857877e9e}\label{classlarcfm_1_1_traffic_state_a7e55a2663a1ca9bb85753b3857877e9e}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!setVerticalSpeedUncertainty@{setVerticalSpeedUncertainty}}
+\index{setVerticalSpeedUncertainty@{setVerticalSpeedUncertainty}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{setVerticalSpeedUncertainty()}{setVerticalSpeedUncertainty()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traffic\+State\+::set\+Vertical\+Speed\+Uncertainty (\begin{DoxyParamCaption}\item[{double}]{vz\+\_\+std }\end{DoxyParamCaption})}
+
+vz\+\_\+std \+: \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} velocity standard deviation in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a47b9070c54eb45679adb1d807b95ed93}\label{classlarcfm_1_1_traffic_state_a47b9070c54eb45679adb1d807b95ed93}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!sum@{sum}}
+\index{sum@{sum}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{sum()}{sum()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}} \& larcfm\+::\+Traffic\+State\+::sum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+SUM (Sensor Uncertainty Mitigation) data 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a37e4a5b1b47768b8894aae99acd9d280}\label{classlarcfm_1_1_traffic_state_a37e4a5b1b47768b8894aae99acd9d280}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::vertical\+Speed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns current vertical speed in internal units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_a8f85ff69d241bc9b43010283d1f6d53b}\label{classlarcfm_1_1_traffic_state_a8f85ff69d241bc9b43010283d1f6d53b}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!verticalSpeed@{verticalSpeed}}
+\index{verticalSpeed@{verticalSpeed}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{verticalSpeed()}{verticalSpeed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double larcfm\+::\+Traffic\+State\+::vertical\+Speed (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{uvs }\end{DoxyParamCaption}) const}
+
+Returns current vertical speed in given units \mbox{\Hypertarget{classlarcfm_1_1_traffic_state_ad14bf844793de976c3577beb5056e540}\label{classlarcfm_1_1_traffic_state_ad14bf844793de976c3577beb5056e540}} 
+\index{larcfm::TrafficState@{larcfm::TrafficState}!windVector@{windVector}}
+\index{windVector@{windVector}!larcfm::TrafficState@{larcfm::TrafficState}}
+\doxysubsubsection{\texorpdfstring{windVector()}{windVector()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} larcfm\+::\+Traffic\+State\+::wind\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return wind velocity in the to direction \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Traffic\+State.\+h\item 
+Modules/\+ACCo\+RD/src/Traffic\+State.\+cpp\end{DoxyCompactItemize}

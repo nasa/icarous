@@ -1,0 +1,37 @@
+\hypertarget{classlarcfm_1_1_urgency_strategy}{}\doxysection{larcfm\+::Urgency\+Strategy Class Reference}
+\label{classlarcfm_1_1_urgency_strategy}\index{larcfm::UrgencyStrategy@{larcfm::UrgencyStrategy}}
+Inheritance diagram for larcfm\+::Urgency\+Strategy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.623188cm]{classlarcfm_1_1_urgency_strategy}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy_affe64d3a64d10b0c2dcd8a629ca2f996}{most\+Urgent\+Aircraft}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&\mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, double T) const =0
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_urgency_strategy_af24f82940fd4efe1c75d863c142dae7b}\label{classlarcfm_1_1_urgency_strategy_af24f82940fd4efe1c75d863c142dae7b}} 
+virtual \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{Urgency\+Strategy}} $\ast$ {\bfseries copy} () const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_urgency_strategy_affe64d3a64d10b0c2dcd8a629ca2f996}\label{classlarcfm_1_1_urgency_strategy_affe64d3a64d10b0c2dcd8a629ca2f996}} 
+\index{larcfm::UrgencyStrategy@{larcfm::UrgencyStrategy}!mostUrgentAircraft@{mostUrgentAircraft}}
+\index{mostUrgentAircraft@{mostUrgentAircraft}!larcfm::UrgencyStrategy@{larcfm::UrgencyStrategy}}
+\doxysubsubsection{\texorpdfstring{mostUrgentAircraft()}{mostUrgentAircraft()}}
+{\footnotesize\ttfamily virtual int larcfm\+::\+Urgency\+Strategy\+::most\+Urgent\+Aircraft (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{ownship,  }\item[{const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ \&}]{traffic,  }\item[{double}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\begin{DoxyReturn}{Returns}
+index of most urgent traffic aircraft for given ownship, traffic, and lookahead time T. If index \texorpdfstring{$<$}{<}= -\/1, then no aircraft is the most urgent 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classlarcfm_1_1_d_c_p_a_urgency_strategy_a6a77faa4a020ce245e4229fcd1950531}{larcfm\+::\+DCPAUrgency\+Strategy}}, \mbox{\hyperlink{classlarcfm_1_1_fixed_aircraft_urgency_strategy_a28411cc51f29ddc96931ffe46ddddf00}{larcfm\+::\+Fixed\+Aircraft\+Urgency\+Strategy}}, and \mbox{\hyperlink{classlarcfm_1_1_none_urgency_strategy_af587aee2788381bb1486700b8934ecd5}{larcfm\+::\+None\+Urgency\+Strategy}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Urgency\+Strategy.\+h\end{DoxyCompactItemize}

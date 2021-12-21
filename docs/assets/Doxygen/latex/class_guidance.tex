@@ -18,7 +18,7 @@ void \mbox{\hyperlink{class_guidance_afdc131e75d3d551c1c60db0245329f07}{Read\+Pa
 \begin{DoxyCompactList}\small\item\em Read parameters from file. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_guidance_a59574093df3c470814eab4130a3f05a0}{Set\+Guidance\+Params}} (const \mbox{\hyperlink{struct_guidance_params__t}{Guidance\+Params\+\_\+t}} $\ast$\mbox{\hyperlink{class_guidance_a408c2efa5f9e118e6336559651f23f02}{params}})
 \begin{DoxyCompactList}\small\item\em Set the \mbox{\hyperlink{class_guidance}{Guidance}} Params object. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_guidance_a80e367c673156c2b0dcbf74306e01d38}{Set\+Aircraft\+State}} (const larcfm\+::\+Position \&pos, const larcfm\+::\+Velocity \&ground\+Speed)
+void \mbox{\hyperlink{class_guidance_a80e367c673156c2b0dcbf74306e01d38}{Set\+Aircraft\+State}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&ground\+Speed)
 \begin{DoxyCompactList}\small\item\em Set the Aircraft State. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_guidance_a2fc86c190cb04814294e5c461291d8bd}{Set\+Wind\+Data}} (const double wind\+From, const double wind\+Speed)
 \begin{DoxyCompactList}\small\item\em Set the Wind Data. \end{DoxyCompactList}\item 
@@ -34,7 +34,7 @@ void \mbox{\hyperlink{class_guidance_a90cc0d4c68148a6aa6b902843be6fb70}{Change\+
 \begin{DoxyCompactList}\small\item\em Change speed in flightplan segement. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_guidance_a425dd495bb750034b8f823affe3735c5}{Change\+Waypoint\+ETA}} (const std\+::string plan\+ID, const int wp\+ID, const double value, const bool update\+All)
 \begin{DoxyCompactList}\small\item\em Change eta constraints in flightplan. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}{Set\+Velocity\+Commands}} (const larcfm\+::\+Velocity \&inputs)
+void \mbox{\hyperlink{class_guidance_a052f2143feaaca24a511cf5f7a30cdf1}{Set\+Velocity\+Commands}} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&inputs)
 \begin{DoxyCompactList}\small\item\em Set the Velocity Commands (used when an external modules is computing guidance commands) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_guidance_ac5d309f7a536bc055e2f3bd349059c44}{Get\+Output}} (\mbox{\hyperlink{struct_guidance_output__t}{Guidance\+Output\+\_\+t}} \&output)
 \begin{DoxyCompactList}\small\item\em Get the Output object. \end{DoxyCompactList}\item 
@@ -43,9 +43,9 @@ int \mbox{\hyperlink{class_guidance_a625e0e9f260b4a4548fefc9f1cbcd6e4}{Get\+Wayp
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-double \mbox{\hyperlink{class_guidance_a09cde1ef1e07435eb9b51cef679e7e72}{Compute\+Off\+Set\+Position\+On\+Plan}} (larcfm\+::\+Plan $\ast$fp, int next\+WP, double guidance\+\_\+radius, larcfm\+::\+Position \&pos)
+double \mbox{\hyperlink{class_guidance_a09cde1ef1e07435eb9b51cef679e7e72}{Compute\+Off\+Set\+Position\+On\+Plan}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$fp, int next\+WP, double guidance\+\_\+radius, \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&pos)
 \begin{DoxyCompactList}\small\item\em Function to compute the intersection of the line of sight circle with current plan segment. \end{DoxyCompactList}\item 
-larcfm\+::\+Vect3 \mbox{\hyperlink{class_guidance_acaf0febbd3b74f90045eca72c3ac466e}{Get\+Correct\+Intersection\+Point}} (const larcfm\+::\+Vect3 \&wpA, const larcfm\+::\+Vect3 \&wpB, const double r)
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} \mbox{\hyperlink{class_guidance_acaf0febbd3b74f90045eca72c3ac466e}{Get\+Correct\+Intersection\+Point}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} \&wpA, const \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} \&wpB, const double r)
 \begin{DoxyCompactList}\small\item\em Returns the intersection point between a circle of radius r and the line between wpA and wpB. current position is the origin and wpA and wpB are defined with respect to origin. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_guidance_a7d5f0b2939acbd54aeb1d0394d292e48}{distance}} (double x1, double y1, double x2, double y2)
 \begin{DoxyCompactList}\small\item\em Compute distance given two points. \end{DoxyCompactList}\item 
@@ -55,9 +55,9 @@ double \mbox{\hyperlink{class_guidance_ab3c21f0a86beb2e02a67b44d6c39a91b}{Comput
 \begin{DoxyCompactList}\small\item\em Compute current climb rate for the output. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{class_guidance_aa2b54e794e2ce943f60c85e52f2e5f95}{Compute\+New\+Heading}} (double \&speed\+Ref)
 \begin{DoxyCompactList}\small\item\em Compute new heading. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{class_guidance_a6eb0f998b75786d65b6c009b99ce709c}{Get\+Approach\+Precision}} (const larcfm\+::\+Position \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, const larcfm\+::\+Velocity \&velocity, const larcfm\+::\+Position \&waypoint)
+double \mbox{\hyperlink{class_guidance_a6eb0f998b75786d65b6c009b99ce709c}{Get\+Approach\+Precision}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&\mbox{\hyperlink{arducopter_8h_a97f6f07d9b99c3e3d789183a9064a7da}{position}}, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&velocity, const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&waypoint)
 \begin{DoxyCompactList}\small\item\em A dot product computation to check if vehicle has crossed the waypoint. \texorpdfstring{$<$}{<} 0 if crossed. \texorpdfstring{$>$}{>}= 0 if not crossed. \end{DoxyCompactList}\item 
-larcfm\+::\+Plan $\ast$ \mbox{\hyperlink{class_guidance_a6a1adb5833bec5563805c903343a4a76}{Get\+Plan}} (const std\+::string \&plan\+\_\+id)
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ \mbox{\hyperlink{class_guidance_a6a1adb5833bec5563805c903343a4a76}{Get\+Plan}} (const std\+::string \&plan\+\_\+id)
 \begin{DoxyCompactList}\small\item\em Get the Plan object. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_guidance_ac5fe2f4655823439df58f6e13695f784}{Filter\+Command}} (double \&ref\+Heading, double \&ref\+Speed, double \&ref\+VS)
 \begin{DoxyCompactList}\small\item\em Filter command (rate limits and saturations) \end{DoxyCompactList}\item 
@@ -69,7 +69,7 @@ void \mbox{\hyperlink{class_guidance_abb21bdc8546f5f4e5f0243d9341440de}{Check\+W
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{class_guidance_a5facd495f812b7b0bde3e02cf6d4a750}\label{class_guidance_a5facd495f812b7b0bde3e02cf6d4a750}} 
-std\+::list$<$ larcfm\+::\+Plan $>$ {\bfseries plan\+List}
+std\+::list$<$ \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $>$ {\bfseries plan\+List}
 \begin{DoxyCompactList}\small\item\em List of all plans received by guidance. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a87378fb2c5414eaaaa22005745a81079}\label{class_guidance_a87378fb2c5414eaaaa22005745a81079}} 
 std\+::map$<$ std\+::string, int $>$ {\bfseries next\+Wp\+Id}
@@ -81,19 +81,19 @@ std\+::string {\bfseries active\+Plan\+Id}
 std\+::string {\bfseries prev\+Plan}
 \begin{DoxyCompactList}\small\item\em Plan ID for previous plan. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a747324c9ea535bbdc0b0b05eb50be855}\label{class_guidance_a747324c9ea535bbdc0b0b05eb50be855}} 
-larcfm\+::\+Plan $\ast$ {\bfseries current\+Plan}
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ {\bfseries current\+Plan}
 \begin{DoxyCompactList}\small\item\em Pointer to current plan data structure. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a50450dacd698e9da0be6b593858bcef2}\label{class_guidance_a50450dacd698e9da0be6b593858bcef2}} 
-larcfm\+::\+Position {\bfseries current\+Pos}
+\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} {\bfseries current\+Pos}
 \begin{DoxyCompactList}\small\item\em Current position. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a8b993d81fec5384ad4f12944b459bfec}\label{class_guidance_a8b993d81fec5384ad4f12944b459bfec}} 
-larcfm\+::\+Velocity {\bfseries current\+Airspeed}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries current\+Airspeed}
 \begin{DoxyCompactList}\small\item\em Current velocity (airspeed) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a118ce9bd01ef62ba59b3f8208e43e2cc}\label{class_guidance_a118ce9bd01ef62ba59b3f8208e43e2cc}} 
-larcfm\+::\+Velocity {\bfseries current\+Ground\+Speed}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries current\+Ground\+Speed}
 \begin{DoxyCompactList}\small\item\em Current velocity (ground speed) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a5524351858d155338c1e0c7cdb608980}\label{class_guidance_a5524351858d155338c1e0c7cdb608980}} 
-larcfm\+::\+Velocity {\bfseries output\+Cmd}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries output\+Cmd}
 \begin{DoxyCompactList}\small\item\em Output command computed by guidance. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}\label{class_guidance_a50024fbe5c70caa58cc683a98e2f3d37}} 
 \mbox{\hyperlink{_modules_2_core_2_guidance_2guidance_8h_a59cb78b8a1e23b30cdbd8e61db8c8e01}{Guidance\+Mode}} {\bfseries mode}
@@ -126,7 +126,7 @@ double {\bfseries prev\+Track\+Controller\+Time}
 double {\bfseries prev\+Track\+Controller\+Target}
 \begin{DoxyCompactList}\small\item\em Previous target command for the controller. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a1942a98a0e540bac5732463566562098}\label{class_guidance_a1942a98a0e540bac5732463566562098}} 
-larcfm\+::\+Velocity {\bfseries wind}
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} {\bfseries wind}
 \begin{DoxyCompactList}\small\item\em Wind velocity (to) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_guidance_a408c2efa5f9e118e6336559651f23f02}\label{class_guidance_a408c2efa5f9e118e6336559651f23f02}} 
 \mbox{\hyperlink{struct_guidance_params__t}{Guidance\+Params\+\_\+t}} {\bfseries params}
@@ -332,7 +332,7 @@ If prev waypoint is not Track TCP or is EOT, use the line of sight circle method
 \index{Guidance@{Guidance}!ComputeOffSetPositionOnPlan@{ComputeOffSetPositionOnPlan}}
 \index{ComputeOffSetPositionOnPlan@{ComputeOffSetPositionOnPlan}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{ComputeOffSetPositionOnPlan()}{ComputeOffSetPositionOnPlan()}}
-{\footnotesize\ttfamily double Guidance\+::\+Compute\+Off\+Set\+Position\+On\+Plan (\begin{DoxyParamCaption}\item[{larcfm\+::\+Plan $\ast$}]{fp,  }\item[{int}]{next\+WP,  }\item[{double}]{guidance\+\_\+radius,  }\item[{larcfm\+::\+Position \&}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily double Guidance\+::\+Compute\+Off\+Set\+Position\+On\+Plan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$}]{fp,  }\item[{int}]{next\+WP,  }\item[{double}]{guidance\+\_\+radius,  }\item[{\mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -462,7 +462,7 @@ Low pass filter for speed and vertical speed commands n factor determines when l
 \index{Guidance@{Guidance}!GetApproachPrecision@{GetApproachPrecision}}
 \index{GetApproachPrecision@{GetApproachPrecision}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{GetApproachPrecision()}{GetApproachPrecision()}}
-{\footnotesize\ttfamily double Guidance\+::\+Get\+Approach\+Precision (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{position,  }\item[{const larcfm\+::\+Velocity \&}]{velocity,  }\item[{const larcfm\+::\+Position \&}]{waypoint }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily double Guidance\+::\+Get\+Approach\+Precision (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{position,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{velocity,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{waypoint }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -480,7 +480,7 @@ Look at the dot product of current velocity with the position of the waypoint in
 \index{Guidance@{Guidance}!GetCorrectIntersectionPoint@{GetCorrectIntersectionPoint}}
 \index{GetCorrectIntersectionPoint@{GetCorrectIntersectionPoint}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{GetCorrectIntersectionPoint()}{GetCorrectIntersectionPoint()}}
-{\footnotesize\ttfamily larcfm\+::\+Vect3 Guidance\+::\+Get\+Correct\+Intersection\+Point (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Vect3 \&}]{wpA,  }\item[{const larcfm\+::\+Vect3 \&}]{wpB,  }\item[{const double}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} Guidance\+::\+Get\+Correct\+Intersection\+Point (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} \&}]{wpA,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} \&}]{wpB,  }\item[{const double}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -492,7 +492,7 @@ Look at the dot product of current velocity with the position of the waypoint in
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Vect3 Intersection of circle with plan segment 
+\mbox{\hyperlink{classlarcfm_1_1_vect3}{larcfm\+::\+Vect3}} Intersection of circle with plan segment 
 \end{DoxyReturn}
 Compute intersection of circle of radius r and line joining point A and point B
 
@@ -517,7 +517,7 @@ If we are doing a speed change or altitude change, we are still on the the origi
 \index{Guidance@{Guidance}!GetPlan@{GetPlan}}
 \index{GetPlan@{GetPlan}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{GetPlan()}{GetPlan()}}
-{\footnotesize\ttfamily larcfm\+::\+Plan $\ast$ Guidance\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}} $\ast$ Guidance\+::\+Get\+Plan (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{plan\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 \begin{DoxyParams}{Parameters}
@@ -525,7 +525,7 @@ If we are doing a speed change or altitude change, we are still on the the origi
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-larcfm\+::\+Plan$\ast$ pointer to plan 
+\mbox{\hyperlink{classlarcfm_1_1_plan}{larcfm\+::\+Plan}}$\ast$ pointer to plan 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_guidance_a625e0e9f260b4a4548fefc9f1cbcd6e4}\label{class_guidance_a625e0e9f260b4a4548fefc9f1cbcd6e4}} 
 \index{Guidance@{Guidance}!GetWaypoint@{GetWaypoint}}
@@ -601,7 +601,7 @@ int
 \index{Guidance@{Guidance}!SetAircraftState@{SetAircraftState}}
 \index{SetAircraftState@{SetAircraftState}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{SetAircraftState()}{SetAircraftState()}}
-{\footnotesize\ttfamily void Guidance\+::\+Set\+Aircraft\+State (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Position \&}]{pos,  }\item[{const larcfm\+::\+Velocity \&}]{ground\+Speed }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Guidance\+::\+Set\+Aircraft\+State (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{larcfm\+::\+Position}} \&}]{pos,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{ground\+Speed }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}
@@ -654,7 +654,7 @@ Set initial conditions for nextwp\mbox{\Hypertarget{class_guidance_a59574093df3c
 \index{Guidance@{Guidance}!SetVelocityCommands@{SetVelocityCommands}}
 \index{SetVelocityCommands@{SetVelocityCommands}!Guidance@{Guidance}}
 \doxysubsubsection{\texorpdfstring{SetVelocityCommands()}{SetVelocityCommands()}}
-{\footnotesize\ttfamily void Guidance\+::\+Set\+Velocity\+Commands (\begin{DoxyParamCaption}\item[{const larcfm\+::\+Velocity \&}]{inputs }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Guidance\+::\+Set\+Velocity\+Commands (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{larcfm\+::\+Velocity}} \&}]{inputs }\end{DoxyParamCaption})}
 
 
 \begin{DoxyParams}{Parameters}

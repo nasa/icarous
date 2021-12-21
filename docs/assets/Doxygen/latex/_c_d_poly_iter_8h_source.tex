@@ -1,0 +1,124 @@
+\hypertarget{_c_d_poly_iter_8h_source}{}\doxysection{CDPoly\+Iter.\+h}
+\label{_c_d_poly_iter_8h_source}\index{Modules/ACCoRD/inc/CDPolyIter.h@{Modules/ACCoRD/inc/CDPolyIter.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef CDPOLYITER\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define CDPOLYITER\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Poly2D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}DetectionPolygon.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Horizontal.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ParameterData.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}MovingPolygon2D.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}MovingPolygon3D.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter}{CDPolyIter}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}} \{}
+\DoxyCodeLine{26 \textcolor{keyword}{private}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   std::vector<double> timesin;}
+\DoxyCodeLine{29   std::vector<double> timesout;}
+\DoxyCodeLine{30   std::vector<double> timestca;}
+\DoxyCodeLine{31   std::vector<double> diststca;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   std::string id;}
+\DoxyCodeLine{34   \textcolor{keywordtype}{double} timeStep;}
+\DoxyCodeLine{35   \textcolor{keywordtype}{bool} containment;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} no\_detection(\textcolor{keyword}{const} std::pair<double,double>\& det) \{}
+\DoxyCodeLine{38     \textcolor{keywordflow}{return} det.second < det.first;}
+\DoxyCodeLine{39   \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{public}:}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter}{CDPolyIter}}();}
+\DoxyCodeLine{44   \textcolor{comment}{//}}
+\DoxyCodeLine{45   \textcolor{comment}{//    \string~CDPolyIter();}}
+\DoxyCodeLine{46   \textcolor{comment}{//    CDPolyIter(const CDPolyIter\& d);}}
+\DoxyCodeLine{47   \textcolor{comment}{//    CDPolyIter\& operator= (const CDPolyIter\& d);}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keywordtype}{double} getTimeStep() \textcolor{keyword}{const};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordtype}{void} setTimeStep(\textcolor{keywordtype}{double} val);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} getContainment() \textcolor{keyword}{const};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordtype}{void} setContainment(\textcolor{keywordtype}{bool} flag);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \textcolor{keyword}{static} \textcolor{keyword}{const} std::pair<double,double>\& noDetection();}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{keyword}{static} std::vector<Vect2> polygon\_2D\_at(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon2_d}{MovingPolygon2D}}\& mp, \textcolor{keywordtype}{double} tr);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   std::pair<double,double> polygon\_alt\_inside\_time(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keywordtype}{double} vspeed, \textcolor{keywordtype}{double} minalt, \textcolor{keywordtype}{double} maxalt, \textcolor{keywordtype}{double} sz, \textcolor{keywordtype}{double} vz) ;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keyword}{static} \textcolor{keywordtype}{bool} within\_polygon\_altitude(\textcolor{keywordtype}{double} minalt, \textcolor{keywordtype}{double} maxalt, \textcolor{keywordtype}{double} sz);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keywordtype}{bool} contains(\mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& p3d, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}} getParameters() \textcolor{keyword}{const};}
+\DoxyCodeLine{68   \textcolor{keywordtype}{void} updateParameterData(\mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{69   \textcolor{keywordtype}{void} setParameters(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{ParameterData}}\& p);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{bool} polyIter\_detection(\textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& mp3D, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \textcolor{keywordtype}{bool} violation(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly3_d}{Poly3D}}\& si) \textcolor{keyword}{const};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{keywordtype}{bool} conflict(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) \textcolor{keyword}{const};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82   \textcolor{keywordtype}{bool} conflictDetection(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& so, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& si, \textcolor{keywordtype}{double} B, \textcolor{keywordtype}{double} T) ;}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   std::vector<double> getTimesIn() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90   std::vector<double> getTimesOut() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92   \textcolor{keywordtype}{double} getTimeIn(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{101   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a71fc40ce9d1a77b926842122722c363c}{getTimeOut}}(\textcolor{keywordtype}{int} i) \textcolor{keyword}{const} ;}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103   \textcolor{keywordtype}{double} getTimeIn() \textcolor{keyword}{const};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a71fc40ce9d1a77b926842122722c363c}{getTimeOut}}() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114   std::vector<double> getCriticalTimesOfConflict() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   std::vector<double> getDistancesAtCriticalTimes() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{119   \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* copy() \textcolor{keyword}{const};}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   std::string getClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{124   std::string getIdentifier() \textcolor{keyword}{const};}
+\DoxyCodeLine{125   \textcolor{keywordtype}{void} setIdentifier(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_d_poly_iter_a377870d0372d739996529f8f0c0993a1}{equals}}(\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{DetectionPolygon}}* d) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129   std::string strVelocities(\textcolor{keyword}{const} std::vector<Vect2>\& polyvel) \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \};}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CDPOLYITER\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

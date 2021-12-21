@@ -1,0 +1,71 @@
+\hypertarget{_general3_d_state_8h_source}{}\doxysection{General3\+DState.\+h}
+\label{_general3_d_state_8h_source}\index{Modules/ACCoRD/inc/General3DState.h@{Modules/ACCoRD/inc/General3DState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef GENERAL3DSTATE\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define GENERAL3DSTATE\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Vect3.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}MovingPolygon3D.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}} \{}
+\DoxyCodeLine{24 \textcolor{keyword}{private}:}
+\DoxyCodeLine{25     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} si;}
+\DoxyCodeLine{26     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vi;}
+\DoxyCodeLine{27     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} mp;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{bool} containment;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{bool} pointDefined;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{bool} polyDefined;}
+\DoxyCodeLine{31     }
+\DoxyCodeLine{32 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}();}
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& p);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}}\& p, \textcolor{keywordtype}{bool} containment);}
+\DoxyCodeLine{40     }
+\DoxyCodeLine{41     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}}\& g);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}} INVALID;}
+\DoxyCodeLine{44     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}} ZERO;}
+\DoxyCodeLine{45     }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47     \textcolor{keywordtype}{bool} hasPointMass() \textcolor{keyword}{const};}
+\DoxyCodeLine{48     }
+\DoxyCodeLine{49     \textcolor{keywordtype}{bool} hasPolygon() \textcolor{keyword}{const};}
+\DoxyCodeLine{50     }
+\DoxyCodeLine{51     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} getVect3() \textcolor{keyword}{const};}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} getVelocity() \textcolor{keyword}{const};}
+\DoxyCodeLine{54     }
+\DoxyCodeLine{55     \mbox{\hyperlink{classlarcfm_1_1_moving_polygon3_d}{MovingPolygon3D}} getPolygon() \textcolor{keyword}{const};}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     \textcolor{keywordtype}{bool} isContainment() \textcolor{keyword}{const};}
+\DoxyCodeLine{58     }
+\DoxyCodeLine{59     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} representativePosition() \textcolor{keyword}{const};}
+\DoxyCodeLine{60     }
+\DoxyCodeLine{61     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} representativeVelocity() \textcolor{keyword}{const};}
+\DoxyCodeLine{62     }
+\DoxyCodeLine{66     \mbox{\hyperlink{classlarcfm_1_1_general3_d_state}{General3DState}} \mbox{\hyperlink{classlarcfm_1_1_general3_d_state_a800f9b2032f7bba9d8545bb420685eca}{linear}}(\textcolor{keywordtype}{double} dt) \textcolor{keyword}{const};}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{68     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \};}
+\DoxyCodeLine{71 \}\textcolor{comment}{// namespace}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

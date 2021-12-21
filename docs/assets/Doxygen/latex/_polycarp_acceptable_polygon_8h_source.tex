@@ -1,0 +1,65 @@
+\hypertarget{_polycarp_acceptable_polygon_8h_source}{}\doxysection{Polycarp\+Acceptable\+Polygon.\+h}
+\label{_polycarp_acceptable_polygon_8h_source}\index{Modules/ACCoRD/inc/PolycarpAcceptablePolygon.h@{Modules/ACCoRD/inc/PolycarpAcceptablePolygon.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * PolycarpAcceptablePolygon -\/ determining if a 2D polygon is well-\/formed}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2015-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef POLYCARPACCEPTABLEPOLYGON\_H\_}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define POLYCARPACCEPTABLEPOLYGON\_H\_}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Vect2.h"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon}{PolycarpAcceptablePolygon}} \{}
+\DoxyCodeLine{23     \textcolor{keyword}{public}:}
+\DoxyCodeLine{24         }
+\DoxyCodeLine{25         \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_edge_cross}{EdgeCross}} \{}
+\DoxyCodeLine{26         \textcolor{keyword}{public}:}
+\DoxyCodeLine{27             \textcolor{keywordtype}{bool} ans;}
+\DoxyCodeLine{28             \textcolor{keywordtype}{bool} invalid;}
+\DoxyCodeLine{29             }
+\DoxyCodeLine{30             \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_edge_cross}{EdgeCross}}(\textcolor{keywordtype}{bool} b1, \textcolor{keywordtype}{bool} b2) \{}
+\DoxyCodeLine{31                 ans = b1;}
+\DoxyCodeLine{32                 invalid = b2;}
+\DoxyCodeLine{33             \}}
+\DoxyCodeLine{34         \};}
+\DoxyCodeLine{35         }
+\DoxyCodeLine{36         \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{CrossAns}} \{}
+\DoxyCodeLine{37         \textcolor{keyword}{public}:}
+\DoxyCodeLine{38             \textcolor{keywordtype}{int} index;}
+\DoxyCodeLine{39             \textcolor{keywordtype}{double} num;}
+\DoxyCodeLine{40             \textcolor{keywordtype}{double} denom;}
+\DoxyCodeLine{41             }
+\DoxyCodeLine{42             \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{CrossAns}}(\textcolor{keywordtype}{int} a, \textcolor{keywordtype}{double} b, \textcolor{keywordtype}{double} c) \{}
+\DoxyCodeLine{43                 index = a;}
+\DoxyCodeLine{44                 num = b;}
+\DoxyCodeLine{45                 denom = c;}
+\DoxyCodeLine{46             \}}
+\DoxyCodeLine{47         \};}
+\DoxyCodeLine{48         }
+\DoxyCodeLine{49         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} near\_poly\_edge(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,\textcolor{keywordtype}{double} BUFF,\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{50         \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_edge_cross}{EdgeCross}} upshot\_crosses\_edge(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{51         \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{CrossAns}} compute\_intercept(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s,\textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{52         \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{CrossAns}} min\_cross\_dist\_index(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& s);}
+\DoxyCodeLine{53         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} corner\_lt\_3deg(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& v,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& w);}
+\DoxyCodeLine{54         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} acceptable\_polygon\_2D(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{55         \textcolor{keyword}{static} \textcolor{keywordtype}{int} counterclockwise\_corner\_index(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keywordtype}{int} eps);}
+\DoxyCodeLine{56         \textcolor{keyword}{static} \textcolor{keywordtype}{double} min\_y\_val(\textcolor{keyword}{const} std::vector<Vect2>\& p);}
+\DoxyCodeLine{57         \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} test\_point\_below(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keywordtype}{double} BUFF);}
+\DoxyCodeLine{58         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} counterclockwise\_edges(\textcolor{keyword}{const} std::vector<Vect2>\& p);}
+\DoxyCodeLine{59         \textcolor{keyword}{static} \textcolor{keywordtype}{bool} segment\_near\_any\_edge(\textcolor{keyword}{const} std::vector<Vect2>\& p,\textcolor{keywordtype}{double} BUFF,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segstart, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& segend);}
+\DoxyCodeLine{60     \};}
+\DoxyCodeLine{61 \}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{63 }
+
+\end{DoxyCode}

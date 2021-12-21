@@ -1,0 +1,58 @@
+\hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon}{}\doxysection{larcfm\+::Polycarp\+Acceptable\+Polygon Class Reference}
+\label{classlarcfm_1_1_polycarp_acceptable_polygon}\index{larcfm::PolycarpAcceptablePolygon@{larcfm::PolycarpAcceptablePolygon}}
+
+
+{\ttfamily \#include $<$Polycarp\+Acceptable\+Polygon.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{Cross\+Ans}}
+\item 
+class \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_edge_cross}{Edge\+Cross}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_aff82d4203e1ba4485eb0413f78905745}\label{classlarcfm_1_1_polycarp_acceptable_polygon_aff82d4203e1ba4485eb0413f78905745}} 
+static bool {\bfseries near\+\_\+poly\+\_\+edge} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, double BUFF, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a9cc93a91fb9357a860ce35611e1f691c}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a9cc93a91fb9357a860ce35611e1f691c}} 
+static \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_edge_cross}{Edge\+Cross}} {\bfseries upshot\+\_\+crosses\+\_\+edge} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a452e251e91c52023d1e5f4336b19fb60}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a452e251e91c52023d1e5f4336b19fb60}} 
+static \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{Cross\+Ans}} {\bfseries compute\+\_\+intercept} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s, int i)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a6ebf5b2aee99fe8919d7b802335d9a7c}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a6ebf5b2aee99fe8919d7b802335d9a7c}} 
+static \mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon_1_1_cross_ans}{Cross\+Ans}} {\bfseries min\+\_\+cross\+\_\+dist\+\_\+index} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&s)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a26ba41ff368f57c8e4dc53242ff5362f}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a26ba41ff368f57c8e4dc53242ff5362f}} 
+static bool {\bfseries corner\+\_\+lt\+\_\+3deg} (const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&w)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a6548929cdedd9175b7daf7784d9bc59e}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a6548929cdedd9175b7daf7784d9bc59e}} 
+static bool {\bfseries acceptable\+\_\+polygon\+\_\+2D} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, double BUFF)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_ae49573e7ec7a40099a5c3069e0801378}\label{classlarcfm_1_1_polycarp_acceptable_polygon_ae49573e7ec7a40099a5c3069e0801378}} 
+static int {\bfseries counterclockwise\+\_\+corner\+\_\+index} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, int eps)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a89e657c1567f48cf101379ab96c4f7ee}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a89e657c1567f48cf101379ab96c4f7ee}} 
+static double {\bfseries min\+\_\+y\+\_\+val} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a042764a13575419f040936a69e239545}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a042764a13575419f040936a69e239545}} 
+static \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} {\bfseries test\+\_\+point\+\_\+below} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, double BUFF)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a4af38f93b119a4c297bf5540c42e18a8}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a4af38f93b119a4c297bf5540c42e18a8}} 
+static bool {\bfseries counterclockwise\+\_\+edges} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_polycarp_acceptable_polygon_a030231356bc4e9e12488e0e5de9841de}\label{classlarcfm_1_1_polycarp_acceptable_polygon_a030231356bc4e9e12488e0e5de9841de}} 
+static bool {\bfseries segment\+\_\+near\+\_\+any\+\_\+edge} (const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} $>$ \&p, double BUFF, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segstart, const \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} \&segend)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classlarcfm_1_1_polycarp_acceptable_polygon}{Polycarp\+Acceptable\+Polygon}} -\/ determining if a 2D polygon is well-\/formed 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Polycarp\+Acceptable\+Polygon.\+h\item 
+Modules/\+ACCo\+RD/src/Polycarp\+Acceptable\+Polygon.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,861 @@
+\hypertarget{classlarcfm_1_1_traj_gen}{}\doxysection{larcfm\+::Traj\+Gen Class Reference}
+\label{classlarcfm_1_1_traj_gen}\index{larcfm::TrajGen@{larcfm::TrajGen}}
+
+
+{\ttfamily \#include $<$Traj\+Gen.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ad3e3d10765911659a237341cda1d3b93}\label{classlarcfm_1_1_traj_gen_ad3e3d10765911659a237341cda1d3b93}} 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ double, double, double $>$ {\bfseries get\+Stored\+Parameters} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a8c2c60f27339975ec0e91eb8de4510b2}{add\+Params}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double bank\+Angle, double gs\+Accel, double vs\+Accel)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a6445e915de0100a4161c8be68131cc67}{turn\+Can\+Be\+Inscribed}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, int i, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&BOT, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&EOT)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aa1e877d03c90423997e4ac49be45a38a}{mark\+Vs\+Changes}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a0de6b703561842fd232ee0c09fb6789a}\label{classlarcfm_1_1_traj_gen_a0de6b703561842fd232ee0c09fb6789a}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries generate\+Turn\+TCPs} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, double bank\+Angle)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ab17834a65478d405282832de1beb2a9c}{generate\+Turn\+TCPs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, double default\+\_\+bank\+\_\+angle, bool continue\+Gen)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aef2c63c713c201ff70719f68cee137f2}{generate\+Turn\+Tcp\+At}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int ix\+Np2, double default\+\_\+bank\+Angle, bool continue\+Gen)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a01bd59cefba698bc3fe770bb74c74642}{generate\+Turn\+Tcp}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int ix\+Np2, double R, bool bank\+Used, bool continue\+Gen)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a12471debfe7a4423c90d26d1fae309e2}{needed\+Turn\+Leg\+Distance}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int ix, double radius)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a9ffa60418ad7971d9fa9afc841ca4fbd}\label{classlarcfm_1_1_traj_gen_a9ffa60418ad7971d9fa9afc841ca4fbd}} 
+static double {\bfseries needed\+Leg\+Length\+Bank\+Angle} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int ix, double bank\+Angle)
+\item 
+static std\+::pair$<$ int, double $>$ \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a93a1053a6a0e01eeb7e8902f23575551}{move\+Points\+Within\+Turn}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int ix\+BOT, int ix\+Np2, int ix\+EOT, double gs\+In)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a8617fe8ace9e3ba73a7e8110047d2749}{generate\+Turn\+TCPs\+Radius}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ab594ad54082d412c1e00a2305384a4b1}{generate\+Turn\+TCPs\+Radius}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, bool continue\+Gen)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a26bfd1b62cfd293b0068de3a3ae1124d}{generate\+Gs\+TCPs\+At}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int i, double gs\+Accel, bool repair\+Gs)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae77878d67545931d99b4a8b7c3b0c685}{adjust\+Gs\+Inside\+Accel}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int ix\+BGS, double a\+BGS, double dist\+To\+EGS)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_traj_gen_aac41f95601e3605fc332e4122de4878c}{generate\+Gs\+To\+Zero}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int i, double a, double target\+Gs)
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae3d0ebd3864192b15c5eeb2d20613171}{adjust\+Gs\+Inside\+Accel\+To\+EGS}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int ix\+BGS, double a\+BGS, int ix\+EGS)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ae572f031833cdf1cddf04bb1bca04059}\label{classlarcfm_1_1_traj_gen_ae572f031833cdf1cddf04bb1bca04059}} 
+static bool {\bfseries attempt\+Repair2} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, int ix\+BGS, int ix\+EGS, double max\+Gs\+Accel)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_adc9cb6e9be450e8dfd6851afea3aa479}{make\+BGS}} (const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&tcp1, double a, bool is\+Alt\+Preserve)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a3289172b5556e4a970173ddfdf2eb925}\label{classlarcfm_1_1_traj_gen_a3289172b5556e4a970173ddfdf2eb925}} 
+static \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} {\bfseries make\+EGS} ()
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a60e4f258e3ec3e3584bfe31063f0d20f}{generate\+Gs\+TCPs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double max\+Gs\+Accel, bool repair\+Gs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_aee7336eff6a2b1609df8484faddd33e3}\label{classlarcfm_1_1_traj_gen_aee7336eff6a2b1609df8484faddd33e3}} 
+static void {\bfseries generate\+Gs\+TCP} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int i, double max\+Gs\+Accel, bool repair\+Gs)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_acda5065816f1724020cd50c1f03786d0}{generate\+Vs\+TCPs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, double max\+Vs\+Accel, bool continue\+Gen, bool repair\+Vs\+\_\+zero\+Gs)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a906f8aa459cc5b30f427b15f9f75249b}\label{classlarcfm_1_1_traj_gen_a906f8aa459cc5b30f427b15f9f75249b}} 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} {\bfseries generate\+Vs\+TCPs} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc, double max\+Vs\+Accel)
+\item 
+static int \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a94c5c66a2bb41cc58ad71e9049ee2848}{generate\+Vs\+TCP}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int i, double vs\+Accel, bool continue\+Gen, bool repair\+Vs\+\_\+zero\+Gs)
+\item 
+static bool \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a2c0a61c4972829a25a71af1bef3fee87}{fix\+Alts}} (\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&traj, int bindex, int eindex, double vs1, double accel)
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ab386b0dd2b05c11d9e0c4acf70a746cf}{calc\+Radius}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, int ix, double bank)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a162674a2cb362686a0fafa0d01ee2fb7}{linear\+Repair\+Short\+Turn\+Legs}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double bank, bool add\+Middle)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a5162ab6e136997fd0027c3009d4256ca}{make\+Marked\+Vs\+Constant}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&kpc)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a797551bef34b6dd96adbe6904bfdb65c}{repair\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, bool repair\+Turn, bool repair\+Vs, double bank\+Angle, double vs\+Accel)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}{make\+Kinematic\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double bank\+Angle, double gs\+Accel, double vs\+Accel, bool repair\+Turn, bool repair\+Vs, bool repair\+Gs)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ac1cd5cccf9d7f88097670ccb13a63bd7}{make\+Kinematic\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, double bank\+Angle, double gs\+Accel, double vs\+Accel)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a025851b7b5b571aca08ba7bc8ce9abca}{make\+Vs\+Kinematic\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&p, double vs\+Accel)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_abc98b6bc05596549d611472b519863ae}{gen\+Direct2}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double to, double bank\+Angle)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a47a5b698976f1d47992747bd553942bb}{gen\+Direct\+To\+Linear}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}}, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double to, double bank\+Angle, double time\+Before\+Turn)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_ae71b0e901aa77f11c9598f7a840bee22}{build\+Direct\+To}} (const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&s, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&base, double bank\+Angle)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a645e4413c5a8b00918602a814c4e2e50}{make\+Linear\+Plan}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&\mbox{\hyperlink{namespacelarcfm_ac38ddaf52315b43b38020c69681bf69b}{fp}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ad79d40ccdcbafdac51d796dbf8849766}\label{classlarcfm_1_1_traj_gen_ad79d40ccdcbafdac51d796dbf8849766}} 
+static void {\bfseries set\+Verbose} (bool b)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ac362c3ae388120323dc516a4551ef5ba}\label{classlarcfm_1_1_traj_gen_ac362c3ae388120323dc516a4551ef5ba}} 
+static void {\bfseries print\+Error} (const std\+::string \&s)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a04d3f95ba4a57672cd2ebb2aaab6653a}\label{classlarcfm_1_1_traj_gen_a04d3f95ba4a57672cd2ebb2aaab6653a}} 
+static const double {\bfseries MIN\+\_\+\+MARK\+\_\+\+LEG\+\_\+\+TIME} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units\+::from}}(\char`\"{}s\char`\"{},60)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a403c0b9ef9a60438e8edac28dec2377e}\label{classlarcfm_1_1_traj_gen_a403c0b9ef9a60438e8edac28dec2377e}} 
+static const double {\bfseries minor\+Vfactor} = 0.\+01
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a8abf8e266401afffac95ce650220a0d3}\label{classlarcfm_1_1_traj_gen_a8abf8e266401afffac95ce650220a0d3}} 
+static const double {\bfseries max\+Vs} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units\+::from}}(\char`\"{}fpm\char`\"{},10000)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ab637af6ae271e2bc4969fa5d6d6e10c7}\label{classlarcfm_1_1_traj_gen_ab637af6ae271e2bc4969fa5d6d6e10c7}} 
+static const double {\bfseries max\+Alt} = \mbox{\hyperlink{classlarcfm_1_1_units_abbcc1b16b94f83ab9568d16a9d2dbdf7}{Units\+::from}}(\char`\"{}ft\char`\"{},60000)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_aa5571c98893a424c8533619d6a6b5783}\label{classlarcfm_1_1_traj_gen_aa5571c98893a424c8533619d6a6b5783}} 
+static const std\+::string {\bfseries turn\+Fail} = \char`\"{}$<$Traj\+Gen.\+turn\+Gen\+Error$>$\char`\"{}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a62a42ba34c661bc882f53b0d0cc481be}\label{classlarcfm_1_1_traj_gen_a62a42ba34c661bc882f53b0d0cc481be}} 
+static const std\+::string {\bfseries gs\+Fail} = \char`\"{}$<$Traj\+Gen.\+gs\+Gen\+Error$>$\char`\"{}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a377b58e451a9cf991ee8f768e7cd79d8}\label{classlarcfm_1_1_traj_gen_a377b58e451a9cf991ee8f768e7cd79d8}} 
+static const std\+::string {\bfseries vs\+Fail} = \char`\"{}$<$Traj\+Gen.\+vs\+Gen\+Error$>$\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a44b92ca0d70289426d74a34c43d772cd}{direct\+To\+Continue\+Time}} (const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&lpc, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&so, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vo, double to, double bank\+Angle)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_af80b930baa31eb9412cca874b2ae5e43}\label{classlarcfm_1_1_traj_gen_af80b930baa31eb9412cca874b2ae5e43}} 
+static bool {\bfseries verbose} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Trajectory generation functionality. This class translates Linear plans into Kinematic plans. The translation back to a Linear plan from a Kinematic plan is accomplished using reversion methods defined in \mbox{\hyperlink{classlarcfm_1_1_plan_util}{Plan\+Util}} (See Plan\+Util.\+revert\+All\+TCPS).
+
+{\bfseries{Note\+:}} It is very easy to create a linear plan that is infeasible, that is, it contains a segment where there is insufficient time or distance to achieve the acceleration implicit in it. If \mbox{\hyperlink{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}{Traj\+Gen.\+make\+Kinematic\+Plan}} fails to generate a Kinematic plan, an error message is added to the plan. There are \char`\"{}repair\char`\"{} methods available that modify the linear plan that often turn it into a feasible plan (See \mbox{\hyperlink{classlarcfm_1_1_plan_util_a2042a772213ba2540655efd302aa1496}{Plan\+Util.\+repair\+Short\+Vs\+Legs}}, Plan\+Util.\+fix\+Bad\+Turns)
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a8c2c60f27339975ec0e91eb8de4510b2}\label{classlarcfm_1_1_traj_gen_a8c2c60f27339975ec0e91eb8de4510b2}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!addParams@{addParams}}
+\index{addParams@{addParams}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{addParams()}{addParams()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traj\+Gen\+::add\+Params (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{bank\+Angle,  }\item[{double}]{gs\+Accel,  }\item[{double}]{vs\+Accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Store accel magnitude values used to generate this kinematic plan in a plan\textquotesingle{}s note field. Negative values will be ignored. 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan to modify \\
+\hline
+{\em bank\+Angle} & bank angle in radians, negative for none \\
+\hline
+{\em gs\+Accel} & gs accel in m/s, negative for none \\
+\hline
+{\em vs\+Accel} & vs accel in m/s, negative for none\\
+\hline
+\end{DoxyParams}
+Store accel values in a plan\textquotesingle{}s note field 
+\begin{DoxyParams}{Parameters}
+{\em p} & plan to modify \\
+\hline
+{\em bank\+Angle} & bank angle in radians, negative for none \\
+\hline
+{\em gs\+Accel} & gs accel in m/s, negative for none \\
+\hline
+{\em vs\+Accel} & vs accel in m/s, negative for none \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ae77878d67545931d99b4a8b7c3b0c685}\label{classlarcfm_1_1_traj_gen_ae77878d67545931d99b4a8b7c3b0c685}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!adjustGsInsideAccel@{adjustGsInsideAccel}}
+\index{adjustGsInsideAccel@{adjustGsInsideAccel}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{adjustGsInsideAccel()}{adjustGsInsideAccel()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Traj\+Gen\+::adjust\+Gs\+Inside\+Accel (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{ix\+BGS,  }\item[{double}]{a\+BGS,  }\item[{double}]{dist\+To\+EGS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Adjust ground speed of all points that will fall within distance to new EGS (dist\+To\+EGS) This is necessary because points between a newly added BGS -- EGS region will have time based on the previous non-\/accelerated section.
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & the plan file of interest \\
+\hline
+{\em ix\+BGS} & index of BGS (that has just been added, but EGS has not yet been added!) \\
+\hline
+{\em a\+BGS} & signed acceleration value \\
+\hline
+{\em dist\+To\+EGS} & distance from BGS to new EGS point\\
+\hline
+\end{DoxyParams}
+Note\+: It is necessary to adjust by distance and not time. The times will change, so the EGS should added after this function is called.
+
+remove all points that will fall within distance to new EGS (dist\+To\+EGS)
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & the plan file of interest \\
+\hline
+{\em ix\+BGS} & index of BGS \\
+\hline
+{\em a\+BGS} & acceleration value \\
+\hline
+{\em dist\+To\+EGS} & distance from BGS to new EGS point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ae3d0ebd3864192b15c5eeb2d20613171}\label{classlarcfm_1_1_traj_gen_ae3d0ebd3864192b15c5eeb2d20613171}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!adjustGsInsideAccelToEGS@{adjustGsInsideAccelToEGS}}
+\index{adjustGsInsideAccelToEGS@{adjustGsInsideAccelToEGS}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{adjustGsInsideAccelToEGS()}{adjustGsInsideAccelToEGS()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traj\+Gen\+::adjust\+Gs\+Inside\+Accel\+To\+EGS (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{ix\+BGS,  }\item[{double}]{gs\+Accel,  }\item[{int}]{ix\+EGS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Adjust ground speed of all points that will fall within distance to new EGS (dist\+To\+EGS)
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & the plan file of interest \\
+\hline
+{\em ix\+BGS} & index of BGS \\
+\hline
+{\em a\+BGS} & signed acceleration value \\
+\hline
+{\em dist\+To\+EGS} & distance from BGS to new EGS point\\
+\hline
+\end{DoxyParams}
+Note\+: this function used where EGS has already been added. \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ae71b0e901aa77f11c9598f7a840bee22}\label{classlarcfm_1_1_traj_gen_ae71b0e901aa77f11c9598f7a840bee22}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!buildDirectTo@{buildDirectTo}}
+\index{buildDirectTo@{buildDirectTo}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{buildDirectTo()}{buildDirectTo()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::build\+Direct\+To (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} \&}]{s,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{v,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{base,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Construct a (hopefully) feasible linear plan that describes a path from s to the goal point. If this fails, it reurns a simple direct plan. \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ab386b0dd2b05c11d9e0c4acf70a746cf}\label{classlarcfm_1_1_traj_gen_ab386b0dd2b05c11d9e0c4acf70a746cf}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!calcRadius@{calcRadius}}
+\index{calcRadius@{calcRadius}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{calcRadius()}{calcRadius()}}
+{\footnotesize\ttfamily double larcfm\+::\+Traj\+Gen\+::calc\+Radius (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{ix,  }\item[{double}]{bank }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+calculate radius at vertex ix, If a radius has been set use it, otherwise use bank angle and GS to calculate value
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \\
+\hline
+{\em ix} & index of vertex point \\
+\hline
+{\em bank} & bank angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a44b92ca0d70289426d74a34c43d772cd}\label{classlarcfm_1_1_traj_gen_a44b92ca0d70289426d74a34c43d772cd}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!directToContinueTime@{directToContinueTime}}
+\index{directToContinueTime@{directToContinueTime}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{directToContinueTime()}{directToContinueTime()}}
+{\footnotesize\ttfamily double larcfm\+::\+Traj\+Gen\+::direct\+To\+Continue\+Time (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{to,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Attempts to compute (heuristic) the amount of time to continue current velocity before starting direct to turn. (in 2-\/D) 
+\begin{DoxyParams}{Parameters}
+{\em lpc} & \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} trying to connect to at point zero. \\
+\hline
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em to} & current time \\
+\hline
+{\em bank\+Angle} & max bank angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a2c0a61c4972829a25a71af1bef3fee87}\label{classlarcfm_1_1_traj_gen_a2c0a61c4972829a25a71af1bef3fee87}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!fixAlts@{fixAlts}}
+\index{fixAlts@{fixAlts}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{fixAlts()}{fixAlts()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Traj\+Gen\+::fix\+Alts (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{bindex,  }\item[{int}]{eindex,  }\item[{double}]{vs1,  }\item[{double}]{accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This method makes all of the vertical speed out of bindex to be vs1. It also smoothes the velocity profile according to the \char`\"{}accel\char`\"{} parameter.
+
+Note\+: this is essential to making the BVS-\/\+EVS pair consistent
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & trajectory of interest \\
+\hline
+{\em bindex} & start of smoothing region \\
+\hline
+{\em eindex} & end of smoothing region \\
+\hline
+{\em vs1} & velocity to use for smoothing \\
+\hline
+{\em accel} & acceleration in this BGS EGS region \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true, if successful 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_abc98b6bc05596549d611472b519863ae}\label{classlarcfm_1_1_traj_gen_abc98b6bc05596549d611472b519863ae}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!genDirect2@{genDirect2}}
+\index{genDirect2@{genDirect2}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{genDirect2()}{genDirect2()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::gen\+Direct2 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{pc,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{to,  }\item[{double}]{bank\+Angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+$\ast$$\ast$$\ast$ UNUSED $\ast$$\ast$$\ast$
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & a linear plan that needs to be connected to, preferable at point 0 \\
+\hline
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em to} & current time \\
+\hline
+{\em bank\+Angle} & turn bank angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new plan with (so,vo,to) added as a first point and a lead\+In point added
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & a linear plan that needs to be connected to, preferable at point 0 \\
+\hline
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em to} & current time \\
+\hline
+{\em bank\+Angle} & turn bank angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new plan with (so,vo,to) added as a first point and a lead\+In point added 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a47a5b698976f1d47992747bd553942bb}\label{classlarcfm_1_1_traj_gen_a47a5b698976f1d47992747bd553942bb}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!genDirectToLinear@{genDirectToLinear}}
+\index{genDirectToLinear@{genDirectToLinear}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{genDirectToLinear()}{genDirectToLinear()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::gen\+Direct\+To\+Linear (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{so,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&}]{vo,  }\item[{double}]{to,  }\item[{double}]{bank\+Angle,  }\item[{double}]{time\+Before\+Turn }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Constructs a new linear plan that connects current state to existing linear plan lpc (in 2-\/D). 
+\begin{DoxyParams}{Parameters}
+{\em fp} & a linear plan that needs to be connected to at point 0 \\
+\hline
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em to} & current time \\
+\hline
+{\em bank\+Angle} & turn bank angle \\
+\hline
+{\em time\+Before\+Turn} & delay time before continuing turn. (can call direct\+To\+Continue\+Time for an estimate) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new linear plan with (so,vo,to) added as a first point and a lead\+In point added If we cannot connect to point zero of lpc this returns a plan with its error status set. The resulting plan may be infeasible from a kinematic view.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & a linear plan that needs to be connected to, preferable at point 0 \\
+\hline
+{\em so} & current position \\
+\hline
+{\em vo} & current velocity \\
+\hline
+{\em to} & current time \\
+\hline
+{\em bank\+Angle} & turn bank angle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new plan with (so,vo,to) added as a first point and a lead\+In point added 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a60e4f258e3ec3e3584bfe31063f0d20f}\label{classlarcfm_1_1_traj_gen_a60e4f258e3ec3e3584bfe31063f0d20f}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateGsTCPs@{generateGsTCPs}}
+\index{generateGsTCPs@{generateGsTCPs}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateGsTCPs()}{generateGsTCPs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::generate\+Gs\+TCPs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{max\+Gs\+Accel,  }\item[{bool}]{repair\+Gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generates ground speed TCPs (in forward direction)
+
+
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan to be processed \\
+\hline
+{\em max\+Gs\+Accel} & ground speed acceleration (non-\/negative) \\
+\hline
+{\em repair\+Gs} & if segment is too short, repair by skipping over it (i.\+e. achieve max possible accel) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan with BGS-\/\+EGS pairs added 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a26bfd1b62cfd293b0068de3a3ae1124d}\label{classlarcfm_1_1_traj_gen_a26bfd1b62cfd293b0068de3a3ae1124d}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateGsTCPsAt@{generateGsTCPsAt}}
+\index{generateGsTCPsAt@{generateGsTCPsAt}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateGsTCPsAt()}{generateGsTCPsAt()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traj\+Gen\+::generate\+Gs\+TCPs\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{i,  }\item[{double}]{gs\+Accel,  }\item[{bool}]{repair\+Gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a BGS-\/\+EGS pair starting at index \char`\"{}i\char`\"{}. The speed into and out of EGS will be \char`\"{}target\+Gs\char`\"{} Note\+: target\+GS is often chosen to be gs\+Out(i+1) so that there is continuity at \char`\"{}i+1\char`\"{} after this method is called at \char`\"{}i\char`\"{}
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & trajectory \\
+\hline
+{\em i} & index where BGS is created \\
+\hline
+{\em gs\+Accel} & unsigned acceleration value \\
+\hline
+{\em target\+Gs} & target ground speed (usually gs\+Out(i+1) -- calculated earlier) \\
+\hline
+{\em time\+Offset} & create BGS this much time after time(i), it can be zero\\
+\hline
+\end{DoxyParams}
+Note\+: This method will skip over points until the target\+Gs is obtained. \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_aac41f95601e3605fc332e4122de4878c}\label{classlarcfm_1_1_traj_gen_aac41f95601e3605fc332e4122de4878c}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateGsToZero@{generateGsToZero}}
+\index{generateGsToZero@{generateGsToZero}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateGsToZero()}{generateGsToZero()}}
+{\footnotesize\ttfamily int larcfm\+::\+Traj\+Gen\+::generate\+Gs\+To\+Zero (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{i,  }\item[{double}]{gs\+Accel,  }\item[{double}]{target\+Gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+generate an BGS-\/\+EGS pair with the EGS at point i
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & trajectory \\
+\hline
+{\em i} & point with GSOut = 0 \\
+\hline
+{\em a} & absolute acceleration \\
+\hline
+{\em target\+Gs} & should be zero are almost zero \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index where BGS is located 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a01bd59cefba698bc3fe770bb74c74642}\label{classlarcfm_1_1_traj_gen_a01bd59cefba698bc3fe770bb74c74642}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateTurnTcp@{generateTurnTcp}}
+\index{generateTurnTcp@{generateTurnTcp}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateTurnTcp()}{generateTurnTcp()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traj\+Gen\+::generate\+Turn\+Tcp (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{ix\+Np2,  }\item[{double}]{R,  }\item[{bool}]{bank\+Used,  }\item[{bool}]{continue\+Gen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate turn at vertex \char`\"{}ix\+NP2\char`\"{} with radius R
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & trajectory under construction \\
+\hline
+{\em ix\+Np2} & index of np2 in plan \\
+\hline
+{\em R} & unsigned radius \\
+\hline
+{\em bank\+Used} & true if default bank angle was used to compute R \\
+\hline
+{\em continue\+Gen} & continue generation, even with problems \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_aef2c63c713c201ff70719f68cee137f2}\label{classlarcfm_1_1_traj_gen_aef2c63c713c201ff70719f68cee137f2}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateTurnTcpAt@{generateTurnTcpAt}}
+\index{generateTurnTcpAt@{generateTurnTcpAt}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateTurnTcpAt()}{generateTurnTcpAt()}}
+{\footnotesize\ttfamily void larcfm\+::\+Traj\+Gen\+::generate\+Turn\+Tcp\+At (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{ix\+Np2,  }\item[{double}]{default\+\_\+bank\+Angle,  }\item[{bool}]{continue\+Gen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate turn at vertex \char`\"{}ix\+NP2\char`\"{}. If there is a stored radius use that value, otherwise compute radius from default\+\_\+bank\+Angle and speed
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & traj \\
+\hline
+{\em ix\+Np2} & turn vertex -- should not be in a turn already \\
+\hline
+{\em dafault\+\_\+bank\+Angle} & default banks angle used to compute radius \\
+\hline
+{\em continue\+Gen} & if true continue turn generation in the presence of errors \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ab17834a65478d405282832de1beb2a9c}\label{classlarcfm_1_1_traj_gen_ab17834a65478d405282832de1beb2a9c}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateTurnTCPs@{generateTurnTCPs}}
+\index{generateTurnTCPs@{generateTurnTCPs}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateTurnTCPs()}{generateTurnTCPs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::generate\+Turn\+TCPs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{double}]{default\+\_\+bank\+\_\+angle,  }\item[{bool}]{continue\+Gen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Kinematic generator that adds turn TCPs. This defers ground speed changes until after the turn. It assumes legs are long enough to support the turns. bank angle must be nonnegative!!!!!
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em default\+\_\+bank\+\_\+angle} & the default bank angle, if a radius is not present in the plan. \\
+\hline
+{\em continue\+Gen} & if true, do not terminate generation if an error message is produced \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a turn plan with BOTs and EOTs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a8617fe8ace9e3ba73a7e8110047d2749}\label{classlarcfm_1_1_traj_gen_a8617fe8ace9e3ba73a7e8110047d2749}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateTurnTCPsRadius@{generateTurnTCPsRadius}}
+\index{generateTurnTCPsRadius@{generateTurnTCPsRadius}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateTurnTCPsRadius()}{generateTurnTCPsRadius()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::generate\+Turn\+TCPs\+Radius (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Kinematic generator that adds turn TCPs. This defers ground speed changes until after the turn. It assumes legs are long enough to support the turns.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a plan with BOTs and EOTs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ab594ad54082d412c1e00a2305384a4b1}\label{classlarcfm_1_1_traj_gen_ab594ad54082d412c1e00a2305384a4b1}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateTurnTCPsRadius@{generateTurnTCPsRadius}}
+\index{generateTurnTCPsRadius@{generateTurnTCPsRadius}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateTurnTCPsRadius()}{generateTurnTCPsRadius()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::generate\+Turn\+TCPs\+Radius (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{bool}]{continue\+Gen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Kinematic generator that adds turn TCPs. This defers ground speed changes until after the turn. It assumes legs are long enough to support the turns.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em continue\+Gen} & continue generation, even with problems \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a plan with BOTs and EOTs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a94c5c66a2bb41cc58ad71e9049ee2848}\label{classlarcfm_1_1_traj_gen_a94c5c66a2bb41cc58ad71e9049ee2848}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateVsTCP@{generateVsTCP}}
+\index{generateVsTCP@{generateVsTCP}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateVsTCP()}{generateVsTCP()}}
+{\footnotesize\ttfamily int larcfm\+::\+Traj\+Gen\+::generate\+Vs\+TCP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{i,  }\item[{double}]{vs\+Accel,  }\item[{bool}]{continue\+Gen,  }\item[{bool}]{repair\+Vs\+\_\+zero\+Gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate a BVS EVS pair at index i if delta\+Vs is large enough
+
+
+\begin{DoxyParams}{Parameters}
+{\em traj} & trajectory \\
+\hline
+{\em i} & index \\
+\hline
+{\em vs\+Accel} & vertical acceleration \\
+\hline
+{\em continue\+Gen} & if true continue generation even if errors are encountered, results in a partial kinematic plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the index of the EVS if successful, otherwise just i
+\end{DoxyReturn}
+t1 = previous point\textquotesingle{}s time (previous EVS) t2 = np2.\+time() = end time of the linear segment where the vertical speed change occurred next\+Vs\+Change\+Tm = time of the next vertical change (i.\+e. where the next TCP will appear) vs1 vertical speed into point at time t2 vs2 vertical speed out of point at time t2 \begin{DoxyVerb}                        vs1                              vs2
+        t1  -------------------------------- t2 ------------------------------ nextVsChangeTm
+                                       ^     "i"   ^
+                                       |           |
+                                     tbegin       tend
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_acda5065816f1724020cd50c1f03786d0}\label{classlarcfm_1_1_traj_gen_acda5065816f1724020cd50c1f03786d0}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!generateVsTCPs@{generateVsTCPs}}
+\index{generateVsTCPs@{generateVsTCPs}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{generateVsTCPs()}{generateVsTCPs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::generate\+Vs\+TCPs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{kpc,  }\item[{double}]{max\+Vs\+Accel,  }\item[{bool}]{continue\+Gen,  }\item[{bool}]{repair\+Vs\+\_\+zero\+Gs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} acceleration TCPs It assumes that all horizontal passes have been completed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em kpc} & kinematic plan with final horizontal path \\
+\hline
+{\em max\+Vs\+Accel} & vertical speed acceleration (positive) \\
+\hline
+{\em continue\+Gen} & true means continue generation even with problems \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan
+\end{DoxyReturn}
+Generate \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} acceleration TCPs It assumes that all horizontal passes have been completed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em kpc} & kinematic plan with final horizontal path \\
+\hline
+{\em max\+Vs\+Accel} & vertical speed acceleration (positive) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a162674a2cb362686a0fafa0d01ee2fb7}\label{classlarcfm_1_1_traj_gen_a162674a2cb362686a0fafa0d01ee2fb7}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!linearRepairShortTurnLegs@{linearRepairShortTurnLegs}}
+\index{linearRepairShortTurnLegs@{linearRepairShortTurnLegs}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{linearRepairShortTurnLegs()}{linearRepairShortTurnLegs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::linear\+Repair\+Short\+Turn\+Legs (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{bank,  }\item[{bool}]{add\+Middle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Repair function for a linear plan This can eliminate short legs. This function look for two sequential turns with a very short leg segment between them. It collapses the two turns into one or no turns 
+\begin{DoxyParams}{Parameters}
+{\em fp} & linear plan to be repaired \\
+\hline
+{\em bank} & bank angle \\
+\hline
+{\em add\+Middle} & if true, it adds a middle point when it deletes two points (one turn left) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+repaired \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}
+\end{DoxyReturn}
+Note\+: if add\+Middle is false, point info and named waypoint may be lost \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_adc9cb6e9be450e8dfd6851afea3aa479}\label{classlarcfm_1_1_traj_gen_adc9cb6e9be450e8dfd6851afea3aa479}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeBGS@{makeBGS}}
+\index{makeBGS@{makeBGS}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeBGS()}{makeBGS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} larcfm\+::\+Traj\+Gen\+::make\+BGS (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{Tcp\+Data}} \&}]{tcp1,  }\item[{double}]{a,  }\item[{bool}]{is\+Alt\+Preserve }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a BGS point from a previous point (that is using its TCP info in tcp1)
+
+
+\begin{DoxyParams}{Parameters}
+{\em tcp1} & \\
+\hline
+{\em a} & \\
+\hline
+{\em time\+Offset} & \\
+\hline
+{\em is\+Alt\+Preserve} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_ac1cd5cccf9d7f88097670ccb13a63bd7}\label{classlarcfm_1_1_traj_gen_ac1cd5cccf9d7f88097670ccb13a63bd7}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeKinematicPlan@{makeKinematicPlan}}
+\index{makeKinematicPlan@{makeKinematicPlan}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeKinematicPlan()}{makeKinematicPlan()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::make\+Kinematic\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{bank\+Angle,  }\item[{double}]{gs\+Accel,  }\item[{double}]{vs\+Accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The resulting Plan\+Core will be \char`\"{}clean\char`\"{} in that it will have all original points, with no history of deleted points. Also all TCPs should reference points in a feasible plan. If the trajectory is modified, it will have added, modified, or deleted points. If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as \char`\"{}\+TCP\+\_\+generation\+\_\+failure\+\_\+point\char`\"{}). 
+\begin{DoxyParams}{Parameters}
+{\em fp} & input plan (is linearized if not already so) \\
+\hline
+{\em bank\+Angle} & maximum allowed (and default) bank angle for turns \\
+\hline
+{\em gs\+Accel} & maximum allowed (and default) ground speed acceleration (m/s$^\wedge$2) \\
+\hline
+{\em vs\+Accel} & maximum allowed (and default) vertical speed acceleration (m/s$^\wedge$2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}\label{classlarcfm_1_1_traj_gen_a76ac1994430b61a4c4ff0203e81048e6}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeKinematicPlan@{makeKinematicPlan}}
+\index{makeKinematicPlan@{makeKinematicPlan}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeKinematicPlan()}{makeKinematicPlan()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::make\+Kinematic\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp,  }\item[{double}]{bank\+Angle\+In,  }\item[{double}]{gs\+Accel\+In,  }\item[{double}]{vs\+Accel\+In,  }\item[{bool}]{repair\+Turn,  }\item[{bool}]{repair\+Gs,  }\item[{bool}]{repair\+Vs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+TODO (helps me find this method)
+
+The resulting \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} will be \char`\"{}clean\char`\"{} in that it will have all original points, with no history of deleted points. Also all TCPs should reference points in a feasible plan. If the trajectory is modified, it will have added, modified, or deleted points. If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as \char`\"{}\+TCP\+\_\+generation\+\_\+failure\+\_\+point\char`\"{}). Note\+: This method seeks to preserve ground speeds of legs. The time at a waypoint is assumed to be not important compared to the original ground speed. Note. If a turn vertex \mbox{\hyperlink{classlarcfm_1_1_nav_point}{Nav\+Point}} has a non-\/zero \char`\"{}radius\char`\"{}, then that value is used rather than \char`\"{}bank\+Angle\char`\"{} 
+\begin{DoxyParams}{Parameters}
+{\em fp} & input plan (is linearized if not already so) \\
+\hline
+{\em bank\+Angle} & maximum allowed (and default) bank angle for turns \\
+\hline
+{\em gs\+Accel} & maximum allowed (and default) ground speed acceleration (m/s$^\wedge$2) \\
+\hline
+{\em vs\+Accel} & maximum allowed (and default) vertical speed acceleration (m/s$^\wedge$2) \\
+\hline
+{\em repair\+Turn} & attempt to repair infeasible turns as a preprocessing step \\
+\hline
+{\em repair\+Gs} & attempt to repair infeasible ground speed accelerations \\
+\hline
+{\em repair\+Vs} & attempt to repair infeasible vertical speed accelerations as a preprocessing step \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting kinematic plan
+\end{DoxyReturn}
+TODO
+\begin{DoxyItemize}
+\item The resulting Plan\+Core will be \char`\"{}clean\char`\"{} in that it will have all original points, with no history of deleted points. Also all TCPs should reference points in a feasible plan. If the trajectory is modified, it will have added, modified, or deleted points. If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as \char`\"{}\+TCP\+\_\+generation\+\_\+failure\+\_\+point\char`\"{}). 
+\begin{DoxyParams}{Parameters}
+{\em fp} & input plan (is linearized if not already so) \\
+\hline
+{\em bank\+Angle} & maximum allowed (and default) bank angle for turns \\
+\hline
+{\em gs\+Accel} & maximum allowed (and default) ground speed acceleration (m/s$^\wedge$2) \\
+\hline
+{\em vs\+Accel} & maximum allowed (and default) vertical speed acceleration (m/s$^\wedge$2) \\
+\hline
+{\em min\+Vs\+Change\+Recognized} & minimum vs change that will register as \char`\"{}non-\/constant\char`\"{} (m/s) \\
+\hline
+{\em repair\+Turn} & attempt to repair infeasible turns as a preprocessing step \\
+\hline
+{\em repair\+Gs} & attempt to repair infeasible gs accelerations as a preprocessing step \\
+\hline
+{\em repair\+Vs} & attempt to repair infeasible vs accelerations as a preprocessing step \\
+\hline
+{\em constant\+GS} & if true, produces a constant ground speed kinematic plan with gs being average of linear plan \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a645e4413c5a8b00918602a814c4e2e50}\label{classlarcfm_1_1_traj_gen_a645e4413c5a8b00918602a814c4e2e50}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeLinearPlan@{makeLinearPlan}}
+\index{makeLinearPlan@{makeLinearPlan}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeLinearPlan()}{makeLinearPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::make\+Linear\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{fp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns a Plan\+Core version of the given plan. If it was a kinematic plan, this will attempt to regress the TCPs to their original source points (if the proper metadata is available). If this is already a Plan\+Core, return a copy. 
+\begin{DoxyParams}{Parameters}
+{\em fp} & plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan
+\end{DoxyReturn}
+Returns a Plan\+Core version of the given plan. If it was a kinematic plan, this will attempt to regress the TCPs to their original source points (if the proper metadata is available). If this is already a Plan\+Core, return a copy. \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a5162ab6e136997fd0027c3009d4256ca}\label{classlarcfm_1_1_traj_gen_a5162ab6e136997fd0027c3009d4256ca}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeMarkedVsConstant@{makeMarkedVsConstant}}
+\index{makeMarkedVsConstant@{makeMarkedVsConstant}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeMarkedVsConstant()}{makeMarkedVsConstant()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::make\+Marked\+Vs\+Constant (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{kpc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Penultimate Kinematic generation pass. Repairs altitudes so that only VSC points have vertical speed changes. Averages vertical speeds between alt preserved points by modifying altitudes on points between them. 
+\begin{DoxyParams}{Parameters}
+{\em kpc} & kinematic plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a025851b7b5b571aca08ba7bc8ce9abca}\label{classlarcfm_1_1_traj_gen_a025851b7b5b571aca08ba7bc8ce9abca}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!makeVsKinematicPlan@{makeVsKinematicPlan}}
+\index{makeVsKinematicPlan@{makeVsKinematicPlan}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{makeVsKinematicPlan()}{makeVsKinematicPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::make\+Vs\+Kinematic\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{double}]{vs\+Accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This assumes a plan that has altitude preserve points marked. Generate the vertical profile (only) for Vs\+TCPs in this plan. 
+\begin{DoxyParams}{Parameters}
+{\em p} & input plan (need not be linear) \\
+\hline
+{\em vs\+Accel} & vertical acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+plan with vertical TCPs generated 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_aa1e877d03c90423997e4ac49be45a38a}\label{classlarcfm_1_1_traj_gen_aa1e877d03c90423997e4ac49be45a38a}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!markVsChanges@{markVsChanges}}
+\index{markVsChanges@{markVsChanges}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{markVsChanges()}{markVsChanges()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::mark\+Vs\+Changes (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+This takes a \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} lpc and returns a plan that has all points with vertical changes as \char`\"{}\+Alt\+Preserve\char`\"{} points, with all other points being \char`\"{}\+Original\char`\"{} points. Beginning and end points are always marked. 
+\begin{DoxyParams}{Parameters}
+{\em lpc} & source plan \\
+\hline
+{\em vs\+Accel} & vertical acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+kinematic plan with marked points
+\end{DoxyReturn}
+This takes a plancore lpc and returns a kinematic plan core that has all points with vertical changes as \char`\"{}\+Alt\+Preserve\char`\"{} points, with all other points being \char`\"{}\+Original\char`\"{} points. Beginning and end points are always marked. 
+\begin{DoxyParams}{Parameters}
+{\em lpc} & source plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+kinematic plan with marked points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a93a1053a6a0e01eeb7e8902f23575551}\label{classlarcfm_1_1_traj_gen_a93a1053a6a0e01eeb7e8902f23575551}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!movePointsWithinTurn@{movePointsWithinTurn}}
+\index{movePointsWithinTurn@{movePointsWithinTurn}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{movePointsWithinTurn()}{movePointsWithinTurn()}}
+{\footnotesize\ttfamily std\+::pair$<$ int, double $>$ larcfm\+::\+Traj\+Gen\+::move\+Points\+Within\+Turn (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{traj,  }\item[{int}]{ix\+BOT,  }\item[{int}]{ix\+Np2,  }\item[{int}]{ix\+EOT,  }\item[{double}]{gs\+In }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Re-\/aligns points that are within a newly generated turn at j \mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a12471debfe7a4423c90d26d1fae309e2}\label{classlarcfm_1_1_traj_gen_a12471debfe7a4423c90d26d1fae309e2}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!neededTurnLegDistance@{neededTurnLegDistance}}
+\index{neededTurnLegDistance@{neededTurnLegDistance}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{neededTurnLegDistance()}{neededTurnLegDistance()}}
+{\footnotesize\ttfamily double larcfm\+::\+Traj\+Gen\+::needed\+Turn\+Leg\+Distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{p,  }\item[{int}]{ix,  }\item[{double}]{radius }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Calculates the minimum leg distance that can handle a specified radius
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & the \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} (i.\+e. trajectory) \\
+\hline
+{\em ix} & vertex index \\
+\hline
+{\em radius} & radius of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum leg distance, return 0 if no turn would be generated here
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em p} & the \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} (i.\+e. trajectory) \\
+\hline
+{\em ix} & vertex index \\
+\hline
+{\em radius} & radius of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+minimum leg distance, return 0 if no turn would be generated here 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a797551bef34b6dd96adbe6904bfdb65c}\label{classlarcfm_1_1_traj_gen_a797551bef34b6dd96adbe6904bfdb65c}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!repairPlan@{repairPlan}}
+\index{repairPlan@{repairPlan}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{repairPlan()}{repairPlan()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} larcfm\+::\+Traj\+Gen\+::repair\+Plan (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{bool}]{repair\+Turn,  }\item[{bool}]{repair\+Vs,  }\item[{double}]{bank\+Angle,  }\item[{double}]{vs\+Accel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Method to repair an infeasible linear plan where there are segments that are too short to achieve specified acceleration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & linear plan \\
+\hline
+{\em repair\+Turn} & true, to attempt repair of infeasible turns \\
+\hline
+{\em repair\+Vs} & true, to attempt repair of infeasible vertical speed segments \\
+\hline
+{\em bank\+Angle} & bank angle \\
+\hline
+{\em vs\+Accel} & vertical speed acceleration \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+repaired plan 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_traj_gen_a6445e915de0100a4161c8be68131cc67}\label{classlarcfm_1_1_traj_gen_a6445e915de0100a4161c8be68131cc67}} 
+\index{larcfm::TrajGen@{larcfm::TrajGen}!turnCanBeInscribed@{turnCanBeInscribed}}
+\index{turnCanBeInscribed@{turnCanBeInscribed}!larcfm::TrajGen@{larcfm::TrajGen}}
+\doxysubsubsection{\texorpdfstring{turnCanBeInscribed()}{turnCanBeInscribed()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Traj\+Gen\+::turn\+Can\+Be\+Inscribed (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} \&}]{lpc,  }\item[{int}]{i,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{BOT,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{EOT }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns true if turn at i can be inscribed in the available leg space. Note that it will check for collinear points using prev\+Track\+Change and next\+Track\+Change
+
+
+\begin{DoxyParams}{Parameters}
+{\em lpc} & source plan \\
+\hline
+{\em i} & vertex to be tested \\
+\hline
+{\em BOT} & Beginning of turn \\
+\hline
+{\em EOT} & End of turn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff the BOT -\/ EOT pair can be placed within vertex 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Traj\+Gen.\+h\item 
+Modules/\+ACCo\+RD/src/Traj\+Gen.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,160 @@
+\hypertarget{_nav_point_8h_source}{}\doxysection{Nav\+Point.\+h}
+\label{_nav_point_8h_source}\index{Modules/ACCoRD/inc/NavPoint.h@{Modules/ACCoRD/inc/NavPoint.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/* Defines a 4D Waypoint}}
+\DoxyCodeLine{2 \textcolor{comment}{ *}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Authors:  George Hagen              NASA Langley Research Center}}
+\DoxyCodeLine{4 \textcolor{comment}{ *           Ricky Butler              NASA Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *           Jeff Maddalon             NASA Langley Research Center}}
+\DoxyCodeLine{6 \textcolor{comment}{ *}}
+\DoxyCodeLine{7 \textcolor{comment}{ * }}
+\DoxyCodeLine{8 \textcolor{comment}{ * Copyright (c) 2011-\/2020 United States Government as represented by}}
+\DoxyCodeLine{9 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{10 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{11 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef NAVPOINT\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define NAVPOINT\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Point.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{22   }
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{private}:}
+\DoxyCodeLine{30     \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} p;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{double} t;}
+\DoxyCodeLine{32     std::string name\_s;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{public}:}
+\DoxyCodeLine{37     \mbox{\hyperlink{classlarcfm_1_1_nav_point_aa9d35f4eca5192894d998a5eabbbf6fe}{NavPoint}}();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{46     \mbox{\hyperlink{classlarcfm_1_1_nav_point_aa9d35f4eca5192894d998a5eabbbf6fe}{NavPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{56     \mbox{\hyperlink{classlarcfm_1_1_nav_point_a369650fb7607383956275c52d4e4e720}{NavPoint}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p, \textcolor{keywordtype}{double} t, \textcolor{keyword}{const} std::string\& label);}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{69     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_adfc5adcafc18fc7bbb4fec2dff93a044}{makeLatLonAlt}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a4fcf4f6f371d13aaaa7b7bf69fea3a33}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8cfaaa96e51fc35d127a54df91ff4a6d}{lon}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0fb4c8bc5c29106e4dc7b1a58f638a9b}{alt}}, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{80     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a6d83422f2a308c7dbdc2e4a18ce3254b}{mkLatLonAlt}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a4fcf4f6f371d13aaaa7b7bf69fea3a33}{lat}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8cfaaa96e51fc35d127a54df91ff4a6d}{lon}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0fb4c8bc5c29106e4dc7b1a58f638a9b}{alt}}, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{91     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a1cc0ec4c2f3ba2bf262964babff125fa}{makeXYZ}}(\textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a7847fda67bce9273bfd5dcd841e60f37}{x}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a558e364779d42c4835760319584fdc10}{y}}, \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8536693b77243336f69d9fdb87bb973c}{z}}, \textcolor{keywordtype}{double} t);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{97     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_adf72fe351031b0b83893fbb564abb26d}{isInvalid}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     }
+\DoxyCodeLine{103     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8b6f8da0ca23e12ded1cd3042f1298b2}{ZERO\_LL}}();}
+\DoxyCodeLine{105     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& \mbox{\hyperlink{classlarcfm_1_1_nav_point_a81b3b132abe38349efe0edf84f739513}{ZERO\_XYZ}}();}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& INVALID();}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a3e129cd3fcdd47e3bfab9e55d4052237}{almostEquals}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{128     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0bb4219f6f7ecb4e57e5498bbb4d0f44}{almostEqualsPosition}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v, \textcolor{keywordtype}{double} epsilon\_horiz, \textcolor{keywordtype}{double} epsilon\_vert) \textcolor{keyword}{const};}
+\DoxyCodeLine{129     }
+\DoxyCodeLine{138     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0bb4219f6f7ecb4e57e5498bbb4d0f44}{almostEqualsPosition}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{141     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a2cdb731ec551fa19aa2fb3308cb2d9fe}{operator == }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{142     }
+\DoxyCodeLine{144     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a979884dd15186c486a1d090190b15fbf}{equals}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{147     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a77b39af429342e2e39e933b06629db5e}{operator != }}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{148     }
+\DoxyCodeLine{152     \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}  \mbox{\hyperlink{classlarcfm_1_1_nav_point_a08446a40e325749b94ffc1e1673bbb21}{vect2}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{153     }
+\DoxyCodeLine{157     \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ab4c2b9d045bc5d21321b16e6fd3ab142}{vect3}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{158     }
+\DoxyCodeLine{160     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& \mbox{\hyperlink{classlarcfm_1_1_nav_point_a008db9958a9b1b8569886af69fb25020}{lla}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{161     }
+\DoxyCodeLine{163     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& \mbox{\hyperlink{classlarcfm_1_1_nav_point_a39e71592b3ba6aa713bffc9f9d09ab7b}{position}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{164     }
+\DoxyCodeLine{168     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a7847fda67bce9273bfd5dcd841e60f37}{x}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{172     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a558e364779d42c4835760319584fdc10}{y}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{176     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8536693b77243336f69d9fdb87bb973c}{z}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{181     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a4fcf4f6f371d13aaaa7b7bf69fea3a33}{lat}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{186     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8cfaaa96e51fc35d127a54df91ff4a6d}{lon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{190     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0fb4c8bc5c29106e4dc7b1a58f638a9b}{alt}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{192     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a25738e0a59403ff858893a2c44f2aede}{latitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{194     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a7bf7e2a745777c836e888fec54346e0a}{longitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{196     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a5c5d1f422f783e7e1b493e801e653d28}{altitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{198     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0f9f5cbd996e04d9c74362c3061f5941}{xCoordinate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{200     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8425fa48b762970d76f69224535c76b6}{yCoordinate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{202     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a5be35f2b3bc90a4fe50ffe737d373d1c}{zCoordinate}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{206     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ac877a2f5efc78ce58f75f4917e83d2e1}{time}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{209     \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0a66540afd7f8a9e5e44ea5f5e3610be}{name}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{210     }
+\DoxyCodeLine{215     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a7910133a2a7bd489222b26af3266d13c}{isNameSet}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{220     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_nav_point_aac7da4f95f9f547b07a63876b1ceb03a}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{226     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ab841a9832401c3ee9d5b7a7e45396aaa}{mkLat}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a4fcf4f6f371d13aaaa7b7bf69fea3a33}{lat}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{231     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a949879c9e9c5a594959b76da446f4a3e}{mkX}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a7847fda67bce9273bfd5dcd841e60f37}{x}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{236     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a531110e6e340e0848d3d91d20315dc15}{mkLon}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8cfaaa96e51fc35d127a54df91ff4a6d}{lon}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{241     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_afdb5beecec65f31d411d473b494085f6}{mkY}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a558e364779d42c4835760319584fdc10}{y}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{246     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a779893309b9b6826f7a989778615eceb}{mkAlt}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a0fb4c8bc5c29106e4dc7b1a58f638a9b}{alt}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{251     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a3f74a5992981344e53269a0c73d7d1c5}{mkZ}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a8536693b77243336f69d9fdb87bb973c}{z}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{256     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a95e6a1439c9503ff121471711bd391af}{makeTime}}(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ac877a2f5efc78ce58f75f4917e83d2e1}{time}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{262     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_afa192cec980accd723b06d5b21ab3c3c}{makeName}}(\textcolor{keyword}{const} std::string\& label) \textcolor{keyword}{const};}
+\DoxyCodeLine{263     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} appendName(\textcolor{keyword}{const} std::string\& label) \textcolor{keyword}{const};}
+\DoxyCodeLine{264     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} appendNameNoDuplication(\textcolor{keyword}{const} std::string\& label) \textcolor{keyword}{const};}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{269     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_aa4f7b580932a480aeed389ba7e99fc15}{makeAdded}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{272     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a82ed5a0d9c734c31563f9cc32c293b2c}{makeMovedFrom}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& o) \textcolor{keyword}{const};}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{280     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ada420e77b10ce55f22f626825c3351a4}{makePosition}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{291     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a42eaaf22b134a263c09fdfc6335ab44f}{initialVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s2);}
+\DoxyCodeLine{292 }
+\DoxyCodeLine{300     \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a42eaaf22b134a263c09fdfc6335ab44f}{initialVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{310     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ae65cae8576150a592022c23caa235045}{finalVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s2);}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{319     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_aea6ac0296e2d385a0fee64ff43c277d7}{verticalSpeed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{329     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a01c610990165236e6e501c399ff01964}{averageVelocity}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& s2);}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{339     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_aeb408d205a342495795a7b3413460cf4}{linear}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ac877a2f5efc78ce58f75f4917e83d2e1}{time}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{349     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ae9167bea2944eddb8df60146bbd57cad}{linearEst}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keywordtype}{double} tm) \textcolor{keyword}{const};}
+\DoxyCodeLine{350 }
+\DoxyCodeLine{351 }
+\DoxyCodeLine{361     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a605935ef9d718a3197142bd74068438e}{interpolate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_ac877a2f5efc78ce58f75f4917e83d2e1}{time}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363 }
+\DoxyCodeLine{369     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a98b4e2ef4450c25ebd1f588ccc633839}{distanceH}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np2) \textcolor{keyword}{const};}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{376     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_nav_point_a86f0d046e7dd1b39200c2ac386dd8394}{distanceV}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np2) \textcolor{keyword}{const};}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 }
+\DoxyCodeLine{380     std::string \mbox{\hyperlink{classlarcfm_1_1_nav_point_a72b8466c42a8d21b63195f7d1816789f}{toStringShort}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{386     std::string \mbox{\hyperlink{classlarcfm_1_1_nav_point_a72b8466c42a8d21b63195f7d1816789f}{toStringShort}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{387 }
+\DoxyCodeLine{392     std::string \mbox{\hyperlink{classlarcfm_1_1_nav_point_a3a49a68318ca7f952f8dfead5ab32bfb}{toString}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{397     std::string \mbox{\hyperlink{classlarcfm_1_1_nav_point_a3a49a68318ca7f952f8dfead5ab32bfb}{toString}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399     std::vector<std::string> toStringList(\textcolor{keywordtype}{int} precision, \textcolor{keywordtype}{bool} tcp) \textcolor{keyword}{const};}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401 \textcolor{keyword}{private}:}
+\DoxyCodeLine{402     \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}} copy(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{403 }
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406   \};}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   }
+\DoxyCodeLine{409 \}}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* NAVPOINT\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

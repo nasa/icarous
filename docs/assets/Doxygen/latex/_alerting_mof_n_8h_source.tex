@@ -1,0 +1,83 @@
+\hypertarget{_alerting_mof_n_8h_source}{}\doxysection{Alerting\+Mof\+N.\+h}
+\label{_alerting_mof_n_8h_source}\index{Modules/ACCoRD/inc/AlertingMofN.h@{Modules/ACCoRD/inc/AlertingMofN.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Implementation of M of N algorithm for alerting}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Contact: Cesar A. Munoz}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Organization: NASA/Langley Research Center}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Copyright (c) 2011-\/2018 United States Government as represented by}}
+\DoxyCodeLine{7 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{8 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{10 \textcolor{comment}{ */}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef ALERTINGMOFN\_H\_}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define ALERTINGMOFN\_H\_}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <deque>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_alerting_mof_n}{AlertingMofN}} \{}
+\DoxyCodeLine{20 \textcolor{keyword}{public}:}
+\DoxyCodeLine{21   \textcolor{comment}{/*}}
+\DoxyCodeLine{22 \textcolor{comment}{   * Creates an empty M of N object}}
+\DoxyCodeLine{23 \textcolor{comment}{   */}}
+\DoxyCodeLine{24   \mbox{\hyperlink{classlarcfm_1_1_alerting_mof_n}{AlertingMofN}}();}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26   \textcolor{comment}{/*}}
+\DoxyCodeLine{27 \textcolor{comment}{   * Creates a M of N object for given values of m, n, and maximum alert level.}}
+\DoxyCodeLine{28 \textcolor{comment}{   * Assumes  m >= 1 and m <= n}}
+\DoxyCodeLine{29 \textcolor{comment}{   */}}
+\DoxyCodeLine{30   \mbox{\hyperlink{classlarcfm_1_1_alerting_mof_n}{AlertingMofN}}(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n, \textcolor{keywordtype}{double} hysteresis\_time, \textcolor{keywordtype}{double} persistence\_time);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{comment}{/*}}
+\DoxyCodeLine{33 \textcolor{comment}{   * Reset M of N object.}}
+\DoxyCodeLine{34 \textcolor{comment}{   */}}
+\DoxyCodeLine{35   \textcolor{keywordtype}{void} reset();}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{comment}{/*}}
+\DoxyCodeLine{38 \textcolor{comment}{   * Reset M of N object with given parameters}}
+\DoxyCodeLine{39 \textcolor{comment}{   */}}
+\DoxyCodeLine{40   \textcolor{keywordtype}{void} reset(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n, \textcolor{keywordtype}{double} hysteresis\_time, \textcolor{keywordtype}{double} persistence\_time);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{comment}{/*}}
+\DoxyCodeLine{43 \textcolor{comment}{   * Set new values for m and n.}}
+\DoxyCodeLine{44 \textcolor{comment}{   * Assumes  m >= 1 and m <= n}}
+\DoxyCodeLine{45 \textcolor{comment}{   */}}
+\DoxyCodeLine{46   \textcolor{keywordtype}{void} setMofN(\textcolor{keywordtype}{int} m, \textcolor{keywordtype}{int} n);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{keywordtype}{bool} isValid() \textcolor{keyword}{const};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{comment}{/*}}
+\DoxyCodeLine{51 \textcolor{comment}{   * Return M of N value for a given alert level}}
+\DoxyCodeLine{52 \textcolor{comment}{   */}}
+\DoxyCodeLine{53   \textcolor{keywordtype}{int} m\_of\_n(\textcolor{keywordtype}{int} alert\_level);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{comment}{/*}}
+\DoxyCodeLine{56 \textcolor{comment}{   * Return M of N value for a given alert level at a current time.}}
+\DoxyCodeLine{57 \textcolor{comment}{   * In addition of m\_of\_n, this also applies hysteresis and persistence}}
+\DoxyCodeLine{58 \textcolor{comment}{   */}}
+\DoxyCodeLine{59   \textcolor{keywordtype}{int} m\_of\_n(\textcolor{keywordtype}{int} alert\_level, \textcolor{keywordtype}{double} current\_time);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_alerting_mof_n}{\string~AlertingMofN}}() \{\};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{private}:}
+\DoxyCodeLine{64   \textcolor{keywordtype}{int} m\_;}
+\DoxyCodeLine{65   \textcolor{keywordtype}{int} n\_;}
+\DoxyCodeLine{66   \textcolor{keywordtype}{double} hysteresis\_time\_;}
+\DoxyCodeLine{67   \textcolor{keywordtype}{double} persistence\_time\_;}
+\DoxyCodeLine{68   \textcolor{keywordtype}{double} \_init\_time\_;}
+\DoxyCodeLine{69   \textcolor{keywordtype}{double} \_last\_time\_;}
+\DoxyCodeLine{70   \textcolor{keywordtype}{int}    \_alert\_;}
+\DoxyCodeLine{71   \textcolor{keywordtype}{int}    \_max\_;}
+\DoxyCodeLine{72   std::deque<int> \_queue\_;}
+\DoxyCodeLine{73 \};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \} \textcolor{comment}{/* namespace larcfm */}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* ALERTINGMOFN\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

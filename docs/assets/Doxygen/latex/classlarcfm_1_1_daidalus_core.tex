@@ -1,0 +1,360 @@
+\hypertarget{classlarcfm_1_1_daidalus_core}{}\doxysection{larcfm\+::Daidalus\+Core Class Reference}
+\label{classlarcfm_1_1_daidalus_core}\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ac4ea2e1ecbd9fe3c5ee18d6d59809600}\label{classlarcfm_1_1_daidalus_core_ac4ea2e1ecbd9fe3c5ee18d6d59809600}} 
+const \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{Urgency\+Strategy}} $\ast$ {\bfseries get\+\_\+urgency\+\_\+strategy} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a90b70c4f496a1e23af04bad729653d81}\label{classlarcfm_1_1_daidalus_core_a90b70c4f496a1e23af04bad729653d81}} 
+bool {\bfseries set\+\_\+urgency\+\_\+strategy} (const \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{Urgency\+Strategy}} $\ast$strat)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a79313efc6451455b9ce5fa679575661b}\label{classlarcfm_1_1_daidalus_core_a79313efc6451455b9ce5fa679575661b}} 
+\mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{Daidalus\+Core}} \& {\bfseries operator=} (const \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{Daidalus\+Core}} \&core)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a218cf8f2319616bc9a3eea0003d73ec0}\label{classlarcfm_1_1_daidalus_core_a218cf8f2319616bc9a3eea0003d73ec0}} 
+{\bfseries Daidalus\+Core} (const \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{Daidalus\+Core}} \&core)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_af71a277cf66b0cca66936d44edd4c9e4}\label{classlarcfm_1_1_daidalus_core_af71a277cf66b0cca66936d44edd4c9e4}} 
+{\bfseries Daidalus\+Core} (const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \&alerter)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a23f246020f6fd09f027d1f8c8a37febe}\label{classlarcfm_1_1_daidalus_core_a23f246020f6fd09f027d1f8c8a37febe}} 
+{\bfseries Daidalus\+Core} (const \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}} $\ast$det, double T)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a4e23db85255cc7b8574b824b6133494c}{clear}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_af27f7ddaef3950143f12a70df195e229}{clear\+\_\+wind}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a24471fce869b75046dbb865fca9c3fa7}\label{classlarcfm_1_1_daidalus_core_a24471fce869b75046dbb865fca9c3fa7}} 
+bool {\bfseries set\+\_\+alerter\+\_\+ownship} (int alerter\+\_\+idx)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a3acab6bc5c54220acb6127a6af6fdc2e}\label{classlarcfm_1_1_daidalus_core_a3acab6bc5c54220acb6127a6af6fdc2e}} 
+bool {\bfseries set\+\_\+alerter\+\_\+traffic} (int idx, int alerter\+\_\+idx)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a09d1310b1edfe8241a21e46e3ab11b1f}{clear\+\_\+hysteresis}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a361648c37ce97a448a4c88a371b28f35}{stale}} ()
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a1adcef8309d1b46af85b1ca038dfa3b7}{is\+Fresh}} () const
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a75fa2ba9e607c11ccce1d20473f5462c}{refresh}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a690eb24b454741d92ee907a202606675}{DTAStatus}} ()
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a831a776b40f07c977288d5aa2e263130}{most\+Urgent\+Aircraft}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}{epsilonH}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}{epsilonV}} ()
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_aa0ffc9a6e93b6cbb1f1d2d3725d7660b}{epsilonH}} (bool recovery\+\_\+case, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&traffic)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_ae3975878322b9dfc3ea8327990bf0c29}{epsilonV}} (bool recovery\+\_\+case, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&traffic)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a522b4d07c06955d1984008e60600852c}{bands\+\_\+for}} (int region)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_aeb86b90ae45ac49b7b8f92c03484bf8e}{min\+Horizontal\+Recovery}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a56b56dbe05c4d6f5fd7bc6d7a123cc70}{min\+Vertical\+Recovery}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_af326c1cd95abbef9dde38a5804ebe055}\label{classlarcfm_1_1_daidalus_core_af326c1cd95abbef9dde38a5804ebe055}} 
+void {\bfseries set\+\_\+ownship\+\_\+state} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aab558fc15ea268957da39b1772f33fd7}\label{classlarcfm_1_1_daidalus_core_aab558fc15ea268957da39b1772f33fd7}} 
+int {\bfseries find\+\_\+traffic\+\_\+state} (const std\+::string \&id) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a531f79399bab855f40685d1366f675b2}\label{classlarcfm_1_1_daidalus_core_a531f79399bab855f40685d1366f675b2}} 
+int {\bfseries set\+\_\+traffic\+\_\+state} (const std\+::string \&id, const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&pos, const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&vel, double time)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aae4f19f1f946183d298fb4dd3af9a203}\label{classlarcfm_1_1_daidalus_core_aae4f19f1f946183d298fb4dd3af9a203}} 
+void {\bfseries reset\+\_\+ownship} (int idx)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a2fd2849a831c04228383c5b6248682b5}\label{classlarcfm_1_1_daidalus_core_a2fd2849a831c04228383c5b6248682b5}} 
+bool {\bfseries remove\+\_\+traffic} (int idx)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a8c5b17645b97a8af7ebd103b9d326903}\label{classlarcfm_1_1_daidalus_core_a8c5b17645b97a8af7ebd103b9d326903}} 
+void {\bfseries set\+\_\+wind\+\_\+velocity} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&wind)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a89dc6bf044e19bdc8af888a7be670c74}\label{classlarcfm_1_1_daidalus_core_a89dc6bf044e19bdc8af888a7be670c74}} 
+bool {\bfseries linear\+\_\+projection} (double offset)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a37e8511a875a6f08646ec06ecd2750c6}\label{classlarcfm_1_1_daidalus_core_a37e8511a875a6f08646ec06ecd2750c6}} 
+bool {\bfseries has\+\_\+ownship} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_abd872278cae3ce9bb418c64a70a1477d}\label{classlarcfm_1_1_daidalus_core_abd872278cae3ce9bb418c64a70a1477d}} 
+bool {\bfseries has\+\_\+traffic} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aad7309581dbd43998589f744850c5fee}\label{classlarcfm_1_1_daidalus_core_aad7309581dbd43998589f744850c5fee}} 
+int {\bfseries horizontal\+\_\+contours} (std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ $>$ \&blobs, int idx, int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\+\_\+level}})
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ae32923a87cd24bdb9b30514fdcc61ad2}\label{classlarcfm_1_1_daidalus_core_ae32923a87cd24bdb9b30514fdcc61ad2}} 
+int {\bfseries horizontal\+\_\+hazard\+\_\+zone} (std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} $>$ \&haz, int idx, int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\+\_\+level}}, bool loss, bool from\+\_\+ownship)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\+\_\+level}} (int idx, int turning, int accelerating, int climbing)
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_index_level_t}{Index\+LevelT}} $>$ \& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a9ec679045c479da3d72b3849e2fc745c}{acs\+\_\+conflict\+\_\+bands}} (int conflict\+\_\+region)
+\item 
+const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \& \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a19de4fff9ab586d751d62173527312a2}{tiov}} (int conflict\+\_\+region)
+\item 
+int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a46ccc9f76e75e54afb7b578de21985ea}{alerter\+\_\+index\+\_\+of}} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a62a059c7e1e9f44aea9e30df62daf848}\label{classlarcfm_1_1_daidalus_core_a62a059c7e1e9f44aea9e30df62daf848}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries criteria\+\_\+ac} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a3683d2790936ab5753c2ccce8b16ca1c}\label{classlarcfm_1_1_daidalus_core_a3683d2790936ab5753c2ccce8b16ca1c}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries recovery\+\_\+ac} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ae339dda2ac900e58d3540662085cfeff}\label{classlarcfm_1_1_daidalus_core_ae339dda2ac900e58d3540662085cfeff}} 
+std\+::string {\bfseries output\+String\+Aircraft\+States} (bool internal) const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ac369d9b825857f7b4a5602efc914c2a4}\label{classlarcfm_1_1_daidalus_core_ac369d9b825857f7b4a5602efc914c2a4}} 
+std\+::string {\bfseries raw\+String} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aaa7a06515e168d99c5f41b17b9eb14e8}\label{classlarcfm_1_1_daidalus_core_aaa7a06515e168d99c5f41b17b9eb14e8}} 
+std\+::string {\bfseries to\+String} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a8e8a1d07b85fb09b2b8b2097f540e862}\label{classlarcfm_1_1_daidalus_core_a8e8a1d07b85fb09b2b8b2097f540e862}} 
+static int {\bfseries epsilonH} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a2f28b7d0abd2d509c1cadc2df84c4fe5}\label{classlarcfm_1_1_daidalus_core_a2f28b7d0abd2d509c1cadc2df84c4fe5}} 
+static int {\bfseries epsilonV} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ownship, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ad8c9f918491affd35e96b09918ebb313}\label{classlarcfm_1_1_daidalus_core_ad8c9f918491affd35e96b09918ebb313}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries ownship}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aade15132a13cb601af7d4213349fe420}\label{classlarcfm_1_1_daidalus_core_aade15132a13cb601af7d4213349fe420}} 
+std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} $>$ {\bfseries traffic}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a4fb3484c9d6faddd7f3e134dd7ea5e85}\label{classlarcfm_1_1_daidalus_core_a4fb3484c9d6faddd7f3e134dd7ea5e85}} 
+double {\bfseries current\+\_\+time}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a8a09536b47ef6b1de7201b1cd004d97b}\label{classlarcfm_1_1_daidalus_core_a8a09536b47ef6b1de7201b1cd004d97b}} 
+\mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} {\bfseries wind\+\_\+vector}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ab15f7f1ec7aad7a416f964f042cfa5bc}\label{classlarcfm_1_1_daidalus_core_ab15f7f1ec7aad7a416f964f042cfa5bc}} 
+\mbox{\hyperlink{classlarcfm_1_1_daidalus_parameters}{Daidalus\+Parameters}} {\bfseries parameters}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a1042a8e979c9103aa10e9b444c8b76c0}\label{classlarcfm_1_1_daidalus_core_a1042a8e979c9103aa10e9b444c8b76c0}} 
+void {\bfseries copy\+From} (const \mbox{\hyperlink{classlarcfm_1_1_daidalus_core}{Daidalus\+Core}} \&core)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ac1f26d2ddd694ac58d240370fd8e65de}\label{classlarcfm_1_1_daidalus_core_ac1f26d2ddd694ac58d240370fd8e65de}} 
+void {\bfseries refresh\+\_\+mua\+\_\+eps} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ada0641e5028c7225db65c57390d7e371}\label{classlarcfm_1_1_daidalus_core_ada0641e5028c7225db65c57390d7e371}} 
+int {\bfseries dta\+\_\+hysteresis\+\_\+current\+\_\+value} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&ac)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a6f851fe35be4a484e41d02523d58fbeb}\label{classlarcfm_1_1_daidalus_core_a6f851fe35be4a484e41d02523d58fbeb}} 
+int {\bfseries alerting\+\_\+hysteresis\+\_\+current\+\_\+value} (const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, int turning, int accelerating, int climbing)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a377787568d8473c56c64135088382b00}\label{classlarcfm_1_1_daidalus_core_a377787568d8473c56c64135088382b00}} 
+bool {\bfseries greater\+\_\+than\+\_\+corrective} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a2db4726cc749aeb9635692619289ad55}\label{classlarcfm_1_1_daidalus_core_a2db4726cc749aeb9635692619289ad55}} 
+int {\bfseries raw\+\_\+alert\+\_\+level} (const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \&alerter, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, int turning, int accelerating, int climbing)
+\item 
+bool \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a759b3bbd45b93a297a498ad3f7406349}{check\+\_\+alerting\+\_\+thresholds}} (const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \&alerter, int \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}{alert\+\_\+level}}, const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&intruder, int turning, int accelerating, int climbing)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_daidalus_core_a4fc4a7e130ca428155a5d9ae4ad92e50}{conflict\+\_\+aircraft}} (int conflict\+\_\+region)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aede20ed4126d294521b01d995a8b1b11}\label{classlarcfm_1_1_daidalus_core_aede20ed4126d294521b01d995a8b1b11}} 
+const \mbox{\hyperlink{classlarcfm_1_1_urgency_strategy}{Urgency\+Strategy}} $\ast$ {\bfseries urgency\+\_\+strategy\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a6748a5a9cae465a6495522eadb3d9539}\label{classlarcfm_1_1_daidalus_core_a6748a5a9cae465a6495522eadb3d9539}} 
+int {\bfseries cache\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a96f74ee9539e7861319d1cc5e2e7507f}\label{classlarcfm_1_1_daidalus_core_a96f74ee9539e7861319d1cc5e2e7507f}} 
+\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} {\bfseries most\+\_\+urgent\+\_\+ac\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a06a16def4004da1dc2ad360124ca297a}\label{classlarcfm_1_1_daidalus_core_a06a16def4004da1dc2ad360124ca297a}} 
+int {\bfseries epsh\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ad7714f27469dc58a4679338e2eda91b4}\label{classlarcfm_1_1_daidalus_core_ad7714f27469dc58a4679338e2eda91b4}} 
+int {\bfseries epsv\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a7d9b1304068e3ff7851ff84e5cfe0721}\label{classlarcfm_1_1_daidalus_core_a7d9b1304068e3ff7851ff84e5cfe0721}} 
+int {\bfseries dta\+\_\+status\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a3989bdda7b90081eb479095add92f7e0}\label{classlarcfm_1_1_daidalus_core_a3989bdda7b90081eb479095add92f7e0}} 
+std\+::vector$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_index_level_t}{Index\+LevelT}} $>$ $>$ {\bfseries acs\+\_\+conflict\+\_\+bands\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a6942d7ad924aaf9efb1c949b69f71329}\label{classlarcfm_1_1_daidalus_core_a6942d7ad924aaf9efb1c949b69f71329}} 
+\mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} {\bfseries tiov\+\_\+} \mbox{[}Bands\+Region\+::\+NUMBER\+\_\+\+OF\+\_\+\+CONFLICT\+\_\+\+BANDS\mbox{]}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a0a2a83478643b15b865f61a958ba5ffa}\label{classlarcfm_1_1_daidalus_core_a0a2a83478643b15b865f61a958ba5ffa}} 
+bool {\bfseries bands4region\+\_\+} \mbox{[}Bands\+Region\+::\+NUMBER\+\_\+\+OF\+\_\+\+CONFLICT\+\_\+\+BANDS\mbox{]}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a7edcf85f0d983bd52a70fc1ebf1a44b0}\label{classlarcfm_1_1_daidalus_core_a7edcf85f0d983bd52a70fc1ebf1a44b0}} 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_hysteresis_data}{Hysteresis\+Data}} $>$ {\bfseries alerting\+\_\+hysteresis\+\_\+acs\+\_\+}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a2f24a8b4d377ed8b9746d8a49626d13c}\label{classlarcfm_1_1_daidalus_core_a2f24a8b4d377ed8b9746d8a49626d13c}} 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_hysteresis_data}{Hysteresis\+Data}} $>$ {\bfseries dta\+\_\+hysteresis\+\_\+acs\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a9ec679045c479da3d72b3849e2fc745c}\label{classlarcfm_1_1_daidalus_core_a9ec679045c479da3d72b3849e2fc745c}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!acs\_conflict\_bands@{acs\_conflict\_bands}}
+\index{acs\_conflict\_bands@{acs\_conflict\_bands}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{acs\_conflict\_bands()}{acs\_conflict\_bands()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_index_level_t}{Index\+LevelT}} $>$ \& larcfm\+::\+Daidalus\+Core\+::acs\+\_\+conflict\+\_\+bands (\begin{DoxyParamCaption}\item[{int}]{conflict\+\_\+region }\end{DoxyParamCaption})}
+
+Requires 0 \texorpdfstring{$<$}{<}= conflict\+\_\+region \texorpdfstring{$<$}{<} CONFICT\+\_\+\+BANDS \begin{DoxyReturn}{Returns}
+sorted list of aircraft indices and alert\+\_\+levels contributing to conflict (non-\/peripheral) bands for given conflict region. INTERNAL USE ONLY 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}\label{classlarcfm_1_1_daidalus_core_abd69d1c0d14d8036ea3872bddbad1630}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!alert\_level@{alert\_level}}
+\index{alert\_level@{alert\_level}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{alert\_level()}{alert\_level()}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::alert\+\_\+level (\begin{DoxyParamCaption}\item[{int}]{idx,  }\item[{int}]{turning,  }\item[{int}]{accelerating,  }\item[{int}]{climbing }\end{DoxyParamCaption})}
+
+Computes alerting type of ownship and an the idx-\/th aircraft in the traffic list The number 0 means no alert. A negative number means that aircraft index is not valid. When the alerter object has been configured to consider ownship maneuvers, i.\+e., using spread values, the alerting logic could also use information about the ownship turning, accelerating, and climbing status as follows\+:
+\begin{DoxyItemize}
+\item turning \texorpdfstring{$<$}{<} 0\+: ownship is turning left, turning \texorpdfstring{$>$}{>} 0\+: ownship is turning right, turning = 0\+: do not make any turning assumption about the ownship.
+\item accelerating \texorpdfstring{$<$}{<} 0\+: ownship is decelerating, accelerating \texorpdfstring{$>$}{>} 0\+: ownship is accelerating, accelerating = 0\+: do not make any accelerating assumption about the ownship.
+\item climbing \texorpdfstring{$<$}{<} 0\+: ownship is descending, climbing \texorpdfstring{$>$}{>} 0\+: ownship is climbing, climbing = 0\+: do not make any climbing assumption about the ownship. NOTES\+:
+\end{DoxyItemize}
+\begin{DoxyEnumerate}
+\item This method uses a 0-\/based traffic index.
+\item This methods applies \mbox{\hyperlink{classlarcfm_1_1_mof_n}{MofN}} alerting strategy 
+\end{DoxyEnumerate}\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a46ccc9f76e75e54afb7b578de21985ea}\label{classlarcfm_1_1_daidalus_core_a46ccc9f76e75e54afb7b578de21985ea}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!alerter\_index\_of@{alerter\_index\_of}}
+\index{alerter\_index\_of@{alerter\_index\_of}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{alerter\_index\_of()}{alerter\_index\_of()}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::alerter\+\_\+index\+\_\+of (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder }\end{DoxyParamCaption})}
+
+Return alert index used for intruder aircraft. The alert index depends on alerting logic and DTA logic. If ownship centric, it returns the alert index of ownship. Otherwise, returns the alert index of the intruder. If the DTA logic is enabled, the alerter of an aircraft is determined by its dta status. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a522b4d07c06955d1984008e60600852c}\label{classlarcfm_1_1_daidalus_core_a522b4d07c06955d1984008e60600852c}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!bands\_for@{bands\_for}}
+\index{bands\_for@{bands\_for}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{bands\_for()}{bands\_for()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Daidalus\+Core\+::bands\+\_\+for (\begin{DoxyParamCaption}\item[{int}]{region }\end{DoxyParamCaption})}
+
+Return true if bands are computed for this particular region (0\+:NEAR, 1\+:MID, 2\+: FAR) \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a759b3bbd45b93a297a498ad3f7406349}\label{classlarcfm_1_1_daidalus_core_a759b3bbd45b93a297a498ad3f7406349}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!check\_alerting\_thresholds@{check\_alerting\_thresholds}}
+\index{check\_alerting\_thresholds@{check\_alerting\_thresholds}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{check\_alerting\_thresholds()}{check\_alerting\_thresholds()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Daidalus\+Core\+::check\+\_\+alerting\+\_\+thresholds (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_alerter}{Alerter}} \&}]{alerter,  }\item[{int}]{alert\+\_\+level,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{intruder,  }\item[{int}]{turning,  }\item[{int}]{accelerating,  }\item[{int}]{climbing }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Return true if and only if threshold values, defining an alerting level, are violated. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a4e23db85255cc7b8574b824b6133494c}\label{classlarcfm_1_1_daidalus_core_a4e23db85255cc7b8574b824b6133494c}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!clear@{clear}}
+\index{clear@{clear}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear ownship and traffic data from this object. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a09d1310b1edfe8241a21e46e3ab11b1f}\label{classlarcfm_1_1_daidalus_core_a09d1310b1edfe8241a21e46e3ab11b1f}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!clear\_hysteresis@{clear\_hysteresis}}
+\index{clear\_hysteresis@{clear\_hysteresis}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{clear\_hysteresis()}{clear\_hysteresis()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::clear\+\_\+hysteresis (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear hysteresis information from this object.
+
+Clear alerting hysteresis information from this object. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_af27f7ddaef3950143f12a70df195e229}\label{classlarcfm_1_1_daidalus_core_af27f7ddaef3950143f12a70df195e229}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!clear\_wind@{clear\_wind}}
+\index{clear\_wind@{clear\_wind}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{clear\_wind()}{clear\_wind()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::clear\+\_\+wind (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Clear wind vector from this object. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a4fc4a7e130ca428155a5d9ae4ad92e50}\label{classlarcfm_1_1_daidalus_core_a4fc4a7e130ca428155a5d9ae4ad92e50}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!conflict\_aircraft@{conflict\_aircraft}}
+\index{conflict\_aircraft@{conflict\_aircraft}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{conflict\_aircraft()}{conflict\_aircraft()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::conflict\+\_\+aircraft (\begin{DoxyParamCaption}\item[{int}]{conflict\+\_\+region }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Requires 0 \texorpdfstring{$<$}{<}= conflict\+\_\+region \texorpdfstring{$<$}{<} CONFICT\+\_\+\+BANDS Put in acs\+\_\+conflict\+\_\+bands\+\_\+ the list of aircraft predicted to be in conflict for the given region. Put compute\+\_\+bands\+\_\+ a flag indicating if bands for given region are computed for some aircraft Put in tiov\+\_\+ the time interval of violation for given region \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a690eb24b454741d92ee907a202606675}\label{classlarcfm_1_1_daidalus_core_a690eb24b454741d92ee907a202606675}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!DTAStatus@{DTAStatus}}
+\index{DTAStatus@{DTAStatus}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{DTAStatus()}{DTAStatus()}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::\+DTAStatus (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns DTA status\+: 0 \+: DTA is not active -\/1 \+: DTA is active, but special bands are not enabled yet 1 \+: DTA is active and special bands are enabled \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}\label{classlarcfm_1_1_daidalus_core_a21c973936fb16fb4ed2e4d9c3785c57a}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!epsilonH@{epsilonH}}
+\index{epsilonH@{epsilonH}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{epsilonH()}{epsilonH()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::epsilonH (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns horizontal epsilon for implicit coordination with respect to criteria ac. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aa0ffc9a6e93b6cbb1f1d2d3725d7660b}\label{classlarcfm_1_1_daidalus_core_aa0ffc9a6e93b6cbb1f1d2d3725d7660b}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!epsilonH@{epsilonH}}
+\index{epsilonH@{epsilonH}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{epsilonH()}{epsilonH()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::epsilonH (\begin{DoxyParamCaption}\item[{bool}]{recovery\+\_\+case,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{traffic }\end{DoxyParamCaption})}
+
+Returns horizontal epsilon for implicit coordination with respect to criteria ac. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}\label{classlarcfm_1_1_daidalus_core_a960e2e8766878b0c1fbe370478e2666f}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!epsilonV@{epsilonV}}
+\index{epsilonV@{epsilonV}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{epsilonV()}{epsilonV()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::epsilonV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns vertical epsilon for implicit coordination with respect to criteria ac. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_ae3975878322b9dfc3ea8327990bf0c29}\label{classlarcfm_1_1_daidalus_core_ae3975878322b9dfc3ea8327990bf0c29}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!epsilonV@{epsilonV}}
+\index{epsilonV@{epsilonV}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{epsilonV()}{epsilonV()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int larcfm\+::\+Daidalus\+Core\+::epsilonV (\begin{DoxyParamCaption}\item[{bool}]{recovery\+\_\+case,  }\item[{const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \&}]{traffic }\end{DoxyParamCaption})}
+
+Returns vertical epsilon for implicit coordination with respect to criteria ac. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a1adcef8309d1b46af85b1ca038dfa3b7}\label{classlarcfm_1_1_daidalus_core_a1adcef8309d1b46af85b1ca038dfa3b7}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!isFresh@{isFresh}}
+\index{isFresh@{isFresh}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{isFresh()}{isFresh()}}
+{\footnotesize\ttfamily bool larcfm\+::\+Daidalus\+Core\+::is\+Fresh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns true is object is fresh \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_aeb86b90ae45ac49b7b8f92c03484bf8e}\label{classlarcfm_1_1_daidalus_core_aeb86b90ae45ac49b7b8f92c03484bf8e}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!minHorizontalRecovery@{minHorizontalRecovery}}
+\index{minHorizontalRecovery@{minHorizontalRecovery}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{minHorizontalRecovery()}{minHorizontalRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Daidalus\+Core\+::min\+Horizontal\+Recovery (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns actual minimum horizontal separation for recovery bands in internal units. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a56b56dbe05c4d6f5fd7bc6d7a123cc70}\label{classlarcfm_1_1_daidalus_core_a56b56dbe05c4d6f5fd7bc6d7a123cc70}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!minVerticalRecovery@{minVerticalRecovery}}
+\index{minVerticalRecovery@{minVerticalRecovery}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{minVerticalRecovery()}{minVerticalRecovery()}}
+{\footnotesize\ttfamily double larcfm\+::\+Daidalus\+Core\+::min\+Vertical\+Recovery (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns actual minimum vertical separation for recovery bands in internal units. \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a831a776b40f07c977288d5aa2e263130}\label{classlarcfm_1_1_daidalus_core_a831a776b40f07c977288d5aa2e263130}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!mostUrgentAircraft@{mostUrgentAircraft}}
+\index{mostUrgentAircraft@{mostUrgentAircraft}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{mostUrgentAircraft()}{mostUrgentAircraft()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{Traffic\+State}} \& larcfm\+::\+Daidalus\+Core\+::most\+Urgent\+Aircraft (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+most urgent aircraft for implicit coordination 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a75fa2ba9e607c11ccce1d20473f5462c}\label{classlarcfm_1_1_daidalus_core_a75fa2ba9e607c11ccce1d20473f5462c}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!refresh@{refresh}}
+\index{refresh@{refresh}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{refresh()}{refresh()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::refresh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Refresh cached values \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a361648c37ce97a448a4c88a371b28f35}\label{classlarcfm_1_1_daidalus_core_a361648c37ce97a448a4c88a371b28f35}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!stale@{stale}}
+\index{stale@{stale}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{stale()}{stale()}}
+{\footnotesize\ttfamily void larcfm\+::\+Daidalus\+Core\+::stale (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set cached values to stale conditions as they are no longer fresh.
+
+Set cached values to stale conditions as they are no longer fresh. If hysteresis is true, it also clears hysteresis variables \mbox{\Hypertarget{classlarcfm_1_1_daidalus_core_a19de4fff9ab586d751d62173527312a2}\label{classlarcfm_1_1_daidalus_core_a19de4fff9ab586d751d62173527312a2}} 
+\index{larcfm::DaidalusCore@{larcfm::DaidalusCore}!tiov@{tiov}}
+\index{tiov@{tiov}!larcfm::DaidalusCore@{larcfm::DaidalusCore}}
+\doxysubsubsection{\texorpdfstring{tiov()}{tiov()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classlarcfm_1_1_interval}{Interval}} \& larcfm\+::\+Daidalus\+Core\+::tiov (\begin{DoxyParamCaption}\item[{int}]{conflict\+\_\+region }\end{DoxyParamCaption})}
+
+Requires 0 \texorpdfstring{$<$}{<}= conflict\+\_\+region \texorpdfstring{$<$}{<} CONFICT\+\_\+\+BANDS \begin{DoxyReturn}{Returns}
+Return time interval of conflict for given conflict region INTERNAL USE ONLY 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Daidalus\+Core.\+h\item 
+Modules/\+ACCo\+RD/src/Daidalus\+Core.\+cpp\end{DoxyCompactItemize}

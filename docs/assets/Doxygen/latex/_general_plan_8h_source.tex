@@ -1,0 +1,123 @@
+\hypertarget{_general_plan_8h_source}{}\doxysection{General\+Plan.\+h}
+\label{_general_plan_8h_source}\index{Modules/ACCoRD/inc/GeneralPlan.h@{Modules/ACCoRD/inc/GeneralPlan.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef GENERALPLAN\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define GENERALPLAN\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Plan.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}PolyPath.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}GeneralState.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}ErrorReporter.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_error_reporter}{ErrorReporter}} \{}
+\DoxyCodeLine{26 \textcolor{keyword}{private}:}
+\DoxyCodeLine{27     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} fp;}
+\DoxyCodeLine{28     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} pp;}
+\DoxyCodeLine{29     \textcolor{keywordtype}{bool} plan;}
+\DoxyCodeLine{30     \textcolor{keywordtype}{bool} poly;}
+\DoxyCodeLine{31     \textcolor{keywordtype}{bool} containment;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{public}:}
+\DoxyCodeLine{34     \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}} INVALID;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}();}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}}\& p);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& p);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{49     \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}}\& p, \textcolor{keywordtype}{bool} cont);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_general_plan}{GeneralPlan}}\& g);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \mbox{\hyperlink{classlarcfm_1_1_general_state}{GeneralState}} state(\textcolor{keywordtype}{double} time) ;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keywordtype}{double} getFirstTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{keywordtype}{double} getLastTime() \textcolor{keyword}{const};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keywordtype}{int} size() \textcolor{keyword}{const};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     std::string getID() \textcolor{keyword}{const};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     \textcolor{keywordtype}{bool} isLatLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{keywordtype}{bool} hasPlan() \textcolor{keyword}{const};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{bool} hasPolyPath() \textcolor{keyword}{const};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \mbox{\hyperlink{classlarcfm_1_1_plan}{Plan}} getPlan() \textcolor{keyword}{const};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \mbox{\hyperlink{classlarcfm_1_1_poly_path}{PolyPath}} getPolyPath() \textcolor{keyword}{const};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keywordtype}{bool} isContainment() \textcolor{keyword}{const};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keywordtype}{bool} isInvalid() \textcolor{keyword}{const};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \mbox{\hyperlink{classlarcfm_1_1_general_state}{GeneralState}} point(\textcolor{keywordtype}{int} i) ;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{keywordtype}{int} getSegment(\textcolor{keywordtype}{double} t) \textcolor{keyword}{const};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{bool} validate() \textcolor{keyword}{const};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     std::string toString() ;}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{comment}{//std::string toOutput(int precision) ;}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{comment}{// ErrorReporter Interface Methods}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_aca0ab743439ad1e84c8ad823a0d29681}{hasError}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{91         \textcolor{keywordflow}{if} (plan) \{}
+\DoxyCodeLine{92             \textcolor{keywordflow}{return} fp.hasError();}
+\DoxyCodeLine{93         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (poly) \{}
+\DoxyCodeLine{94             \textcolor{keywordflow}{return} pp.\mbox{\hyperlink{classlarcfm_1_1_poly_path_ad036abef95be3b0fc8c58c510f855646}{hasError}}();}
+\DoxyCodeLine{95         \}}
+\DoxyCodeLine{96         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_general_plan_ac52779fb92d60bef7a72508f6982bbca}{hasMessage}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{99         \textcolor{keywordflow}{if} (plan) \{}
+\DoxyCodeLine{100             \textcolor{keywordflow}{return} fp.hasMessage();}
+\DoxyCodeLine{101         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (poly) \{}
+\DoxyCodeLine{102             \textcolor{keywordflow}{return} pp.\mbox{\hyperlink{classlarcfm_1_1_poly_path_a29521b00fcc1860cd0c675210c437aae}{hasMessage}}();}
+\DoxyCodeLine{103         \}}
+\DoxyCodeLine{104         \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106     std::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_a0524e1e9206544d5261941a531b34779}{getMessage}}() \{}
+\DoxyCodeLine{107         \textcolor{keywordflow}{if} (plan) \{}
+\DoxyCodeLine{108             \textcolor{keywordflow}{return} fp.getMessage();}
+\DoxyCodeLine{109         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (poly) \{}
+\DoxyCodeLine{110             \textcolor{keywordflow}{return} pp.\mbox{\hyperlink{classlarcfm_1_1_poly_path_ac54be7cc2e5e82347dc3437600404683}{getMessage}}();}
+\DoxyCodeLine{111         \}}
+\DoxyCodeLine{112         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{113     \}}
+\DoxyCodeLine{114     std::string \mbox{\hyperlink{classlarcfm_1_1_general_plan_a8da9c87517990955fb3474ad43cd1066}{getMessageNoClear}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{115         \textcolor{keywordflow}{if} (plan) \{}
+\DoxyCodeLine{116             \textcolor{keywordflow}{return} fp.getMessageNoClear();}
+\DoxyCodeLine{117         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (poly) \{}
+\DoxyCodeLine{118             \textcolor{keywordflow}{return} pp.\mbox{\hyperlink{classlarcfm_1_1_poly_path_ac51b445672b398b8cb8cc3829342b387}{getMessageNoClear}}();}
+\DoxyCodeLine{119         \}}
+\DoxyCodeLine{120         \textcolor{keywordflow}{return} \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{121     \}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \}\textcolor{comment}{// namespace}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

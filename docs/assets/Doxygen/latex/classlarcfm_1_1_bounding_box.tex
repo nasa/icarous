@@ -1,0 +1,249 @@
+\hypertarget{classlarcfm_1_1_bounding_box}{}\doxysection{larcfm\+::Bounding\+Box Class Reference}
+\label{classlarcfm_1_1_bounding_box}\index{larcfm::BoundingBox@{larcfm::BoundingBox}}
+
+
+{\ttfamily \#include $<$Bounding\+Box.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}{Bounding\+Box}} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a9bd1156fbbc8e720c91b21b13623145a}\label{classlarcfm_1_1_bounding_box_a9bd1156fbbc8e720c91b21b13623145a}} 
+{\bfseries Bounding\+Box} (double z\+Min, double z\+Max)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_box_ac2d8cccd7caf0d92ace8f578f5c8d368}{Bounding\+Box}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{Bounding\+Box}} \&bb)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_box_a55a3a57267d08bf197a5699cc7d854da}{Bounding\+Box}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&br)
+\item 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_box_a388abf67c093019cf8e9bf5804bbc275}{Bounding\+Box}} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&br, double z\+Min, double z\+Max)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_box_adf19e1677e5f66b9cd8dccb324f7af61}{clear}} ()
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}{add}} (double x, double y, double z)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a47312d9e87032ddc39e571d7c3724b56}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&v)
+\item 
+void \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a3741cf3d3fcda5cf47b011d4de3f7258}{add}} (const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&p)
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a7bea926974b4ed731c25a2e2b7d3de62}{get\+MinX}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a1065a62a51692a06134e1456763b03e7}{get\+MaxX}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_adefd158b1324059f5fa61c390f551956}{get\+MinY}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_ab104ed9ae07cce5b5104f40b835d5cd2}{get\+MaxY}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a0caddff6fa26031c3eb0d581e06e283c}{get\+MinZ}} () const
+\item 
+double \mbox{\hyperlink{classlarcfm_1_1_bounding_box_a8864275bb0fc1c6b1732836628222dbf}{get\+MaxZ}} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_ae4d26cd682dba525cd6ad8471be4fc42}\label{classlarcfm_1_1_bounding_box_ae4d26cd682dba525cd6ad8471be4fc42}} 
+double {\bfseries get\+Min\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_af25d41368ed832fd7838809d328481ec}\label{classlarcfm_1_1_bounding_box_af25d41368ed832fd7838809d328481ec}} 
+double {\bfseries get\+Max\+Lon} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_aa88e1af0db5a7652fffd12df1a5fa0e9}\label{classlarcfm_1_1_bounding_box_aa88e1af0db5a7652fffd12df1a5fa0e9}} 
+double {\bfseries get\+Min\+Lat} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a38da9996b420fe59bfc51709b2c2ad72}\label{classlarcfm_1_1_bounding_box_a38da9996b420fe59bfc51709b2c2ad72}} 
+double {\bfseries get\+Max\+Lat} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a69efc715b3cd4b03e556a70e9af98b39}\label{classlarcfm_1_1_bounding_box_a69efc715b3cd4b03e556a70e9af98b39}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries upper\+Right\+Top} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a5843b8ea0c9e3dfdcb442c827af2e612}\label{classlarcfm_1_1_bounding_box_a5843b8ea0c9e3dfdcb442c827af2e612}} 
+\mbox{\hyperlink{classlarcfm_1_1_position}{Position}} {\bfseries lower\+Left\+Bottom} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a2e6ae475cc332884514b81b0389ccedf}\label{classlarcfm_1_1_bounding_box_a2e6ae475cc332884514b81b0389ccedf}} 
+double {\bfseries get\+Min\+Alt} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_af774939ab8050199e5f57324d187d5fb}\label{classlarcfm_1_1_bounding_box_af774939ab8050199e5f57324d187d5fb}} 
+double {\bfseries get\+Max\+Alt} ()
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a16ea0fe0daf5353732a106b15bffb4d3}\label{classlarcfm_1_1_bounding_box_a16ea0fe0daf5353732a106b15bffb4d3}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries get\+Bound\+Rect} () const
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a503755e2e5048235a56a8076fbc1a8d3}\label{classlarcfm_1_1_bounding_box_a503755e2e5048235a56a8076fbc1a8d3}} 
+bool {\bfseries intersects} (const \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{Bounding\+Box}} \&bb)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a20841b32bd29b13dc0009665a07f9341}\label{classlarcfm_1_1_bounding_box_a20841b32bd29b13dc0009665a07f9341}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_box}{Bounding\+Box}} {\bfseries linear} (const \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&v, double dt)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a6436a86b5150640cda5adf48fac104b2}\label{classlarcfm_1_1_bounding_box_a6436a86b5150640cda5adf48fac104b2}} 
+std\+::string {\bfseries to\+String} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a2457b5aec93c39806bdd4100491d27e0}\label{classlarcfm_1_1_bounding_box_a2457b5aec93c39806bdd4100491d27e0}} 
+\mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} {\bfseries br}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a6b4b38de191c9c87e35ea5f997a926d8}\label{classlarcfm_1_1_bounding_box_a6b4b38de191c9c87e35ea5f997a926d8}} 
+double {\bfseries z\+Min}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_accce1e7ce2d0c83eaf4e730b5ebd8962}\label{classlarcfm_1_1_bounding_box_accce1e7ce2d0c83eaf4e730b5ebd8962}} 
+double {\bfseries z\+Max}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A Bounding\+Retangle that has been extended to 3 dimensions, so it includes height information. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}\label{classlarcfm_1_1_bounding_box_a00c6e0675930c0645f7b94e69e9b201c}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!BoundingBox@{BoundingBox}}
+\index{BoundingBox@{BoundingBox}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{BoundingBox()}{BoundingBox()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Box\+::\+Bounding\+Box (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Create a bounding rectangle with invalid values. When the first point is added, valid values are obtained. \mbox{\Hypertarget{classlarcfm_1_1_bounding_box_ac2d8cccd7caf0d92ace8f578f5c8d368}\label{classlarcfm_1_1_bounding_box_ac2d8cccd7caf0d92ace8f578f5c8d368}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!BoundingBox@{BoundingBox}}
+\index{BoundingBox@{BoundingBox}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{BoundingBox()}{BoundingBox()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Box\+::\+Bounding\+Box (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_box}{Bounding\+Box}} \&}]{bb }\end{DoxyParamCaption})}
+
+Copy a bounding rectangle from an existing bounding box 
+\begin{DoxyParams}{Parameters}
+{\em bb} & box to copy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a55a3a57267d08bf197a5699cc7d854da}\label{classlarcfm_1_1_bounding_box_a55a3a57267d08bf197a5699cc7d854da}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!BoundingBox@{BoundingBox}}
+\index{BoundingBox@{BoundingBox}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{BoundingBox()}{BoundingBox()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Box\+::\+Bounding\+Box (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{br }\end{DoxyParamCaption})}
+
+Extend an existing \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} with invalid height information. Height information will be assigned as additional points are added. 
+\begin{DoxyParams}{Parameters}
+{\em br} & rectangle to copy \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a388abf67c093019cf8e9bf5804bbc275}\label{classlarcfm_1_1_bounding_box_a388abf67c093019cf8e9bf5804bbc275}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!BoundingBox@{BoundingBox}}
+\index{BoundingBox@{BoundingBox}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{BoundingBox()}{BoundingBox()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily larcfm\+::\+Bounding\+Box\+::\+Bounding\+Box (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} \&}]{br,  }\item[{double}]{z\+Min,  }\item[{double}]{z\+Max }\end{DoxyParamCaption})}
+
+Extend an existing \mbox{\hyperlink{classlarcfm_1_1_bounding_rectangle}{Bounding\+Rectangle}} to include explicit height information. 
+\begin{DoxyParams}{Parameters}
+{\em br} & rectangle to copy \\
+\hline
+{\em z\+Min} & minimal height \\
+\hline
+{\em z\+Max} & maximal height \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a3741cf3d3fcda5cf47b011d4de3f7258}\label{classlarcfm_1_1_bounding_box_a3741cf3d3fcda5cf47b011d4de3f7258}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!add@{add}}
+\index{add@{add}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Box\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} \&}]{p }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle. Note that when adding \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{Lat\+Lon\+Alt}} points, great circle paths may fall outside the defined bounding rectangle!
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a47312d9e87032ddc39e571d7c3724b56}\label{classlarcfm_1_1_bounding_box_a47312d9e87032ddc39e571d7c3724b56}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!add@{add}}
+\index{add@{add}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Box\+::add (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \&}]{v }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}\label{classlarcfm_1_1_bounding_box_ad265281ebbb066f408252a3668b00e3d}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!add@{add}}
+\index{add@{add}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Box\+::add (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y,  }\item[{double}]{z }\end{DoxyParamCaption})}
+
+Add a point to this bounding rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & x coordinate \\
+\hline
+{\em y} & y coordinate \\
+\hline
+{\em z} & z coordinate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_adf19e1677e5f66b9cd8dccb324f7af61}\label{classlarcfm_1_1_bounding_box_adf19e1677e5f66b9cd8dccb324f7af61}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!clear@{clear}}
+\index{clear@{clear}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void larcfm\+::\+Bounding\+Box\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reset this bounding rectangle to a structure with invalid values. When the first point is added, valid values are obtained. \mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a1065a62a51692a06134e1456763b03e7}\label{classlarcfm_1_1_bounding_box_a1065a62a51692a06134e1456763b03e7}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMaxX@{getMaxX}}
+\index{getMaxX@{getMaxX}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMaxX()}{getMaxX()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MaxX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+right bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_ab104ed9ae07cce5b5104f40b835d5cd2}\label{classlarcfm_1_1_bounding_box_ab104ed9ae07cce5b5104f40b835d5cd2}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMaxY@{getMaxY}}
+\index{getMaxY@{getMaxY}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMaxY()}{getMaxY()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MaxY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+top bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a8864275bb0fc1c6b1732836628222dbf}\label{classlarcfm_1_1_bounding_box_a8864275bb0fc1c6b1732836628222dbf}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMaxZ@{getMaxZ}}
+\index{getMaxZ@{getMaxZ}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMaxZ()}{getMaxZ()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MaxZ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+max Z bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a7bea926974b4ed731c25a2e2b7d3de62}\label{classlarcfm_1_1_bounding_box_a7bea926974b4ed731c25a2e2b7d3de62}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMinX@{getMinX}}
+\index{getMinX@{getMinX}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMinX()}{getMinX()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MinX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+left bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_adefd158b1324059f5fa61c390f551956}\label{classlarcfm_1_1_bounding_box_adefd158b1324059f5fa61c390f551956}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMinY@{getMinY}}
+\index{getMinY@{getMinY}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMinY()}{getMinY()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MinY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+bottom bound 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlarcfm_1_1_bounding_box_a0caddff6fa26031c3eb0d581e06e283c}\label{classlarcfm_1_1_bounding_box_a0caddff6fa26031c3eb0d581e06e283c}} 
+\index{larcfm::BoundingBox@{larcfm::BoundingBox}!getMinZ@{getMinZ}}
+\index{getMinZ@{getMinZ}!larcfm::BoundingBox@{larcfm::BoundingBox}}
+\doxysubsubsection{\texorpdfstring{getMinZ()}{getMinZ()}}
+{\footnotesize\ttfamily double larcfm\+::\+Bounding\+Box\+::get\+MinZ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+min Z bound 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Bounding\+Box.\+h\item 
+Modules/\+ACCo\+RD/src/Bounding\+Box.\+cpp\end{DoxyCompactItemize}

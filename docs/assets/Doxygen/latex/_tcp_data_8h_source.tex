@@ -1,0 +1,286 @@
+\hypertarget{_tcp_data_8h_source}{}\doxysection{Tcp\+Data.\+h}
+\label{_tcp_data_8h_source}\index{Modules/ACCoRD/inc/TcpData.h@{Modules/ACCoRD/inc/TcpData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * TcpData}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)}}
+\DoxyCodeLine{5 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{6 \textcolor{comment}{ * }}
+\DoxyCodeLine{7 \textcolor{comment}{ * Copyright (c) 2016-\/2019 United States Government as represented by}}
+\DoxyCodeLine{8 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{9 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{10 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{11 \textcolor{comment}{ */}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef TCPDATA\_H\_}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define TCPDATA\_H\_}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Point.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{46 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \{}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{public}:}
+\DoxyCodeLine{49     \textcolor{comment}{//TODO make this private once conversion is complete}}
+\DoxyCodeLine{51 \textcolor{comment}{}    \textcolor{keyword}{enum} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{WayType}} \{Orig, Virtual, AltPreserve, UNKNOWN\_WT\};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{54     \textcolor{comment}{//TODO make this private once conversion is complete}}
+\DoxyCodeLine{55     \textcolor{keyword}{enum} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{TrkTcpType}} \{NONE, BOT, EOT, EOTBOT, MOT, UNKNOWN\_TRK\};}
+\DoxyCodeLine{56     \textcolor{comment}{//TODO make this private once conversion is complete}}
+\DoxyCodeLine{57     \textcolor{keyword}{enum} GsTcpType \{NONEg, BGS, EGS, EGSBGS, UNKNOWN\_GS\};}
+\DoxyCodeLine{58     \textcolor{comment}{//TODO make this private once conversion is complete}}
+\DoxyCodeLine{59     \textcolor{keyword}{enum} VsTcpType \{NONEv, BVS, EVS, EVSBVS, UNKNOWN\_VS\};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} TCP\_OUTPUT\_COLUMNS = 20;   \textcolor{comment}{// total number of output columns for full TCP (not including aircraft name)}}
+\DoxyCodeLine{62     \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{int} MIN\_OUTPUT\_COLUMNS = 5;    \textcolor{comment}{// total number of output columns for linear (not including aircraft name)}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \textcolor{keyword}{static} \textcolor{keywordtype}{bool} motFlagInInfo;}
+\DoxyCodeLine{65     \textcolor{keyword}{static} std::string MOTflag;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{private}:}
+\DoxyCodeLine{69     \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{WayType}}    ty;              \textcolor{comment}{// type of point}}
+\DoxyCodeLine{70     \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{TrkTcpType}} tcpTrk;            \textcolor{comment}{// Trk TCP type}}
+\DoxyCodeLine{71     GsTcpType  tcpGs;           \textcolor{comment}{// Gs TCP type}}
+\DoxyCodeLine{72     VsTcpType  tcpVs;           \textcolor{comment}{// Vs TCP type}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{double}     radiusSigned;    \textcolor{comment}{// signed turn radius, positive values indicate right turn, negative values indicate left turn, zero indicates no specified radius}}
+\DoxyCodeLine{74                                 \textcolor{comment}{// Used in two ways:  (1) in a BOT to specify a turn radius, sign indicates direction of turn}}
+\DoxyCodeLine{75                                 \textcolor{comment}{//                    (2) in a vertex of a linear plan to specify a desired turn radius at this location.  The sign is ignored.}}
+\DoxyCodeLine{76     Position   centerTurn;      \textcolor{comment}{// location of the turn center (stored in BOT)}}
+\DoxyCodeLine{77     \textcolor{keywordtype}{double}     accelGs;         \textcolor{comment}{// signed gs-\/acceleration value (stored in BGS)}}
+\DoxyCodeLine{78     \textcolor{keywordtype}{double}     accelVs;         \textcolor{comment}{// signed vs-\/acceleration value (stored in BVS)}}
+\DoxyCodeLine{79     std::string  information;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{public}:}
+\DoxyCodeLine{82     TcpData() :}
+\DoxyCodeLine{83         ty(Orig),}
+\DoxyCodeLine{84         tcpTrk(NONE),}
+\DoxyCodeLine{85         tcpGs(NONEg),}
+\DoxyCodeLine{86         tcpVs(NONEv),}
+\DoxyCodeLine{87         radiusSigned(0.0),}
+\DoxyCodeLine{88         centerTurn(Position::INVALID()),}
+\DoxyCodeLine{89         accelGs(0.0),}
+\DoxyCodeLine{90         accelVs(0.0),}
+\DoxyCodeLine{91         information(\textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{92     \{ \}}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95     TcpData(\textcolor{keyword}{const} TcpData\& data) :}
+\DoxyCodeLine{96         ty(data.ty),}
+\DoxyCodeLine{97         tcpTrk(data.tcpTrk),}
+\DoxyCodeLine{98         tcpGs(data.tcpGs),}
+\DoxyCodeLine{99         tcpVs(data.tcpVs),}
+\DoxyCodeLine{100         radiusSigned(data.radiusSigned),}
+\DoxyCodeLine{101         centerTurn(data.centerTurn),}
+\DoxyCodeLine{102         accelGs(data.accelGs),}
+\DoxyCodeLine{103         accelVs(data.accelVs),}
+\DoxyCodeLine{104         information(data.information)}
+\DoxyCodeLine{105     \{ \}}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{107     std::string getTypeString() \textcolor{keyword}{const};}
+\DoxyCodeLine{108     \textcolor{keyword}{static} std::string toStringWayType(\mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{WayType}} t);}
+\DoxyCodeLine{109     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a70f32ab9052afe4b9252eeaa0380b2ee}{TcpData::WayType}} valueOfWayType(\textcolor{keyword}{const} std::string\& t);}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \textcolor{keywordtype}{bool} isVirtual() \textcolor{keyword}{const};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \textcolor{keywordtype}{bool} isOriginal() \textcolor{keyword}{const};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116     \textcolor{keywordtype}{bool} isAltPreserve() \textcolor{keyword}{const};}
+\DoxyCodeLine{117     }
+\DoxyCodeLine{118     \textcolor{keywordtype}{void} setType(\textcolor{keyword}{const} std::string\& t);}
+\DoxyCodeLine{119     }
+\DoxyCodeLine{122     TcpData \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a7f8498b7c6f118f7cd57b15b798bf906}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{127     TcpData \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad371f17dc7823f221718c352c380f5cd}{setVirtual}}();}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{133     TcpData \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a3b6c2bd493ffba7b8936c5602b2482f4}{setOriginal}}();}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{138     TcpData \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a555531044652eff0b5b5b09f60d6fddb}{setAltPreserve}}();}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{144     \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abeb5db5d65b96bedbf7046616915e6f2}{reset}}();}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     std::string getTrkTypeString() \textcolor{keyword}{const};}
+\DoxyCodeLine{148     \textcolor{keyword}{static} std::string toStringTrkType(\mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{TrkTcpType}} t);}
+\DoxyCodeLine{149     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{TcpData::TrkTcpType}} valueOfTrkType(\textcolor{keyword}{const} std::string\& t);}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152     std::string getGsTypeString() \textcolor{keyword}{const};}
+\DoxyCodeLine{153     \textcolor{keyword}{static} std::string toStringGsType(GsTcpType t);}
+\DoxyCodeLine{154     \textcolor{keyword}{static} TcpData::GsTcpType valueOfGsType(\textcolor{keyword}{const} std::string\& t);}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157     std::string getVsTypeString() \textcolor{keyword}{const};}
+\DoxyCodeLine{158     \textcolor{keyword}{static} std::string toStringVsType(VsTcpType t);}
+\DoxyCodeLine{159     \textcolor{keyword}{static} TcpData::VsTcpType valueOfVsType(\textcolor{keyword}{const} std::string\& t);}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{165     \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a5b7ac2c3e4a2c4de35ff5a0e02d9f889}{getRadiusSigned}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{166     \textcolor{keywordtype}{int}    turnDir() \textcolor{keyword}{const};}
+\DoxyCodeLine{167     TcpData setRadiusSigned(\textcolor{keywordtype}{double} r);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     Position turnCenter() \textcolor{keyword}{const};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171     TcpData setTurnCenter(\textcolor{keyword}{const} Position\& center);}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174     \textcolor{keywordtype}{double} getGsAccel() \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176     TcpData setGsAccel(\textcolor{keywordtype}{double} ga);}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178     \textcolor{keywordtype}{double} getVsAccel() \textcolor{keyword}{const};}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{184     TcpData \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ab510229563aecb320545fbede9489539}{setVsAccel}}(\textcolor{keywordtype}{double} va);}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{189     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a27f6d57e9bae7bdd53d8509fed518158}{setVelocityInit}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     std::string getInformation() \textcolor{keyword}{const};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194     \textcolor{keywordtype}{void} setInformation(\textcolor{keyword}{const} std::string\& info);}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196     \textcolor{keywordtype}{void} appendInformation(\textcolor{keyword}{const} std::string\&  info);}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198     \textcolor{keywordtype}{void} appendInformationNoDuplication(\textcolor{keyword}{const} std::string\&  info);}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200     }
+\DoxyCodeLine{201     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} makeFull(\textcolor{keyword}{const} std::string\& ty, \textcolor{keyword}{const} std::string\& tcp\_trk, \textcolor{keyword}{const} std::string\& tcp\_gs, \textcolor{keyword}{const} std::string\& tcp\_vs,}
+\DoxyCodeLine{202             \textcolor{keywordtype}{double} radiusSigned, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& center,  \textcolor{keywordtype}{double} accel\_gs, \textcolor{keywordtype}{double} accel\_vs);}
+\DoxyCodeLine{203         }
+\DoxyCodeLine{204     }
+\DoxyCodeLine{205     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} makeInvalid();}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{214     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa85693ab3767466a887829088d99cf1c}{makeOrig}}();}
+\DoxyCodeLine{215     }
+\DoxyCodeLine{216     }
+\DoxyCodeLine{223     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_acc75d8baf2a39de7521766b908db080d}{setBOT}}(\textcolor{keywordtype}{double} signedRadius, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& center);}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225     \textcolor{keywordtype}{void} clearTrk();}
+\DoxyCodeLine{226     }
+\DoxyCodeLine{227     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearBOT();}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearEOT();}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearBGS();}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearEGS();}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearBVS();}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} clearEVS();}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 }
+\DoxyCodeLine{244     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ae16cd1bab30fd24a8478cf0a400f5e1e}{setEOT}}();}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+\DoxyCodeLine{254     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a16f7a79ec786db9c86438825b92327f9}{addBOT}}(\textcolor{keywordtype}{double} signedRadius, \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} center);}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{260     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a78ffadcaccf990c2718fafbe9173aad9}{addEOT}}();}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 }
+\DoxyCodeLine{269     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a07c16e48dc075fa239abe727487cef6a}{setEOTBOT}}(\textcolor{keywordtype}{double} signedRadius, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& center);}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} setMOT(\textcolor{keywordtype}{bool} b);}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{279     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad55c87dd5b180ddecf5c8378b6b3446a}{setBGS}}(\textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{285     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa7e344159211b453d0550ebc8eef96da}{addEGS}}();}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287     \textcolor{keywordtype}{void} clearGs();}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{294     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af724ee28a19f0f3e1c37299bb163c704}{setEGS}}();}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{302     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af1dda2d56350ec024eeafb902e3ea5e9}{setEGSBGS}}(\textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304 }
+\DoxyCodeLine{310     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a807d497f1fb1295ac50a6cdcc04223da}{setBVS}}(\textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312     \textcolor{keywordtype}{void} clearVs();}
+\DoxyCodeLine{313 }
+\DoxyCodeLine{319     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a1cf343924626c85223f745ac3ba79fda}{setEVS}}();}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{325     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_af0c8ca4d45c338198c4d117ce31ac59d}{addEVS}}();}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{333     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a3855ecd086eb72561dfb98275f10bcca}{setEVSBVS}}(\textcolor{keywordtype}{double} a);}
+\DoxyCodeLine{334     }
+\DoxyCodeLine{335     }
+\DoxyCodeLine{336     \textcolor{keywordtype}{bool} isInvalid() \textcolor{keyword}{const};}
+\DoxyCodeLine{337     }
+\DoxyCodeLine{341     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ab13d913bfe67c18cb46837cc9ba8a2b9}{isTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{346     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa271332e80aa344694e2c98922a17cef}{isTrkTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{351     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a805732b3940471d62a27f4871217f066}{isBOT}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{352 }
+\DoxyCodeLine{356     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_afc4ba1bec6879cca07fd761e18f0fd32}{isEOT}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358     \textcolor{keywordtype}{bool} isMOT() \textcolor{keyword}{const} ;}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 }
+\DoxyCodeLine{364     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ac294d324638b4a1774825f9d3592f7e6}{isGsTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{369     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a7f79bc42b1757612dbefba6f96941ca3}{isEGSBGS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{374     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a372aac49509066ef50c38beded7744fe}{isBGS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{379     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a36c4a169837932361d0641ef1161f178}{isEGS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{380 }
+\DoxyCodeLine{384     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a876af646b8dde84dd7f8df51d358ce46}{isEVSBVS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{385 }
+\DoxyCodeLine{389     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aadeed51fd6c0494c797bb1641459423e}{isVsTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{394     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abd48dd60df8191f50afd6140d4f1fe6e}{isBVS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{399     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_acdb28dd12e9632e8226cb7f21dd7d205}{isEVS}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{405     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abb63dcbc9d5e6d6795a7cd32ad85918f}{isBeginTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{411     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_abd6ce54f6fe37d08292dfe8f18316942}{isEndTCP}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{412     }
+\DoxyCodeLine{417     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a30397f94c8868b252d18a7ef8ef9de74}{isDefined}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{424     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a2df565a2453b2789ebdfa881beb729e2}{mergeable}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}}\& point) \textcolor{keyword}{const};}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{449     \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a4fc72931862be9e897cc5c501dfa25b0}{mergeTCPData}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}}\& point) \textcolor{keyword}{const};}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+\DoxyCodeLine{460     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classlarcfm_1_1_tcp_data_aa2b451a3ab762343defdb39b84bd0ac4}{fullName}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_tcp_data}{TcpData}}\& d);}
+\DoxyCodeLine{461     }
+\DoxyCodeLine{469     std::pair<TcpData,std::string> \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a34c1634c49321d5078682ba8442b2246}{parseMetaDataLabel}}(\textcolor{keyword}{const} std::string\& tlabel);}
+\DoxyCodeLine{470 }
+\DoxyCodeLine{471 }
+\DoxyCodeLine{472     std::string tcpTypeString() \textcolor{keyword}{const};}
+\DoxyCodeLine{473 }
+\DoxyCodeLine{481     std::string \mbox{\hyperlink{classlarcfm_1_1_tcp_data_a49ec32fd144da0620a14779be7f5d543}{metaDataLabel}}(\textcolor{keywordtype}{int} precision) \textcolor{keyword}{const};}
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483     \textcolor{keyword}{static} std::pair<NavPoint,TcpData> parseLL(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{484     }
+\DoxyCodeLine{485     \textcolor{keyword}{static} std::pair<NavPoint,TcpData> parseXYZ(\textcolor{keyword}{const} std::string\& s);}
+\DoxyCodeLine{486 }
+\DoxyCodeLine{487     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tcp_data_ad1dd232aa2354387242745578220fdfd}{TcpData::TrkTcpType}} toTrkTCP(\textcolor{keywordtype}{int} ty);}
+\DoxyCodeLine{488     \textcolor{keyword}{static} TcpData::GsTcpType toGsTCP(\textcolor{keywordtype}{int} ty);}
+\DoxyCodeLine{489     \textcolor{keyword}{static} TcpData::VsTcpType toVsTCP(\textcolor{keywordtype}{int} ty);}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491     std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{492     }
+\DoxyCodeLine{493     std::string toStringTcpType() \textcolor{keyword}{const};}
+\DoxyCodeLine{494     }
+\DoxyCodeLine{495 \};}
+\DoxyCodeLine{496 }
+\DoxyCodeLine{497 \}}
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* TCPDATA\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

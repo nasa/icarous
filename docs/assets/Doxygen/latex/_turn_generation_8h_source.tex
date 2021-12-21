@@ -1,0 +1,71 @@
+\hypertarget{_turn_generation_8h_source}{}\doxysection{Turn\+Generation.\+h}
+\label{_turn_generation_8h_source}\index{Modules/ACCoRD/inc/TurnGeneration.h@{Modules/ACCoRD/inc/TurnGeneration.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2019 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef TurnGeneration\_H}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define TurnGeneration\_H}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Units.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}Triple.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}Quad.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}Tuple5.h"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}Tuple6.h"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}ErrorLog.h"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}NavPoint.h"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}LatLonAlt.h"{}}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{23   }
+\DoxyCodeLine{30 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_turn_generation}{TurnGeneration}} \{}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<NavPoint,NavPoint,NavPoint, int, Position>}} turnGenerator(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{34   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<Position,Position,Position,int,double,Position>}} turnGenerator(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& np1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& np2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& np3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{35     }
+\DoxyCodeLine{46   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<Vect2,Vect2,Vect2,int,double,Vect2>}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a85a2bfc52374d0b84b050279c315fa5a}{turnGeneratorEucl}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& pt1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& pt2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& pt3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{47  }
+\DoxyCodeLine{48     }
+\DoxyCodeLine{59   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<Vect3,Vect3,Vect3,int,double,Vect3>}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a85a2bfc52374d0b84b050279c315fa5a}{turnGeneratorEucl}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{60  }
+\DoxyCodeLine{71   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_quad}{Quad<NavPoint,NavPoint,NavPoint,int>}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a3f73081a7a9aee9105f154756fa0f76d}{turnGeneratorProjected}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_nav_point}{NavPoint}}\& np3, \textcolor{keywordtype}{double} R);}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{81   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt>}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_afc146dee3509c23f452e75527b1a9686}{turnGeneratorLLA\_orig}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{82     }
+\DoxyCodeLine{92   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple5}{Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,LatLonAlt>}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a3ff569f5e8cb19a78ea4260153d82976}{turnGeneratorLLA\_Alt2}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_tuple6}{Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt>}} turnGeneratorLLA\_Alt3(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p1, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p2, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& p3, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97     }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{private}:    }
+\DoxyCodeLine{101   \textcolor{keyword}{static} \textcolor{keywordtype}{double} arcLengthLLA(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& bot, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_lat_lon_alt}{LatLonAlt}}\& intercept, \textcolor{keywordtype}{double} radius);}
+\DoxyCodeLine{110   \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a75fff303b6c3c02c5ea7a048a5b78fe9}{Rprime}}(\textcolor{keywordtype}{double} TurnRad);}
+\DoxyCodeLine{118   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_a14e624d9e6e497a432b56e83330e902d}{normalvect}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{129   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_acb1c3361224ce5242f805dae5e434b61}{point\_on\_line}}(\textcolor{keywordtype}{double} TurnRad, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{130   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} turnCenterxyz(\textcolor{keywordtype}{double} TurnRad, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{131   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} BOT(\textcolor{keywordtype}{double} TurnRad, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{132   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} EOT(\textcolor{keywordtype}{double} TurnRad, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{140   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_turn_generation_afe5e9f06482d40a40d1fef6f15f38774}{turnDirection}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& p, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& q, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& r);}
+\DoxyCodeLine{141     }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{//public:}}
+\DoxyCodeLine{144 \textcolor{comment}{//  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> turnGeneratorLLA\_Alt3(const LatLonAlt\& p1, const LatLonAlt\& p2, const LatLonAlt\& p3, double radius);}}
+\DoxyCodeLine{145     }
+\DoxyCodeLine{146     }
+\DoxyCodeLine{147 \};}
+\DoxyCodeLine{148 \}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// TurnGeneration\_H}}
+
+\end{DoxyCode}

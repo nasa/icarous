@@ -1,0 +1,60 @@
+\hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader}{}\doxysection{larcfm\+::Detection\+Polygon\+Parameter\+Reader Class Reference}
+\label{classlarcfm_1_1_detection_polygon_parameter_reader}\index{larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}}
+
+
+{\ttfamily \#include $<$Detection\+Polygon\+Parameter\+Reader.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_a41551b81e84cb5a275690c0212b6dbbe}{register\+Defaults}} ()
+\item 
+static void \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_ac452c99050d1dee9583fb6b925866156}{register\+Detection\+Polygon}} (\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$cd)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_a48e2276a8235fbaf9b40905fced3a300}\label{classlarcfm_1_1_detection_polygon_parameter_reader_a48e2276a8235fbaf9b40905fced3a300}} 
+static void {\bfseries register\+Detection\+Polygon} (\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$cd, const std\+::string \&aternate\+\_\+name)
+\item 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_reader_aae6f2921e2cb2bdf5c35ed2850b8e223}{read\+Polygon\+Detection}} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&params)
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_a806e22512a5b3da9495ea1464742a4ad}\label{classlarcfm_1_1_detection_polygon_parameter_reader_a806e22512a5b3da9495ea1464742a4ad}} 
+static \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ std\+::vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ {\bfseries read\+Polygon\+Detection} (const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&params, bool verbose)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_af093c078970a5c8945a3b809ecd402ad}\label{classlarcfm_1_1_detection_polygon_parameter_reader_af093c078970a5c8945a3b809ecd402ad}} 
+static std\+::map$<$ std\+::string, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ {\bfseries registered\+Detection\+Polygon\+Classes}
+\item 
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_a273b20988a224d94c459f5176c7602ed}\label{classlarcfm_1_1_detection_polygon_parameter_reader_a273b20988a224d94c459f5176c7602ed}} 
+static bool {\bfseries registered} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains static methods to read in \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} instance definitions from a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object in a format consistent with a \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} object created by \mbox{\hyperlink{classlarcfm_1_1_detection_polygon_parameter_writer}{Detection\+Polygon\+Parameter\+Writer}}. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_aae6f2921e2cb2bdf5c35ed2850b8e223}\label{classlarcfm_1_1_detection_polygon_parameter_reader_aae6f2921e2cb2bdf5c35ed2850b8e223}} 
+\index{larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}!readPolygonDetection@{readPolygonDetection}}
+\index{readPolygonDetection@{readPolygonDetection}!larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}}
+\doxysubsubsection{\texorpdfstring{readPolygonDetection()}{readPolygonDetection()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlarcfm_1_1_triple}{Triple}}$<$ vector$<$ \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$, \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$ $>$ larcfm\+::\+Detection\+Polygon\+Parameter\+Reader\+::read\+Polygon\+Detection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlarcfm_1_1_parameter_data}{Parameter\+Data}} \&}]{params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+The user is responsible for deleting the entries in the list (which will contain the second and third tuple elements). \mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_a41551b81e84cb5a275690c0212b6dbbe}\label{classlarcfm_1_1_detection_polygon_parameter_reader_a41551b81e84cb5a275690c0212b6dbbe}} 
+\index{larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}!registerDefaults@{registerDefaults}}
+\index{registerDefaults@{registerDefaults}!larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}}
+\doxysubsubsection{\texorpdfstring{registerDefaults()}{registerDefaults()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection\+Polygon\+Parameter\+Reader\+::register\+Defaults (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Register standard Formal\+ATM classes. This may also be done through explicit calls to register\+Detection3D and register\+Detection\+Polygon, below. Nonstandard classed need to be registered individually. \mbox{\Hypertarget{classlarcfm_1_1_detection_polygon_parameter_reader_ac452c99050d1dee9583fb6b925866156}\label{classlarcfm_1_1_detection_polygon_parameter_reader_ac452c99050d1dee9583fb6b925866156}} 
+\index{larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}!registerDetectionPolygon@{registerDetectionPolygon}}
+\index{registerDetectionPolygon@{registerDetectionPolygon}!larcfm::DetectionPolygonParameterReader@{larcfm::DetectionPolygonParameterReader}}
+\doxysubsubsection{\texorpdfstring{registerDetectionPolygon()}{registerDetectionPolygon()}}
+{\footnotesize\ttfamily void larcfm\+::\+Detection\+Polygon\+Parameter\+Reader\+::register\+Detection\+Polygon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} $\ast$}]{cd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Register a new \mbox{\hyperlink{classlarcfm_1_1_detection_polygon}{Detection\+Polygon}} class with this reader. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Modules/\+ACCo\+RD/inc/Detection\+Polygon\+Parameter\+Reader.\+h\item 
+Modules/\+ACCo\+RD/src/Detection\+Polygon\+Parameter\+Reader.\+cpp\end{DoxyCompactItemize}

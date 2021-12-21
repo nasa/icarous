@@ -85,13 +85,13 @@ Public Member Functions</h2></td></tr>
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>InputIntruderData</b> (const <a class="el" href="structobject.html">object</a> obj)</td></tr>
 <tr class="separator:a53831ee5d71d8c58652c949e80b97c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2fbed6e4be858f8acc498d75a27dae"><td class="memItemLeft" align="right" valign="top"><a id="a5c2fbed6e4be858f8acc498d75a27dae" name="a5c2fbed6e4be858f8acc498d75a27dae"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>InputOwnshipData</b> (const larcfm::Position pos, const larcfm::Velocity vel, double time, double sigPos[6], double sigVel[6])</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>InputOwnshipData</b> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> pos, const <a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> vel, double time, double sigPos[6], double sigVel[6])</td></tr>
 <tr class="separator:a5c2fbed6e4be858f8acc498d75a27dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a085bc09041250af142b02d4d346e4a46"><td class="memItemLeft" align="right" valign="top"><a id="a085bc09041250af142b02d4d346e4a46" name="a085bc09041250af142b02d4d346e4a46"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MonitorTraffic</b> (larcfm::Velocity windfrom)=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>MonitorTraffic</b> (<a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a> windfrom)=0</td></tr>
 <tr class="separator:a085bc09041250af142b02d4d346e4a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42be21fc28c0dcf865ae1876b6a0959a"><td class="memItemLeft" align="right" valign="top"><a id="a42be21fc28c0dcf865ae1876b6a0959a" name="a42be21fc28c0dcf865ae1876b6a0959a"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckPositionFeasibility</b> (const larcfm::Position pos, const double speed)=0</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckPositionFeasibility</b> (const <a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a> pos, const double speed)=0</td></tr>
 <tr class="separator:a42be21fc28c0dcf865ae1876b6a0959a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d858ececfda6089c9aca65c5a5785ac"><td class="memItemLeft" align="right" valign="top"><a id="a4d858ececfda6089c9aca65c5a5785ac" name="a4d858ececfda6089c9aca65c5a5785ac"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateParameters</b> (std::string params)=0</td></tr>
@@ -118,10 +118,10 @@ Protected Attributes</h2></td></tr>
 std::map&lt; std::string, <a class="el" href="structobject.html">object</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>trafficList</b></td></tr>
 <tr class="separator:ac44010824a9d1ee32be0b393de3716aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad810fa3877be8784f238b6115bcdd11"><td class="memItemLeft" align="right" valign="top"><a id="aad810fa3877be8784f238b6115bcdd11" name="aad810fa3877be8784f238b6115bcdd11"></a>
-larcfm::Position&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<a class="el" href="classlarcfm_1_1_position.html">larcfm::Position</a>&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
 <tr class="separator:aad810fa3877be8784f238b6115bcdd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc18d8629d255edc26968e5f24469806"><td class="memItemLeft" align="right" valign="top"><a id="acc18d8629d255edc26968e5f24469806" name="acc18d8629d255edc26968e5f24469806"></a>
-larcfm::Velocity&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
+<a class="el" href="classlarcfm_1_1_velocity.html">larcfm::Velocity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>velocity</b></td></tr>
 <tr class="separator:acc18d8629d255edc26968e5f24469806"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c35567713cae90e23f779a61aaf46c"><td class="memItemLeft" align="right" valign="top"><a id="a99c35567713cae90e23f779a61aaf46c" name="a99c35567713cae90e23f779a61aaf46c"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>elapsedTime</b></td></tr>

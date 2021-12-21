@@ -1,0 +1,168 @@
+\hypertarget{_traffic_state_8h_source}{}\doxysection{Traffic\+State.\+h}
+\label{_traffic_state_8h_source}\index{Modules/ACCoRD/inc/TrafficState.h@{Modules/ACCoRD/inc/TrafficState.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef TRAFFICSTATE\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define TRAFFICSTATE\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}Position.h"{}}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}EuclideanProjection.h"{}}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}SUMData.h"{}}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22   \textcolor{comment}{// This numeric type is used for index variables over vectors of TrafficState}}
+\DoxyCodeLine{23   \textcolor{keyword}{typedef} std::vector<TrafficState>::size\_type nat;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{private}:}
+\DoxyCodeLine{26   std::string id\_;}
+\DoxyCodeLine{27   \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} pos\_;}
+\DoxyCodeLine{28   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} gvel\_; \textcolor{comment}{// Ground velocity}}
+\DoxyCodeLine{29   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} avel\_; \textcolor{comment}{// Air velocity}}
+\DoxyCodeLine{30   EuclideanProjection eprj\_; \textcolor{comment}{// Projection}}
+\DoxyCodeLine{31   \textcolor{keywordtype}{int} alerter\_; \textcolor{comment}{// Index to alert levels used by this aircraft}}
+\DoxyCodeLine{32   \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}} sum\_; \textcolor{comment}{// SUM data}}
+\DoxyCodeLine{33   \mbox{\hyperlink{classlarcfm_1_1_position}{Position}} posxyz\_;  \textcolor{comment}{// Projected position}}
+\DoxyCodeLine{34   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}    sxyz\_; \textcolor{comment}{// 3-\/D Cartesion  position}}
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} velxyz\_; \textcolor{comment}{// Projected air velocity}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{public}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{42   \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}{TrafficState}}();}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& INVALID();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   \textcolor{comment}{// Set air velocity to new\_avel}}
+\DoxyCodeLine{47   \textcolor{keywordtype}{void} setAirVelocity(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \&new\_avel);}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{comment}{// Set position to new\_pos and apply Euclidean projection. This methods doesn't change ownship, i.e.,}}
+\DoxyCodeLine{50   \textcolor{comment}{// the resulting aircraft is considered as another intruder.}}
+\DoxyCodeLine{51   \textcolor{keywordtype}{void} setPosition(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& new\_pos);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{private}:}
+\DoxyCodeLine{60   \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}{TrafficState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{69   \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0e4869f5cc5cac1142c9e9a1e1e9e148}{TrafficState}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel,}
+\DoxyCodeLine{70       EuclideanProjection eprj,\textcolor{keywordtype}{int} alerter);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{76   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4cc15dca56f13c23a90963f1adc11911}{applyEuclideanProjection}}();}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{keyword}{public}:}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{83   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4c74796330fd4913ba08cddee31ee2fd}{setAsOwnship}}();}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{92   \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ab7f965b72c22316cd52655d6a8766f18}{makeOwnship}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{97   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ac1c035c6aee85290b983b41a50780ec8}{setAsIntruderOf}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ownship);}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{106   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a346cf68cd1f30e9664fa371e106ecc8b}{makeIntruder}}(\textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id}, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& pos, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vel) \textcolor{keyword}{const};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_afececb56377116067e5c55aeb90b5178}{setAlerterIndex}}(\textcolor{keywordtype}{int} alerter);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{117   \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aae53a6fbba33ae5519bb87f4520462ed}{getAlerterIndex}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{123   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a3160cd09f9512eaeef6a53a2dfef7950}{applyWindVector}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& wind\_vector);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{129   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ad14bf844793de976c3577beb5056e540}{windVector}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{134   \textcolor{keyword}{const} EuclideanProjection\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a720c910510955430d0941fa9b03be6fa}{getEuclideanProjection}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& get\_s() \textcolor{keyword}{const};}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& get\_v() \textcolor{keyword}{const};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} pos\_to\_s(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p) \textcolor{keyword}{const};}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vel\_to\_v(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& p,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} inverseVelocity(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& v) \textcolor{keyword}{const};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{153   \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a62322fc057eb54cd15b8696fceeee266}{linearProjection}}(\textcolor{keywordtype}{double} offset) \textcolor{keyword}{const};}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{160   \textcolor{keyword}{static} \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a71a2b1f4637f017a870d027fe12cc7cb}{findAircraftIndex}}(\textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}, \textcolor{keyword}{const} std::string\& \textcolor{keywordtype}{id});}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162   \textcolor{keyword}{static} std::string listToString(\textcolor{keyword}{const} std::vector<std::string>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164   std::string formattedHeader(\textcolor{keyword}{const} std::string\& utrk, \textcolor{keyword}{const} std::string\& uxy, \textcolor{keyword}{const} std::string\& ualt, \textcolor{keyword}{const} std::string\& ugs, \textcolor{keyword}{const} std::string\& uvs) \textcolor{keyword}{const};}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166   std::string formattedTrafficState(\textcolor{keyword}{const} std::string\& utrk, \textcolor{keyword}{const} std::string\& uxy, \textcolor{keyword}{const} std::string\& ualt, \textcolor{keyword}{const} std::string\& ugs, \textcolor{keyword}{const} std::string\& uvs, \textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168   \textcolor{keyword}{static} std::string formattedTrafficList(\textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{169       \textcolor{keyword}{const} std::string\& utrk, \textcolor{keyword}{const} std::string\& uxy, \textcolor{keyword}{const} std::string\& ualt, \textcolor{keyword}{const} std::string\& ugs, \textcolor{keyword}{const} std::string\& uvs, \textcolor{keywordtype}{double} time);}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171   std::string formattedTraffic(\textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}},}
+\DoxyCodeLine{172       \textcolor{keyword}{const} std::string\& utrk, \textcolor{keyword}{const} std::string\& uxy, \textcolor{keyword}{const} std::string\& ualt, \textcolor{keyword}{const} std::string\& ugs, \textcolor{keyword}{const} std::string\& uvs, \textcolor{keywordtype}{double} time) \textcolor{keyword}{const};}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174   std::string toPVS() \textcolor{keyword}{const};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176   std::string listToPVSAircraftList(\textcolor{keyword}{const} std::vector<TrafficState>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178   \textcolor{keyword}{static} std::string listToPVSStringList(\textcolor{keyword}{const} std::vector<std::string>\& \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{183   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aecd00e5886d2fad3d3ccebff51a5843d}{isValid}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{188   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a195cdbda86deaa8b9ebd431ad9cd8cb0}{isLatLon}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{193   \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a408e7599b2ea6f0d027e5e3011dd90ac}{getId}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{198   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a8044fe0c585f7c0e975b1e5b7f36f94b}{getPosition}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{203   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_adec5a54b018d11406b3f4ed42ad1c413}{getAirVelocity}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{208   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a629f0fa4341841f7e4db9cc00be52734}{getGroundVelocity}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{213   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ad5acc966150a71b58467e1d214e64112}{getVelocity}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_position}{Position}}\& positionXYZ() \textcolor{keyword}{const};}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& velocityXYZ() \textcolor{keyword}{const};}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{223   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aed8ccd6195dccced0db94bddfccbf34b}{horizontalDirection}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{229   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_aed8ccd6195dccced0db94bddfccbf34b}{horizontalDirection}}(\textcolor{keyword}{const} std::string\& utrk) \textcolor{keyword}{const};}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{236   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4e4538f0978568acdfe2bad96f702edc}{horizontalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{243   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a4e4538f0978568acdfe2bad96f702edc}{horizontalSpeed}}(\textcolor{keyword}{const} std::string\& ugs) \textcolor{keyword}{const};}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{248   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a37e4a5b1b47768b8894aae99acd9d280}{verticalSpeed}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{253   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a37e4a5b1b47768b8894aae99acd9d280}{verticalSpeed}}(\textcolor{keyword}{const} std::string\& uvs) \textcolor{keyword}{const};}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{258   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a62383a851a845908bdbc8d033e548c0a}{altitude}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{263   \textcolor{keywordtype}{double} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a62383a851a845908bdbc8d033e548c0a}{altitude}}(\textcolor{keyword}{const} std::string\& ualt) \textcolor{keyword}{const};}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{268   \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_s_u_m_data}{SUMData}}\& \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a47b9070c54eb45679adb1d807b95ed93}{sum}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{275   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_ae63d4240c730ceab972537f2b5c271c5}{setHorizontalPositionUncertainty}}(\textcolor{keywordtype}{double} s\_EW\_std, \textcolor{keywordtype}{double} s\_NS\_std, \textcolor{keywordtype}{double} s\_EN\_std);}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{280   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a0bfec216859765ecf0127f6e9d7fa0dd}{setVerticalPositionUncertainty}}(\textcolor{keywordtype}{double} sz\_std);}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{287   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a117c9b3a0e530d5bfdabf3cb209a0968}{setHorizontalVelocityUncertainty}}(\textcolor{keywordtype}{double} v\_EW\_std, \textcolor{keywordtype}{double} v\_NS\_std,  \textcolor{keywordtype}{double} v\_EN\_std);}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{292   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a7e55a2663a1ca9bb85753b3857877e9e}{setVerticalSpeedUncertainty}}(\textcolor{keywordtype}{double} vz\_std);}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{297   \textcolor{keywordtype}{void} \mbox{\hyperlink{classlarcfm_1_1_traffic_state_a37506ee2ad9e001385f141b64d005f38}{resetUncertainty}}();}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299   \textcolor{keywordtype}{bool} sameId(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_traffic_state}{TrafficState}}\& ac) \textcolor{keyword}{const};}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301   std::string toString() \textcolor{keyword}{const};}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 \};}
+\DoxyCodeLine{304 \}}
+\DoxyCodeLine{305 }
+\DoxyCodeLine{306 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

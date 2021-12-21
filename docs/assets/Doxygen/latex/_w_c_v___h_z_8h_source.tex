@@ -1,0 +1,46 @@
+\hypertarget{_w_c_v___h_z_8h_source}{}\doxysection{WCV\+\_\+\+HZ.\+h}
+\label{_w_c_v___h_z_8h_source}\index{Modules/ACCoRD/inc/WCV\_HZ.h@{Modules/ACCoRD/inc/WCV\_HZ.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2015-\/2020 United States Government as represented by}}
+\DoxyCodeLine{3 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{4 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{6 \textcolor{comment}{ */}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef WCV\_HZ\_H\_}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define WCV\_HZ\_H\_}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{comment}{/* Horizontal Well Clear Volume concept based on Modified TAU,}}
+\DoxyCodeLine{11 \textcolor{comment}{ * and, in the vertical dimension, VMOD}}
+\DoxyCodeLine{12 \textcolor{comment}{ */}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}WCV\_TAUMOD.h"{}}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z}{WCV\_HZ}} : \textcolor{keyword}{public} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___t_a_u_m_o_d}{WCV\_TAUMOD}} \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{public}:}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23   \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z_a073fb2e0987c7ab957d5dced8806de29}{WCV\_HZ}}();}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{26   \textcolor{keyword}{explicit} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z_a073fb2e0987c7ab957d5dced8806de29}{WCV\_HZ}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v_table}{WCVTable}}\& tab);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{virtual} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z}{\string~WCV\_HZ}}() \{\};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z}{WCV\_HZ}}\& \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z_a6d2eb32808a71cfbc01634f1cea738c9}{A\_WCV\_HZ}}();}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* make() \textcolor{keyword}{const};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{40   \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* \mbox{\hyperlink{classlarcfm_1_1_w_c_v___h_z_a7c50912c16b1058d67feea82f0ca9df2}{copy}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   std::string getSimpleClassName() \textcolor{keyword}{const};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keywordtype}{bool} contains(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_detection3_d}{Detection3D}}* cd) \textcolor{keyword}{const};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 \}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,184 @@
+\hypertarget{_c_r3_d_8h_source}{}\doxysection{CR3\+D.\+h}
+\label{_c_r3_d_8h_source}\index{Modules/ACCoRD/inc/CR3D.h@{Modules/ACCoRD/inc/CR3D.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * CR3D.h}}
+\DoxyCodeLine{3 \textcolor{comment}{ * Release: ACCoRD++-\/2.b (08/22/10)}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Contact: Cesar Munoz (cesar.a.munoz@nasa.gov)}}
+\DoxyCodeLine{6 \textcolor{comment}{ * NASA LaRC}}
+\DoxyCodeLine{7 \textcolor{comment}{ * http://shemesh.larc.nasa.gov/people/cam/ACCoRD}}
+\DoxyCodeLine{8 \textcolor{comment}{ *}}
+\DoxyCodeLine{9 \textcolor{comment}{ * Copyright (c) 2011-\/2018 United States Government as represented by}}
+\DoxyCodeLine{10 \textcolor{comment}{ * the National Aeronautics and Space Administration.  No copyright}}
+\DoxyCodeLine{11 \textcolor{comment}{ * is claimed in the United States under Title 17, U.S.Code. All Other}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Rights Reserved.}}
+\DoxyCodeLine{13 \textcolor{comment}{ */}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef CR3D\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define CR3D\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}CDCylinder.h"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}ACCoRDConfig.h"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}Horizontal.h"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}Vertical.h"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}Velocity.h"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacelarcfm}{larcfm}} \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{63   \textcolor{keyword}{class }\mbox{\hyperlink{classlarcfm_1_1_c_r3_d}{CR3D}} \{}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keyword}{public}:}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{68     \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}   \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a0a86feb068f1d10fd6734ccd1efb2668}{trk}};}
+\DoxyCodeLine{70     \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}   \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_ae62b2ec79112641d40db0eb5fb7d11e6}{gs}};}
+\DoxyCodeLine{72     \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}}   \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_aa2e25fe579b49e9c859ef47f656c63d4}{opt}};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75     \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}}     \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_adb4dfa7a0748c92c934ce91bc1b34689}{vs}};         }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{81     \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a0b3f94ea413b7160b01326290020593f}{CR3D}}();}
+\DoxyCodeLine{106     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a8f71ceb4212f2faccaeb15ffaf021648}{cr}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo,\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{107         \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{108     }
+\DoxyCodeLine{109 \textcolor{comment}{//  /**}}
+\DoxyCodeLine{110 \textcolor{comment}{//   * Loss of separation recovery algorithm}}
+\DoxyCodeLine{111 \textcolor{comment}{//   *}}
+\DoxyCodeLine{112 \textcolor{comment}{//   *}}
+\DoxyCodeLine{113 \textcolor{comment}{//   * If trk is not zero, trk satisfies}}
+\DoxyCodeLine{114 \textcolor{comment}{//   *   || trk || = || vo ||, and}}
+\DoxyCodeLine{115 \textcolor{comment}{//   * trk is a coordinated track only LoS recovery maneuver for the ownship.}}
+\DoxyCodeLine{116 \textcolor{comment}{//   *}}
+\DoxyCodeLine{117 \textcolor{comment}{//   * If gs is not zero, gs satisfies}}
+\DoxyCodeLine{118 \textcolor{comment}{//   *   exists l > 0 such that l*gs = vo, and}}
+\DoxyCodeLine{119 \textcolor{comment}{//   * gs is a coordinated ground speed only LoS recovery maneuver for the ownship.}}
+\DoxyCodeLine{120 \textcolor{comment}{//   *}}
+\DoxyCodeLine{121 \textcolor{comment}{//   * If opt is not zero, opt is a coordinated optimal horizontal LoS recovery maneuver for the ownship.}}
+\DoxyCodeLine{122 \textcolor{comment}{//   *}}
+\DoxyCodeLine{123 \textcolor{comment}{//   * vs is defined ==>}}
+\DoxyCodeLine{124 \textcolor{comment}{//   *   vs is a coordinated vertical only LoS recovery maneuver for the ownship.}}
+\DoxyCodeLine{125 \textcolor{comment}{//   *}}
+\DoxyCodeLine{126 \textcolor{comment}{//   * @param s the relative position of the aircraft}}
+\DoxyCodeLine{127 \textcolor{comment}{//   * @param vo the ownship's velocity}}
+\DoxyCodeLine{128 \textcolor{comment}{//   * @param vi the intruder's velocity}}
+\DoxyCodeLine{129 \textcolor{comment}{//   * @param D the minimum horizontal distance}}
+\DoxyCodeLine{130 \textcolor{comment}{//   * @param H the minimum vertical distance}}
+\DoxyCodeLine{131 \textcolor{comment}{//   *}}
+\DoxyCodeLine{132 \textcolor{comment}{//   * @return true, if at least one recovery maneuver was found.}}
+\DoxyCodeLine{133 \textcolor{comment}{//   */}}
+\DoxyCodeLine{134 \textcolor{comment}{//    bool losr\_old(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{135 \textcolor{comment}{//        const double D, const double H, int epsv);}}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{161     \textcolor{keywordtype}{bool} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a711d2e4d3faa1958167cc2147957d708}{losr\_repulsive}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} NMAC\_D, \textcolor{keywordtype}{double} NMAC\_H,}
+\DoxyCodeLine{162         \textcolor{keywordtype}{double} minHorizExitSpeedLoS, \textcolor{keywordtype}{double} minVertExitSpeedLoS, \textcolor{keywordtype}{double} minGs, \textcolor{keywordtype}{double} maxGs, \textcolor{keywordtype}{double} maxVs, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{comment}{//    static Horizontal losr\_trk(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{165 \textcolor{comment}{//        const double D, const double H);}}
+\DoxyCodeLine{166 \textcolor{comment}{//}}
+\DoxyCodeLine{167 \textcolor{comment}{//    static Horizontal losr\_gs(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{168 \textcolor{comment}{//        const double D, const double H);}}
+\DoxyCodeLine{169 \textcolor{comment}{//}}
+\DoxyCodeLine{170 \textcolor{comment}{//    static Vertical  losr\_vs(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{171 \textcolor{comment}{//            const double D, const double H,int epsv);}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{188     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a14ebdfb26a0d4d1f43febd1b38ab0826}{cr3d}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{189          \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H, std::string ownship, std::string \mbox{\hyperlink{arducopter_8h_af658750d9926b54e48a492c3cf3f446b}{traffic}});}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{comment}{//    /**}}
+\DoxyCodeLine{192 \textcolor{comment}{//     * Conflict resolution algorithm including loss of separation recovery maneuvers}}
+\DoxyCodeLine{193 \textcolor{comment}{//     *}}
+\DoxyCodeLine{194 \textcolor{comment}{//     * @param s the relative position of the aircraft}}
+\DoxyCodeLine{195 \textcolor{comment}{//     * @param vo the ownship's velocity}}
+\DoxyCodeLine{196 \textcolor{comment}{//     * @param vi the intruder's velocity}}
+\DoxyCodeLine{197 \textcolor{comment}{//     * @param D the minimum horizontal distance}}
+\DoxyCodeLine{198 \textcolor{comment}{//     * @param H the minimum vertical distance}}
+\DoxyCodeLine{199 \textcolor{comment}{//     * \&param Th the minimum time to recover from loss of separation horizontally}}
+\DoxyCodeLine{200 \textcolor{comment}{//     * \&param Tv the minimum time to recover from loss of separation vertically}}
+\DoxyCodeLine{201 \textcolor{comment}{//     *}}
+\DoxyCodeLine{202 \textcolor{comment}{//     * @return the type of resolution maneuver:}}
+\DoxyCodeLine{203 \textcolor{comment}{//     * -\/1 : None available}}
+\DoxyCodeLine{204 \textcolor{comment}{//     *  0 : Conflict resolution}}
+\DoxyCodeLine{205 \textcolor{comment}{//     *  1 : Loss of separation resolution}}
+\DoxyCodeLine{206 \textcolor{comment}{//     */}}
+\DoxyCodeLine{207 \textcolor{comment}{//}}
+\DoxyCodeLine{208 \textcolor{comment}{//        int cr3d(const Vect3\& s, const Vect3\& vo, const Vect3\& vi,}}
+\DoxyCodeLine{209 \textcolor{comment}{//           const double D, const double H, const double Tv, const double Th);}}
+\DoxyCodeLine{210 \textcolor{comment}{//}}
+\DoxyCodeLine{211 \textcolor{comment}{//}}
+\DoxyCodeLine{212 \textcolor{comment}{//    int cr3d\_old(const Vect3\& s, const Velocity\& vo, const Velocity\& vi,}}
+\DoxyCodeLine{213 \textcolor{comment}{//       const double D, const double H, const double TLos\_h, const double TLos\_v,}}
+\DoxyCodeLine{214 \textcolor{comment}{//           const double minGs, const double maxGs, double maxVs, int epsh, int epsv);}}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{232     \textcolor{keywordtype}{int} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a5d2de0ff4b48248de5d512bee6331524}{cr3d\_repulsive}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi,}
+\DoxyCodeLine{233          \textcolor{keyword}{const} \textcolor{keywordtype}{double} D, \textcolor{keyword}{const} \textcolor{keywordtype}{double} H,}
+\DoxyCodeLine{234           \textcolor{keyword}{const} \textcolor{keywordtype}{double} minHorizExitSpeedLoS, \textcolor{keywordtype}{double} minVertExitSpeedLoS,}
+\DoxyCodeLine{235           \textcolor{keyword}{const} \textcolor{keywordtype}{double} minGs, \textcolor{keyword}{const} \textcolor{keywordtype}{double} maxGs, \textcolor{keywordtype}{double} maxVs, \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237     \textcolor{keywordtype}{int} cr3d\_repulsive\_los(\mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}} s, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vo, \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}} vi, \textcolor{keywordtype}{double} NMAC\_D, \textcolor{keywordtype}{double} NMAC\_H,}
+\DoxyCodeLine{238         \textcolor{keywordtype}{double} minHorizExitSpeedLoS, \textcolor{keywordtype}{double} minVertExitSpeedLoS, \textcolor{keywordtype}{double} minGs, \textcolor{keywordtype}{double} maxGs, \textcolor{keywordtype}{double} maxVs,}
+\DoxyCodeLine{239         \textcolor{keywordtype}{int} epsh, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241     \textcolor{comment}{// static int trk\_repulsive\_dir(const Vect2\& s, const Vect2\& vo, const Vect2\& vi);}}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{256     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a279e6fe2088ec674779f4db3ad590d14}{losr\_trk\_iter}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi, \textcolor{keywordtype}{double} minrelgs, \textcolor{keywordtype}{double} maxtrk, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} epsh);}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_horizontal}{Horizontal}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a6a6ff0c0c73db586f2fabf13733882ba}{losr\_gs\_iter}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& vi,}
+\DoxyCodeLine{259                                       \textcolor{keywordtype}{double} minrelgs, \textcolor{keywordtype}{double} mings, \textcolor{keywordtype}{double} maxgs, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} epsh);}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{275     \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vertical}{Vertical}} \mbox{\hyperlink{classlarcfm_1_1_c_r3_d_a841a4a66b50aa97507bd3e7dbcc231d0}{losr\_vs\_new}}(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect3}{Vect3}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vo, \textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_velocity}{Velocity}}\& vi, \textcolor{keywordtype}{double} minrelvs, \textcolor{keywordtype}{double} maxvs,}
+\DoxyCodeLine{276             \textcolor{keywordtype}{double} caD, \textcolor{keywordtype}{double} caH, \textcolor{keywordtype}{int} epsv);}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \textcolor{comment}{//    /** returns CR3D track solution via static function}}
+\DoxyCodeLine{280 \textcolor{comment}{//    * Warning: returns zero vector if no solution present}}
+\DoxyCodeLine{281 \textcolor{comment}{//    * @param s the relative position of the aircraft}}
+\DoxyCodeLine{282 \textcolor{comment}{//    * @param vo the ownship's velocity}}
+\DoxyCodeLine{283 \textcolor{comment}{//    * @param vi the intruder's velocity}}
+\DoxyCodeLine{284 \textcolor{comment}{//    * @param D the minimum horizontal distance}}
+\DoxyCodeLine{285 \textcolor{comment}{//    * @param H the minimum vertical distance}}
+\DoxyCodeLine{286 \textcolor{comment}{//   */}}
+\DoxyCodeLine{287 \textcolor{comment}{//      static Velocity  old\_trk\_solution(const Vect3\& s, const Vect3\& vo, const Vect3\& vi, double D, double H, int epsh, int epsv);}}
+\DoxyCodeLine{288 \textcolor{comment}{//}}
+\DoxyCodeLine{289 \textcolor{comment}{//    /** returns CR3D ground speed solution via static function}}
+\DoxyCodeLine{290 \textcolor{comment}{//    * Warning: returns zero vector if no solution present}}
+\DoxyCodeLine{291 \textcolor{comment}{//    * @param s the relative position of the aircraft}}
+\DoxyCodeLine{292 \textcolor{comment}{//    * @param vo the ownship's velocity}}
+\DoxyCodeLine{293 \textcolor{comment}{//    * @param vi the intruder's velocity}}
+\DoxyCodeLine{294 \textcolor{comment}{//    * @param D the minimum horizontal distance}}
+\DoxyCodeLine{295 \textcolor{comment}{//    * @param H the minimum vertical distance}}
+\DoxyCodeLine{296 \textcolor{comment}{//   */}}
+\DoxyCodeLine{297 \textcolor{comment}{//      static Velocity  old\_gs\_solution(const Vect3\& s, const Vect3\& vo, const Vect3\& vi, double D, double H, int epsh, int epsv);}}
+\DoxyCodeLine{298 \textcolor{comment}{//}}
+\DoxyCodeLine{299 \textcolor{comment}{//    /**}}
+\DoxyCodeLine{300 \textcolor{comment}{//     * Returns CR3D vertical speed solution via static function}}
+\DoxyCodeLine{301 \textcolor{comment}{//     * **Warning: returns zero vector if no solution present}}
+\DoxyCodeLine{302 \textcolor{comment}{//     * @param s the relative position of the aircraft}}
+\DoxyCodeLine{303 \textcolor{comment}{//     * @param vo the ownship's velocity}}
+\DoxyCodeLine{304 \textcolor{comment}{//     * @param vi the intruder's velocity}}
+\DoxyCodeLine{305 \textcolor{comment}{//     * @param D the minimum horizontal distance}}
+\DoxyCodeLine{306 \textcolor{comment}{//     * @param H the minimum vertical distance}}
+\DoxyCodeLine{307 \textcolor{comment}{//     */}}
+\DoxyCodeLine{308 \textcolor{comment}{//      static Velocity  old\_vs\_solution(const Vect3\& s, const Vect3\& vo, const Vect3\& vi, double D, double H, int epsv);}}
+\DoxyCodeLine{309 \textcolor{comment}{//}}
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312   \textcolor{keyword}{private}:}
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 \textcolor{comment}{//    static int trk\_los\_iter\_dir(const Vect2\& s, const Vect2\& vo, const Vect2\& vi, double step, int eps);  // ??????}}
+\DoxyCodeLine{315       \textcolor{keyword}{static} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}} incr\_vect(\textcolor{keyword}{const} \mbox{\hyperlink{classlarcfm_1_1_vect2}{Vect2}}\& nvo, \textcolor{keywordtype}{double} step, \textcolor{keywordtype}{int} dir);}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320   \};}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322 \}}
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* CR3D\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
