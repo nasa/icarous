@@ -23,7 +23,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.2.5 - March 8, 2021
+- ICAROUS  V-2.2.6 - January 3, 2022
 
 ### Pycarous
 
