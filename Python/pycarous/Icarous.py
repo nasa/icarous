@@ -127,7 +127,7 @@ class Icarous(IcarousInterface):
                 self.core.ProcessTargets(self.currTime,callsign,position,velocity,sigmaP,sigmaV)
             else:
                 trkgsvs = ConvertVnedToTrkGsVs(*velocity)
-                self.core.InputIntruderState(self.currTime,"ADSB",callsign,position,trkgsvs,sigmaP,sigmaV)
+                self.core.InputIntruderState(self.currTime,source,callsign,position,trkgsvs,sigmaP,sigmaV)
 
     def GetAcquiredTargets(self):
         n = self.core.GetTotalAcquiredTargets()
@@ -228,7 +228,8 @@ class Icarous(IcarousInterface):
 
     def RunOwnship(self):
         self.controlInput = self.core.GetOutput()
-        self.ownship.InputCommand(*self.controlInput)
+        if np.linalg.norm(self.controlInput) > 1e-3:
+            self.ownship.InputCommand(*self.controlInput)
         status = self.ownship.Run(windFrom=self.windFrom,windSpeed=self.windSpeed)
         if status:
             self.InputOwnshipState()

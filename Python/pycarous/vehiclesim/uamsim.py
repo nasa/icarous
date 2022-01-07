@@ -39,6 +39,12 @@ class UamVtolSim(VehicleSimInterface):
     def SetInitialConditions(self,x=0,y=0,z=0,heading=0,speed=0,vs=0):
         self.pos0 = np.array([x,y,z])
         self.trk,self.gs,self.vs = heading,speed,vs
+        self.vel[0] = self.gs*np.sin(self.trk * np.pi/180)
+        self.vel[1] = self.gs*np.cos(self.trk * np.pi/180)
+        self.vel[2] = self.vs
+        self.U[0] = self.trk
+        self.U[1] = self.gs
+        self.U[2] = self.vs
         
 
     def Run(self, windFrom=0, windSpeed=0):
