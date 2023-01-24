@@ -118,8 +118,8 @@ void DDS_INTERFACE_ProcessPacket(){
                          0,
                          traffic->latitude,
                          traffic->longitude,
-                         traffic->altiude,
-                         traffic->altiude,
+                         traffic->altitude,
+                         traffic->altitude,
                          traffic->vx,
                          traffic->vy,
                          traffic->vz);
