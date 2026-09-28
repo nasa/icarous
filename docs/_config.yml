@@ -25,11 +25,17 @@ url: "https://nasa.github.io" # the base hostname & protocol for your site, e.g.
 nasatree: "https://github.com/nasa/icarous/tree/master"
 nasablob: "https://github.com/nasa/icarous/blob/master"
 # Build settings
-remote_theme: pmarsceill/just-the-docs
+theme: just-the-docs
 markdown: kramdown
-#theme: just-the-docs
-#plugins:
-#  - jekyll-feed
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Suppress Sass deprecation warnings from theme
+sass:
+  quiet_deps: true
+  style: compressed
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
